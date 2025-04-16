@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structidol_1_1Optimizers_1_1PADM_1_1IterationLog" kind="struct" language="C++" prot="private">
+    <compoundname>idol::Optimizers::PADM::IterationLog</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structidol_1_1Optimizers_1_1PADM_1_1IterationLog_1a834368ab9f0348fa15b741fb37ad259a" prot="public" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Optimizers::PADM::IterationLog::outer_iteration</definition>
+        <argsstring></argsstring>
+        <name>outer_iteration</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="137" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structidol_1_1Optimizers_1_1PADM_1_1IterationLog_1a0f816abbbb68d2a9b1fe108641bc061b" prot="public" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Optimizers::PADM::IterationLog::inner_iteration</definition>
+        <argsstring></argsstring>
+        <name>inner_iteration</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="138" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structidol_1_1Optimizers_1_1PADM_1_1IterationLog_1ad9df6a0adebadb4c7320d2a7390eb743" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; idol::Optimizers::PADM::IterationLog::objective_value</definition>
+        <argsstring></argsstring>
+        <name>objective_value</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="139" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="139" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structidol_1_1Optimizers_1_1PADM_1_1IterationLog_1a45b2c7caf77f5eb3b200c271a4fe8a18" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; idol::Optimizers::PADM::IterationLog::infeasibility</definition>
+        <argsstring></argsstring>
+        <name>infeasibility</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="140" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structidol_1_1Optimizers_1_1PADM_1_1IterationLog_1a81117e6871dfd03b751e088df1000461" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Optimizers::PADM::IterationLog::IterationLog</definition>
+        <argsstring>(unsigned int t_outer_iteration, unsigned int t_inner_iteration, std::vector&lt; double &gt; t_objective_value, std::vector&lt; double &gt; t_infeasibility)</argsstring>
+        <name>IterationLog</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_outer_iteration</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_inner_iteration</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt;</type>
+          <declname>t_objective_value</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt;</type>
+          <declname>t_infeasibility</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="141" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="141" bodyend="142"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Optimizers::PADM::IterationLog</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="136" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="136" bodyend="143"/>
+    <listofallmembers>
+      <member refid="structidol_1_1Optimizers_1_1PADM_1_1IterationLog_1a45b2c7caf77f5eb3b200c271a4fe8a18" prot="public" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationLog</scope><name>infeasibility</name></member>
+      <member refid="structidol_1_1Optimizers_1_1PADM_1_1IterationLog_1a0f816abbbb68d2a9b1fe108641bc061b" prot="public" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationLog</scope><name>inner_iteration</name></member>
+      <member refid="structidol_1_1Optimizers_1_1PADM_1_1IterationLog_1a81117e6871dfd03b751e088df1000461" prot="public" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationLog</scope><name>IterationLog</name></member>
+      <member refid="structidol_1_1Optimizers_1_1PADM_1_1IterationLog_1ad9df6a0adebadb4c7320d2a7390eb743" prot="public" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationLog</scope><name>objective_value</name></member>
+      <member refid="structidol_1_1Optimizers_1_1PADM_1_1IterationLog_1a834368ab9f0348fa15b741fb37ad259a" prot="public" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationLog</scope><name>outer_iteration</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

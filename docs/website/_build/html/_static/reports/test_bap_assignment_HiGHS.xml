@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Catch2TestRun name="test_bap_assignment_HiGHS" rng-seed="2120275426" xml-format-version="3" catch2-version="3.3.2">
+  <TestCase name="Solve Generalized Assignment Problem instances with different branch-and-price approaches" tags="[assignment][branch-and-bound]" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="33">
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance0.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.500000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + B&amp;B with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance1.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with integer master heuristic with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to master and stabilizers factor of 0.800000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance2.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance2.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance2.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance2.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance2.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance2.txt&quot; is solved by branch-and-bound with subtree depth of 1 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.000000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance2.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance2.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + B&amp;B with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <Section name="Then: The solution status is Optimal" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="199">
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="When: The instance &quot;GAP_instance2.txt&quot; is solved by branch-and-bound with subtree depth of 0 and with relaxation solved by CG + nested B&amp;P with artificial variables, branching applied to sub-problem and stabilizers factor of 0.300000" filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+      <FatalErrorCondition filename="/home/henri/Research/idol/tests/mixed-integer/branch-and-price/assignment.cpp" line="188">
+        SIGINT - Terminal interrupt signal
+      </FatalErrorCondition>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <OverallResults successes="400" failures="1" expectedFailures="0" skips="0"/>
+  <OverallResultsCases successes="0" failures="1" expectedFailures="0" skips="0"/>
+</Catch2TestRun>

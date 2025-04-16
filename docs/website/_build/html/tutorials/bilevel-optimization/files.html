@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Reading and Writing Bilevel Instances (BOBILib)</title>
+    
+          <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../_static/theme-vendors.js"></script> -->
+      <script src="../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/bilevel-optimization/files.html" />
+    
+  <link rel="index" title="Index" href="../../genindex.html" />
+  <link rel="search" title="Search" href="../../search.html" />
+  <link rel="next" title="Deriving Single-level Reformulations" href="kkt.html" />
+  <link rel="prev" title="Modeling a Bilevel Problem" href="modeling.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../index.html">Tutorials</a> &raquo;</li>
+    
+      <li><a href="index.html">Bilevel Optimization</a> &raquo;</li>
+    
+    <li>Reading and Writing Bilevel Instances (BOBILib)</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="modeling.html"
+       title="previous chapter">← Modeling a Bilevel Problem</a>
+  </li>
+  <li class="next">
+    <a href="kkt.html"
+       title="next chapter">Deriving Single-level Reformulations →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="reading-and-writing-bilevel-instances-bobilib">
+<h1>Reading and Writing Bilevel Instances (BOBILib)<a class="headerlink" href="#reading-and-writing-bilevel-instances-bobilib" title="Link to this heading">¶</a></h1>
+<p><a class="reference external" href="https://BOBILib.org/">BOBILib</a> is a library of instances for bilevel optimization problems.
+In this tutorial, we will show how to read and write bilevel instances in the format which is used by BOBILib.
+The advantage is twofold. First, we can easily access a large number of bilevel instances.
+Second, we can easily share our bilevel instances with others.</p>
+<p>Let’s get started!</p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#the-format" id="id2">The Format</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id3">Implementation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#reading-instances" id="id4">Reading Instances</a></p></li>
+<li><p><a class="reference internal" href="#writing-instances" id="id5">Writing Instances</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="the-format">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">The Format</a><a class="headerlink" href="#the-format" title="Link to this heading">¶</a></h2>
+<p>The instances in BOBILib are stored in two files:</p>
+<ul class="simple">
+<li><p>An <code class="code docutils literal notranslate"><span class="pre">.mps</span></code> or <code class="code docutils literal notranslate"><span class="pre">.lp</span></code> file containing the high-point relaxation of the bilevel problem,</p></li>
+<li><p>An <code class="code docutils literal notranslate"><span class="pre">.aux</span></code> file containing the description of the lower-level problem.</p></li>
+</ul>
+<p>For more details, we refer to the report <span id="id1">[<a class="reference internal" href="../../references.html#id18" title="Johannes Thürauf, Thomas Kleinert, Ivana Ljubić, Ted Ralphs, and Martin Schmidt. Bobilib: bilevel optimization (benchmark) instance library. Technical Report, Universität Trier, Quantagonia, ESSEC Business School, Lehigh University, 2024. URL: https://optimization-online.org/?p=27063.">12</a>]</span>.</p>
+</section>
+<section id="implementation">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
+<section id="reading-instances">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Reading Instances</a><a class="headerlink" href="#reading-instances" title="Link to this heading">¶</a></h3>
+<p>Reading a BOBILib instance is straightforward. We can use the <code class="code docutils literal notranslate"><span class="pre">Bilevel::read_from_file</span></code> function.
+However, it requires an underlying solver to parse the <code class="code docutils literal notranslate"><span class="pre">.mps</span></code> file. Here, we will use Gurobi.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">description</span><span class="p">]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">Bilevel</span><span class="o">::</span><span class="n">read_from_file</span><span class="o">&lt;</span><span class="n">Gurobi</span><span class="o">&gt;</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">aux_filename</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The function returns a pair made by the high-point relaxation model and the description of the lower-level problem.</p>
+</section>
+<section id="writing-instances">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Writing Instances</a><a class="headerlink" href="#writing-instances" title="Link to this heading">¶</a></h3>
+<p>Assume that you have a bilevel model <code class="code docutils literal notranslate"><span class="pre">model</span></code> and a description <code class="code docutils literal notranslate"><span class="pre">description</span></code> for the lower-level problem.
+Writing this problem to file can be done by a single call to <code class="code docutils literal notranslate"><span class="pre">Bilevel::write_to_file</span></code>.
+Here, no external solver is necessary.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">    the following creates two files:</span>
+<span class="cm">    - instance-filename.mps</span>
+<span class="cm">    - instance-filename.aux</span>
+<span class="cm">*/</span>
+<span class="n">Bilevel</span><span class="o">::</span><span class="n">write_to_file</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">description</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;instance-filename&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="modeling.html"
+       title="previous chapter">← Modeling a Bilevel Problem</a>
+  </li>
+  <li class="next">
+    <a href="kkt.html"
+       title="next chapter">Deriving Single-level Reformulations →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

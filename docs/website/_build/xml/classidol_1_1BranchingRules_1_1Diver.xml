@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1BranchingRules_1_1Diver" kind="class" language="C++" prot="public">
+    <compoundname>idol::BranchingRules::Diver</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">BranchingRuleT</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>class BranchingRuleT</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classidol_1_1BranchingRules_1_1Diver_1aef5f770a906e6ab04854951a08e2493d" prot="public" static="no">
+        <type>typename BranchingRuleT::NodeInfoT</type>
+        <definition>using idol::BranchingRules::Diver&lt; BranchingRuleT &gt;::NodeInfoT =  typename BranchingRuleT::NodeInfoT</definition>
+        <argsstring></argsstring>
+        <name>NodeInfoT</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/Diver.h" line="18" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/Diver.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1BranchingRules_1_1Diver_1a88792105d76c5b1115def3e1cdecbc39" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::BranchingRules::Diver&lt; BranchingRuleT &gt;::Diver</definition>
+        <argsstring>(const Optimizers::BranchAndBound&lt; NodeInfoT &gt; &amp;t_parent, std::list&lt; Var &gt; t_branching_candidates)</argsstring>
+        <name>Diver</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound</ref>&lt; NodeInfoT &gt; &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <param>
+          <type>std::list&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+          <declname>t_branching_candidates</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/Diver.h" line="20" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/Diver.h" bodystart="26" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchingRules_1_1Diver_1acebfb238061adc08f8c2e0ad569753df" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::list&lt; NodeInfoT * &gt;</type>
+        <definition>std::list&lt; typename BranchingRuleT::NodeInfoT * &gt; idol::BranchingRules::Diver&lt; BranchingRuleT &gt;::create_child_nodes</definition>
+        <argsstring>(const Node&lt; NodeInfoT &gt; &amp;t_node) override</argsstring>
+        <name>create_child_nodes</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Node" kindref="compound">Node</ref>&lt; NodeInfoT &gt; &amp;</type>
+          <declname>t_node</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/Diver.h" line="22" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/Diver.h" bodystart="32" bodyend="46"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>BranchingRuleT</label>
+      </node>
+      <node id="1">
+        <label>idol::BranchingRules::Diver&lt; BranchingRuleT &gt;</label>
+        <link refid="classidol_1_1BranchingRules_1_1Diver"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>BranchingRuleT</label>
+      </node>
+      <node id="1">
+        <label>idol::BranchingRules::Diver&lt; BranchingRuleT &gt;</label>
+        <link refid="classidol_1_1BranchingRules_1_1Diver"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/Diver.h" line="16" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/Diver.h" bodystart="16" bodyend="23"/>
+    <listofallmembers>
+      <member refid="classidol_1_1BranchingRules_1_1Diver_1acebfb238061adc08f8c2e0ad569753df" prot="public" virt="non-virtual"><scope>idol::BranchingRules::Diver</scope><name>create_child_nodes</name></member>
+      <member refid="classidol_1_1BranchingRules_1_1Diver_1a88792105d76c5b1115def3e1cdecbc39" prot="public" virt="non-virtual"><scope>idol::BranchingRules::Diver</scope><name>Diver</name></member>
+      <member refid="classidol_1_1BranchingRules_1_1Diver_1aef5f770a906e6ab04854951a08e2493d" prot="public" virt="non-virtual"><scope>idol::BranchingRules::Diver</scope><name>NodeInfoT</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

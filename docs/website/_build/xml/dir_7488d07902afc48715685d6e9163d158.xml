@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_7488d07902afc48715685d6e9163d158" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound</compoundname>
+    <innerdir refid="dir_ecc052d8a887a7360147be43766a35cd">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules</innerdir>
+    <innerdir refid="dir_23e540c7372bac415c750a58ec202909">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks</innerdir>
+    <innerdir refid="dir_109333e66b1bd1f5535b8d1041f4eefc">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs</innerdir>
+    <innerdir refid="dir_7a41da09d9bd356e581497fc922db9b5">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules</innerdir>
+    <innerdir refid="dir_bbdda13fb12bb9431a5d0d74a2040c51">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes</innerdir>
+    <innerfile refid="BranchAndBound_8h">BranchAndBound.h</innerfile>
+    <innerfile refid="Optimizers__BranchAndBound_8h">Optimizers_BranchAndBound.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/"/>
+  </compounddef>
+</doxygen>

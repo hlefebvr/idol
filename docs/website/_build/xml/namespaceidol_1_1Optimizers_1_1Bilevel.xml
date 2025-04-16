@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1Optimizers_1_1Bilevel" kind="namespace" language="C++">
+    <compoundname>idol::Optimizers::Bilevel</compoundname>
+    <innerclass refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut" prot="public">idol::Optimizers::Bilevel::BranchAndCut</innerclass>
+    <innerclass refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT" prot="public">idol::Optimizers::Bilevel::KKT</innerclass>
+    <innerclass refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic" prot="public">idol::Optimizers::Bilevel::PessimisticAsOptimistic</innerclass>
+    <innerclass refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality" prot="public">idol::Optimizers::Bilevel::StrongDuality</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.h" line="12" column="1"/>
+  </compounddef>
+</doxygen>

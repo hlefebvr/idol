@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1MibSCallbackI_1_1CutGenerator" kind="class" language="C++" prot="public">
+    <compoundname>idol::MibSCallbackI::CutGenerator</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">CglCutGenerator</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1MibSCallbackI_1_1CutGenerator_1a808be90d1ce9c509696554b8ccd0a8ae" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1MibSCallbackI" kindref="compound">MibSCallbackI</ref> &amp;</type>
+        <definition>MibSCallbackI&amp; idol::MibSCallbackI::CutGenerator::m_parent</definition>
+        <argsstring></argsstring>
+        <name>m_parent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="84" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1MibSCallbackI_1_1CutGenerator_1a8182ed3a4f30cefd40b894e9903bccd0" prot="private" static="no" mutable="no">
+        <type>std::list&lt; <ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref> &gt;</type>
+        <definition>std::list&lt;TempCtr&gt; idol::MibSCallbackI::CutGenerator::m_cuts</definition>
+        <argsstring></argsstring>
+        <name>m_cuts</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="85" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1MibSCallbackI_1_1CutGenerator_1a2c3744c2d9aace50198fd1bd4f132f00" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::MibSCallbackI::CutGenerator::CutGenerator</definition>
+        <argsstring>(MibSCallbackI &amp;t_parent)</argsstring>
+        <name>CutGenerator</name>
+        <param>
+          <type><ref refid="classidol_1_1MibSCallbackI" kindref="compound">MibSCallbackI</ref> &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="87" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="87" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1MibSCallbackI_1_1CutGenerator_1a6df645101c70169cd01cfd908e697410" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::MibSCallbackI::CutGenerator::add_user_cut</definition>
+        <argsstring>(TempCtr t_cut)</argsstring>
+        <name>add_user_cut</name>
+        <param>
+          <type><ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref></type>
+          <declname>t_cut</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="89" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="89" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1MibSCallbackI_1_1CutGenerator_1aa0c631c4ab0ce04e203b9087a0317355" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::MibSCallbackI::CutGenerator::generateCuts</definition>
+        <argsstring>(const OsiSolverInterface &amp;si, OsiCuts &amp;cs, const CglTreeInfo info) override</argsstring>
+        <name>generateCuts</name>
+        <param>
+          <type>const <ref refid="structOsiSolverInterface" kindref="compound">OsiSolverInterface</ref> &amp;</type>
+          <declname>si</declname>
+        </param>
+        <param>
+          <type>OsiCuts &amp;</type>
+          <declname>cs</declname>
+        </param>
+        <param>
+          <type>const CglTreeInfo</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="93" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="93" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1MibSCallbackI_1_1CutGenerator_1a86f0f4ccaa98d12bd4ad421ea7694818" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>CglCutGenerator *</type>
+        <definition>CglCutGenerator* idol::MibSCallbackI::CutGenerator::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="135" column="26" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="135" bodyend="137"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>CglCutGenerator</label>
+      </node>
+      <node id="1">
+        <label>idol::MibSCallbackI::CutGenerator</label>
+        <link refid="classidol_1_1MibSCallbackI_1_1CutGenerator"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>CglCutGenerator</label>
+      </node>
+      <node id="1">
+        <label>idol::MibSCallbackI::CutGenerator</label>
+        <link refid="classidol_1_1MibSCallbackI_1_1CutGenerator"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="83" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="83" bodyend="138"/>
+    <listofallmembers>
+      <member refid="classidol_1_1MibSCallbackI_1_1CutGenerator_1a6df645101c70169cd01cfd908e697410" prot="public" virt="non-virtual"><scope>idol::MibSCallbackI::CutGenerator</scope><name>add_user_cut</name></member>
+      <member refid="classidol_1_1MibSCallbackI_1_1CutGenerator_1a86f0f4ccaa98d12bd4ad421ea7694818" prot="public" virt="non-virtual"><scope>idol::MibSCallbackI::CutGenerator</scope><name>clone</name></member>
+      <member refid="classidol_1_1MibSCallbackI_1_1CutGenerator_1a2c3744c2d9aace50198fd1bd4f132f00" prot="public" virt="non-virtual"><scope>idol::MibSCallbackI::CutGenerator</scope><name>CutGenerator</name></member>
+      <member refid="classidol_1_1MibSCallbackI_1_1CutGenerator_1aa0c631c4ab0ce04e203b9087a0317355" prot="public" virt="non-virtual"><scope>idol::MibSCallbackI::CutGenerator</scope><name>generateCuts</name></member>
+      <member refid="classidol_1_1MibSCallbackI_1_1CutGenerator_1a8182ed3a4f30cefd40b894e9903bccd0" prot="private" virt="non-virtual"><scope>idol::MibSCallbackI::CutGenerator</scope><name>m_cuts</name></member>
+      <member refid="classidol_1_1MibSCallbackI_1_1CutGenerator_1a808be90d1ce9c509696554b8ccd0a8ae" prot="private" virt="non-virtual"><scope>idol::MibSCallbackI::CutGenerator</scope><name>m_parent</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Bilevel_1_1OptimizerInterface" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>idol::Bilevel::OptimizerInterface</compoundname>
+    <derivedcompoundref refid="classidol_1_1Bilevel_1_1BranchAndCut" prot="public" virt="non-virtual">idol::Bilevel::BranchAndCut</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1Bilevel_1_1KKT" prot="public" virt="non-virtual">idol::Bilevel::KKT</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1Bilevel_1_1MibS" prot="public" virt="non-virtual">idol::Bilevel::MibS</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic" prot="public" virt="non-virtual">idol::Bilevel::PessimisticAsOptimistic</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1Bilevel_1_1StrongDuality" prot="public" virt="non-virtual">idol::Bilevel::StrongDuality</derivedcompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1OptimizerInterface_1a495dc1a16d4ab25630d28c1e273b7d47" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual idol::Bilevel::OptimizerInterface::~OptimizerInterface</definition>
+        <argsstring>()=default</argsstring>
+        <name>~OptimizerInterface</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/BilevelOptimizerInterface.h" line="15" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1OptimizerInterface_1a9ff014a74d240c414a5fef72c6c8522f" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void idol::Bilevel::OptimizerInterface::set_bilevel_description</definition>
+        <argsstring>(const Bilevel::Description &amp;t_bilevel_description)=0</argsstring>
+        <name>set_bilevel_description</name>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1BranchAndCut_1a60e4d4a12316be0dc85d88a4e99ae7a9">set_bilevel_description</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1KKT_1ad3c7c52a769b2a19365db177c3a7eead">set_bilevel_description</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic_1a5b4b31bf57f35ebd8c9ce5b74b32ab8e">set_bilevel_description</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1StrongDuality_1a7c6ccf3be7ff052e10ca62032f26e7df">set_bilevel_description</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1MibS_1a1d32b62bd6c7d74669aa47fcec044611">set_bilevel_description</reimplementedby>
+        <param>
+          <type>const <ref refid="classidol_1_1Bilevel_1_1Description" kindref="compound">Bilevel::Description</ref> &amp;</type>
+          <declname>t_bilevel_description</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/BilevelOptimizerInterface.h" line="17" column="18"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="4">
+        <label>idol::Bilevel::MibS</label>
+        <link refid="classidol_1_1Bilevel_1_1MibS"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::Bilevel::OptimizerInterface</label>
+        <link refid="classidol_1_1Bilevel_1_1OptimizerInterface"/>
+      </node>
+      <node id="5">
+        <label>idol::Bilevel::PessimisticAsOptimistic</label>
+        <link refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>idol::Bilevel::StrongDuality</label>
+        <link refid="classidol_1_1Bilevel_1_1StrongDuality"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::Bilevel::BranchAndCut</label>
+        <link refid="classidol_1_1Bilevel_1_1BranchAndCut"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::Bilevel::KKT</label>
+        <link refid="classidol_1_1Bilevel_1_1KKT"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Bilevel::OptimizerInterface</label>
+        <link refid="classidol_1_1Bilevel_1_1OptimizerInterface"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/BilevelOptimizerInterface.h" line="13" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/BilevelOptimizerInterface.h" bodystart="13" bodyend="18"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Bilevel_1_1OptimizerInterface_1a9ff014a74d240c414a5fef72c6c8522f" prot="public" virt="pure-virtual"><scope>idol::Bilevel::OptimizerInterface</scope><name>set_bilevel_description</name></member>
+      <member refid="classidol_1_1Bilevel_1_1OptimizerInterface_1a495dc1a16d4ab25630d28c1e273b7d47" prot="public" virt="virtual"><scope>idol::Bilevel::OptimizerInterface</scope><name>~OptimizerInterface</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

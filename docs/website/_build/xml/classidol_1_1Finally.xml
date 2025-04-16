@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Finally" kind="class" language="C++" prot="public">
+    <compoundname>idol::Finally</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Finally_1afac788e527933fbe8218c75242c8aa49" prot="private" static="no" mutable="no">
+        <type>std::function&lt; void()&gt;</type>
+        <definition>std::function&lt;void()&gt; idol::Finally::m_function</definition>
+        <argsstring></argsstring>
+        <name>m_function</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Finally.h" line="15" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Finally.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Finally_1a31d0915217c62f144071f1972455e172" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Finally::Finally</definition>
+        <argsstring>(std::function&lt; void()&gt; t_function)</argsstring>
+        <name>Finally</name>
+        <param>
+          <type>std::function&lt; void()&gt;</type>
+          <declname>t_function</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Finally.h" line="17" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Finally.h" bodystart="17" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Finally_1a99d7c4d9cc0b396d86878ddb6de91885" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Finally::~Finally</definition>
+        <argsstring>()</argsstring>
+        <name>~Finally</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Finally.h" line="19" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Finally.h" bodystart="19" bodyend="19"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Finally</label>
+        <link refid="classidol_1_1Finally"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Finally.h" line="14" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Finally.h" bodystart="14" bodyend="20"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Finally_1a31d0915217c62f144071f1972455e172" prot="public" virt="non-virtual"><scope>idol::Finally</scope><name>Finally</name></member>
+      <member refid="classidol_1_1Finally_1afac788e527933fbe8218c75242c8aa49" prot="private" virt="non-virtual"><scope>idol::Finally</scope><name>m_function</name></member>
+      <member refid="classidol_1_1Finally_1a99d7c4d9cc0b396d86878ddb6de91885" prot="public" virt="non-virtual"><scope>idol::Finally</scope><name>~Finally</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

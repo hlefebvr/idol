@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_109333e66b1bd1f5535b8d1041f4eefc" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs</compoundname>
+    <innerfile refid="branch-and-bound_2logs_2Factory_8h">Factory.h</innerfile>
+    <innerfile refid="branch-and-bound_2logs_2Info_8h">Info.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/"/>
+  </compounddef>
+</doxygen>

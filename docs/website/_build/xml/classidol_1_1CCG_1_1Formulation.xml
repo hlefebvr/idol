@@ -1,0 +1,480 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1CCG_1_1Formulation" kind="class" language="C++" prot="public">
+    <compoundname>idol::CCG::Formulation</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1CCG_1_1Formulation_1a6942988c841e1010eae25347ed468b2f" prot="private" static="no" mutable="no">
+        <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+        <definition>const Model&amp; idol::CCG::Formulation::m_parent</definition>
+        <argsstring></argsstring>
+        <name>m_parent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="17" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CCG_1_1Formulation_1ae17162b09e4761b7d6559b7320785e31" prot="private" static="no" mutable="no">
+        <type>const ::<ref refid="classidol_1_1Robust_1_1Description" kindref="compound">idol::Robust::Description</ref> &amp;</type>
+        <definition>const ::idol::Robust::Description&amp; idol::CCG::Formulation::m_robust_description</definition>
+        <argsstring></argsstring>
+        <name>m_robust_description</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="18" column="39" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CCG_1_1Formulation_1a415064d622d73fc43ec658e562accf1e" prot="private" static="no" mutable="no">
+        <type>const ::<ref refid="classidol_1_1Bilevel_1_1Description" kindref="compound">idol::Bilevel::Description</ref> &amp;</type>
+        <definition>const ::idol::Bilevel::Description&amp; idol::CCG::Formulation::m_bilevel_description</definition>
+        <argsstring></argsstring>
+        <name>m_bilevel_description</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="19" column="40" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CCG_1_1Formulation_1a0c9329396cb1377e6c8e60bd7a85fc9f" prot="private" static="no" mutable="no">
+        <type>::<ref refid="classidol_1_1Bilevel_1_1Description" kindref="compound">idol::Bilevel::Description</ref></type>
+        <definition>::idol::Bilevel::Description idol::CCG::Formulation::m_bilevel_description_separation</definition>
+        <argsstring></argsstring>
+        <name>m_bilevel_description_separation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="20" column="34" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CCG_1_1Formulation_1a61db1d6c9322a37fe2a9b821e3bba917" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref></type>
+        <definition>Model idol::CCG::Formulation::m_master</definition>
+        <argsstring></argsstring>
+        <name>m_master</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="22" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CCG_1_1Formulation_1a8ad494f743b80236cab3098529be6942" prot="private" static="no" mutable="no">
+        <type>std::optional&lt;::<ref refid="classidol_1_1Bilevel_1_1Description" kindref="compound">idol::Bilevel::Description</ref> &gt;</type>
+        <definition>std::optional&lt;::idol::Bilevel::Description&gt; idol::CCG::Formulation::m_bilevel_description_master</definition>
+        <argsstring></argsstring>
+        <name>m_bilevel_description_master</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="23" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CCG_1_1Formulation_1a683623707369d52734e20e5bab206fa2" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+        <definition>std::vector&lt;Var&gt; idol::CCG::Formulation::m_second_stage_variables</definition>
+        <argsstring></argsstring>
+        <name>m_second_stage_variables</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="24" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CCG_1_1Formulation_1a7b464538fd04d472e77a9071814dd7c5" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt;</type>
+        <definition>std::vector&lt;Ctr&gt; idol::CCG::Formulation::m_second_stage_constraints</definition>
+        <argsstring></argsstring>
+        <name>m_second_stage_constraints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="25" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CCG_1_1Formulation_1acc9c56c7049263f94e5ac57230f827e8" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt;</type>
+        <definition>std::vector&lt;Ctr&gt; idol::CCG::Formulation::m_linking_constraints</definition>
+        <argsstring></argsstring>
+        <name>m_linking_constraints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="26" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CCG_1_1Formulation_1a0857ad432424ebaa1f0418f6bf233104" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt;</type>
+        <definition>std::vector&lt;Ctr&gt; idol::CCG::Formulation::m_coupling_constraints</definition>
+        <argsstring></argsstring>
+        <name>m_coupling_constraints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="27" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CCG_1_1Formulation_1aece4ef9e2f80f294fc14fabfbac41e61" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::CCG::Formulation::m_n_added_scenario</definition>
+        <argsstring></argsstring>
+        <name>m_n_added_scenario</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="29" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CCG_1_1Formulation_1a8df5d783fea91fd04cb5e088175ae4e8" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+        <definition>std::optional&lt;Var&gt; idol::CCG::Formulation::m_second_stage_epigraph</definition>
+        <argsstring></argsstring>
+        <name>m_second_stage_epigraph</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="30" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1a73bbb2cb8b6c6ac6b5b328ac4a6d3d08" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::CCG::Formulation::parse_variables</definition>
+        <argsstring>()</argsstring>
+        <name>parse_variables</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="32" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1a4a7eebbcfd572ae8f872c86891ff8bc7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::CCG::Formulation::parse_objective</definition>
+        <argsstring>()</argsstring>
+        <name>parse_objective</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="33" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1abc0426250f03d0ffe8f5bba7e563e77d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::CCG::Formulation::parse_constraints</definition>
+        <argsstring>()</argsstring>
+        <name>parse_constraints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="34" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1abe7c96c259690fa780ae1f83032373fd" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::CCG::Formulation::copy_bilevel_description</definition>
+        <argsstring>(const ::idol::Bilevel::Description &amp;t_src, const ::idol::Bilevel::Description &amp;t_dest) const</argsstring>
+        <name>copy_bilevel_description</name>
+        <param>
+          <type>const ::<ref refid="classidol_1_1Bilevel_1_1Description" kindref="compound">idol::Bilevel::Description</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <param>
+          <type>const ::<ref refid="classidol_1_1Bilevel_1_1Description" kindref="compound">idol::Bilevel::Description</ref> &amp;</type>
+          <declname>t_dest</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="35" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1ae90c8ca356a1031a663a2a6fe83a6a2e" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::CCG::Formulation::add_separation_problem_constraints</definition>
+        <argsstring>(idol::Model &amp;t_model, const idol::Point&lt; idol::Var &gt; &amp;t_first_stage_decision)</argsstring>
+        <name>add_separation_problem_constraints</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">idol::Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1Point" kindref="compound">idol::Point</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">idol::Var</ref> &gt; &amp;</type>
+          <declname>t_first_stage_decision</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="36" column="10"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1a43516bd18ae2eacdb0cdc39197bde767" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::CCG::Formulation::Formulation</definition>
+        <argsstring>(const Model &amp;t_parent, const ::idol::Robust::Description &amp;t_robust_description, const ::idol::Bilevel::Description &amp;t_bilevel_description)</argsstring>
+        <name>Formulation</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <param>
+          <type>const ::<ref refid="classidol_1_1Robust_1_1Description" kindref="compound">idol::Robust::Description</ref> &amp;</type>
+          <declname>t_robust_description</declname>
+        </param>
+        <param>
+          <type>const ::<ref refid="classidol_1_1Bilevel_1_1Description" kindref="compound">idol::Bilevel::Description</ref> &amp;</type>
+          <declname>t_bilevel_description</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="38" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1ac0c9bd02a273830fb9aeee49b7d7eb6c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+        <definition>Model&amp; idol::CCG::Formulation::master</definition>
+        <argsstring>()</argsstring>
+        <name>master</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="43" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="43" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1a5913ec8f8261f6b1c3edc467532ea5ae" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+        <definition>const Model&amp; idol::CCG::Formulation::master</definition>
+        <argsstring>() const</argsstring>
+        <name>master</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="45" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="45" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1ab7043dd3b225cd1ded77dddfd37adebc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::CCG::Formulation::add_scenario_to_master</definition>
+        <argsstring>(const Point&lt; Var &gt; &amp;t_scenario, bool t_add_annotation)</argsstring>
+        <name>add_scenario_to_master</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Point" kindref="compound">Point</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+          <declname>t_scenario</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>t_add_annotation</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="47" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1ade3b1abfb1dbc984892aa9cc610f6f12" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref></type>
+        <definition>Model idol::CCG::Formulation::build_optimality_separation_problem_for_adjustable_robust_problem</definition>
+        <argsstring>(const Point&lt; Var &gt; &amp;t_first_stage_decision, unsigned int t_coupling_constraint_index)</argsstring>
+        <name>build_optimality_separation_problem_for_adjustable_robust_problem</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Point" kindref="compound">Point</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+          <declname>t_first_stage_decision</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_coupling_constraint_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="49" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1a80a48c25ab8faaa5c42edfcd158c6fb2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref></type>
+        <definition>Model idol::CCG::Formulation::build_feasibility_separation_problem</definition>
+        <argsstring>(const Point&lt; Var &gt; &amp;t_first_stage_decision)</argsstring>
+        <name>build_feasibility_separation_problem</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Point" kindref="compound">Point</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+          <declname>t_first_stage_decision</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="51" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1a262cf2d91fe896355f3671fe49e9a2b5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::CCG::Formulation::n_coupling_constraints</definition>
+        <argsstring>() const</argsstring>
+        <name>n_coupling_constraints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="53" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="53" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1a954ec2afa06a5fe1c30109427ef85a78" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::CCG::Formulation::n_added_scenarios</definition>
+        <argsstring>() const</argsstring>
+        <name>n_added_scenarios</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="55" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="55" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1a95c349f47fccc1eb8dc7de27a81b75c9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1Bilevel_1_1Description" kindref="compound">Bilevel::Description</ref> &amp;</type>
+        <definition>const Bilevel::Description&amp; idol::CCG::Formulation::bilevel_description_separation</definition>
+        <argsstring>() const</argsstring>
+        <name>bilevel_description_separation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="57" column="32" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="57" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1a41fc60dac7957f3b77d7ee84e57bb41a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1Bilevel_1_1Description" kindref="compound">Bilevel::Description</ref> &amp;</type>
+        <definition>const Bilevel::Description&amp; idol::CCG::Formulation::bilevel_description_master</definition>
+        <argsstring>() const</argsstring>
+        <name>bilevel_description_master</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="59" column="32" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="59" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1a95c4c44e3655c74a23eb35954ab6465e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::CCG::Formulation::is_adjustable_robust_problem</definition>
+        <argsstring>() const</argsstring>
+        <name>is_adjustable_robust_problem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="61" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1a1b313f5da60244ff6ac3d3d2f7dbbcff" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::CCG::Formulation::is_wait_and_see_follower</definition>
+        <argsstring>() const</argsstring>
+        <name>is_wait_and_see_follower</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="63" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="63" bodyend="63"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::CCG::Formulation</label>
+        <link refid="classidol_1_1CCG_1_1Formulation"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" line="16" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h" bodystart="16" bodyend="64"/>
+    <listofallmembers>
+      <member refid="classidol_1_1CCG_1_1Formulation_1ab7043dd3b225cd1ded77dddfd37adebc" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>add_scenario_to_master</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1ae90c8ca356a1031a663a2a6fe83a6a2e" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>add_separation_problem_constraints</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a41fc60dac7957f3b77d7ee84e57bb41a" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>bilevel_description_master</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a95c349f47fccc1eb8dc7de27a81b75c9" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>bilevel_description_separation</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a80a48c25ab8faaa5c42edfcd158c6fb2" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>build_feasibility_separation_problem</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1ade3b1abfb1dbc984892aa9cc610f6f12" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>build_optimality_separation_problem_for_adjustable_robust_problem</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1abe7c96c259690fa780ae1f83032373fd" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>copy_bilevel_description</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a43516bd18ae2eacdb0cdc39197bde767" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>Formulation</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a95c4c44e3655c74a23eb35954ab6465e" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>is_adjustable_robust_problem</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a1b313f5da60244ff6ac3d3d2f7dbbcff" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>is_wait_and_see_follower</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a415064d622d73fc43ec658e562accf1e" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>m_bilevel_description</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a8ad494f743b80236cab3098529be6942" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>m_bilevel_description_master</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a0c9329396cb1377e6c8e60bd7a85fc9f" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>m_bilevel_description_separation</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a0857ad432424ebaa1f0418f6bf233104" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>m_coupling_constraints</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1acc9c56c7049263f94e5ac57230f827e8" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>m_linking_constraints</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a61db1d6c9322a37fe2a9b821e3bba917" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>m_master</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1aece4ef9e2f80f294fc14fabfbac41e61" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>m_n_added_scenario</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a6942988c841e1010eae25347ed468b2f" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>m_parent</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1ae17162b09e4761b7d6559b7320785e31" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>m_robust_description</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a7b464538fd04d472e77a9071814dd7c5" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>m_second_stage_constraints</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a8df5d783fea91fd04cb5e088175ae4e8" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>m_second_stage_epigraph</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a683623707369d52734e20e5bab206fa2" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>m_second_stage_variables</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1ac0c9bd02a273830fb9aeee49b7d7eb6c" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>master</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a5913ec8f8261f6b1c3edc467532ea5ae" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>master</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a954ec2afa06a5fe1c30109427ef85a78" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>n_added_scenarios</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a262cf2d91fe896355f3671fe49e9a2b5" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>n_coupling_constraints</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1abc0426250f03d0ffe8f5bba7e563e77d" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>parse_constraints</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a4a7eebbcfd572ae8f872c86891ff8bc7" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>parse_objective</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1a73bbb2cb8b6c6ac6b5b328ac4a6d3d08" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>parse_variables</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

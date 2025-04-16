@@ -1,0 +1,291 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1QCtrVersion" kind="class" language="C++" prot="public">
+    <compoundname>idol::QCtrVersion</compoundname>
+    <basecompoundref refid="classidol_1_1Version" prot="public" virt="non-virtual">idol::Version</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1QCtrVersion_1ab1fdc807ab17b710d0ed8e95f98b4a46" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+        <definition>QuadExpr&lt;Var&gt; idol::QCtrVersion::m_expr</definition>
+        <argsstring></argsstring>
+        <name>m_expr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="17" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1QCtrVersion_1aede4712eb20af5bfccfa5645734bbf54" prot="private" static="no" mutable="no">
+        <type>CtrType</type>
+        <definition>CtrType idol::QCtrVersion::m_type</definition>
+        <argsstring></argsstring>
+        <name>m_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="18" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1QCtrVersion_1a8ff14f7171065750428688589ae274cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::QCtrVersion::QCtrVersion</definition>
+        <argsstring>(unsigned int t_index, TempQCtr &amp;&amp;t_temp_ctr)</argsstring>
+        <name>QCtrVersion</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1TempQCtr" kindref="compound">TempQCtr</ref> &amp;&amp;</type>
+          <declname>t_temp_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="20" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1QCtrVersion_1a85e923ca0069f80d3e4789c1dcb26ab7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::QCtrVersion::QCtrVersion</definition>
+        <argsstring>(unsigned int t_index, const TempQCtr &amp;t_temp_ctr)</argsstring>
+        <name>QCtrVersion</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1TempQCtr" kindref="compound">TempQCtr</ref> &amp;</type>
+          <declname>t_temp_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="22" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1QCtrVersion_1ae9abafe26a41345754a663a791493d14" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::QCtrVersion::QCtrVersion</definition>
+        <argsstring>(unsigned int t_index, QuadExpr&lt; Var &gt; &amp;&amp;t_expr, CtrType t_type)</argsstring>
+        <name>QCtrVersion</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_expr</declname>
+        </param>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="24" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" bodystart="24" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1QCtrVersion_1a54ab16d9bdb661895978d517a42979ce" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::QCtrVersion::QCtrVersion</definition>
+        <argsstring>(unsigned int t_index, CtrType t_type)</argsstring>
+        <name>QCtrVersion</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="30" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" bodystart="30" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1QCtrVersion_1a7d5f334eea74dedb587b83e8cadecda1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::QCtrVersion::QCtrVersion</definition>
+        <argsstring>(const QCtrVersion &amp;t_src)=default</argsstring>
+        <name>QCtrVersion</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtrVersion" kindref="compound">QCtrVersion</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="35" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1QCtrVersion_1a087488b2b5af6b82bbc9bd3c3e788dce" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>CtrType</type>
+        <definition>CtrType idol::QCtrVersion::type</definition>
+        <argsstring>() const</argsstring>
+        <name>type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="37" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" bodystart="37" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1QCtrVersion_1a1bf858b99a41c83bdc3c382092f0a477" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::QCtrVersion::set_type</definition>
+        <argsstring>(CtrType t_type)</argsstring>
+        <name>set_type</name>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="39" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" bodystart="39" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1QCtrVersion_1a89faf6decaa3873873637bcd75037c55" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>QuadExpr&lt;Var&gt;&amp; idol::QCtrVersion::expr</definition>
+        <argsstring>()</argsstring>
+        <name>expr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="41" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" bodystart="41" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1QCtrVersion_1a9431cdc69eb04a2291131f90a14cfd1b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>const QuadExpr&lt;Var&gt;&amp; idol::QCtrVersion::expr</definition>
+        <argsstring>() const</argsstring>
+        <name>expr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="43" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" bodystart="43" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1QCtrVersion_1a41bd74e36e16c43dfafbb41dffd12bec" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::QCtrVersion::set_expr</definition>
+        <argsstring>(QuadExpr&lt; Var &gt; &amp;&amp;t_expr)</argsstring>
+        <name>set_expr</name>
+        <param>
+          <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_expr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="45" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" bodystart="45" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Version_1a001025d4d96827039121ac0429fc7306" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Version::index</definition>
+        <argsstring>() const</argsstring>
+        <name>index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" line="17" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" bodystart="17" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Version_1ab975bf3e614686035e2872b1b7e8fb32" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Version::set_index</definition>
+        <argsstring>(unsigned int t_index)</argsstring>
+        <name>set_index</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" line="19" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" bodystart="19" bodyend="19"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>idol::Version</label>
+        <link refid="classidol_1_1Version"/>
+      </node>
+      <node id="1">
+        <label>idol::QCtrVersion</label>
+        <link refid="classidol_1_1QCtrVersion"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>idol::Version</label>
+        <link refid="classidol_1_1Version"/>
+      </node>
+      <node id="1">
+        <label>idol::QCtrVersion</label>
+        <link refid="classidol_1_1QCtrVersion"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" line="16" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h" bodystart="16" bodyend="46"/>
+    <listofallmembers>
+      <member refid="classidol_1_1QCtrVersion_1a89faf6decaa3873873637bcd75037c55" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>expr</name></member>
+      <member refid="classidol_1_1QCtrVersion_1a9431cdc69eb04a2291131f90a14cfd1b" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>expr</name></member>
+      <member refid="classidol_1_1Version_1a001025d4d96827039121ac0429fc7306" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>index</name></member>
+      <member refid="classidol_1_1QCtrVersion_1ab1fdc807ab17b710d0ed8e95f98b4a46" prot="private" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>m_expr</name></member>
+      <member refid="classidol_1_1QCtrVersion_1aede4712eb20af5bfccfa5645734bbf54" prot="private" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>m_type</name></member>
+      <member refid="classidol_1_1QCtrVersion_1a8ff14f7171065750428688589ae274cd" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>QCtrVersion</name></member>
+      <member refid="classidol_1_1QCtrVersion_1a85e923ca0069f80d3e4789c1dcb26ab7" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>QCtrVersion</name></member>
+      <member refid="classidol_1_1QCtrVersion_1ae9abafe26a41345754a663a791493d14" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>QCtrVersion</name></member>
+      <member refid="classidol_1_1QCtrVersion_1a54ab16d9bdb661895978d517a42979ce" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>QCtrVersion</name></member>
+      <member refid="classidol_1_1QCtrVersion_1a7d5f334eea74dedb587b83e8cadecda1" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>QCtrVersion</name></member>
+      <member refid="classidol_1_1QCtrVersion_1a41bd74e36e16c43dfafbb41dffd12bec" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>set_expr</name></member>
+      <member refid="classidol_1_1Version_1ab975bf3e614686035e2872b1b7e8fb32" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>set_index</name></member>
+      <member refid="classidol_1_1QCtrVersion_1a1bf858b99a41c83bdc3c382092f0a477" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>set_type</name></member>
+      <member refid="classidol_1_1QCtrVersion_1a087488b2b5af6b82bbc9bd3c3e788dce" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>type</name></member>
+      <member refid="classidol_1_1Version_1ac20ae41000d677ee2ccfbddcd1bdd134" prot="public" virt="non-virtual"><scope>idol::QCtrVersion</scope><name>Version</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1PenaltyUpdates_1_1Additive" kind="class" language="C++" prot="public">
+    <compoundname>idol::PenaltyUpdates::Additive</compoundname>
+    <basecompoundref refid="classidol_1_1PenaltyUpdate" prot="public" virt="non-virtual">idol::PenaltyUpdate</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1PenaltyUpdates_1_1Additive_1abe1a851c4bba520d3235eb7ee3eaef59" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double idol::PenaltyUpdates::Additive::m_increment</definition>
+        <argsstring></argsstring>
+        <name>m_increment</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" line="41" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1PenaltyUpdates_1_1Additive_1aeb19831f3ce9b905035a94168cb8107c" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::PenaltyUpdates::Additive::Additive</definition>
+        <argsstring>(double t_increment)</argsstring>
+        <name>Additive</name>
+        <param>
+          <type>double</type>
+          <declname>t_increment</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" line="43" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" bodystart="43" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1PenaltyUpdates_1_1Additive_1a81dcee7b8ec840e6be9e69153f95b8ec" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>double</type>
+        <definition>double idol::PenaltyUpdates::Additive::operator()</definition>
+        <argsstring>(double t_current_penalty) override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1PenaltyUpdate_1a0abe9d4b7367fcce20b2eba5de5ac139">operator()</reimplements>
+        <param>
+          <type>double</type>
+          <declname>t_current_penalty</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" line="45" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" bodystart="45" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1PenaltyUpdates_1_1Additive_1ae8776e08287e20de0fcfddbc6cb3557e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream&amp; idol::PenaltyUpdates::Additive::describe</definition>
+        <argsstring>(std::ostream &amp;t_os) const override</argsstring>
+        <name>describe</name>
+        <reimplements refid="classidol_1_1PenaltyUpdate_1adb674b77cb04ecb8fdd1100ca517ac22">describe</reimplements>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>t_os</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" line="49" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" bodystart="49" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1PenaltyUpdates_1_1Additive_1a3045ab15da373fec045a06f4ef257c74" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1PenaltyUpdate" kindref="compound">PenaltyUpdate</ref> *</type>
+        <definition>PenaltyUpdate* idol::PenaltyUpdates::Additive::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1PenaltyUpdate_1a05b3249092a74debbab2c6ab0e9d7ef7">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" line="53" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" bodystart="53" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1PenaltyUpdate_1a2befebc3b2d5c5ce8441051c0d59c0fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::PenaltyUpdate::operator()</definition>
+        <argsstring>(std::list&lt; ADM::Formulation::CurrentPenalty &gt; &amp;t_current_penalties)</argsstring>
+        <name>operator()</name>
+        <reimplementedby refid="classidol_1_1PenaltyUpdates_1_1Multiplicative_1acfe45d2aee2ea9a55c93d80520c97062">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1PenaltyUpdates_1_1Adaptive_1a4a37a81e0bc7fbbd3d232609a08c6e97">operator()</reimplementedby>
+        <param>
+          <type>std::list&lt; <ref refid="structidol_1_1ADM_1_1Formulation_1_1CurrentPenalty" kindref="compound">ADM::Formulation::CurrentPenalty</ref> &gt; &amp;</type>
+          <declname>t_current_penalties</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" line="31" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1PenaltyUpdate_1a80bc0ea2e6759197b5f17a56d2115d4c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool idol::PenaltyUpdate::diversify</definition>
+        <argsstring>()</argsstring>
+        <name>diversify</name>
+        <reimplementedby refid="classidol_1_1PenaltyUpdates_1_1Multiplicative_1aa9d3f34976331730f197ce7bf36bd0ca">diversify</reimplementedby>
+        <reimplementedby refid="classidol_1_1PenaltyUpdates_1_1Adaptive_1a5554fa2ded6427a95d2cb8787846050a">diversify</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" line="33" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" bodystart="33" bodyend="33"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>idol::PenaltyUpdate</label>
+        <link refid="classidol_1_1PenaltyUpdate"/>
+      </node>
+      <node id="1">
+        <label>idol::PenaltyUpdates::Additive</label>
+        <link refid="classidol_1_1PenaltyUpdates_1_1Additive"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>idol::PenaltyUpdate</label>
+        <link refid="classidol_1_1PenaltyUpdate"/>
+      </node>
+      <node id="1">
+        <label>idol::PenaltyUpdates::Additive</label>
+        <link refid="classidol_1_1PenaltyUpdates_1_1Additive"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" line="40" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h" bodystart="40" bodyend="56"/>
+    <listofallmembers>
+      <member refid="classidol_1_1PenaltyUpdates_1_1Additive_1aeb19831f3ce9b905035a94168cb8107c" prot="public" virt="non-virtual"><scope>idol::PenaltyUpdates::Additive</scope><name>Additive</name></member>
+      <member refid="classidol_1_1PenaltyUpdates_1_1Additive_1a3045ab15da373fec045a06f4ef257c74" prot="public" virt="virtual"><scope>idol::PenaltyUpdates::Additive</scope><name>clone</name></member>
+      <member refid="classidol_1_1PenaltyUpdates_1_1Additive_1ae8776e08287e20de0fcfddbc6cb3557e" prot="public" virt="virtual"><scope>idol::PenaltyUpdates::Additive</scope><name>describe</name></member>
+      <member refid="classidol_1_1PenaltyUpdate_1a80bc0ea2e6759197b5f17a56d2115d4c" prot="public" virt="virtual"><scope>idol::PenaltyUpdates::Additive</scope><name>diversify</name></member>
+      <member refid="classidol_1_1PenaltyUpdates_1_1Additive_1abe1a851c4bba520d3235eb7ee3eaef59" prot="private" virt="non-virtual"><scope>idol::PenaltyUpdates::Additive</scope><name>m_increment</name></member>
+      <member refid="classidol_1_1PenaltyUpdates_1_1Additive_1a81dcee7b8ec840e6be9e69153f95b8ec" prot="public" virt="virtual"><scope>idol::PenaltyUpdates::Additive</scope><name>operator()</name></member>
+      <member refid="classidol_1_1PenaltyUpdate_1a2befebc3b2d5c5ce8441051c0d59c0fe" prot="public" virt="virtual" ambiguityscope="idol::PenaltyUpdate::"><scope>idol::PenaltyUpdates::Additive</scope><name>operator()</name></member>
+      <member refid="classidol_1_1PenaltyUpdate_1acd2fc8e3968febd90a7fd9cb80af31c8" prot="public" virt="virtual"><scope>idol::PenaltyUpdates::Additive</scope><name>~PenaltyUpdate</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

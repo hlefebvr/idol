@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="NodeSelectionRuleFactory_8h" kind="file" language="C++">
+    <compoundname>NodeSelectionRuleFactory.h</compoundname>
+    <includedby refid="factories_2BestBound_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h</includedby>
+    <includedby refid="factories_2BestEstimate_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h</includedby>
+    <includedby refid="factories_2BreadthFirst_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h</includedby>
+    <includedby refid="factories_2DepthFirst_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h</includedby>
+    <includedby refid="factories_2WorstBound_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h</includedby>
+    <includedby refid="Optimizers__BranchAndBound_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/Optimizers_BranchAndBound.h</includedby>
+    <invincdepgraph>
+      <node id="3">
+        <label>/home/henri/Research/idol/lib/include/idol/solvers.h</label>
+        <link refid="solvers_8h_source"/>
+      </node>
+      <node id="13">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h</label>
+        <link refid="IntegerMaster_8h_source"/>
+      </node>
+      <node id="6">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h</label>
+        <link refid="factories_2DepthFirst_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/ExportBranchAndBoundTreeToCSV.h</label>
+        <link refid="ExportBranchAndBoundTreeToCSV_8h_source"/>
+      </node>
+      <node id="9">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h</label>
+        <link refid="BranchAndBound_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h</label>
+        <link refid="factories_2BestEstimate_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/NodeSelectionRuleFactory.h</label>
+        <link refid="NodeSelectionRuleFactory_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h</label>
+        <link refid="BranchAndBoundCallback_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/Optimizers_BranchAndBound.h</label>
+        <link refid="Optimizers__BranchAndBound_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h</label>
+        <link refid="factories_2BreadthFirst_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h</label>
+        <link refid="ReducedCostFixing_8h_source"/>
+      </node>
+      <node id="7">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h</label>
+        <link refid="factories_2WorstBound_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h</label>
+        <link refid="KnapsackCover_8h_source"/>
+      </node>
+      <node id="2">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h</label>
+        <link refid="factories_2BestBound_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h</label>
+        <link refid="CallbackAsBranchAndBoundCallback_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classidol_1_1NodeSelectionRuleFactory" prot="public">idol::NodeSelectionRuleFactory</innerclass>
+    <innernamespace refid="namespaceidol">idol</innernamespace>
+    <innernamespace refid="namespaceidol_1_1Optimizers">idol::Optimizers</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Created<sp/>by<sp/>henri<sp/>on<sp/>21/03/23.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>IDOL_NODESELECTIONRULEFACTORY_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>IDOL_NODESELECTIONRULEFACTORY_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">idol<sp/>{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>NodeT&gt;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">NodeSelectionRule;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>NodeT&gt;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">NodeSelectionRuleFactory;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Optimizers<sp/>{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>NodeT&gt;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">BranchAndBound;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>NodeT&gt;</highlight></codeline>
+<codeline lineno="22" refid="classidol_1_1NodeSelectionRuleFactory" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classidol_1_1NodeSelectionRuleFactory" kindref="compound">idol::NodeSelectionRuleFactory</ref><sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="classidol_1_1NodeSelectionRuleFactory" kindref="compound">NodeSelectionRuleFactory</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1NodeSelectionRule" kindref="compound">NodeSelectionRule&lt;NodeT&gt;</ref>*<sp/>operator()(<ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound&lt;NodeT&gt;</ref>&amp;<sp/>t_parent)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1NodeSelectionRuleFactory" kindref="compound">NodeSelectionRuleFactory</ref>*<sp/>clone()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//IDOL_NODESELECTIONRULEFACTORY_H</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/NodeSelectionRuleFactory.h"/>
+  </compounddef>
+</doxygen>

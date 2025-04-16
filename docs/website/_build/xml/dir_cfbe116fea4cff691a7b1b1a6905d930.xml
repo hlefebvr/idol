@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_cfbe116fea4cff691a7b1b1a6905d930" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/general/utils</compoundname>
+    <innerdir refid="dir_ba9c0a73c7f2ebd0aa972a5e138270e3">/home/henri/Research/idol/lib/include/idol/general/utils/exceptions</innerdir>
+    <innerfile refid="Finally_8h">Finally.h</innerfile>
+    <innerfile refid="GenerationPattern_8h">GenerationPattern.h</innerfile>
+    <innerfile refid="GeneratorPool_8h">GeneratorPool.h</innerfile>
+    <innerfile refid="IteratorForward_8h">IteratorForward.h</innerfile>
+    <innerfile refid="LimitedWidthStream_8h">LimitedWidthStream.h</innerfile>
+    <innerfile refid="Map_8h">Map.h</innerfile>
+    <innerfile refid="Optional_8h">Optional.h</innerfile>
+    <innerfile refid="Pair_8h">Pair.h</innerfile>
+    <innerfile refid="Point_8h">Point.h</innerfile>
+    <innerfile refid="Set_8h">Set.h</innerfile>
+    <innerfile refid="SilentMode_8h">SilentMode.h</innerfile>
+    <innerfile refid="sort_8h">sort.h</innerfile>
+    <innerfile refid="SparseVector_8h">SparseVector.h</innerfile>
+    <innerfile refid="types_8h">types.h</innerfile>
+    <innerfile refid="uuid_8h">uuid.h</innerfile>
+    <innerfile refid="Vector_8h">Vector.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/utils/"/>
+  </compounddef>
+</doxygen>

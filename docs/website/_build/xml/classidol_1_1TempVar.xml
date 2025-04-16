@@ -1,0 +1,502 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1TempVar" kind="class" language="C++" prot="public">
+    <compoundname>idol::TempVar</compoundname>
+    <includes refid="TempVar_8h" local="no">TempVar.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1TempVar_1abecd147659d4eaf0e0b0b9a7b60bc2fd" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double idol::TempVar::m_lb</definition>
+        <argsstring></argsstring>
+        <name>m_lb</name>
+        <initializer>= 0.</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="32" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1TempVar_1a5bf7d335dc108aa68b420a3568049611" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double idol::TempVar::m_ub</definition>
+        <argsstring></argsstring>
+        <name>m_ub</name>
+        <initializer>= Inf</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="33" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1TempVar_1a754203fc722c769b8954a7e2c0fd6c6e" prot="private" static="no" mutable="no">
+        <type>VarType</type>
+        <definition>VarType idol::TempVar::m_type</definition>
+        <argsstring></argsstring>
+        <name>m_type</name>
+        <initializer>= Continuous</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="34" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1TempVar_1a0580c223e9f2a432f3ce5880021484e8" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double idol::TempVar::m_obj</definition>
+        <argsstring></argsstring>
+        <name>m_obj</name>
+        <initializer>= 0.</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="35" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1TempVar_1ae99e662fbfa07258ee5199d05acfa370" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt;</type>
+        <definition>LinExpr&lt;Ctr&gt; idol::TempVar::m_column</definition>
+        <argsstring></argsstring>
+        <name>m_column</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="36" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1TempVar_1a5ab2916a25cad1c473cb827300c0c401" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::TempVar::TempVar</definition>
+        <argsstring>()=default</argsstring>
+        <name>TempVar</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Default constructor.</para>
+<para>Creates a new temporary variable. The default lower and upper bounds are <computeroutput>0</computeroutput> and <computeroutput>Inf</computeroutput> and the type is <computeroutput>Continuous</computeroutput>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="43" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1a6c3e5c967ba8c82bd8f3524251c1407d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::TempVar::TempVar</definition>
+        <argsstring>(double t_lb, double t_ub, VarType t_type, double t_obj, LinExpr&lt; Ctr &gt; &amp;&amp;t_column)</argsstring>
+        <name>TempVar</name>
+        <param>
+          <type>double</type>
+          <declname>t_lb</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_ub</declname>
+        </param>
+        <param>
+          <type>VarType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_obj</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt; &amp;&amp;</type>
+          <declname>t_column</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para>Creates a new temporary variable. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_lb</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The desired lower bound. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_ub</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The desired upper bound. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The desired variable type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_column</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The desired column. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="54" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="54" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1a8047ae0988041192a8ee64c78a117e26" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::TempVar::TempVar</definition>
+        <argsstring>(TempVar &amp;&amp;t_src)=default</argsstring>
+        <name>TempVar</name>
+        <param>
+          <type><ref refid="classidol_1_1TempVar" kindref="compound">TempVar</ref> &amp;&amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Copy constructor. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The object to copy. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="60" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1ad67ca7302ce9b6ecdcc909ff5b558c02" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::TempVar::TempVar</definition>
+        <argsstring>(const TempVar &amp;t_src)</argsstring>
+        <name>TempVar</name>
+        <param>
+          <type>const <ref refid="classidol_1_1TempVar" kindref="compound">TempVar</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Move constructor. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The object to move. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="66" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="66" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1a708d438c13f17c0352791975bd9c589e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1TempVar" kindref="compound">TempVar</ref> &amp;</type>
+        <definition>TempVar&amp; idol::TempVar::operator=</definition>
+        <argsstring>(TempVar &amp;&amp;t_src)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1TempVar" kindref="compound">TempVar</ref> &amp;&amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Copy-assignment operator. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The object to copy. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="72" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1a46b281d225722bf9dcfc89ba8c03dac2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1TempVar" kindref="compound">TempVar</ref> &amp;</type>
+        <definition>TempVar&amp; idol::TempVar::operator=</definition>
+        <argsstring>(const TempVar &amp;t_src)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1TempVar" kindref="compound">TempVar</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Move-assignment operator. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The object to move. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="78" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1a94a432355eec8b8cd187178737189d64" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt; &amp;</type>
+        <definition>const LinExpr&lt;Ctr&gt;&amp; idol::TempVar::column</definition>
+        <argsstring>() const</argsstring>
+        <name>column</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the column of the temporary variable (see <computeroutput>Column</computeroutput>). <simplesect kind="return"><para>The column of the temporary variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="84" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="84" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1a7081d25dfba1cc24cda9f27dce236b27" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt; &amp;</type>
+        <definition>LinExpr&lt;Ctr&gt;&amp; idol::TempVar::column</definition>
+        <argsstring>()</argsstring>
+        <name>column</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the column of the temporary variable (see <computeroutput>Column</computeroutput>). <simplesect kind="return"><para>The column of the temporary variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="90" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="90" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1aa8c471db6b04dc0e974d6b7c7dca1591" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::TempVar::lb</definition>
+        <argsstring>() const</argsstring>
+        <name>lb</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the lower bound of the temporary variable. <simplesect kind="return"><para>The lower bound of the temporary variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="96" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="96" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1a0f437cb9e1aa828b263be4e09b7fe0c2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::TempVar::set_lb</definition>
+        <argsstring>(double t_lb)</argsstring>
+        <name>set_lb</name>
+        <param>
+          <type>double</type>
+          <declname>t_lb</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the lower bound of the temporary variable. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_lb</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The desired lower bound of the temporary variable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="102" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="102" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1a63661d22cc3aab060f94b0f46e9fb5bf" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::TempVar::ub</definition>
+        <argsstring>() const</argsstring>
+        <name>ub</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the upper bound of the temporary variable. <simplesect kind="return"><para>The upper bound of the temporary variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="108" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="108" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1a7bc8216524501353d1bfcdf151c89995" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::TempVar::set_ub</definition>
+        <argsstring>(double t_ub)</argsstring>
+        <name>set_ub</name>
+        <param>
+          <type>double</type>
+          <declname>t_ub</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the upper bound of the temporary variable. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_ub</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The desired upper bound of the temporary variable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="114" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="114" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1a5b2d871b3a3f6e6b9e4a0f2d48e55b02" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>VarType</type>
+        <definition>VarType idol::TempVar::type</definition>
+        <argsstring>() const</argsstring>
+        <name>type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the type of the temporary variable. <simplesect kind="return"><para>The type of the temporary variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="120" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="120" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1a49488fba31d59ad3cdfeea5b578576c4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::TempVar::set_type</definition>
+        <argsstring>(VarType t_type)</argsstring>
+        <name>set_type</name>
+        <param>
+          <type>VarType</type>
+          <declname>t_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the type of the temporary variable. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The desired type of the temporary variable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="126" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="126" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1aac47cb19f49c417e513795a46f7f5c1d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::TempVar::obj</definition>
+        <argsstring>() const</argsstring>
+        <name>obj</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="133" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="133" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempVar_1afb149e4b94c3b3ffdee31a7fa8f22278" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::TempVar::set_obj</definition>
+        <argsstring>(double t_obj)</argsstring>
+        <name>set_obj</name>
+        <param>
+          <type>double</type>
+          <declname>t_obj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="135" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="135" bodyend="135"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Temporary variable class.</para>
+<para>This class represents a variable which has not been built yet by a <ref refid="classidol_1_1Model" kindref="compound">Model</ref>. It contains all the arguments needed to create a real variable as instantiated by the <computeroutput><ref refid="classidol_1_1Var" kindref="compound">Var</ref></computeroutput> class. It is made of a lower and an upper bound, a type (see <computeroutput>VarType</computeroutput>), and a column (see <computeroutput>Column</computeroutput>).</para>
+<para><bold>Example 1</bold>: <programlisting><codeline><highlight class="normal">model.add_var(0.,<sp/>1.,<sp/>Binary,<sp/>2.);</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>is<sp/>the<sp/>same<sp/>as</highlight></codeline>
+<codeline><highlight class="normal">model.add_var(TempVar(0.,<sp/>1.,<sp/>Binary,<sp/>2.));</highlight></codeline>
+</programlisting> </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::TempVar</label>
+        <link refid="classidol_1_1TempVar"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" line="31" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h" bodystart="31" bodyend="136"/>
+    <listofallmembers>
+      <member refid="classidol_1_1TempVar_1a94a432355eec8b8cd187178737189d64" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>column</name></member>
+      <member refid="classidol_1_1TempVar_1a7081d25dfba1cc24cda9f27dce236b27" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>column</name></member>
+      <member refid="classidol_1_1TempVar_1aa8c471db6b04dc0e974d6b7c7dca1591" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>lb</name></member>
+      <member refid="classidol_1_1TempVar_1ae99e662fbfa07258ee5199d05acfa370" prot="private" virt="non-virtual"><scope>idol::TempVar</scope><name>m_column</name></member>
+      <member refid="classidol_1_1TempVar_1abecd147659d4eaf0e0b0b9a7b60bc2fd" prot="private" virt="non-virtual"><scope>idol::TempVar</scope><name>m_lb</name></member>
+      <member refid="classidol_1_1TempVar_1a0580c223e9f2a432f3ce5880021484e8" prot="private" virt="non-virtual"><scope>idol::TempVar</scope><name>m_obj</name></member>
+      <member refid="classidol_1_1TempVar_1a754203fc722c769b8954a7e2c0fd6c6e" prot="private" virt="non-virtual"><scope>idol::TempVar</scope><name>m_type</name></member>
+      <member refid="classidol_1_1TempVar_1a5bf7d335dc108aa68b420a3568049611" prot="private" virt="non-virtual"><scope>idol::TempVar</scope><name>m_ub</name></member>
+      <member refid="classidol_1_1TempVar_1aac47cb19f49c417e513795a46f7f5c1d" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>obj</name></member>
+      <member refid="classidol_1_1TempVar_1a708d438c13f17c0352791975bd9c589e" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>operator=</name></member>
+      <member refid="classidol_1_1TempVar_1a46b281d225722bf9dcfc89ba8c03dac2" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>operator=</name></member>
+      <member refid="classidol_1_1TempVar_1a0f437cb9e1aa828b263be4e09b7fe0c2" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>set_lb</name></member>
+      <member refid="classidol_1_1TempVar_1afb149e4b94c3b3ffdee31a7fa8f22278" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>set_obj</name></member>
+      <member refid="classidol_1_1TempVar_1a49488fba31d59ad3cdfeea5b578576c4" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>set_type</name></member>
+      <member refid="classidol_1_1TempVar_1a7bc8216524501353d1bfcdf151c89995" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>set_ub</name></member>
+      <member refid="classidol_1_1TempVar_1a5ab2916a25cad1c473cb827300c0c401" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>TempVar</name></member>
+      <member refid="classidol_1_1TempVar_1a6c3e5c967ba8c82bd8f3524251c1407d" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>TempVar</name></member>
+      <member refid="classidol_1_1TempVar_1a8047ae0988041192a8ee64c78a117e26" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>TempVar</name></member>
+      <member refid="classidol_1_1TempVar_1ad67ca7302ce9b6ecdcc909ff5b558c02" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>TempVar</name></member>
+      <member refid="classidol_1_1TempVar_1a5b2d871b3a3f6e6b9e4a0f2d48e55b02" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>type</name></member>
+      <member refid="classidol_1_1TempVar_1a63661d22cc3aab060f94b0f46e9fb5bf" prot="public" virt="non-virtual"><scope>idol::TempVar</scope><name>ub</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

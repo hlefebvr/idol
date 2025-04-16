@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1MatrixIndices" kind="class" language="C++" prot="public">
+    <compoundname>idol::MatrixIndices</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1MatrixIndices_1a63b203f3f8f6f32b91589e6e31dee9a9" prot="private" static="no" mutable="no">
+        <type>Map&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref>, unsigned int &gt;</type>
+        <definition>Map&lt;Var, unsigned int&gt; idol::MatrixIndices::m_indices</definition>
+        <argsstring></argsstring>
+        <name>m_indices</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" line="18" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1MatrixIndices_1a0ad767c18feb0984a1485b391ec49bb0" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::MatrixIndices::m_n_indices</definition>
+        <argsstring></argsstring>
+        <name>m_n_indices</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" line="19" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1MatrixIndices_1abbb0f6da51cdd3201d21bc6683ee1344" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::MatrixIndices::MatrixIndices</definition>
+        <argsstring>()=default</argsstring>
+        <name>MatrixIndices</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" line="21" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1MatrixIndices_1adaba6427092889d7409bc2870e61e9c3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::MatrixIndices::add</definition>
+        <argsstring>(const Var &amp;t_var)</argsstring>
+        <name>add</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" line="23" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" bodystart="23" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1MatrixIndices_1af7cb452584268f92a32be8f374a8eb57" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::MatrixIndices::get</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>get</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" line="30" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" bodystart="30" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1MatrixIndices_1ab50c2a492176a47d7e0b67e955b9e460" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto idol::MatrixIndices::indices</definition>
+        <argsstring>() const</argsstring>
+        <name>indices</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" line="36" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" bodystart="36" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1MatrixIndices_1ac558b4990bfa46adea3a1657443a632a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::MatrixIndices::n_indices</definition>
+        <argsstring>() const</argsstring>
+        <name>n_indices</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" line="38" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" bodystart="38" bodyend="38"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::MatrixIndices</label>
+        <link refid="classidol_1_1MatrixIndices"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" line="17" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h" bodystart="17" bodyend="39"/>
+    <listofallmembers>
+      <member refid="classidol_1_1MatrixIndices_1adaba6427092889d7409bc2870e61e9c3" prot="public" virt="non-virtual"><scope>idol::MatrixIndices</scope><name>add</name></member>
+      <member refid="classidol_1_1MatrixIndices_1af7cb452584268f92a32be8f374a8eb57" prot="public" virt="non-virtual"><scope>idol::MatrixIndices</scope><name>get</name></member>
+      <member refid="classidol_1_1MatrixIndices_1ab50c2a492176a47d7e0b67e955b9e460" prot="public" virt="non-virtual"><scope>idol::MatrixIndices</scope><name>indices</name></member>
+      <member refid="classidol_1_1MatrixIndices_1a63b203f3f8f6f32b91589e6e31dee9a9" prot="private" virt="non-virtual"><scope>idol::MatrixIndices</scope><name>m_indices</name></member>
+      <member refid="classidol_1_1MatrixIndices_1a0ad767c18feb0984a1485b391ec49bb0" prot="private" virt="non-virtual"><scope>idol::MatrixIndices</scope><name>m_n_indices</name></member>
+      <member refid="classidol_1_1MatrixIndices_1abbb0f6da51cdd3201d21bc6683ee1344" prot="public" virt="non-virtual"><scope>idol::MatrixIndices</scope><name>MatrixIndices</name></member>
+      <member refid="classidol_1_1MatrixIndices_1ac558b4990bfa46adea3a1657443a632a" prot="public" virt="non-virtual"><scope>idol::MatrixIndices</scope><name>n_indices</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

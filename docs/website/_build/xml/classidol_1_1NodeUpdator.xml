@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1NodeUpdator" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>idol::NodeUpdator</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class NodeT</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1NodeUpdator_1a3609a4134b1e53db0ddf7e2557dba2fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual idol::NodeUpdator&lt; NodeT &gt;::~NodeUpdator</definition>
+        <argsstring>()=default</argsstring>
+        <name>~NodeUpdator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeUpdator.h" line="21" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeUpdator_1ae8d3d20ca5a30986986dad5fea64fd75" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void idol::NodeUpdator&lt; NodeT &gt;::initialize</definition>
+        <argsstring>()=0</argsstring>
+        <name>initialize</name>
+        <reimplementedby refid="classidol_1_1DefaultNodeUpdator_1afddbee41e5727b4b5c06976471c8de36">initialize</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeUpdator.h" line="23" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeUpdator_1a3d3feb5359b21a9b0aae2636380400c7" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void idol::NodeUpdator&lt; NodeT &gt;::prepare</definition>
+        <argsstring>(const Node&lt; NodeT &gt; &amp;t_node)=0</argsstring>
+        <name>prepare</name>
+        <reimplementedby refid="classidol_1_1DefaultNodeUpdator_1ae17f6831c6cda32417c79c65e7c58ae9">prepare</reimplementedby>
+        <param>
+          <type>const <ref refid="classidol_1_1Node" kindref="compound">Node</ref>&lt; NodeT &gt; &amp;</type>
+          <declname>t_node</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeUpdator.h" line="25" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeUpdator_1adbd492819770b2bedbcf6bd2c488d7f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void idol::NodeUpdator&lt; NodeT &gt;::clear</definition>
+        <argsstring>()=0</argsstring>
+        <name>clear</name>
+        <reimplementedby refid="classidol_1_1DefaultNodeUpdator_1a7978e323ece5e28f3b1f8a7f645f2f06">clear</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeUpdator.h" line="27" column="18"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>idol::DefaultNodeUpdator&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1DefaultNodeUpdator"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::NodeUpdator&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1NodeUpdator"/>
+      </node>
+      <node id="2">
+        <label>idol::NodeUpdator&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1NodeUpdator"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; NodeInfoT &gt;</edgelabel>
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::NodeUpdator&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1NodeUpdator"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeUpdator.h" line="19" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeUpdator.h" bodystart="19" bodyend="28"/>
+    <listofallmembers>
+      <member refid="classidol_1_1NodeUpdator_1adbd492819770b2bedbcf6bd2c488d7f9" prot="public" virt="pure-virtual"><scope>idol::NodeUpdator</scope><name>clear</name></member>
+      <member refid="classidol_1_1NodeUpdator_1ae8d3d20ca5a30986986dad5fea64fd75" prot="public" virt="pure-virtual"><scope>idol::NodeUpdator</scope><name>initialize</name></member>
+      <member refid="classidol_1_1NodeUpdator_1a3d3feb5359b21a9b0aae2636380400c7" prot="public" virt="pure-virtual"><scope>idol::NodeUpdator</scope><name>prepare</name></member>
+      <member refid="classidol_1_1NodeUpdator_1a3609a4134b1e53db0ddf7e2557dba2fe" prot="public" virt="virtual"><scope>idol::NodeUpdator</scope><name>~NodeUpdator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

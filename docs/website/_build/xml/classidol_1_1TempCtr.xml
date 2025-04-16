@@ -1,0 +1,386 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1TempCtr" kind="class" language="C++" prot="public">
+    <compoundname>idol::TempCtr</compoundname>
+    <includes refid="TempCtr_8h" local="no">TempCtr.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1TempCtr_1ace8b00d47212915d64f0cf699e73567d" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+        <definition>LinExpr&lt;Var&gt; idol::TempCtr::m_lhs</definition>
+        <argsstring></argsstring>
+        <name>m_lhs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="42" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1TempCtr_1a01ddefd1cbe900a2fe2fdea3751c2e37" prot="private" static="no" mutable="no">
+        <type>CtrType</type>
+        <definition>CtrType idol::TempCtr::m_type</definition>
+        <argsstring></argsstring>
+        <name>m_type</name>
+        <initializer>= LessOrEqual</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="43" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1TempCtr_1a5132ef03444026ebe23716d0a4e1f02d" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double idol::TempCtr::m_rhs</definition>
+        <argsstring></argsstring>
+        <name>m_rhs</name>
+        <initializer>= 0.</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="44" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1TempCtr_1a8503d65fdcf740bd162ee265d8e636d5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::TempCtr::TempCtr</definition>
+        <argsstring>()=default</argsstring>
+        <name>TempCtr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Default constructor.</para>
+<para>Creates an empty temporary constraint. The default type is <computeroutput>LessOrEqual</computeroutput>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="51" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1a70343dc1ae8cf6766f7a91e25c7d0f60" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::TempCtr::TempCtr</definition>
+        <argsstring>(LinExpr&lt; Var &gt; &amp;&amp;t_lhs, CtrType t_type, double t_rhs)</argsstring>
+        <name>TempCtr</name>
+        <param>
+          <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_lhs</declname>
+        </param>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para>Creates a new temporary constraint. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_row</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The desired row. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The desired constraint type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="60" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="60" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1afdc31296a1c8e3324a914aa64226995d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::TempCtr::TempCtr</definition>
+        <argsstring>(const TempCtr &amp;t_src)=default</argsstring>
+        <name>TempCtr</name>
+        <param>
+          <type>const <ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Copy constructor. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The object to copy. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="66" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1a5654058d43f58ccd067a807ec8e2c426" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::TempCtr::TempCtr</definition>
+        <argsstring>(TempCtr &amp;&amp;t_src) noexcept=default</argsstring>
+        <name>TempCtr</name>
+        <param>
+          <type><ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref> &amp;&amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Move constructor. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The object to move. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="72" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1a0956c57f032dd53518ebcab5c965bc6c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref> &amp;</type>
+        <definition>TempCtr&amp; idol::TempCtr::operator=</definition>
+        <argsstring>(const TempCtr &amp;t_src)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Copy-assignment operator. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The object to copy. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="78" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1a2349f21da693b4bb1d111ae6e66b9040" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref> &amp;</type>
+        <definition>TempCtr&amp; idol::TempCtr::operator=</definition>
+        <argsstring>(TempCtr &amp;&amp;t_src) noexcept=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref> &amp;&amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Move-assignment operator. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The object to move. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="84" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1a081bc540d3334f77e01a35da6e969361" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>LinExpr&lt;Var&gt;&amp; idol::TempCtr::lhs</definition>
+        <argsstring>()</argsstring>
+        <name>lhs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="86" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="86" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1a1037649e71ecabc3bbefa590219597dd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>const LinExpr&lt;Var&gt;&amp; idol::TempCtr::lhs</definition>
+        <argsstring>() const</argsstring>
+        <name>lhs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="88" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="88" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1a6b0157b51fb0b256dbd46d8de883efde" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::TempCtr::set_lhs</definition>
+        <argsstring>(LinExpr&lt; Var &gt; &amp;&amp;t_lhs)</argsstring>
+        <name>set_lhs</name>
+        <param>
+          <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_lhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="90" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="90" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1a117dd60c8d8e68e87f24311b497f7bcd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>CtrType</type>
+        <definition>CtrType idol::TempCtr::type</definition>
+        <argsstring>() const</argsstring>
+        <name>type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the temporary constraint type. <simplesect kind="return"><para>The temporary constraint type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="96" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="96" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1a5f1adc5075d4ef47590c8db5218504e5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::TempCtr::rhs</definition>
+        <argsstring>() const</argsstring>
+        <name>rhs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="98" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="98" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1a8a561fe7146e7fc07ea0dfdab0753f98" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double &amp;</type>
+        <definition>double&amp; idol::TempCtr::rhs</definition>
+        <argsstring>()</argsstring>
+        <name>rhs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="100" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="100" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1ac06b38d8e17e1d57386f1068cda24943" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::TempCtr::set_rhs</definition>
+        <argsstring>(double t_rhs)</argsstring>
+        <name>set_rhs</name>
+        <param>
+          <type>double</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="102" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="102" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempCtr_1a864b1daa13c5671d4d1bd111c50de72b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::TempCtr::set_type</definition>
+        <argsstring>(CtrType t_type)</argsstring>
+        <name>set_type</name>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the type of the temporary constraint. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the desired type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="108" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="108" bodyend="113"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Temporary constraint class.</para>
+<para>This class represents a constraint which has not been built yet by a <ref refid="classidol_1_1Model" kindref="compound">Model</ref>. It contains all the arguments needed to create a real constraint as instantiated by the <computeroutput><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref></computeroutput> class. It is made of a row (see <computeroutput>Row</computeroutput>) and a type (see <computeroutput>CtrType.rst.rst</computeroutput>).</para>
+<para>Typically, one creates a <computeroutput><ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref></computeroutput> by using the overloaded operators <computeroutput>&lt;=</computeroutput>, <computeroutput>&gt;=</computeroutput> and <computeroutput>==</computeroutput> between variable expressions (i.e., <computeroutput><ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref></computeroutput>) and constant terms (i.e., <computeroutput>Constant</computeroutput>).</para>
+<para><bold>Example 1</bold>: <programlisting><codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">model.add_ctr(x<sp/>+<sp/>y<sp/>&lt;=<sp/>1.);</highlight></codeline>
+</programlisting> <bold>Example 2</bold> (equivalent to Example 1): <programlisting><codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">model.add_ctr(TempCtr(Row(x<sp/>+<sp/>y,<sp/>1.),<sp/>LessOrEqual));</highlight></codeline>
+</programlisting> </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::TempCtr</label>
+        <link refid="classidol_1_1TempCtr"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" line="41" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h" bodystart="41" bodyend="115"/>
+    <listofallmembers>
+      <member refid="classidol_1_1TempCtr_1a081bc540d3334f77e01a35da6e969361" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>lhs</name></member>
+      <member refid="classidol_1_1TempCtr_1a1037649e71ecabc3bbefa590219597dd" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>lhs</name></member>
+      <member refid="classidol_1_1TempCtr_1ace8b00d47212915d64f0cf699e73567d" prot="private" virt="non-virtual"><scope>idol::TempCtr</scope><name>m_lhs</name></member>
+      <member refid="classidol_1_1TempCtr_1a5132ef03444026ebe23716d0a4e1f02d" prot="private" virt="non-virtual"><scope>idol::TempCtr</scope><name>m_rhs</name></member>
+      <member refid="classidol_1_1TempCtr_1a01ddefd1cbe900a2fe2fdea3751c2e37" prot="private" virt="non-virtual"><scope>idol::TempCtr</scope><name>m_type</name></member>
+      <member refid="classidol_1_1TempCtr_1a0956c57f032dd53518ebcab5c965bc6c" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>operator=</name></member>
+      <member refid="classidol_1_1TempCtr_1a2349f21da693b4bb1d111ae6e66b9040" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>operator=</name></member>
+      <member refid="classidol_1_1TempCtr_1a5f1adc5075d4ef47590c8db5218504e5" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>rhs</name></member>
+      <member refid="classidol_1_1TempCtr_1a8a561fe7146e7fc07ea0dfdab0753f98" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>rhs</name></member>
+      <member refid="classidol_1_1TempCtr_1a6b0157b51fb0b256dbd46d8de883efde" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>set_lhs</name></member>
+      <member refid="classidol_1_1TempCtr_1ac06b38d8e17e1d57386f1068cda24943" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>set_rhs</name></member>
+      <member refid="classidol_1_1TempCtr_1a864b1daa13c5671d4d1bd111c50de72b" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>set_type</name></member>
+      <member refid="classidol_1_1TempCtr_1a8503d65fdcf740bd162ee265d8e636d5" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>TempCtr</name></member>
+      <member refid="classidol_1_1TempCtr_1a70343dc1ae8cf6766f7a91e25c7d0f60" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>TempCtr</name></member>
+      <member refid="classidol_1_1TempCtr_1afdc31296a1c8e3324a914aa64226995d" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>TempCtr</name></member>
+      <member refid="classidol_1_1TempCtr_1a5654058d43f58ccd067a807ec8e2c426" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>TempCtr</name></member>
+      <member refid="classidol_1_1TempCtr_1a117dd60c8d8e68e87f24311b497f7bcd" prot="public" virt="non-virtual"><scope>idol::TempCtr</scope><name>type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

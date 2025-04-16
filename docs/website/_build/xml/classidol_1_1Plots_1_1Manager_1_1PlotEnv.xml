@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Plots_1_1Manager_1_1PlotEnv" kind="class" language="C++" prot="private">
+    <compoundname>idol::Plots::Manager::PlotEnv</compoundname>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classidol_1_1Plots_1_1Manager_1_1PlotEnv_1a200c2439f07f8abe79ecac3d8eaa4cf5" prot="private" static="yes" mutable="no">
+        <type>PlotEnv *</type>
+        <definition>PlotEnv* idol::Plots::Manager::PlotEnv::m_instance</definition>
+        <argsstring></argsstring>
+        <name>m_instance</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h" line="22" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Plots_1_1Manager_1_1PlotEnv_1ad363b6c89cd452cb8ca9129c0a89b7d3" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Plots::Manager::PlotEnv::m_n_manager</definition>
+        <argsstring></argsstring>
+        <name>m_n_manager</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h" line="26" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classidol_1_1Plots_1_1Manager_1_1PlotEnv_1aea82b5ab54d0ad02bdcd29313ae3c34c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Plots::Manager::PlotEnv::PlotEnv</definition>
+        <argsstring>()</argsstring>
+        <name>PlotEnv</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h" line="28" column="9"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="classidol_1_1Plots_1_1Manager_1_1PlotEnv_1a653a5b53a11805e1dff24e81883094bb" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>PlotEnv &amp;</type>
+        <definition>static PlotEnv&amp; idol::Plots::Manager::PlotEnv::get</definition>
+        <argsstring>()</argsstring>
+        <name>get</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h" line="30" column="24"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classidol_1_1Plots_1_1Manager_1_1PlotEnv_1a3a18d15ff5a39895f62c6e10583834b4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void idol::Plots::Manager::PlotEnv::declare_plot_manager</definition>
+        <argsstring>()</argsstring>
+        <name>declare_plot_manager</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h" line="32" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Plots_1_1Manager_1_1PlotEnv_1a7d89d3bc720a655801b390bc5fffcef5" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void idol::Plots::Manager::PlotEnv::destroy_plot_manager</definition>
+        <argsstring>()</argsstring>
+        <name>destroy_plot_manager</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h" line="33" column="21"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Plots::Manager::PlotEnv</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h" line="21" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h" bodystart="21" bodyend="34"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Plots_1_1Manager_1_1PlotEnv_1a3a18d15ff5a39895f62c6e10583834b4" prot="public" virt="non-virtual"><scope>idol::Plots::Manager::PlotEnv</scope><name>declare_plot_manager</name></member>
+      <member refid="classidol_1_1Plots_1_1Manager_1_1PlotEnv_1a7d89d3bc720a655801b390bc5fffcef5" prot="public" virt="non-virtual"><scope>idol::Plots::Manager::PlotEnv</scope><name>destroy_plot_manager</name></member>
+      <member refid="classidol_1_1Plots_1_1Manager_1_1PlotEnv_1a653a5b53a11805e1dff24e81883094bb" prot="private" virt="non-virtual"><scope>idol::Plots::Manager::PlotEnv</scope><name>get</name></member>
+      <member refid="classidol_1_1Plots_1_1Manager_1_1PlotEnv_1a200c2439f07f8abe79ecac3d8eaa4cf5" prot="private" virt="non-virtual"><scope>idol::Plots::Manager::PlotEnv</scope><name>m_instance</name></member>
+      <member refid="classidol_1_1Plots_1_1Manager_1_1PlotEnv_1ad363b6c89cd452cb8ca9129c0a89b7d3" prot="private" virt="non-virtual"><scope>idol::Plots::Manager::PlotEnv</scope><name>m_n_manager</name></member>
+      <member refid="classidol_1_1Plots_1_1Manager_1_1PlotEnv_1aea82b5ab54d0ad02bdcd29313ae3c34c" prot="private" virt="non-virtual"><scope>idol::Plots::Manager::PlotEnv</scope><name>PlotEnv</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

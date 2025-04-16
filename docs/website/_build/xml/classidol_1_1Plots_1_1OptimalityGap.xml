@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Plots_1_1OptimalityGap" kind="class" language="C++" prot="public">
+    <compoundname>idol::Plots::OptimalityGap</compoundname>
+    <basecompoundref refid="classidol_1_1CallbackFactory" prot="public" virt="non-virtual">idol::CallbackFactory</basecompoundref>
+    <innerclass refid="classidol_1_1Plots_1_1OptimalityGap_1_1Strategy" prot="public">idol::Plots::OptimalityGap::Strategy</innerclass>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Plots_1_1OptimalityGap_1aee1978a1272cbd6c3c643791b31b8702" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1Plots_1_1Manager" kindref="compound">Manager</ref> &amp;</type>
+        <definition>Manager&amp; idol::Plots::OptimalityGap::m_plot_manager</definition>
+        <argsstring></argsstring>
+        <name>m_plot_manager</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h" line="21" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Plots_1_1OptimalityGap_1a086d518688354777c953572feee4820f" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Plots::OptimalityGap::OptimalityGap</definition>
+        <argsstring>(Manager &amp;t_plot_manager)</argsstring>
+        <name>OptimalityGap</name>
+        <param>
+          <type><ref refid="classidol_1_1Plots_1_1Manager" kindref="compound">Manager</ref> &amp;</type>
+          <declname>t_plot_manager</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h" line="41" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h" bodystart="41" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Plots_1_1OptimalityGap_1a9e3486a38bb188be49f223ac3cd79cac" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1Callback" kindref="compound">Callback</ref> *</type>
+        <definition>Callback* idol::Plots::OptimalityGap::operator()</definition>
+        <argsstring>() override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1CallbackFactory_1a335c94aa21641762b12272291acd5a38">operator()</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h" line="43" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h" bodystart="43" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Plots_1_1OptimalityGap_1ab32adfb1104ebdaa67548bd9fb130125" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1CallbackFactory" kindref="compound">CallbackFactory</ref> *</type>
+        <definition>CallbackFactory* idol::Plots::OptimalityGap::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1CallbackFactory_1ab7bbed495749b23133b1ca64b5ac3b3c">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h" line="47" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h" bodystart="47" bodyend="49"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>idol::Plots::OptimalityGap</label>
+        <link refid="classidol_1_1Plots_1_1OptimalityGap"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::CallbackFactory</label>
+        <link refid="classidol_1_1CallbackFactory"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Plots::OptimalityGap</label>
+        <link refid="classidol_1_1Plots_1_1OptimalityGap"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::CallbackFactory</label>
+        <link refid="classidol_1_1CallbackFactory"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h" line="20" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h" bodystart="20" bodyend="50"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Plots_1_1OptimalityGap_1ab32adfb1104ebdaa67548bd9fb130125" prot="public" virt="virtual"><scope>idol::Plots::OptimalityGap</scope><name>clone</name></member>
+      <member refid="classidol_1_1Plots_1_1OptimalityGap_1aee1978a1272cbd6c3c643791b31b8702" prot="private" virt="non-virtual"><scope>idol::Plots::OptimalityGap</scope><name>m_plot_manager</name></member>
+      <member refid="classidol_1_1Plots_1_1OptimalityGap_1a9e3486a38bb188be49f223ac3cd79cac" prot="public" virt="virtual"><scope>idol::Plots::OptimalityGap</scope><name>operator()</name></member>
+      <member refid="classidol_1_1Plots_1_1OptimalityGap_1a086d518688354777c953572feee4820f" prot="public" virt="non-virtual"><scope>idol::Plots::OptimalityGap</scope><name>OptimalityGap</name></member>
+      <member refid="classidol_1_1CallbackFactory_1a0634d81639b5ad89ca5ba6c05ecc756b" prot="public" virt="virtual"><scope>idol::Plots::OptimalityGap</scope><name>~CallbackFactory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

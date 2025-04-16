@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1Robust" kind="namespace" language="C++">
+    <compoundname>idol::Robust</compoundname>
+    <innerclass refid="classidol_1_1Robust_1_1Description" prot="public">idol::Robust::Description</innerclass>
+    <innerclass refid="classidol_1_1Robust_1_1AffineDecisionRule" prot="public">idol::Robust::AffineDecisionRule</innerclass>
+    <innerclass refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration" prot="public">idol::Robust::ColumnAndConstraintGeneration</innerclass>
+    <innerclass refid="classidol_1_1Robust_1_1Deterministic" prot="public">idol::Robust::Deterministic</innerclass>
+    <innerclass refid="classidol_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver" prot="public">idol::Robust::ScenarioBasedKAdaptabilityProblemSolver</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="13" column="1"/>
+  </compounddef>
+</doxygen>

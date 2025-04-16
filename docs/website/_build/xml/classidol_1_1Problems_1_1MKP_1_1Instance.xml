@@ -1,0 +1,361 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Problems_1_1MKP_1_1Instance" kind="class" language="C++" prot="public">
+    <compoundname>idol::Problems::MKP::Instance</compoundname>
+    <includes refid="MKP__Instance_8h" local="no">MKP_Instance.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classidol_1_1Problems_1_1MKP_1_1Instance_1a8e6aacde4244fcc8d46a28d6fb15465f" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; idol::Problems::MKP::Instance::m_profits</definition>
+        <argsstring></argsstring>
+        <name>m_profits</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="21" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Problems_1_1MKP_1_1Instance_1ac7f3aa7732bf340865a16766da1e31b6" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; idol::Problems::MKP::Instance::m_weights</definition>
+        <argsstring></argsstring>
+        <name>m_weights</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="22" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Problems_1_1MKP_1_1Instance_1afb6f4a5599db83db0d4b090764d58c03" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; idol::Problems::MKP::Instance::m_capacities</definition>
+        <argsstring></argsstring>
+        <name>m_capacities</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="23" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1ad63c60d022980d73c8db23950a5a6ff1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Problems::MKP::Instance::Instance</definition>
+        <argsstring>(unsigned int t_n_knapsacks, unsigned int t_n_items)</argsstring>
+        <name>Instance</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_knapsacks</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_items</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="25" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1ade5cced428b6a044bd42c092d25686cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Problems::MKP::Instance::Instance</definition>
+        <argsstring>(const Instance &amp;)=default</argsstring>
+        <name>Instance</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Problems_1_1MKP_1_1Instance" kindref="compound">Instance</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="27" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1a12a7b109a9ff23229e597122ce4fa824" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Problems::MKP::Instance::Instance</definition>
+        <argsstring>(Instance &amp;&amp;) noexcept=default</argsstring>
+        <name>Instance</name>
+        <param>
+          <type><ref refid="classidol_1_1Problems_1_1MKP_1_1Instance" kindref="compound">Instance</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="28" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1af9fd9b1951051c81c06eff80aaabf565" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Problems_1_1MKP_1_1Instance" kindref="compound">Instance</ref> &amp;</type>
+        <definition>Instance&amp; idol::Problems::MKP::Instance::operator=</definition>
+        <argsstring>(const Instance &amp;)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Problems_1_1MKP_1_1Instance" kindref="compound">Instance</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="30" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1ac36785f31940f4432f7d41aeb9ca0a7e" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Problems_1_1MKP_1_1Instance" kindref="compound">Instance</ref> &amp;</type>
+        <definition>Instance&amp; idol::Problems::MKP::Instance::operator=</definition>
+        <argsstring>(Instance &amp;&amp;) noexcept=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1Problems_1_1MKP_1_1Instance" kindref="compound">Instance</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="31" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1ae154ff43382fc7cbc56b080ad62576d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Problems::MKP::Instance::~Instance</definition>
+        <argsstring>()=default</argsstring>
+        <name>~Instance</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="33" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1a817ee1b4201fa90e18cf82b416906112" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Problems::MKP::Instance::n_knapsacks</definition>
+        <argsstring>() const</argsstring>
+        <name>n_knapsacks</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="34" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="34" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1ac1d3f767cbd9a6b3e15e64eef696b97b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Problems::MKP::Instance::n_items</definition>
+        <argsstring>() const</argsstring>
+        <name>n_items</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="35" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="35" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1a937e326c082d49f48319bcd0cfac900c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Problems::MKP::Instance::profit</definition>
+        <argsstring>(unsigned int t_item) const</argsstring>
+        <name>profit</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_item</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="36" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="36" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1aa5fe400a44d0e2835303cea6bf45d3f4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Problems::MKP::Instance::weight</definition>
+        <argsstring>(unsigned int t_item) const</argsstring>
+        <name>weight</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_item</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="37" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="37" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1a817491ade75977e3f437753dd85a0417" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Problems::MKP::Instance::capacity</definition>
+        <argsstring>(unsigned int t_knapsack) const</argsstring>
+        <name>capacity</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_knapsack</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="38" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="38" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1ab659e37eaee0faed432fc6c28742bcb7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::Problems::MKP::Instance::profits</definition>
+        <argsstring>() const</argsstring>
+        <name>profits</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="40" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="40" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1a2da4fbc29b1ccc22d7730c868704fda4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::Problems::MKP::Instance::weights</definition>
+        <argsstring>() const</argsstring>
+        <name>weights</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="41" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="41" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1ab16df7b0548bac8d4b133df6cd8cd92e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::Problems::MKP::Instance::capacities</definition>
+        <argsstring>() const</argsstring>
+        <name>capacities</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="42" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="42" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1a67b50b3818e067cd0df5b4f28000e027" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Problems::MKP::Instance::set_profit</definition>
+        <argsstring>(unsigned int t_item, double t_value)</argsstring>
+        <name>set_profit</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_item</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="44" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1a1de25396688ff525e18949079e4b22f4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Problems::MKP::Instance::set_weight</definition>
+        <argsstring>(unsigned int t_item, double t_value)</argsstring>
+        <name>set_weight</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_item</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="45" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="45" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1MKP_1_1Instance_1adbd698367fa9c5cd8c1c65fc25e3bcbf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Problems::MKP::Instance::set_capacity</definition>
+        <argsstring>(unsigned int t_knapsack, double t_value)</argsstring>
+        <name>set_capacity</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_knapsack</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="46" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="46" bodyend="46"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>See also <ulink url="https://en.wikipedia.org/wiki/Knapsack_problem">https://en.wikipedia.org/wiki/Knapsack_problem</ulink>. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Problems::MKP::Instance</label>
+        <link refid="classidol_1_1Problems_1_1MKP_1_1Instance"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" line="19" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h" bodystart="19" bodyend="48"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1ab16df7b0548bac8d4b133df6cd8cd92e" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>capacities</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1a817491ade75977e3f437753dd85a0417" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>capacity</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1ad63c60d022980d73c8db23950a5a6ff1" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>Instance</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1ade5cced428b6a044bd42c092d25686cf" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>Instance</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1a12a7b109a9ff23229e597122ce4fa824" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>Instance</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1afb6f4a5599db83db0d4b090764d58c03" prot="protected" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>m_capacities</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1a8e6aacde4244fcc8d46a28d6fb15465f" prot="protected" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>m_profits</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1ac7f3aa7732bf340865a16766da1e31b6" prot="protected" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>m_weights</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1ac1d3f767cbd9a6b3e15e64eef696b97b" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>n_items</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1a817ee1b4201fa90e18cf82b416906112" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>n_knapsacks</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1af9fd9b1951051c81c06eff80aaabf565" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1ac36785f31940f4432f7d41aeb9ca0a7e" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1a937e326c082d49f48319bcd0cfac900c" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>profit</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1ab659e37eaee0faed432fc6c28742bcb7" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>profits</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1adbd698367fa9c5cd8c1c65fc25e3bcbf" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>set_capacity</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1a67b50b3818e067cd0df5b4f28000e027" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>set_profit</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1a1de25396688ff525e18949079e4b22f4" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>set_weight</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1aa5fe400a44d0e2835303cea6bf45d3f4" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>weight</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1a2da4fbc29b1ccc22d7730c868704fda4" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>weights</name></member>
+      <member refid="classidol_1_1Problems_1_1MKP_1_1Instance_1ae154ff43382fc7cbc56b080ad62576d2" prot="public" virt="non-virtual"><scope>idol::Problems::MKP::Instance</scope><name>~Instance</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

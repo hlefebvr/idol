@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Modeling Adjustable Robust Problems</title>
+    
+          <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/robust/two-stage/modeling.html" />
+    
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="next" title="The Column-and-Constraint Generation: Introduction" href="ccg.html" />
+  <link rel="prev" title="Two-stage Robust Optimization (Adjustable)" href="index.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../../index.html">Tutorials</a> &raquo;</li>
+    
+      <li><a href="../index.html">Robust Optimization</a> &raquo;</li>
+    
+      <li><a href="index.html">Two-stage Robust Optimization (Adjustable)</a> &raquo;</li>
+    
+    <li>Modeling Adjustable Robust Problems</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="index.html"
+       title="previous chapter">← Two-stage Robust Optimization (Adjustable)</a>
+  </li>
+  <li class="next">
+    <a href="ccg.html"
+       title="next chapter">The Column-and-Constraint Generation: Introduction →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="modeling-adjustable-robust-problems">
+<span id="modeling-two-stage-robust-problem"></span><h1>Modeling Adjustable Robust Problems<a class="headerlink" href="#modeling-adjustable-robust-problems" title="Link to this heading">¶</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This tutorial is still under construction.</p>
+</div>
+<p>In this tutorial, we will see how to model a two-stage robust problem in idol.</p>
+<p>To follow this tutorial, you should be familiar with two-stage robust optimization and modeling optimization problems in idol.
+If this is not the case, we recommend you to read the tutorial on <a class="reference internal" href="../../mixed-integer/modeling/index.html#mip-modeling"><span class="std std-ref">MIP modeling</span></a>.</p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#a-two-stage-robust-facility-location-problem" id="id1">A Two-Stage Robust Facility Location Problem</a></p></li>
+<li><p><a class="reference internal" href="#modeling-steps" id="id2">Modeling Steps</a></p>
+<ul>
+<li><p><a class="reference internal" href="#defining-the-uncertainty-set" id="id3">Defining the Uncertainty Set</a></p></li>
+<li><p><a class="reference internal" href="#defining-the-deterministic-model" id="id4">Defining the Deterministic Model</a></p></li>
+<li><p><a class="reference internal" href="#assigning-stages" id="id5">Assigning Stages</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#complete-example" id="id6">Complete Example</a></p></li>
+</ul>
+</nav>
+<section id="a-two-stage-robust-facility-location-problem">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">A Two-Stage Robust Facility Location Problem</a><a class="headerlink" href="#a-two-stage-robust-facility-location-problem" title="Link to this heading">¶</a></h2>
+<p>We consider a two-stage robust facility location problem (FLP) where demands are uncertain.</p>
+<p>Given a set of potential facility locations <span class="math notranslate nohighlight">\(V_1\)</span> and a set of customers <span class="math notranslate nohighlight">\(V_2\)</span>, the goal is to select a subset of facility locations
+to activate in order to serve all customers’ demand, while minimizing the total cost.
+This version introduces uncertainty in the customers’ demands.</p>
+<p>Note that there is also an example for the <a class="reference internal" href="../../../examples/facility-location-problem.html#example-flp"><span class="std std-ref">deterministic version of the FLP using Column Generation</span></a>.</p>
+<p>Each facility <span class="math notranslate nohighlight">\(i\in V_1\)</span> has an opening cost <span class="math notranslate nohighlight">\(f_i\)</span> and a maximum capacity <span class="math notranslate nohighlight">\(q_i\)</span>.
+Each customer <span class="math notranslate nohighlight">\(j\in V_2\)</span> has a demand <span class="math notranslate nohighlight">\(d_j\)</span>.
+The unitary cost for serving customer <span class="math notranslate nohighlight">\(j\in V_2\)</span> from facility <span class="math notranslate nohighlight">\(i\in V_1\)</span> is <span class="math notranslate nohighlight">\(t_{ij}\)</span>.
+The uncertainty in customer demands is controlled by a parameter <span class="math notranslate nohighlight">\(\Gamma\)</span>.</p>
+<p>In this robust variant, we consider that the demands are uncertain and can be expressed as <span class="math notranslate nohighlight">\(d_j(\xi) = d_j(1 + p\xi_j)\)</span>
+with <span class="math notranslate nohighlight">\(p\)</span> being the maximum increase in demand and <span class="math notranslate nohighlight">\(\xi\)</span> being an unknown vector taken in the uncertainty set</p>
+<div class="math notranslate nohighlight">
+\[\Xi := \left\{ \xi\in[ 0, 1 ]^{|V_2|} : \sum_{j\in V_2} \xi_j \le \Gamma \right\}.\]</div>
+<p>We model the two-stage robust FLP as</p>
+<div class="math notranslate nohighlight">
+\[\min_{x\in \{0,1\}^{|V_1|}} \ \left\{ \sum_{i\in V_1} f_i x_i + \max_{\xi\in \Xi} \ \min_{y\in Y(x,\xi)} \  \sum_{i\in V_1} \sum_{j\in V_2} t_{ij} y_{ij} \right\}\]</div>
+<p>where <span class="math notranslate nohighlight">\(Y(x,\xi)\)</span> is the set of feasible solutions for the second stage problem, given the first stage solution <span class="math notranslate nohighlight">\(x\)</span> and the realization <span class="math notranslate nohighlight">\(\xi\)</span> of the uncertain demand vector.
+It is defined as the set of vectors <span class="math notranslate nohighlight">\(y\in \mathbb{R}^{|V_1|\times|V_2|}\)</span> that satisfy the following constraints</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+    &amp; \sum_{i\in V_1} y_{ij} = d_j(\xi) &amp;&amp; j\in V_2, \\
+    &amp; \sum_{j\in V_2} y_{ij} \le q_i x_i &amp;&amp; i\in V_1, \\
+    &amp; y_{ij} \ge 0 &amp;&amp; i\in V_1, j\in V_2.
+\end{align*}\end{split}\]</div>
+<p>In what follows, we will assume that we have a variable <code class="code docutils literal notranslate"><span class="pre">instance</span></code> of type <code class="code docutils literal notranslate"><span class="pre">idol::Problems::FLP::Instance</span></code>
+that contains the data of the problem. Most typically, you will want to read the instance from a file. This is done as follows.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Read instance</span>
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Problems</span><span class="o">::</span><span class="n">FLP</span><span class="o">::</span><span class="n">read_instance_1991_Cornuejols_eal</span><span class="p">(</span><span class="s">&quot;robust_ccg.data.txt&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Additionally, we define an optimization environment <code class="code docutils literal notranslate"><span class="pre">env</span></code> and some parameters.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">Gamma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">percentage_increase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">.2</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="modeling-steps">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Modeling Steps</a><a class="headerlink" href="#modeling-steps" title="Link to this heading">¶</a></h2>
+<p>To model a two-stage robust problem, one needs to perform the following steps:</p>
+<ol class="arabic simple">
+<li><p>Define an uncertainty set <span class="math notranslate nohighlight">\(\Xi\)</span>.</p></li>
+<li><p>Define the deterministic model in which <span class="math notranslate nohighlight">\(\xi\)</span> is a parameter.</p></li>
+<li><p>Assign a stage to each variable and constraint.</p></li>
+</ol>
+<p>Let’s see how these steps are done in idol.</p>
+<section id="defining-the-uncertainty-set">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Defining the Uncertainty Set</a><a class="headerlink" href="#defining-the-uncertainty-set" title="Link to this heading">¶</a></h3>
+<p>Modeling the uncertainty set <span class="math notranslate nohighlight">\(\Xi\)</span> is done in the same way as modeling any classical optimization problem.
+For instance, one can do as follows.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n_customers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">n_customers</span><span class="p">();</span>
+
+<span class="n">Model</span><span class="w"> </span><span class="nf">uncertainty_set</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">xi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uncertainty_set</span><span class="p">.</span><span class="n">add_vars</span><span class="p">(</span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n_customers</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">Binary</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;xi&quot;</span><span class="p">);</span>
+<span class="n">uncertainty_set</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_customers</span><span class="p">),</span><span class="w"> </span><span class="n">xi</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">Gamma</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that defining an objective function is not necessary since the uncertainty set is not optimized over.
+If an objective function is defined, it will be ignored by the optimizer.</p>
+</section>
+<section id="defining-the-deterministic-model">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Defining the Deterministic Model</a><a class="headerlink" href="#defining-the-deterministic-model" title="Link to this heading">¶</a></h3>
+<p>The deterministic model underlying the two-stage robust FLP is the same as the classical FLP, except that the demand is seen as a parameter.</p>
+<p>Recall that a variable, e.g., <code class="code docutils literal notranslate"><span class="pre">xi[0]</span></code>, can be turned into a parameter by prepending it with <code class="code docutils literal notranslate"><span class="pre">!</span></code>.</p>
+<p>Hence,
+we can define the deterministic model as follows.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n_facilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">n_facilities</span><span class="p">();</span>
+
+<span class="n">Model</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_vars</span><span class="p">(</span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n_facilities</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="mf">1.</span><span class="p">,</span><span class="w"> </span><span class="n">Binary</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_vars</span><span class="p">(</span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n_facilities</span><span class="p">,</span><span class="w"> </span><span class="n">n_customers</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p">);</span>
+
+<span class="c1">// Capacity constraints</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_facilities</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_customers</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">capacity</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="p">}</span>
+
+<span class="c1">// Demand satisfaction constraints</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_customers</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// IMPORTANT: here we use the parameter &quot;!xi[j]&quot; instead of the variable &quot;xi[j]&quot;</span>
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_facilities</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">demand</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">percentage_increase</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">!</span><span class="n">xi</span><span class="p">[</span><span class="n">j</span><span class="p">]));</span>
+<span class="p">}</span>
+
+<span class="c1">// Objective function</span>
+<span class="n">model</span><span class="p">.</span><span class="n">seobj_expr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_facilities</span><span class="p">),</span>
+<span class="w">                            </span><span class="n">instance</span><span class="p">.</span><span class="n">fixed_cost</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="w">                            </span><span class="o">+</span><span class="w"> </span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_customers</span><span class="p">),</span>
+<span class="w">                                       </span><span class="n">instance</span><span class="p">.</span><span class="n">per_unit_transportation_cost</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+<span class="w">                            </span><span class="p">)</span>
+<span class="w">                   </span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="assigning-stages">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Assigning Stages</a><a class="headerlink" href="#assigning-stages" title="Link to this heading">¶</a></h3>
+<p>The last step is to assign a stage to each variable and constraint. Here, variables <span class="math notranslate nohighlight">\(x\)</span> are first-stage variables
+and variables <span class="math notranslate nohighlight">\(y\)</span> are second-stage variables, i.e., they depend on the realization of the uncertain demand.
+Similarly, all constraints are second-stage constraints since they are part of the second-stage feasible region.</p>
+<p>Assigning stages is done by creating a new object of type <code class="code docutils literal notranslate"><span class="pre">idol::Robust::StageDescription</span></code>.
+Under the hood, this object does nothing more but defining new annotations for variables and constraints storing
+the assigned stage of each variable and constraint. It is created as follows.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Robust</span><span class="o">::</span><span class="n">StageDescription</span><span class="w"> </span><span class="nf">stages</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>By default, all variables and constraints are assigned to the first stage.
+To assign a variable or constraint to the second stage, one can use the method <code class="code docutils literal notranslate"><span class="pre">set_stage</span></code> of the object <code class="code docutils literal notranslate"><span class="pre">stages</span></code>.
+For instance, one can do as follows.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">var</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">vars</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">var</span><span class="p">.</span><span class="n">name</span><span class="p">().</span><span class="n">front</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;x&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">stages</span><span class="p">.</span><span class="n">set_stage</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Similarly, since all constraints are second-stage constraints, one can do as follows.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctr</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">ctrs</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">stages</span><span class="p">.</span><span class="n">set_stage</span><span class="p">(</span><span class="n">ctr</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition-about-stage-annotations admonition">
+<p class="admonition-title">About stage annotations</p>
+<p>Note that it is also possible to define your own annotations to assign variables and constraints to stages.
+This is a rather advanced feature and it is your responsability to ensure that the annotations are consistent with the model.</p>
+<p>The annotations are based on the following conventions: all first-stage variables and constraints have the annotation evaluating to <code class="code docutils literal notranslate"><span class="pre">MasterId</span></code>.
+All second-stage variables and constraints have the annotation evaluating to <code class="code docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<p>For instance, the following code is equivalent to the previous one.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Annotation</span><span class="o">&lt;</span><span class="n">Var</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stage_vars</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;stage_vars&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MasterId</span><span class="p">);</span><span class="w"> </span><span class="c1">// By default, all variables are first-stage variables</span>
+<span class="n">Annotation</span><span class="o">&lt;</span><span class="n">Ctr</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stage_ctrs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;stage_ctrs&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MasterId</span><span class="p">);</span><span class="w"> </span><span class="c1">// By default, all constraints are first-stage constraints</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">var</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">vars</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">var</span><span class="p">.</span><span class="n">name</span><span class="p">().</span><span class="n">front</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;x&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">var</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">stage_vars</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// Assign variable to the second stage</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctr</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">ctrs</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ctr</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">stage_ctrs</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// Assign constraint to the second stage</span>
+<span class="p">}</span>
+
+<span class="n">idol</span><span class="o">::</span><span class="n">Robust</span><span class="o">::</span><span class="n">StageDescription</span><span class="w"> </span><span class="n">stages</span><span class="p">(</span><span class="n">stage_vars</span><span class="p">,</span><span class="w"> </span><span class="n">stage_ctrs</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>By doing so, a call to <code class="code docutils literal notranslate"><span class="pre">stages.stage(var)</span></code> will return “1” for all first-stage variables and “2” for all second-stage variables.
+The underlying annotation can be obtained using</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Annotation</span><span class="o">&lt;</span><span class="n">Var</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stage_vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stages</span><span class="p">.</span><span class="n">stage_vars</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Finally, also note the method <code class="code docutils literal notranslate"><span class="pre">stages.stage_index(var)</span></code> that will return “0” for all first-stage variables and “1” for all second-stage variables.</p>
+</div>
+<p>That’s it! We have now modeled a two-stage robust FLP in idol. Note that you will now need
+to attach an optimizer to the model to solve it.
+To this end, be sure to check the tutorials on optimizers for two-stage robust problems, e.g., <a class="reference internal" href="column-and-constraint-generation/write-ccg.html#tutorial-ccg"><span class="std std-ref">the column-and-constraint generation tutorial</span></a>.</p>
+</section>
+</section>
+<section id="complete-example">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Complete Example</a><a class="headerlink" href="#complete-example" title="Link to this heading">¶</a></h2>
+<p>A complete example is given <a class="reference internal" href="../../../examples/robust-ccg.html#example-robust-flp-ccg"><span class="std std-ref">here</span></a></p>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="index.html"
+       title="previous chapter">← Two-stage Robust Optimization (Adjustable)</a>
+  </li>
+  <li class="next">
+    <a href="ccg.html"
+       title="next chapter">The Column-and-Constraint Generation: Introduction →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

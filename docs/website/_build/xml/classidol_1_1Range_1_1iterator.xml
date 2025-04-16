@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Range_1_1iterator" kind="class" language="C++" prot="public">
+    <compoundname>idol::Range::iterator</compoundname>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classidol_1_1Range_1_1iterator_1a93ae870ea2ac248caad0eb21914374f6" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class Range&lt; NumT &gt;</definition>
+        <argsstring></argsstring>
+        <name>Range&lt; NumT &gt;</name>
+        <param>
+          <type><ref refid="classidol_1_1Range" kindref="compound">Range</ref>&lt; NumT &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" line="35" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Range_1_1iterator_1ab26ceb706a56c1daa4bbe6e56ec3515e" prot="private" static="no" mutable="no">
+        <type>NumT</type>
+        <definition>NumT idol::Range&lt; NumT &gt;::iterator::m_index</definition>
+        <argsstring></argsstring>
+        <name>m_index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" line="23" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classidol_1_1Range_1_1iterator_1a834d9286d2e991e05a623894c5aefed9" prot="private" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Range&lt; NumT &gt;::iterator::iterator</definition>
+        <argsstring>(NumT t_index)</argsstring>
+        <name>iterator</name>
+        <param>
+          <type>NumT</type>
+          <declname>t_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" line="24" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" bodystart="24" bodyend="24"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Range_1_1iterator_1a4fb8d12e2ff8c08926876ed6238fd70c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Range&lt; NumT &gt;::iterator::operator!=</definition>
+        <argsstring>(const iterator &amp;t_it) const</argsstring>
+        <name>operator!=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Range_1_1iterator" kindref="compound">iterator</ref> &amp;</type>
+          <declname>t_it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" line="26" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" bodystart="26" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Range_1_1iterator_1ae5fe014664843947ecbf54739f82e6a9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Range&lt; NumT &gt;::iterator::operator==</definition>
+        <argsstring>(const iterator &amp;t_it) const</argsstring>
+        <name>operator==</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Range_1_1iterator" kindref="compound">iterator</ref> &amp;</type>
+          <declname>t_it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" line="27" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" bodystart="27" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Range_1_1iterator_1a191af95f406534e1b771c1e3c4b1c7e8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Range_1_1iterator" kindref="compound">iterator</ref> &amp;</type>
+        <definition>iterator&amp; idol::Range&lt; NumT &gt;::iterator::operator++</definition>
+        <argsstring>()</argsstring>
+        <name>operator++</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" line="28" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" bodystart="28" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Range_1_1iterator_1a866b714ad7ef89a13478cc83eb1d6dca" prot="public" static="no" const="no" explicit="no" inline="yes" refqual="lvalue" virt="non-virtual">
+        <type><ref refid="classidol_1_1Range_1_1iterator" kindref="compound">iterator</ref></type>
+        <definition>iterator idol::Range&lt; NumT &gt;::iterator::operator++</definition>
+        <argsstring>(int) &amp;</argsstring>
+        <name>operator++</name>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" line="29" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" bodystart="29" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Range_1_1iterator_1a16cd23dee36a098d434b8904df5c9af8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>NumT</type>
+        <definition>NumT idol::Range&lt; NumT &gt;::iterator::operator*</definition>
+        <argsstring>() const</argsstring>
+        <name>operator*</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" line="30" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" bodystart="30" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Range_1_1iterator_1a4e7f5df133af30903c51f745d38309a3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>NumT *</type>
+        <definition>NumT* idol::Range&lt; NumT &gt;::iterator::operator-&gt;</definition>
+        <argsstring>() const</argsstring>
+        <name>operator-&gt;</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" line="31" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" bodystart="31" bodyend="31"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Range&lt; NumT &gt;::iterator</label>
+        <link refid="classidol_1_1Range_1_1iterator"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" line="21" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h" bodystart="21" bodyend="32"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Range_1_1iterator_1a834d9286d2e991e05a623894c5aefed9" prot="private" virt="non-virtual"><scope>idol::Range::iterator</scope><name>iterator</name></member>
+      <member refid="classidol_1_1Range_1_1iterator_1ab26ceb706a56c1daa4bbe6e56ec3515e" prot="private" virt="non-virtual"><scope>idol::Range::iterator</scope><name>m_index</name></member>
+      <member refid="classidol_1_1Range_1_1iterator_1a4fb8d12e2ff8c08926876ed6238fd70c" prot="public" virt="non-virtual"><scope>idol::Range::iterator</scope><name>operator!=</name></member>
+      <member refid="classidol_1_1Range_1_1iterator_1a16cd23dee36a098d434b8904df5c9af8" prot="public" virt="non-virtual"><scope>idol::Range::iterator</scope><name>operator*</name></member>
+      <member refid="classidol_1_1Range_1_1iterator_1a191af95f406534e1b771c1e3c4b1c7e8" prot="public" virt="non-virtual"><scope>idol::Range::iterator</scope><name>operator++</name></member>
+      <member refid="classidol_1_1Range_1_1iterator_1a866b714ad7ef89a13478cc83eb1d6dca" prot="public" virt="non-virtual"><scope>idol::Range::iterator</scope><name>operator++</name></member>
+      <member refid="classidol_1_1Range_1_1iterator_1a4e7f5df133af30903c51f745d38309a3" prot="public" virt="non-virtual"><scope>idol::Range::iterator</scope><name>operator-&gt;</name></member>
+      <member refid="classidol_1_1Range_1_1iterator_1ae5fe014664843947ecbf54739f82e6a9" prot="public" virt="non-virtual"><scope>idol::Range::iterator</scope><name>operator==</name></member>
+      <member refid="classidol_1_1Range_1_1iterator_1a93ae870ea2ac248caad0eb21914374f6" prot="private" virt="non-virtual"><scope>idol::Range::iterator</scope><name>Range&lt; NumT &gt;</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

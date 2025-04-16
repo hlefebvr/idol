@@ -1,0 +1,452 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Bilevel_1_1Description" kind="class" language="C++" prot="public">
+    <compoundname>idol::Bilevel::Description</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Bilevel_1_1Description_1a883f5212934a36212608a895747dd8ff" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1Annotation" kindref="compound">Annotation</ref>&lt; unsigned int &gt;</type>
+        <definition>Annotation&lt;unsigned int&gt; idol::Bilevel::Description::m_level</definition>
+        <argsstring></argsstring>
+        <name>m_level</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="20" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Bilevel_1_1Description_1a993c42384d1db48b174a0a75d24b42c0" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+        <definition>QuadExpr&lt;Var&gt; idol::Bilevel::Description::m_follower_objective</definition>
+        <argsstring></argsstring>
+        <name>m_follower_objective</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="21" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a21cd8d46441fdc360f52b02a31c0db75" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>unsigned int</type>
+            <declname>N</declname>
+            <defname>N</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::Bilevel::Description::set_annotation</definition>
+        <argsstring>(const Vector&lt; T, N &gt; &amp;t_vector, unsigned int t_value)</argsstring>
+        <name>set_annotation</name>
+        <param>
+          <type>const Vector&lt; T, N &gt; &amp;</type>
+          <declname>t_vector</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="24" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="24" bodyend="34"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a490d6e52c6fc3ca2a5d417040eb41203" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Bilevel::Description::Description</definition>
+        <argsstring>(Env &amp;t_env, const std::string &amp;t_name)</argsstring>
+        <name>Description</name>
+        <param>
+          <type><ref refid="classidol_1_1Env" kindref="compound">Env</ref> &amp;</type>
+          <declname>t_env</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="37" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="37" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a163506c9ac1a2e853522cc5b74755415" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Bilevel::Description::Description</definition>
+        <argsstring>(Env &amp;t_env)</argsstring>
+        <name>Description</name>
+        <param>
+          <type><ref refid="classidol_1_1Env" kindref="compound">Env</ref> &amp;</type>
+          <declname>t_env</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="39" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="39" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a885a9dcfcb38a889d627bef0fe929348" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Bilevel::Description::Description</definition>
+        <argsstring>(const Annotation&lt; unsigned int &gt; &amp;t_lower_level)</argsstring>
+        <name>Description</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Annotation" kindref="compound">Annotation</ref>&lt; unsigned int &gt; &amp;</type>
+          <declname>t_lower_level</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="41" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="41" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a7f645f27795306b42c34285b1de0ee6d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Bilevel::Description::Description</definition>
+        <argsstring>(const Annotation&lt; unsigned int &gt; &amp;t_lower_level, AffExpr&lt; Var &gt; t_follower_objective)</argsstring>
+        <name>Description</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Annotation" kindref="compound">Annotation</ref>&lt; unsigned int &gt; &amp;</type>
+          <declname>t_lower_level</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+          <declname>t_follower_objective</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="43" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="43" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a7ecb4b7393ae4b7c32e5aeecdadf9665" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1Annotation" kindref="compound">Annotation</ref>&lt; unsigned int &gt; &amp;</type>
+        <definition>const Annotation&lt;unsigned int&gt;&amp; idol::Bilevel::Description::lower_level</definition>
+        <argsstring>() const</argsstring>
+        <name>lower_level</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="48" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="48" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a9933b15a850aba646d41223a666ba2dd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>const QuadExpr&lt;Var&gt;&amp; idol::Bilevel::Description::lower_level_obj</definition>
+        <argsstring>() const</argsstring>
+        <name>lower_level_obj</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="50" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="50" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a4121127f6defeabad4ce8ac5143581a6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Bilevel::Description::make_upper_level</definition>
+        <argsstring>(const Var &amp;t_var)</argsstring>
+        <name>make_upper_level</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="52" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="52" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1ac98ce99467853a222593c96a02ee2cf1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Bilevel::Description::make_upper_level</definition>
+        <argsstring>(const Ctr &amp;t_ctr)</argsstring>
+        <name>make_upper_level</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="54" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="54" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1acb699e0c9ed7797a415342a78320ccf9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Bilevel::Description::make_upper_level</definition>
+        <argsstring>(const QCtr &amp;t_ctr)</argsstring>
+        <name>make_upper_level</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="56" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="56" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a6fb966c89235accfc64133921a6d8df9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Bilevel::Description::make_lower_level</definition>
+        <argsstring>(const Var &amp;t_var)</argsstring>
+        <name>make_lower_level</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="58" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="58" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a4cb24f4e7f4ff0344f35af4b7e0fc752" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>unsigned int</type>
+            <declname>N</declname>
+            <defname>N</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::Bilevel::Description::make_lower_level</definition>
+        <argsstring>(const Vector&lt; Var, N &gt; &amp;t_vars)</argsstring>
+        <name>make_lower_level</name>
+        <param>
+          <type>const Vector&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref>, N &gt; &amp;</type>
+          <declname>t_vars</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="60" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="60" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a5deaab2bc88a399511334b169fca3cd5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Bilevel::Description::make_lower_level</definition>
+        <argsstring>(const Ctr &amp;t_ctr)</argsstring>
+        <name>make_lower_level</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="62" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="62" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a57f75e306790faa313c0dbd5440e6d62" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Bilevel::Description::make_lower_level</definition>
+        <argsstring>(const QCtr &amp;t_ctr)</argsstring>
+        <name>make_lower_level</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="64" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="64" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a56573d425ca3f630c4291c92f483236b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Bilevel::Description::set_lower_level_obj</definition>
+        <argsstring>(QuadExpr&lt; Var &gt; t_objective)</argsstring>
+        <name>set_lower_level_obj</name>
+        <param>
+          <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+          <declname>t_objective</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="66" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="66" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a1c581286b11498d42ed2685fbb63e229" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Bilevel::Description::is_upper</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>is_upper</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="68" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="68" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a7f561604a713e88876dc963f66bee7a1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Bilevel::Description::is_upper</definition>
+        <argsstring>(const Ctr &amp;t_ctr) const</argsstring>
+        <name>is_upper</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="70" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="70" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1ae6d3a23b8675df1c2353d8307a16dc68" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Bilevel::Description::is_upper</definition>
+        <argsstring>(const QCtr &amp;t_ctr) const</argsstring>
+        <name>is_upper</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="72" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="72" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a3230475185375f49ecaabf041ff7e1dd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Bilevel::Description::is_lower</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>is_lower</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="74" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="74" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a8b1c780c15e47bef6d70506d9b6e6302" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Bilevel::Description::is_lower</definition>
+        <argsstring>(const Ctr &amp;t_ctr) const</argsstring>
+        <name>is_lower</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="76" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="76" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Bilevel_1_1Description_1a55843af42e51b8ea9d1329e3b064d8e4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Bilevel::Description::is_lower</definition>
+        <argsstring>(const QCtr &amp;t_ctr) const</argsstring>
+        <name>is_lower</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="78" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="78" bodyend="78"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Bilevel::Description</label>
+        <link refid="classidol_1_1Bilevel_1_1Description"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" line="19" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h" bodystart="19" bodyend="79"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a490d6e52c6fc3ca2a5d417040eb41203" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>Description</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a163506c9ac1a2e853522cc5b74755415" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>Description</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a885a9dcfcb38a889d627bef0fe929348" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>Description</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a7f645f27795306b42c34285b1de0ee6d" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>Description</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a3230475185375f49ecaabf041ff7e1dd" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>is_lower</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a8b1c780c15e47bef6d70506d9b6e6302" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>is_lower</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a55843af42e51b8ea9d1329e3b064d8e4" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>is_lower</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a1c581286b11498d42ed2685fbb63e229" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>is_upper</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a7f561604a713e88876dc963f66bee7a1" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>is_upper</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1ae6d3a23b8675df1c2353d8307a16dc68" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>is_upper</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a7ecb4b7393ae4b7c32e5aeecdadf9665" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>lower_level</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a9933b15a850aba646d41223a666ba2dd" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>lower_level_obj</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a993c42384d1db48b174a0a75d24b42c0" prot="private" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>m_follower_objective</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a883f5212934a36212608a895747dd8ff" prot="private" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>m_level</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a6fb966c89235accfc64133921a6d8df9" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>make_lower_level</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a4cb24f4e7f4ff0344f35af4b7e0fc752" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>make_lower_level</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a5deaab2bc88a399511334b169fca3cd5" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>make_lower_level</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a57f75e306790faa313c0dbd5440e6d62" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>make_lower_level</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a4121127f6defeabad4ce8ac5143581a6" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>make_upper_level</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1ac98ce99467853a222593c96a02ee2cf1" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>make_upper_level</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1acb699e0c9ed7797a415342a78320ccf9" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>make_upper_level</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a21cd8d46441fdc360f52b02a31c0db75" prot="private" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>set_annotation</name></member>
+      <member refid="classidol_1_1Bilevel_1_1Description_1a56573d425ca3f630c4291c92f483236b" prot="public" virt="non-virtual"><scope>idol::Bilevel::Description</scope><name>set_lower_level_obj</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

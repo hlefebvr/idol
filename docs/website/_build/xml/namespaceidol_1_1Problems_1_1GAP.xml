@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1Problems_1_1GAP" kind="namespace" language="C++">
+    <compoundname>idol::Problems::GAP</compoundname>
+    <innerclass refid="classidol_1_1Problems_1_1GAP_1_1Instance" prot="public">idol::Problems::GAP::Instance</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="GAP__Instance_8h_1a0a12c351a45609fb299eafe9530fdeac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Problems_1_1GAP_1_1Instance" kindref="compound">Instance</ref></type>
+        <definition>Instance idol::Problems::GAP::read_instance</definition>
+        <argsstring>(const std::string &amp;t_filename)</argsstring>
+        <name>read_instance</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="13" column="14" declfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" declline="13" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="GAP__Instance_8h_1a83d4e807c4524b9b0198bcd65ff81092" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Problems_1_1GAP_1_1Instance" kindref="compound">Instance</ref></type>
+        <definition>Instance idol::Problems::GAP::generate_instance_Chu_and_Beasley_1997_C</definition>
+        <argsstring>(unsigned int t_n_machines, unsigned int t_n_jobs)</argsstring>
+        <name>generate_instance_Chu_and_Beasley_1997_C</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_machines</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_jobs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="15" column="14" declfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" declline="15" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="GAP__Instance_8h_1aea804d27882b30b83b45c65bccf2b74b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream&amp; idol::Problems::GAP::operator&lt;&lt;</definition>
+        <argsstring>(std::ostream &amp;t_os, const idol::Problems::GAP::Instance &amp;t_instance)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>t_os</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1Problems_1_1GAP_1_1Instance" kindref="compound">idol::Problems::GAP::Instance</ref> &amp;</type>
+          <declname>t_instance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="48" column="5" declfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" declline="48" declcolumn="5"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="11" column="1"/>
+  </compounddef>
+</doxygen>

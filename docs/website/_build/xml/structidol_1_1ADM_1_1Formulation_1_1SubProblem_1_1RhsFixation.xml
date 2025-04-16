@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structidol_1_1ADM_1_1Formulation_1_1SubProblem_1_1RhsFixation" kind="struct" language="C++" prot="public">
+    <compoundname>idol::ADM::Formulation::SubProblem::RhsFixation</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structidol_1_1ADM_1_1Formulation_1_1SubProblem_1_1RhsFixation_1a9acefd05d72f77d9f2bef5b832b6b5ad" prot="public" static="no" mutable="no">
+        <type><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref></type>
+        <definition>Ctr idol::ADM::Formulation::SubProblem::RhsFixation::ctr</definition>
+        <argsstring></argsstring>
+        <name>ctr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" line="32" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structidol_1_1ADM_1_1Formulation_1_1SubProblem_1_1RhsFixation_1adc1271f8a2131b860ff59e792aff4171" prot="public" static="no" mutable="no">
+        <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+        <definition>QuadExpr&lt;Var&gt; idol::ADM::Formulation::SubProblem::RhsFixation::rhs_pattern</definition>
+        <argsstring></argsstring>
+        <name>rhs_pattern</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" line="33" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structidol_1_1ADM_1_1Formulation_1_1SubProblem_1_1RhsFixation_1a222aba27a279420b6a0764664f39f808" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::ADM::Formulation::SubProblem::RhsFixation::RhsFixation</definition>
+        <argsstring>(Ctr t_sub_problem_ctr, QuadExpr&lt; Var &gt; t_pattern)</argsstring>
+        <name>RhsFixation</name>
+        <param>
+          <type><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref></type>
+          <declname>t_sub_problem_ctr</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+          <declname>t_pattern</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" line="35" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" bodystart="35" bodyend="36"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="6">
+        <label>idol::SparseVector&lt; idol::Var, double &gt;</label>
+        <link refid="classidol_1_1SparseVector"/>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; idol::Var, double &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>idol::Ctr</label>
+        <link refid="classidol_1_1Ctr"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::QuadExpr&lt; idol::Var &gt;</label>
+        <link refid="classidol_1_1QuadExpr"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="8" relation="template-instance">
+          <edgelabel>&lt; idol::Var &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::ADM::Formulation::SubProblem::RhsFixation</label>
+        <link refid="structidol_1_1ADM_1_1Formulation_1_1SubProblem_1_1RhsFixation"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>+rhs_pattern</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>+ctr</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>idol::SparseVector&lt; IndexT, ValueT &gt;</label>
+        <link refid="classidol_1_1SparseVector"/>
+      </node>
+      <node id="11">
+        <label>idol::Object&lt; T, CRTP &gt;</label>
+        <link refid="classidol_1_1Object"/>
+      </node>
+      <node id="7">
+        <label>idol::LinExpr&lt; idol::Var, double &gt;</label>
+        <link refid="classidol_1_1LinExpr"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; idol::Var, double &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>idol::Object&lt; CtrVersion, Ctr &gt;</label>
+        <link refid="classidol_1_1Object"/>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; CtrVersion, Ctr &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::LinExpr&lt; CommutativePair&lt; idol::Var &gt;, double &gt;</label>
+        <link refid="classidol_1_1LinExpr"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; CommutativePair&lt; idol::Var &gt;, double &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>idol::QuadExpr&lt; KeyT, ValueT &gt;</label>
+        <link refid="classidol_1_1QuadExpr"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>idol::LinExpr&lt; KeyT, ValueT &gt;</label>
+        <link refid="classidol_1_1LinExpr"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>+Zero</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" line="31" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" bodystart="31" bodyend="37"/>
+    <listofallmembers>
+      <member refid="structidol_1_1ADM_1_1Formulation_1_1SubProblem_1_1RhsFixation_1a9acefd05d72f77d9f2bef5b832b6b5ad" prot="public" virt="non-virtual"><scope>idol::ADM::Formulation::SubProblem::RhsFixation</scope><name>ctr</name></member>
+      <member refid="structidol_1_1ADM_1_1Formulation_1_1SubProblem_1_1RhsFixation_1adc1271f8a2131b860ff59e792aff4171" prot="public" virt="non-virtual"><scope>idol::ADM::Formulation::SubProblem::RhsFixation</scope><name>rhs_pattern</name></member>
+      <member refid="structidol_1_1ADM_1_1Formulation_1_1SubProblem_1_1RhsFixation_1a222aba27a279420b6a0764664f39f808" prot="public" virt="non-virtual"><scope>idol::ADM::Formulation::SubProblem::RhsFixation</scope><name>RhsFixation</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot" kind="class" language="C++" prot="public">
+    <compoundname>idol::Optimizers::PADM::IterationPlot</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1ad284f05bf8f5ffdbcc292ce58df72e9b" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1Plots_1_1Manager" kindref="compound">Plots::Manager</ref> &amp;</type>
+        <definition>Plots::Manager&amp; idol::Optimizers::PADM::IterationPlot::m_manager</definition>
+        <argsstring></argsstring>
+        <name>m_manager</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="154" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="154" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1ae81c1ec104df01fd8e07f9d8c652a5f2" prot="private" static="no" mutable="no">
+        <type>TCanvas *</type>
+        <definition>TCanvas* idol::Optimizers::PADM::IterationPlot::m_canvas</definition>
+        <argsstring></argsstring>
+        <name>m_canvas</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="156" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="156" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1afcbc24e1c6de9b7a68ac5fff24f14d72" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; TPad * &gt;</type>
+        <definition>std::vector&lt;TPad*&gt; idol::Optimizers::PADM::IterationPlot::m_pads</definition>
+        <argsstring></argsstring>
+        <name>m_pads</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="157" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="157" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a557bbab5b47d57fd9775ff7c17074c3c" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; TGraph * &gt;</type>
+        <definition>std::vector&lt;TGraph*&gt; idol::Optimizers::PADM::IterationPlot::m_objective_graphs</definition>
+        <argsstring></argsstring>
+        <name>m_objective_graphs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="158" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="158" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a248843458624c9a5611572f41818e252" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::list&lt; TLine * &gt; &gt;</type>
+        <definition>std::vector&lt;std::list&lt;TLine*&gt; &gt; idol::Optimizers::PADM::IterationPlot::m_objective_lines</definition>
+        <argsstring></argsstring>
+        <name>m_objective_lines</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="159" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="159" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a4b9597236b79ef2b4160b43360872024" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; TGraph * &gt;</type>
+        <definition>std::vector&lt;TGraph*&gt; idol::Optimizers::PADM::IterationPlot::m_infeasibility_graphs</definition>
+        <argsstring></argsstring>
+        <name>m_infeasibility_graphs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="160" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="160" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1ac16281bb19b3a0c0f9368d58c62dfd73" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::list&lt; TLine * &gt; &gt;</type>
+        <definition>std::vector&lt;std::list&lt;TLine*&gt; &gt; idol::Optimizers::PADM::IterationPlot::m_infeasibility_lines</definition>
+        <argsstring></argsstring>
+        <name>m_infeasibility_lines</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="161" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="161" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a960f3686a7c517714650edd9776e8131" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Optimizers::PADM::IterationPlot::m_last_outer_iteration</definition>
+        <argsstring></argsstring>
+        <name>m_last_outer_iteration</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="162" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="162" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a77fe7c43cd431fe6b5ba26ca2aca5c36" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::PADM::IterationPlot::initialize</definition>
+        <argsstring>(unsigned int t_n_sub_problems)</argsstring>
+        <name>initialize</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_sub_problems</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="164" column="10"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a2e3184ed4f0f2280638ebc618fea44af" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Optimizers::PADM::IterationPlot::IterationPlot</definition>
+        <argsstring>(Plots::Manager &amp;t_manager)</argsstring>
+        <name>IterationPlot</name>
+        <param>
+          <type><ref refid="classidol_1_1Plots_1_1Manager" kindref="compound">Plots::Manager</ref> &amp;</type>
+          <declname>t_manager</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="166" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a027133380a3ef2e50e7dd8ad6c805e82" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::PADM::IterationPlot::update</definition>
+        <argsstring>(unsigned int t_outer_loop_iteration, unsigned int t_inner_loop_iteration, const std::vector&lt; double &gt; &amp;t_objective_values, const std::vector&lt; double &gt; &amp;t_infeasibilities)</argsstring>
+        <name>update</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_outer_loop_iteration</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_inner_loop_iteration</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; double &gt; &amp;</type>
+          <declname>t_objective_values</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; double &gt; &amp;</type>
+          <declname>t_infeasibilities</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="168" column="10"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Optimizers::PADM::IterationPlot</label>
+        <link refid="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" line="153" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h" bodystart="153" bodyend="172"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a77fe7c43cd431fe6b5ba26ca2aca5c36" prot="private" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationPlot</scope><name>initialize</name></member>
+      <member refid="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a2e3184ed4f0f2280638ebc618fea44af" prot="public" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationPlot</scope><name>IterationPlot</name></member>
+      <member refid="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1ae81c1ec104df01fd8e07f9d8c652a5f2" prot="private" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationPlot</scope><name>m_canvas</name></member>
+      <member refid="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a4b9597236b79ef2b4160b43360872024" prot="private" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationPlot</scope><name>m_infeasibility_graphs</name></member>
+      <member refid="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1ac16281bb19b3a0c0f9368d58c62dfd73" prot="private" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationPlot</scope><name>m_infeasibility_lines</name></member>
+      <member refid="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a960f3686a7c517714650edd9776e8131" prot="private" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationPlot</scope><name>m_last_outer_iteration</name></member>
+      <member refid="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1ad284f05bf8f5ffdbcc292ce58df72e9b" prot="private" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationPlot</scope><name>m_manager</name></member>
+      <member refid="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a557bbab5b47d57fd9775ff7c17074c3c" prot="private" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationPlot</scope><name>m_objective_graphs</name></member>
+      <member refid="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a248843458624c9a5611572f41818e252" prot="private" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationPlot</scope><name>m_objective_lines</name></member>
+      <member refid="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1afcbc24e1c6de9b7a68ac5fff24f14d72" prot="private" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationPlot</scope><name>m_pads</name></member>
+      <member refid="classidol_1_1Optimizers_1_1PADM_1_1IterationPlot_1a027133380a3ef2e50e7dd8ad6c805e82" prot="public" virt="non-virtual"><scope>idol::Optimizers::PADM::IterationPlot</scope><name>update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

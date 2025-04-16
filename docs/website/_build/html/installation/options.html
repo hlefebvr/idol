@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>List of CMake Options</title>
+    
+          <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../_static/theme-vendors.js"></script> -->
+      <script src="../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/installation/options.html" />
+    
+  <link rel="index" title="Index" href="../genindex.html" />
+  <link rel="search" title="Search" href="../search.html" />
+  <link rel="next" title="Tutorials" href="../tutorials/index.html" />
+  <link rel="prev" title="Linking Your C++ Project" href="global-installation/linking.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="index.html">Installation</a> &raquo;</li>
+    
+    <li>List of CMake Options</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="global-installation/linking.html"
+       title="previous chapter">← Linking Your C++ Project</a>
+  </li>
+  <li class="next">
+    <a href="../tutorials/index.html"
+       title="next chapter">Tutorials →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="list-of-cmake-options">
+<span id="cmake-options"></span><h1>List of CMake Options<a class="headerlink" href="#list-of-cmake-options" title="Link to this heading">¶</a></h1>
+<p>This page contains a list of all CMake options that can be used to configure idol. In particular, this is useful to
+link idol with external solvers.</p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#linking-with-external-solvers" id="id1">Linking with External Solvers</a></p>
+<ul>
+<li><p><a class="reference internal" href="#gurobi-commercial-solver" id="id2">Gurobi (Commercial Solver)</a></p></li>
+<li><p><a class="reference internal" href="#mosek-commercial-solver" id="id3">Mosek (Commercial Solver)</a></p></li>
+<li><p><a class="reference internal" href="#glpk-open-source-solver" id="id4">GLPK (Open-Source Solver)</a></p></li>
+<li><p><a class="reference internal" href="#highs-open-source-solver" id="id5">HiGHS (Open-Source Solver)</a></p></li>
+<li><p><a class="reference internal" href="#coin-or-open-source-solvers" id="id6">coin-or (Open-Source Solvers)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#building-examples" id="id7">Building Examples</a></p></li>
+<li><p><a class="reference internal" href="#other-optional-dependencies" id="id8">Other optional dependencies</a></p>
+<ul>
+<li><p><a class="reference internal" href="#using-martinus-robin-hood-hashing-hash-map" id="id9">Using martinus/robin-hood-hashing hash map</a></p></li>
+<li><p><a class="reference internal" href="#using-eigen" id="id10">Using Eigen</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#building-unit-and-integration-tests" id="id11">Building Unit and Integration Tests</a></p></li>
+</ul>
+</nav>
+<section id="linking-with-external-solvers">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Linking with External Solvers</a><a class="headerlink" href="#linking-with-external-solvers" title="Link to this heading">¶</a></h2>
+<section id="gurobi-commercial-solver">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Gurobi (Commercial Solver)</a><a class="headerlink" href="#gurobi-commercial-solver" title="Link to this heading">¶</a></h3>
+<p>To link with Gurobi, you will need to pass the <code class="code highlight bash docutils literal highlight-bash">USE_GUROBI</code> CMake option with value <code class="code highlight bash docutils literal highlight-bash">YES</code>.</p>
+<p>By default, CMake will look for Gurobi inside the folder indicated by the environment variable <code class="code highlight bash docutils literal highlight-bash">GUROBI_HOME</code>
+(see <a class="reference external" href="https://www.gurobi.com/documentation/10.0/quickstart_linux/software_installation_guid.html">this official Gurobi page</a>).
+Note that it is also possible to pass the CMake option <code class="code highlight bash docutils literal highlight-bash"><span class="nv">GUROBI_DIR</span><span class="o">=</span>/path/to/gurobi/install/dir</code> in order to specify
+another directory to look for Gurobi.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>The following will create an <code class="code highlight bash docutils literal highlight-bash">install</code> target which will install idol with Gurobi.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DUSE_GUROBI<span class="o">=</span>YES<span class="w"> </span>-DGUROBI_DIR<span class="o">=</span>/path/to/gurobi/install/dir<span class="w"> </span>..
+</pre></div>
+</div>
+<p>If you are doing a <em>local installation</em>, then the same can be achieved as follows.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>set<span class="o">(</span>USE_GUROBI<span class="w"> </span>YES<span class="o">)</span>
+set<span class="o">(</span>GUROBI_DIR<span class="w"> </span>/path/to/gurobi/install/dir<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="mosek-commercial-solver">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Mosek (Commercial Solver)</a><a class="headerlink" href="#mosek-commercial-solver" title="Link to this heading">¶</a></h3>
+<p>To link with Mosek, you will need to pass the <code class="code highlight bash docutils literal highlight-bash">USE_MOSEK</code> CMake option with value <code class="code highlight bash docutils literal highlight-bash">YES</code>.</p>
+<p>By default, CMake will look for Mosek inside the folder indicated by the environment variable <code class="code highlight bash docutils literal highlight-bash">MOSEK_HOME</code>.
+Note that it is also possible to pass the CMake option <code class="code highlight bash docutils literal highlight-bash"><span class="nv">MOSEK_DIR</span><span class="o">=</span>/path/to/mosek/install/dir</code> in order to specify
+another directory to look for Mosek.</p>
+<p>Note that <code class="code highlight bash docutils literal highlight-bash">MOSEK_HOME</code> (or equivalently <code class="code highlight bash docutils literal highlight-bash">MOSEK_DIR</code>) should point to the Mosek installation folder where
+folders <code class="code highlight bash docutils literal highlight-bash">h</code> and <code class="code highlight bash docutils literal highlight-bash">bin</code> can be found. For instance, <code class="code highlight bash docutils literal highlight-bash"><span class="nv">MOSEK_HOME</span><span class="o">=</span>~/mosek/10.0/tools/platform/linux64x86</code>.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>The following will create an <code class="code highlight bash docutils literal highlight-bash">install</code> target which will install idol with Mosek.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DUSE_MOSEK<span class="o">=</span>YES<span class="w"> </span>-DMOSEK_DIR<span class="o">=</span>/path/to/mosek/install/dir<span class="w"> </span>..
+</pre></div>
+</div>
+<p>If you are doing a <em>local installation</em>, then the same can be achieved as follows.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>set<span class="o">(</span>USE_MOSEK<span class="w"> </span>YES<span class="o">)</span>
+set<span class="o">(</span>MOSEK_DIR<span class="w"> </span>/path/to/mosek/install/dir<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>If you intend to use Mosek for solving QPs or SOCPs, please <a class="reference internal" href="../faq/mosek-and-eigen.html#mosek-and-socp"><span class="std std-ref">read this</span></a>.</p>
+</div>
+</section>
+<section id="glpk-open-source-solver">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">GLPK (Open-Source Solver)</a><a class="headerlink" href="#glpk-open-source-solver" title="Link to this heading">¶</a></h3>
+<p>To link with GLPK, you will need to pass the <code class="code highlight bash docutils literal highlight-bash">USE_GLPK</code> CMake option with value <code class="code highlight bash docutils literal highlight-bash">YES</code>.</p>
+<p>By default, CMake will look for GLPK inside the folder indicated by the environment variable <code class="code highlight bash docutils literal highlight-bash">GLPK_HOME</code> as well
+as in the default installation folders <code class="code highlight bash docutils literal highlight-bash">/usr/include</code> and <code class="code highlight bash docutils literal highlight-bash">/usr/lib</code>.
+Note that it is also possible to pass the CMake option <code class="code highlight bash docutils literal highlight-bash"><span class="nv">GLPK_DIR</span><span class="o">=</span>/path/to/glpk/install/dir</code> in order to specify
+another directory to look for GLPK.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>The following will create an <code class="code highlight bash docutils literal highlight-bash">install</code> target which will install idol with GLPK.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DUSE_GLPK<span class="o">=</span>YES<span class="w"> </span>-DGLPK_DIR<span class="o">=</span>/path/to/glpk/install/dir<span class="w"> </span>..
+</pre></div>
+</div>
+<p>If you are doing a <em>local installation</em>, then the same can be achieved as follows.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>set<span class="o">(</span>USE_GLPK<span class="w"> </span>YES<span class="o">)</span>
+set<span class="o">(</span>GLPK_DIR<span class="w"> </span>/path/to/glpk/install/dir<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="highs-open-source-solver">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">HiGHS (Open-Source Solver)</a><a class="headerlink" href="#highs-open-source-solver" title="Link to this heading">¶</a></h3>
+<p>To link with GLPK, you will need to pass the <code class="code highlight bash docutils literal highlight-bash">USE_HIGHS</code> CMake option with value <code class="code highlight bash docutils literal highlight-bash">YES</code>.</p>
+<p>By default, CMake will look for HIGHS inside the default installation folders <code class="code highlight bash docutils literal highlight-bash">/usr/include</code> and <code class="code highlight bash docutils literal highlight-bash">/usr/lib</code>.
+Note that it is also possible to pass the CMake option <code class="code highlight bash docutils literal highlight-bash"><span class="nv">HIGHS_DIR</span><span class="o">=</span>/path/to/highs/install/dir</code> in order to specify
+another directory to look for GLPK.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>The following will create an <code class="code highlight bash docutils literal highlight-bash">install</code> target which will install idol with GLPK.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DUSE_HIGHS<span class="o">=</span>YES<span class="w"> </span>-DHIGHS_DIR<span class="o">=</span>/path/to/glpk/install/dir<span class="w"> </span>..
+</pre></div>
+</div>
+<p>If you are doing a <em>local installation</em>, then the same can be achieved as follows.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>set<span class="o">(</span>USE_HIGHS<span class="w"> </span>YES<span class="o">)</span>
+set<span class="o">(</span>HIGHS_DIR<span class="w"> </span>/path/to/glpk/install/dir<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="coin-or-open-source-solvers">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">coin-or (Open-Source Solvers)</a><a class="headerlink" href="#coin-or-open-source-solvers" title="Link to this heading">¶</a></h3>
+<p>idol can be linked with some of the coin-or libraries.
+Hereafter, we give a list of such libraries. For all the <code class="code docutils literal notranslate"><span class="pre">USE_*</span></code> options, you will need to define the environment
+variable <code class="code docutils literal notranslate"><span class="pre">COIN_OR_HOME</span></code> or to set the CMake option <code class="code docutils literal notranslate"><span class="pre">COIN_OR_DIR</span></code>. It must point to the <code class="code docutils literal notranslate"><span class="pre">dist</span></code> directory
+of coin-or.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>The following will prepare CMake for linking against coin-or libraries.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">cmake</span><span class="w"> </span><span class="o">-</span><span class="n">DCOIN_OR_DIR</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">coin_or</span><span class="o">/</span><span class="n">dist</span><span class="w"> </span><span class="o">&lt;</span><span class="n">OTHER_OPTIONS_GO_HERE</span><span class="o">&gt;</span><span class="w"> </span><span class="p">..</span>
+</pre></div>
+</div>
+<p>If you are doing a <em>local installation</em>, then the same can be achieved as follows.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">set</span><span class="p">(</span><span class="n">COIN_OR_DIR</span><span class="w"> </span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">coin_or</span><span class="o">/</span><span class="n">dist</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We now give the list of options which can be used in relation with coin-or libraries.</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">USE_OSI=YES</span></code>: use the Osi solver.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">USE_SYMPHONY=YES</span></code>: use the Symphony solver (can only be used through Osi).</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">USE_CBC=YES</span></code>: use the Cbc solver (can only be used through Osi).</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">USE_CLP=YES</span></code>: use the Clp solver (can only be used through Osi).</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">USE_CPLEX=YES</span></code>: use the Cplex solver (can only be used through Osi).</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">USE_MIBS=YES</span></code>: use the MibS solver (will automatically search for Alps, Bcps, Blis, and Cgl).</p></li>
+</ul>
+</section>
+</section>
+<section id="building-examples">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Building Examples</a><a class="headerlink" href="#building-examples" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">Examples :</span></a> can be found at the root level of the idol repository, inside the directory <code class="docutils literal notranslate"><span class="pre">examples</span></code>.</p>
+<p>By default, CMake will not generate targets to build these example. To tell CMake to generate these, you
+need to set the CMake option <code class="docutils literal notranslate"><span class="pre">BUILD_EXAMPLE</span></code> to <code class="docutils literal notranslate"><span class="pre">YES</span></code>.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>The following will tell CMake to create targets for examples.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">cmake</span><span class="w"> </span><span class="o">-</span><span class="n">DBUILD_EXAMPLES</span><span class="o">=</span><span class="n">YES</span><span class="w"> </span><span class="p">..</span>
+</pre></div>
+</div>
+<p>For instance, we can now build the Knapsack Problem example,</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">make</span><span class="w"> </span><span class="n">example_knapsack</span>
+</pre></div>
+</div>
+<p>and run it.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span><span class="w"> </span><span class="n">examples</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">example_knapsack</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="other-optional-dependencies">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Other optional dependencies</a><a class="headerlink" href="#other-optional-dependencies" title="Link to this heading">¶</a></h2>
+<section id="using-martinus-robin-hood-hashing-hash-map">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Using martinus/robin-hood-hashing hash map</a><a class="headerlink" href="#using-martinus-robin-hood-hashing-hash-map" title="Link to this heading">¶</a></h3>
+<p>Internally, idol uses unordered maps (also called hash maps).
+Unfortunately, the default <code class="code docutils literal notranslate"><span class="pre">std</span></code> implementation is not the best choice when
+it comes to performance. To avoid this, if found relevant, users can tell idol to use the hash-map implementation of
+<a class="reference external" href="https://github.com/martinus/robin-hood-hashing">martinus/robin-hood-hashing</a>. It’s actually a header-only library, so
+all you have to do is to tell CMake where the <code class="code docutils literal notranslate"><span class="pre">robin_hood.hpp</span></code> file is. This is done through the CMake option
+<code class="code docutils literal notranslate"><span class="pre">ROBINHOOD_DIR=/path/to/robin_hood/folder</span></code> together with <code class="code docutils literal notranslate"><span class="pre">USE_ROBINHOOD=YES</span></code>.</p>
+<p>Note that, if <code class="code docutils literal notranslate"><span class="pre">ROBINHOOD_DIR</span></code> is not specified, <code class="code docutils literal notranslate"><span class="pre">robin_hood.hpp</span></code> is searched for in <code class="code docutils literal notranslate"><span class="pre">/usr/include</span></code>,
+<code class="code docutils literal notranslate"><span class="pre">/usr/include/robin_hood/</span></code>, <code class="code docutils literal notranslate"><span class="pre">/usr/local/include/</span></code>, <code class="code docutils literal notranslate"><span class="pre">/usr/local/include/robin_hood/</span></code> and in the path
+stored in the environment variable <code class="code docutils literal notranslate"><span class="pre">ROBINHOOD_HOME</span></code>.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>The following will create an <code class="code highlight bash docutils literal highlight-bash">install</code> target which will install idol with martinus’s robin_hood hash map
+implementation.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">cmake</span><span class="w"> </span><span class="o">-</span><span class="n">DUSE_ROBINHOOD</span><span class="o">=</span><span class="n">YES</span><span class="w"> </span><span class="o">-</span><span class="n">DROBINHOOD_DIR</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">robin_hood</span><span class="o">/</span><span class="n">folder</span><span class="w"> </span><span class="p">..</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="using-eigen">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Using Eigen</a><a class="headerlink" href="#using-eigen" title="Link to this heading">¶</a></h3>
+<p>Eigen is a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms.
+It is internally used by idol for some of its functionalities. In particular, this is <em>necessary</em> for solving QPs and SOCPs
+with the Mosek solver.</p>
+<p>Since Eigen is a header-only library, all you have to do is to tell CMake where the <code class="code docutils literal notranslate"><span class="pre">Eigen</span></code> folder is. This is done
+through the CMake option <code class="code docutils literal notranslate"><span class="pre">EIGEN_DIR=/path/to/eigen/folder</span></code> together with <code class="code docutils literal notranslate"><span class="pre">USE_EIGEN=YES</span></code>.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>The following will create an <code class="code highlight bash docutils literal highlight-bash">install</code> target which will install idol with Eigen.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">cmake</span><span class="w"> </span><span class="o">-</span><span class="n">DUSE_EIGEN</span><span class="o">=</span><span class="n">YES</span><span class="w"> </span><span class="o">-</span><span class="n">DEIGEN_DIR</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">eigen</span><span class="o">/</span><span class="n">folder</span><span class="w"> </span><span class="p">..</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="building-unit-and-integration-tests">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Building Unit and Integration Tests</a><a class="headerlink" href="#building-unit-and-integration-tests" title="Link to this heading">¶</a></h2>
+<p>To build tests for idol, please refer to this <a class="reference internal" href="../developer_guide/tests.html#tests"><span class="std std-ref">developer page</span></a>.</p>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="global-installation/linking.html"
+       title="previous chapter">← Linking Your C++ Project</a>
+  </li>
+  <li class="next">
+    <a href="../tutorials/index.html"
+       title="next chapter">Tutorials →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

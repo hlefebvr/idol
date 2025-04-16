@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Column Generation and Branch-and-Price Algorithm</title>
+    
+          <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/mixed-integer/dantzig-wolfe/index.html" />
+    
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="next" title="Solving A Dantzig-Wolfe Reformulation" href="dantzig-wolfe.html" />
+  <link rel="prev" title="Writing an LP-based Branch-and-Bound [TODO]" href="../branch-and-bound/write-branch-and-bound.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../../index.html">Tutorials</a> &raquo;</li>
+    
+      <li><a href="../index.html">Mixed-Integer Optimization</a> &raquo;</li>
+    
+    <li>Column Generation and Branch-and-Price Algorithm</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="../branch-and-bound/write-branch-and-bound.html"
+       title="previous chapter">← Writing an LP-based Branch-and-Bound [TODO]</a>
+  </li>
+  <li class="next">
+    <a href="dantzig-wolfe.html"
+       title="next chapter">Solving A Dantzig-Wolfe Reformulation →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="column-generation-and-branch-and-price-algorithm">
+<span id="tutorial-dantzigwolfe"></span><h1>Column Generation and Branch-and-Price Algorithm<a class="headerlink" href="#column-generation-and-branch-and-price-algorithm" title="Link to this heading">¶</a></h1>
+<p><strong>Column generation</strong> is an algorithm used to solve large scale optimization problems which involve a large number of variables.
+Instead of solving the problem in its entirety, column generation begins with a restricted version of the problem containing only a subset of variables. It then iteratively introduces new variables (or columns) that have the potential to improve the solution, based on the problem’s structure and constraints.</p>
+<p>In practice, column generation is particularly effective for problems with block-angular structures, such as cutting stock, vehicle routing, and generalized assignment problems. The method splits the problem into a master problem, which handles the selection of variables, and a pricing problem, which identifies the most promising variables to add to the master problem. These subproblems are solved iteratively until no further improvements are possible.</p>
+<figure class="align-center" id="id2">
+<a class="reference external image-reference" href="https://en.wikipedia.org/wiki/Dantzig%E2%80%93Wolfe_decomposition"><img alt="https://upload.wikimedia.org/wikipedia/commons/e/ec/DW_Block_Angular_Matrix.jpg" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/DW_Block_Angular_Matrix.jpg" /></a>
+<figcaption>
+<p><span class="caption-text">Block-angular matrix structure particularly suited for column generation.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The <strong>Branch-and-Price</strong> algorithm extends column generation to integer programming. While column generation operates on the linear relaxation of the problem, Branch-and-Price integrates it into a Branch-and-Bound framework to handle integer constraints. This combination allows efficient exploration of the solution space while exploiting the power of decomposition techniques. Each node of the Branch-and-Bound tree employs column generation to solve the relaxed problem, providing tight bounds for pruning and accelerating convergence.</p>
+<p>In this series of tutorials, we will see how column generation and, more precisely, <strong>Dantzig-Wolfe decomposition</strong> can be implemented in idol.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>For more details on column generation, we refer to the book <span id="id1">[<a class="reference internal" href="../../../references.html#id17" title="Eduardo Uchoa, Artur Pessoa, and Lorenza Moreno. Optimizing with Column Generation: advanced branch-cut-and-price algorithms. Technical Report L-2024-3, Cadernos do LOGIS-UFF, Universidade Federal Fluminense, Engenharia de Produção, 2024. URL: https://optimizingwithcolumngeneration.github.io.">13</a>]</span>.</p>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dantzig-wolfe.html">Solving A Dantzig-Wolfe Reformulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="writing-branch-and-price.html">Writing A Branch-and-Price Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strong-branching.html">Using Strong Branching</a></li>
+</ul>
+</div>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="../branch-and-bound/write-branch-and-bound.html"
+       title="previous chapter">← Writing an LP-based Branch-and-Bound [TODO]</a>
+  </li>
+  <li class="next">
+    <a href="dantzig-wolfe.html"
+       title="next chapter">Solving A Dantzig-Wolfe Reformulation →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

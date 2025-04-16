@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1StrongBranchingPhases" kind="namespace" language="C++">
+    <compoundname>idol::StrongBranchingPhases</compoundname>
+    <innerclass refid="classidol_1_1StrongBranchingPhases_1_1WithNodeOptimizer" prot="public">idol::StrongBranchingPhases::WithNodeOptimizer</innerclass>
+    <innerclass refid="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit" prot="public">idol::StrongBranchingPhases::WithIterationLimit</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" line="17" column="5"/>
+  </compounddef>
+</doxygen>

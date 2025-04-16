@@ -1,0 +1,311 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Problems_1_1FLP_1_1Instance" kind="class" language="C++" prot="public">
+    <compoundname>idol::Problems::FLP::Instance</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Problems_1_1FLP_1_1Instance_1af3e74b759074969f0ba2b7a316d05d5c" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; idol::Problems::FLP::Instance::m_fixed_costs</definition>
+        <argsstring></argsstring>
+        <name>m_fixed_costs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="35" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Problems_1_1FLP_1_1Instance_1a604f5c4abe55c13179ce38c5253d694f" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; idol::Problems::FLP::Instance::m_capacities</definition>
+        <argsstring></argsstring>
+        <name>m_capacities</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="36" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Problems_1_1FLP_1_1Instance_1ab8fc5dd6785ec7460b8358238f0ab39d" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; idol::Problems::FLP::Instance::m_demands</definition>
+        <argsstring></argsstring>
+        <name>m_demands</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="39" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Problems_1_1FLP_1_1Instance_1a4f75fdaebb9a27c21b964a84f12ae726" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; idol::Problems::FLP::Instance::m_per_unit_penalties</definition>
+        <argsstring></argsstring>
+        <name>m_per_unit_penalties</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="40" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Problems_1_1FLP_1_1Instance_1a4fe0f107cfed0763721e95f0dd4c6747" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; double &gt; &gt;</type>
+        <definition>std::vector&lt;std::vector&lt;double&gt; &gt; idol::Problems::FLP::Instance::m_per_unit_transportation_costs</definition>
+        <argsstring></argsstring>
+        <name>m_per_unit_transportation_costs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="43" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Problems_1_1FLP_1_1Instance_1adc09f858d605248106d6dd06fa8969cc" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Problems::FLP::Instance::Instance</definition>
+        <argsstring>(unsigned int t_n_facilities, unsigned int t_n_customers)</argsstring>
+        <name>Instance</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_facilities</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_customers</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="45" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1FLP_1_1Instance_1a3618c7fc05fd2c55e5397fb27755bee1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Problems::FLP::Instance::n_facilities</definition>
+        <argsstring>() const</argsstring>
+        <name>n_facilities</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="47" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="47" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1FLP_1_1Instance_1ac2897dada94ae992f5b67d0a7ccff5fe" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Problems::FLP::Instance::n_customers</definition>
+        <argsstring>() const</argsstring>
+        <name>n_customers</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="48" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="48" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1FLP_1_1Instance_1a27f90060e53d76f430992edfec40c36a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>double</type>
+        <definition>virtual double idol::Problems::FLP::Instance::fixed_cost</definition>
+        <argsstring>(unsigned int t_i) const</argsstring>
+        <name>fixed_cost</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="50" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="50" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1FLP_1_1Instance_1ae364b67b80b7efa7f927e895cde77d20" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>double</type>
+        <definition>virtual double idol::Problems::FLP::Instance::capacity</definition>
+        <argsstring>(unsigned int t_i) const</argsstring>
+        <name>capacity</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="51" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="51" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1FLP_1_1Instance_1a7332439ef95c3d357b85264c5c80f543" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>double</type>
+        <definition>virtual double idol::Problems::FLP::Instance::demand</definition>
+        <argsstring>(unsigned int t_j) const</argsstring>
+        <name>demand</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_j</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="52" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="52" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1FLP_1_1Instance_1a75d9c0234ab9133d55de65a69411dee6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>double</type>
+        <definition>virtual double idol::Problems::FLP::Instance::per_unit_transportation_cost</definition>
+        <argsstring>(unsigned int t_i, unsigned int t_j) const</argsstring>
+        <name>per_unit_transportation_cost</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_i</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_j</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="53" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="53" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1FLP_1_1Instance_1a41d600bb979d318e0bde95f6dc8db5c5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Problems::FLP::Instance::set_fixed_cost</definition>
+        <argsstring>(unsigned int t_i, double t_value)</argsstring>
+        <name>set_fixed_cost</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_i</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="55" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="55" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1FLP_1_1Instance_1a6fac8c533673fa7cae3acd7a461cfc68" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Problems::FLP::Instance::set_capacity</definition>
+        <argsstring>(unsigned int t_i, double t_value)</argsstring>
+        <name>set_capacity</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_i</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="56" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="56" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1FLP_1_1Instance_1a6eb6f74d6828396c82446fb034840178" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Problems::FLP::Instance::set_demand</definition>
+        <argsstring>(unsigned int t_j, double t_value)</argsstring>
+        <name>set_demand</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_j</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="57" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="57" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1FLP_1_1Instance_1a44d571cc2e12bfcb59155dd2e94d54ab" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Problems::FLP::Instance::set_per_unit_transportation_cost</definition>
+        <argsstring>(unsigned int t_i, unsigned int t_j, double t_value)</argsstring>
+        <name>set_per_unit_transportation_cost</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_i</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_j</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="58" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="58" bodyend="58"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Problems::FLP::Instance</label>
+        <link refid="classidol_1_1Problems_1_1FLP_1_1Instance"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="33" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" bodystart="33" bodyend="60"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1ae364b67b80b7efa7f927e895cde77d20" prot="public" virt="virtual"><scope>idol::Problems::FLP::Instance</scope><name>capacity</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1a7332439ef95c3d357b85264c5c80f543" prot="public" virt="virtual"><scope>idol::Problems::FLP::Instance</scope><name>demand</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1a27f90060e53d76f430992edfec40c36a" prot="public" virt="virtual"><scope>idol::Problems::FLP::Instance</scope><name>fixed_cost</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1adc09f858d605248106d6dd06fa8969cc" prot="public" virt="non-virtual"><scope>idol::Problems::FLP::Instance</scope><name>Instance</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1a604f5c4abe55c13179ce38c5253d694f" prot="private" virt="non-virtual"><scope>idol::Problems::FLP::Instance</scope><name>m_capacities</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1ab8fc5dd6785ec7460b8358238f0ab39d" prot="private" virt="non-virtual"><scope>idol::Problems::FLP::Instance</scope><name>m_demands</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1af3e74b759074969f0ba2b7a316d05d5c" prot="private" virt="non-virtual"><scope>idol::Problems::FLP::Instance</scope><name>m_fixed_costs</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1a4f75fdaebb9a27c21b964a84f12ae726" prot="private" virt="non-virtual"><scope>idol::Problems::FLP::Instance</scope><name>m_per_unit_penalties</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1a4fe0f107cfed0763721e95f0dd4c6747" prot="private" virt="non-virtual"><scope>idol::Problems::FLP::Instance</scope><name>m_per_unit_transportation_costs</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1ac2897dada94ae992f5b67d0a7ccff5fe" prot="public" virt="non-virtual"><scope>idol::Problems::FLP::Instance</scope><name>n_customers</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1a3618c7fc05fd2c55e5397fb27755bee1" prot="public" virt="non-virtual"><scope>idol::Problems::FLP::Instance</scope><name>n_facilities</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1a75d9c0234ab9133d55de65a69411dee6" prot="public" virt="virtual"><scope>idol::Problems::FLP::Instance</scope><name>per_unit_transportation_cost</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1a6fac8c533673fa7cae3acd7a461cfc68" prot="public" virt="non-virtual"><scope>idol::Problems::FLP::Instance</scope><name>set_capacity</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1a6eb6f74d6828396c82446fb034840178" prot="public" virt="non-virtual"><scope>idol::Problems::FLP::Instance</scope><name>set_demand</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1a41d600bb979d318e0bde95f6dc8db5c5" prot="public" virt="non-virtual"><scope>idol::Problems::FLP::Instance</scope><name>set_fixed_cost</name></member>
+      <member refid="classidol_1_1Problems_1_1FLP_1_1Instance_1a44d571cc2e12bfcb59155dd2e94d54ab" prot="public" virt="non-virtual"><scope>idol::Problems::FLP::Instance</scope><name>set_per_unit_transportation_cost</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

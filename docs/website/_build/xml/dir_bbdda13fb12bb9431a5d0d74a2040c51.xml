@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_bbdda13fb12bb9431a5d0d74a2040c51" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes</compoundname>
+    <innerfile refid="BranchingDecision_8h">BranchingDecision.h</innerfile>
+    <innerfile refid="DefaultNodeInfo_8h">DefaultNodeInfo.h</innerfile>
+    <innerfile refid="DefaultNodeUpdator_8h">DefaultNodeUpdator.h</innerfile>
+    <innerfile refid="Node_8h">Node.h</innerfile>
+    <innerfile refid="NodeSet_8h">NodeSet.h</innerfile>
+    <innerfile refid="NodeUpdator_8h">NodeUpdator.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/"/>
+  </compounddef>
+</doxygen>

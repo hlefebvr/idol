@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1NodeScoreFunctions" kind="namespace" language="C++">
+    <compoundname>idol::NodeScoreFunctions</compoundname>
+    <innerclass refid="classidol_1_1NodeScoreFunctions_1_1Linear" prot="public">idol::NodeScoreFunctions::Linear</innerclass>
+    <innerclass refid="classidol_1_1NodeScoreFunctions_1_1Product" prot="public">idol::NodeScoreFunctions::Product</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" line="13" column="5"/>
+  </compounddef>
+</doxygen>

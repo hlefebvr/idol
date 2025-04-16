@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1BestEstimate" kind="class" language="C++" prot="public">
+    <compoundname>idol::BestEstimate</compoundname>
+    <innerclass refid="classidol_1_1BestEstimate_1_1Strategy" prot="public">idol::BestEstimate::Strategy</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::BestEstimate</label>
+        <link refid="classidol_1_1BestEstimate"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h" line="15" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h" bodystart="15" bodyend="30"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

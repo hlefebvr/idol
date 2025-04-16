@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Catch2TestRun name="test_wrapper_MibS" rng-seed="1751212538" xml-format-version="3" catch2-version="3.3.2">
+  <TestCase name="Can solve a feasible bilevel problem" tags="[solving-bilevel]" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="12">
+    <Section name="Can solve a bilevel problem with continuous lower level" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="14">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="15">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can solve a bilevel problem with mixed-integer lower level" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="18">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="19">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can solve a bilevel problem with no lower level problem" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="22">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="23">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if some linking variables are continuous" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="26">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="27">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can update a problem and re-optimize" tags="[solving-bilevel]" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="32">
+    <Section name="Can update the objective function of the upper level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="34">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="35">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the objective function of the lower level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="38">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="39">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the right-hand side of the upper level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="42">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="43">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the right-hand side of the lower level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="46">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="47">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the left-hand side of the upper level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="50">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="51">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the left-hand side of the lower level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="54">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="55">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add a cut to the upper level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="58">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="59">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add a cut to the lower level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="62">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="63">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add a column to the upper level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="66">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="67">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add a column to the lower level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="70">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="71">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change the bounds of the upper level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="74">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="75">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change the bounds of the lower level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="78">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="79">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can remove a constraint from the upper level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="82">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="83">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can remove a constraint from the lower level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="86">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="87">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can remove a variable from the upper level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="90">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="91">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can remove a variable from the lower level and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="94">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="95">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add and remove the same variable and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="98">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="99">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add and remove a different variable and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="102">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="103">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add and remove the same constraint and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="106">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="107">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add and remove a different constraint and re-optimize" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="110">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="111">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add a constraint which depends on a variable that is then removed" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="114">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="115">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add a variable which depends on a constraint that is then removed" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="118">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="119">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change the objective function then remove a variable which appears in the objective function" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="122">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="123">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the objective function constant" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="126">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="127">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can solve a bilevel problem with infeasible upper level" tags="[solving-bilevel]" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="132">
+    <Section name="Can retrieve the solution status" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="134">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="135">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can solve a bilevel problem with infeasible lower level" tags="[solving-bilevel]" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="140">
+    <Section name="Can retrieve the solution status" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="142">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="143">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can solve an infeasible bilevel problem with feasible upper level and lower level" tags="[solving-bilevel]" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="148">
+    <Section name="Can retrieve the solution status" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="150">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/bilevel/wrappers/solve_bilevel.test.cpp" line="151">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <OverallResults successes="0" failures="31" expectedFailures="0" skips="0"/>
+  <OverallResultsCases successes="0" failures="5" expectedFailures="0" skips="0"/>
+</Catch2TestRun>

@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="impls_2BestEstimate_8h" kind="file" language="C++">
+    <compoundname>BestEstimate.h</compoundname>
+    <includes refid="NodeSelectionRule_8h" local="yes">NodeSelectionRule.h</includes>
+    <includes refid="NodeSet_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h</includes>
+    <includes refid="Exception_8h" local="yes">idol/general/utils/exceptions/Exception.h</includes>
+    <includes local="no">optional</includes>
+    <includedby refid="factories_2BestEstimate_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h</includedby>
+    <incdepgraph>
+      <node id="6">
+        <label>map</label>
+      </node>
+      <node id="3">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/nodes/Node.h</label>
+        <link refid="Node_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/BestEstimate.h</label>
+        <link refid="impls_2BestEstimate_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>optional</label>
+      </node>
+      <node id="2">
+        <label>NodeSelectionRule.h</label>
+        <link refid="NodeSelectionRule_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>idol/general/utils/IteratorForward.h</label>
+        <link refid="IteratorForward_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>iostream</label>
+      </node>
+      <node id="8">
+        <label>idol/general/utils/exceptions/Exception.h</label>
+        <link refid="Exception_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h</label>
+        <link refid="NodeSet_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>memory</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>/home/henri/Research/idol/lib/include/idol/solvers.h</label>
+        <link refid="solvers_8h_source"/>
+      </node>
+      <node id="2">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h</label>
+        <link refid="factories_2BestEstimate_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/BestEstimate.h</label>
+        <link refid="impls_2BestEstimate_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classidol_1_1NodeSelectionRules_1_1BestEstimate" prot="public">idol::NodeSelectionRules::BestEstimate</innerclass>
+    <innernamespace refid="namespaceidol">idol</innernamespace>
+    <innernamespace refid="namespaceidol_1_1NodeSelectionRules">idol::NodeSelectionRules</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Created<sp/>by<sp/>henri<sp/>on<sp/>22/03/23.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>IDOL_BESTESTIMATE_IMPL_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>IDOL_BESTESTIMATE_IMPL_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;NodeSelectionRule.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/general/utils/exceptions/Exception.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;optional&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">idol::NodeSelectionRules<sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>NodeT&gt;<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">BestEstimate;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>NodeT&gt;</highlight></codeline>
+<codeline lineno="18" refid="classidol_1_1NodeSelectionRules_1_1BestEstimate" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classidol_1_1NodeSelectionRules_1_1BestEstimate" kindref="compound">idol::NodeSelectionRules::BestEstimate</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1NodeSelectionRule" kindref="compound">NodeSelectionRule</ref>&lt;NodeT&gt;<sp/>{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>std::optional&lt;double&gt;<sp/>m_root_node_obj;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>std::optional&lt;double&gt;<sp/>m_root_node_sum_of_infeasibilities;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>compute_score(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Node" kindref="compound">Node&lt;NodeT&gt;</ref>&amp;<sp/>t_node)<sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>node_obj<sp/>=<sp/>t_node.info().objective_value();</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>node_sum_of_infeasibilities<sp/>=<sp/>t_node.info().sum_of_infeasibilities();</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>incumbent_obj<sp/>=<sp/>this-&gt;parent().incumbent().info().objective_value();</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>node_obj<sp/>-<sp/>(<sp/>m_root_node_obj.value()<sp/>-<sp/>incumbent_obj<sp/>)<sp/>*<sp/>node_sum_of_infeasibilities<sp/>/<sp/>m_root_node_sum_of_infeasibilities.value();</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1NodeSelectionRules_1_1BestEstimate" kindref="compound">BestEstimate</ref>(<ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound&lt;NodeT&gt;</ref>&amp;<sp/>t_parent)<sp/>:<sp/><ref refid="classidol_1_1NodeSelectionRule" kindref="compound">NodeSelectionRule&lt;NodeT&gt;</ref>(t_parent)<sp/>{}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1NodeSet" kindref="compound">NodeSet&lt;Node&lt;NodeT&gt;</ref>&gt;::const_iterator<sp/>operator()(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1NodeSet" kindref="compound">NodeSet</ref>&lt;<ref refid="classidol_1_1Node" kindref="compound">Node&lt;NodeT&gt;</ref>&gt;&amp;<sp/>t_active_nodes)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(t_active_nodes.size()<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>t_active_nodes.by_objective_value().begin()-&gt;id()<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>root_node_it<sp/>=<sp/>t_active_nodes.by_objective_value().begin();</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_root_node_obj<sp/>=<sp/>(double)<sp/>root_node_it-&gt;info().objective_value();</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_root_node_sum_of_infeasibilities<sp/>=<sp/>root_node_it-&gt;info().sum_of_infeasibilities();</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>root_node_it;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!this-&gt;parent().has_incumbent())<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>t_active_nodes.by_objective_value().begin();</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>max<sp/>=<sp/>std::numeric_limits&lt;double&gt;::lowest();</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1NodeSet" kindref="compound">NodeSet&lt;Node&lt;NodeT&gt;</ref>&gt;::const_iterator<sp/>argmax;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>it<sp/>=<sp/>t_active_nodes.by_objective_value().begin(),</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>end<sp/>=<sp/>t_active_nodes.by_objective_value().end()<sp/>;<sp/>it<sp/>!=<sp/>end<sp/>;<sp/>++it)<sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>score<sp/>=<sp/>compute_score(*it);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(score<sp/>&gt;<sp/>max)<sp/>{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>max<sp/>=<sp/>score;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>argmax<sp/>=<sp/>it;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>argmax;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//IDOL_BESTESTIMATE_IMPL_H</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/BestEstimate.h"/>
+  </compounddef>
+</doxygen>

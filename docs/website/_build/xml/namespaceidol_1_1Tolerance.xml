@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1Tolerance" kind="namespace" language="C++">
+    <compoundname>idol::Tolerance</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceidol_1_1Tolerance_1af9089aedbd007a648ad7f6d032b64a77" prot="public" static="yes" mutable="no">
+        <type>double</type>
+        <definition>double idol::Tolerance::Sparsity</definition>
+        <argsstring></argsstring>
+        <name>Sparsity</name>
+        <initializer>= 1e-8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><bold>Default:</bold> <formula id="0">$ 10^{-8} $</formula></para>
+<para><bold>Recommended range:</bold> <formula id="1">$ [ 10^{-10}, 10^{-5} ] $</formula></para>
+<para>This tolerance is used when data is saved in a sparse manner. For instance, when a value close to zero should be stored or ignored when saving a primal point. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/numericals.h" line="37" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/numericals.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceidol_1_1Tolerance_1a40addd09ea9f7a213a6350a902ad12d1" prot="public" static="yes" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Tolerance::Digits</definition>
+        <argsstring></argsstring>
+        <name>Digits</name>
+        <initializer>= 8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/numericals.h" line="39" column="29" bodyfile="/home/henri/Research/idol/lib/include/idol/general/numericals.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceidol_1_1Tolerance_1ab4484c05875fa9025bb5fbfe0a13983d" prot="public" static="yes" mutable="no">
+        <type>double</type>
+        <definition>double idol::Tolerance::MIPRelativeGap</definition>
+        <argsstring></argsstring>
+        <name>MIPRelativeGap</name>
+        <initializer>= 1e-4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><bold>Default:</bold> <formula id="2">$ 10^{-4} $</formula></para>
+<para><bold>Recommended range:</bold> <formula id="3">$ [ 0, +\infty ] $</formula></para>
+<para>Used to declare optimality of a MIP solution by comparing with the current relative gap.</para>
+<para>The relative gap is computed as follows: <formula id="4">\[ \gamma_{\text{rel}} := \frac{ |UB - LB| }{ 10^{-10} + |UB| }. \]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/numericals.h" line="51" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/numericals.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceidol_1_1Tolerance_1a3e653737a3ca4ba069e242126fd3091d" prot="public" static="yes" mutable="no">
+        <type>double</type>
+        <definition>double idol::Tolerance::MIPAbsoluteGap</definition>
+        <argsstring></argsstring>
+        <name>MIPAbsoluteGap</name>
+        <initializer>= 1e-5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><bold>Default:</bold> <formula id="5">$ 10^{-5} $</formula></para>
+<para><bold>Recommended range:</bold> <formula id="6">$ [ 0, \infty ] $</formula></para>
+<para>Used to declare optimality of a MIP solution by comparing with the current absolute gap.</para>
+<para>The absolute gap is computed as follows: <formula id="7">\[ \gamma_{\text{abs}} := |UB - LB| \]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/numericals.h" line="63" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/numericals.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceidol_1_1Tolerance_1abc666019c56885dd181bef0e1ce49088" prot="public" static="yes" mutable="no">
+        <type>double</type>
+        <definition>double idol::Tolerance::Integer</definition>
+        <argsstring></argsstring>
+        <name>Integer</name>
+        <initializer>= 10e-5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><bold>Default:</bold> <formula id="5">$ 10^{-5} $</formula></para>
+<para><bold>Recommended range:</bold> <formula id="8">$ [ 10^{-9}, 10^{-1} ] $</formula></para>
+<para>Used to recognized integer values, i.e., a given value is considered integer when the closest integer point is closer than this tolerance. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/numericals.h" line="73" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/numericals.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceidol_1_1Tolerance_1a03c72f5e5c9bf99d8f9fa0005bddd84c" prot="public" static="yes" mutable="no">
+        <type>double</type>
+        <definition>double idol::Tolerance::Feasibility</definition>
+        <argsstring></argsstring>
+        <name>Feasibility</name>
+        <initializer>= 10e-6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><bold>Default:</bold> <formula id="9">$ 10^{-6} $</formula></para>
+<para><bold>Recommended range:</bold> <formula id="10">$ [ 10^{-9}, 10^{-2} ] $</formula></para>
+<para>Used to characterized constraint satisfaction, i.e., a constraint is satisfied if it is not violated by a larger amount than this tolerance. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/numericals.h" line="83" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/numericals.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceidol_1_1Tolerance_1adc12ee102340ff38b68e4f2e9832e025" prot="public" static="yes" mutable="no">
+        <type>double</type>
+        <definition>double idol::Tolerance::Optimality</definition>
+        <argsstring></argsstring>
+        <name>Optimality</name>
+        <initializer>= 10e-6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><bold>Default:</bold> <formula id="9">$ 10^{-6} $</formula></para>
+<para><bold>Recommended range:</bold> <formula id="10">$ [ 10^{-9}, 10^{-2} ] $</formula></para>
+<para>Used to characterize optimality, i.e., all reduced costs must be smaller than this tolerance. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/numericals.h" line="92" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/numericals.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Stores the default high-level tolerances used in idol.</para>
+<para>It is possible for external-mip to have additional tolerance parameters, yet, the tolerances defined in this namespace should always be taken into account by the optimizer. Apart from the Sparsity tolerance, users can also change tolerance values at a local level (i.e., at an optimizer level) rather than at a global level. </para>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/numericals.h" line="26" column="5"/>
+  </compounddef>
+</doxygen>

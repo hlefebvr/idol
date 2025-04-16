@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Logs_1_1BranchAndBound_1_1Factory" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>idol::Logs::BranchAndBound::Factory</compoundname>
+    <innerclass refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory_1_1Strategy" prot="public">idol::Logs::BranchAndBound::Factory::Strategy</innerclass>
+    <templateparamlist>
+      <param>
+        <type>class NodeInfoT</type>
+        <defval><ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref></defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Logs_1_1BranchAndBound_1_1Factory_1a0accdf4695c3b853c2b30f66530dd728" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual idol::Logs::BranchAndBound::Factory&lt; NodeInfoT &gt;::~Factory</definition>
+        <argsstring>()=default</argsstring>
+        <name>~Factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Factory.h" line="22" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Logs_1_1BranchAndBound_1_1Factory_1ab1d5eced97c48ed9d8eb684fae7fcba1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory_1_1Strategy" kindref="compound">Strategy</ref> *</type>
+        <definition>virtual Strategy* idol::Logs::BranchAndBound::Factory&lt; NodeInfoT &gt;::operator()</definition>
+        <argsstring>(Optimizers::BranchAndBound&lt; NodeInfoT &gt; &amp;t_parent) const =0</argsstring>
+        <name>operator()</name>
+        <param>
+          <type><ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound</ref>&lt; NodeInfoT &gt; &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Factory.h" line="41" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Logs_1_1BranchAndBound_1_1Factory_1a69dd890e15f5d367c1ee88081ce6967b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory" kindref="compound">Factory</ref> *</type>
+        <definition>virtual Factory* idol::Logs::BranchAndBound::Factory&lt; NodeInfoT &gt;::clone</definition>
+        <argsstring>() const =0</argsstring>
+        <name>clone</name>
+        <reimplementedby refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aec71ab9f6e1561a148230e603e722679">clone</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Factory.h" line="43" column="21"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::Logs::BranchAndBound::Factory&lt; idol::DefaultNodeInfo &gt;</label>
+        <link refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; idol::DefaultNodeInfo &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::Logs::BranchAndBound::Factory&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Logs::BranchAndBound::Factory&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Factory.h" line="20" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Factory.h" bodystart="20" bodyend="44"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory_1a69dd890e15f5d367c1ee88081ce6967b" prot="public" virt="pure-virtual"><scope>idol::Logs::BranchAndBound::Factory</scope><name>clone</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory_1ab1d5eced97c48ed9d8eb684fae7fcba1" prot="public" virt="pure-virtual"><scope>idol::Logs::BranchAndBound::Factory</scope><name>operator()</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory_1a0accdf4695c3b853c2b30f66530dd728" prot="public" virt="virtual"><scope>idol::Logs::BranchAndBound::Factory</scope><name>~Factory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

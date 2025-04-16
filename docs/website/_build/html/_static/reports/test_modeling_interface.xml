@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Catch2TestRun name="test_modeling_interface" rng-seed="3100709558" xml-format-version="3" catch2-version="3.3.2">
+  <TestCase name="Can manipulate mathematical expressions" tags="[expressions]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/expressions.test.cpp" line="15">
+    <Section name="Can add mathematical expressions together via overloaded operator+" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/expressions.test.cpp" line="19">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/expressions.test.cpp" line="21">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="34" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can subtract mathematical expressions from each other via overloaded operator-" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/expressions.test.cpp" line="75">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/expressions.test.cpp" line="77">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="34" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can multiply mathematical expressions with each other via overloaded operator*" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/expressions.test.cpp" line="131">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/expressions.test.cpp" line="133">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="16" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can divide mathematical expressions by each other via overloaded operator/" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/expressions.test.cpp" line="174">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/expressions.test.cpp" line="176">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="6" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can iterate over terms in mathematical expressions" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/expressions.test.cpp" line="203">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/expressions.test.cpp" line="205">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can add variables to a model" tags="[variables]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="20">
+    <Section name="Can add a new variable with bounds and type" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="29">
+      <OverallResults successes="18" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add a new variable with bounds, type and column" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="57">
+      <OverallResults successes="36" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add an existing variable" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="114">
+      <OverallResults successes="18" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add an existing variable with new bounds and type" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="146">
+      <OverallResults successes="18" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add an existing variable with new bounds, type and column" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="178">
+      <OverallResults successes="36" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add multiple new variables with bounds and type" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="239">
+      <OverallResults successes="153" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add multiple existing variables" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="273">
+      <OverallResults successes="153" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if a variable is added twice" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="311">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can update variables in a model" tags="[variables]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="318">
+    <Section name="Can update a variable's bound" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="329">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update a variable's type" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="336">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update a variable's column" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="345">
+      <OverallResults successes="12" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update a variable's objective coefficient" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="372">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if trying to update a variable that is not in the model" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="378">
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can remove a variable from a model" tags="[variables]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="389">
+    <Section name="Can remove a variable" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="398">
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if trying to remove a variable that is not in the model" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="407">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can access a variable in a model" tags="[variables]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="414">
+    <Section name="Can retrieve a variable's bound" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="434">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve a variable's type" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="439">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve a variable's column" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="443">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve a variable's objective coefficient" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="448">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if trying to retrieve info of a variable which is not in the model" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="453">
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can iterate over variables in a model" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="462">
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve a variable's index" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="476">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve a variable by index" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/variables.test.cpp" line="482">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can add a linear constraint to a model" tags="[linear-constraints]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="20">
+    <Section name="Can add a new linear constraint with type and expression" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="31">
+      <OverallResults successes="36" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add an existing linear constraint" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="78">
+      <OverallResults successes="36" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add an existing linear constraint with new type and expression" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="128">
+      <OverallResults successes="36" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add multiple new linear constraints with type and right-hand side" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="178">
+      <OverallResults successes="63" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add multiple existing linear constraints with type and right-hand side" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="203">
+      <OverallResults successes="63" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can update a linear constraint in a model" tags="[linear-constraints]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="234">
+    <Section name="Can update a coefficient in the linear constraints matrix" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="245">
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the left-hand side of a linear constraint" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="258">
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the right-hand side of a linear constraint" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="271">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the type of a linear constraint" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="281">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can remove a linear constraint from a model" tags="[linear-constraints]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="298">
+    <Section name="Can remove a linear constraint" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="309">
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if trying to remove a linear constraint which is not in the model" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="320">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can access a linear constraint in a model" tags="[linear-constraints]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="329">
+    <Section name="Can retrieve a linear constraint's type" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="344">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve a linear constraint's right-hand side" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="350">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve a linear constraint's left-hand side" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="356">
+      <OverallResults successes="9" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve a linear constraint's index" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="370">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve a linear constraint by index" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="376">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can iterate over linear constraints in a model" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp" line="382">
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can add a quadratic constraint to a model" tags="[quadratic-constraints]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="20">
+    <Section name="Can add a new quadratic constraint with type and expression" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="31">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="32">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add an existing quadratic constraint" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="35">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="36">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add an existing quadratic constraint with new type and expression" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="39">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="40">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add multiple new quadratic constraints with type and right-hand side" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="43">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="44">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add multiple existing quadratic constraints with type and right-hand side" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="47">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="48">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can remove a quadratic constraint from a model" tags="[quadratic-constraints]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="53">
+    <Section name="Can remove a quadratic constraint" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="64">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="65">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if trying to remove a quadratic constraint which is not in the model" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="68">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can access a quadratic constraint in a model" tags="[quadratic-constraints]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="77">
+    <Section name="Can retrieve a quadratic constraint's type" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="88">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="89">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve a quadratic constraint's expression" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="92">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="93">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve a quadratic constraint's index" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="96">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="97">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve a quadratic constraint by index" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="100">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="101">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can iterate over quadratic constraints in a model" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="104">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp" line="105">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can set the objective function of a model" tags="[objective]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="20">
+    <Section name="Can set a linear objective function" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="31">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="32">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can set an affine objective function" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="35">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="36">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can set a quadratic objective function" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="39">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="40">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can set the objective sense" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="43">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="44">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can update the objective function of a model" tags="[objective]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="49">
+    <Section name="Can update the objective coefficient of a variable" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="60">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="61">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the objective constant" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="64">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="65">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the objective sense" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="68">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="69">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can access the objective function of a model" tags="[objective]" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="74">
+    <Section name="Can retrieve the objective function" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="85">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="86">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve the objective coefficient of a variable" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="89">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="90">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve the objective sense" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="93">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/modeling/objective.test.cpp" line="94">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <OverallResults successes="852" failures="26" expectedFailures="0" skips="0"/>
+  <OverallResultsCases successes="8" failures="7" expectedFailures="0" skips="0"/>
+</Catch2TestRun>

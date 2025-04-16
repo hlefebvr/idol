@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_23e540c7372bac415c750a58ec202909" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks</compoundname>
+    <innerfile refid="AbstractBranchAndBoundCallbackI_8h">AbstractBranchAndBoundCallbackI.h</innerfile>
+    <innerfile refid="BranchAndBoundCallback_8h">BranchAndBoundCallback.h</innerfile>
+    <innerfile refid="BranchAndBoundCallbackFactory_8h">BranchAndBoundCallbackFactory.h</innerfile>
+    <innerfile refid="CallbackAsBranchAndBoundCallback_8h">CallbackAsBranchAndBoundCallback.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/"/>
+  </compounddef>
+</doxygen>

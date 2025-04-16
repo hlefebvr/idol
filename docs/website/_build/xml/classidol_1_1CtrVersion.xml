@@ -1,0 +1,392 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1CtrVersion" kind="class" language="C++" prot="public">
+    <compoundname>idol::CtrVersion</compoundname>
+    <basecompoundref refid="classidol_1_1Version" prot="public" virt="non-virtual">idol::Version</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1CtrVersion_1a34c13e7e430ea653b8ac5b4deb40c6e3" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &gt;</type>
+        <definition>std::unique_ptr&lt;LinExpr&lt;Var&gt; &gt; idol::CtrVersion::m_lhs</definition>
+        <argsstring></argsstring>
+        <name>m_lhs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="18" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CtrVersion_1a3e60f3deef9e7e1e2b243a86c65d643d" prot="private" static="no" mutable="no">
+        <type>CtrType</type>
+        <definition>CtrType idol::CtrVersion::m_type</definition>
+        <argsstring></argsstring>
+        <name>m_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="19" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1CtrVersion_1ab642ef5fc58fdc16dbe40d4e3d8be609" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double idol::CtrVersion::m_rhs</definition>
+        <argsstring></argsstring>
+        <name>m_rhs</name>
+        <initializer>= 0.</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="20" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1ad32f8b57576e08892881432995c7e4e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::CtrVersion::CtrVersion</definition>
+        <argsstring>(unsigned int t_index, TempCtr &amp;&amp;t_temp_ctr)</argsstring>
+        <name>CtrVersion</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref> &amp;&amp;</type>
+          <declname>t_temp_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="22" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1a5209de5291af9183bae6a14a589783a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::CtrVersion::CtrVersion</definition>
+        <argsstring>(unsigned int t_index, const TempCtr &amp;t_temp_ctr)</argsstring>
+        <name>CtrVersion</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref> &amp;</type>
+          <declname>t_temp_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="24" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1a01cdfdddd3d7b7c12844d19ae12d2c00" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::CtrVersion::CtrVersion</definition>
+        <argsstring>(unsigned int t_index, LinExpr&lt; Var &gt; &amp;&amp;t_lhs, CtrType t_type, double t_rhs)</argsstring>
+        <name>CtrVersion</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_lhs</declname>
+        </param>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="26" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="26" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1a624bb6d957f1c72c68ee0da9cf763336" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::CtrVersion::CtrVersion</definition>
+        <argsstring>(unsigned int t_index, CtrType t_type, double t_rhs)</argsstring>
+        <name>CtrVersion</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="33" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="33" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1a4b71bdfc87eee1985a971e8486ecd82d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::CtrVersion::CtrVersion</definition>
+        <argsstring>(const CtrVersion &amp;t_src)</argsstring>
+        <name>CtrVersion</name>
+        <param>
+          <type>const <ref refid="classidol_1_1CtrVersion" kindref="compound">CtrVersion</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="39" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="39" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1a3063fce01c20eda2ba2cd21473c0e70c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::CtrVersion::rhs</definition>
+        <argsstring>() const</argsstring>
+        <name>rhs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="45" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="45" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1acabe9b89d55aa11dc960a7f172d62eed" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::CtrVersion::set_rhs</definition>
+        <argsstring>(double t_rhs)</argsstring>
+        <name>set_rhs</name>
+        <param>
+          <type>double</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="47" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="47" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1a4476e2cf36f6c529132ad94e9f28e7ed" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>CtrType</type>
+        <definition>CtrType idol::CtrVersion::type</definition>
+        <argsstring>() const</argsstring>
+        <name>type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="49" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="49" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1a89a793ca0681cfa22fcd46e6cf43adec" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::CtrVersion::set_type</definition>
+        <argsstring>(CtrType t_type)</argsstring>
+        <name>set_type</name>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="51" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="51" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1aa9191d6e51e65e20538f47605fedf613" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>LinExpr&lt;Var&gt;&amp; idol::CtrVersion::row</definition>
+        <argsstring>()</argsstring>
+        <name>row</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="53" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="53" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1a81c681d03264776b3ac1d87e03408b9f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>const LinExpr&lt;Var&gt;&amp; idol::CtrVersion::lhs</definition>
+        <argsstring>() const</argsstring>
+        <name>lhs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="55" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="55" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1a54fefab7571e0b7cbf204e1a27051e34" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::CtrVersion::set_row</definition>
+        <argsstring>(LinExpr&lt; Var &gt; &amp;&amp;t_row)</argsstring>
+        <name>set_row</name>
+        <param>
+          <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_row</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="57" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="57" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1ae156381927777dd1c300c364e593ae14" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::CtrVersion::has_row</definition>
+        <argsstring>() const</argsstring>
+        <name>has_row</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="59" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="59" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1a1b46a49d60b04b1c10c3087b60c6e386" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::CtrVersion::set_row</definition>
+        <argsstring>(const LinExpr&lt; Var &gt; &amp;t_row)</argsstring>
+        <name>set_row</name>
+        <param>
+          <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+          <declname>t_row</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="61" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="61" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1CtrVersion_1a26609f77c58e0cc91739fab276922b11" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::CtrVersion::reset_row</definition>
+        <argsstring>()</argsstring>
+        <name>reset_row</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="63" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="63" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Version_1a001025d4d96827039121ac0429fc7306" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Version::index</definition>
+        <argsstring>() const</argsstring>
+        <name>index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" line="17" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" bodystart="17" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Version_1ab975bf3e614686035e2872b1b7e8fb32" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Version::set_index</definition>
+        <argsstring>(unsigned int t_index)</argsstring>
+        <name>set_index</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" line="19" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" bodystart="19" bodyend="19"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>idol::Version</label>
+        <link refid="classidol_1_1Version"/>
+      </node>
+      <node id="1">
+        <label>idol::CtrVersion</label>
+        <link refid="classidol_1_1CtrVersion"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>idol::Version</label>
+        <link refid="classidol_1_1Version"/>
+      </node>
+      <node id="1">
+        <label>idol::CtrVersion</label>
+        <link refid="classidol_1_1CtrVersion"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" line="17" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h" bodystart="17" bodyend="64"/>
+    <listofallmembers>
+      <member refid="classidol_1_1CtrVersion_1ad32f8b57576e08892881432995c7e4e5" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>CtrVersion</name></member>
+      <member refid="classidol_1_1CtrVersion_1a5209de5291af9183bae6a14a589783a2" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>CtrVersion</name></member>
+      <member refid="classidol_1_1CtrVersion_1a01cdfdddd3d7b7c12844d19ae12d2c00" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>CtrVersion</name></member>
+      <member refid="classidol_1_1CtrVersion_1a624bb6d957f1c72c68ee0da9cf763336" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>CtrVersion</name></member>
+      <member refid="classidol_1_1CtrVersion_1a4b71bdfc87eee1985a971e8486ecd82d" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>CtrVersion</name></member>
+      <member refid="classidol_1_1CtrVersion_1ae156381927777dd1c300c364e593ae14" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>has_row</name></member>
+      <member refid="classidol_1_1Version_1a001025d4d96827039121ac0429fc7306" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>index</name></member>
+      <member refid="classidol_1_1CtrVersion_1a81c681d03264776b3ac1d87e03408b9f" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>lhs</name></member>
+      <member refid="classidol_1_1CtrVersion_1a34c13e7e430ea653b8ac5b4deb40c6e3" prot="private" virt="non-virtual"><scope>idol::CtrVersion</scope><name>m_lhs</name></member>
+      <member refid="classidol_1_1CtrVersion_1ab642ef5fc58fdc16dbe40d4e3d8be609" prot="private" virt="non-virtual"><scope>idol::CtrVersion</scope><name>m_rhs</name></member>
+      <member refid="classidol_1_1CtrVersion_1a3e60f3deef9e7e1e2b243a86c65d643d" prot="private" virt="non-virtual"><scope>idol::CtrVersion</scope><name>m_type</name></member>
+      <member refid="classidol_1_1CtrVersion_1a26609f77c58e0cc91739fab276922b11" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>reset_row</name></member>
+      <member refid="classidol_1_1CtrVersion_1a3063fce01c20eda2ba2cd21473c0e70c" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>rhs</name></member>
+      <member refid="classidol_1_1CtrVersion_1aa9191d6e51e65e20538f47605fedf613" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>row</name></member>
+      <member refid="classidol_1_1Version_1ab975bf3e614686035e2872b1b7e8fb32" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>set_index</name></member>
+      <member refid="classidol_1_1CtrVersion_1acabe9b89d55aa11dc960a7f172d62eed" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>set_rhs</name></member>
+      <member refid="classidol_1_1CtrVersion_1a54fefab7571e0b7cbf204e1a27051e34" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>set_row</name></member>
+      <member refid="classidol_1_1CtrVersion_1a1b46a49d60b04b1c10c3087b60c6e386" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>set_row</name></member>
+      <member refid="classidol_1_1CtrVersion_1a89a793ca0681cfa22fcd46e6cf43adec" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>set_type</name></member>
+      <member refid="classidol_1_1CtrVersion_1a4476e2cf36f6c529132ad94e9f28e7ed" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>type</name></member>
+      <member refid="classidol_1_1Version_1ac20ae41000d677ee2ccfbddcd1bdd134" prot="public" virt="non-virtual"><scope>idol::CtrVersion</scope><name>Version</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

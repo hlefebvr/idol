@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Tutorials</title>
+    
+          <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../_static/theme-vendors.js"></script> -->
+      <script src="../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/index.html" />
+    
+  <link rel="index" title="Index" href="../genindex.html" />
+  <link rel="search" title="Search" href="../search.html" />
+  <link rel="next" title="Mixed-Integer Optimization" href="mixed-integer/index.html" />
+  <link rel="prev" title="List of CMake Options" href="../installation/options.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="current">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 current">
+            
+              <a href="#" class="reference internal current">Tutorials</a>
+            
+
+            
+              <ul>
+                
+                  <li class="toctree-l2"><a href="#mixed-integer-optimization" class="reference internal">Mixed-Integer Optimization</a></li>
+                
+                  <li class="toctree-l2"><a href="#bilevel-optimization" class="reference internal">Bilevel Optimization</a></li>
+                
+                  <li class="toctree-l2"><a href="#robust-optimization" class="reference internal">Robust Optimization</a></li>
+                
+                  <li class="toctree-l2"><a href="#artificial-intelligence" class="reference internal">Artificial Intelligence</a></li>
+                
+              </ul>
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+    
+    <li>Tutorials</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="../installation/options.html"
+       title="previous chapter">← List of CMake Options</a>
+  </li>
+  <li class="next">
+    <a href="mixed-integer/index.html"
+       title="next chapter">Mixed-Integer Optimization →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="tutorials">
+<span id="id1"></span><h1>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">¶</a></h1>
+<p>On this page, you will find a collection of tutorials that demonstrate how to use idol to solve various optimization problems.
+The tutorials are organized by topic.</p>
+<section id="mixed-integer-optimization">
+<h2>Mixed-Integer Optimization<a class="headerlink" href="#mixed-integer-optimization" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mixed-integer/index.html">Mixed-Integer Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mixed-integer/modeling/index.html">Modeling a MIP with idol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/modeling/environment.html">The Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/modeling/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/modeling/variables.html">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/modeling/expressions.html">Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/modeling/constraints.html">Constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/modeling/objective-function.html">Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mixed-integer/optimizers/index.html">Solving MIPs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/optimizers/optimizers.html">The Concept of <code class="code docutils literal notranslate"><span class="pre">Optimizer</span></code> and <code class="code docutils literal notranslate"><span class="pre">OptimizerFactory</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/optimizers/solving.html">Using an External Solver and Accessing the Solution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/optimizers/access-optimizer.html">Getting Access to The Underlying Optimizer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/optimizers/universal-callbacks.html">Adding User Cuts and Lazy Constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/optimizers/create-universal-callback.html">Creating Your Own Callback</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mixed-integer/branch-and-bound/index.html">Branch-and-Bound Algorithm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/branch-and-bound/write-branch-and-bound.html">Writing an LP-based Branch-and-Bound [TODO]</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mixed-integer/dantzig-wolfe/index.html">Column Generation and Branch-and-Price Algorithm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/dantzig-wolfe/dantzig-wolfe.html">Solving A Dantzig-Wolfe Reformulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/dantzig-wolfe/writing-branch-and-price.html">Writing A Branch-and-Price Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixed-integer/dantzig-wolfe/strong-branching.html">Using Strong Branching</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="bilevel-optimization">
+<h2>Bilevel Optimization<a class="headerlink" href="#bilevel-optimization" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bilevel/index.html">Bilevel Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bilevel/modeling.html">Modeling a Bilevel Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bilevel/files.html">Reading and Writing Bilevel Instances (BOBILib)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bilevel/kkt.html">Deriving Single-level Reformulations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bilevel/mibs.html">Solving Mixed-Integer Bilevel Problems with coin-or/MibS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bilevel/pessimistic.html">From Pessimistic Bilevel Optimization to Optimistic Bilevel Optimization</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="robust-optimization">
+<h2>Robust Optimization<a class="headerlink" href="#robust-optimization" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="robust/index.html">Robust Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="robust/single-stage/index.html">Single-stage Robust Optimization</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robust/two-stage/index.html">Two-stage Robust Optimization (Adjustable)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robust/two-stage/modeling.html">Modeling Adjustable Robust Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robust/two-stage/ccg.html">The Column-and-Constraint Generation: Introduction</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="artificial-intelligence">
+<h2>Artificial Intelligence<a class="headerlink" href="#artificial-intelligence" title="Link to this heading">¶</a></h2>
+<p>To come…</p>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="../installation/options.html"
+       title="previous chapter">← List of CMake Options</a>
+  </li>
+  <li class="next">
+    <a href="mixed-integer/index.html"
+       title="next chapter">Mixed-Integer Optimization →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

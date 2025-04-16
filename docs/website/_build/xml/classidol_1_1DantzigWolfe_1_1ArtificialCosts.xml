@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1DantzigWolfe_1_1ArtificialCosts" kind="class" language="C++" prot="public">
+    <compoundname>idol::DantzigWolfe::ArtificialCosts</compoundname>
+    <basecompoundref refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory" prot="public" virt="non-virtual">idol::DantzigWolfe::InfeasibilityStrategyFactory</basecompoundref>
+    <innerclass refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1_1Strategy" prot="public">idol::DantzigWolfe::ArtificialCosts::Strategy</innerclass>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1acb71e9965777ea3f36addc609a97b6a0" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::DantzigWolfe::ArtificialCosts::m_initial_costs</definition>
+        <argsstring></argsstring>
+        <name>m_initial_costs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" line="16" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1a2c2070dfb004265d6a48475076eba62a" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::DantzigWolfe::ArtificialCosts::m_update_factor</definition>
+        <argsstring></argsstring>
+        <name>m_update_factor</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" line="17" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1ae2fe5dbebce00f2fb0fb37742db2dce7" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; unsigned int &gt;</type>
+        <definition>std::optional&lt;unsigned int&gt; idol::DantzigWolfe::ArtificialCosts::m_max_updates_before_phase_I</definition>
+        <argsstring></argsstring>
+        <name>m_max_updates_before_phase_I</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" line="18" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1a7c658d313257705d1ef831d1b98450ce" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy" kindref="compound">InfeasibilityStrategyFactory::Strategy</ref> *</type>
+        <definition>InfeasibilityStrategyFactory::Strategy* idol::DantzigWolfe::ArtificialCosts::operator()</definition>
+        <argsstring>() const override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1a88f18e5471d2736e544c0f6182810877">operator()</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" line="42" column="44" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" bodystart="42" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1a8eb39da7440f994e106a28e7badf782d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts" kindref="compound">ArtificialCosts</ref> *</type>
+        <definition>ArtificialCosts* idol::DantzigWolfe::ArtificialCosts::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1aabb90a4238a480ae8bf72c01ff9efa56">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" line="50" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" bodystart="50" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1ab3bf8e006d6937b294ca4063444e2b89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts" kindref="compound">ArtificialCosts</ref> &amp;</type>
+        <definition>ArtificialCosts&amp; idol::DantzigWolfe::ArtificialCosts::with_max_updates_before_phase_I</definition>
+        <argsstring>(unsigned int t_value)</argsstring>
+        <name>with_max_updates_before_phase_I</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" line="54" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1a8f9096fabe0161904c62a29c699b9cb1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts" kindref="compound">ArtificialCosts</ref> &amp;</type>
+        <definition>ArtificialCosts&amp; idol::DantzigWolfe::ArtificialCosts::with_update_factor</definition>
+        <argsstring>(double t_value)</argsstring>
+        <name>with_update_factor</name>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" line="56" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1ac54257c01968354571d07a3c7186fa23" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts" kindref="compound">ArtificialCosts</ref> &amp;</type>
+        <definition>ArtificialCosts&amp; idol::DantzigWolfe::ArtificialCosts::with_initial_costs</definition>
+        <argsstring>(double t_value)</argsstring>
+        <name>with_initial_costs</name>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" line="58" column="21"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>idol::DantzigWolfe::ArtificialCosts</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::DantzigWolfe::InfeasibilityStrategyFactory</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::DantzigWolfe::ArtificialCosts</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::DantzigWolfe::InfeasibilityStrategyFactory</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" line="15" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h" bodystart="15" bodyend="60"/>
+    <listofallmembers>
+      <member refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1a8eb39da7440f994e106a28e7badf782d" prot="public" virt="virtual"><scope>idol::DantzigWolfe::ArtificialCosts</scope><name>clone</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1acb71e9965777ea3f36addc609a97b6a0" prot="private" virt="non-virtual"><scope>idol::DantzigWolfe::ArtificialCosts</scope><name>m_initial_costs</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1ae2fe5dbebce00f2fb0fb37742db2dce7" prot="private" virt="non-virtual"><scope>idol::DantzigWolfe::ArtificialCosts</scope><name>m_max_updates_before_phase_I</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1a2c2070dfb004265d6a48475076eba62a" prot="private" virt="non-virtual"><scope>idol::DantzigWolfe::ArtificialCosts</scope><name>m_update_factor</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1a7c658d313257705d1ef831d1b98450ce" prot="public" virt="virtual"><scope>idol::DantzigWolfe::ArtificialCosts</scope><name>operator()</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1ac54257c01968354571d07a3c7186fa23" prot="public" virt="non-virtual"><scope>idol::DantzigWolfe::ArtificialCosts</scope><name>with_initial_costs</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1ab3bf8e006d6937b294ca4063444e2b89" prot="public" virt="non-virtual"><scope>idol::DantzigWolfe::ArtificialCosts</scope><name>with_max_updates_before_phase_I</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1a8f9096fabe0161904c62a29c699b9cb1" prot="public" virt="non-virtual"><scope>idol::DantzigWolfe::ArtificialCosts</scope><name>with_update_factor</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1a08028cfb0b71ccb7c5bd77f3b545b125" prot="public" virt="virtual"><scope>idol::DantzigWolfe::ArtificialCosts</scope><name>~InfeasibilityStrategyFactory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1LimitedWidthStream" kind="class" language="C++" prot="public">
+    <compoundname>idol::LimitedWidthStream</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::ostream</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1LimitedWidthStream_1a8a611cad34a185cee7189d22ee9ca8f1" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1LimitedWidthBuffer" kindref="compound">LimitedWidthBuffer</ref></type>
+        <definition>LimitedWidthBuffer idol::LimitedWidthStream::buffer</definition>
+        <argsstring></argsstring>
+        <name>buffer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/LimitedWidthStream.h" line="70" column="28" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/LimitedWidthStream.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1LimitedWidthStream_1aa5217ebb1e57864b22a5810e29354673" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::LimitedWidthStream::LimitedWidthStream</definition>
+        <argsstring>(std::ostream &amp;os, std::size_t max_width)</argsstring>
+        <name>LimitedWidthStream</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>max_width</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/LimitedWidthStream.h" line="66" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/LimitedWidthStream.h" bodystart="66" bodyend="67"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>idol::LimitedWidthStream</label>
+        <link refid="classidol_1_1LimitedWidthStream"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::ostream</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::LimitedWidthStream</label>
+        <link refid="classidol_1_1LimitedWidthStream"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::ostream</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/utils/LimitedWidthStream.h" line="64" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/LimitedWidthStream.h" bodystart="64" bodyend="71"/>
+    <listofallmembers>
+      <member refid="classidol_1_1LimitedWidthStream_1a8a611cad34a185cee7189d22ee9ca8f1" prot="private" virt="non-virtual"><scope>idol::LimitedWidthStream</scope><name>buffer</name></member>
+      <member refid="classidol_1_1LimitedWidthStream_1aa5217ebb1e57864b22a5810e29354673" prot="public" virt="non-virtual"><scope>idol::LimitedWidthStream</scope><name>LimitedWidthStream</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

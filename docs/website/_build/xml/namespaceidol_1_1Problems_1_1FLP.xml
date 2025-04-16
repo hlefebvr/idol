@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1Problems_1_1FLP" kind="namespace" language="C++">
+    <compoundname>idol::Problems::FLP</compoundname>
+    <innerclass refid="classidol_1_1Problems_1_1FLP_1_1Instance" prot="public">idol::Problems::FLP::Instance</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="FLP__Instance_8h_1a92fc4475af39f41d5a77fb3eca5087cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Problems_1_1FLP_1_1Instance" kindref="compound">Instance</ref></type>
+        <definition>Instance idol::Problems::FLP::read_instance_2021_Cheng_et_al</definition>
+        <argsstring>(const std::string &amp;t_filename)</argsstring>
+        <name>read_instance_2021_Cheng_et_al</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reads an instance from Chun Cheng, Yossiri Adulyasak, Louis-Martin Rousseau, Robust facility location under demand uncertainty and facility disruptions, Omega, Volume 103, 2021, 102429, ISSN 0305-0483, <ulink url="https://doi.org/10.1016/j.omega.2021.102429">https://doi.org/10.1016/j.omega.2021.102429</ulink>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the filename </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="26" column="14" declfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" declline="26" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="FLP__Instance_8h_1acf9e7028de4f60dbaeef8d4fc44771b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Problems_1_1FLP_1_1Instance" kindref="compound">Instance</ref></type>
+        <definition>Instance idol::Problems::FLP::read_instance_1991_Cornuejols_et_al</definition>
+        <argsstring>(const std::string &amp;t_filename)</argsstring>
+        <name>read_instance_1991_Cornuejols_et_al</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="28" column="14" declfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" declline="28" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="FLP__Instance_8h_1ac523627453a2b13a0765eae8410feaa3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Problems_1_1FLP_1_1Instance" kindref="compound">Instance</ref></type>
+        <definition>Instance idol::Problems::FLP::generate_instance_1991_Cornuejols_et_al</definition>
+        <argsstring>(unsigned int t_n_facilities, unsigned int t_n_customers, double t_ratio_capacity_over_demand)</argsstring>
+        <name>generate_instance_1991_Cornuejols_et_al</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_facilities</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_customers</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_ratio_capacity_over_demand</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="30" column="14" declfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" declline="30" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="FLP__Instance_8h_1a83841c19ab9312f5daa3bacef3a97d56" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream&amp; idol::Problems::FLP::operator&lt;&lt;</definition>
+        <argsstring>(std::ostream &amp;t_os, const idol::Problems::FLP::Instance &amp;t_instance)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>t_os</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1Problems_1_1FLP_1_1Instance" kindref="compound">idol::Problems::FLP::Instance</ref> &amp;</type>
+          <declname>t_instance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="63" column="5" declfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" declline="63" declcolumn="5"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h" line="11" column="1"/>
+  </compounddef>
+</doxygen>

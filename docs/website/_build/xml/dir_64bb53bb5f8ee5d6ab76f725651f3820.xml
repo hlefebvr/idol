@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_64bb53bb5f8ee5d6ab76f725651f3820" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization</compoundname>
+    <innerfile refid="DualPriceSmoothingStabilization_8h">DualPriceSmoothingStabilization.h</innerfile>
+    <innerfile refid="Neame_8h">Neame.h</innerfile>
+    <innerfile refid="NoStabilization_8h">NoStabilization.h</innerfile>
+    <innerfile refid="Wentges_8h">Wentges.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/"/>
+  </compounddef>
+</doxygen>

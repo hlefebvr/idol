@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Logs_1_1DantzigWolfe_1_1Info" kind="class" language="C++" prot="public">
+    <compoundname>idol::Logs::DantzigWolfe::Info</compoundname>
+    <basecompoundref refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Factory" prot="public" virt="non-virtual">idol::Logs::DantzigWolfe::Factory</basecompoundref>
+    <innerclass refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1_1Strategy" prot="public">idol::Logs::DantzigWolfe::Info::Strategy</innerclass>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1abe5eacba282d5c014ff8610e6750afb2" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; unsigned int &gt;</type>
+        <definition>std::optional&lt;unsigned int&gt; idol::Logs::DantzigWolfe::Info::m_frequency_in_seconds</definition>
+        <argsstring></argsstring>
+        <name>m_frequency_in_seconds</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h" line="17" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1aa48c84d481262fbc27c384b39243d608" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt;bool&gt; idol::Logs::DantzigWolfe::Info::m_log_for_sub_problems</definition>
+        <argsstring></argsstring>
+        <name>m_log_for_sub_problems</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h" line="18" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1a4a32b34f8b5335255f700e0adf64ca60" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Info" kindref="compound">Info</ref> &amp;</type>
+        <definition>Info&amp; idol::Logs::DantzigWolfe::Info::with_frequency_in_seconds</definition>
+        <argsstring>(double t_frequency)</argsstring>
+        <name>with_frequency_in_seconds</name>
+        <param>
+          <type>double</type>
+          <declname>t_frequency</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h" line="58" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1abac3a5a71793d325702f11feee8ddedc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Info" kindref="compound">Info</ref> &amp;</type>
+        <definition>Info&amp; idol::Logs::DantzigWolfe::Info::with_sub_problems</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_sub_problems</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h" line="60" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1acfc365879bdb4c2934f59eae696499f8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1_1Strategy" kindref="compound">Strategy</ref> *</type>
+        <definition>Strategy* idol::Logs::DantzigWolfe::Info::operator()</definition>
+        <argsstring>() const override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Factory_1a85f1aaaee83a74d922fee4639bc74cd2">operator()</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h" line="62" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h" bodystart="62" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1aa671334857ec9adc6c1e45005d1c5d5b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Factory" kindref="compound">Factory</ref> *</type>
+        <definition>Factory* idol::Logs::DantzigWolfe::Info::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Factory_1ac9c21bb3a42b4afcf651224bffbc02fc">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h" line="69" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h" bodystart="69" bodyend="71"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>idol::Logs::DantzigWolfe::Info</label>
+        <link refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Info"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::Logs::DantzigWolfe::Factory</label>
+        <link refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Factory"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Logs::DantzigWolfe::Info</label>
+        <link refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Info"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::Logs::DantzigWolfe::Factory</label>
+        <link refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Factory"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h" line="16" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h" bodystart="16" bodyend="72"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1aa671334857ec9adc6c1e45005d1c5d5b" prot="public" virt="virtual"><scope>idol::Logs::DantzigWolfe::Info</scope><name>clone</name></member>
+      <member refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1abe5eacba282d5c014ff8610e6750afb2" prot="private" virt="non-virtual"><scope>idol::Logs::DantzigWolfe::Info</scope><name>m_frequency_in_seconds</name></member>
+      <member refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1aa48c84d481262fbc27c384b39243d608" prot="private" virt="non-virtual"><scope>idol::Logs::DantzigWolfe::Info</scope><name>m_log_for_sub_problems</name></member>
+      <member refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1acfc365879bdb4c2934f59eae696499f8" prot="public" virt="virtual"><scope>idol::Logs::DantzigWolfe::Info</scope><name>operator()</name></member>
+      <member refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1a4a32b34f8b5335255f700e0adf64ca60" prot="public" virt="non-virtual"><scope>idol::Logs::DantzigWolfe::Info</scope><name>with_frequency_in_seconds</name></member>
+      <member refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Info_1abac3a5a71793d325702f11feee8ddedc" prot="public" virt="non-virtual"><scope>idol::Logs::DantzigWolfe::Info</scope><name>with_sub_problems</name></member>
+      <member refid="classidol_1_1Logs_1_1DantzigWolfe_1_1Factory_1a1fd1ee8d6ac492b498cd0946f6f6d667" prot="public" virt="virtual"><scope>idol::Logs::DantzigWolfe::Info</scope><name>~Factory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Cuts::KnapsackCover</title>
+    
+          <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/api/mixed-integer/branch-and-bound/cuts/KnapsackCover.html" />
+    
+  <link rel="index" title="Index" href="../../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../../search.html" />
+  <link rel="next" title="DantzigWolfe::ArtificialCosts" href="../../column-generation/ArtificialCosts.html" />
+  <link rel="prev" title="More on Cutting Planes…" href="index.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../../../index.html">API</a> &raquo;</li>
+    
+      <li><a href="../../index.html">Mixed-integer Optimization</a> &raquo;</li>
+    
+      <li><a href="index.html">More on Cutting Planes…</a> &raquo;</li>
+    
+    <li>Cuts::KnapsackCover</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="index.html"
+       title="previous chapter">← More on Cutting Planes…</a>
+  </li>
+  <li class="next">
+    <a href="../../column-generation/ArtificialCosts.html"
+       title="next chapter">DantzigWolfe::ArtificialCosts →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="cuts-knapsackcover">
+<h1>Cuts::KnapsackCover<a class="headerlink" href="#cuts-knapsackcover" title="Link to this heading">¶</a></h1>
+<section id="doxygen">
+<h2>Doxygen<a class="headerlink" href="#doxygen" title="Link to this heading">¶</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4idol4Cuts13KnapsackCoverE">
+<span id="_CPPv3I0EN4idol4Cuts13KnapsackCoverE"></span><span id="_CPPv2I0EN4idol4Cuts13KnapsackCoverE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NodeInfoT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1Cuts_1_1KnapsackCover"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Cuts</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">KnapsackCover</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../BranchAndBoundCallbackFactory.html#_CPPv4I0EN4idol29BranchAndBoundCallbackFactoryE" title="idol::BranchAndBoundCallbackFactory"><span class="n"><span class="pre">BranchAndBoundCallbackFactory</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN4idol4Cuts13KnapsackCoverE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Cuts13KnapsackCoverclEv">
+<span id="_CPPv3N4idol4Cuts13KnapsackCoverclEv"></span><span id="_CPPv2N4idol4Cuts13KnapsackCoverclEv"></span><span id="idol::Cuts::KnapsackCover::call-operator"></span><span class="target" id="classidol_1_1Cuts_1_1KnapsackCover_1a8f1d293ea24553ce9aa679ff370db774"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../BranchAndBoundCallback.html#_CPPv4I0EN4idol22BranchAndBoundCallbackE" title="idol::BranchAndBoundCallback"><span class="n"><span class="pre">BranchAndBoundCallback</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol4Cuts13KnapsackCoverE" title="idol::Cuts::KnapsackCover::NodeInfoT"><span class="n"><span class="pre">NodeInfoT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N4idol4Cuts13KnapsackCoverclEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol4Cuts13KnapsackCover5cloneEv">
+<span id="_CPPv3NK4idol4Cuts13KnapsackCover5cloneEv"></span><span id="_CPPv2NK4idol4Cuts13KnapsackCover5cloneEv"></span><span id="idol::Cuts::KnapsackCover::cloneC"></span><span class="target" id="classidol_1_1Cuts_1_1KnapsackCover_1a1cc326ca3fdd9573e4eb3d982eab41f3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../BranchAndBoundCallbackFactory.html#_CPPv4I0EN4idol29BranchAndBoundCallbackFactoryE" title="idol::BranchAndBoundCallbackFactory"><span class="n"><span class="pre">BranchAndBoundCallbackFactory</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol4Cuts13KnapsackCoverE" title="idol::Cuts::KnapsackCover::NodeInfoT"><span class="n"><span class="pre">NodeInfoT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK4idol4Cuts13KnapsackCover5cloneEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Cuts13KnapsackCover12with_liftingEb">
+<span id="_CPPv3N4idol4Cuts13KnapsackCover12with_liftingEb"></span><span id="_CPPv2N4idol4Cuts13KnapsackCover12with_liftingEb"></span><span id="idol::Cuts::KnapsackCover::with_lifting__b"></span><span class="target" id="classidol_1_1Cuts_1_1KnapsackCover_1a492d2927b37547976e3064665f43dd70"></span><a class="reference internal" href="#_CPPv4I0EN4idol4Cuts13KnapsackCoverE" title="idol::Cuts::KnapsackCover"><span class="n"><span class="pre">KnapsackCover</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_lifting</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Cuts13KnapsackCover12with_liftingEb" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Cuts13KnapsackCover19with_tree_node_cutsEb">
+<span id="_CPPv3N4idol4Cuts13KnapsackCover19with_tree_node_cutsEb"></span><span id="_CPPv2N4idol4Cuts13KnapsackCover19with_tree_node_cutsEb"></span><span id="idol::Cuts::KnapsackCover::with_tree_node_cuts__b"></span><span class="target" id="classidol_1_1Cuts_1_1KnapsackCover_1a6a8a124f7ec62a9218ead0ccdca37a94"></span><a class="reference internal" href="#_CPPv4I0EN4idol4Cuts13KnapsackCoverE" title="idol::Cuts::KnapsackCover"><span class="n"><span class="pre">KnapsackCover</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_tree_node_cuts</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Cuts13KnapsackCover19with_tree_node_cutsEb" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Cuts13KnapsackCover23with_max_pass_root_nodeEj">
+<span id="_CPPv3N4idol4Cuts13KnapsackCover23with_max_pass_root_nodeEj"></span><span id="_CPPv2N4idol4Cuts13KnapsackCover23with_max_pass_root_nodeEj"></span><span id="idol::Cuts::KnapsackCover::with_max_pass_root_node__unsigned-i"></span><span class="target" id="classidol_1_1Cuts_1_1KnapsackCover_1afe912d20616b634e185416709a57d1c1"></span><a class="reference internal" href="#_CPPv4I0EN4idol4Cuts13KnapsackCoverE" title="idol::Cuts::KnapsackCover"><span class="n"><span class="pre">KnapsackCover</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_max_pass_root_node</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Cuts13KnapsackCover23with_max_pass_root_nodeEj" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Cuts13KnapsackCover20with_max_cuts_factorEd">
+<span id="_CPPv3N4idol4Cuts13KnapsackCover20with_max_cuts_factorEd"></span><span id="_CPPv2N4idol4Cuts13KnapsackCover20with_max_cuts_factorEd"></span><span id="idol::Cuts::KnapsackCover::with_max_cuts_factor__double"></span><span class="target" id="classidol_1_1Cuts_1_1KnapsackCover_1a91a5c4a1273c9450912ce560ee69b7db"></span><a class="reference internal" href="#_CPPv4I0EN4idol4Cuts13KnapsackCoverE" title="idol::Cuts::KnapsackCover"><span class="n"><span class="pre">KnapsackCover</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_max_cuts_factor</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Cuts13KnapsackCover20with_max_cuts_factorEd" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Cuts13KnapsackCover8StrategyE">
+<span id="_CPPv3N4idol4Cuts13KnapsackCover8StrategyE"></span><span id="_CPPv2N4idol4Cuts13KnapsackCover8StrategyE"></span><span id="idol::Cuts::KnapsackCover::Strategy"></span><span class="target" id="classidol_1_1Cuts_1_1KnapsackCover_1_1Strategy"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Strategy</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../BranchAndBoundCallback.html#_CPPv4I0EN4idol22BranchAndBoundCallbackE" title="idol::BranchAndBoundCallback"><span class="n"><span class="pre">BranchAndBoundCallback</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol4Cuts13KnapsackCoverE" title="idol::Cuts::KnapsackCover::NodeInfoT"><span class="n"><span class="pre">NodeInfoT</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N4idol4Cuts13KnapsackCover8StrategyE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Cuts13KnapsackCover8Strategy8StrategyEbbjd">
+<span id="_CPPv3N4idol4Cuts13KnapsackCover8Strategy8StrategyEbbjd"></span><span id="_CPPv2N4idol4Cuts13KnapsackCover8Strategy8StrategyEbbjd"></span><span id="idol::Cuts::KnapsackCover::Strategy::Strategy__b.b.unsigned-i.double"></span><span class="target" id="classidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1af0cc2d8a4876d1224e0f81567432694b"></span><span class="sig-name descname"><span class="n"><span class="pre">Strategy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_use_lifting</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_apply_to_tree_nodes</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_max_pass_root_node</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_max_cuts_factor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Cuts13KnapsackCover8Strategy8StrategyEbbjd" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="index.html"
+       title="previous chapter">← More on Cutting Planes…</a>
+  </li>
+  <li class="next">
+    <a href="../../column-generation/ArtificialCosts.html"
+       title="next chapter">DantzigWolfe::ArtificialCosts →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

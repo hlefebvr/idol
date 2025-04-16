@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Lazy" kind="class" language="C++" prot="public">
+    <compoundname>idol::Lazy</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+      <param>
+        <type>class ImplT</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Lazy_1a23e8e9cbd39d374706f384b944a28eab" prot="private" static="no" mutable="no">
+        <type>T</type>
+        <definition>T idol::Lazy&lt; T, ImplT &gt;::m_object</definition>
+        <argsstring></argsstring>
+        <name>m_object</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="26" column="7" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Lazy_1a3cbf9c81a3bc52ab14142bb8859e081a" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; ImplT &gt;</type>
+        <definition>std::optional&lt;ImplT&gt; idol::Lazy&lt; T, ImplT &gt;::m_impl</definition>
+        <argsstring></argsstring>
+        <name>m_impl</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="27" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Lazy_1a6f22e2beb245a5b919aaa761f8dc034a" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; std::list&lt; unsigned int &gt;::iterator &gt;</type>
+        <definition>std::optional&lt;std::list&lt;unsigned int&gt;::iterator&gt; idol::Lazy&lt; T, ImplT &gt;::m_to_be_updated_flag</definition>
+        <argsstring></argsstring>
+        <name>m_to_be_updated_flag</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="28" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Lazy_1a6a42e0746ba3329077e501a3c5c3b747" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Lazy&lt; T, ImplT &gt;::Lazy</definition>
+        <argsstring>(const T &amp;t_object, std::list&lt; unsigned int &gt;::iterator t_to_be_updated_flag)</argsstring>
+        <name>Lazy</name>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t_object</declname>
+        </param>
+        <param>
+          <type>std::list&lt; unsigned int &gt;::iterator</type>
+          <declname>t_to_be_updated_flag</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="30" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="30" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Lazy_1a351847026d4c05dc46d1889010742dc2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Lazy&lt; T, ImplT &gt;::has_impl</definition>
+        <argsstring>() const</argsstring>
+        <name>has_impl</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="33" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="33" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Lazy_1a5738fa9822bfccc9c9b65e53b842a81d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>ImplT &amp;</type>
+        <definition>ImplT&amp; idol::Lazy&lt; T, ImplT &gt;::impl</definition>
+        <argsstring>()</argsstring>
+        <name>impl</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="35" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="35" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Lazy_1a03d86f4a2f481743e01fc99fd60a949d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const ImplT &amp;</type>
+        <definition>const ImplT&amp; idol::Lazy&lt; T, ImplT &gt;::impl</definition>
+        <argsstring>() const</argsstring>
+        <name>impl</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="37" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="37" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Lazy_1ad9be72b577d32171249f8bc7da2bae80" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Lazy&lt; T, ImplT &gt;::is_to_be_updated</definition>
+        <argsstring>() const</argsstring>
+        <name>is_to_be_updated</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="39" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="39" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Lazy_1a749b61ba9133942ebd88b5189ce87e54" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Lazy&lt; T, ImplT &gt;::set_as_to_be_updated</definition>
+        <argsstring>(std::list&lt; unsigned int &gt;::iterator t_flag)</argsstring>
+        <name>set_as_to_be_updated</name>
+        <param>
+          <type>std::list&lt; unsigned int &gt;::iterator</type>
+          <declname>t_flag</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="41" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="41" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Lazy_1af6becf397c153c14ba6d9f3aa747e74a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Lazy&lt; T, ImplT &gt;::set_as_updated</definition>
+        <argsstring>()</argsstring>
+        <name>set_as_updated</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="43" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="43" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Lazy_1ab1d77c218da6f4e66c95700a07adac39" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::list&lt; unsigned int &gt;::iterator</type>
+        <definition>std::list&lt;unsigned int&gt;::iterator idol::Lazy&lt; T, ImplT &gt;::to_be_updated_flag</definition>
+        <argsstring>() const</argsstring>
+        <name>to_be_updated_flag</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="45" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="45" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Lazy_1a73fae360347eedb2ace8a4effb3a7bcf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Lazy&lt; T, ImplT &gt;::set_impl</definition>
+        <argsstring>(ImplT &amp;&amp;t_impl)</argsstring>
+        <name>set_impl</name>
+        <param>
+          <type>ImplT &amp;&amp;</type>
+          <declname>t_impl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="47" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="47" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Lazy_1ae1561fad8fb13a7d43c53843e41b5726" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const T &amp;</type>
+        <definition>const T&amp; idol::Lazy&lt; T, ImplT &gt;::object</definition>
+        <argsstring>() const</argsstring>
+        <name>object</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="49" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="49" bodyend="49"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Lazy&lt; T, ImplT &gt;</label>
+        <link refid="classidol_1_1Lazy"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="25" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="25" bodyend="50"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Lazy_1a351847026d4c05dc46d1889010742dc2" prot="public" virt="non-virtual"><scope>idol::Lazy</scope><name>has_impl</name></member>
+      <member refid="classidol_1_1Lazy_1a5738fa9822bfccc9c9b65e53b842a81d" prot="public" virt="non-virtual"><scope>idol::Lazy</scope><name>impl</name></member>
+      <member refid="classidol_1_1Lazy_1a03d86f4a2f481743e01fc99fd60a949d" prot="public" virt="non-virtual"><scope>idol::Lazy</scope><name>impl</name></member>
+      <member refid="classidol_1_1Lazy_1ad9be72b577d32171249f8bc7da2bae80" prot="public" virt="non-virtual"><scope>idol::Lazy</scope><name>is_to_be_updated</name></member>
+      <member refid="classidol_1_1Lazy_1a6a42e0746ba3329077e501a3c5c3b747" prot="public" virt="non-virtual"><scope>idol::Lazy</scope><name>Lazy</name></member>
+      <member refid="classidol_1_1Lazy_1a3cbf9c81a3bc52ab14142bb8859e081a" prot="private" virt="non-virtual"><scope>idol::Lazy</scope><name>m_impl</name></member>
+      <member refid="classidol_1_1Lazy_1a23e8e9cbd39d374706f384b944a28eab" prot="private" virt="non-virtual"><scope>idol::Lazy</scope><name>m_object</name></member>
+      <member refid="classidol_1_1Lazy_1a6f22e2beb245a5b919aaa761f8dc034a" prot="private" virt="non-virtual"><scope>idol::Lazy</scope><name>m_to_be_updated_flag</name></member>
+      <member refid="classidol_1_1Lazy_1ae1561fad8fb13a7d43c53843e41b5726" prot="public" virt="non-virtual"><scope>idol::Lazy</scope><name>object</name></member>
+      <member refid="classidol_1_1Lazy_1a749b61ba9133942ebd88b5189ce87e54" prot="public" virt="non-virtual"><scope>idol::Lazy</scope><name>set_as_to_be_updated</name></member>
+      <member refid="classidol_1_1Lazy_1af6becf397c153c14ba6d9f3aa747e74a" prot="public" virt="non-virtual"><scope>idol::Lazy</scope><name>set_as_updated</name></member>
+      <member refid="classidol_1_1Lazy_1a73fae360347eedb2ace8a4effb3a7bcf" prot="public" virt="non-virtual"><scope>idol::Lazy</scope><name>set_impl</name></member>
+      <member refid="classidol_1_1Lazy_1ab1d77c218da6f4e66c95700a07adac39" prot="public" virt="non-virtual"><scope>idol::Lazy</scope><name>to_be_updated_flag</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

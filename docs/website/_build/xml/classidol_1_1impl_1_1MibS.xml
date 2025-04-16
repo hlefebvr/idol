@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1impl_1_1MibS" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>idol::impl::MibS</compoundname>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1impl_1_1MibS_1a14620c5525cf6b19457ce1381c340976" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual idol::impl::MibS::~MibS</definition>
+        <argsstring>()=default</argsstring>
+        <name>~MibS</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h" line="14" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1MibS_1a2bbf65b15a1f5be4539c3cf1ee5ef757" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>SolutionStatus</type>
+        <definition>virtual SolutionStatus idol::impl::MibS::get_status</definition>
+        <argsstring>() const =0</argsstring>
+        <name>get_status</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h" line="16" column="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1MibS_1ae946fe08fe3b06e199f3dc418e5606d4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>SolutionReason</type>
+        <definition>virtual SolutionReason idol::impl::MibS::get_reason</definition>
+        <argsstring>() const =0</argsstring>
+        <name>get_reason</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h" line="18" column="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1MibS_1a31f359e00bcba541d5415ca735ddd3b3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double idol::impl::MibS::get_best_obj</definition>
+        <argsstring>() const =0</argsstring>
+        <name>get_best_obj</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h" line="20" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1MibS_1a70dcd9f5bd90ee44d7cf17285fb141f2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double idol::impl::MibS::get_best_bound</definition>
+        <argsstring>() const =0</argsstring>
+        <name>get_best_bound</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h" line="22" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1MibS_1a05580e0163190dc26cf2e32bed23f3ae" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double idol::impl::MibS::get_var_primal</definition>
+        <argsstring>(const Var &amp;t_var) const =0</argsstring>
+        <name>get_var_primal</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h" line="24" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1MibS_1af1303ce61a1d0c43af36cc8aee88b4a7" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::MibS::solve</definition>
+        <argsstring>()=0</argsstring>
+        <name>solve</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h" line="26" column="18"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::impl::MibS</label>
+        <link refid="classidol_1_1impl_1_1MibS"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h" line="12" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h" bodystart="12" bodyend="27"/>
+    <listofallmembers>
+      <member refid="classidol_1_1impl_1_1MibS_1a70dcd9f5bd90ee44d7cf17285fb141f2" prot="public" virt="pure-virtual"><scope>idol::impl::MibS</scope><name>get_best_bound</name></member>
+      <member refid="classidol_1_1impl_1_1MibS_1a31f359e00bcba541d5415ca735ddd3b3" prot="public" virt="pure-virtual"><scope>idol::impl::MibS</scope><name>get_best_obj</name></member>
+      <member refid="classidol_1_1impl_1_1MibS_1ae946fe08fe3b06e199f3dc418e5606d4" prot="public" virt="pure-virtual"><scope>idol::impl::MibS</scope><name>get_reason</name></member>
+      <member refid="classidol_1_1impl_1_1MibS_1a2bbf65b15a1f5be4539c3cf1ee5ef757" prot="public" virt="pure-virtual"><scope>idol::impl::MibS</scope><name>get_status</name></member>
+      <member refid="classidol_1_1impl_1_1MibS_1a05580e0163190dc26cf2e32bed23f3ae" prot="public" virt="pure-virtual"><scope>idol::impl::MibS</scope><name>get_var_primal</name></member>
+      <member refid="classidol_1_1impl_1_1MibS_1af1303ce61a1d0c43af36cc8aee88b4a7" prot="public" virt="pure-virtual"><scope>idol::impl::MibS</scope><name>solve</name></member>
+      <member refid="classidol_1_1impl_1_1MibS_1a14620c5525cf6b19457ce1381c340976" prot="public" virt="virtual"><scope>idol::impl::MibS</scope><name>~MibS</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

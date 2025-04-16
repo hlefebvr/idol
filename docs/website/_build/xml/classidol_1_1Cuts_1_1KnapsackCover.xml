@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Cuts_1_1KnapsackCover" kind="class" language="C++" prot="public">
+    <compoundname>idol::Cuts::KnapsackCover</compoundname>
+    <basecompoundref refid="classidol_1_1BranchAndBoundCallbackFactory" prot="public" virt="non-virtual">idol::BranchAndBoundCallbackFactory&lt; idol::DefaultNodeInfo &gt;</basecompoundref>
+    <innerclass refid="classidol_1_1Cuts_1_1KnapsackCover_1_1Strategy" prot="public">idol::Cuts::KnapsackCover::Strategy</innerclass>
+    <templateparamlist>
+      <param>
+        <type>class NodeInfoT</type>
+        <defval><ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref></defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Cuts_1_1KnapsackCover_1abb72b9378c9f6c0ce924c4baf37483b8" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt;bool&gt; idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::m_lifting</definition>
+        <argsstring></argsstring>
+        <name>m_lifting</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="18" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Cuts_1_1KnapsackCover_1a9750218e98fe3f683a0c49aa23843eae" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt;bool&gt; idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::m_apply_to_tree_nodes</definition>
+        <argsstring></argsstring>
+        <name>m_apply_to_tree_nodes</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="19" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Cuts_1_1KnapsackCover_1a645cb9029cd4491b4191c301fb482d49" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; unsigned int &gt;</type>
+        <definition>std::optional&lt;unsigned int&gt; idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::m_max_pass_root_node</definition>
+        <argsstring></argsstring>
+        <name>m_max_pass_root_node</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="20" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Cuts_1_1KnapsackCover_1a340c20619caf5e9a0ece129d491cf3e6" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::m_max_cuts_factor</definition>
+        <argsstring></argsstring>
+        <name>m_max_cuts_factor</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="21" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Cuts_1_1KnapsackCover_1a8f1d293ea24553ce9aa679ff370db774" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classidol_1_1BranchAndBoundCallback" kindref="compound">BranchAndBoundCallback</ref>&lt; NodeInfoT &gt; *</type>
+        <definition>idol::BranchAndBoundCallback&lt; NodeInfoT &gt; * idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::operator()</definition>
+        <argsstring>() override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1BranchAndBoundCallbackFactory_1a621c12413465f0d279df195f515382d9">operator()</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="24" column="28" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="942" bodyend="949"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Cuts_1_1KnapsackCover_1a1cc326ca3fdd9573e4eb3d982eab41f3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classidol_1_1BranchAndBoundCallbackFactory" kindref="compound">BranchAndBoundCallbackFactory</ref>&lt; NodeInfoT &gt; *</type>
+        <definition>idol::BranchAndBoundCallbackFactory&lt; NodeInfoT &gt; * idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1BranchAndBoundCallbackFactory_1a068043d97a3a7cf36016eb2e373854ba">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="25" column="35" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="937" bodyend="939"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Cuts_1_1KnapsackCover_1a492d2927b37547976e3064665f43dd70" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Cuts_1_1KnapsackCover" kindref="compound">KnapsackCover</ref> &amp;</type>
+        <definition>idol::Cuts::KnapsackCover&lt; NodeInfoT &gt; &amp; idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::with_lifting</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_lifting</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="27" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="73" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Cuts_1_1KnapsackCover_1a6a8a124f7ec62a9218ead0ccdca37a94" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Cuts_1_1KnapsackCover" kindref="compound">KnapsackCover</ref> &amp;</type>
+        <definition>idol::Cuts::KnapsackCover&lt; NodeInfoT &gt; &amp; idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::with_tree_node_cuts</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_tree_node_cuts</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="29" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="61" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Cuts_1_1KnapsackCover_1afe912d20616b634e185416709a57d1c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Cuts_1_1KnapsackCover" kindref="compound">KnapsackCover</ref> &amp;</type>
+        <definition>idol::Cuts::KnapsackCover&lt; NodeInfoT &gt; &amp; idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::with_max_pass_root_node</definition>
+        <argsstring>(unsigned int t_value)</argsstring>
+        <name>with_max_pass_root_node</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="31" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="37" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Cuts_1_1KnapsackCover_1a91a5c4a1273c9450912ce560ee69b7db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Cuts_1_1KnapsackCover" kindref="compound">KnapsackCover</ref> &amp;</type>
+        <definition>idol::Cuts::KnapsackCover&lt; NodeInfoT &gt; &amp; idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::with_max_cuts_factor</definition>
+        <argsstring>(double t_value)</argsstring>
+        <name>with_max_cuts_factor</name>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="33" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="49" bodyend="58"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>idol::BranchAndBoundCallbackFactory&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackFactory"/>
+      </node>
+      <node id="1">
+        <label>idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Cuts_1_1KnapsackCover"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::BranchAndBoundCallbackFactory&lt; idol::DefaultNodeInfo &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackFactory"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; idol::DefaultNodeInfo &gt;</edgelabel>
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>idol::BranchAndBoundCallbackFactory&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackFactory"/>
+      </node>
+      <node id="1">
+        <label>idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Cuts_1_1KnapsackCover"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::BranchAndBoundCallbackFactory&lt; idol::DefaultNodeInfo &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackFactory"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; idol::DefaultNodeInfo &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="17" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="17" bodyend="34"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Cuts_1_1KnapsackCover_1a1cc326ca3fdd9573e4eb3d982eab41f3" prot="public" virt="virtual"><scope>idol::Cuts::KnapsackCover</scope><name>clone</name></member>
+      <member refid="classidol_1_1Cuts_1_1KnapsackCover_1a9750218e98fe3f683a0c49aa23843eae" prot="private" virt="non-virtual"><scope>idol::Cuts::KnapsackCover</scope><name>m_apply_to_tree_nodes</name></member>
+      <member refid="classidol_1_1Cuts_1_1KnapsackCover_1abb72b9378c9f6c0ce924c4baf37483b8" prot="private" virt="non-virtual"><scope>idol::Cuts::KnapsackCover</scope><name>m_lifting</name></member>
+      <member refid="classidol_1_1Cuts_1_1KnapsackCover_1a340c20619caf5e9a0ece129d491cf3e6" prot="private" virt="non-virtual"><scope>idol::Cuts::KnapsackCover</scope><name>m_max_cuts_factor</name></member>
+      <member refid="classidol_1_1Cuts_1_1KnapsackCover_1a645cb9029cd4491b4191c301fb482d49" prot="private" virt="non-virtual"><scope>idol::Cuts::KnapsackCover</scope><name>m_max_pass_root_node</name></member>
+      <member refid="classidol_1_1Cuts_1_1KnapsackCover_1a8f1d293ea24553ce9aa679ff370db774" prot="public" virt="virtual"><scope>idol::Cuts::KnapsackCover</scope><name>operator()</name></member>
+      <member refid="classidol_1_1Cuts_1_1KnapsackCover_1a492d2927b37547976e3064665f43dd70" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover</scope><name>with_lifting</name></member>
+      <member refid="classidol_1_1Cuts_1_1KnapsackCover_1a91a5c4a1273c9450912ce560ee69b7db" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover</scope><name>with_max_cuts_factor</name></member>
+      <member refid="classidol_1_1Cuts_1_1KnapsackCover_1afe912d20616b634e185416709a57d1c1" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover</scope><name>with_max_pass_root_node</name></member>
+      <member refid="classidol_1_1Cuts_1_1KnapsackCover_1a6a8a124f7ec62a9218ead0ccdca37a94" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover</scope><name>with_tree_node_cuts</name></member>
+      <member refid="classidol_1_1BranchAndBoundCallbackFactory_1a3975f35ac10323fad20a2fde3a0cecc2" prot="public" virt="virtual"><scope>idol::Cuts::KnapsackCover</scope><name>~BranchAndBoundCallbackFactory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

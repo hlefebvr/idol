@@ -1,0 +1,240 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1impl_1_1Annotation" kind="class" language="C++" prot="public">
+    <compoundname>idol::impl::Annotation</compoundname>
+    <derivedcompoundref refid="classidol_1_1Annotation" prot="public" virt="non-virtual">idol::Annotation&lt; double &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1Annotation" prot="public" virt="non-virtual">idol::Annotation&lt; unsigned int &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1Annotation" prot="public" virt="non-virtual">idol::Annotation&lt; ValueT &gt;</derivedcompoundref>
+    <innerclass refid="structidol_1_1impl_1_1Annotation_1_1Id" prot="private">idol::impl::Annotation::Id</innerclass>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1impl_1_1Annotation_1ab2f9ebad77cc158ec81dfd2ef4786707" prot="private" static="no" mutable="no">
+        <type>std::shared_ptr&lt; Id &gt;</type>
+        <definition>std::shared_ptr&lt;Id&gt; idol::impl::Annotation::m_id</definition>
+        <argsstring></argsstring>
+        <name>m_id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="29" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classidol_1_1impl_1_1Annotation_1ae3ac98114b7a96a281cd389c2e8d3eb6" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class ...</type>
+            <declname>ArgsT</declname>
+            <defname>ArgsT</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::impl::Annotation::set_default_value</definition>
+        <argsstring>(ArgsT &amp;&amp;...t_args)</argsstring>
+        <name>set_default_value</name>
+        <param>
+          <type>ArgsT &amp;&amp;...</type>
+          <declname>t_args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="31" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="71" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Annotation_1a29be39ae8b14bd61aa935147feb85e7e" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>const T &amp;</type>
+        <definition>const T&amp; idol::impl::Annotation::cast_default_value</definition>
+        <argsstring>() const</argsstring>
+        <name>cast_default_value</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="32" column="25" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="32" bodyend="32"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1impl_1_1Annotation_1a87ad63097c41e7db8a54472b6ae70d50" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::impl::Annotation::Annotation</definition>
+        <argsstring>(::idol::Env &amp;t_env, std::string &amp;&amp;t_name)</argsstring>
+        <name>Annotation</name>
+        <param>
+          <type>::<ref refid="classidol_1_1Env" kindref="compound">idol::Env</ref> &amp;</type>
+          <declname>t_env</declname>
+        </param>
+        <param>
+          <type>std::string &amp;&amp;</type>
+          <declname>t_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="34" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Annotation_1abade444ae4f4a12f7ca7cd2d54d7b344" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual idol::impl::Annotation::~Annotation</definition>
+        <argsstring>()=default</argsstring>
+        <name>~Annotation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="36" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Annotation_1ac26d9a3fd757d1af30bd2cf6edafe7ed" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::impl::Annotation::id</definition>
+        <argsstring>() const</argsstring>
+        <name>id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the id of the annotation.</para>
+<para>The id is unique within the environment. <simplesect kind="return"><para>The id of the annotation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="44" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Annotation_1ae8656d3f3b7137a0560e92a72627db41" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::string &amp;</type>
+        <definition>const std::string&amp; idol::impl::Annotation::name</definition>
+        <argsstring>() const</argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the given name of the annotation. <simplesect kind="return"><para>The given name of the annotation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="50" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="50" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Annotation_1a0b4fb9e4586c9d3983eae4be0b1e946a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::impl::Annotation::has_default</definition>
+        <argsstring>() const</argsstring>
+        <name>has_default</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns true if the annotation has a default value, false otherwise. <simplesect kind="return"><para>true if the annotation has a default value, false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="56" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="56" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Annotation_1a45a68fd3068b795fd400edc01c72d9c6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::impl::Annotation::free</definition>
+        <argsstring>()</argsstring>
+        <name>free</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Frees the memory kept for the annotation in the environment. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="61" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Annotation_1abe4db61ccab2aca644379002b099233e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1impl_1_1Env" kindref="compound">Env</ref> &amp;</type>
+        <definition>Env&amp; idol::impl::Annotation::env</definition>
+        <argsstring>() const</argsstring>
+        <name>env</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the underlying environment of the annotation. <simplesect kind="return"><para>The underlying environment of the annotation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="67" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="67" bodyend="67"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="4">
+        <label>idol::Annotation&lt; ValueT &gt;</label>
+        <link refid="classidol_1_1Annotation"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::Annotation&lt; unsigned int &gt;</label>
+        <link refid="classidol_1_1Annotation"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; unsigned int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::Annotation&lt; double &gt;</label>
+        <link refid="classidol_1_1Annotation"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; double &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::impl::Annotation</label>
+        <link refid="classidol_1_1impl_1_1Annotation"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::impl::Annotation</label>
+        <link refid="classidol_1_1impl_1_1Annotation"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="21" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="21" bodyend="68"/>
+    <listofallmembers>
+      <member refid="classidol_1_1impl_1_1Annotation_1a87ad63097c41e7db8a54472b6ae70d50" prot="public" virt="non-virtual"><scope>idol::impl::Annotation</scope><name>Annotation</name></member>
+      <member refid="classidol_1_1impl_1_1Annotation_1a29be39ae8b14bd61aa935147feb85e7e" prot="protected" virt="non-virtual"><scope>idol::impl::Annotation</scope><name>cast_default_value</name></member>
+      <member refid="classidol_1_1impl_1_1Annotation_1abe4db61ccab2aca644379002b099233e" prot="public" virt="non-virtual"><scope>idol::impl::Annotation</scope><name>env</name></member>
+      <member refid="classidol_1_1impl_1_1Annotation_1a45a68fd3068b795fd400edc01c72d9c6" prot="public" virt="non-virtual"><scope>idol::impl::Annotation</scope><name>free</name></member>
+      <member refid="classidol_1_1impl_1_1Annotation_1a0b4fb9e4586c9d3983eae4be0b1e946a" prot="public" virt="non-virtual"><scope>idol::impl::Annotation</scope><name>has_default</name></member>
+      <member refid="classidol_1_1impl_1_1Annotation_1ac26d9a3fd757d1af30bd2cf6edafe7ed" prot="public" virt="non-virtual"><scope>idol::impl::Annotation</scope><name>id</name></member>
+      <member refid="classidol_1_1impl_1_1Annotation_1ab2f9ebad77cc158ec81dfd2ef4786707" prot="private" virt="non-virtual"><scope>idol::impl::Annotation</scope><name>m_id</name></member>
+      <member refid="classidol_1_1impl_1_1Annotation_1ae8656d3f3b7137a0560e92a72627db41" prot="public" virt="non-virtual"><scope>idol::impl::Annotation</scope><name>name</name></member>
+      <member refid="classidol_1_1impl_1_1Annotation_1ae3ac98114b7a96a281cd389c2e8d3eb6" prot="protected" virt="non-virtual"><scope>idol::impl::Annotation</scope><name>set_default_value</name></member>
+      <member refid="classidol_1_1impl_1_1Annotation_1abade444ae4f4a12f7ca7cd2d54d7b344" prot="public" virt="virtual"><scope>idol::impl::Annotation</scope><name>~Annotation</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

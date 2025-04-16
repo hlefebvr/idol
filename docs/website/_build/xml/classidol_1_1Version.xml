@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Version" kind="class" language="C++" prot="public">
+    <compoundname>idol::Version</compoundname>
+    <derivedcompoundref refid="classidol_1_1CtrVersion" prot="public" virt="non-virtual">idol::CtrVersion</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1QCtrVersion" prot="public" virt="non-virtual">idol::QCtrVersion</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1SOSCtrVersion" prot="public" virt="non-virtual">idol::SOSCtrVersion</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1VarVersion" prot="public" virt="non-virtual">idol::VarVersion</derivedcompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Version_1aaf9cf95e28b8446c61cc93c4e432ed76" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Version::m_index</definition>
+        <argsstring></argsstring>
+        <name>m_index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" line="13" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Version_1ac20ae41000d677ee2ccfbddcd1bdd134" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Version::Version</definition>
+        <argsstring>(unsigned int t_index)</argsstring>
+        <name>Version</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" line="15" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" bodystart="15" bodyend="15"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Version_1a001025d4d96827039121ac0429fc7306" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Version::index</definition>
+        <argsstring>() const</argsstring>
+        <name>index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" line="17" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" bodystart="17" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Version_1ab975bf3e614686035e2872b1b7e8fb32" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Version::set_index</definition>
+        <argsstring>(unsigned int t_index)</argsstring>
+        <name>set_index</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" line="19" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" bodystart="19" bodyend="19"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>idol::Version</label>
+        <link refid="classidol_1_1Version"/>
+      </node>
+      <node id="4">
+        <label>idol::SOSCtrVersion</label>
+        <link refid="classidol_1_1SOSCtrVersion"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::QCtrVersion</label>
+        <link refid="classidol_1_1QCtrVersion"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::CtrVersion</label>
+        <link refid="classidol_1_1CtrVersion"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>idol::VarVersion</label>
+        <link refid="classidol_1_1VarVersion"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Version</label>
+        <link refid="classidol_1_1Version"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" line="12" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Version.h" bodystart="12" bodyend="20"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Version_1a001025d4d96827039121ac0429fc7306" prot="public" virt="non-virtual"><scope>idol::Version</scope><name>index</name></member>
+      <member refid="classidol_1_1Version_1aaf9cf95e28b8446c61cc93c4e432ed76" prot="private" virt="non-virtual"><scope>idol::Version</scope><name>m_index</name></member>
+      <member refid="classidol_1_1Version_1ab975bf3e614686035e2872b1b7e8fb32" prot="public" virt="non-virtual"><scope>idol::Version</scope><name>set_index</name></member>
+      <member refid="classidol_1_1Version_1ac20ae41000d677ee2ccfbddcd1bdd134" prot="public" virt="non-virtual"><scope>idol::Version</scope><name>Version</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

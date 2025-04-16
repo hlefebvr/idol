@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_49506f371578f6088f4c79eabf540f03" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm</compoundname>
+    <innerfile refid="mixed-integer_2optimizers_2padm_2Formulation_8h">Formulation.h</innerfile>
+    <innerfile refid="Optimizers__PADM_8h">Optimizers_PADM.h</innerfile>
+    <innerfile refid="PADM_8h">PADM.h</innerfile>
+    <innerfile refid="PenaltyMethod_8h">PenaltyMethod.h</innerfile>
+    <innerfile refid="PenaltyUpdates_8h">PenaltyUpdates.h</innerfile>
+    <innerfile refid="padm_2SubProblem_8h">SubProblem.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/"/>
+  </compounddef>
+</doxygen>

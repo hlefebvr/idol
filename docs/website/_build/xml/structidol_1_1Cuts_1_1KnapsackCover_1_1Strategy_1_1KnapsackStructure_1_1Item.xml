@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item" kind="struct" language="C++" prot="public">
+    <compoundname>idol::Cuts::KnapsackCover::Strategy::KnapsackStructure::Item</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1abb0ad8a63527a5aa3af1d3ca00886c57" prot="public" static="no" mutable="no">
+        <type><ref refid="classidol_1_1Var" kindref="compound">Var</ref></type>
+        <definition>Var idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::Strategy::KnapsackStructure::Item::variable</definition>
+        <argsstring></argsstring>
+        <name>variable</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="90" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1ab9321be24704b788fffe93adf8632c4f" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::Strategy::KnapsackStructure::Item::weight</definition>
+        <argsstring></argsstring>
+        <name>weight</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="91" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a10f0cf30d4eb8cec9f271bc9cd1fd35e" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::Strategy::KnapsackStructure::Item::current_value</definition>
+        <argsstring></argsstring>
+        <name>current_value</name>
+        <initializer>= -1.</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="92" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a9969814ff4c4e1d2bd399c9f87e0f06f" prot="public" static="no" mutable="no">
+        <type>std::optional&lt; int &gt;</type>
+        <definition>std::optional&lt;int&gt; idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::Strategy::KnapsackStructure::Item::cut_coefficient</definition>
+        <argsstring></argsstring>
+        <name>cut_coefficient</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="93" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a2ce677f18169a6075d40e60bea6ddca4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::Strategy::KnapsackStructure::Item::Item</definition>
+        <argsstring>(const Var &amp;t_var, int t_weight)</argsstring>
+        <name>Item</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t_weight</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="94" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="239" bodyend="242"/>
+      </memberdef>
+      <memberdef kind="function" id="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a4676f97e2af2463ea2856a7cc6f25e2c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::Strategy::KnapsackStructure::Item::Item</definition>
+        <argsstring>(const Item &amp;)=default</argsstring>
+        <name>Item</name>
+        <param>
+          <type>const <ref refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item" kindref="compound">Item</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="96" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a6a6b0424948246a84d94b9b33748bfb0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::Strategy::KnapsackStructure::Item::Item</definition>
+        <argsstring>(Item &amp;&amp;)=default</argsstring>
+        <name>Item</name>
+        <param>
+          <type><ref refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item" kindref="compound">Item</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="97" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a7d8cbdb6382151ad48027e2c7f9308c4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item" kindref="compound">Item</ref> &amp;</type>
+        <definition>Item&amp; idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::Strategy::KnapsackStructure::Item::operator=</definition>
+        <argsstring>(const Item &amp;)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item" kindref="compound">Item</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="99" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a249a9046a0f420d4bd4c46a4219b7909" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item" kindref="compound">Item</ref> &amp;</type>
+        <definition>Item&amp; idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::Strategy::KnapsackStructure::Item::operator=</definition>
+        <argsstring>(Item &amp;&amp;)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item" kindref="compound">Item</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="100" column="18"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::Strategy::KnapsackStructure::Item</label>
+        <link refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>+variable</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>idol::Object&lt; T, CRTP &gt;</label>
+        <link refid="classidol_1_1Object"/>
+      </node>
+      <node id="2">
+        <label>idol::Var</label>
+        <link refid="classidol_1_1Var"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::Object&lt; VarVersion, Var &gt;</label>
+        <link refid="classidol_1_1Object"/>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; VarVersion, Var &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" line="89" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h" bodystart="89" bodyend="101"/>
+    <listofallmembers>
+      <member refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a10f0cf30d4eb8cec9f271bc9cd1fd35e" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover::Strategy::KnapsackStructure::Item</scope><name>current_value</name></member>
+      <member refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a9969814ff4c4e1d2bd399c9f87e0f06f" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover::Strategy::KnapsackStructure::Item</scope><name>cut_coefficient</name></member>
+      <member refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a2ce677f18169a6075d40e60bea6ddca4" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover::Strategy::KnapsackStructure::Item</scope><name>Item</name></member>
+      <member refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a4676f97e2af2463ea2856a7cc6f25e2c" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover::Strategy::KnapsackStructure::Item</scope><name>Item</name></member>
+      <member refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a6a6b0424948246a84d94b9b33748bfb0" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover::Strategy::KnapsackStructure::Item</scope><name>Item</name></member>
+      <member refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a7d8cbdb6382151ad48027e2c7f9308c4" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover::Strategy::KnapsackStructure::Item</scope><name>operator=</name></member>
+      <member refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1a249a9046a0f420d4bd4c46a4219b7909" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover::Strategy::KnapsackStructure::Item</scope><name>operator=</name></member>
+      <member refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1abb0ad8a63527a5aa3af1d3ca00886c57" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover::Strategy::KnapsackStructure::Item</scope><name>variable</name></member>
+      <member refid="structidol_1_1Cuts_1_1KnapsackCover_1_1Strategy_1_1KnapsackStructure_1_1Item_1ab9321be24704b788fffe93adf8632c4f" prot="public" virt="non-virtual"><scope>idol::Cuts::KnapsackCover::Strategy::KnapsackStructure::Item</scope><name>weight</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="Osi_8h" kind="file" language="C++">
+    <compoundname>Osi.h</compoundname>
+    <includes local="no">memory</includes>
+    <includes refid="OptimizerFactory_8h" local="yes">idol/general/optimizers/OptimizerFactory.h</includes>
+    <incdepgraph>
+      <node id="4">
+        <label>Optimizer.h</label>
+        <link refid="Optimizer_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>functional</label>
+      </node>
+      <node id="13">
+        <label>iomanip</label>
+      </node>
+      <node id="10">
+        <label>limits</label>
+      </node>
+      <node id="1">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h</label>
+        <link refid="Osi_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>cmath</label>
+      </node>
+      <node id="3">
+        <label>idol/general/optimizers/OptimizerFactory.h</label>
+        <link refid="OptimizerFactory_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>stdexcept</label>
+      </node>
+      <node id="14">
+        <label>numeric</label>
+      </node>
+      <node id="5">
+        <label>string</label>
+      </node>
+      <node id="9">
+        <label>idol/general/numericals.h</label>
+        <link refid="numericals_8h_source"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>ostream</label>
+      </node>
+      <node id="6">
+        <label>optional</label>
+      </node>
+      <node id="15">
+        <label>idol/mixed-integer/modeling/Types.h</label>
+        <link refid="Types_8h_source"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>iostream</label>
+      </node>
+      <node id="8">
+        <label>chrono</label>
+      </node>
+      <node id="7">
+        <label>Timer.h</label>
+        <link refid="Timer_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>idol/general/utils/exceptions/Exception.h</label>
+        <link refid="Exception_8h_source"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>memory</label>
+      </node>
+      <node id="17">
+        <label>idol/general/utils/types.h</label>
+        <link refid="types_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <innerclass refid="structOsiSolverInterface" prot="public">OsiSolverInterface</innerclass>
+    <innerclass refid="classidol_1_1Osi" prot="public">idol::Osi</innerclass>
+    <innerclass refid="classidol_1_1OsiCplex" prot="public">idol::OsiCplex</innerclass>
+    <innerclass refid="classidol_1_1OsiSymphony" prot="public">idol::OsiSymphony</innerclass>
+    <innerclass refid="classidol_1_1OsiCbc" prot="public">idol::OsiCbc</innerclass>
+    <innernamespace refid="namespaceidol">idol</innernamespace>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="Osi_8h_1a63411e1b56c1f3899f9a1a8fada3958d" prot="public" static="no">
+        <name>ADD_SHORTCUT</name>
+        <param><defname>name</defname></param>
+        <param><defname>osi_interface</defname></param>
+        <initializer>namespace idol { class name; }                            \
+class idol::name : public <ref refid="classidol_1_1Osi" kindref="compound">idol::Osi</ref> {               \
+public:                    \
+    name() : Osi(osi_interface()) {}      \
+    static Osi ContinuousRelaxation() { return Osi::ContinuousRelaxation(osi_interface()); } \
+    using OsiT = osi_interface; \
+};</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="36" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Osi_8h_1a8145eb60f6b15557623c8d8a4b347424" prot="public" static="no">
+        <name>ADD_FAKE_SHORTCUT</name>
+        <param><defname>name</defname></param>
+        <initializer>namespace idol { class name; }  \
+class idol::name : public <ref refid="classidol_1_1Osi" kindref="compound">idol::Osi</ref> { \
+    name() : Osi(#name) {} \
+    static Osi ContinuousRelaxation() { return name(); }    \
+};</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="45" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Created<sp/>by<sp/>henri<sp/>on<sp/>05.02.24.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>IDOL_OSI_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>IDOL_OSI_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;memory&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_OSI</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;OsiSolverInterface.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>IDOL_USE_CPLEX</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;OsiCpxSolverInterface.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>IDOL_USE_GUROBI</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//#include<sp/>&lt;OsiGrbSolverInterface.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_SYMPHONY</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;OsiSymSolverInterface.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_CLP</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;OsiClpSolverInterface.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="structOsiSolverInterface" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structOsiSolverInterface" kindref="compound">OsiSolverInterface</ref><sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="structOsiSolverInterface" kindref="compound">OsiSolverInterface</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="structOsiSolverInterface" kindref="compound">OsiSolverInterface</ref>*<sp/>clone()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADD_SHORTCUT(name,<sp/>osi_interface)<sp/>\</highlight></codeline>
+<codeline lineno="37"><highlight class="preprocessor">namespace<sp/>idol<sp/>{<sp/>class<sp/>name;<sp/>}<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="38"><highlight class="preprocessor">class<sp/>idol::name<sp/>:<sp/>public<sp/>idol::Osi<sp/>{<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="39"><highlight class="preprocessor">public:<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="40"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>name()<sp/>:<sp/>Osi(osi_interface())<sp/>{}<sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="41"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>static<sp/>Osi<sp/>ContinuousRelaxation()<sp/>{<sp/>return<sp/>Osi::ContinuousRelaxation(osi_interface());<sp/>}<sp/>\</highlight></codeline>
+<codeline lineno="42"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>using<sp/>OsiT<sp/>=<sp/>osi_interface;<sp/>\</highlight></codeline>
+<codeline lineno="43"><highlight class="preprocessor">};</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADD_FAKE_SHORTCUT(name)<sp/>\</highlight></codeline>
+<codeline lineno="46"><highlight class="preprocessor">namespace<sp/>idol<sp/>{<sp/>class<sp/>name;<sp/>}<sp/><sp/>\</highlight></codeline>
+<codeline lineno="47"><highlight class="preprocessor">class<sp/>idol::name<sp/>:<sp/>public<sp/>idol::Osi<sp/>{<sp/>\</highlight></codeline>
+<codeline lineno="48"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>name()<sp/>:<sp/>Osi(#name)<sp/>{}<sp/>\</highlight></codeline>
+<codeline lineno="49"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>static<sp/>Osi<sp/>ContinuousRelaxation()<sp/>{<sp/>return<sp/>name();<sp/>}<sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="50"><highlight class="preprocessor">};</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/general/optimizers/OptimizerFactory.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">idol<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Osi;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="classidol_1_1Osi" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classidol_1_1Osi" kindref="compound">idol::Osi</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1OptimizerFactoryWithDefaultParameters" kindref="compound">OptimizerFactoryWithDefaultParameters</ref>&lt;Osi&gt;<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;OsiSolverInterface&gt;<sp/>m_solver_interface;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>m_continuous_relaxation<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOsiSolverInterface" kindref="compound">OsiSolverInterface</ref>&amp;<sp/>t_solver_interface,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>t_continuous_relaxation);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>t_solver);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOsiSolverInterface" kindref="compound">OsiSolverInterface</ref>&amp;<sp/>t_solver_interface);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref>&amp;<sp/>t_src);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref>(<ref refid="classidol_1_1Osi" kindref="compound">Osi</ref>&amp;&amp;)<sp/>noexcept<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref>&amp;<sp/>operator=(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref>&amp;<sp/>operator=(<ref refid="classidol_1_1Osi" kindref="compound">Osi</ref>&amp;&amp;)<sp/>noexcept<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="classidol_1_1Osi_1a22e7895a9df6a80cb9e35bd162eb4893" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref><sp/>*<ref refid="classidol_1_1Osi_1a22e7895a9df6a80cb9e35bd162eb4893" kindref="member">operator()</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref><sp/>&amp;t_model)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structOsiSolverInterface" kindref="compound">OsiSolverInterface</ref>*<sp/>create_osi_solver_interface()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref><sp/>ContinuousRelaxation(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOsiSolverInterface" kindref="compound">OsiSolverInterface</ref>&amp;<sp/>t_solver_interface);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="classidol_1_1Osi_1a3595578d4bacf9c9c1e2376f50dc29dc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref><sp/>*<ref refid="classidol_1_1Osi_1a3595578d4bacf9c9c1e2376f50dc29dc" kindref="member">clone</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_CPLEX</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal">ADD_SHORTCUT(<ref refid="classidol_1_1OsiCplex" kindref="compound">OsiCplex</ref>,<sp/>OsiCpxSolverInterface)</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="classidol_1_1OsiCplex" refkind="compound"><highlight class="normal">ADD_FAKE_SHORTCUT(<ref refid="classidol_1_1OsiCplex" kindref="compound">OsiCplex</ref>)</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_SYMPHONY</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal">ADD_SHORTCUT(<ref refid="classidol_1_1OsiSymphony" kindref="compound">OsiSymphony</ref>,<sp/>OsiSymSolverInterface)</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93" refid="classidol_1_1OsiSymphony" refkind="compound"><highlight class="normal">ADD_FAKE_SHORTCUT(<ref refid="classidol_1_1OsiSymphony" kindref="compound">OsiSymphony</ref>)</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_CLP</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal">ADD_SHORTCUT(OsiClp,<sp/>OsiClpSolverInterface)</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="classidol_1_1OsiCbc" refkind="compound"><highlight class="normal">ADD_FAKE_SHORTCUT(<ref refid="classidol_1_1OsiCbc" kindref="compound">OsiCbc</ref>)</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//IDOL_OSI_H</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"/>
+  </compounddef>
+</doxygen>

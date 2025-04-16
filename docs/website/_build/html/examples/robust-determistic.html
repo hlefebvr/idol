@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Solving a robust facility location problem by its deterministic equivalent</title>
+    
+          <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../_static/theme-vendors.js"></script> -->
+      <script src="../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/examples/robust-determistic.html" />
+    
+  <link rel="index" title="Index" href="../genindex.html" />
+  <link rel="search" title="Search" href="../search.html" />
+  <link rel="next" title="Using affine decision rules to solve a two-stage facility location problem with facility disruption" href="robust-adr.html" />
+  <link rel="prev" title="Solving a pessimistic bilevel problem using an optimistic reformulation" href="bilevel-pessimistic.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="index.html">Examples</a> &raquo;</li>
+    
+    <li>Solving a robust facility location problem by its deterministic equivalent</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="bilevel-pessimistic.html"
+       title="previous chapter">← Solving a pessimistic bilevel problem using an optimistic reformulation</a>
+  </li>
+  <li class="next">
+    <a href="robust-adr.html"
+       title="next chapter">Using affine decision rules to solve a two-stage facility location problem with facility disruption →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="solving-a-robust-facility-location-problem-by-its-deterministic-equivalent">
+<h1>Solving a robust facility location problem by its deterministic equivalent<a class="headerlink" href="#solving-a-robust-facility-location-problem-by-its-deterministic-equivalent" title="Link to this heading">¶</a></h1>
+<section id="problem-definition">
+<h2>Problem Definition<a class="headerlink" href="#problem-definition" title="Link to this heading">¶</a></h2>
+<p>We consider a facility location problem with uncertain demand.
+Given a set of potential facility locations <span class="math notranslate nohighlight">\(V_1\)</span> and a set of customers <span class="math notranslate nohighlight">\(V_2\)</span>, the goal is to select a subset of facility locations
+to activate in order to serve all customers’ demand, while minimizing the total cost.
+This version introduces uncertainty in the customers’ demands.</p>
+<p>Note that there is also an example for the <a class="reference internal" href="facility-location-problem.html#example-flp"><span class="std std-ref">deterministic version of the FLP using Column Generation</span></a>.</p>
+<p>Each facility <span class="math notranslate nohighlight">\(i\in V_1\)</span> has an opening cost <span class="math notranslate nohighlight">\(f_i\)</span> and a maximum capacity <span class="math notranslate nohighlight">\(q_i\)</span>.
+Each customer <span class="math notranslate nohighlight">\(j\in V_2\)</span> has a demand <span class="math notranslate nohighlight">\(d_j\)</span>.
+The unitary cost for serving customer <span class="math notranslate nohighlight">\(j\in V_2\)</span> from facility <span class="math notranslate nohighlight">\(i\in V_1\)</span> is <span class="math notranslate nohighlight">\(t_{ij}\)</span>.
+The uncertainty in customer demands is controlled by a parameter <span class="math notranslate nohighlight">\(\Gamma\)</span>.</p>
+<p>In this robust variant, we consider that the demands are uncertain and can be expressed as <span class="math notranslate nohighlight">\(d_j(\xi) = d_j(1 + 0.2 \xi_j)\)</span>
+with <span class="math notranslate nohighlight">\(\xi\)</span> being an unknown vector taken in the uncertainty set</p>
+<div class="math notranslate nohighlight">
+\[\Xi := \left\{ \xi\in[ 0, 1 ]^{|V_2|} : \sum_{j\in V_2} \xi_j \le \Gamma \right\}.\]</div>
+<p>The goal is to minimize the total cost of opening facilities and serving customers, considering the worst-case demand scenario.</p>
+<p>The robust version can be formulated as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+    \min_{x,y} \quad &amp; \sum_{i\in V_1} f_i x_i + \sum_{i\in V_1} \sum_{j\in V_2} t_{ij} y_{ij} \\
+    \text{s.t.} \quad &amp; \sum_{j\in V_2} d_j(\xi) y_{ij} \le q_i, &amp;&amp; i\in V_1, \quad \text{for all }\xi\in\Xi, \\
+                      &amp; \sum_{i\in V_1} y_{ij} = 1, &amp;&amp; j\in V_2, \\
+                      &amp; y_{ij} \le x_i &amp;&amp; i\in V_1, j\in V_2, \\
+                      &amp; x_i \in \{0,1\}, &amp;&amp; i\in V_1, \\
+                      &amp; y_{ij} \in \{0,1\}, &amp;&amp; i\in V_1, j\in V_2.
+\end{align*}\end{split}\]</div>
+<p>In this example, we will reformulate this robust facility location problem as a deterministic one. Then, we will solve it using Gurobi.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Here, the deterministic reformulation reads as follows.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+    \min_{x,y,u.v} \quad &amp; \sum_{i\in V_1} f_i x_i + \sum_{i\in V_1} \sum_{j\in V_2} t_{ij} y_{ij} \\
+    \text{s.t.} \quad &amp; \sum_{j\in V_2} d_j y_{ij} + \Gamma u + \sum_{j\in V_2} v_j \le q_i, &amp;&amp; i\in V_1, \\
+                      &amp; u + v_j \ge 0.2 d_j y_j, &amp;&amp; j\in V_2, \\
+                      &amp; \sum_{i\in V_1} y_{ij} = 1, &amp;&amp; j\in V_2, \\
+                      &amp; u, v_j \ge 0, &amp;&amp; j\in V_2, \\
+                      &amp; y_{ij} \le x_i &amp;&amp; i\in V_1, j\in V_2, \\
+                      &amp; x_i \in \{0,1\}, &amp;&amp; i\in V_1, \\
+                      &amp; y_{ij} \in \{0,1\}, &amp;&amp; i\in V_1, j\in V_2.
+\end{align*}\end{split}\]</div>
+</div>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">//</span>
+<span class="c1">// Created by henri on 06/04/23.</span>
+<span class="c1">//</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/modeling.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/robust/modeling/Description.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/robust/optimizers/deterministic/Deterministic.h&quot;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">idol</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">t_argc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">t_argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Read instance</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Problems</span><span class="o">::</span><span class="n">FLP</span><span class="o">::</span><span class="n">read_instance_1991_Cornuejols_et_al</span><span class="p">(</span><span class="s">&quot;robust-facility-location.data.txt&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n_customers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">n_customers</span><span class="p">();</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n_facilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">n_facilities</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Uncertainty set</span>
+<span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="n">uncertainty_set</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">Gamma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">xi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uncertainty_set</span><span class="p">.</span><span class="n">add_vars</span><span class="p">(</span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n_customers</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="mf">1.</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;xi&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">uncertainty_set</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_customers</span><span class="p">),</span><span class="w"> </span><span class="n">xi</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">Gamma</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Make model</span>
+<span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Robust</span><span class="o">::</span><span class="n">Description</span><span class="w"> </span><span class="n">description</span><span class="p">(</span><span class="n">uncertainty_set</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_vars</span><span class="p">(</span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n_facilities</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="mf">1.</span><span class="p">,</span><span class="w"> </span><span class="n">Binary</span><span class="p">,</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_vars</span><span class="p">(</span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n_facilities</span><span class="p">,</span><span class="w"> </span><span class="n">n_customers</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="mf">1.</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_facilities</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_customers</span><span class="p">),</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">demand</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">capacity</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_customers</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">description</span><span class="p">.</span><span class="n">set_uncertain_mat_coeff</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span><span class="w"> </span><span class="mf">0.2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">demand</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">xi</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_customers</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_facilities</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_facilities</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_customers</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">set_obj_expr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_facilities</span><span class="p">),</span>
+<span class="w">                                </span><span class="n">instance</span><span class="p">.</span><span class="n">fixed_cost</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="w">                                </span><span class="o">+</span><span class="w"> </span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_customers</span><span class="p">),</span>
+<span class="w">                                           </span><span class="n">instance</span><span class="p">.</span><span class="n">per_unit_transportation_cost</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span>
+<span class="w">                                           </span><span class="n">instance</span><span class="p">.</span><span class="n">demand</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span>
+<span class="w">                                           </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+<span class="w">                                </span><span class="p">)</span>
+<span class="w">                       </span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_facilities</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_customers</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">description</span><span class="p">.</span><span class="n">set_uncertain_obj</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span><span class="w"> </span><span class="mf">0.2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">per_unit_transportation_cost</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">demand</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">xi</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">Gurobi</span><span class="p">());</span>
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Deterministic Problem has value: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">get_best_obj</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/*</span>
+<span class="cm">     * Alternatively, you could also do</span>
+<span class="cm">     * const auto deterministic_model = Robust::Deterministic::make_model(model, description);</span>
+<span class="cm">     * std::cout &lt;&lt; Robust::Description::View(model, description) &lt;&lt; std::endl;</span>
+<span class="cm">     */</span>
+
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span>
+<span class="w">                </span><span class="n">Robust</span><span class="o">::</span><span class="n">Deterministic</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">.</span><span class="n">with_deterministic_optimizer</span><span class="p">(</span><span class="n">Gurobi</span><span class="p">().</span><span class="n">with_logs</span><span class="p">(</span><span class="nb">false</span><span class="p">))</span>
+<span class="w">            </span><span class="p">);</span>
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Robust Problem has value: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">get_best_obj</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="bilevel-pessimistic.html"
+       title="previous chapter">← Solving a pessimistic bilevel problem using an optimistic reformulation</a>
+  </li>
+  <li class="next">
+    <a href="robust-adr.html"
+       title="next chapter">Using affine decision rules to solve a two-stage facility location problem with facility disruption →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

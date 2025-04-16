@@ -1,0 +1,430 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1SOSCtr" kind="class" language="C++" prot="public">
+    <compoundname>idol::SOSCtr</compoundname>
+    <basecompoundref refid="classidol_1_1Object" prot="public" virt="non-virtual">idol::Object&lt; SOSCtrVersion, SOSCtr &gt;</basecompoundref>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classidol_1_1SOSCtr_1a40b6af78cce24bfa98bbef574f910496" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class impl::Env</definition>
+        <argsstring></argsstring>
+        <name>impl::Env</name>
+        <param>
+          <type><ref refid="classidol_1_1impl_1_1Env" kindref="compound">impl::Env</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtr.h" line="28" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtr.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1SOSCtr_1aa99d9c66173d4d7f20fc64c83a4ee08d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::SOSCtr::SOSCtr</definition>
+        <argsstring>(Env &amp;t_env, bool t_is_sos1, std::vector&lt; Var &gt; t_vars, std::vector&lt; double &gt; t_weights, std::string t_name=&quot;&quot;)</argsstring>
+        <name>SOSCtr</name>
+        <param>
+          <type><ref refid="classidol_1_1Env" kindref="compound">Env</ref> &amp;</type>
+          <declname>t_env</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>t_is_sos1</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+          <declname>t_vars</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt;</type>
+          <declname>t_weights</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtr.h" line="30" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1SOSCtr_1a585b30e706a368bbe8a7eca03a1218b5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::SOSCtr::index</definition>
+        <argsstring>(const Model &amp;t_index) const</argsstring>
+        <name>index</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtr.h" line="40" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1a3cc33224269c4c20bd39931cbbbe3cd4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::string &amp;</type>
+        <definition>const std::string&amp; idol::Object&lt; SOSCtrVersion , SOSCtr  &gt;::name</definition>
+        <argsstring>() const</argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the name of the optimization object. <simplesect kind="return"><para>The name of the optimization object. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="54" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="54" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1ac8e398b9b937f08b1c5dbd2b32414036" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Object&lt; SOSCtrVersion , SOSCtr  &gt;::id</definition>
+        <argsstring>() const</argsstring>
+        <name>id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the id of the optimization object. <simplesect kind="return"><para>The id of the optimization object. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="60" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="60" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1aa25899704860cb066f885015ec1f11f3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Object&lt; SOSCtrVersion , SOSCtr  &gt;::is_in</definition>
+        <argsstring>(const Model &amp;t_model) const</argsstring>
+        <name>is_in</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns true if the optimization object is part of the model <computeroutput>t_model</computeroutput>, false otherwise. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_model</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The model. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the optimization object is part of the model <computeroutput>t_model</computeroutput>, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="67" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="67" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1afcade3116fd43e168a1aba7138f5ac44" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const ValueT &amp;</type>
+        <definition>const ValueT&amp; idol::Object&lt; SOSCtrVersion , SOSCtr  &gt;::get</definition>
+        <argsstring>(const Annotation&lt; ValueT &gt; &amp;t_annotation) const</argsstring>
+        <name>get</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Annotation" kindref="compound">Annotation</ref>&lt; ValueT &gt; &amp;</type>
+          <declname>t_annotation</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the value of the given annotation <computeroutput>t_annotation</computeroutput> associated to the object.</para>
+<para>If no value is found, the default value of the annotation is returned. If no default value was set, an exception is thrown. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ValueT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value type of the annotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_annotation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The annotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The value of the annotation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="78" column="29" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="78" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1a7d1921eca2bb0e0453867839e80dde63" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Object&lt; SOSCtrVersion , SOSCtr  &gt;::set</definition>
+        <argsstring>(const Annotation&lt; ValueT &gt; &amp;t_annotation, ArgsT &amp;&amp;...t_args) const</argsstring>
+        <name>set</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Annotation" kindref="compound">Annotation</ref>&lt; ValueT &gt; &amp;</type>
+          <declname>t_annotation</declname>
+        </param>
+        <param>
+          <type>ArgsT &amp;&amp;...</type>
+          <declname>t_args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the value of the given annotation <computeroutput>t_annotation</computeroutput> associated to the object. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ValueT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value type of the annotation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ArgsT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The parameter pack types for constructing the value of the annotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_annotation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The annotation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The parameter pack arguments used to construct &quot;in place&quot; the value of the annotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="96" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="96" bodyend="96"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classidol_1_1SOSCtr_1ab8770b6f2d30a8227f87f43a08f4a279" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref></type>
+        <definition>static SOSCtr idol::SOSCtr::SOS1</definition>
+        <argsstring>(Env &amp;t_env, std::vector&lt; Var &gt; t_vars, std::vector&lt; double &gt; t_weights, std::string t_name=&quot;&quot;)</argsstring>
+        <name>SOS1</name>
+        <param>
+          <type><ref refid="classidol_1_1Env" kindref="compound">Env</ref> &amp;</type>
+          <declname>t_env</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+          <declname>t_vars</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt;</type>
+          <declname>t_weights</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtr.h" line="32" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtr.h" bodystart="32" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1SOSCtr_1a61e1f1a30257f72626b0e38800fb8cdf" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref></type>
+        <definition>static SOSCtr idol::SOSCtr::SOS2</definition>
+        <argsstring>(Env &amp;t_env, std::vector&lt; Var &gt; t_vars, std::vector&lt; double &gt; t_weights, std::string t_name=&quot;&quot;)</argsstring>
+        <name>SOS2</name>
+        <param>
+          <type><ref refid="classidol_1_1Env" kindref="compound">Env</ref> &amp;</type>
+          <declname>t_env</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+          <declname>t_vars</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt;</type>
+          <declname>t_weights</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtr.h" line="36" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtr.h" bodystart="36" bodyend="38"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classidol_1_1Object_1a8a85515a45c06acc28d8065cc6aeca75" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto &amp;</type>
+        <definition>auto&amp; idol::Object&lt; SOSCtrVersion , SOSCtr  &gt;::versions</definition>
+        <argsstring>()</argsstring>
+        <name>versions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="29" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="29" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1a9ce6b3c2064f4dbfe702bb7015965273" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::Object&lt; SOSCtrVersion , SOSCtr  &gt;::versions</definition>
+        <argsstring>() const</argsstring>
+        <name>versions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="31" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="31" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1aa7bae45c14dc473a743334722b30948f" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Object&lt; SOSCtrVersion , SOSCtr  &gt;::create_version</definition>
+        <argsstring>(const Model &amp;t_model, unsigned int t_index, ArgsT &amp;&amp;...t_args) const</argsstring>
+        <name>create_version</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <param>
+          <type>ArgsT &amp;&amp;...</type>
+          <declname>t_args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="34" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="34" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1a4e7aa71b3a721b2e333bbe324cf3e0ad" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Object&lt; SOSCtrVersion , SOSCtr  &gt;::remove_version</definition>
+        <argsstring>(const Model &amp;t_model) const</argsstring>
+        <name>remove_version</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="38" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="38" bodyend="40"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>idol::Object&lt; T, CRTP &gt;</label>
+        <link refid="classidol_1_1Object"/>
+      </node>
+      <node id="1">
+        <label>idol::SOSCtr</label>
+        <link refid="classidol_1_1SOSCtr"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::Object&lt; SOSCtrVersion, SOSCtr &gt;</label>
+        <link refid="classidol_1_1Object"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; SOSCtrVersion, SOSCtr &gt;</edgelabel>
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>idol::Object&lt; T, CRTP &gt;</label>
+        <link refid="classidol_1_1Object"/>
+      </node>
+      <node id="1">
+        <label>idol::SOSCtr</label>
+        <link refid="classidol_1_1SOSCtr"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::Object&lt; SOSCtrVersion, SOSCtr &gt;</label>
+        <link refid="classidol_1_1Object"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; SOSCtrVersion, SOSCtr &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtr.h" line="27" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtr.h" bodystart="27" bodyend="41"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Object_1aa7bae45c14dc473a743334722b30948f" prot="protected" virt="non-virtual"><scope>idol::SOSCtr</scope><name>create_version</name></member>
+      <member refid="classidol_1_1Object_1afcade3116fd43e168a1aba7138f5ac44" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>get</name></member>
+      <member refid="classidol_1_1Object_1ac8e398b9b937f08b1c5dbd2b32414036" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>id</name></member>
+      <member refid="classidol_1_1SOSCtr_1a40b6af78cce24bfa98bbef574f910496" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>impl::Env</name></member>
+      <member refid="classidol_1_1SOSCtr_1a585b30e706a368bbe8a7eca03a1218b5" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>index</name></member>
+      <member refid="classidol_1_1Object_1aa25899704860cb066f885015ec1f11f3" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>is_in</name></member>
+      <member refid="classidol_1_1Object_1a3cc33224269c4c20bd39931cbbbe3cd4" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>name</name></member>
+      <member refid="classidol_1_1Object_1a40c32e951ebdc1b278d336937617983f" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>Object</name></member>
+      <member refid="classidol_1_1Object_1a4742882ea8f92aaff9a7e053170a463e" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>Object</name></member>
+      <member refid="classidol_1_1Object_1a5f5a9498106e472168e5bc68f45e7862" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>Object</name></member>
+      <member refid="classidol_1_1Object_1a4ed82a0fc9883221a56d1b1b3a96922a" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Object_1ac9021e4c6bc93530525172d43854a211" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Object_1a4e7aa71b3a721b2e333bbe324cf3e0ad" prot="protected" virt="non-virtual"><scope>idol::SOSCtr</scope><name>remove_version</name></member>
+      <member refid="classidol_1_1Object_1a7d1921eca2bb0e0453867839e80dde63" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>set</name></member>
+      <member refid="classidol_1_1SOSCtr_1ab8770b6f2d30a8227f87f43a08f4a279" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>SOS1</name></member>
+      <member refid="classidol_1_1SOSCtr_1a61e1f1a30257f72626b0e38800fb8cdf" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>SOS2</name></member>
+      <member refid="classidol_1_1SOSCtr_1aa99d9c66173d4d7f20fc64c83a4ee08d" prot="public" virt="non-virtual"><scope>idol::SOSCtr</scope><name>SOSCtr</name></member>
+      <member refid="classidol_1_1Object_1a8a85515a45c06acc28d8065cc6aeca75" prot="protected" virt="non-virtual"><scope>idol::SOSCtr</scope><name>versions</name></member>
+      <member refid="classidol_1_1Object_1a9ce6b3c2064f4dbfe702bb7015965273" prot="protected" virt="non-virtual"><scope>idol::SOSCtr</scope><name>versions</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

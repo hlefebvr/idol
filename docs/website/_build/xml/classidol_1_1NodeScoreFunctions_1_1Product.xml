@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1NodeScoreFunctions_1_1Product" kind="class" language="C++" prot="public">
+    <compoundname>idol::NodeScoreFunctions::Product</compoundname>
+    <basecompoundref refid="classidol_1_1NodeScoreFunction" prot="public" virt="non-virtual">idol::NodeScoreFunction</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1NodeScoreFunctions_1_1Product_1ae21ec63f96117d01b3c1ac4871427f7b" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double idol::NodeScoreFunctions::Product::m_parameter</definition>
+        <argsstring></argsstring>
+        <name>m_parameter</name>
+        <initializer>= 10e-6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" line="52" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1NodeScoreFunctions_1_1Product_1a9053232f1a0983726b4697b0d8574cee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::NodeScoreFunctions::Product::Product</definition>
+        <argsstring>()=default</argsstring>
+        <name>Product</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" line="54" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeScoreFunctions_1_1Product_1aa34b14d73102e8b66ac57370d9569343" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::NodeScoreFunctions::Product::Product</definition>
+        <argsstring>(double t_parameter)</argsstring>
+        <name>Product</name>
+        <param>
+          <type>double</type>
+          <declname>t_parameter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" line="56" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" bodystart="56" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeScoreFunctions_1_1Product_1a96ae09115db76faec59d5595c4dbcf2c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::NodeScoreFunctions::Product::Product</definition>
+        <argsstring>(const Product &amp;)=default</argsstring>
+        <name>Product</name>
+        <param>
+          <type>const <ref refid="classidol_1_1NodeScoreFunctions_1_1Product" kindref="compound">Product</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" line="58" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeScoreFunctions_1_1Product_1ab40b15a33a031ef23b53882b15aa4c38" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::NodeScoreFunctions::Product::Product</definition>
+        <argsstring>(Product &amp;&amp;)=default</argsstring>
+        <name>Product</name>
+        <param>
+          <type><ref refid="classidol_1_1NodeScoreFunctions_1_1Product" kindref="compound">Product</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" line="59" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeScoreFunctions_1_1Product_1a65549c6b3966266156c0adc127fa0ce7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1NodeScoreFunctions_1_1Product" kindref="compound">Product</ref> &amp;</type>
+        <definition>Product&amp; idol::NodeScoreFunctions::Product::operator=</definition>
+        <argsstring>(const Product &amp;)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1NodeScoreFunctions_1_1Product" kindref="compound">Product</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" line="61" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeScoreFunctions_1_1Product_1a5dbcc865c3b7d6c783f6129881c7e7e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1NodeScoreFunctions_1_1Product" kindref="compound">Product</ref> &amp;</type>
+        <definition>Product&amp; idol::NodeScoreFunctions::Product::operator=</definition>
+        <argsstring>(Product &amp;&amp;)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1NodeScoreFunctions_1_1Product" kindref="compound">Product</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" line="62" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeScoreFunctions_1_1Product_1afeeaead977c5a17cae280d20c74a4cd3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>double</type>
+        <definition>double idol::NodeScoreFunctions::Product::operator()</definition>
+        <argsstring>(double t_left, double t_right) override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1NodeScoreFunction_1a169fb5cc354bff5eb41cb682286f0e05">operator()</reimplements>
+        <param>
+          <type>double</type>
+          <declname>t_left</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_right</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" line="64" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" bodystart="64" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeScoreFunctions_1_1Product_1a02325fb8162c317ecf2ca6983fd46072" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1NodeScoreFunctions_1_1Product" kindref="compound">Product</ref> *</type>
+        <definition>Product* idol::NodeScoreFunctions::Product::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1NodeScoreFunction_1a0a9f40bd880703f8a4787e55f9b825fa">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" line="68" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" bodystart="68" bodyend="70"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>idol::NodeScoreFunction</label>
+        <link refid="classidol_1_1NodeScoreFunction"/>
+      </node>
+      <node id="1">
+        <label>idol::NodeScoreFunctions::Product</label>
+        <link refid="classidol_1_1NodeScoreFunctions_1_1Product"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>idol::NodeScoreFunction</label>
+        <link refid="classidol_1_1NodeScoreFunction"/>
+      </node>
+      <node id="1">
+        <label>idol::NodeScoreFunctions::Product</label>
+        <link refid="classidol_1_1NodeScoreFunctions_1_1Product"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" line="51" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h" bodystart="51" bodyend="71"/>
+    <listofallmembers>
+      <member refid="classidol_1_1NodeScoreFunctions_1_1Product_1a02325fb8162c317ecf2ca6983fd46072" prot="public" virt="virtual"><scope>idol::NodeScoreFunctions::Product</scope><name>clone</name></member>
+      <member refid="classidol_1_1NodeScoreFunctions_1_1Product_1ae21ec63f96117d01b3c1ac4871427f7b" prot="private" virt="non-virtual"><scope>idol::NodeScoreFunctions::Product</scope><name>m_parameter</name></member>
+      <member refid="classidol_1_1NodeScoreFunctions_1_1Product_1afeeaead977c5a17cae280d20c74a4cd3" prot="public" virt="virtual"><scope>idol::NodeScoreFunctions::Product</scope><name>operator()</name></member>
+      <member refid="classidol_1_1NodeScoreFunctions_1_1Product_1a65549c6b3966266156c0adc127fa0ce7" prot="public" virt="non-virtual"><scope>idol::NodeScoreFunctions::Product</scope><name>operator=</name></member>
+      <member refid="classidol_1_1NodeScoreFunctions_1_1Product_1a5dbcc865c3b7d6c783f6129881c7e7e0" prot="public" virt="non-virtual"><scope>idol::NodeScoreFunctions::Product</scope><name>operator=</name></member>
+      <member refid="classidol_1_1NodeScoreFunctions_1_1Product_1a9053232f1a0983726b4697b0d8574cee" prot="public" virt="non-virtual"><scope>idol::NodeScoreFunctions::Product</scope><name>Product</name></member>
+      <member refid="classidol_1_1NodeScoreFunctions_1_1Product_1aa34b14d73102e8b66ac57370d9569343" prot="public" virt="non-virtual"><scope>idol::NodeScoreFunctions::Product</scope><name>Product</name></member>
+      <member refid="classidol_1_1NodeScoreFunctions_1_1Product_1a96ae09115db76faec59d5595c4dbcf2c" prot="public" virt="non-virtual"><scope>idol::NodeScoreFunctions::Product</scope><name>Product</name></member>
+      <member refid="classidol_1_1NodeScoreFunctions_1_1Product_1ab40b15a33a031ef23b53882b15aa4c38" prot="public" virt="non-virtual"><scope>idol::NodeScoreFunctions::Product</scope><name>Product</name></member>
+      <member refid="classidol_1_1NodeScoreFunction_1ac923999bbd2e28a239e03fdc794034bc" prot="public" virt="virtual"><scope>idol::NodeScoreFunctions::Product</scope><name>~NodeScoreFunction</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

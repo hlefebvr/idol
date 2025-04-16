@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1ConstIteratorForward" kind="class" language="C++" prot="public">
+    <compoundname>idol::ConstIteratorForward</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+      <param>
+        <type>class ConstIteratorT</type>
+        <defval>typename T::const_iterator</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1ConstIteratorForward_1a94195ca77f8e22a413bd062920a20786" prot="private" static="no" mutable="no">
+        <type>const T &amp;</type>
+        <definition>const T&amp; idol::ConstIteratorForward&lt; T, ConstIteratorT &gt;::m_container</definition>
+        <argsstring></argsstring>
+        <name>m_container</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" line="42" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1ConstIteratorForward_1abc4e559c1b81be330418fed098a2248c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::ConstIteratorForward&lt; T, ConstIteratorT &gt;::ConstIteratorForward</definition>
+        <argsstring>(const T &amp;t_container)</argsstring>
+        <name>ConstIteratorForward</name>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t_container</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" line="44" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ConstIteratorForward_1a62ec40ecec5c61d1bd81d20302f868c7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::ConstIteratorForward&lt; T, ConstIteratorT &gt;::ConstIteratorForward</definition>
+        <argsstring>(const ConstIteratorForward &amp;)=default</argsstring>
+        <name>ConstIteratorForward</name>
+        <param>
+          <type>const <ref refid="classidol_1_1ConstIteratorForward" kindref="compound">ConstIteratorForward</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" line="46" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ConstIteratorForward_1a91ce6310aae81db47c9d1fcf9b01ccb2" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::ConstIteratorForward&lt; T, ConstIteratorT &gt;::ConstIteratorForward</definition>
+        <argsstring>(ConstIteratorForward &amp;&amp;) noexcept=default</argsstring>
+        <name>ConstIteratorForward</name>
+        <param>
+          <type><ref refid="classidol_1_1ConstIteratorForward" kindref="compound">ConstIteratorForward</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" line="47" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ConstIteratorForward_1ac4143a2698827ca3cb4275499ab4883f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1ConstIteratorForward" kindref="compound">ConstIteratorForward</ref> &amp;</type>
+        <definition>ConstIteratorForward&amp; idol::ConstIteratorForward&lt; T, ConstIteratorT &gt;::operator=</definition>
+        <argsstring>(const ConstIteratorForward &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1ConstIteratorForward" kindref="compound">ConstIteratorForward</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" line="49" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ConstIteratorForward_1ae4181c82b875c97fe9bf1f63fad48b13" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1ConstIteratorForward" kindref="compound">ConstIteratorForward</ref> &amp;</type>
+        <definition>ConstIteratorForward&amp; idol::ConstIteratorForward&lt; T, ConstIteratorT &gt;::operator=</definition>
+        <argsstring>(ConstIteratorForward &amp;&amp;) noexcept=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1ConstIteratorForward" kindref="compound">ConstIteratorForward</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" line="50" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ConstIteratorForward_1a68b8fe7b40d127b28d85400ed1f6b7a5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>ConstIteratorT</type>
+        <definition>ConstIteratorT idol::ConstIteratorForward&lt; T, ConstIteratorT &gt;::begin</definition>
+        <argsstring>() const</argsstring>
+        <name>begin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" line="52" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" bodystart="52" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ConstIteratorForward_1ad11adf4162f60dad850fe8e293dd8bbd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>ConstIteratorT</type>
+        <definition>ConstIteratorT idol::ConstIteratorForward&lt; T, ConstIteratorT &gt;::end</definition>
+        <argsstring>() const</argsstring>
+        <name>end</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" line="53" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" bodystart="53" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ConstIteratorForward_1aeaa79c6012aed356d5dddf6ca8ca35ae" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>ConstIteratorT</type>
+        <definition>ConstIteratorT idol::ConstIteratorForward&lt; T, ConstIteratorT &gt;::cbegin</definition>
+        <argsstring>() const</argsstring>
+        <name>cbegin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" line="54" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" bodystart="54" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ConstIteratorForward_1acd2e2606c1d02c2c8c50574ab5c61cdb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>ConstIteratorT</type>
+        <definition>ConstIteratorT idol::ConstIteratorForward&lt; T, ConstIteratorT &gt;::cend</definition>
+        <argsstring>() const</argsstring>
+        <name>cend</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" line="55" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" bodystart="55" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ConstIteratorForward_1a88011aa2a4e53d3765e7178d98ca1039" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::ConstIteratorForward&lt; T, ConstIteratorT &gt;::size</definition>
+        <argsstring>() const</argsstring>
+        <name>size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" line="57" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" bodystart="57" bodyend="57"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::ConstIteratorForward&lt; T, ConstIteratorT &gt;</label>
+        <link refid="classidol_1_1ConstIteratorForward"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" line="41" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/IteratorForward.h" bodystart="41" bodyend="58"/>
+    <listofallmembers>
+      <member refid="classidol_1_1ConstIteratorForward_1a68b8fe7b40d127b28d85400ed1f6b7a5" prot="public" virt="non-virtual"><scope>idol::ConstIteratorForward</scope><name>begin</name></member>
+      <member refid="classidol_1_1ConstIteratorForward_1aeaa79c6012aed356d5dddf6ca8ca35ae" prot="public" virt="non-virtual"><scope>idol::ConstIteratorForward</scope><name>cbegin</name></member>
+      <member refid="classidol_1_1ConstIteratorForward_1acd2e2606c1d02c2c8c50574ab5c61cdb" prot="public" virt="non-virtual"><scope>idol::ConstIteratorForward</scope><name>cend</name></member>
+      <member refid="classidol_1_1ConstIteratorForward_1abc4e559c1b81be330418fed098a2248c" prot="public" virt="non-virtual"><scope>idol::ConstIteratorForward</scope><name>ConstIteratorForward</name></member>
+      <member refid="classidol_1_1ConstIteratorForward_1a62ec40ecec5c61d1bd81d20302f868c7" prot="public" virt="non-virtual"><scope>idol::ConstIteratorForward</scope><name>ConstIteratorForward</name></member>
+      <member refid="classidol_1_1ConstIteratorForward_1a91ce6310aae81db47c9d1fcf9b01ccb2" prot="public" virt="non-virtual"><scope>idol::ConstIteratorForward</scope><name>ConstIteratorForward</name></member>
+      <member refid="classidol_1_1ConstIteratorForward_1ad11adf4162f60dad850fe8e293dd8bbd" prot="public" virt="non-virtual"><scope>idol::ConstIteratorForward</scope><name>end</name></member>
+      <member refid="classidol_1_1ConstIteratorForward_1a94195ca77f8e22a413bd062920a20786" prot="private" virt="non-virtual"><scope>idol::ConstIteratorForward</scope><name>m_container</name></member>
+      <member refid="classidol_1_1ConstIteratorForward_1ac4143a2698827ca3cb4275499ab4883f" prot="public" virt="non-virtual"><scope>idol::ConstIteratorForward</scope><name>operator=</name></member>
+      <member refid="classidol_1_1ConstIteratorForward_1ae4181c82b875c97fe9bf1f63fad48b13" prot="public" virt="non-virtual"><scope>idol::ConstIteratorForward</scope><name>operator=</name></member>
+      <member refid="classidol_1_1ConstIteratorForward_1a88011aa2a4e53d3765e7178d98ca1039" prot="public" virt="non-virtual"><scope>idol::ConstIteratorForward</scope><name>size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

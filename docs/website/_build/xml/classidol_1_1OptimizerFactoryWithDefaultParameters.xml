@@ -1,0 +1,1095 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1OptimizerFactoryWithDefaultParameters" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>idol::OptimizerFactoryWithDefaultParameters</compoundname>
+    <basecompoundref refid="classidol_1_1OptimizerFactory" prot="public" virt="non-virtual">idol::OptimizerFactory</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>class CRTP</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad5f747cf58baa5675159f00cd5f395ea" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt;bool&gt; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::m_logs</definition>
+        <argsstring></argsstring>
+        <name>m_logs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="67" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a9fc1223457375a28c0fd728288aed874" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::m_time_limit</definition>
+        <argsstring></argsstring>
+        <name>m_time_limit</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="68" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a9797f4eb06f3250c6cadd2b23f17e790" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; unsigned int &gt;</type>
+        <definition>std::optional&lt;unsigned int&gt; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::m_thread_limit</definition>
+        <argsstring></argsstring>
+        <name>m_thread_limit</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="69" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ab0fc8fe2406dc469aab2c11b3a9b37e6" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; unsigned int &gt;</type>
+        <definition>std::optional&lt;unsigned int&gt; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::m_iteration_count_limit</definition>
+        <argsstring></argsstring>
+        <name>m_iteration_count_limit</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="70" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad0882ae0ce86406d2a363669dbbf877a" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::m_best_bound_stop</definition>
+        <argsstring></argsstring>
+        <name>m_best_bound_stop</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="71" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae6abbe4a0e47eccba0a9a68b3282ce5e" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::m_best_obj_stop</definition>
+        <argsstring></argsstring>
+        <name>m_best_obj_stop</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="72" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a84dc48151e8edf31644df01497bcbd2f" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::m_relative_gap_tolerance</definition>
+        <argsstring></argsstring>
+        <name>m_relative_gap_tolerance</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="73" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1aa2c7b00309727eb33e74644de5560ee7" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::m_absolute_gap_tolerance</definition>
+        <argsstring></argsstring>
+        <name>m_absolute_gap_tolerance</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="74" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1af9ea27c60a467e25d7bc89c46665b50d" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt;bool&gt; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::m_presolve</definition>
+        <argsstring></argsstring>
+        <name>m_presolve</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="75" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a77adc6f5e41a7fbb3805a7c69c05f0ac" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt;bool&gt; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::m_infeasible_or_unbounded_info</definition>
+        <argsstring></argsstring>
+        <name>m_infeasible_or_unbounded_info</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="76" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1afa26d14ea2c1479683e1e832156fac2a" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP&amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::crtp</definition>
+        <argsstring>()</argsstring>
+        <name>crtp</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="78" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="78" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a71231955c8b77473a4dd13b630d52cab" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const CRTP &amp;</type>
+        <definition>const CRTP&amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::crtp</definition>
+        <argsstring>() const</argsstring>
+        <name>crtp</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="79" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="79" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a8a11a96b51aa42b6a8ec863d43bec00b" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::handle_default_parameters</definition>
+        <argsstring>(Optimizer *t_optimizer) const</argsstring>
+        <name>handle_default_parameters</name>
+        <param>
+          <type><ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref> *</type>
+          <declname>t_optimizer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="81" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="398" bodyend="440"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a495f616340209e28fde87270f69ce28f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP &amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::with_logs</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_logs</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the log_master level and color for the optimizer</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_logs(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_log_level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the log_master level </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_log_color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the output color </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="95" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="386" bodyend="395"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a192ee8cb58e8e1b2d33b0d58df3b0123" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP &amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::with_time_limit</definition>
+        <argsstring>(double t_time_limit)</argsstring>
+        <name>with_time_limit</name>
+        <param>
+          <type>double</type>
+          <declname>t_time_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the time limit for the optimizer</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_time_limit(3600);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_time_limit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the time limit (in seconds) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="108" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="374" bodyend="383"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a62819967487a06cacad8ca03d0891090" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP &amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::with_thread_limit</definition>
+        <argsstring>(unsigned int t_max_n_threads)</argsstring>
+        <name>with_thread_limit</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_max_n_threads</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the maximum number of threads which the optimizer can use</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_thread_limit(5);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_max_n_threads</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the number of threads which can be used </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="121" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="362" bodyend="371"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ac342238df14873996a25d1182b5a2a7d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP &amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::with_iteration_limit</definition>
+        <argsstring>(unsigned int t_iteration_count_limit)</argsstring>
+        <name>with_iteration_limit</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_iteration_count_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the maximum number of iterations which the optimizer go through</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_iteration_limit(200);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_iteration_count_limit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the maximum number of iterations </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="134" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="350" bodyend="359"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a10a7490342b8cb9a0719f150ad70513d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP &amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::with_best_bound_stop</definition>
+        <argsstring>(double t_best_bound_stop)</argsstring>
+        <name>with_best_bound_stop</name>
+        <param>
+          <type>double</type>
+          <declname>t_best_bound_stop</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets a threshold on the best bound for stopping the optimizer. When the optimizer have found a best bound which is greater than this threshold, the optimizer stops.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>my_known_best_obj<sp/>=<sp/>0.;</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_best_bound_stop(my_known_best_obj);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_best_bound_stop</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the threshold </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="149" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="338" bodyend="347"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad3e0bc7a6d07853f2f54b4b47aec52ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP &amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::with_best_obj_stop</definition>
+        <argsstring>(double t_user_best_obj)</argsstring>
+        <name>with_best_obj_stop</name>
+        <param>
+          <type>double</type>
+          <declname>t_user_best_obj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets a threshold on the best objective value for stopping the optimizer. When the optimizer have found a best objective value which is less than this threshold, the optimizer stops.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>my_known_best_bound<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_best_obj_stop(my_known_best_bound);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_user_best_obj</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the threshold </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="164" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="326" bodyend="335"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad18892029116d8e33e6731f0041be83d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP &amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::with_relative_gap_tolerance</definition>
+        <argsstring>(double t_relative_gap_tolerance)</argsstring>
+        <name>with_relative_gap_tolerance</name>
+        <param>
+          <type>double</type>
+          <declname>t_relative_gap_tolerance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the relative gap tolerance for the optimizer. When the optimizer proves that the relative optimality gap is less than this threshold, the optimizer stops.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_relative_gap_tolerance(.05);<sp/></highlight><highlight class="comment">//<sp/>sets<sp/>a<sp/>gap<sp/>tolerance<sp/>of<sp/>5%</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_relative_gap_tolerance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the relative gap tolerance </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="178" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="314" bodyend="323"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a799ede043bde76795f7f4fd9fac0880c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP &amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::with_absolute_gap_tolerance</definition>
+        <argsstring>(double t_absolute_gap_tolerance)</argsstring>
+        <name>with_absolute_gap_tolerance</name>
+        <param>
+          <type>double</type>
+          <declname>t_absolute_gap_tolerance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the absolute gap tolerance for the optimizer. When the optimizer proves that the absolute optimality gap is less than this threshold, the optimizer stops.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_absolute_gap_tolerance(1e-4);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_absolute_gap_tolerance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the absolute gap tolerance </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="192" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="302" bodyend="311"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a31b5bc10c1e96a84b4617b35bf137ea2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP &amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::with_presolve</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_presolve</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the get_param_presolve activation for the optimizer.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_presolve(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);<sp/></highlight><highlight class="comment">//<sp/>turns<sp/>off<sp/>get_param_presolve<sp/>phase</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the activation level for the optimizer&apos;s get_param_presolve (0 for disabling, 1 for enabling) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="205" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="290" bodyend="299"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae015603918a608ffe8ef04e6145e40e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP &amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::with_infeasible_or_unbounded_info</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_infeasible_or_unbounded_info</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the behaviour of the optimizer when a model is shown to be infeasible or unbounded. When set to true, the optimizer is forced to prove feasibility or unboundedness by providing a certificate.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_infeasible_or_unbounded_info(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the activation level </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="219" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="278" bodyend="287"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a3197aa27445d62fd0491104238275c97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP &amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::conditional</definition>
+        <argsstring>(bool t_conditional_value, const std::function&lt; void(CRTP &amp;)&gt; &amp;t_if)</argsstring>
+        <name>conditional</name>
+        <param>
+          <type>bool</type>
+          <declname>t_conditional_value</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; void(CRTP &amp;)&gt; &amp;</type>
+          <declname>t_if</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executes the lambda function given as second parameter if and only if its first argument is true. This function can be used to build different optimizer factories depending on some external variable.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>use_presolve<sp/>:<sp/>{</highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">})<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.conditional(use_presolve,<sp/>[](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>x){<sp/>x.with_presolve(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/>})</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>model.use(algorithm);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>model.optimize();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_conditional_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, the t_if lambda function is executed, if false, nothing happens. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_if</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lambda function to execute in case t_conditional_value is true </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="238" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="273" bodyend="275"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae8fb4db490981b38547b5b6b86b3d6f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CRTP &amp;</type>
+        <definition>CRTP &amp; idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;::conditional</definition>
+        <argsstring>(bool t_conditional_value, const std::function&lt; void(CRTP &amp;)&gt; &amp;t_if, const std::function&lt; void(CRTP &amp;)&gt; &amp;t_else)</argsstring>
+        <name>conditional</name>
+        <param>
+          <type>bool</type>
+          <declname>t_conditional_value</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; void(CRTP &amp;)&gt; &amp;</type>
+          <declname>t_if</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; void(CRTP &amp;)&gt; &amp;</type>
+          <declname>t_else</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executes the lambda function given as second parameter if and only if its first argument is true. This function can be used to build different optimizer factories depending on some external variable.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>use_presolve<sp/>:<sp/>{</highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">})<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.conditional(use_presolve,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>x){<sp/>x.with_presolve(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>x){<sp/>x.with_presolve(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);<sp/>})</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>model.use(algorithm);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>model.optimize();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_conditional_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, the t_if lambda function is executed, if false, the t_else lambda function is. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_if</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lambda function to execute in case t_conditional_value is true </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_else</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lambda function to execute in case t_conditional_value is false </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="260" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="266" bodyend="269"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactory_1a6363ef08653c866a17e474a1dc8c0f0a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref> *</type>
+        <definition>virtual Optimizer* idol::OptimizerFactory::operator()</definition>
+        <argsstring>(const Model &amp;t_model) const =0</argsstring>
+        <name>operator()</name>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1BranchAndCut_1a040e394c1771737949fa3660fe764c05">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1KKT_1ac99523cef508bf19fa4e1e7489030551">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic_1ac3833a3f85113998810c41600a67e6cd">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1StrongDuality_1a5c290149e6710aed0d9c62e733ce0383">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1MibS_1a759f9b3a6f6c9e971079d1f1c60434d2">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1BranchAndBound_1af4f3c1a3e69cd034a733f9c544a0728b">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1DantzigWolfeDecomposition_1af86bcfaef285281713b451955435e3a0">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1PADM_1ac2d380a57f3bb44afb683b068a413b06">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1PenaltyMethod_1ae845c5190a696d0d8fd3da7147d318d5">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Cplex_1a05f64c1cc35c9efdcf0488cdcc79646f">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1GLPK_1a6b1158963e494d9a69d9c0d7422ee61d">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Gurobi_1af4e1888d7b0df311a74a7bd07146383b">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1HiGHS_1aa7bef94dfa6d31e04a8f23edc41655c7">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Mosek_1ac6fdcf5f31dbcacd00d295dcffc14cfe">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Osi_1a22e7895a9df6a80cb9e35bd162eb4893">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Robust_1_1AffineDecisionRule_1a006a9f44f0e437c3ff128ef09c35c25e">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a10cc684387e2c359ab2d1ac6ed1f0e5f">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Robust_1_1Deterministic_1a5ef7f4ccf27de3145f57f956d480a87c">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a8541145070a97efab4ffbbd69edbd931">operator()</reimplementedby>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates and returns a new optimizer to solve the model given as parameter. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_model</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The model which the optimizer will solve </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A new optimizer for the model </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="35" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactory_1af42e193fdac6920f4dfda602a98bf4a1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> *</type>
+        <definition>virtual OptimizerFactory* idol::OptimizerFactory::clone</definition>
+        <argsstring>() const =0</argsstring>
+        <name>clone</name>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1BranchAndCut_1adc1a19d5b0396af1ea60cac82b8b8016">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1KKT_1a0a533ca659f0966b219b4477acefb866">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic_1ae981926705e5940d80930c5eec5780c0">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1StrongDuality_1a2342647b8a07923fefba9c535bff7a36">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1MibS_1ac946ea69a4f3c45af62de29bac2f2b39">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1BranchAndBound_1a9aea0205e36cc09c10fe280c265d1215">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1DantzigWolfeDecomposition_1ad311de4a9ec161333595ae2d78346922">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1PADM_1aad421e528d01607046fdbbcc348f53ac">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1PenaltyMethod_1a50881107f7bea862f47e027397a6748a">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Cplex_1a737832852190eb39ea6069a6b4931302">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1GLPK_1a809d9ca31e9528bb44e74c0cf6b31de3">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Gurobi_1a59b695542c520ae3e659bd754d1aaaff">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1HiGHS_1a98335cd2bd680f89358bed27a0cac805">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Mosek_1a6c9d22f331d48cc46c6016d8980d9a5a">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Osi_1a3595578d4bacf9c9c1e2376f50dc29dc">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Robust_1_1AffineDecisionRule_1a7f6130f11ed9acc79cd3f7510565d965">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a7e412a8c938b525e790c5159eb7a82f5">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Robust_1_1Deterministic_1a6ecd5d8ce60aeb8aa9cf24c8761353f2">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1ac287cbd81adbfe953b27638fc72f2e14">clone</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates and return a copy of the optimizer factory. This is used for polymorphism. <simplesect kind="return"><para>A copied object of the current object (i.e., *this) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="41" column="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactory_1a997906f3b7db473a7368c48c4be595ac" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>T &amp;</type>
+        <definition>T&amp; idol::OptimizerFactory::as</definition>
+        <argsstring>()</argsstring>
+        <name>as</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="44" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="44" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactory_1a804f8415a57f2a2ae5c197139de2d236" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>const T &amp;</type>
+        <definition>const T&amp; idol::OptimizerFactory::as</definition>
+        <argsstring>() const</argsstring>
+        <name>as</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="52" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="52" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactory_1a8282a87bf2a07d6bf4d5f391632dc423" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool idol::OptimizerFactory::is</definition>
+        <argsstring>() const</argsstring>
+        <name>is</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="60" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="60" bodyend="62"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="37">
+        <label>idol::DantzigWolfeDecomposition</label>
+        <link refid="classidol_1_1DantzigWolfeDecomposition"/>
+        <childnode refid="36" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>idol::Robust::AffineDecisionRule</label>
+        <link refid="classidol_1_1Robust_1_1AffineDecisionRule"/>
+        <childnode refid="15" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>idol::HiGHS</label>
+        <link refid="classidol_1_1HiGHS"/>
+        <childnode refid="42" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; Deterministic &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; Deterministic &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="33">
+        <label>idol::OsiCbc</label>
+        <link refid="classidol_1_1OsiCbc"/>
+        <childnode refid="32" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; DantzigWolfeDecomposition &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; DantzigWolfeDecomposition &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="25">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; PADM &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; PADM &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; HiGHS &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; HiGHS &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="41">
+        <label>idol::PenaltyMethod</label>
+        <link refid="classidol_1_1PenaltyMethod"/>
+        <childnode refid="40" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; PenaltyMethod &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; PenaltyMethod &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; GLPK &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; GLPK &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="34">
+        <label>idol::OsiCplex</label>
+        <link refid="classidol_1_1OsiCplex"/>
+        <childnode refid="32" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; AffineDecisionRule &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; AffineDecisionRule &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; Gurobi &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="26">
+        <label>idol::PADM</label>
+        <link refid="classidol_1_1PADM"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>idol::Robust::Deterministic</label>
+        <link refid="classidol_1_1Robust_1_1Deterministic"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>idol::Osi</label>
+        <link refid="classidol_1_1Osi"/>
+        <childnode refid="31" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>idol::Bilevel::MibS</label>
+        <link refid="classidol_1_1Bilevel_1_1MibS"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>idol::OsiSymphony</label>
+        <link refid="classidol_1_1OsiSymphony"/>
+        <childnode refid="32" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>idol::BranchAndBound&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1BranchAndBound"/>
+        <childnode refid="21" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; ColumnAndConstraintGeneration &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; ColumnAndConstraintGeneration &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; MibS &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; MibS &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; PessimisticAsOptimistic &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; PessimisticAsOptimistic &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>idol::Cplex</label>
+        <link refid="classidol_1_1Cplex"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>idol::Bilevel::PessimisticAsOptimistic</label>
+        <link refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic"/>
+        <childnode refid="13" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; Cplex &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; Cplex &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="24">
+        <label>idol::Mosek</label>
+        <link refid="classidol_1_1Mosek"/>
+        <childnode refid="23" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>idol::Robust::ColumnAndConstraintGeneration</label>
+        <link refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration"/>
+        <childnode refid="38" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndCut &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; BranchAndCut &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>idol::Robust::ScenarioBasedKAdaptabilityProblemSolver</label>
+        <link refid="classidol_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver"/>
+        <childnode refid="19" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>idol::Bilevel::StrongDuality</label>
+        <link refid="classidol_1_1Bilevel_1_1StrongDuality"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; Mosek &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; Mosek &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="30">
+        <label>idol::Bilevel::BranchAndCut</label>
+        <link refid="classidol_1_1Bilevel_1_1BranchAndCut"/>
+        <childnode refid="29" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt; &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>idol::Gurobi</label>
+        <link refid="classidol_1_1Gurobi"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>idol::GLPK</label>
+        <link refid="classidol_1_1GLPK"/>
+        <childnode refid="17" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; Osi &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; Osi &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="27">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; KKT &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; KKT &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="19">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; ScenarioBasedKAdaptabilityProblemSolver &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; ScenarioBasedKAdaptabilityProblemSolver &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::OptimizerFactory</label>
+        <link refid="classidol_1_1OptimizerFactory"/>
+      </node>
+      <node id="28">
+        <label>idol::Bilevel::KKT</label>
+        <link refid="classidol_1_1Bilevel_1_1KKT"/>
+        <childnode refid="27" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; StrongDuality &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; StrongDuality &gt;</edgelabel>
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::OptimizerFactory</label>
+        <link refid="classidol_1_1OptimizerFactory"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="66" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="66" bodyend="262"/>
+    <listofallmembers>
+      <member refid="classidol_1_1OptimizerFactory_1a997906f3b7db473a7368c48c4be595ac" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>as</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1a804f8415a57f2a2ae5c197139de2d236" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>as</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1af42e193fdac6920f4dfda602a98bf4a1" prot="public" virt="pure-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>clone</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a3197aa27445d62fd0491104238275c97" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>conditional</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae8fb4db490981b38547b5b6b86b3d6f3" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>conditional</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1afa26d14ea2c1479683e1e832156fac2a" prot="protected" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>crtp</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a71231955c8b77473a4dd13b630d52cab" prot="protected" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>crtp</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a8a11a96b51aa42b6a8ec863d43bec00b" prot="protected" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>handle_default_parameters</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1a8282a87bf2a07d6bf4d5f391632dc423" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>is</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1aa2c7b00309727eb33e74644de5560ee7" prot="private" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>m_absolute_gap_tolerance</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad0882ae0ce86406d2a363669dbbf877a" prot="private" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>m_best_bound_stop</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae6abbe4a0e47eccba0a9a68b3282ce5e" prot="private" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>m_best_obj_stop</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a77adc6f5e41a7fbb3805a7c69c05f0ac" prot="private" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>m_infeasible_or_unbounded_info</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ab0fc8fe2406dc469aab2c11b3a9b37e6" prot="private" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>m_iteration_count_limit</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad5f747cf58baa5675159f00cd5f395ea" prot="private" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>m_logs</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1af9ea27c60a467e25d7bc89c46665b50d" prot="private" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>m_presolve</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a84dc48151e8edf31644df01497bcbd2f" prot="private" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>m_relative_gap_tolerance</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a9797f4eb06f3250c6cadd2b23f17e790" prot="private" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>m_thread_limit</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a9fc1223457375a28c0fd728288aed874" prot="private" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>m_time_limit</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1a6363ef08653c866a17e474a1dc8c0f0a" prot="public" virt="pure-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>operator()</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a799ede043bde76795f7f4fd9fac0880c" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>with_absolute_gap_tolerance</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a10a7490342b8cb9a0719f150ad70513d" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>with_best_bound_stop</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad3e0bc7a6d07853f2f54b4b47aec52ce" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>with_best_obj_stop</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae015603918a608ffe8ef04e6145e40e0" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>with_infeasible_or_unbounded_info</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ac342238df14873996a25d1182b5a2a7d" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>with_iteration_limit</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a495f616340209e28fde87270f69ce28f" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>with_logs</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a31b5bc10c1e96a84b4617b35bf137ea2" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>with_presolve</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad18892029116d8e33e6731f0041be83d" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>with_relative_gap_tolerance</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a62819967487a06cacad8ca03d0891090" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>with_thread_limit</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a192ee8cb58e8e1b2d33b0d58df3b0123" prot="public" virt="non-virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>with_time_limit</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1aab1c822c36ac4c578bf451e544586c74" prot="public" virt="virtual"><scope>idol::OptimizerFactoryWithDefaultParameters</scope><name>~OptimizerFactory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1ADM_1_1SubProblem" kind="class" language="C++" prot="public">
+    <compoundname>idol::ADM::SubProblem</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1ADM_1_1SubProblem_1a08ac5eb7bf56a45c9229aa6200870237" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;OptimizerFactory&gt; idol::ADM::SubProblem::m_optimizer_factory</definition>
+        <argsstring></argsstring>
+        <name>m_optimizer_factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" line="17" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1ADM_1_1SubProblem_1a766d3ec11abafcca439fe3f7aa0fde00" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; <ref refid="classidol_1_1Point" kindref="compound">PrimalPoint</ref> &gt;</type>
+        <definition>std::optional&lt;PrimalPoint&gt; idol::ADM::SubProblem::m_initial_point</definition>
+        <argsstring></argsstring>
+        <name>m_initial_point</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" line="18" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1ADM_1_1SubProblem_1ad32adaa522886fe6c24a3ca9fb1f4082" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::ADM::SubProblem::SubProblem</definition>
+        <argsstring>()=default</argsstring>
+        <name>SubProblem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" line="20" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ADM_1_1SubProblem_1adae003a28761907504470051cf73b3e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::ADM::SubProblem::SubProblem</definition>
+        <argsstring>(const SubProblem &amp;)</argsstring>
+        <name>SubProblem</name>
+        <param>
+          <type>const <ref refid="classidol_1_1ADM_1_1SubProblem" kindref="compound">SubProblem</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" line="22" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ADM_1_1SubProblem_1a7d5b77a60e7915ed0e2b9c7508dfa9cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::ADM::SubProblem::SubProblem</definition>
+        <argsstring>(SubProblem &amp;&amp;)=default</argsstring>
+        <name>SubProblem</name>
+        <param>
+          <type><ref refid="classidol_1_1ADM_1_1SubProblem" kindref="compound">SubProblem</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" line="23" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ADM_1_1SubProblem_1ad7a7cd09bb42ee5ebf24f3c9b9689f9b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1ADM_1_1SubProblem" kindref="compound">SubProblem</ref> &amp;</type>
+        <definition>SubProblem&amp; idol::ADM::SubProblem::operator=</definition>
+        <argsstring>(const SubProblem &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1ADM_1_1SubProblem" kindref="compound">SubProblem</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" line="25" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ADM_1_1SubProblem_1a13a2b67e704748eca4fbc3603a8bcc80" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1ADM_1_1SubProblem" kindref="compound">SubProblem</ref> &amp;</type>
+        <definition>SubProblem&amp; idol::ADM::SubProblem::operator=</definition>
+        <argsstring>(SubProblem &amp;&amp;)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1ADM_1_1SubProblem" kindref="compound">SubProblem</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" line="26" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ADM_1_1SubProblem_1a3c6d916040fe5ab613d6086f0a6d16ae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1ADM_1_1SubProblem" kindref="compound">SubProblem</ref> &amp;</type>
+        <definition>SubProblem&amp; idol::ADM::SubProblem::with_optimizer</definition>
+        <argsstring>(const OptimizerFactory &amp;t_optimizer_factory)</argsstring>
+        <name>with_optimizer</name>
+        <param>
+          <type>const <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &amp;</type>
+          <declname>t_optimizer_factory</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" line="28" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ADM_1_1SubProblem_1abcd785a535d1be2e239bf98a34bd0ec0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1ADM_1_1SubProblem" kindref="compound">SubProblem</ref> &amp;</type>
+        <definition>SubProblem&amp; idol::ADM::SubProblem::with_initial_point</definition>
+        <argsstring>(const PrimalPoint &amp;t_initial_point, bool t_force=false)</argsstring>
+        <name>with_initial_point</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Point" kindref="compound">PrimalPoint</ref> &amp;</type>
+          <declname>t_initial_point</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>t_force</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" line="30" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ADM_1_1SubProblem_1ac590a0c099c702cdb4a97d247e9eb5d7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &amp;</type>
+        <definition>const OptimizerFactory&amp; idol::ADM::SubProblem::optimizer_factory</definition>
+        <argsstring>() const</argsstring>
+        <name>optimizer_factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" line="32" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ADM_1_1SubProblem_1a4e5c9128d165483ca00ddcae839a91ff" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Point" kindref="compound">PrimalPoint</ref></type>
+        <definition>PrimalPoint idol::ADM::SubProblem::initial_point</definition>
+        <argsstring>() const</argsstring>
+        <name>initial_point</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" line="34" column="17"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::ADM::SubProblem</label>
+        <link refid="classidol_1_1ADM_1_1SubProblem"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" line="16" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h" bodystart="16" bodyend="35"/>
+    <listofallmembers>
+      <member refid="classidol_1_1ADM_1_1SubProblem_1a4e5c9128d165483ca00ddcae839a91ff" prot="public" virt="non-virtual"><scope>idol::ADM::SubProblem</scope><name>initial_point</name></member>
+      <member refid="classidol_1_1ADM_1_1SubProblem_1a766d3ec11abafcca439fe3f7aa0fde00" prot="private" virt="non-virtual"><scope>idol::ADM::SubProblem</scope><name>m_initial_point</name></member>
+      <member refid="classidol_1_1ADM_1_1SubProblem_1a08ac5eb7bf56a45c9229aa6200870237" prot="private" virt="non-virtual"><scope>idol::ADM::SubProblem</scope><name>m_optimizer_factory</name></member>
+      <member refid="classidol_1_1ADM_1_1SubProblem_1ad7a7cd09bb42ee5ebf24f3c9b9689f9b" prot="public" virt="non-virtual"><scope>idol::ADM::SubProblem</scope><name>operator=</name></member>
+      <member refid="classidol_1_1ADM_1_1SubProblem_1a13a2b67e704748eca4fbc3603a8bcc80" prot="public" virt="non-virtual"><scope>idol::ADM::SubProblem</scope><name>operator=</name></member>
+      <member refid="classidol_1_1ADM_1_1SubProblem_1ac590a0c099c702cdb4a97d247e9eb5d7" prot="public" virt="non-virtual"><scope>idol::ADM::SubProblem</scope><name>optimizer_factory</name></member>
+      <member refid="classidol_1_1ADM_1_1SubProblem_1ad32adaa522886fe6c24a3ca9fb1f4082" prot="public" virt="non-virtual"><scope>idol::ADM::SubProblem</scope><name>SubProblem</name></member>
+      <member refid="classidol_1_1ADM_1_1SubProblem_1adae003a28761907504470051cf73b3e6" prot="public" virt="non-virtual"><scope>idol::ADM::SubProblem</scope><name>SubProblem</name></member>
+      <member refid="classidol_1_1ADM_1_1SubProblem_1a7d5b77a60e7915ed0e2b9c7508dfa9cc" prot="public" virt="non-virtual"><scope>idol::ADM::SubProblem</scope><name>SubProblem</name></member>
+      <member refid="classidol_1_1ADM_1_1SubProblem_1abcd785a535d1be2e239bf98a34bd0ec0" prot="public" virt="non-virtual"><scope>idol::ADM::SubProblem</scope><name>with_initial_point</name></member>
+      <member refid="classidol_1_1ADM_1_1SubProblem_1a3c6d916040fe5ab613d6086f0a6d16ae" prot="public" virt="non-virtual"><scope>idol::ADM::SubProblem</scope><name>with_optimizer</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

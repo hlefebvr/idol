@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>TempQCtr</title>
+    
+          <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/api/mixed-integer/modeling/TempQCtr.html" />
+    
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="next" title="TempVar" href="TempVar.html" />
+  <link rel="prev" title="TempCtr" href="TempCtr.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../../index.html">API</a> &raquo;</li>
+    
+      <li><a href="../index.html">Mixed-integer Optimization</a> &raquo;</li>
+    
+    <li>TempQCtr</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="TempCtr.html"
+       title="previous chapter">← TempCtr</a>
+  </li>
+  <li class="next">
+    <a href="TempVar.html"
+       title="next chapter">TempVar →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="tempqctr">
+<span id="api-tempqctr"></span><h1>TempQCtr<a class="headerlink" href="#tempqctr" title="Link to this heading">¶</a></h1>
+<section id="doxygen">
+<h2>Doxygen<a class="headerlink" href="#doxygen" title="Link to this heading">¶</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8TempQCtrE">
+<span id="_CPPv3N4idol8TempQCtrE"></span><span id="_CPPv2N4idol8TempQCtrE"></span><span id="idol::TempQCtr"></span><span class="target" id="classidol_1_1TempQCtr"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">TempQCtr</span></span></span><a class="headerlink" href="#_CPPv4N4idol8TempQCtrE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8TempQCtr8TempQCtrEv">
+<span id="_CPPv3N4idol8TempQCtr8TempQCtrEv"></span><span id="_CPPv2N4idol8TempQCtr8TempQCtrEv"></span><span id="idol::TempQCtr::TempQCtr"></span><span class="target" id="classidol_1_1TempQCtr_1a7b55952cc4f8c7f989a96997feaaf7ed"></span><span class="sig-name descname"><span class="n"><span class="pre">TempQCtr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol8TempQCtr8TempQCtrEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8TempQCtr8TempQCtrERR8QuadExprI3VarE7CtrType">
+<span id="_CPPv3N4idol8TempQCtr8TempQCtrERR8QuadExprI3VarE7CtrType"></span><span id="_CPPv2N4idol8TempQCtr8TempQCtrERR8QuadExprI3VarE7CtrType"></span><span id="idol::TempQCtr::TempQCtr__QuadExpr:Var:RR.CtrType"></span><span class="target" id="classidol_1_1TempQCtr_1a7a3111e8d8faf50bb03ddc8f456ec967"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TempQCtr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="QuadExpr.html#_CPPv4I00EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_expr</span></span>, <a class="reference internal" href="../misc/CtrType.html#_CPPv4N4idol7CtrTypeE" title="idol::CtrType"><span class="n"><span class="pre">CtrType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8TempQCtr8TempQCtrERR8QuadExprI3VarE7CtrType" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8TempQCtr8TempQCtrERK8TempQCtr">
+<span id="_CPPv3N4idol8TempQCtr8TempQCtrERK8TempQCtr"></span><span id="_CPPv2N4idol8TempQCtr8TempQCtrERK8TempQCtr"></span><span id="idol::TempQCtr::TempQCtr__TempQCtrCR"></span><span class="target" id="classidol_1_1TempQCtr_1a3bb559a6fa856e88d48698913271b32b"></span><span class="sig-name descname"><span class="n"><span class="pre">TempQCtr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8TempQCtr8TempQCtrERK8TempQCtr" title="idol::TempQCtr::TempQCtr"><span class="n"><span class="pre">TempQCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_src</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol8TempQCtr8TempQCtrERK8TempQCtr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8TempQCtr8TempQCtrERR8TempQCtr">
+<span id="_CPPv3N4idol8TempQCtr8TempQCtrERR8TempQCtr"></span><span id="_CPPv2N4idol8TempQCtr8TempQCtrERR8TempQCtr"></span><span id="idol::TempQCtr::TempQCtr__TempQCtrRR"></span><span class="target" id="classidol_1_1TempQCtr_1aeecfa270826979838da857e6f43db0c0"></span><span class="sig-name descname"><span class="n"><span class="pre">TempQCtr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol8TempQCtr8TempQCtrERR8TempQCtr" title="idol::TempQCtr::TempQCtr"><span class="n"><span class="pre">TempQCtr</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol8TempQCtr8TempQCtrERR8TempQCtr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8TempQCtraSERK8TempQCtr">
+<span id="_CPPv3N4idol8TempQCtraSERK8TempQCtr"></span><span id="_CPPv2N4idol8TempQCtraSERK8TempQCtr"></span><span id="idol::TempQCtr::assign-operator__TempQCtrCR"></span><span class="target" id="classidol_1_1TempQCtr_1a31397a026cb8788fbd1599d585e1da23"></span><a class="reference internal" href="#_CPPv4N4idol8TempQCtrE" title="idol::TempQCtr"><span class="n"><span class="pre">TempQCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8TempQCtrE" title="idol::TempQCtr"><span class="n"><span class="pre">TempQCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol8TempQCtraSERK8TempQCtr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8TempQCtraSERR8TempQCtr">
+<span id="_CPPv3N4idol8TempQCtraSERR8TempQCtr"></span><span id="_CPPv2N4idol8TempQCtraSERR8TempQCtr"></span><span id="idol::TempQCtr::assign-operator__TempQCtrRR"></span><span class="target" id="classidol_1_1TempQCtr_1a39a79a90073f1e437e74e4accf606b58"></span><a class="reference internal" href="#_CPPv4N4idol8TempQCtrE" title="idol::TempQCtr"><span class="n"><span class="pre">TempQCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol8TempQCtrE" title="idol::TempQCtr"><span class="n"><span class="pre">TempQCtr</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol8TempQCtraSERR8TempQCtr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8TempQCtr4exprEv">
+<span id="_CPPv3N4idol8TempQCtr4exprEv"></span><span id="_CPPv2N4idol8TempQCtr4exprEv"></span><span id="idol::TempQCtr::expr"></span><span class="target" id="classidol_1_1TempQCtr_1a1b619525cad236fe744ce706d6575458"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="QuadExpr.html#_CPPv4I00EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">expr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8TempQCtr4exprEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8TempQCtr4exprEv">
+<span id="_CPPv3NK4idol8TempQCtr4exprEv"></span><span id="_CPPv2NK4idol8TempQCtr4exprEv"></span><span id="idol::TempQCtr::exprC"></span><span class="target" id="classidol_1_1TempQCtr_1acf27e6233c64e5df07a368d413972c4a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="QuadExpr.html#_CPPv4I00EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">expr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8TempQCtr4exprEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8TempQCtr4typeEv">
+<span id="_CPPv3NK4idol8TempQCtr4typeEv"></span><span id="_CPPv2NK4idol8TempQCtr4typeEv"></span><span id="idol::TempQCtr::typeC"></span><span class="target" id="classidol_1_1TempQCtr_1afff8244b120c2640caab8af94e9dbf90"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../misc/CtrType.html#_CPPv4N4idol7CtrTypeE" title="idol::CtrType"><span class="n"><span class="pre">CtrType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8TempQCtr4typeEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8TempQCtr8set_exprERR8QuadExprI3VarE">
+<span id="_CPPv3N4idol8TempQCtr8set_exprERR8QuadExprI3VarE"></span><span id="_CPPv2N4idol8TempQCtr8set_exprERR8QuadExprI3VarE"></span><span id="idol::TempQCtr::set_expr__QuadExpr:Var:RR"></span><span class="target" id="classidol_1_1TempQCtr_1a4d45a488f8e5c2d13b560e033ef79566"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_expr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="QuadExpr.html#_CPPv4I00EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_expr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8TempQCtr8set_exprERR8QuadExprI3VarE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8TempQCtr8set_typeE7CtrType">
+<span id="_CPPv3N4idol8TempQCtr8set_typeE7CtrType"></span><span id="_CPPv2N4idol8TempQCtr8set_typeE7CtrType"></span><span id="idol::TempQCtr::set_type__CtrType"></span><span class="target" id="classidol_1_1TempQCtr_1ac1b194673e4cd754cf4165025cf43949"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_type</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../misc/CtrType.html#_CPPv4N4idol7CtrTypeE" title="idol::CtrType"><span class="n"><span class="pre">CtrType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8TempQCtr8set_typeE7CtrType" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="TempCtr.html"
+       title="previous chapter">← TempCtr</a>
+  </li>
+  <li class="next">
+    <a href="TempVar.html"
+       title="next chapter">TempVar →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

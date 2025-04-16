@@ -1,0 +1,335 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Problems_1_1GAP_1_1Instance" kind="class" language="C++" prot="public">
+    <compoundname>idol::Problems::GAP::Instance</compoundname>
+    <includes refid="GAP__Instance_8h" local="no">GAP_Instance.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classidol_1_1Problems_1_1GAP_1_1Instance_1a7c57b79b4324bbf8732aa17bd1fa629b" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; double &gt; &gt;</type>
+        <definition>std::vector&lt;std::vector&lt;double&gt; &gt; idol::Problems::GAP::Instance::m_costs</definition>
+        <argsstring></argsstring>
+        <name>m_costs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="23" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Problems_1_1GAP_1_1Instance_1a5be05a47bb0d9eed272142f966127387" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; double &gt; &gt;</type>
+        <definition>std::vector&lt;std::vector&lt;double&gt; &gt; idol::Problems::GAP::Instance::m_resource_consumptions</definition>
+        <argsstring></argsstring>
+        <name>m_resource_consumptions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="24" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Problems_1_1GAP_1_1Instance_1af35b480fd101526dde972dd9f8b4ab37" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; idol::Problems::GAP::Instance::m_capacities</definition>
+        <argsstring></argsstring>
+        <name>m_capacities</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="25" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1ae33ed06d518cd45cf542a0ff4186025e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Problems::GAP::Instance::Instance</definition>
+        <argsstring>(unsigned int t_n_agents, unsigned int t_n_jobs)</argsstring>
+        <name>Instance</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_agents</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_jobs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="27" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1ab35cbc401190a1bea07557ff95624c14" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Problems::GAP::Instance::Instance</definition>
+        <argsstring>(const Instance &amp;)=default</argsstring>
+        <name>Instance</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Problems_1_1GAP_1_1Instance" kindref="compound">Instance</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="29" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1aaf8d520d6f280d276c729bb886e1f69e" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Problems::GAP::Instance::Instance</definition>
+        <argsstring>(Instance &amp;&amp;) noexcept=default</argsstring>
+        <name>Instance</name>
+        <param>
+          <type><ref refid="classidol_1_1Problems_1_1GAP_1_1Instance" kindref="compound">Instance</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="30" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1aac664dd02cb1155c6eb6eaaa15e226af" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Problems_1_1GAP_1_1Instance" kindref="compound">Instance</ref> &amp;</type>
+        <definition>Instance&amp; idol::Problems::GAP::Instance::operator=</definition>
+        <argsstring>(const Instance &amp;)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Problems_1_1GAP_1_1Instance" kindref="compound">Instance</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="32" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1a50a5dbe38abd299a96a3c2352fc9458e" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Problems_1_1GAP_1_1Instance" kindref="compound">Instance</ref> &amp;</type>
+        <definition>Instance&amp; idol::Problems::GAP::Instance::operator=</definition>
+        <argsstring>(Instance &amp;&amp;) noexcept=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1Problems_1_1GAP_1_1Instance" kindref="compound">Instance</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="33" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1abb978ec36a970628e991841e8704e274" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Problems::GAP::Instance::~Instance</definition>
+        <argsstring>()=default</argsstring>
+        <name>~Instance</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="35" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1ade7272f9732e620641b0d75c777131e0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Problems::GAP::Instance::n_agents</definition>
+        <argsstring>() const</argsstring>
+        <name>n_agents</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="36" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" bodystart="36" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1adb8da7a386c958c77398bb7388a1ce28" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Problems::GAP::Instance::n_jobs</definition>
+        <argsstring>() const</argsstring>
+        <name>n_jobs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="37" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" bodystart="37" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1acf403b42d054b73ffd737e6b7b48ec86" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Problems::GAP::Instance::cost</definition>
+        <argsstring>(unsigned int t_agent, unsigned int t_job) const</argsstring>
+        <name>cost</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_agent</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_job</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="38" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" bodystart="38" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1a7bc7622bc663f5592207a57fa4bc70a9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Problems::GAP::Instance::resource_consumption</definition>
+        <argsstring>(unsigned int t_agent, unsigned int t_job) const</argsstring>
+        <name>resource_consumption</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_agent</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_job</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="39" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" bodystart="39" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1a7c002b1272f695b6e941116b5f7d5cfc" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Problems::GAP::Instance::capacity</definition>
+        <argsstring>(unsigned int t_agent) const</argsstring>
+        <name>capacity</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_agent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="40" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" bodystart="40" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1ab5b52f34ac111d90ccfd46985fbd1ea5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Problems::GAP::Instance::set_cost</definition>
+        <argsstring>(unsigned int t_agent, unsigned int t_job, double t_value)</argsstring>
+        <name>set_cost</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_agent</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_job</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="42" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" bodystart="42" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1a45d50f7e2d844a7e3f34c53ee630f1f1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Problems::GAP::Instance::set_resource_consumption</definition>
+        <argsstring>(unsigned int t_agent, unsigned int t_job, double t_value)</argsstring>
+        <name>set_resource_consumption</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_agent</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_job</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="43" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" bodystart="43" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Problems_1_1GAP_1_1Instance_1ab94837755402de95831628e666f21a12" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Problems::GAP::Instance::set_capacity</definition>
+        <argsstring>(unsigned int t_agent, double t_value)</argsstring>
+        <name>set_capacity</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_agent</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="44" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" bodystart="44" bodyend="44"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>See also <ulink url="https://en.wikipedia.org/wiki/Generalized_assignment_problem">https://en.wikipedia.org/wiki/Generalized_assignment_problem</ulink>. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Problems::GAP::Instance</label>
+        <link refid="classidol_1_1Problems_1_1GAP_1_1Instance"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" line="21" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h" bodystart="21" bodyend="45"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1a7c002b1272f695b6e941116b5f7d5cfc" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>capacity</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1acf403b42d054b73ffd737e6b7b48ec86" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>cost</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1ae33ed06d518cd45cf542a0ff4186025e" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>Instance</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1ab35cbc401190a1bea07557ff95624c14" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>Instance</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1aaf8d520d6f280d276c729bb886e1f69e" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>Instance</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1af35b480fd101526dde972dd9f8b4ab37" prot="protected" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>m_capacities</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1a7c57b79b4324bbf8732aa17bd1fa629b" prot="protected" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>m_costs</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1a5be05a47bb0d9eed272142f966127387" prot="protected" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>m_resource_consumptions</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1ade7272f9732e620641b0d75c777131e0" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>n_agents</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1adb8da7a386c958c77398bb7388a1ce28" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>n_jobs</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1aac664dd02cb1155c6eb6eaaa15e226af" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1a50a5dbe38abd299a96a3c2352fc9458e" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1a7bc7622bc663f5592207a57fa4bc70a9" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>resource_consumption</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1ab94837755402de95831628e666f21a12" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>set_capacity</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1ab5b52f34ac111d90ccfd46985fbd1ea5" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>set_cost</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1a45d50f7e2d844a7e3f34c53ee630f1f1" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>set_resource_consumption</name></member>
+      <member refid="classidol_1_1Problems_1_1GAP_1_1Instance_1abb978ec36a970628e991841e8704e274" prot="public" virt="non-virtual"><scope>idol::Problems::GAP::Instance</scope><name>~Instance</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

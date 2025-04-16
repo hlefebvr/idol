@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1BestEstimate_1_1Strategy" kind="class" language="C++" prot="public">
+    <compoundname>idol::BestEstimate::Strategy</compoundname>
+    <basecompoundref refid="classidol_1_1NodeSelectionRuleFactory" prot="public" virt="non-virtual">idol::NodeSelectionRuleFactory&lt; NodeT &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>class NodeT</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1BestEstimate_1_1Strategy_1a02e5f5a86c2bd06e7e1c35bdf2384207" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::BestEstimate::Strategy&lt; NodeT &gt;::Strategy</definition>
+        <argsstring>(const BestEstimate &amp;t_parent)</argsstring>
+        <name>Strategy</name>
+        <param>
+          <type>const <ref refid="classidol_1_1BestEstimate" kindref="compound">BestEstimate</ref> &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h" line="20" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h" bodystart="20" bodyend="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BestEstimate_1_1Strategy_1a9bf6ad38f68d22c9b1d1b6da886dca39" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1NodeSelectionRules_1_1BestEstimate" kindref="compound">NodeSelectionRules::BestEstimate</ref>&lt; NodeT &gt; *</type>
+        <definition>NodeSelectionRules::BestEstimate&lt;NodeT&gt;* idol::BestEstimate::Strategy&lt; NodeT &gt;::operator()</definition>
+        <argsstring>(Optimizers::BranchAndBound&lt; NodeT &gt; &amp;t_parent) const override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1NodeSelectionRuleFactory_1ab592dfbca453a3edd06cb07112c8155a">operator()</reimplements>
+        <param>
+          <type><ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound</ref>&lt; NodeT &gt; &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h" line="22" column="42" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h" bodystart="22" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BestEstimate_1_1Strategy_1ad3b9f8e42f0edc6fc1ba65443ac7fb54" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1BestEstimate_1_1Strategy" kindref="compound">Strategy</ref> *</type>
+        <definition>Strategy* idol::BestEstimate::Strategy&lt; NodeT &gt;::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1NodeSelectionRuleFactory_1a9bc3ef2003c48949e16107c57648a216">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h" line="26" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h" bodystart="26" bodyend="28"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>idol::BestEstimate::Strategy&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1BestEstimate_1_1Strategy"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::NodeSelectionRuleFactory&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1NodeSelectionRuleFactory"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::BestEstimate::Strategy&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1BestEstimate_1_1Strategy"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::NodeSelectionRuleFactory&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1NodeSelectionRuleFactory"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h" line="18" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h" bodystart="18" bodyend="29"/>
+    <listofallmembers>
+      <member refid="classidol_1_1BestEstimate_1_1Strategy_1ad3b9f8e42f0edc6fc1ba65443ac7fb54" prot="public" virt="virtual"><scope>idol::BestEstimate::Strategy</scope><name>clone</name></member>
+      <member refid="classidol_1_1BestEstimate_1_1Strategy_1a9bf6ad38f68d22c9b1d1b6da886dca39" prot="public" virt="virtual"><scope>idol::BestEstimate::Strategy</scope><name>operator()</name></member>
+      <member refid="classidol_1_1BestEstimate_1_1Strategy_1a02e5f5a86c2bd06e7e1c35bdf2384207" prot="public" virt="non-virtual"><scope>idol::BestEstimate::Strategy</scope><name>Strategy</name></member>
+      <member refid="classidol_1_1NodeSelectionRuleFactory_1ab414283daaab0949d39a2b15a8ab16c9" prot="public" virt="virtual"><scope>idol::BestEstimate::Strategy</scope><name>~NodeSelectionRuleFactory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

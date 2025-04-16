@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>LazyCutCallback</title>
+    
+          <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/api/classes/universal-callbacks/LazyCutCallback.html" />
+    
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+    
+    <li>LazyCutCallback</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="lazycutcallback">
+<span id="api-lazycutcallback"></span><h1>LazyCutCallback<a class="headerlink" href="#lazycutcallback" title="Link to this heading">¶</a></h1>
+<p>Lazy cuts are essentially constraints which are part of an optimization model but which have been omitted in the current
+definition of the model. Lazy cuts typically arise in models with a large number of constraints. Instead of enumerating
+then all, it may be judicious to omit some of them to get a smaller optimization model. Then, the returned solution is
+checked for feasibility against the whole set of constraints. If a violated constraint is identified, we add the
+constraint to the model and resolve. If not, then all the constraints are satisfied and the solution is optimal for the
+original model in which all constraints materializes.</p>
+<p>The LazyCutCallback can be used to implement lazy cut constraint generation on the fly, during the optimization process.</p>
+<p>Consider the following optimization problem:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    \min_x \ &amp; c^\top x \\
+    \text{s.t.} \ &amp; x\in X, \\
+    &amp; \xi^\top x \le \xi_0 \quad (\xi_0,\xi) \in \Xi,
+\end{align}\end{split}\]</div>
+<p>in which assume that <span class="math notranslate nohighlight">\(|\Xi|\)</span> is large (potentially infinite). The idea is to start by solving the following
+relaxed master problem in which constraints associated to <span class="math notranslate nohighlight">\((\xi_0,\xi)\)</span> have been omitted.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    \min_x \ &amp; c^\top x \\
+    \text{s.t.} \ &amp; x\in X.
+\end{align}\end{split}\]</div>
+<p>If we assume that this problem is feasible and bounded, we can denote by <span class="math notranslate nohighlight">\(x^*\)</span> a solution of this problem. Then,
+we search for a violated constraint “<span class="math notranslate nohighlight">\(\xi^\top x \le \xi_0\)</span>” for some <span class="math notranslate nohighlight">\((\xi_0,\xi)\in\Xi\)</span>. Observe that
+a constraint is violated if, and only if, the following holds:</p>
+<div class="math notranslate nohighlight">
+\[\left(\exists(\xi_0,\xi)\in\Xi, \ \xi^\top x^* &gt; \xi_0\right)
+\Leftrightarrow
+\left(\max_{(\xi_0,\xi)\in\Xi} \xi_0 - \xi^\top x^* &lt; 0\right).\]</div>
+<p>Thus, the LazyCutCallback automatically solve the optimization problem on the right handside and checks for its value.
+A new constraint is added if, and only if,</p>
+<div class="math notranslate nohighlight">
+\[\max_{\xi\in\Xi} \xi_0 - \xi^\top x^* &lt; -\varepsilon,\]</div>
+<p>with <span class="math notranslate nohighlight">\(\varepsilon\)</span> a given tolerance (by default, <code class="code docutils literal notranslate"><span class="pre">Tolerance::Feasibility</span></code>).</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You may also be interested by a tutorial showing how you can implement a simple Benders Decomposition using lazy
+cuts. <a class="reference internal" href="../../../tutorials/mixed-integer/optimizers/universal-callbacks.html#tutorial-user-lazy-cuts"><span class="std std-ref">See Benders Decomposition tutorial</span></a>.</p>
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol15LazyCutCallbackE">
+<span id="_CPPv3N4idol15LazyCutCallbackE"></span><span id="_CPPv2N4idol15LazyCutCallbackE"></span><span id="idol::LazyCutCallback"></span><span class="target" id="classidol_1_1LazyCutCallback"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../../mixed-integer/misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">LazyCutCallback</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="CallbackFactory.html#_CPPv4N4idol15CallbackFactoryE" title="idol::CallbackFactory"><span class="n"><span class="pre">CallbackFactory</span></span></a><a class="headerlink" href="#_CPPv4N4idol15LazyCutCallbackE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol15LazyCutCallback15LazyCutCallbackERK5Model17GenerationPatternI3CtrE7CtrType">
+<span id="_CPPv3N4idol15LazyCutCallback15LazyCutCallbackERK5Model17GenerationPatternI3CtrE7CtrType"></span><span id="_CPPv2N4idol15LazyCutCallback15LazyCutCallbackERK5Model17GenerationPatternI3CtrE7CtrType"></span><span id="idol::LazyCutCallback::LazyCutCallback__ModelCR.GenerationPattern:Ctr:.CtrType"></span><span class="target" id="classidol_1_1LazyCutCallback_1a51f063e0ba90c140cb4af4605cbf7975"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LazyCutCallback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Model.html#_CPPv4N4idol5ModelE" title="idol::Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_model</span></span>, <span class="n"><span class="pre">GenerationPattern</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_cut</span></span>, <a class="reference internal" href="../../mixed-integer/misc/CtrType.html#_CPPv4N4idol7CtrTypeE" title="idol::CtrType"><span class="n"><span class="pre">CtrType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/misc/CtrType.html#_CPPv4N4idol7CtrType11LessOrEqualE" title="idol::LessOrEqual"><span class="n"><span class="pre">LessOrEqual</span></span></a><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol15LazyCutCallback15LazyCutCallbackERK5Model17GenerationPatternI3CtrE7CtrType" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol15LazyCutCallbackclEv">
+<span id="_CPPv3N4idol15LazyCutCallbackclEv"></span><span id="_CPPv2N4idol15LazyCutCallbackclEv"></span><span id="idol::LazyCutCallback::call-operator"></span><span class="target" id="classidol_1_1LazyCutCallback_1aeda77c3af52357efc19fc5dde76cca89"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="Callback.html#_CPPv4N4idol8CallbackE" title="idol::Callback"><span class="n"><span class="pre">Callback</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N4idol15LazyCutCallbackclEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol15LazyCutCallback5cloneEv">
+<span id="_CPPv3NK4idol15LazyCutCallback5cloneEv"></span><span id="_CPPv2NK4idol15LazyCutCallback5cloneEv"></span><span id="idol::LazyCutCallback::cloneC"></span><span class="target" id="classidol_1_1LazyCutCallback_1a10ca0cca2a0e0bd9234fee142b73f727"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="CallbackFactory.html#_CPPv4N4idol15CallbackFactoryE" title="idol::CallbackFactory"><span class="n"><span class="pre">CallbackFactory</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK4idol15LazyCutCallback5cloneEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol15LazyCutCallback25with_separation_optimizerERK16OptimizerFactory">
+<span id="_CPPv3N4idol15LazyCutCallback25with_separation_optimizerERK16OptimizerFactory"></span><span id="_CPPv2N4idol15LazyCutCallback25with_separation_optimizerERK16OptimizerFactory"></span><span id="idol::LazyCutCallback::with_separation_optimizer__OptimizerFactoryCR"></span><span class="target" id="classidol_1_1LazyCutCallback_1a7cfac2d18955bdbb4d1b640fcc2b5ffd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol15LazyCutCallbackE" title="idol::LazyCutCallback"><span class="n"><span class="pre">LazyCutCallback</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_separation_optimizer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">OptimizerFactory</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_optimizer_factory</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol15LazyCutCallback25with_separation_optimizerERK16OptimizerFactory" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol15LazyCutCallback8StrategyE">
+<span id="_CPPv3N4idol15LazyCutCallback8StrategyE"></span><span id="_CPPv2N4idol15LazyCutCallback8StrategyE"></span><span id="idol::LazyCutCallback::Strategy"></span><span class="target" id="classidol_1_1LazyCutCallback_1_1Strategy"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Strategy</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">impl</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">CutSeparation</span></span><a class="headerlink" href="#_CPPv4N4idol15LazyCutCallback8StrategyE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol15LazyCutCallback8Strategy8StrategyEP5Model17GenerationPatternI3CtrE7CtrType">
+<span id="_CPPv3N4idol15LazyCutCallback8Strategy8StrategyEP5Model17GenerationPatternI3CtrE7CtrType"></span><span id="_CPPv2N4idol15LazyCutCallback8Strategy8StrategyEP5Model17GenerationPatternI3CtrE7CtrType"></span><span id="idol::LazyCutCallback::Strategy::Strategy__ModelP.GenerationPattern:Ctr:.CtrType"></span><span class="target" id="classidol_1_1LazyCutCallback_1_1Strategy_1ade12ebf67bdd154bf4491a0800ca71d9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Strategy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../mixed-integer/modeling/Model.html#_CPPv4N4idol5ModelE" title="idol::Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">t_separation_problem</span></span>, <span class="n"><span class="pre">GenerationPattern</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_cut</span></span>, <a class="reference internal" href="../../mixed-integer/misc/CtrType.html#_CPPv4N4idol7CtrTypeE" title="idol::CtrType"><span class="n"><span class="pre">CtrType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol15LazyCutCallback8Strategy8StrategyEP5Model17GenerationPatternI3CtrE7CtrType" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

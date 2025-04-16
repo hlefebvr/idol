@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1NodeSelectionRules" kind="namespace" language="C++">
+    <compoundname>idol::NodeSelectionRules</compoundname>
+    <innerclass refid="classidol_1_1NodeSelectionRules_1_1BestBound" prot="public">idol::NodeSelectionRules::BestBound</innerclass>
+    <innerclass refid="classidol_1_1NodeSelectionRules_1_1BestEstimate" prot="public">idol::NodeSelectionRules::BestEstimate</innerclass>
+    <innerclass refid="classidol_1_1NodeSelectionRules_1_1BreadthFirst" prot="public">idol::NodeSelectionRules::BreadthFirst</innerclass>
+    <innerclass refid="classidol_1_1NodeSelectionRules_1_1DepthFirst" prot="public">idol::NodeSelectionRules::DepthFirst</innerclass>
+    <innerclass refid="classidol_1_1NodeSelectionRules_1_1WorstBound" prot="public">idol::NodeSelectionRules::WorstBound</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/BestBound.h" line="11" column="1"/>
+  </compounddef>
+</doxygen>

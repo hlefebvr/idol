@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_adfa9b24b8cd6b38bd6e4e971f5a371e" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/helpers</compoundname>
+    <innerfile refid="distances_8h">distances.h</innerfile>
+    <innerfile refid="parse__delimited_8h">parse_delimited.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/helpers/"/>
+  </compounddef>
+</doxygen>

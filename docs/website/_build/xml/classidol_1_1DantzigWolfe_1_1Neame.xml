@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1DantzigWolfe_1_1Neame" kind="class" language="C++" prot="public">
+    <compoundname>idol::DantzigWolfe::Neame</compoundname>
+    <basecompoundref refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization" prot="public" virt="non-virtual">idol::DantzigWolfe::DualPriceSmoothingStabilization</basecompoundref>
+    <innerclass refid="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy" prot="public">idol::DantzigWolfe::Neame::Strategy</innerclass>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1DantzigWolfe_1_1Neame_1afaaee958368697b795232aad3bf1a1e0" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double idol::DantzigWolfe::Neame::m_initial_factor</definition>
+        <argsstring></argsstring>
+        <name>m_initial_factor</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" line="15" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1Neame_1a9c2819551038cc40fb212fac30529db1" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::DantzigWolfe::Neame::Neame</definition>
+        <argsstring>(double t_initial_factor)</argsstring>
+        <name>Neame</name>
+        <param>
+          <type>double</type>
+          <declname>t_initial_factor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" line="17" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" bodystart="17" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1Neame_1a8018a75912c648a1ad034c45f4654a2b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1_1Strategy" kindref="compound">DualPriceSmoothingStabilization::Strategy</ref> *</type>
+        <definition>DualPriceSmoothingStabilization::Strategy* idol::DantzigWolfe::Neame::operator()</definition>
+        <argsstring>() const override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1a720effa06e6f5befd7e055ecd3882537">operator()</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" line="46" column="47" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" bodystart="46" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1Neame_1ae0fc60e622e94b4b2076e0521a966fc8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization" kindref="compound">DualPriceSmoothingStabilization</ref> *</type>
+        <definition>DualPriceSmoothingStabilization* idol::DantzigWolfe::Neame::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1a790f93b44bab32e04cb30ec6b7374ebe">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" line="50" column="37" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" bodystart="50" bodyend="52"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>idol::DantzigWolfe::DualPriceSmoothingStabilization</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization"/>
+      </node>
+      <node id="1">
+        <label>idol::DantzigWolfe::Neame</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1Neame"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>idol::DantzigWolfe::DualPriceSmoothingStabilization</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization"/>
+      </node>
+      <node id="1">
+        <label>idol::DantzigWolfe::Neame</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1Neame"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" line="14" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" bodystart="14" bodyend="53"/>
+    <listofallmembers>
+      <member refid="classidol_1_1DantzigWolfe_1_1Neame_1ae0fc60e622e94b4b2076e0521a966fc8" prot="public" virt="virtual"><scope>idol::DantzigWolfe::Neame</scope><name>clone</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1Neame_1afaaee958368697b795232aad3bf1a1e0" prot="private" virt="non-virtual"><scope>idol::DantzigWolfe::Neame</scope><name>m_initial_factor</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1Neame_1a9c2819551038cc40fb212fac30529db1" prot="public" virt="non-virtual"><scope>idol::DantzigWolfe::Neame</scope><name>Neame</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1Neame_1a8018a75912c648a1ad034c45f4654a2b" prot="public" virt="virtual"><scope>idol::DantzigWolfe::Neame</scope><name>operator()</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1a9297387ee0dd0eb20b85f7c8b6f72ae3" prot="public" virt="virtual"><scope>idol::DantzigWolfe::Neame</scope><name>~DualPriceSmoothingStabilization</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

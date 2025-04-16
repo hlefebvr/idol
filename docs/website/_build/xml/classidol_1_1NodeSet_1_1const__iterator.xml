@@ -1,0 +1,271 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1NodeSet_1_1const__iterator" kind="class" language="C++" prot="public">
+    <compoundname>idol::NodeSet::const_iterator</compoundname>
+      <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="classidol_1_1NodeSet_1_1const__iterator_1a0a4b4f6eb789726c8c413ae703eff7a1" prot="private" static="no">
+        <type>typename by_objective_value_t::const_iterator</type>
+        <definition>using idol::NodeSet&lt; NodeT &gt;::const_iterator::by_objective_value_it_t =  typename by_objective_value_t::const_iterator</definition>
+        <argsstring></argsstring>
+        <name>by_objective_value_it_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="101" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classidol_1_1NodeSet_1_1const__iterator_1a0f15608dd4ed9e70fb286a91f3ea7f06" prot="private" static="no">
+        <type>typename by_level_t::const_iterator</type>
+        <definition>using idol::NodeSet&lt; NodeT &gt;::const_iterator::by_level_it_t =  typename by_level_t::const_iterator</definition>
+        <argsstring></argsstring>
+        <name>by_level_it_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="102" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classidol_1_1NodeSet_1_1const__iterator_1ac0e086855d2f414bd6f442451be4c05b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class NodeSet&lt; NodeT &gt;</definition>
+        <argsstring></argsstring>
+        <name>NodeSet&lt; NodeT &gt;</name>
+        <param>
+          <type><ref refid="classidol_1_1NodeSet" kindref="compound">NodeSet</ref>&lt; NodeT &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="41" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1NodeSet_1_1const__iterator_1ab4b320be739c2d87437a604e1dbf1fa9" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool idol::NodeSet&lt; NodeT &gt;::const_iterator::m_is_by_level</definition>
+        <argsstring></argsstring>
+        <name>m_is_by_level</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="104" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1NodeSet_1_1const__iterator_1a2a46da407c6f897d0a536e9af9203364" prot="private" static="no" mutable="no">
+        <type>by_objective_value_it_t</type>
+        <definition>by_objective_value_it_t idol::NodeSet&lt; NodeT &gt;::const_iterator::m_by_objective_value_it</definition>
+        <argsstring></argsstring>
+        <name>m_by_objective_value_it</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="105" column="29" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1NodeSet_1_1const__iterator_1a95a709251bb2008ebbf3e7ae6befaf53" prot="private" static="no" mutable="no">
+        <type>by_level_it_t</type>
+        <definition>by_level_it_t idol::NodeSet&lt; NodeT &gt;::const_iterator::m_by_level_it</definition>
+        <argsstring></argsstring>
+        <name>m_by_level_it</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="106" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1NodeSet_1_1const__iterator_1ab49d3dc95eac567672042f90226013a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::NodeSet&lt; NodeT &gt;::const_iterator::const_iterator</definition>
+        <argsstring>()=default</argsstring>
+        <name>const_iterator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="108" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeSet_1_1const__iterator_1a08d8b3e7e7e811808dfa700faffe8b8a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::NodeSet&lt; NodeT &gt;::const_iterator::const_iterator</definition>
+        <argsstring>(by_objective_value_it_t t_it)</argsstring>
+        <name>const_iterator</name>
+        <param>
+          <type>by_objective_value_it_t</type>
+          <declname>t_it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="109" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="109" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeSet_1_1const__iterator_1a33f8f6a46e58875c375570e316645460" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::NodeSet&lt; NodeT &gt;::const_iterator::const_iterator</definition>
+        <argsstring>(by_level_it_t t_it)</argsstring>
+        <name>const_iterator</name>
+        <param>
+          <type>by_level_it_t</type>
+          <declname>t_it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="110" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="110" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeSet_1_1const__iterator_1a08af3b55aaf565e63931ea35aae61c0d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::NodeSet&lt; NodeT &gt;::const_iterator::operator!=</definition>
+        <argsstring>(const const_iterator &amp;t_rhs) const</argsstring>
+        <name>operator!=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1NodeSet_1_1const__iterator" kindref="compound">const_iterator</ref> &amp;</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="111" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="111" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeSet_1_1const__iterator_1aeaaf566c534d4531d43914f8ce25a224" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::NodeSet&lt; NodeT &gt;::const_iterator::is_by_level</definition>
+        <argsstring>() const</argsstring>
+        <name>is_by_level</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="121" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="121" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeSet_1_1const__iterator_1a3f155f4eb5fa5fb6b900693344879428" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1NodeSet_1_1const__iterator" kindref="compound">const_iterator</ref> &amp;</type>
+        <definition>const_iterator&amp; idol::NodeSet&lt; NodeT &gt;::const_iterator::operator=</definition>
+        <argsstring>(const const_iterator &amp;t_rhs)</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1NodeSet_1_1const__iterator" kindref="compound">const_iterator</ref> &amp;</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="123" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="123" bodyend="129"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeSet_1_1const__iterator_1a30d650a27f8a1234781d7daa1717146f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1NodeSet_1_1const__iterator" kindref="compound">const_iterator</ref> &amp;</type>
+        <definition>const_iterator&amp; idol::NodeSet&lt; NodeT &gt;::const_iterator::operator++</definition>
+        <argsstring>()</argsstring>
+        <name>operator++</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="130" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="130" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeSet_1_1const__iterator_1a86c01a071f08b1e51502036359ef2bfe" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1NodeSet_1_1const__iterator" kindref="compound">const_iterator</ref> &amp;</type>
+        <definition>const_iterator&amp; idol::NodeSet&lt; NodeT &gt;::const_iterator::operator--</definition>
+        <argsstring>()</argsstring>
+        <name>operator--</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="138" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="138" bodyend="145"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeSet_1_1const__iterator_1a153c2684786d3672e65f5f49fd0b0471" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const NodeT &amp;</type>
+        <definition>const NodeT&amp; idol::NodeSet&lt; NodeT &gt;::const_iterator::operator*</definition>
+        <argsstring>() const</argsstring>
+        <name>operator*</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="146" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="146" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1NodeSet_1_1const__iterator_1aaa74b931d4a393f0c1596ed1922a434f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const NodeT *</type>
+        <definition>const NodeT* idol::NodeSet&lt; NodeT &gt;::const_iterator::operator-&gt;</definition>
+        <argsstring>() const</argsstring>
+        <name>operator-&gt;</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="153" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="153" bodyend="158"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::NodeSet&lt; NodeT &gt;::const_iterator</label>
+        <link refid="classidol_1_1NodeSet_1_1const__iterator"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" line="98" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h" bodystart="98" bodyend="167"/>
+    <listofallmembers>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1a0f15608dd4ed9e70fb286a91f3ea7f06" prot="private" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>by_level_it_t</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1a0a4b4f6eb789726c8c413ae703eff7a1" prot="private" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>by_objective_value_it_t</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1ab49d3dc95eac567672042f90226013a4" prot="public" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>const_iterator</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1a08d8b3e7e7e811808dfa700faffe8b8a" prot="public" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>const_iterator</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1a33f8f6a46e58875c375570e316645460" prot="public" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>const_iterator</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1aeaaf566c534d4531d43914f8ce25a224" prot="public" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>is_by_level</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1a95a709251bb2008ebbf3e7ae6befaf53" prot="private" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>m_by_level_it</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1a2a46da407c6f897d0a536e9af9203364" prot="private" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>m_by_objective_value_it</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1ab4b320be739c2d87437a604e1dbf1fa9" prot="private" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>m_is_by_level</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1ac0e086855d2f414bd6f442451be4c05b" prot="private" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>NodeSet&lt; NodeT &gt;</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1a08af3b55aaf565e63931ea35aae61c0d" prot="public" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>operator!=</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1a153c2684786d3672e65f5f49fd0b0471" prot="public" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>operator*</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1a30d650a27f8a1234781d7daa1717146f" prot="public" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>operator++</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1a86c01a071f08b1e51502036359ef2bfe" prot="public" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>operator--</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1aaa74b931d4a393f0c1596ed1922a434f" prot="public" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>operator-&gt;</name></member>
+      <member refid="classidol_1_1NodeSet_1_1const__iterator_1a3f155f4eb5fa5fb6b900693344879428" prot="public" virt="non-virtual"><scope>idol::NodeSet::const_iterator</scope><name>operator=</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

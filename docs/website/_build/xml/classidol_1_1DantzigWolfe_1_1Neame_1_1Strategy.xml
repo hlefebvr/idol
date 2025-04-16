@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy" kind="class" language="C++" prot="public">
+    <compoundname>idol::DantzigWolfe::Neame::Strategy</compoundname>
+    <basecompoundref refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1_1Strategy" prot="public" virt="non-virtual">idol::DantzigWolfe::DualPriceSmoothingStabilization::Strategy</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a359ea4f85e4140061b0adcca27780b30" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double idol::DantzigWolfe::Neame::Strategy::m_factor</definition>
+        <argsstring></argsstring>
+        <name>m_factor</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" line="20" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1afa3b5cb776d7c44d05d9b1ff6cd3629c" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; <ref refid="classidol_1_1Point" kindref="compound">DualPoint</ref> &gt;</type>
+        <definition>std::optional&lt;DualPoint&gt; idol::DantzigWolfe::Neame::Strategy::m_smoothed_dual</definition>
+        <argsstring></argsstring>
+        <name>m_smoothed_dual</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" line="21" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a3bc1ecc83e6b5cea20976fcf10d85146" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::DantzigWolfe::Neame::Strategy::Strategy</definition>
+        <argsstring>(double t_initial_factor)</argsstring>
+        <name>Strategy</name>
+        <param>
+          <type>double</type>
+          <declname>t_initial_factor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" line="23" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" bodystart="23" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a63a4f9de08bef142353a3030348b0ade" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void idol::DantzigWolfe::Neame::Strategy::initialize</definition>
+        <argsstring>() override</argsstring>
+        <name>initialize</name>
+        <reimplements refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1_1Strategy_1ab6c6253810f343dcc142be3b0a2f93ad">initialize</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" line="25" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" bodystart="25" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a48f1e59228d3c46ec334b167a8335937" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void idol::DantzigWolfe::Neame::Strategy::update_stability_center</definition>
+        <argsstring>(const DualPoint &amp;t_master_dual) override</argsstring>
+        <name>update_stability_center</name>
+        <reimplements refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1_1Strategy_1a11d2814fab559095ed6f244359bdda24">update_stability_center</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Point" kindref="compound">DualPoint</ref> &amp;</type>
+          <declname>t_master_dual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" line="29" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" bodystart="29" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a1ad11933aa89ef696abd15f36b93a14b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1Point" kindref="compound">DualPoint</ref></type>
+        <definition>DualPoint idol::DantzigWolfe::Neame::Strategy::compute_smoothed_dual_solution</definition>
+        <argsstring>(const DualPoint &amp;t_master_dual) override</argsstring>
+        <name>compute_smoothed_dual_solution</name>
+        <reimplements refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1_1Strategy_1af3b375df13e42dbac1c1bb29f00ce169">compute_smoothed_dual_solution</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Point" kindref="compound">DualPoint</ref> &amp;</type>
+          <declname>t_master_dual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" line="33" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" bodystart="33" bodyend="42"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>idol::DantzigWolfe::Neame::Strategy</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::DantzigWolfe::DualPriceSmoothingStabilization::Strategy</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1_1Strategy"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::DantzigWolfe::Neame::Strategy</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::DantzigWolfe::DualPriceSmoothingStabilization::Strategy</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1_1Strategy"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" line="19" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h" bodystart="19" bodyend="44"/>
+    <listofallmembers>
+      <member refid="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a1ad11933aa89ef696abd15f36b93a14b" prot="public" virt="virtual"><scope>idol::DantzigWolfe::Neame::Strategy</scope><name>compute_smoothed_dual_solution</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a63a4f9de08bef142353a3030348b0ade" prot="public" virt="virtual"><scope>idol::DantzigWolfe::Neame::Strategy</scope><name>initialize</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a359ea4f85e4140061b0adcca27780b30" prot="private" virt="non-virtual"><scope>idol::DantzigWolfe::Neame::Strategy</scope><name>m_factor</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1afa3b5cb776d7c44d05d9b1ff6cd3629c" prot="private" virt="non-virtual"><scope>idol::DantzigWolfe::Neame::Strategy</scope><name>m_smoothed_dual</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a3bc1ecc83e6b5cea20976fcf10d85146" prot="public" virt="non-virtual"><scope>idol::DantzigWolfe::Neame::Strategy</scope><name>Strategy</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a48f1e59228d3c46ec334b167a8335937" prot="public" virt="virtual"><scope>idol::DantzigWolfe::Neame::Strategy</scope><name>update_stability_center</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1_1Strategy_1a859cbae1df41c3aae6a826816e36c837" prot="public" virt="virtual"><scope>idol::DantzigWolfe::Neame::Strategy</scope><name>~Strategy</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

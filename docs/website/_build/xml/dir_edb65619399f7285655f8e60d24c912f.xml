@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_edb65619399f7285655f8e60d24c912f" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies</compoundname>
+    <innerfile refid="ArtificialCosts_8h">ArtificialCosts.h</innerfile>
+    <innerfile refid="DantzigWolfeInfeasibilityStrategy_8h">DantzigWolfeInfeasibilityStrategy.h</innerfile>
+    <innerfile refid="FarkasPricing_8h">FarkasPricing.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/"/>
+  </compounddef>
+</doxygen>

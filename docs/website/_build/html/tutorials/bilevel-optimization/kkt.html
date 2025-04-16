@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Deriving Single-level Reformulations</title>
+    
+          <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../_static/theme-vendors.js"></script> -->
+      <script src="../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/bilevel-optimization/kkt.html" />
+    
+  <link rel="index" title="Index" href="../../genindex.html" />
+  <link rel="search" title="Search" href="../../search.html" />
+  <link rel="next" title="Solving Mixed-Integer Bilevel Problems with coin-or/MibS" href="mibs.html" />
+  <link rel="prev" title="Reading and Writing Bilevel Instances (BOBILib)" href="files.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../index.html">Tutorials</a> &raquo;</li>
+    
+      <li><a href="index.html">Bilevel Optimization</a> &raquo;</li>
+    
+    <li>Deriving Single-level Reformulations</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="files.html"
+       title="previous chapter">← Reading and Writing Bilevel Instances (BOBILib)</a>
+  </li>
+  <li class="next">
+    <a href="mibs.html"
+       title="next chapter">Solving Mixed-Integer Bilevel Problems with coin-or/MibS →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="deriving-single-level-reformulations">
+<span id="tutorial-bilevel-kkt"></span><h1>Deriving Single-level Reformulations<a class="headerlink" href="#deriving-single-level-reformulations" title="Link to this heading">¶</a></h1>
+<p>A standard technique for solving LP-LP bilevel problems is to reformulate the problem as a single-level problem.
+This can be done in several ways. In this tutorial, we will show how we can use idol to derive the
+Karush-Kuhn-Tucker (KKT) reformulation and the strong-duality reformulation of a bilevel problem.</p>
+<p>Let’s get started!</p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#problem-formulation" id="id2">Problem Formulation</a></p></li>
+<li><p><a class="reference internal" href="#the-kkt-reformulation" id="id3">The KKT Reformulation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#getting-the-reformulated-model" id="id4">Getting the Reformulated Model</a></p></li>
+<li><p><a class="reference internal" href="#solving-the-kkt-reformulation-directly" id="id5">Solving the KKT Reformulation directly</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#the-strong-duality-reformulation" id="id6">The Strong-duality Reformulation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id7">Getting the Reformulated Model</a></p></li>
+<li><p><a class="reference internal" href="#solving-the-strong-duality-reformulation-directly" id="id8">Solving the Strong-duality Reformulation directly</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="problem-formulation">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Problem Formulation</a><a class="headerlink" href="#problem-formulation" title="Link to this heading">¶</a></h2>
+<p>Consider the following bilevel optimization problem:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    \min_{x,y} \quad &amp; c^\top x + d^\top y \\
+    \text{s.t.} \quad &amp; Ax + By \ge a, \\
+    &amp; y \in \text{arg min} \{ f^\top y : Dy \ge b - Cx \}.
+\end{align}\end{split}\]</div>
+<p>In order to solve problem <a class="reference internal" href="index.html#equation-bilevel">(1)</a> with a standard optimization solver, we need to reformulate it as a single-level optimization problem.
+This can be automatically done by idol using the KKT reformulation or the strong-duality reformulation.</p>
+<p>For this tutorial, we will work on the following code snippet:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+
+<span class="n">Model</span><span class="w"> </span><span class="nf">high_point_relaxation</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_var</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_var</span><span class="p">(</span><span class="o">-</span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p">);</span>
+
+<span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">set_obj_expr</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">lower_c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">lower_c2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">-6</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">lower_c3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">-3</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">lower_c4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">12.5</span><span class="p">);</span>
+
+<span class="n">Bilevel</span><span class="o">::</span><span class="n">Description</span><span class="w"> </span><span class="nf">description</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+<span class="n">description</span><span class="p">.</span><span class="n">set_lower_level_obj</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">);</span>
+<span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+<span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">lower_c1</span><span class="p">);</span>
+<span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">lower_c2</span><span class="p">);</span>
+<span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">lower_c3</span><span class="p">);</span>
+<span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">lower_c4</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Here, a bilevel problem is modeled with idol. The high point relaxation is stored in <code class="code docutils literal notranslate"><span class="pre">high_point_relaxation</span></code>, while
+the lower-level problem is described using the <code class="code docutils literal notranslate"><span class="pre">Bilevel::Description</span></code> object <code class="code docutils literal notranslate"><span class="pre">description</span></code>.</p>
+</section>
+<section id="the-kkt-reformulation">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">The KKT Reformulation</a><a class="headerlink" href="#the-kkt-reformulation" title="Link to this heading">¶</a></h2>
+<p>The KKT reformulation of a bilevel problem is obtained by replacing the lower-level problem with its KKT optimality conditions.
+The KKT reformulation of the bilevel problem is as follows:</p>
+<div class="math notranslate nohighlight" id="equation-kkt">
+<span class="eqno">(1)<a class="headerlink" href="#equation-kkt" title="Link to this equation">¶</a></span>\[\begin{split}\begin{align}
+    \min_{x,y,\lambda} \quad &amp; c^\top x + d^\top y \\
+    \text{s.t.} \quad &amp; Ax + By \ge a, \\
+    &amp; Dy \ge b - Cx, \\
+    &amp; D^\top \lambda = f, \;  \lambda \ge 0, \\
+    &amp; \lambda^\top (b - Cx - Dy) = 0.
+\end{align}\end{split}\]</div>
+<section id="getting-the-reformulated-model">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Getting the Reformulated Model</a><a class="headerlink" href="#getting-the-reformulated-model" title="Link to this heading">¶</a></h3>
+<p>With idol, it is possible to generate the KKT reformulation of the bilevel problem using the <code class="code docutils literal notranslate"><span class="pre">Bilevel::KKT::make_model</span></code> function.</p>
+<p>For instance, one could do the following.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">single_level_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bilevel</span><span class="o">::</span><span class="n">KKT</span><span class="o">::</span><span class="n">make_model</span><span class="p">(</span>
+<span class="w">    </span><span class="n">high_point_relaxation</span><span class="p">,</span><span class="w"> </span><span class="n">description</span>
+<span class="w">    </span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Then, one can solve the single-level model using a standard optimization solver. Here, we use Gurobi.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">single_level</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">Gurobi</span><span class="p">());</span>
+<span class="n">single_level</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Note that the KKT reformulation <a class="reference internal" href="#equation-kkt">(1)</a>, and thus <code class="code docutils literal notranslate"><span class="pre">single_level</span></code>, is a nonlinear problem because of the complementarity constraint.
+Hence, we use the nonlinear solving features of Gurobi here.</p>
+<p>A common approach to handle the complementarity constraints is to linearize them by introducing binary variables.
+This can also be done in idol. To do this, we will need to provide some valid bounds on the dual variables.
+This is done by annotating the lower-level problem constraints. The constraints associated with the variables
+bounds can also have their big-M values by annotating the corresponding variable.</p>
+<p>In the following code, we will simply use a default value for the big-M values of <span class="math notranslate nohighlight">\(10^{4}\)</span>.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Annotation</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">big_M</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;big_M&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">1e4</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">single_level_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bilevel</span><span class="o">::</span><span class="n">KKT</span><span class="o">::</span><span class="n">make_model</span><span class="p">(</span>
+<span class="w">        </span><span class="n">high_point_relaxation</span><span class="p">,</span><span class="w"> </span><span class="n">description</span><span class="p">,</span><span class="w"> </span><span class="n">big_M</span>
+<span class="w">        </span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The returned model is now a mixed-integer linear program that can be solved using a standard optimization solver.</p>
+<p>Now, say that constraint <code class="code docutils literal notranslate"><span class="pre">lower_c1</span></code> is known to have a dual variable bounded by, say, 10. One could do the following.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Annotation</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">big_M</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;big_M&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">1e4</span><span class="p">);</span>
+<span class="n">lower_c1</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">big_M</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">single_level_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bilevel</span><span class="o">::</span><span class="n">KKT</span><span class="o">::</span><span class="n">make_model</span><span class="p">(</span>
+<span class="w">        </span><span class="n">high_point_relaxation</span><span class="p">,</span><span class="w"> </span><span class="n">description</span><span class="p">,</span><span class="w"> </span><span class="n">big_M</span>
+<span class="w">        </span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="solving-the-kkt-reformulation-directly">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Solving the KKT Reformulation directly</a><a class="headerlink" href="#solving-the-kkt-reformulation-directly" title="Link to this heading">¶</a></h3>
+<p>In the previous section, we showed how to generate the KKT reformulation of a bilevel problem.
+However, idol also provides a function to solve the KKT reformulation directly.
+This can be done by using the <code class="code docutils literal notranslate"><span class="pre">Bilevel::KKT</span></code> optimizer.</p>
+<p>Here is a code snippet that shows how to solve the KKT reformulation directly.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">Bilevel</span><span class="o">::</span><span class="n">KKT</span><span class="p">(</span><span class="n">description</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Gurobi</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Note that big-M values can also be provided to the <code class="code docutils literal notranslate"><span class="pre">Bilevel::KKT</span></code> optimizer. Here is an example.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">use</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Bilevel</span><span class="o">::</span><span class="n">KKT</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="n">with_single_level_optimizer</span><span class="p">(</span><span class="n">Gurobi</span><span class="p">())</span>
+<span class="w">        </span><span class="p">.</span><span class="n">with_big_M</span><span class="p">(</span><span class="n">big_M</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>Calling the <code class="code docutils literal notranslate"><span class="pre">optimize</span></code> method on the model will solve the KKT reformulation of the bilevel problem.</p>
+</section>
+</section>
+<section id="the-strong-duality-reformulation">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">The Strong-duality Reformulation</a><a class="headerlink" href="#the-strong-duality-reformulation" title="Link to this heading">¶</a></h2>
+<p>Another single-level reformulation is the so-called strong-duality reformulation which reads</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    \min_{x,y,\lambda} \quad &amp; c^\top x + d^\top y \\
+    \text{s.t.} \quad &amp; Ax + By \ge a, \\
+    &amp; Dy \ge b - Cx, \\
+    &amp; D^\top \lambda = f, \;  \lambda \ge 0, \\
+    &amp; f^\top y \le (b - Cx)^\top \lambda.
+\end{align}\end{split}\]</div>
+<section id="id1">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Getting the Reformulated Model</a><a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<p>The strong-duality reformulation can be obtained using the <code class="code docutils literal notranslate"><span class="pre">Bilevel::StrongDuality::make_model</span></code> function.
+This function works similarly to the <code class="code docutils literal notranslate"><span class="pre">Bilevel::KKT::make_model</span></code> function.
+Here is an example.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">single_level_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bilevel</span><span class="o">::</span><span class="n">StrongDuality</span><span class="o">::</span><span class="n">make_model</span><span class="p">(</span>
+<span class="w">    </span><span class="n">high_point_relaxation</span><span class="p">,</span><span class="w"> </span><span class="n">description</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="n">single_level_model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">Gurobi</span><span class="p">());</span>
+<span class="n">single_level_model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Note that here, the strong-duality reformulation is a nonlinear problem because of the dual objective function.
+Hence, we use the nonlinear solving features of Gurobi here.</p>
+</section>
+<section id="solving-the-strong-duality-reformulation-directly">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Solving the Strong-duality Reformulation directly</a><a class="headerlink" href="#solving-the-strong-duality-reformulation-directly" title="Link to this heading">¶</a></h3>
+<p>Similarly to the KKT reformulation, idol also provides a function to solve the strong-duality reformulation directly.
+This can be done by using the <code class="code docutils literal notranslate"><span class="pre">Bilevel::StrongDuality</span></code> optimizer as follows.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">use</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Bilevel</span><span class="o">::</span><span class="n">StrongDuality</span><span class="p">(</span><span class="n">description</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Gurobi</span><span class="p">()</span>
+<span class="p">);</span>
+<span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="files.html"
+       title="previous chapter">← Reading and Writing Bilevel Instances (BOBILib)</a>
+  </li>
+  <li class="next">
+    <a href="mibs.html"
+       title="next chapter">Solving Mixed-Integer Bilevel Problems with coin-or/MibS →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

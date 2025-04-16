@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1Bilevel_1_1impl" kind="namespace" language="C++">
+    <compoundname>idol::Bilevel::impl</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="read__from__file_8h_1a0979f04ce6cdae120745ba97c66412b4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Model" kindref="compound">idol::Model</ref></type>
+        <definition>idol::Model idol::Bilevel::impl::read_from_file</definition>
+        <argsstring>(Env &amp;t_env, const std::string &amp;t_path_to_aux, idol::Bilevel::Description &amp;t_lower_level_description, const std::function&lt; Model(Env &amp;, const std::string &amp;)&gt; &amp;t_mps_reader)</argsstring>
+        <name>read_from_file</name>
+        <param>
+          <type><ref refid="classidol_1_1Env" kindref="compound">Env</ref> &amp;</type>
+          <declname>t_env</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_path_to_aux</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1Bilevel_1_1Description" kindref="compound">idol::Bilevel::Description</ref> &amp;</type>
+          <declname>t_lower_level_description</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; <ref refid="classidol_1_1Model" kindref="compound">Model</ref>(<ref refid="classidol_1_1Env" kindref="compound">Env</ref> &amp;, const std::string &amp;)&gt; &amp;</type>
+          <declname>t_mps_reader</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/read_from_file.h" line="16" column="9" declfile="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/read_from_file.h" declline="16" declcolumn="9"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/bilevel/modeling/read_from_file.h" line="14" column="5"/>
+  </compounddef>
+</doxygen>

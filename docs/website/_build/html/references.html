@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>References</title>
+    
+          <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="_static/theme-vendors.js"></script> -->
+      <script src="_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/references.html" />
+    
+  <link rel="index" title="Index" href="genindex.html" />
+  <link rel="search" title="Search" href="search.html" />
+  <link rel="prev" title="Functional, Unit and Integration Tests" href="developer_guide/tests.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="current">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 current">
+            
+              <a href="#" class="reference internal current">References</a>
+            
+
+            
+              <ul>
+                
+                  <li class="toctree-l2"><a href="#references" class="reference internal">References</a></li>
+                
+              </ul>
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+    
+    <li>References</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="developer_guide/tests.html"
+       title="previous chapter">← Functional, Unit and Integration Tests</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="references">
+<h1>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h1>
+<p>This page contains references to the literature used in the documentation.</p>
+<div class="docutils container" id="id1">
+<div role="list" class="citation-list">
+<div class="citation" id="id2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Tobias Achterberg, Thorsten Koch, and Alexander Martin. Branching rules revisited. <em>Operations Research Letters</em>, 33(1):42–54, 2005. <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.orl.2004.04.002">doi:https://doi.org/10.1016/j.orl.2004.04.002</a>.</p>
+</div>
+<div class="citation" id="id12" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Josette Ayoub and Michael Poss. Decomposition for adjustable robust linear optimization subject to uncertainty polytope. <em>Computational Management Science</em>, 13(2):219–239, 2016. <a class="reference external" href="https://doi.org/10.1007/s10287-016-0249-2">doi:10.1007/s10287-016-0249-2</a>.</p>
+</div>
+<div class="citation" id="id13" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<p>Daniel Baena, Jordi Castro, and Antonio Frangioni. Stabilized benders methods for large-scale combinatorial optimization, with application to data privacy. <em>Management Science</em>, 66(7):3051–3068, 2020. <a class="reference external" href="https://doi.org/10.1287/mnsc.2019.3341">doi:10.1287/mnsc.2019.3341</a>.</p>
+</div>
+<div class="citation" id="id7" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
+<p>Timo Berthold. Primal heuristics for mixed integer programs. Master's thesis, Technische Universität Berlin, 2006.</p>
+</div>
+<div class="citation" id="id10" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
+<p>George B. Dantzig and Philip Wolfe. The decomposition algorithm for linear programs. <em>Econometrica</em>, 29(4):767, 1961. <a class="reference external" href="https://doi.org/10.2307/1911818">doi:10.2307/1911818</a>.</p>
+</div>
+<div class="citation" id="id4" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></span>
+<p>Elizabeth D. Dolan and Jorge J. Moré. Benchmarking optimization software with performance profiles. <em>Mathematical Programming</em>, 91(2):201–213, 2002. <a class="reference external" href="https://doi.org/10.1007/s101070100263">doi:10.1007/s101070100263</a>.</p>
+</div>
+<div class="citation" id="id8" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></span>
+<p>J. J. H. Forrest, J. P. H. Hirst, and J. A. Tomlin. Practical solution of large mixed integer programming problems with umpire. <em>Management Science</em>, 20(5):736–773, 1974. <a class="reference external" href="https://doi.org/10.1287/mnsc.20.5.736">doi:10.1287/mnsc.20.5.736</a>.</p>
+</div>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></span>
+<p>Thomas Kleinert. <em>Algorithms for Mixed-Integer Bilevel Problems with Convex Followers</em>. PhD thesis, Universität Trier, 2021. URL: <a class="reference external" href="https://opus4.kobv.de/opus4-trr154/frontdoor/index/index/docId/383">https://opus4.kobv.de/opus4-trr154/frontdoor/index/index/docId/383</a>.</p>
+</div>
+<div class="citation" id="id3" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></span>
+<p>J. T. Linderoth and M. W. P. Savelsbergh. A computational study of search strategies for mixed integer programming. <em>INFORMS Journal on Computing</em>, 11(2):173–187, 1999. <a class="reference external" href="https://doi.org/10.1287/ijoc.11.2.173">doi:10.1287/ijoc.11.2.173</a>.</p>
+</div>
+<div class="citation" id="id14" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>10<span class="fn-bracket">]</span></span>
+<p>James T. Moore and Jonathan F. Bard. The mixed integer linear bilevel programming problem. <em>Operations Research</em>, 38(5):911–921, 1990. <a class="reference external" href="https://doi.org/10.1287/opre.38.5.911">doi:10.1287/opre.38.5.911</a>.</p>
+</div>
+<div class="citation" id="id5" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>11<span class="fn-bracket">]</span></span>
+<p>A. Pessoa, R. Sadykov, E. Uchoa, and F. Vanderbeck. Automation and combination of linear-programming based stabilization techniques in column generation. <em>INFORMS Journal on Computing</em>, 30(2):339–360, 2018. <a class="reference external" href="https://doi.org/10.1287/ijoc.2017.0784">doi:10.1287/ijoc.2017.0784</a>.</p>
+</div>
+<div class="citation" id="id18" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>12<span class="fn-bracket">]</span></span>
+<p>Johannes Thürauf, Thomas Kleinert, Ivana Ljubić, Ted Ralphs, and Martin Schmidt. Bobilib: bilevel optimization (benchmark) instance library. Technical Report, Universität Trier, Quantagonia, ESSEC Business School, Lehigh University, 2024. URL: <a class="reference external" href="https://optimization-online.org/?p=27063">https://optimization-online.org/?p=27063</a>.</p>
+</div>
+<div class="citation" id="id17" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>13<span class="fn-bracket">]</span></span>
+<p>Eduardo Uchoa, Artur Pessoa, and Lorenza Moreno. Optimizing with Column Generation: advanced branch-cut-and-price algorithms. Technical Report L-2024-3, Cadernos do LOGIS-UFF, Universidade Federal Fluminense, Engenharia de Produção, 2024. URL: <a class="reference external" href="https://optimizingwithcolumngeneration.github.io">https://optimizingwithcolumngeneration.github.io</a>.</p>
+</div>
+<div class="citation" id="id9" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>14<span class="fn-bracket">]</span></span>
+<p>François Vanderbeck. <em>Implementing Mixed Integer Column Generation</em>, pages 331–358. Springer US, Boston, MA, 2005. <a class="reference external" href="https://doi.org/10.1007/0-387-25486-2_12">doi:10.1007/0-387-25486-2_12</a>.</p>
+</div>
+<div class="citation" id="id6" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>15<span class="fn-bracket">]</span></span>
+<p>Laurence Wolsey. <em>Integer Programming</em>. Wiley, 2020. <a class="reference external" href="https://doi.org/10.1002/9781119606475">doi:10.1002/9781119606475</a>.</p>
+</div>
+<div class="citation" id="id16" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>16<span class="fn-bracket">]</span></span>
+<p>Bo Zeng. A practical scheme to compute the pessimistic bilevel optimization problem. <em>INFORMS Journal on Computing</em>, 2020. <a class="reference external" href="https://doi.org/10.1287/ijoc.2019.0927">doi:10.1287/ijoc.2019.0927</a>.</p>
+</div>
+<div class="citation" id="id11" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>17<span class="fn-bracket">]</span></span>
+<p>Bo Zeng and Long Zhao. Solving two-stage robust optimization problems using a column-and-constraint generation method. <em>Operations Research Letters</em>, 41(5):457–461, 2013. <a class="reference external" href="https://doi.org/10.1016/j.orl.2013.05.003">doi:10.1016/j.orl.2013.05.003</a>.</p>
+</div>
+</div>
+</div>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="developer_guide/tests.html"
+       title="previous chapter">← Functional, Unit and Integration Tests</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

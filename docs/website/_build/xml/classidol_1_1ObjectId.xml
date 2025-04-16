@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1ObjectId" kind="class" language="C++" prot="public">
+    <compoundname>idol::ObjectId</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1ObjectId_1a233c436f8a5802c249580be08c6865f2" prot="private" static="no" mutable="no">
+        <type>const std::list&lt; <ref refid="classidol_1_1Versions" kindref="compound">Versions</ref>&lt; T &gt; &gt;::iterator</type>
+        <definition>const std::list&lt;Versions&lt;T&gt; &gt;::iterator idol::ObjectId&lt; T &gt;::m_it</definition>
+        <argsstring></argsstring>
+        <name>m_it</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" line="22" column="41" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1ObjectId_1add0b519b2762c36a88a591d52a4e6351" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::ObjectId&lt; T &gt;::m_id</definition>
+        <argsstring></argsstring>
+        <name>m_id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" line="23" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1ObjectId_1a62a4fb3007ad66edfb48e07b5d27cb15" prot="private" static="no" mutable="no">
+        <type>const std::string</type>
+        <definition>const std::string idol::ObjectId&lt; T &gt;::m_name</definition>
+        <argsstring></argsstring>
+        <name>m_name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" line="24" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1ObjectId_1a42dfe34f2e365884a24cd8c5aefe806f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::ObjectId&lt; T &gt;::ObjectId</definition>
+        <argsstring>(typename std::list&lt; Versions&lt; T &gt;&gt;::iterator t_it, unsigned int t_id, std::string t_name)</argsstring>
+        <name>ObjectId</name>
+        <param>
+          <type>typename std::list&lt; <ref refid="classidol_1_1Versions" kindref="compound">Versions</ref>&lt; T &gt;&gt;::iterator</type>
+          <declname>t_it</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_id</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" line="26" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" bodystart="26" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ObjectId_1a15cfdd929f6f309db6f31b01f917a7f1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto &amp;</type>
+        <definition>auto&amp; idol::ObjectId&lt; T &gt;::versions</definition>
+        <argsstring>()</argsstring>
+        <name>versions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" line="29" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" bodystart="29" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ObjectId_1a79daabe5037217585dcaffb161f76419" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::ObjectId&lt; T &gt;::versions</definition>
+        <argsstring>() const</argsstring>
+        <name>versions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" line="30" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" bodystart="30" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ObjectId_1a344188aaa7914b7b76043f0ce46302d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::ObjectId&lt; T &gt;::id</definition>
+        <argsstring>() const</argsstring>
+        <name>id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" line="32" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" bodystart="32" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ObjectId_1af580e326ad90f4c5f3dc584315443623" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::ObjectId&lt; T &gt;::name</definition>
+        <argsstring>() const</argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" line="34" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" bodystart="34" bodyend="34"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::ObjectId&lt; T &gt;</label>
+        <link refid="classidol_1_1ObjectId"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" line="21" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/ObjectId.h" bodystart="21" bodyend="35"/>
+    <listofallmembers>
+      <member refid="classidol_1_1ObjectId_1a344188aaa7914b7b76043f0ce46302d2" prot="public" virt="non-virtual"><scope>idol::ObjectId</scope><name>id</name></member>
+      <member refid="classidol_1_1ObjectId_1add0b519b2762c36a88a591d52a4e6351" prot="private" virt="non-virtual"><scope>idol::ObjectId</scope><name>m_id</name></member>
+      <member refid="classidol_1_1ObjectId_1a233c436f8a5802c249580be08c6865f2" prot="private" virt="non-virtual"><scope>idol::ObjectId</scope><name>m_it</name></member>
+      <member refid="classidol_1_1ObjectId_1a62a4fb3007ad66edfb48e07b5d27cb15" prot="private" virt="non-virtual"><scope>idol::ObjectId</scope><name>m_name</name></member>
+      <member refid="classidol_1_1ObjectId_1af580e326ad90f4c5f3dc584315443623" prot="public" virt="non-virtual"><scope>idol::ObjectId</scope><name>name</name></member>
+      <member refid="classidol_1_1ObjectId_1a42dfe34f2e365884a24cd8c5aefe806f" prot="public" virt="non-virtual"><scope>idol::ObjectId</scope><name>ObjectId</name></member>
+      <member refid="classidol_1_1ObjectId_1a15cfdd929f6f309db6f31b01f917a7f1" prot="public" virt="non-virtual"><scope>idol::ObjectId</scope><name>versions</name></member>
+      <member refid="classidol_1_1ObjectId_1a79daabe5037217585dcaffb161f76419" prot="public" virt="non-virtual"><scope>idol::ObjectId</scope><name>versions</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

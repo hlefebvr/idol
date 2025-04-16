@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_84121fed028d75f1d9a9f4b419f07efc" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/PessimisticAsOptimistic</compoundname>
+    <innerfile refid="Optimizers__PessimisticAsOptimistic_8h">Optimizers_PessimisticAsOptimistic.h</innerfile>
+    <innerfile refid="PessimisticAsOptimistic_8h">PessimisticAsOptimistic.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/PessimisticAsOptimistic/"/>
+  </compounddef>
+</doxygen>

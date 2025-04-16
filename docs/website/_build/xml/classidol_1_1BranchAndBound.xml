@@ -1,0 +1,1316 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1BranchAndBound" kind="class" language="C++" prot="public">
+    <compoundname>idol::BranchAndBound</compoundname>
+    <basecompoundref refid="classidol_1_1OptimizerFactoryWithDefaultParameters" prot="public" virt="non-virtual">idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt; &gt;</basecompoundref>
+    <includes refid="BranchAndBound_8h" local="no">BranchAndBound.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class NodeT</type>
+        <defval><ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref></defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classidol_1_1BranchAndBound_1aa42256409107a9c2909a0a85b3862a08" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>class ReturnT</type>
+          </param>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>typename std::pair&lt; typename T::template Strategy&lt; NodeT &gt;, ReturnT &gt;::second_type</type>
+        <definition>using idol::BranchAndBound&lt; NodeT &gt;::only_if_has_Strategy =  typename std::pair&lt;typename T::template Strategy&lt;NodeT&gt;, ReturnT&gt;::second_type</definition>
+        <argsstring></argsstring>
+        <name>only_if_has_Strategy</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This type is used to exploit <ulink url="https://en.wikipedia.org/wiki/Substitution_failure_is_not_an_error">SFINAE</ulink> in order to identify classes having a sub-class named <computeroutput>Strategy&lt;NodeInfoT&gt;</computeroutput>. This is used to make calls like <computeroutput>.with_node_selection_rule(DepthFirst());</computeroutput> which will actually call <computeroutput>.with_node_selection_rule(<ref refid="classidol_1_1DepthFirst_1_1Strategy" kindref="compound">DepthFirst::Strategy</ref>&lt;NodeInfoT&gt;())</computeroutput>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="46" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1BranchAndBound_1ac3fd761145b9f372e6b20b8c4b6ae71b" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;OptimizerFactory&gt; idol::BranchAndBound&lt; NodeT &gt;::m_relaxation_optimizer_factory</definition>
+        <argsstring></argsstring>
+        <name>m_relaxation_optimizer_factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="30" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1BranchAndBound_1ab7997a02925adcea606f544d3c822e36" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classidol_1_1BranchingRuleFactory" kindref="compound">BranchingRuleFactory</ref>&lt; NodeT &gt; &gt;</type>
+        <definition>std::unique_ptr&lt;BranchingRuleFactory&lt;NodeT&gt; &gt; idol::BranchAndBound&lt; NodeT &gt;::m_branching_rule_factory</definition>
+        <argsstring></argsstring>
+        <name>m_branching_rule_factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="31" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1BranchAndBound_1a9628a270e7c0194fdb62d08352016849" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classidol_1_1NodeSelectionRuleFactory" kindref="compound">NodeSelectionRuleFactory</ref>&lt; NodeT &gt; &gt;</type>
+        <definition>std::unique_ptr&lt;NodeSelectionRuleFactory&lt;NodeT&gt; &gt; idol::BranchAndBound&lt; NodeT &gt;::m_node_selection_rule_factory</definition>
+        <argsstring></argsstring>
+        <name>m_node_selection_rule_factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="32" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1BranchAndBound_1a0e11b04bd4d14e9b5799666800861b5a" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory" kindref="compound">Logs::BranchAndBound::Factory</ref>&lt; NodeT &gt; &gt;</type>
+        <definition>std::unique_ptr&lt;Logs::BranchAndBound::Factory&lt;NodeT&gt; &gt; idol::BranchAndBound&lt; NodeT &gt;::m_logger_factory</definition>
+        <argsstring></argsstring>
+        <name>m_logger_factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="33" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1BranchAndBound_1a1cb30c2745d711d095cbff768082f5f8" prot="private" static="no" mutable="no">
+        <type>std::list&lt; std::unique_ptr&lt; <ref refid="classidol_1_1BranchAndBoundCallbackFactory" kindref="compound">BranchAndBoundCallbackFactory</ref>&lt; NodeT &gt; &gt; &gt;</type>
+        <definition>std::list&lt;std::unique_ptr&lt;BranchAndBoundCallbackFactory&lt;NodeT&gt; &gt; &gt; idol::BranchAndBound&lt; NodeT &gt;::m_callbacks</definition>
+        <argsstring></argsstring>
+        <name>m_callbacks</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="35" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1BranchAndBound_1a448aa2a55fea7780e57fd4b463cc76a8" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; unsigned int &gt;</type>
+        <definition>std::optional&lt;unsigned int&gt; idol::BranchAndBound&lt; NodeT &gt;::m_subtree_depth</definition>
+        <argsstring></argsstring>
+        <name>m_subtree_depth</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="37" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1BranchAndBound_1ac19d5b55e1f79b9c1f23a30efd202d43" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; unsigned int &gt;</type>
+        <definition>std::optional&lt;unsigned int&gt; idol::BranchAndBound&lt; NodeT &gt;::m_log_frequency</definition>
+        <argsstring></argsstring>
+        <name>m_log_frequency</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="38" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a96fec5e9e6f278c51ec788b317321616" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::BranchAndBound&lt; NodeT &gt;::BranchAndBound</definition>
+        <argsstring>()=default</argsstring>
+        <name>BranchAndBound</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a new branch-and-bound algorithm.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="normal">model.use(<sp/><ref refid="classidol_1_1BranchAndBound_1a96fec5e9e6f278c51ec788b317321616" kindref="member">BranchAndBound</ref>()<sp/>);</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="56" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a15e010f0ecbb6ddde4ec3fee723564f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::BranchAndBound&lt; NodeT &gt;::BranchAndBound</definition>
+        <argsstring>(const BranchAndBound &amp;t_rhs)</argsstring>
+        <name>BranchAndBound</name>
+        <param>
+          <type>const <ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref> &amp;</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Copy constructor <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_rhs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the object to copy </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="62" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="310" bodyend="323"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a8ece634603121d7f538e0a5a5e47312b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; NodeT &gt; &amp;</type>
+        <definition>idol::BranchAndBound&lt; NodeT &gt; &amp; idol::BranchAndBound&lt; NodeT &gt;::with_node_optimizer</definition>
+        <argsstring>(const OptimizerFactory &amp;t_node_optimizer)</argsstring>
+        <name>with_node_optimizer</name>
+        <param>
+          <type>const <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &amp;</type>
+          <declname>t_node_optimizer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the optimizer for solving each of the branch-and-bound tree nodes</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/><ref refid="classidol_1_1BranchAndBound_1a96fec5e9e6f278c51ec788b317321616" kindref="member">BranchAndBound</ref>()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_node_optimizer(GLPK::ContinuousRelaxation());</highlight></codeline>
+</programlisting></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_node_optimizer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the optimizer factory the node problems </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="76" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="298" bodyend="307"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a7afa51162050c25b2a6c47a96cc6d0a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::BranchAndBound&lt; NodeT &gt;::set_node_optimizer</definition>
+        <argsstring>(const OptimizerFactory &amp;t_node_optimizer)</argsstring>
+        <name>set_node_optimizer</name>
+        <param>
+          <type>const <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &amp;</type>
+          <declname>t_node_optimizer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="78" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="210" bodyend="212"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1aa22f3b652c188cc7f7005ea753f73cd5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; NodeT &gt; &amp;</type>
+        <definition>idol::BranchAndBound&lt; NodeT &gt; &amp; idol::BranchAndBound&lt; NodeT &gt;::operator+=</definition>
+        <argsstring>(const OptimizerFactory &amp;t_node_optimizer)</argsstring>
+        <name>operator+=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &amp;</type>
+          <declname>t_node_optimizer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="80" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="228" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a4da44c69626f3a6e6273b29af12d62dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; NodeT &gt; &amp;</type>
+        <definition>idol::BranchAndBound&lt; NodeT &gt; &amp; idol::BranchAndBound&lt; NodeT &gt;::with_branching_rule</definition>
+        <argsstring>(const BranchingRuleFactory&lt; NodeT &gt; &amp;t_branching_rule)</argsstring>
+        <name>with_branching_rule</name>
+        <param>
+          <type>const <ref refid="classidol_1_1BranchingRuleFactory" kindref="compound">BranchingRuleFactory</ref>&lt; NodeT &gt; &amp;</type>
+          <declname>t_branching_rule</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the branching rule used to create child nodes</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>BranchAndBound&lt;NodeVarInfo&gt;()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_branching_rule(MostInfeasible::Strategy&lt;NodeVarInfo&gt;());</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_branching_rule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the branching rule </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="93" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="286" bodyend="295"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a6f26fc42ea22b19b0995416db72e45bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class BranchingRuleFactoryT</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classidol_1_1BranchAndBound_1aa42256409107a9c2909a0a85b3862a08" kindref="member">only_if_has_Strategy</ref>&lt; <ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; NodeT &gt; &amp;, BranchingRuleFactoryT &gt;</type>
+        <definition>only_if_has_Strategy&lt;BranchAndBound&lt;NodeT&gt;&amp;, BranchingRuleFactoryT&gt; idol::BranchAndBound&lt; NodeT &gt;::with_branching_rule</definition>
+        <argsstring>(const BranchingRuleFactoryT &amp;t_branching_rule)</argsstring>
+        <name>with_branching_rule</name>
+        <param>
+          <type>const BranchingRuleFactoryT &amp;</type>
+          <declname>t_branching_rule</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the branching rule used to create child nodes.</para>
+<para>Here, the function is called only when <computeroutput>BranchingRuleFactoryT</computeroutput> has a nested template class named <computeroutput>Strategy&lt;NodeInfoT&gt;</computeroutput>. In such a case, the branching rule is created by calling <computeroutput>BranchingRuleFactoryT::Strategy&lt;NodeInfoT&gt;(t_branching_rule)</computeroutput>. This is used to avoid the user repeating the node type <computeroutput>NodeInfoT</computeroutput> being used.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>BranchAndBound&lt;NodeVarInfo&gt;()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_branching_rule(MostInfeasible());</highlight></codeline>
+</programlisting> <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>BranchingRuleFactoryT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the class containing a nested template class named Strategy </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_branching_rule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the branching rule </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="112" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a899d89528f5a06aa1fdc245d78b991dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; NodeT &gt; &amp;</type>
+        <definition>idol::BranchAndBound&lt; NodeT &gt; &amp; idol::BranchAndBound&lt; NodeT &gt;::with_node_selection_rule</definition>
+        <argsstring>(const NodeSelectionRuleFactory&lt; NodeT &gt; &amp;t_node_selection)</argsstring>
+        <name>with_node_selection_rule</name>
+        <param>
+          <type>const <ref refid="classidol_1_1NodeSelectionRuleFactory" kindref="compound">NodeSelectionRuleFactory</ref>&lt; NodeT &gt; &amp;</type>
+          <declname>t_node_selection</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the node selection rule to explore the branch and bound tree.</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>BranchAndBound&lt;NodeVarInfo&gt;()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_node_selection(BestBound::Strategy&lt;NodeVarInfo&gt;());</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_node_selection</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the node selection rule </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="124" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="267" bodyend="276"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a3b795634a2b9739b7fd1a19918c2004f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class NodeSelectionRuleFactoryT</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classidol_1_1BranchAndBound_1aa42256409107a9c2909a0a85b3862a08" kindref="member">only_if_has_Strategy</ref>&lt; <ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; NodeT &gt; &amp;, NodeSelectionRuleFactoryT &gt;</type>
+        <definition>only_if_has_Strategy&lt;BranchAndBound&lt;NodeT&gt;&amp;, NodeSelectionRuleFactoryT&gt; idol::BranchAndBound&lt; NodeT &gt;::with_node_selection_rule</definition>
+        <argsstring>(const NodeSelectionRuleFactoryT &amp;t_node_selection_rule)</argsstring>
+        <name>with_node_selection_rule</name>
+        <param>
+          <type>const NodeSelectionRuleFactoryT &amp;</type>
+          <declname>t_node_selection_rule</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the node selection rule to explore the branch and bound tree.</para>
+<para>Here, the function is called only when <computeroutput>NodeSelectionRuleFactoryT</computeroutput> has a nested template class named <computeroutput>Strategy&lt;NodeInfoT&gt;</computeroutput>. In such a case, the node selection rule is created by calling <computeroutput>NodeSelectionRuleFactoryT::Strategy&lt;NodeInfoT&gt;(t_node_selection_rule)</computeroutput>. This is used to avoid the user repeating the node type <computeroutput>NodeInfoT</computeroutput> being used.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>BranchAndBound&lt;NodeVarInfo&gt;()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_node_selection_rule(BestBound());</highlight></codeline>
+</programlisting> <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>NodeSelectionRuleFactoryT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the class containing a nested template class named Strategy </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_node_selection_rule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the node selection rule </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="143" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a0ad2d9a03ac409cbe14c79b47b485268" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::BranchAndBound&lt; NodeT &gt;::BranchAndBound</definition>
+        <argsstring>(BranchAndBound &amp;&amp;) noexcept=default</argsstring>
+        <name>BranchAndBound</name>
+        <param>
+          <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="145" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a8e719ec11c533c01d445315fc21deda5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref> &amp;</type>
+        <definition>BranchAndBound&amp; idol::BranchAndBound&lt; NodeT &gt;::operator=</definition>
+        <argsstring>(const BranchAndBound &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="146" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1ab4b7ae48c3eb484145a71d77ce0b8ce4" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref> &amp;</type>
+        <definition>BranchAndBound&amp; idol::BranchAndBound&lt; NodeT &gt;::operator=</definition>
+        <argsstring>(BranchAndBound &amp;&amp;) noexcept=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="147" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1af4f3c1a3e69cd034a733f9c544a0728b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref> *</type>
+        <definition>idol::Optimizer * idol::BranchAndBound&lt; NodeT &gt;::operator()</definition>
+        <argsstring>(const Model &amp;t_model) const override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1OptimizerFactory_1a6363ef08653c866a17e474a1dc8c0f0a">operator()</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates and returns a new optimizer to solve the model given as parameter. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_model</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The model which the optimizer will solve </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A new optimizer for the model </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="149" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="326" bodyend="363"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a9aea0205e36cc09c10fe280c265d1215" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> *</type>
+        <definition>idol::OptimizerFactory * idol::BranchAndBound&lt; NodeT &gt;::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1OptimizerFactory_1af42e193fdac6920f4dfda602a98bf4a1">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates and return a copy of the optimizer factory. This is used for polymorphism. <simplesect kind="return"><para>A copied object of the current object (i.e., *this) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="151" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="366" bodyend="368"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1aaa45a4815818ee36fa0838223a09c1b6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; NodeT &gt; &amp;</type>
+        <definition>idol::BranchAndBound&lt; NodeT &gt; &amp; idol::BranchAndBound&lt; NodeT &gt;::with_subtree_depth</definition>
+        <argsstring>(unsigned int t_depth)</argsstring>
+        <name>with_subtree_depth</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_depth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the depth for sub-tree exploration.</para>
+<para>When a node is selected for branching, each of its children is explored. This exploration takes the form of a sub-tree exploration. When this parameter is set to 0, only the root node of this sub-tree is solved. Thus every child node are solved and the branch-and-bound algorithm is continued.</para>
+<para>For strictly greater values of this parameter, the sub-tree is explored with a maximum depth equal to the value of this parameter.</para>
+<para>For example, with a value of 1, each child node is solved along with its child nodes.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/><ref refid="classidol_1_1BranchAndBound_1a96fec5e9e6f278c51ec788b317321616" kindref="member">BranchAndBound</ref>()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_subtree_depth(1);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_depth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the maximum sub-tree exploration depth </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="173" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="247" bodyend="256"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a2edf65be4254ff2a85e447ae97661505" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; NodeT &gt; &amp;</type>
+        <definition>idol::BranchAndBound&lt; NodeT &gt; &amp; idol::BranchAndBound&lt; NodeT &gt;::with_logger</definition>
+        <argsstring>(const Logs::BranchAndBound::Factory&lt; NodeT &gt; &amp;t_log_factory)</argsstring>
+        <name>with_logger</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory" kindref="compound">Logs::BranchAndBound::Factory</ref>&lt; NodeT &gt; &amp;</type>
+          <declname>t_log_factory</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="175" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="216" bodyend="225"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a946aaee3c50f86c76c45e245dcf77148" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; NodeT &gt; &amp;</type>
+        <definition>idol::BranchAndBound&lt; NodeT &gt; &amp; idol::BranchAndBound&lt; NodeT &gt;::add_callback</definition>
+        <argsstring>(const BranchAndBoundCallbackFactory&lt; NodeT &gt; &amp;t_callback)</argsstring>
+        <name>add_callback</name>
+        <param>
+          <type>const <ref refid="classidol_1_1BranchAndBoundCallbackFactory" kindref="compound">BranchAndBoundCallbackFactory</ref>&lt; NodeT &gt; &amp;</type>
+          <declname>t_callback</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds a callback which will be called by the optimizer.</para>
+<para>Note that this method can be called multiple times so that multiple callbacks can be added.</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/><ref refid="classidol_1_1BranchAndBound_1a96fec5e9e6f278c51ec788b317321616" kindref="member">BranchAndBound</ref>()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_callback(IntegerMaster.rst());</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_callback</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the callback factory </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="189" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="239" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1aa02f32f7120d917e8b843d0b280fcd2a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; NodeT &gt; &amp;</type>
+        <definition>idol::BranchAndBound&lt; NodeT &gt; &amp; idol::BranchAndBound&lt; NodeT &gt;::add_callback</definition>
+        <argsstring>(const CallbackFactory &amp;t_callback)</argsstring>
+        <name>add_callback</name>
+        <param>
+          <type>const <ref refid="classidol_1_1CallbackFactory" kindref="compound">CallbackFactory</ref> &amp;</type>
+          <declname>t_callback</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds a (solver independent) callback which will be called by the optimizer.</para>
+<para>Note that this method can be called multiple times so that multiple callbacks can be added.</para>
+<para>Here, the <computeroutput><ref refid="classidol_1_1Callback" kindref="compound">Callback</ref></computeroutput> is automatically converted into a <computeroutput><ref refid="classidol_1_1BranchAndBoundCallback" kindref="compound">BranchAndBoundCallback</ref>&lt;NodeInfoT&gt;</computeroutput>.</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/><ref refid="classidol_1_1BranchAndBound_1a96fec5e9e6f278c51ec788b317321616" kindref="member">BranchAndBound</ref>()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_callback(UserCutCallback(separation_model,<sp/>my_cut));</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_callback</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the callback factory </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="205" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="234" bodyend="236"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1af28b70d5dcb43121e91d6215cd75d283" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class NodeSelectionRuleFactoryT</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">idol::BranchAndBound</ref>&lt; NodeT &gt;::template <ref refid="classidol_1_1BranchAndBound_1aa42256409107a9c2909a0a85b3862a08" kindref="member">only_if_has_Strategy</ref>&lt; <ref refid="classidol_1_1BranchAndBound" kindref="compound">idol::BranchAndBound</ref>&lt; NodeT &gt; &amp;, NodeSelectionRuleFactoryT &gt;</type>
+        <definition>idol::BranchAndBound&lt;NodeT&gt;::template only_if_has_Strategy&lt;idol::BranchAndBound&lt;NodeT&gt;&amp;, NodeSelectionRuleFactoryT&gt; idol::BranchAndBound&lt; NodeT &gt;::with_node_selection_rule</definition>
+        <argsstring>(const NodeSelectionRuleFactoryT &amp;t_node_selection_rule)</argsstring>
+        <name>with_node_selection_rule</name>
+        <param>
+          <type>const NodeSelectionRuleFactoryT &amp;</type>
+          <declname>t_node_selection_rule</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="261" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="261" bodyend="263"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchAndBound_1a312bfa60303e904b4807d7a59aa947ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class BranchingRuleFactoryT</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">idol::BranchAndBound</ref>&lt; NodeT &gt;::template <ref refid="classidol_1_1BranchAndBound_1aa42256409107a9c2909a0a85b3862a08" kindref="member">only_if_has_Strategy</ref>&lt; <ref refid="classidol_1_1BranchAndBound" kindref="compound">idol::BranchAndBound</ref>&lt; NodeT &gt; &amp;, BranchingRuleFactoryT &gt;</type>
+        <definition>idol::BranchAndBound&lt;NodeT&gt;::template only_if_has_Strategy&lt;idol::BranchAndBound&lt;NodeT&gt;&amp;, BranchingRuleFactoryT&gt; idol::BranchAndBound&lt; NodeT &gt;::with_branching_rule</definition>
+        <argsstring>(const BranchingRuleFactoryT &amp;t_branching_rule)</argsstring>
+        <name>with_branching_rule</name>
+        <param>
+          <type>const BranchingRuleFactoryT &amp;</type>
+          <declname>t_branching_rule</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="281" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="281" bodyend="283"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a495f616340209e28fde87270f69ce28f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::with_logs</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_logs</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the log_master level and color for the optimizer</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_logs(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_log_level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the log_master level </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_log_color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the output color </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="95" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="386" bodyend="395"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a192ee8cb58e8e1b2d33b0d58df3b0123" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::with_time_limit</definition>
+        <argsstring>(double t_time_limit)</argsstring>
+        <name>with_time_limit</name>
+        <param>
+          <type>double</type>
+          <declname>t_time_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the time limit for the optimizer</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_time_limit(3600);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_time_limit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the time limit (in seconds) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="108" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="374" bodyend="383"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a62819967487a06cacad8ca03d0891090" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::with_thread_limit</definition>
+        <argsstring>(unsigned int t_max_n_threads)</argsstring>
+        <name>with_thread_limit</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_max_n_threads</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the maximum number of threads which the optimizer can use</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_thread_limit(5);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_max_n_threads</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the number of threads which can be used </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="121" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="362" bodyend="371"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ac342238df14873996a25d1182b5a2a7d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::with_iteration_limit</definition>
+        <argsstring>(unsigned int t_iteration_count_limit)</argsstring>
+        <name>with_iteration_limit</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_iteration_count_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the maximum number of iterations which the optimizer go through</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_iteration_limit(200);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_iteration_count_limit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the maximum number of iterations </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="134" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="350" bodyend="359"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a10a7490342b8cb9a0719f150ad70513d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::with_best_bound_stop</definition>
+        <argsstring>(double t_best_bound_stop)</argsstring>
+        <name>with_best_bound_stop</name>
+        <param>
+          <type>double</type>
+          <declname>t_best_bound_stop</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets a threshold on the best bound for stopping the optimizer. When the optimizer have found a best bound which is greater than this threshold, the optimizer stops.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>my_known_best_obj<sp/>=<sp/>0.;</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_best_bound_stop(my_known_best_obj);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_best_bound_stop</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the threshold </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="149" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="338" bodyend="347"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad3e0bc7a6d07853f2f54b4b47aec52ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::with_best_obj_stop</definition>
+        <argsstring>(double t_user_best_obj)</argsstring>
+        <name>with_best_obj_stop</name>
+        <param>
+          <type>double</type>
+          <declname>t_user_best_obj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets a threshold on the best objective value for stopping the optimizer. When the optimizer have found a best objective value which is less than this threshold, the optimizer stops.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>my_known_best_bound<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_best_obj_stop(my_known_best_bound);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_user_best_obj</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the threshold </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="164" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="326" bodyend="335"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad18892029116d8e33e6731f0041be83d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::with_relative_gap_tolerance</definition>
+        <argsstring>(double t_relative_gap_tolerance)</argsstring>
+        <name>with_relative_gap_tolerance</name>
+        <param>
+          <type>double</type>
+          <declname>t_relative_gap_tolerance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the relative gap tolerance for the optimizer. When the optimizer proves that the relative optimality gap is less than this threshold, the optimizer stops.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_relative_gap_tolerance(.05);<sp/></highlight><highlight class="comment">//<sp/>sets<sp/>a<sp/>gap<sp/>tolerance<sp/>of<sp/>5%</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_relative_gap_tolerance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the relative gap tolerance </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="178" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="314" bodyend="323"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a799ede043bde76795f7f4fd9fac0880c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::with_absolute_gap_tolerance</definition>
+        <argsstring>(double t_absolute_gap_tolerance)</argsstring>
+        <name>with_absolute_gap_tolerance</name>
+        <param>
+          <type>double</type>
+          <declname>t_absolute_gap_tolerance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the absolute gap tolerance for the optimizer. When the optimizer proves that the absolute optimality gap is less than this threshold, the optimizer stops.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_absolute_gap_tolerance(1e-4);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_absolute_gap_tolerance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the absolute gap tolerance </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="192" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="302" bodyend="311"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a31b5bc10c1e96a84b4617b35bf137ea2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::with_presolve</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_presolve</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the get_param_presolve activation for the optimizer.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_presolve(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);<sp/></highlight><highlight class="comment">//<sp/>turns<sp/>off<sp/>get_param_presolve<sp/>phase</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the activation level for the optimizer&apos;s get_param_presolve (0 for disabling, 1 for enabling) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="205" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="290" bodyend="299"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae015603918a608ffe8ef04e6145e40e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::with_infeasible_or_unbounded_info</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_infeasible_or_unbounded_info</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the behaviour of the optimizer when a model is shown to be infeasible or unbounded. When set to true, the optimizer is forced to prove feasibility or unboundedness by providing a certificate.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_infeasible_or_unbounded_info(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the activation level </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="219" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="278" bodyend="287"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a3197aa27445d62fd0491104238275c97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::conditional</definition>
+        <argsstring>(bool t_conditional_value, const std::function&lt; void(BranchAndBound&lt; idol::DefaultNodeInfo &gt; &amp;)&gt; &amp;t_if)</argsstring>
+        <name>conditional</name>
+        <param>
+          <type>bool</type>
+          <declname>t_conditional_value</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; void(<ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;)&gt; &amp;</type>
+          <declname>t_if</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executes the lambda function given as second parameter if and only if its first argument is true. This function can be used to build different optimizer factories depending on some external variable.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>use_presolve<sp/>:<sp/>{</highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">})<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.conditional(use_presolve,<sp/>[](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>x){<sp/>x.with_presolve(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/>})</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>model.use(algorithm);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>model.optimize();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_conditional_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, the t_if lambda function is executed, if false, nothing happens. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_if</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lambda function to execute in case t_conditional_value is true </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="238" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="273" bodyend="275"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae8fb4db490981b38547b5b6b86b3d6f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::conditional</definition>
+        <argsstring>(bool t_conditional_value, const std::function&lt; void(BranchAndBound&lt; idol::DefaultNodeInfo &gt; &amp;)&gt; &amp;t_if, const std::function&lt; void(BranchAndBound&lt; idol::DefaultNodeInfo &gt; &amp;)&gt; &amp;t_else)</argsstring>
+        <name>conditional</name>
+        <param>
+          <type>bool</type>
+          <declname>t_conditional_value</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; void(<ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;)&gt; &amp;</type>
+          <declname>t_if</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; void(<ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;)&gt; &amp;</type>
+          <declname>t_else</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executes the lambda function given as second parameter if and only if its first argument is true. This function can be used to build different optimizer factories depending on some external variable.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>use_presolve<sp/>:<sp/>{</highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">})<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.conditional(use_presolve,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>x){<sp/>x.with_presolve(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>x){<sp/>x.with_presolve(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);<sp/>})</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>model.use(algorithm);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>model.optimize();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_conditional_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, the t_if lambda function is executed, if false, the t_else lambda function is. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_if</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lambda function to execute in case t_conditional_value is true </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_else</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lambda function to execute in case t_conditional_value is false </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="260" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="266" bodyend="269"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactory_1a997906f3b7db473a7368c48c4be595ac" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>T &amp;</type>
+        <definition>T&amp; idol::OptimizerFactory::as</definition>
+        <argsstring>()</argsstring>
+        <name>as</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="44" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="44" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactory_1a804f8415a57f2a2ae5c197139de2d236" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>const T &amp;</type>
+        <definition>const T&amp; idol::OptimizerFactory::as</definition>
+        <argsstring>() const</argsstring>
+        <name>as</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="52" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="52" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactory_1a8282a87bf2a07d6bf4d5f391632dc423" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool idol::OptimizerFactory::is</definition>
+        <argsstring>() const</argsstring>
+        <name>is</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="60" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="60" bodyend="62"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1afa26d14ea2c1479683e1e832156fac2a" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>BranchAndBound&lt; idol::DefaultNodeInfo &gt; &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::crtp</definition>
+        <argsstring>()</argsstring>
+        <name>crtp</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="78" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="78" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a71231955c8b77473a4dd13b630d52cab" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1BranchAndBound" kindref="compound">BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+        <definition>const BranchAndBound&lt; idol::DefaultNodeInfo &gt; &amp; idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::crtp</definition>
+        <argsstring>() const</argsstring>
+        <name>crtp</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="79" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="79" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a8a11a96b51aa42b6a8ec863d43bec00b" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt;  &gt;::handle_default_parameters</definition>
+        <argsstring>(Optimizer *t_optimizer) const</argsstring>
+        <name>handle_default_parameters</name>
+        <param>
+          <type><ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref> *</type>
+          <declname>t_optimizer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="81" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="398" bodyend="440"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>NodeT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the class used to store nodes information. It is strongly advised to inherit from NodeVarInfo in order to create your own node type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="4">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::BranchAndBound&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1BranchAndBound"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt; &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::OptimizerFactory</label>
+        <link refid="classidol_1_1OptimizerFactory"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::BranchAndBound&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1BranchAndBound"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt; &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::OptimizerFactory</label>
+        <link refid="classidol_1_1OptimizerFactory"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" line="29" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h" bodystart="29" bodyend="207"/>
+    <listofallmembers>
+      <member refid="classidol_1_1BranchAndBound_1a946aaee3c50f86c76c45e245dcf77148" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>add_callback</name></member>
+      <member refid="classidol_1_1BranchAndBound_1aa02f32f7120d917e8b843d0b280fcd2a" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>add_callback</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1a997906f3b7db473a7368c48c4be595ac" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>as</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1a804f8415a57f2a2ae5c197139de2d236" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>as</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a96fec5e9e6f278c51ec788b317321616" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>BranchAndBound</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a15e010f0ecbb6ddde4ec3fee723564f0" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>BranchAndBound</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a0ad2d9a03ac409cbe14c79b47b485268" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>BranchAndBound</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a9aea0205e36cc09c10fe280c265d1215" prot="public" virt="virtual"><scope>idol::BranchAndBound</scope><name>clone</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a3197aa27445d62fd0491104238275c97" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>conditional</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae8fb4db490981b38547b5b6b86b3d6f3" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>conditional</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1afa26d14ea2c1479683e1e832156fac2a" prot="protected" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>crtp</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a71231955c8b77473a4dd13b630d52cab" prot="protected" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>crtp</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a8a11a96b51aa42b6a8ec863d43bec00b" prot="protected" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>handle_default_parameters</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1a8282a87bf2a07d6bf4d5f391632dc423" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>is</name></member>
+      <member refid="classidol_1_1BranchAndBound_1ab7997a02925adcea606f544d3c822e36" prot="private" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>m_branching_rule_factory</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a1cb30c2745d711d095cbff768082f5f8" prot="private" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>m_callbacks</name></member>
+      <member refid="classidol_1_1BranchAndBound_1ac19d5b55e1f79b9c1f23a30efd202d43" prot="private" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>m_log_frequency</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a0e11b04bd4d14e9b5799666800861b5a" prot="private" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>m_logger_factory</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a9628a270e7c0194fdb62d08352016849" prot="private" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>m_node_selection_rule_factory</name></member>
+      <member refid="classidol_1_1BranchAndBound_1ac3fd761145b9f372e6b20b8c4b6ae71b" prot="private" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>m_relaxation_optimizer_factory</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a448aa2a55fea7780e57fd4b463cc76a8" prot="private" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>m_subtree_depth</name></member>
+      <member refid="classidol_1_1BranchAndBound_1aa42256409107a9c2909a0a85b3862a08" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>only_if_has_Strategy</name></member>
+      <member refid="classidol_1_1BranchAndBound_1af4f3c1a3e69cd034a733f9c544a0728b" prot="public" virt="virtual"><scope>idol::BranchAndBound</scope><name>operator()</name></member>
+      <member refid="classidol_1_1BranchAndBound_1aa22f3b652c188cc7f7005ea753f73cd5" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>operator+=</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a8e719ec11c533c01d445315fc21deda5" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>operator=</name></member>
+      <member refid="classidol_1_1BranchAndBound_1ab4b7ae48c3eb484145a71d77ce0b8ce4" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>operator=</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a7afa51162050c25b2a6c47a96cc6d0a8" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>set_node_optimizer</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a799ede043bde76795f7f4fd9fac0880c" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_absolute_gap_tolerance</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a10a7490342b8cb9a0719f150ad70513d" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_best_bound_stop</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad3e0bc7a6d07853f2f54b4b47aec52ce" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_best_obj_stop</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a4da44c69626f3a6e6273b29af12d62dd" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_branching_rule</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a6f26fc42ea22b19b0995416db72e45bf" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_branching_rule</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a312bfa60303e904b4807d7a59aa947ba" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_branching_rule</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae015603918a608ffe8ef04e6145e40e0" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_infeasible_or_unbounded_info</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ac342238df14873996a25d1182b5a2a7d" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_iteration_limit</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a2edf65be4254ff2a85e447ae97661505" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_logger</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a495f616340209e28fde87270f69ce28f" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_logs</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a8ece634603121d7f538e0a5a5e47312b" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_node_optimizer</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a899d89528f5a06aa1fdc245d78b991dd" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_node_selection_rule</name></member>
+      <member refid="classidol_1_1BranchAndBound_1a3b795634a2b9739b7fd1a19918c2004f" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_node_selection_rule</name></member>
+      <member refid="classidol_1_1BranchAndBound_1af28b70d5dcb43121e91d6215cd75d283" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_node_selection_rule</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a31b5bc10c1e96a84b4617b35bf137ea2" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_presolve</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad18892029116d8e33e6731f0041be83d" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_relative_gap_tolerance</name></member>
+      <member refid="classidol_1_1BranchAndBound_1aaa45a4815818ee36fa0838223a09c1b6" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_subtree_depth</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a62819967487a06cacad8ca03d0891090" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_thread_limit</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a192ee8cb58e8e1b2d33b0d58df3b0123" prot="public" virt="non-virtual"><scope>idol::BranchAndBound</scope><name>with_time_limit</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1aab1c822c36ac4c578bf451e544586c74" prot="public" virt="virtual"><scope>idol::BranchAndBound</scope><name>~OptimizerFactory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

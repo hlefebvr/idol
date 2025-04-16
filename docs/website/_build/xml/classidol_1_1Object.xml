@@ -1,0 +1,446 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Object" kind="class" language="C++" prot="public">
+    <compoundname>idol::Object</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+      <param>
+        <type>class CRTP</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Object_1aa510af6c2b66ff868e1a9e3180248cde" prot="private" static="no" mutable="no">
+        <type>std::shared_ptr&lt; <ref refid="classidol_1_1ObjectId" kindref="compound">ObjectId</ref>&lt; T &gt; &gt;</type>
+        <definition>std::shared_ptr&lt;ObjectId&lt;T&gt; &gt; idol::Object&lt; T, CRTP &gt;::m_object_id</definition>
+        <argsstring></argsstring>
+        <name>m_object_id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="27" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classidol_1_1Object_1a8a85515a45c06acc28d8065cc6aeca75" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto &amp;</type>
+        <definition>auto&amp; idol::Object&lt; T, CRTP &gt;::versions</definition>
+        <argsstring>()</argsstring>
+        <name>versions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="29" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="29" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1a9ce6b3c2064f4dbfe702bb7015965273" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::Object&lt; T, CRTP &gt;::versions</definition>
+        <argsstring>() const</argsstring>
+        <name>versions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="31" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="31" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1aa7bae45c14dc473a743334722b30948f" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ...</type>
+            <declname>ArgsT</declname>
+            <defname>ArgsT</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::Object&lt; T, CRTP &gt;::create_version</definition>
+        <argsstring>(const Model &amp;t_model, unsigned int t_index, ArgsT &amp;&amp;...t_args) const</argsstring>
+        <name>create_version</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <param>
+          <type>ArgsT &amp;&amp;...</type>
+          <declname>t_args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="34" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="34" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1a4e7aa71b3a721b2e333bbe324cf3e0ad" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Object&lt; T, CRTP &gt;::remove_version</definition>
+        <argsstring>(const Model &amp;t_model) const</argsstring>
+        <name>remove_version</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="38" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="38" bodyend="40"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Object_1a40c32e951ebdc1b278d336937617983f" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Object&lt; T, CRTP &gt;::Object</definition>
+        <argsstring>(ObjectId&lt; T &gt; &amp;&amp;t_object_id)</argsstring>
+        <name>Object</name>
+        <param>
+          <type><ref refid="classidol_1_1ObjectId" kindref="compound">ObjectId</ref>&lt; T &gt; &amp;&amp;</type>
+          <declname>t_object_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="42" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="42" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1a4742882ea8f92aaff9a7e053170a463e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Object&lt; T, CRTP &gt;::Object</definition>
+        <argsstring>(const Object &amp;)=default</argsstring>
+        <name>Object</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Object" kindref="compound">Object</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="44" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1a5f5a9498106e472168e5bc68f45e7862" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Object&lt; T, CRTP &gt;::Object</definition>
+        <argsstring>(Object &amp;&amp;) noexcept=default</argsstring>
+        <name>Object</name>
+        <param>
+          <type><ref refid="classidol_1_1Object" kindref="compound">Object</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="45" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1a4ed82a0fc9883221a56d1b1b3a96922a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Object" kindref="compound">Object</ref> &amp;</type>
+        <definition>Object&amp; idol::Object&lt; T, CRTP &gt;::operator=</definition>
+        <argsstring>(const Object &amp;)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Object" kindref="compound">Object</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="47" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1ac9021e4c6bc93530525172d43854a211" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Object" kindref="compound">Object</ref> &amp;</type>
+        <definition>Object&amp; idol::Object&lt; T, CRTP &gt;::operator=</definition>
+        <argsstring>(Object &amp;&amp;) noexcept=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1Object" kindref="compound">Object</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="48" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1a3cc33224269c4c20bd39931cbbbe3cd4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::string &amp;</type>
+        <definition>const std::string&amp; idol::Object&lt; T, CRTP &gt;::name</definition>
+        <argsstring>() const</argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the name of the optimization object. <simplesect kind="return"><para>The name of the optimization object. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="54" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="54" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1ac8e398b9b937f08b1c5dbd2b32414036" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Object&lt; T, CRTP &gt;::id</definition>
+        <argsstring>() const</argsstring>
+        <name>id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the id of the optimization object. <simplesect kind="return"><para>The id of the optimization object. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="60" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="60" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1aa25899704860cb066f885015ec1f11f3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Object&lt; T, CRTP &gt;::is_in</definition>
+        <argsstring>(const Model &amp;t_model) const</argsstring>
+        <name>is_in</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns true if the optimization object is part of the model <computeroutput>t_model</computeroutput>, false otherwise. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_model</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The model. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the optimization object is part of the model <computeroutput>t_model</computeroutput>, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="67" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="67" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1afcade3116fd43e168a1aba7138f5ac44" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ValueT</type>
+          </param>
+        </templateparamlist>
+        <type>const ValueT &amp;</type>
+        <definition>const ValueT&amp; idol::Object&lt; T, CRTP &gt;::get</definition>
+        <argsstring>(const Annotation&lt; ValueT &gt; &amp;t_annotation) const</argsstring>
+        <name>get</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Annotation" kindref="compound">Annotation</ref>&lt; ValueT &gt; &amp;</type>
+          <declname>t_annotation</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the value of the given annotation <computeroutput>t_annotation</computeroutput> associated to the object.</para>
+<para>If no value is found, the default value of the annotation is returned. If no default value was set, an exception is thrown. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ValueT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value type of the annotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_annotation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The annotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The value of the annotation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="78" column="29" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="78" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Object_1a7d1921eca2bb0e0453867839e80dde63" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ValueT</type>
+          </param>
+          <param>
+            <type>class ...</type>
+            <declname>ArgsT</declname>
+            <defname>ArgsT</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::Object&lt; T, CRTP &gt;::set</definition>
+        <argsstring>(const Annotation&lt; ValueT &gt; &amp;t_annotation, ArgsT &amp;&amp;...t_args) const</argsstring>
+        <name>set</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Annotation" kindref="compound">Annotation</ref>&lt; ValueT &gt; &amp;</type>
+          <declname>t_annotation</declname>
+        </param>
+        <param>
+          <type>ArgsT &amp;&amp;...</type>
+          <declname>t_args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the value of the given annotation <computeroutput>t_annotation</computeroutput> associated to the object. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ValueT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value type of the annotation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ArgsT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The parameter pack types for constructing the value of the annotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_annotation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The annotation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The parameter pack arguments used to construct &quot;in place&quot; the value of the annotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="96" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="96" bodyend="96"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="9">
+        <label>idol::QCtr</label>
+        <link refid="classidol_1_1QCtr"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>idol::Ctr</label>
+        <link refid="classidol_1_1Ctr"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::Object&lt; T, CRTP &gt;</label>
+        <link refid="classidol_1_1Object"/>
+      </node>
+      <node id="6">
+        <label>idol::Object&lt; CtrVersion, Ctr &gt;</label>
+        <link refid="classidol_1_1Object"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; CtrVersion, Ctr &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::SOSCtr</label>
+        <link refid="classidol_1_1SOSCtr"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>idol::Var</label>
+        <link refid="classidol_1_1Var"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::Object&lt; SOSCtrVersion, SOSCtr &gt;</label>
+        <link refid="classidol_1_1Object"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; SOSCtrVersion, SOSCtr &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>idol::Object&lt; VarVersion, Var &gt;</label>
+        <link refid="classidol_1_1Object"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; VarVersion, Var &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>idol::Object&lt; QCtrVersion, QCtr &gt;</label>
+        <link refid="classidol_1_1Object"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; QCtrVersion, QCtr &gt;</edgelabel>
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Object&lt; T, CRTP &gt;</label>
+        <link refid="classidol_1_1Object"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="26" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="26" bodyend="97"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Object_1aa7bae45c14dc473a743334722b30948f" prot="protected" virt="non-virtual"><scope>idol::Object</scope><name>create_version</name></member>
+      <member refid="classidol_1_1Object_1afcade3116fd43e168a1aba7138f5ac44" prot="public" virt="non-virtual"><scope>idol::Object</scope><name>get</name></member>
+      <member refid="classidol_1_1Object_1ac8e398b9b937f08b1c5dbd2b32414036" prot="public" virt="non-virtual"><scope>idol::Object</scope><name>id</name></member>
+      <member refid="classidol_1_1Object_1aa25899704860cb066f885015ec1f11f3" prot="public" virt="non-virtual"><scope>idol::Object</scope><name>is_in</name></member>
+      <member refid="classidol_1_1Object_1aa510af6c2b66ff868e1a9e3180248cde" prot="private" virt="non-virtual"><scope>idol::Object</scope><name>m_object_id</name></member>
+      <member refid="classidol_1_1Object_1a3cc33224269c4c20bd39931cbbbe3cd4" prot="public" virt="non-virtual"><scope>idol::Object</scope><name>name</name></member>
+      <member refid="classidol_1_1Object_1a40c32e951ebdc1b278d336937617983f" prot="public" virt="non-virtual"><scope>idol::Object</scope><name>Object</name></member>
+      <member refid="classidol_1_1Object_1a4742882ea8f92aaff9a7e053170a463e" prot="public" virt="non-virtual"><scope>idol::Object</scope><name>Object</name></member>
+      <member refid="classidol_1_1Object_1a5f5a9498106e472168e5bc68f45e7862" prot="public" virt="non-virtual"><scope>idol::Object</scope><name>Object</name></member>
+      <member refid="classidol_1_1Object_1a4ed82a0fc9883221a56d1b1b3a96922a" prot="public" virt="non-virtual"><scope>idol::Object</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Object_1ac9021e4c6bc93530525172d43854a211" prot="public" virt="non-virtual"><scope>idol::Object</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Object_1a4e7aa71b3a721b2e333bbe324cf3e0ad" prot="protected" virt="non-virtual"><scope>idol::Object</scope><name>remove_version</name></member>
+      <member refid="classidol_1_1Object_1a7d1921eca2bb0e0453867839e80dde63" prot="public" virt="non-virtual"><scope>idol::Object</scope><name>set</name></member>
+      <member refid="classidol_1_1Object_1a8a85515a45c06acc28d8065cc6aeca75" prot="protected" virt="non-virtual"><scope>idol::Object</scope><name>versions</name></member>
+      <member refid="classidol_1_1Object_1a9ce6b3c2064f4dbfe702bb7015965273" prot="protected" virt="non-virtual"><scope>idol::Object</scope><name>versions</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

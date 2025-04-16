@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structidol_1_1ADM_1_1Formulation_1_1CurrentPenalty" kind="struct" language="C++" prot="public">
+    <compoundname>idol::ADM::Formulation::CurrentPenalty</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structidol_1_1ADM_1_1Formulation_1_1CurrentPenalty_1a2b2ba765cd0ede03209bba06c45691f5" prot="public" static="no" mutable="no">
+        <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref></type>
+        <definition>const Var idol::ADM::Formulation::CurrentPenalty::variable</definition>
+        <argsstring></argsstring>
+        <name>variable</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" line="83" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structidol_1_1ADM_1_1Formulation_1_1CurrentPenalty_1aff88119cba42fbfc04ca05bedcf00441" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double idol::ADM::Formulation::CurrentPenalty::max_violation</definition>
+        <argsstring></argsstring>
+        <name>max_violation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" line="84" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structidol_1_1ADM_1_1Formulation_1_1CurrentPenalty_1a86c99b0d21b4fd9a052b74b969f61921" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double idol::ADM::Formulation::CurrentPenalty::penalty</definition>
+        <argsstring></argsstring>
+        <name>penalty</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" line="85" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structidol_1_1ADM_1_1Formulation_1_1CurrentPenalty_1abceaf0c6e5122ed347ae782c6316c784" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::ADM::Formulation::CurrentPenalty::CurrentPenalty</definition>
+        <argsstring>(Var t_variable, double t_max_violation, double t_penalty)</argsstring>
+        <name>CurrentPenalty</name>
+        <param>
+          <type><ref refid="classidol_1_1Var" kindref="compound">Var</ref></type>
+          <declname>t_variable</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_max_violation</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_penalty</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" line="86" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" bodystart="86" bodyend="87"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::ADM::Formulation::CurrentPenalty</label>
+        <link refid="structidol_1_1ADM_1_1Formulation_1_1CurrentPenalty"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>+variable</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>idol::Object&lt; T, CRTP &gt;</label>
+        <link refid="classidol_1_1Object"/>
+      </node>
+      <node id="2">
+        <label>idol::Var</label>
+        <link refid="classidol_1_1Var"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::Object&lt; VarVersion, Var &gt;</label>
+        <link refid="classidol_1_1Object"/>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; VarVersion, Var &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" line="82" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h" bodystart="82" bodyend="88"/>
+    <listofallmembers>
+      <member refid="structidol_1_1ADM_1_1Formulation_1_1CurrentPenalty_1abceaf0c6e5122ed347ae782c6316c784" prot="public" virt="non-virtual"><scope>idol::ADM::Formulation::CurrentPenalty</scope><name>CurrentPenalty</name></member>
+      <member refid="structidol_1_1ADM_1_1Formulation_1_1CurrentPenalty_1aff88119cba42fbfc04ca05bedcf00441" prot="public" virt="non-virtual"><scope>idol::ADM::Formulation::CurrentPenalty</scope><name>max_violation</name></member>
+      <member refid="structidol_1_1ADM_1_1Formulation_1_1CurrentPenalty_1a86c99b0d21b4fd9a052b74b969f61921" prot="public" virt="non-virtual"><scope>idol::ADM::Formulation::CurrentPenalty</scope><name>penalty</name></member>
+      <member refid="structidol_1_1ADM_1_1Formulation_1_1CurrentPenalty_1a2b2ba765cd0ede03209bba06c45691f5" prot="public" virt="non-virtual"><scope>idol::ADM::Formulation::CurrentPenalty</scope><name>variable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

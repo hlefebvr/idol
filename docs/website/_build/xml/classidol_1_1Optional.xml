@@ -1,0 +1,330 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Optional" kind="class" language="C++" prot="public">
+    <compoundname>idol::Optional</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Optional_1a271c2c111e5a5558d197b63c148a3aa2" prot="private" static="no" mutable="no">
+        <type>T *</type>
+        <definition>T* idol::Optional&lt; T &gt;::m_value</definition>
+        <argsstring></argsstring>
+        <name>m_value</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="14" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Optional_1a33d4f56a84d84fd153dac33eb6fd4710" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Optional&lt; T &gt;::Optional</definition>
+        <argsstring>()=default</argsstring>
+        <name>Optional</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="16" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1ac7b9e8e267d17bbc861cecb8fd53d34e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Optional&lt; T &gt;::Optional</definition>
+        <argsstring>(const Optional&lt; T &gt; &amp;t_optional)</argsstring>
+        <name>Optional</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Optional" kindref="compound">Optional</ref>&lt; T &gt; &amp;</type>
+          <declname>t_optional</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="18" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="18" bodyend="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1acb05d87718829ebfcf960fa0f60584c3" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Optional&lt; T &gt;::Optional</definition>
+        <argsstring>(Optional&lt; T &gt; &amp;&amp;t_optional) noexcept</argsstring>
+        <name>Optional</name>
+        <param>
+          <type><ref refid="classidol_1_1Optional" kindref="compound">Optional</ref>&lt; T &gt; &amp;&amp;</type>
+          <declname>t_optional</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="20" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="20" bodyend="22"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1a8065bca1397becb0b36075c3b6b94005" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Optional&lt; T &gt;::Optional</definition>
+        <argsstring>(const T &amp;t_value)</argsstring>
+        <name>Optional</name>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="24" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="24" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1aa5c49a7d0ed73f19e89e96941b7c606e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Optional&lt; T &gt;::Optional</definition>
+        <argsstring>(T &amp;&amp;t_value)</argsstring>
+        <name>Optional</name>
+        <param>
+          <type>T &amp;&amp;</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="26" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="26" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1aaaed804ee47704f2b4f4d6724ad1a8fe" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Optional&lt; T &gt;::~Optional</definition>
+        <argsstring>()</argsstring>
+        <name>~Optional</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="28" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="28" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1a9a6ed77cea0f679d89a63f8867f79e65" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Optional&lt; T &gt;::has_value</definition>
+        <argsstring>() const</argsstring>
+        <name>has_value</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="34" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="34" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1a1a61560e24944f8dcbbcaf3038428e6f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T &amp;</type>
+        <definition>T&amp; idol::Optional&lt; T &gt;::value</definition>
+        <argsstring>()</argsstring>
+        <name>value</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="36" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="36" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1a5e411d7d20a65a6dc5f6e2157da554c9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const T &amp;</type>
+        <definition>const T&amp; idol::Optional&lt; T &gt;::value</definition>
+        <argsstring>() const</argsstring>
+        <name>value</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="43" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="43" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1acebc7be0bfa1b598f993c6ee3b92e305" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T &amp;</type>
+        <definition>T&amp; idol::Optional&lt; T &gt;::operator*</definition>
+        <argsstring>()</argsstring>
+        <name>operator*</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="50" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="50" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1aae1cc075d47fe693d3aa96424cfb8b64" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const T &amp;</type>
+        <definition>const T&amp; idol::Optional&lt; T &gt;::operator*</definition>
+        <argsstring>() const</argsstring>
+        <name>operator*</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="52" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="52" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1ae0142525b397422cd07410990073b9ac" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T *</type>
+        <definition>T* idol::Optional&lt; T &gt;::operator-&gt;</definition>
+        <argsstring>()</argsstring>
+        <name>operator-&gt;</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="54" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="54" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1a67656ac218e05a728faada43ca32d9ba" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const T *</type>
+        <definition>const T* idol::Optional&lt; T &gt;::operator-&gt;</definition>
+        <argsstring>() const</argsstring>
+        <name>operator-&gt;</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="56" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="56" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1acb5426c340bb7466791ceb425c9df765" prot="public" static="no" const="yes" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Optional&lt; T &gt;::operator bool</definition>
+        <argsstring>() const</argsstring>
+        <name>operator bool</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="58" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="58" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1aa806c23c9afcadd56a635122aeb9699b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Optional" kindref="compound">Optional</ref>&lt; T &gt; &amp;</type>
+        <definition>Optional&lt;T&gt;&amp; idol::Optional&lt; T &gt;::operator=</definition>
+        <argsstring>(T &amp;&amp;t_value)</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>T &amp;&amp;</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="60" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="60" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1a1fe7053a4b0870789964a97a3f7a6e42" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Optional" kindref="compound">Optional</ref>&lt; T &gt; &amp;</type>
+        <definition>Optional&lt;T&gt;&amp; idol::Optional&lt; T &gt;::operator=</definition>
+        <argsstring>(const T &amp;t_value)</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="68" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="68" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1aa8b6710fc8e7dd502bbca246ef85904e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Optional&lt; T &gt;::reset</definition>
+        <argsstring>()</argsstring>
+        <name>reset</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="76" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="76" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optional_1a18c1d5c755e1b465154ac7dfccf26f3a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ...</type>
+            <declname>ArgsT</declname>
+            <defname>ArgsT</defname>
+          </param>
+        </templateparamlist>
+        <type>T &amp;</type>
+        <definition>T&amp; idol::Optional&lt; T &gt;::emplace</definition>
+        <argsstring>(ArgsT &amp;&amp;...t_args)</argsstring>
+        <name>emplace</name>
+        <param>
+          <type>ArgsT &amp;&amp;...</type>
+          <declname>t_args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="84" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="84" bodyend="90"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Optional&lt; T &gt;</label>
+        <link refid="classidol_1_1Optional"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" line="13" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Optional.h" bodystart="13" bodyend="92"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Optional_1a18c1d5c755e1b465154ac7dfccf26f3a" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>emplace</name></member>
+      <member refid="classidol_1_1Optional_1a9a6ed77cea0f679d89a63f8867f79e65" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>has_value</name></member>
+      <member refid="classidol_1_1Optional_1a271c2c111e5a5558d197b63c148a3aa2" prot="private" virt="non-virtual"><scope>idol::Optional</scope><name>m_value</name></member>
+      <member refid="classidol_1_1Optional_1acb5426c340bb7466791ceb425c9df765" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>operator bool</name></member>
+      <member refid="classidol_1_1Optional_1acebc7be0bfa1b598f993c6ee3b92e305" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>operator*</name></member>
+      <member refid="classidol_1_1Optional_1aae1cc075d47fe693d3aa96424cfb8b64" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>operator*</name></member>
+      <member refid="classidol_1_1Optional_1ae0142525b397422cd07410990073b9ac" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>operator-&gt;</name></member>
+      <member refid="classidol_1_1Optional_1a67656ac218e05a728faada43ca32d9ba" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>operator-&gt;</name></member>
+      <member refid="classidol_1_1Optional_1aa806c23c9afcadd56a635122aeb9699b" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Optional_1a1fe7053a4b0870789964a97a3f7a6e42" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Optional_1a33d4f56a84d84fd153dac33eb6fd4710" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>Optional</name></member>
+      <member refid="classidol_1_1Optional_1ac7b9e8e267d17bbc861cecb8fd53d34e" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>Optional</name></member>
+      <member refid="classidol_1_1Optional_1acb05d87718829ebfcf960fa0f60584c3" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>Optional</name></member>
+      <member refid="classidol_1_1Optional_1a8065bca1397becb0b36075c3b6b94005" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>Optional</name></member>
+      <member refid="classidol_1_1Optional_1aa5c49a7d0ed73f19e89e96941b7c606e" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>Optional</name></member>
+      <member refid="classidol_1_1Optional_1aa8b6710fc8e7dd502bbca246ef85904e" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>reset</name></member>
+      <member refid="classidol_1_1Optional_1a1a61560e24944f8dcbbcaf3038428e6f" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>value</name></member>
+      <member refid="classidol_1_1Optional_1a5e411d7d20a65a6dc5f6e2157da554c9" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>value</name></member>
+      <member refid="classidol_1_1Optional_1aaaed804ee47704f2b4f4d6724ad1a8fe" prot="public" virt="non-virtual"><scope>idol::Optional</scope><name>~Optional</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

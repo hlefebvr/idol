@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>&lt;no title&gt;</title>
+    
+          <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/manual/rst/mixed-integer/modeling-a-mip-with-idol/introduction.html" />
+    
+  <link rel="index" title="Index" href="../../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+    
+    <li>&lt;no title&gt;</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <p>In idol, a mixed-integer optimization problem (MIP) is assumed to be of
+the form:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+        \min_x \quad &amp; c^\top x + x^\top D x + c_0 \\
+        \text{s.t.} \quad
+        &amp; a_{i\cdot}^\top x + x^\top Q^i x \le b_i, \quad \text{for all } i=1,\dotsc,m, \\
+        &amp; \ell_j \le x_j \le u_j, \quad \text{for all } j = 1,\dotsc,n, \\
+        &amp; x_j\in \mathbb{Z}, \quad \text{for all } j\in J \subseteq\{1,\dotsc,n\}.
+    \end{aligned}\end{split}\]</div>
+<p>[eq:mip]</p>
+<p>Here, <span class="math notranslate nohighlight">\(x\)</span> is the decision-variable vector while vectors and
+matrices <span class="math notranslate nohighlight">\(c\in\mathbb{Q}^n\)</span>, <span class="math notranslate nohighlight">\(D\in\mathbb{Q}^{n\times n}\)</span>,
+<span class="math notranslate nohighlight">\(A\in\mathbb{Q}^{m\times
+n}\)</span>, <span class="math notranslate nohighlight">\(Q^i\in\mathbb{Q}^i\)</span> (<span class="math notranslate nohighlight">\(i=1,\dotsc,m\)</span>),
+<span class="math notranslate nohighlight">\(b\in\mathbb{Q}^m\)</span>, <span class="math notranslate nohighlight">\(\ell\in\mathbb{Q}^n\cup\{-\infty\}\)</span> and
+<span class="math notranslate nohighlight">\(u\in\mathbb{Q}^n\cup\{\infty\}\)</span> are input data. As usual,
+variables are classified depending on their type (continuous, integer or
+binary) and bounds; see Table <a class="reference external" href="#tab:var-types">1</a>. A constraint in
+which <span class="math notranslate nohighlight">\(Q^i
+= 0\)</span> is called a linear constraint, otherwise, it is a quadratic
+constraint.</p>
+<div class="docutils container" id="tab-var-types">
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Terminology for variables in a MIP</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>A variable
+<span class="math notranslate nohighlight">\(x_j\)</span> is said
+…</p></th>
+<th class="head"><p>if its index
+<span class="math notranslate nohighlight">\(j\)</span> satisfies
+…</p></th>
+<th class="head"><p>and its bounds
+satisfy …</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>integer</p></td>
+<td><p><span class="math notranslate nohighlight">\(j\in J\)</span></p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>binary</p></td>
+<td><p><span class="math notranslate nohighlight">\(j\in J\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0 \
+le \ell \le u \le 1\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>continuous</p></td>
+<td><p><span class="math notranslate nohighlight">\(j\notin J\)</span></p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>free</p></td>
+<td><p>—</p></td>
+<td><p><span class="math notranslate nohighlight">\(l=-\infty\)</span>
+and
+<span class="math notranslate nohighlight">\(u = \infty\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>non-negative</p></td>
+<td><p>—</p></td>
+<td><p><span class="math notranslate nohighlight">\(\ell \ge 0\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>non-positive</p></td>
+<td><p>—</p></td>
+<td><p><span class="math notranslate nohighlight">\(u \le 0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>bounded</p></td>
+<td><p>—</p></td>
+<td><p><span class="math notranslate nohighlight">\(-\infty &lt;
+\ell \le u &lt; \infty\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>fixed</p></td>
+<td><p>—</p></td>
+<td><p><span class="math notranslate nohighlight">\(\ell = u\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>An important class of problems is when all constraints are linear and
+the objective function is linear, i.e., <span class="math notranslate nohighlight">\(Q^i=0\)</span> for all
+<span class="math notranslate nohighlight">\(i=1,\dotsc,m\)</span> and <span class="math notranslate nohighlight">\(D=0\)</span>. In this case, we say
+that <a class="reference external" href="#eq:mip">[eq:mip]</a> is a mixed-integer linear problem (MILP).</p>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

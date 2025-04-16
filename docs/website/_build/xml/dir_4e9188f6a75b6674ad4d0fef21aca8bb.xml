@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_4e9188f6a75b6674ad4d0fef21aca8bb" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls</compoundname>
+    <innerfile refid="impls_2BestBound_8h">BestBound.h</innerfile>
+    <innerfile refid="impls_2BestEstimate_8h">BestEstimate.h</innerfile>
+    <innerfile refid="impls_2BreadthFirst_8h">BreadthFirst.h</innerfile>
+    <innerfile refid="impls_2DepthFirst_8h">DepthFirst.h</innerfile>
+    <innerfile refid="NodeSelectionRule_8h">NodeSelectionRule.h</innerfile>
+    <innerfile refid="impls_2WorstBound_8h">WorstBound.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/"/>
+  </compounddef>
+</doxygen>

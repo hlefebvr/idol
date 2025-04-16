@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Diver_1_1Strategy" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>idol::Diver::Strategy</compoundname>
+    <basecompoundref refid="classidol_1_1VariableBranching_1_1Strategy" prot="public" virt="non-virtual">idol::VariableBranching::Strategy&lt; NodeInfoT &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>class NodeInfoT</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Diver_1_1Strategy_1a95760047c2b66978ccf14d0efe28dbb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Diver&lt; BranchingRuleT &gt;::Strategy&lt; NodeInfoT &gt;::Strategy</definition>
+        <argsstring>()=default</argsstring>
+        <name>Strategy</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/Diver.h" line="26" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Diver_1_1Strategy_1a2ca25e278dfd66a6bbdc173b82852803" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Diver&lt; BranchingRuleT &gt;::Strategy&lt; NodeInfoT &gt;::Strategy</definition>
+        <argsstring>(const Diver &amp;t_parent)</argsstring>
+        <name>Strategy</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Diver" kindref="compound">Diver</ref> &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/Diver.h" line="28" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/Diver.h" bodystart="28" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Diver_1_1Strategy_1a42e8aafa6d5fe12bcc5a785049c52c83" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchingRules_1_1VariableBranching" kindref="compound">BranchingRules::VariableBranching</ref>&lt; NodeInfoT &gt; *</type>
+        <definition>BranchingRules::VariableBranching&lt;NodeInfoT&gt;* idol::Diver&lt; BranchingRuleT &gt;::Strategy&lt; NodeInfoT &gt;::operator()</definition>
+        <argsstring>(const Optimizers::BranchAndBound&lt; NodeInfoT &gt; &amp;t_parent) const override</argsstring>
+        <name>operator()</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound</ref>&lt; NodeInfoT &gt; &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/Diver.h" line="31" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/Diver.h" bodystart="31" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Diver_1_1Strategy_1a018841815054a6b13187456a14257d5c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1VariableBranching_1_1Strategy" kindref="compound">VariableBranching::Strategy</ref>&lt; NodeInfoT &gt; *</type>
+        <definition>VariableBranching::Strategy&lt;NodeInfoT&gt;* idol::Diver&lt; BranchingRuleT &gt;::Strategy&lt; NodeInfoT &gt;::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1BranchingRuleFactory_1a4b88a3128af210b4c6ce21886662fede">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/Diver.h" line="35" column="37" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/Diver.h" bodystart="35" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchingRuleFactory_1a769332fb039e7db9bb7f7aa2a4178848" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classidol_1_1BranchingRule" kindref="compound">BranchingRule</ref>&lt; NodeT &gt; *</type>
+        <definition>virtual BranchingRule&lt;NodeT&gt;* idol::BranchingRuleFactory&lt; NodeT &gt;::operator()</definition>
+        <argsstring>(const Optimizers::BranchAndBound&lt; NodeT &gt; &amp;t_parent) const =0</argsstring>
+        <name>operator()</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound</ref>&lt; NodeT &gt; &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingRuleFactory.h" line="25" column="27"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classidol_1_1VariableBranching_1_1Strategy_1aacdabc4cf7ae2a4e3cc29ef4edaf642c" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::list&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+        <definition>std::list&lt; idol::Var &gt; idol::VariableBranching::Strategy&lt; NodeInfoT  &gt;::create_branching_candidates</definition>
+        <argsstring>(const idol::Model &amp;t_model) const</argsstring>
+        <name>create_branching_candidates</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">idol::Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h" line="36" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h" bodystart="60" bodyend="75"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="4">
+        <label>idol::VariableBranching::Strategy&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1VariableBranching_1_1Strategy"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::BranchingRuleFactory&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1BranchingRuleFactory"/>
+      </node>
+      <node id="2">
+        <label>idol::VariableBranching::Strategy&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1VariableBranching_1_1Strategy"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; NodeInfoT &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::Diver&lt; BranchingRuleT &gt;::Strategy&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Diver_1_1Strategy"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>idol::VariableBranching::Strategy&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1VariableBranching_1_1Strategy"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::BranchingRuleFactory&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1BranchingRuleFactory"/>
+      </node>
+      <node id="2">
+        <label>idol::VariableBranching::Strategy&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1VariableBranching_1_1Strategy"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; NodeInfoT &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::Diver&lt; BranchingRuleT &gt;::Strategy&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Diver_1_1Strategy"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/Diver.h" line="24" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/Diver.h" bodystart="24" bodyend="38"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Diver_1_1Strategy_1a018841815054a6b13187456a14257d5c" prot="public" virt="virtual"><scope>idol::Diver::Strategy</scope><name>clone</name></member>
+      <member refid="classidol_1_1VariableBranching_1_1Strategy_1aacdabc4cf7ae2a4e3cc29ef4edaf642c" prot="protected" virt="non-virtual"><scope>idol::Diver::Strategy</scope><name>create_branching_candidates</name></member>
+      <member refid="classidol_1_1Diver_1_1Strategy_1a42e8aafa6d5fe12bcc5a785049c52c83" prot="public" virt="non-virtual"><scope>idol::Diver::Strategy</scope><name>operator()</name></member>
+      <member refid="classidol_1_1BranchingRuleFactory_1a769332fb039e7db9bb7f7aa2a4178848" prot="public" virt="pure-virtual" ambiguityscope="Strategy&lt; NodeInfoT &gt;::"><scope>idol::Diver::Strategy</scope><name>operator()</name></member>
+      <member refid="classidol_1_1Diver_1_1Strategy_1a95760047c2b66978ccf14d0efe28dbb5" prot="public" virt="non-virtual"><scope>idol::Diver::Strategy</scope><name>Strategy</name></member>
+      <member refid="classidol_1_1Diver_1_1Strategy_1a2ca25e278dfd66a6bbdc173b82852803" prot="public" virt="non-virtual"><scope>idol::Diver::Strategy</scope><name>Strategy</name></member>
+      <member refid="classidol_1_1VariableBranching_1_1Strategy_1aa470f7c4e3c6edb56afc26e09c40f968" prot="public" virt="non-virtual" ambiguityscope="Strategy&lt; NodeInfoT &gt;::"><scope>idol::Diver::Strategy</scope><name>Strategy</name></member>
+      <member refid="classidol_1_1VariableBranching_1_1Strategy_1a9dc8b3b53e15578ac79398bf7f325494" prot="public" virt="non-virtual" ambiguityscope="Strategy&lt; NodeInfoT &gt;::"><scope>idol::Diver::Strategy</scope><name>Strategy</name></member>
+      <member refid="classidol_1_1VariableBranching_1_1Strategy_1aba0c4a95959bc3de360f306cd4de6f56" prot="public" virt="non-virtual" ambiguityscope="Strategy&lt; NodeInfoT &gt;::"><scope>idol::Diver::Strategy</scope><name>Strategy</name></member>
+      <member refid="classidol_1_1BranchingRuleFactory_1a0b5dda2debdc1c4f6729f90449b3377f" prot="public" virt="virtual"><scope>idol::Diver::Strategy</scope><name>~BranchingRuleFactory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

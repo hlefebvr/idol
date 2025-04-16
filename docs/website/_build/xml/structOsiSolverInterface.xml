@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structOsiSolverInterface" kind="struct" language="C++" prot="public" abstract="yes">
+    <compoundname>OsiSolverInterface</compoundname>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structOsiSolverInterface_1a236e9a83689c7933f6bea5f013ba7dac" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual OsiSolverInterface::~OsiSolverInterface</definition>
+        <argsstring>()=default</argsstring>
+        <name>~OsiSolverInterface</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="31" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="structOsiSolverInterface_1ac2f2653c86480b200a28c2684f39d1e5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structOsiSolverInterface" kindref="compound">OsiSolverInterface</ref> *</type>
+        <definition>virtual OsiSolverInterface* OsiSolverInterface::clone</definition>
+        <argsstring>() const =0</argsstring>
+        <name>clone</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="32" column="32"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>OsiSolverInterface</label>
+        <link refid="structOsiSolverInterface"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="30" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" bodystart="30" bodyend="33"/>
+    <listofallmembers>
+      <member refid="structOsiSolverInterface_1ac2f2653c86480b200a28c2684f39d1e5" prot="public" virt="pure-virtual"><scope>OsiSolverInterface</scope><name>clone</name></member>
+      <member refid="structOsiSolverInterface_1a236e9a83689c7933f6bea5f013ba7dac" prot="public" virt="virtual"><scope>OsiSolverInterface</scope><name>~OsiSolverInterface</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

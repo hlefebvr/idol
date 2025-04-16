@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1MibSCallbackI_1_1Heuristic" kind="class" language="C++" prot="public">
+    <compoundname>idol::MibSCallbackI::Heuristic</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">BlisHeuristic</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1MibSCallbackI_1_1Heuristic_1a2172eaf04a53d56841b620765dab205b" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1MibSCallbackI" kindref="compound">MibSCallbackI</ref> &amp;</type>
+        <definition>MibSCallbackI&amp; idol::MibSCallbackI::Heuristic::m_parent</definition>
+        <argsstring></argsstring>
+        <name>m_parent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="41" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1MibSCallbackI_1_1Heuristic_1ae2cd7a18bd64e0f7bed5342df435554f" prot="private" static="no" mutable="no">
+        <type>std::list&lt; <ref refid="classidol_1_1Point" kindref="compound">PrimalPoint</ref> &gt;</type>
+        <definition>std::list&lt;PrimalPoint&gt; idol::MibSCallbackI::Heuristic::m_solutions</definition>
+        <argsstring></argsstring>
+        <name>m_solutions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="42" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1MibSCallbackI_1_1Heuristic_1a644174d7ec8ae5dbe6a370f865765a31" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::MibSCallbackI::Heuristic::Heuristic</definition>
+        <argsstring>(MibSCallbackI &amp;t_parent)</argsstring>
+        <name>Heuristic</name>
+        <param>
+          <type><ref refid="classidol_1_1MibSCallbackI" kindref="compound">MibSCallbackI</ref> &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="44" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1MibSCallbackI_1_1Heuristic_1abbc86addc187589526038d57a019c878" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::MibSCallbackI::Heuristic::submit_heuristic_solution</definition>
+        <argsstring>(PrimalPoint t_solution)</argsstring>
+        <name>submit_heuristic_solution</name>
+        <param>
+          <type><ref refid="classidol_1_1Point" kindref="compound">PrimalPoint</ref></type>
+          <declname>t_solution</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="46" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="46" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1MibSCallbackI_1_1Heuristic_1a9765b8b330206beeb02458a57d8dfbbe" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::MibSCallbackI::Heuristic::searchSolution</definition>
+        <argsstring>(double &amp;t_objective_value, double *t_new_solution) override</argsstring>
+        <name>searchSolution</name>
+        <param>
+          <type>double &amp;</type>
+          <declname>t_objective_value</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>t_new_solution</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="50" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="50" bodyend="80"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>BlisHeuristic</label>
+      </node>
+      <node id="1">
+        <label>idol::MibSCallbackI::Heuristic</label>
+        <link refid="classidol_1_1MibSCallbackI_1_1Heuristic"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>BlisHeuristic</label>
+      </node>
+      <node id="1">
+        <label>idol::MibSCallbackI::Heuristic</label>
+        <link refid="classidol_1_1MibSCallbackI_1_1Heuristic"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" line="40" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h" bodystart="40" bodyend="81"/>
+    <listofallmembers>
+      <member refid="classidol_1_1MibSCallbackI_1_1Heuristic_1a644174d7ec8ae5dbe6a370f865765a31" prot="public" virt="non-virtual"><scope>idol::MibSCallbackI::Heuristic</scope><name>Heuristic</name></member>
+      <member refid="classidol_1_1MibSCallbackI_1_1Heuristic_1a2172eaf04a53d56841b620765dab205b" prot="private" virt="non-virtual"><scope>idol::MibSCallbackI::Heuristic</scope><name>m_parent</name></member>
+      <member refid="classidol_1_1MibSCallbackI_1_1Heuristic_1ae2cd7a18bd64e0f7bed5342df435554f" prot="private" virt="non-virtual"><scope>idol::MibSCallbackI::Heuristic</scope><name>m_solutions</name></member>
+      <member refid="classidol_1_1MibSCallbackI_1_1Heuristic_1a9765b8b330206beeb02458a57d8dfbbe" prot="public" virt="non-virtual"><scope>idol::MibSCallbackI::Heuristic</scope><name>searchSolution</name></member>
+      <member refid="classidol_1_1MibSCallbackI_1_1Heuristic_1abbc86addc187589526038d57a019c878" prot="public" virt="non-virtual"><scope>idol::MibSCallbackI::Heuristic</scope><name>submit_heuristic_solution</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1impl_1_1IdProvider" kind="class" language="C++" prot="public">
+    <compoundname>idol::impl::IdProvider</compoundname>
+    <templateparamlist>
+      <param>
+        <type>unsigned int</type>
+        <declname>Start</declname>
+        <defname>Start</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1impl_1_1IdProvider_1a307470a01888025cfddbdb71f2c6dfc4" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::impl::IdProvider&lt; Start &gt;::m_max_id</definition>
+        <argsstring></argsstring>
+        <name>m_max_id</name>
+        <initializer>= Start</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="37" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1impl_1_1IdProvider_1a8790e37f9f04f59ccea21cbdbdcdffae" prot="private" static="no" mutable="no">
+        <type>std::list&lt; unsigned int &gt;</type>
+        <definition>std::list&lt;unsigned int&gt; idol::impl::IdProvider&lt; Start &gt;::m_free_ids</definition>
+        <argsstring></argsstring>
+        <name>m_free_ids</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="38" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1impl_1_1IdProvider_1a6035beacc2c2511839c012a641202c60" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::impl::IdProvider&lt; Start &gt;::free</definition>
+        <argsstring>(unsigned int t_id)</argsstring>
+        <name>free</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="40" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="40" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1IdProvider_1aa1d0e988bd4d6baf3343cd19fc8a18d3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::impl::IdProvider&lt; Start &gt;::create</definition>
+        <argsstring>()</argsstring>
+        <name>create</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="42" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="42" bodyend="50"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>idol::impl::IdProvider&lt; 0 &gt;</label>
+        <link refid="classidol_1_1impl_1_1IdProvider"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; 0 &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::impl::IdProvider&lt; Start &gt;</label>
+        <link refid="classidol_1_1impl_1_1IdProvider"/>
+      </node>
+      <node id="3">
+        <label>idol::impl::IdProvider&lt; 1 &gt;</label>
+        <link refid="classidol_1_1impl_1_1IdProvider"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; 1 &gt;</edgelabel>
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::impl::IdProvider&lt; Start &gt;</label>
+        <link refid="classidol_1_1impl_1_1IdProvider"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="36" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="36" bodyend="51"/>
+    <listofallmembers>
+      <member refid="classidol_1_1impl_1_1IdProvider_1aa1d0e988bd4d6baf3343cd19fc8a18d3" prot="public" virt="non-virtual"><scope>idol::impl::IdProvider</scope><name>create</name></member>
+      <member refid="classidol_1_1impl_1_1IdProvider_1a6035beacc2c2511839c012a641202c60" prot="public" virt="non-virtual"><scope>idol::impl::IdProvider</scope><name>free</name></member>
+      <member refid="classidol_1_1impl_1_1IdProvider_1a8790e37f9f04f59ccea21cbdbdcdffae" prot="private" virt="non-virtual"><scope>idol::impl::IdProvider</scope><name>m_free_ids</name></member>
+      <member refid="classidol_1_1impl_1_1IdProvider_1a307470a01888025cfddbdb71f2c6dfc4" prot="private" virt="non-virtual"><scope>idol::impl::IdProvider</scope><name>m_max_id</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

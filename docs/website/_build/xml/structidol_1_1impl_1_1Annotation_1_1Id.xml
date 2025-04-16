@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structidol_1_1impl_1_1Annotation_1_1Id" kind="struct" language="C++" prot="private">
+    <compoundname>idol::impl::Annotation::Id</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structidol_1_1impl_1_1Annotation_1_1Id_1af613ccc8f677535913573bf63d5967bd" prot="public" static="no" mutable="no">
+        <type><ref refid="classidol_1_1impl_1_1Env" kindref="compound">Env</ref> &amp;</type>
+        <definition>Env&amp; idol::impl::Annotation::Id::env</definition>
+        <argsstring></argsstring>
+        <name>env</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="23" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structidol_1_1impl_1_1Annotation_1_1Id_1a0f2a948ed283889efadea89474911656" prot="public" static="no" mutable="no">
+        <type>const unsigned int</type>
+        <definition>const unsigned int idol::impl::Annotation::Id::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="24" column="28" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structidol_1_1impl_1_1Annotation_1_1Id_1a23f259cd670588b7e132ab6ceda4583f" prot="public" static="no" mutable="no">
+        <type>const std::string</type>
+        <definition>const std::string idol::impl::Annotation::Id::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="25" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structidol_1_1impl_1_1Annotation_1_1Id_1ae5b7a49500b95abc3498d53f14ae5082" prot="public" static="no" mutable="no">
+        <type>std::any</type>
+        <definition>std::any idol::impl::Annotation::Id::default_value</definition>
+        <argsstring></argsstring>
+        <name>default_value</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="26" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structidol_1_1impl_1_1Annotation_1_1Id_1a14caf77c8f1d01ed2362a338e9c4d599" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::impl::Annotation::Id::Id</definition>
+        <argsstring>(Env &amp;t_env, unsigned int t_id, std::string &amp;&amp;t_name)</argsstring>
+        <name>Id</name>
+        <param>
+          <type><ref refid="classidol_1_1impl_1_1Env" kindref="compound">Env</ref> &amp;</type>
+          <declname>t_env</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_id</declname>
+        </param>
+        <param>
+          <type>std::string &amp;&amp;</type>
+          <declname>t_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="27" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="27" bodyend="27"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::impl::Annotation::Id</label>
+        <childnode refid="2" relation="usage">
+          <edgelabel>+env</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::impl::Env</label>
+        <link refid="classidol_1_1impl_1_1Env"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" line="22" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/annotations/impl_Annotation.h" bodystart="22" bodyend="28"/>
+    <listofallmembers>
+      <member refid="structidol_1_1impl_1_1Annotation_1_1Id_1ae5b7a49500b95abc3498d53f14ae5082" prot="public" virt="non-virtual"><scope>idol::impl::Annotation::Id</scope><name>default_value</name></member>
+      <member refid="structidol_1_1impl_1_1Annotation_1_1Id_1af613ccc8f677535913573bf63d5967bd" prot="public" virt="non-virtual"><scope>idol::impl::Annotation::Id</scope><name>env</name></member>
+      <member refid="structidol_1_1impl_1_1Annotation_1_1Id_1a0f2a948ed283889efadea89474911656" prot="public" virt="non-virtual"><scope>idol::impl::Annotation::Id</scope><name>id</name></member>
+      <member refid="structidol_1_1impl_1_1Annotation_1_1Id_1a14caf77c8f1d01ed2362a338e9c4d599" prot="public" virt="non-virtual"><scope>idol::impl::Annotation::Id</scope><name>Id</name></member>
+      <member refid="structidol_1_1impl_1_1Annotation_1_1Id_1a23f259cd670588b7e132ab6ceda4583f" prot="public" virt="non-virtual"><scope>idol::impl::Annotation::Id</scope><name>name</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

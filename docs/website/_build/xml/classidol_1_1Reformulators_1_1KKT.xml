@@ -1,0 +1,720 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Reformulators_1_1KKT" kind="class" language="C++" prot="public">
+    <compoundname>idol::Reformulators::KKT</compoundname>
+    <innerclass refid="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider" prot="public">idol::Reformulators::KKT::BoundProvider</innerclass>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Reformulators_1_1KKT_1ab16ae863678e2d8dd74bdedde5050cf4" prot="private" static="no" mutable="no">
+        <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+        <definition>const Model&amp; idol::Reformulators::KKT::m_primal</definition>
+        <argsstring></argsstring>
+        <name>m_primal</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="27" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Reformulators_1_1KKT_1ae31ffcffc0f3f2bb215e6a5d7286ff15" prot="private" static="no" mutable="no">
+        <type>const <ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref>, double &gt; &amp;</type>
+        <definition>const QuadExpr&lt;Var, double&gt;&amp; idol::Reformulators::KKT::m_primal_objective</definition>
+        <argsstring></argsstring>
+        <name>m_primal_objective</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="28" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Reformulators_1_1KKT_1a089674440b8b26e98485065cb9269e29" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string idol::Reformulators::KKT::m_prefix</definition>
+        <argsstring></argsstring>
+        <name>m_prefix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="29" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Reformulators_1_1KKT_1ab25fbebba8d425815cd60e1d7b7522a0" prot="private" static="no" mutable="no">
+        <type>std::function&lt; bool(const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;)&gt;</type>
+        <definition>std::function&lt;bool(const Var&amp;)&gt; idol::Reformulators::KKT::m_primal_variable_indicator</definition>
+        <argsstring></argsstring>
+        <name>m_primal_variable_indicator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="31" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Reformulators_1_1KKT_1a4136fc4aa35554533fb561e879a98c0c" prot="private" static="no" mutable="no">
+        <type>std::function&lt; bool(const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;)&gt;</type>
+        <definition>std::function&lt;bool(const Ctr&amp;)&gt; idol::Reformulators::KKT::m_primal_constraint_indicator</definition>
+        <argsstring></argsstring>
+        <name>m_primal_constraint_indicator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="32" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Reformulators_1_1KKT_1aa28296e8665a5abfb7339467c5108bbb" prot="private" static="no" mutable="no">
+        <type>std::function&lt; bool(const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;)&gt;</type>
+        <definition>std::function&lt;bool(const QCtr&amp;)&gt; idol::Reformulators::KKT::m_primal_qconstraint_indicator</definition>
+        <argsstring></argsstring>
+        <name>m_primal_qconstraint_indicator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="33" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Reformulators_1_1KKT_1a25599b617c35c4510ca6bed1799c0865" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref>, double &gt;</type>
+        <definition>QuadExpr&lt;Var, double&gt; idol::Reformulators::KKT::m_dual_objective</definition>
+        <argsstring></argsstring>
+        <name>m_dual_objective</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="35" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Reformulators_1_1KKT_1ad0ffed847fb14bf25c1d76ac12630c23" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::optional&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &gt;</type>
+        <definition>std::vector&lt;std::optional&lt;Var&gt; &gt; idol::Reformulators::KKT::m_dual_variables_for_constraints</definition>
+        <argsstring></argsstring>
+        <name>m_dual_variables_for_constraints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="36" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Reformulators_1_1KKT_1a3af07e9ba18f86908bfdfb7748ebc6ac" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::optional&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &gt;</type>
+        <definition>std::vector&lt;std::optional&lt;Var&gt; &gt; idol::Reformulators::KKT::m_dual_variables_for_qconstraints</definition>
+        <argsstring></argsstring>
+        <name>m_dual_variables_for_qconstraints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="37" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Reformulators_1_1KKT_1a21e4efd1b069ceb1332f9d55711a9106" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::optional&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &gt;</type>
+        <definition>std::vector&lt;std::optional&lt;Var&gt; &gt; idol::Reformulators::KKT::m_dual_variables_for_lower_bounds</definition>
+        <argsstring></argsstring>
+        <name>m_dual_variables_for_lower_bounds</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="38" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Reformulators_1_1KKT_1acd725e34d722b07b3afa2645b3106349" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::optional&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &gt;</type>
+        <definition>std::vector&lt;std::optional&lt;Var&gt; &gt; idol::Reformulators::KKT::m_dual_variables_for_upper_bounds</definition>
+        <argsstring></argsstring>
+        <name>m_dual_variables_for_upper_bounds</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="39" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Reformulators_1_1KKT_1a5640a761a48f4756d8e942f169fbc8a9" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::optional&lt; std::variant&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>, <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &gt; &gt; &gt;</type>
+        <definition>std::vector&lt;std::optional&lt;std::variant&lt;Ctr, QCtr&gt; &gt; &gt; idol::Reformulators::KKT::m_dual_constraints</definition>
+        <argsstring></argsstring>
+        <name>m_dual_constraints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="40" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1ae1d72df622e80d743630ec0606f9ef4e" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Reformulators::KKT::primal_is_a_linear_problem</definition>
+        <argsstring>() const</argsstring>
+        <name>primal_is_a_linear_problem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="42" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a710bd8601df4880ecafedb09f2e0cdf8" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Reformulators::KKT::is_linear</definition>
+        <argsstring>(const QuadExpr&lt; Var, double &gt; &amp;t_expr) const</argsstring>
+        <name>is_linear</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref>, double &gt; &amp;</type>
+          <declname>t_expr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="43" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1acda6a75dc12bb24ec3c8646391a2b75c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::create_dual_variables</definition>
+        <argsstring>()</argsstring>
+        <name>create_dual_variables</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="44" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1aa2268904498cdc9a17a59bfd386cd1e7" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; double, double &gt;</type>
+        <definition>std::pair&lt;double, double&gt; idol::Reformulators::KKT::bounds_for_dual_variable</definition>
+        <argsstring>(idol::CtrType t_type) const</argsstring>
+        <name>bounds_for_dual_variable</name>
+        <param>
+          <type>idol::CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="45" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a0f184810330185fd8c365eba3b22f639" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::create_dual_constraints</definition>
+        <argsstring>()</argsstring>
+        <name>create_dual_constraints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="46" column="10"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a8809d1b5703ed811325970dc75b7682b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Reformulators::KKT::KKT</definition>
+        <argsstring>(const Model &amp;t_parent, const QuadExpr&lt; Var, double &gt; &amp;t_primal_objective, const std::function&lt; bool(const Var &amp;)&gt; &amp;t_primal_variable_indicator=[](const Var &amp;) { return true;}, const std::function&lt; bool(const Ctr &amp;)&gt; &amp;t_primal_constraint_indicator=[](const Ctr &amp;) { return true;}, const std::function&lt; bool(const QCtr &amp;)&gt; &amp;t_primal_qconstraint_indicator=[](const QCtr &amp;) { return true;})</argsstring>
+        <name>KKT</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref>, double &gt; &amp;</type>
+          <declname>t_primal_objective</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; bool(const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;)&gt; &amp;</type>
+          <declname>t_primal_variable_indicator</declname>
+          <defval>[](const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;) { return true;}</defval>
+        </param>
+        <param>
+          <type>const std::function&lt; bool(const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;)&gt; &amp;</type>
+          <declname>t_primal_constraint_indicator</declname>
+          <defval>[](const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;) { return true;}</defval>
+        </param>
+        <param>
+          <type>const std::function&lt; bool(const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;)&gt; &amp;</type>
+          <declname>t_primal_qconstraint_indicator</declname>
+          <defval>[](const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;) { return true;}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="50" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1aa409693fd45eabe32db086568d615ee3" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Reformulators::KKT::KKT</definition>
+        <argsstring>(const Model &amp;t_parent, const std::function&lt; bool(const Var &amp;)&gt; &amp;t_primal_variable_indicator=[](const Var &amp;) { return true;}, const std::function&lt; bool(const Ctr &amp;)&gt; &amp;t_primal_constraint_indicator=[](const Ctr &amp;) { return true;}, const std::function&lt; bool(const QCtr &amp;)&gt; &amp;t_primal_qconstraint_indicator=[](const QCtr &amp;) { return true;})</argsstring>
+        <name>KKT</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; bool(const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;)&gt; &amp;</type>
+          <declname>t_primal_variable_indicator</declname>
+          <defval>[](const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;) { return true;}</defval>
+        </param>
+        <param>
+          <type>const std::function&lt; bool(const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;)&gt; &amp;</type>
+          <declname>t_primal_constraint_indicator</declname>
+          <defval>[](const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;) { return true;}</defval>
+        </param>
+        <param>
+          <type>const std::function&lt; bool(const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;)&gt; &amp;</type>
+          <declname>t_primal_qconstraint_indicator</declname>
+          <defval>[](const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;) { return true;}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="56" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a16c7d358c98dd982751dcb94230b66a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Reformulators::KKT::KKT</definition>
+        <argsstring>(const Model &amp;t_high_point_relaxation, const Bilevel::Description &amp;t_bilevel_description)</argsstring>
+        <name>KKT</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_high_point_relaxation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1Bilevel_1_1Description" kindref="compound">Bilevel::Description</ref> &amp;</type>
+          <declname>t_bilevel_description</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="61" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a50b91d02787046e3995662c3a3382dba" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::set_prefix</definition>
+        <argsstring>(std::string t_prefix)</argsstring>
+        <name>set_prefix</name>
+        <param>
+          <type>std::string</type>
+          <declname>t_prefix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="63" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="63" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1ab930119b61caf0790ca3e7121b5754ee" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref>, double &gt; &amp;</type>
+        <definition>const QuadExpr&lt;Var, double&gt;&amp; idol::Reformulators::KKT::get_dual_obj_expr</definition>
+        <argsstring>() const</argsstring>
+        <name>get_dual_obj_expr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="65" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="65" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1af5817234f776d003cbb03ca57bf33ef3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_coupling</definition>
+        <argsstring>(Model &amp;t_destination)</argsstring>
+        <name>add_coupling</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds the coupling variables and constraints to the destination model. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_destination</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="71" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a6260b7b175ec9918d0736767ee9b2b4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_coupling_variables</definition>
+        <argsstring>(Model &amp;t_destination)</argsstring>
+        <name>add_coupling_variables</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="72" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1aed2a41cc38eb14c34eca1bea0b327e40" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_coupling_constraints</definition>
+        <argsstring>(Model &amp;t_destination)</argsstring>
+        <name>add_coupling_constraints</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="73" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1ae1915c072528d0075956bc8a3e3105c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_dual</definition>
+        <argsstring>(Model &amp;t_destination, bool t_add_objective=true)</argsstring>
+        <name>add_dual</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>t_add_objective</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds the dual of the primal problem to the destination model. The dual is considered only for the indicated constraints and variables. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_destination</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_add_objective</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="81" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a489d715841ff283c52ca6dcd63e46e11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_dual_variables</definition>
+        <argsstring>(Model &amp;t_destination)</argsstring>
+        <name>add_dual_variables</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="82" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1abb978d235a206280dbfd84edeb3c5a6f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_dual_constraints</definition>
+        <argsstring>(Model &amp;t_destination)</argsstring>
+        <name>add_dual_constraints</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="83" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a65b900959b5b04ee949ea27864ecb9fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_dual_objective</definition>
+        <argsstring>(Model &amp;t_destination)</argsstring>
+        <name>add_dual_objective</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="84" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a3105c9f4dad9c492a070f7acddb8f821" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_primal</definition>
+        <argsstring>(Model &amp;t_destination, bool t_add_objective=true)</argsstring>
+        <name>add_primal</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>t_add_objective</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds the primal of the primal problem to the destination model. The primal is considered only for the indicated constraints and variables. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_destination</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="91" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a20fe96b9a0e829d89b787f696c9dc57b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_primal_variables</definition>
+        <argsstring>(idol::Model &amp;t_destination)</argsstring>
+        <name>add_primal_variables</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">idol::Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="92" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a4e745a530eeced564a56372904f46ce7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_primal_constraints</definition>
+        <argsstring>(idol::Model &amp;t_destination)</argsstring>
+        <name>add_primal_constraints</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">idol::Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="93" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a113f05d96d54c74ca20615bc8edde9be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_primal_objective</definition>
+        <argsstring>(idol::Model &amp;t_destination)</argsstring>
+        <name>add_primal_objective</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">idol::Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="94" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a4377296c673a4ec8ed458c8852d6dc14" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_strong_duality_reformulation</definition>
+        <argsstring>(Model &amp;t_destination)</argsstring>
+        <name>add_strong_duality_reformulation</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds the strong duality reformulation to the destination model. The strong duality reformulation is considered only for the indicated constraints and variables. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_destination</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="101" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a418142ba75c673cd56b59f26934ef202" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_kkt_reformulation</definition>
+        <argsstring>(idol::Model &amp;t_destination)</argsstring>
+        <name>add_kkt_reformulation</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">idol::Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds the <ref refid="classidol_1_1Reformulators_1_1KKT" kindref="compound">KKT</ref> reformulation to the destination model. The <ref refid="classidol_1_1Reformulators_1_1KKT" kindref="compound">KKT</ref> reformulation is considered only for the indicated constraints and variables. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_destination</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="108" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Reformulators_1_1KKT_1a468d87adc96b34d06033dbcf2f50a5d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Reformulators::KKT::add_kkt_reformulation</definition>
+        <argsstring>(idol::Model &amp;t_destination, BoundProvider &amp;t_bound_provider)</argsstring>
+        <name>add_kkt_reformulation</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">idol::Model</ref> &amp;</type>
+          <declname>t_destination</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider" kindref="compound">BoundProvider</ref> &amp;</type>
+          <declname>t_bound_provider</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="110" column="10"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Reformulators::KKT</label>
+        <link refid="classidol_1_1Reformulators_1_1KKT"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" line="26" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h" bodystart="26" bodyend="111"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1af5817234f776d003cbb03ca57bf33ef3" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_coupling</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1aed2a41cc38eb14c34eca1bea0b327e40" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_coupling_constraints</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a6260b7b175ec9918d0736767ee9b2b4f" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_coupling_variables</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1ae1915c072528d0075956bc8a3e3105c9" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_dual</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1abb978d235a206280dbfd84edeb3c5a6f" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_dual_constraints</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a65b900959b5b04ee949ea27864ecb9fa" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_dual_objective</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a489d715841ff283c52ca6dcd63e46e11" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_dual_variables</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a418142ba75c673cd56b59f26934ef202" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_kkt_reformulation</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a468d87adc96b34d06033dbcf2f50a5d6" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_kkt_reformulation</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a3105c9f4dad9c492a070f7acddb8f821" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_primal</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a4e745a530eeced564a56372904f46ce7" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_primal_constraints</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a113f05d96d54c74ca20615bc8edde9be" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_primal_objective</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a20fe96b9a0e829d89b787f696c9dc57b" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_primal_variables</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a4377296c673a4ec8ed458c8852d6dc14" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>add_strong_duality_reformulation</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1aa2268904498cdc9a17a59bfd386cd1e7" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>bounds_for_dual_variable</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a0f184810330185fd8c365eba3b22f639" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>create_dual_constraints</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1acda6a75dc12bb24ec3c8646391a2b75c" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>create_dual_variables</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1ab930119b61caf0790ca3e7121b5754ee" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>get_dual_obj_expr</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a710bd8601df4880ecafedb09f2e0cdf8" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>is_linear</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a8809d1b5703ed811325970dc75b7682b" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>KKT</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1aa409693fd45eabe32db086568d615ee3" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>KKT</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a16c7d358c98dd982751dcb94230b66a9" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>KKT</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a5640a761a48f4756d8e942f169fbc8a9" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>m_dual_constraints</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a25599b617c35c4510ca6bed1799c0865" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>m_dual_objective</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1ad0ffed847fb14bf25c1d76ac12630c23" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>m_dual_variables_for_constraints</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a21e4efd1b069ceb1332f9d55711a9106" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>m_dual_variables_for_lower_bounds</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a3af07e9ba18f86908bfdfb7748ebc6ac" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>m_dual_variables_for_qconstraints</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1acd725e34d722b07b3afa2645b3106349" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>m_dual_variables_for_upper_bounds</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a089674440b8b26e98485065cb9269e29" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>m_prefix</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1ab16ae863678e2d8dd74bdedde5050cf4" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>m_primal</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a4136fc4aa35554533fb561e879a98c0c" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>m_primal_constraint_indicator</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1ae31ffcffc0f3f2bb215e6a5d7286ff15" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>m_primal_objective</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1aa28296e8665a5abfb7339467c5108bbb" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>m_primal_qconstraint_indicator</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1ab25fbebba8d425815cd60e1d7b7522a0" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>m_primal_variable_indicator</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1ae1d72df622e80d743630ec0606f9ef4e" prot="private" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>primal_is_a_linear_problem</name></member>
+      <member refid="classidol_1_1Reformulators_1_1KKT_1a50b91d02787046e3995662c3a3382dba" prot="public" virt="non-virtual"><scope>idol::Reformulators::KKT</scope><name>set_prefix</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

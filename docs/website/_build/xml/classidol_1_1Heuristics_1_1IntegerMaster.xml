@@ -1,0 +1,371 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Heuristics_1_1IntegerMaster" kind="class" language="C++" prot="public">
+    <compoundname>idol::Heuristics::IntegerMaster</compoundname>
+    <basecompoundref refid="classidol_1_1BranchAndBoundCallbackFactory" prot="public" virt="non-virtual">idol::BranchAndBoundCallbackFactory&lt; idol::DefaultNodeInfo &gt;</basecompoundref>
+    <innerclass refid="classidol_1_1Heuristics_1_1IntegerMaster_1_1Strategy" prot="public">idol::Heuristics::IntegerMaster::Strategy</innerclass>
+    <templateparamlist>
+      <param>
+        <type>class NodeInfoT</type>
+        <defval><ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref></defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Heuristics_1_1IntegerMaster_1a9ffc233292bb5394579f8c77b5957886" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;OptimizerFactory&gt; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::m_optimizer_factory</definition>
+        <argsstring></argsstring>
+        <name>m_optimizer_factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="19" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Heuristics_1_1IntegerMaster_1a53aacc15d23067236dc00043669da6ed" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt;bool&gt; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::m_integer_columns</definition>
+        <argsstring></argsstring>
+        <name>m_integer_columns</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="21" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Heuristics_1_1IntegerMaster_1a89f6932778e5cdb1b421d86d7365ea8c" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::m_time_limit</definition>
+        <argsstring></argsstring>
+        <name>m_time_limit</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="23" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Heuristics_1_1IntegerMaster_1a84e554fc7481b481c31428964ea5bb6d" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; unsigned int &gt;</type>
+        <definition>std::optional&lt;unsigned int&gt; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::m_iteration_limit</definition>
+        <argsstring></argsstring>
+        <name>m_iteration_limit</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="24" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Heuristics_1_1IntegerMaster_1ae4538a8111b63c1e556406d901b060ed" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; unsigned int &gt;</type>
+        <definition>std::optional&lt;unsigned int&gt; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::m_max_depth</definition>
+        <argsstring></argsstring>
+        <name>m_max_depth</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="25" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Heuristics_1_1IntegerMaster_1ac3e65f4519a64e61e0fc8524fc961009" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; unsigned int &gt;</type>
+        <definition>std::optional&lt;unsigned int&gt; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::m_frequency</definition>
+        <argsstring></argsstring>
+        <name>m_frequency</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="26" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1aa2e1f735694373138f24e9c267356486" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::IntegerMaster</definition>
+        <argsstring>(const IntegerMaster &amp;t_src)</argsstring>
+        <name>IntegerMaster</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Heuristics_1_1IntegerMaster" kindref="compound">IntegerMaster</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="28" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="81" bodyend="88"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1af4612473dfd92dc0dffebd70c5497775" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::IntegerMaster</definition>
+        <argsstring>()=default</argsstring>
+        <name>IntegerMaster</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="30" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1a34eaddc01fc0cb8f10f11b835b7e7909" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::IntegerMaster</definition>
+        <argsstring>(IntegerMaster &amp;&amp;) noexcept=default</argsstring>
+        <name>IntegerMaster</name>
+        <param>
+          <type><ref refid="classidol_1_1Heuristics_1_1IntegerMaster" kindref="compound">IntegerMaster</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="32" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1a55cb83b6e871229aebfac5bdd542326c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Heuristics_1_1IntegerMaster" kindref="compound">IntegerMaster</ref> &amp;</type>
+        <definition>IntegerMaster&amp; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::operator=</definition>
+        <argsstring>(const IntegerMaster &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Heuristics_1_1IntegerMaster" kindref="compound">IntegerMaster</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="34" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1a7737f733a26f0e988751ef3f7e43e90d" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Heuristics_1_1IntegerMaster" kindref="compound">IntegerMaster</ref> &amp;</type>
+        <definition>IntegerMaster&amp; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::operator=</definition>
+        <argsstring>(IntegerMaster &amp;&amp;) noexcept=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1Heuristics_1_1IntegerMaster" kindref="compound">IntegerMaster</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="35" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1a011efb50a751dee1fac7e8a03180ee35" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classidol_1_1BranchAndBoundCallback" kindref="compound">BranchAndBoundCallback</ref>&lt; NodeInfoT &gt; *</type>
+        <definition>idol::BranchAndBoundCallback&lt; NodeInfoT &gt; * idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::operator()</definition>
+        <argsstring>() override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1BranchAndBoundCallbackFactory_1a621c12413465f0d279df195f515382d9">operator()</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="63" column="28" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="91" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1a600ab683dd0bab32fb0a945715dd4068" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classidol_1_1BranchAndBoundCallbackFactory" kindref="compound">BranchAndBoundCallbackFactory</ref>&lt; NodeInfoT &gt; *</type>
+        <definition>idol::BranchAndBoundCallbackFactory&lt; NodeInfoT &gt; * idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1BranchAndBoundCallbackFactory_1a068043d97a3a7cf36016eb2e373854ba">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="65" column="36" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="135" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1ade51e6ccfe9258e7855ed1794384bb40" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Heuristics_1_1IntegerMaster" kindref="compound">IntegerMaster</ref> &amp;</type>
+        <definition>idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt; &amp; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::with_optimizer</definition>
+        <argsstring>(const OptimizerFactory &amp;t_optimizer)</argsstring>
+        <name>with_optimizer</name>
+        <param>
+          <type>const <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &amp;</type>
+          <declname>t_optimizer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="67" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="123" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1a5a2e62167bb6834e452555ef490e773c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Heuristics_1_1IntegerMaster" kindref="compound">IntegerMaster</ref> &amp;</type>
+        <definition>idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt; &amp; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::with_integer_columns</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_integer_columns</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="69" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="140" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1a2c0b67f3b1cc9416290d1007de63d07f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Heuristics_1_1IntegerMaster" kindref="compound">IntegerMaster</ref> &amp;</type>
+        <definition>idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt; &amp; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::with_time_limit</definition>
+        <argsstring>(double t_time_limit)</argsstring>
+        <name>with_time_limit</name>
+        <param>
+          <type>double</type>
+          <declname>t_time_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="71" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="146" bodyend="149"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1a07b9d13545bb4a5c2b555f0be70870e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Heuristics_1_1IntegerMaster" kindref="compound">IntegerMaster</ref> &amp;</type>
+        <definition>idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt; &amp; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::with_iteration_limit</definition>
+        <argsstring>(unsigned int t_iteration_limit)</argsstring>
+        <name>with_iteration_limit</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_iteration_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="73" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="152" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1a842abf3946b244482cb729bde64d0a4e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Heuristics_1_1IntegerMaster" kindref="compound">IntegerMaster</ref> &amp;</type>
+        <definition>idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt; &amp; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::with_max_depth</definition>
+        <argsstring>(unsigned int t_max_depth)</argsstring>
+        <name>with_max_depth</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_max_depth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="75" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="158" bodyend="161"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Heuristics_1_1IntegerMaster_1aa91c82c4531b8e0798c1faed18965c1b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Heuristics_1_1IntegerMaster" kindref="compound">IntegerMaster</ref> &amp;</type>
+        <definition>idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt; &amp; idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::with_frequency</definition>
+        <argsstring>(unsigned int t_frequency)</argsstring>
+        <name>with_frequency</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_frequency</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="77" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="164" bodyend="167"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>idol::BranchAndBoundCallbackFactory&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackFactory"/>
+      </node>
+      <node id="1">
+        <label>idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Heuristics_1_1IntegerMaster"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::BranchAndBoundCallbackFactory&lt; idol::DefaultNodeInfo &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackFactory"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; idol::DefaultNodeInfo &gt;</edgelabel>
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>idol::BranchAndBoundCallbackFactory&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackFactory"/>
+      </node>
+      <node id="1">
+        <label>idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Heuristics_1_1IntegerMaster"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::BranchAndBoundCallbackFactory&lt; idol::DefaultNodeInfo &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackFactory"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; idol::DefaultNodeInfo &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="18" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" bodystart="18" bodyend="78"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a600ab683dd0bab32fb0a945715dd4068" prot="public" virt="virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>clone</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1aa2e1f735694373138f24e9c267356486" prot="private" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>IntegerMaster</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1af4612473dfd92dc0dffebd70c5497775" prot="public" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>IntegerMaster</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a34eaddc01fc0cb8f10f11b835b7e7909" prot="public" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>IntegerMaster</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1ac3e65f4519a64e61e0fc8524fc961009" prot="private" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>m_frequency</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a53aacc15d23067236dc00043669da6ed" prot="private" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>m_integer_columns</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a84e554fc7481b481c31428964ea5bb6d" prot="private" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>m_iteration_limit</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1ae4538a8111b63c1e556406d901b060ed" prot="private" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>m_max_depth</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a9ffc233292bb5394579f8c77b5957886" prot="private" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>m_optimizer_factory</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a89f6932778e5cdb1b421d86d7365ea8c" prot="private" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>m_time_limit</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a011efb50a751dee1fac7e8a03180ee35" prot="public" virt="virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>operator()</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a55cb83b6e871229aebfac5bdd542326c" prot="public" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a7737f733a26f0e988751ef3f7e43e90d" prot="public" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1aa91c82c4531b8e0798c1faed18965c1b" prot="public" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>with_frequency</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a5a2e62167bb6834e452555ef490e773c" prot="public" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>with_integer_columns</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a07b9d13545bb4a5c2b555f0be70870e1" prot="public" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>with_iteration_limit</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a842abf3946b244482cb729bde64d0a4e" prot="public" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>with_max_depth</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1ade51e6ccfe9258e7855ed1794384bb40" prot="public" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>with_optimizer</name></member>
+      <member refid="classidol_1_1Heuristics_1_1IntegerMaster_1a2c0b67f3b1cc9416290d1007de63d07f" prot="public" virt="non-virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>with_time_limit</name></member>
+      <member refid="classidol_1_1BranchAndBoundCallbackFactory_1a3975f35ac10323fad20a2fde3a0cecc2" prot="public" virt="virtual"><scope>idol::Heuristics::IntegerMaster</scope><name>~BranchAndBoundCallbackFactory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,1000 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Gurobi" kind="class" language="C++" prot="public">
+    <compoundname>idol::Gurobi</compoundname>
+    <basecompoundref refid="classidol_1_1OptimizerFactoryWithDefaultParameters" prot="public" virt="non-virtual">idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi &gt;</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Gurobi_1a32f3c46c3fbfaefe91b4a646117612a8" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt;bool&gt; idol::Gurobi::m_continuous_relaxation</definition>
+        <argsstring></argsstring>
+        <name>m_continuous_relaxation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="28" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Gurobi_1a70673d299ea1e9e683e3fc1d80c25eba" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt;bool&gt; idol::Gurobi::m_lazy_cuts</definition>
+        <argsstring></argsstring>
+        <name>m_lazy_cuts</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="29" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Gurobi_1ab76994090ee9e6688df7f7755ddbb9f4" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; unsigned int &gt;</type>
+        <definition>std::optional&lt;unsigned int&gt; idol::Gurobi::m_max_n_solution_in_pool</definition>
+        <argsstring></argsstring>
+        <name>m_max_n_solution_in_pool</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="30" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Gurobi_1a6ac464160b88b5c1480e0029845dce4b" prot="private" static="no" mutable="no">
+        <type>std::list&lt; std::unique_ptr&lt; <ref refid="classidol_1_1CallbackFactory" kindref="compound">CallbackFactory</ref> &gt; &gt;</type>
+        <definition>std::list&lt;std::unique_ptr&lt;CallbackFactory&gt; &gt; idol::Gurobi::m_callbacks</definition>
+        <argsstring></argsstring>
+        <name>m_callbacks</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="31" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Gurobi_1ad37b699dcc14194d63b4c5c84cc40ca8" prot="private" static="no" mutable="no">
+        <type>Map&lt; GRB_IntParam, int &gt;</type>
+        <definition>Map&lt;GRB_IntParam, int&gt; idol::Gurobi::m_int_params</definition>
+        <argsstring></argsstring>
+        <name>m_int_params</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="33" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Gurobi_1aef054055c9418818d47b9b60b47bded6" prot="private" static="no" mutable="no">
+        <type>Map&lt; GRB_DoubleParam, double &gt;</type>
+        <definition>Map&lt;GRB_DoubleParam, double&gt; idol::Gurobi::m_double_params</definition>
+        <argsstring></argsstring>
+        <name>m_double_params</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="34" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Gurobi_1a3b26b8535da50018808bd6ce24630cfa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Gurobi::Gurobi</definition>
+        <argsstring>()=default</argsstring>
+        <name>Gurobi</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="36" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1a87afb6c064c7403c0c4e399f589d3b5c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Gurobi::Gurobi</definition>
+        <argsstring>(const Gurobi &amp;t_src)</argsstring>
+        <name>Gurobi</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="38" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1a2a21c43504c46a48816174f66cb31d2a" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Gurobi::Gurobi</definition>
+        <argsstring>(Gurobi &amp;&amp;) noexcept=default</argsstring>
+        <name>Gurobi</name>
+        <param>
+          <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="39" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1aeca6f85a7d1c98547eeeb3216112710e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi&amp; idol::Gurobi::operator=</definition>
+        <argsstring>(const Gurobi &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="41" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1a70484314eb18a567c6ecbe263a0e45f6" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi&amp; idol::Gurobi::operator=</definition>
+        <argsstring>(Gurobi &amp;&amp;) noexcept=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="42" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1af4e1888d7b0df311a74a7bd07146383b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref> *</type>
+        <definition>Optimizer* idol::Gurobi::operator()</definition>
+        <argsstring>(const Model &amp;t_model) const override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1OptimizerFactory_1a6363ef08653c866a17e474a1dc8c0f0a">operator()</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates and returns a new optimizer to solve the model given as parameter. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_model</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The model which the optimizer will solve </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A new optimizer for the model </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="44" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1a03b9bb96a98bc93a434b55e12043d5a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi&amp; idol::Gurobi::add_callback</definition>
+        <argsstring>(const CallbackFactory &amp;t_cb)</argsstring>
+        <name>add_callback</name>
+        <param>
+          <type>const <ref refid="classidol_1_1CallbackFactory" kindref="compound">CallbackFactory</ref> &amp;</type>
+          <declname>t_cb</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="48" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1ac9e60f4ef90d665a3beefeee0d0eebc3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi&amp; idol::Gurobi::with_lazy_cut</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_lazy_cut</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="50" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1a812ce7786490c1c920ea6c41a397adb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi&amp; idol::Gurobi::with_max_n_solution_in_pool</definition>
+        <argsstring>(unsigned int t_value)</argsstring>
+        <name>with_max_n_solution_in_pool</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="52" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1acaaa44a195844a96d7188079569c7bd2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi&amp; idol::Gurobi::with_continuous_relaxation_only</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_continuous_relaxation_only</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="54" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1aecf91b84c060d9839423da9377eeb44e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi&amp; idol::Gurobi::with_external_param</definition>
+        <argsstring>(GRB_IntParam t_param, int t_value)</argsstring>
+        <name>with_external_param</name>
+        <param>
+          <type>GRB_IntParam</type>
+          <declname>t_param</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="56" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1a068b1f2b4662582244f9c6eee15bcd65" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi&amp; idol::Gurobi::with_external_param</definition>
+        <argsstring>(GRB_DoubleParam t_param, double t_value)</argsstring>
+        <name>with_external_param</name>
+        <param>
+          <type>GRB_DoubleParam</type>
+          <declname>t_param</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="58" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1a59b695542c520ae3e659bd754d1aaaff" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> *</type>
+        <definition>Gurobi* idol::Gurobi::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1OptimizerFactory_1af42e193fdac6920f4dfda602a98bf4a1">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates and return a copy of the optimizer factory. This is used for polymorphism. <simplesect kind="return"><para>A copied object of the current object (i.e., *this) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="62" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a495f616340209e28fde87270f69ce28f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::with_logs</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_logs</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the log_master level and color for the optimizer</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_logs(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_log_level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the log_master level </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_log_color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the output color </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="95" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="386" bodyend="395"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a192ee8cb58e8e1b2d33b0d58df3b0123" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::with_time_limit</definition>
+        <argsstring>(double t_time_limit)</argsstring>
+        <name>with_time_limit</name>
+        <param>
+          <type>double</type>
+          <declname>t_time_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the time limit for the optimizer</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_time_limit(3600);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_time_limit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the time limit (in seconds) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="108" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="374" bodyend="383"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a62819967487a06cacad8ca03d0891090" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::with_thread_limit</definition>
+        <argsstring>(unsigned int t_max_n_threads)</argsstring>
+        <name>with_thread_limit</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_max_n_threads</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the maximum number of threads which the optimizer can use</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_thread_limit(5);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_max_n_threads</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the number of threads which can be used </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="121" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="362" bodyend="371"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ac342238df14873996a25d1182b5a2a7d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::with_iteration_limit</definition>
+        <argsstring>(unsigned int t_iteration_count_limit)</argsstring>
+        <name>with_iteration_limit</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_iteration_count_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the maximum number of iterations which the optimizer go through</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_iteration_limit(200);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_iteration_count_limit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the maximum number of iterations </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="134" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="350" bodyend="359"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a10a7490342b8cb9a0719f150ad70513d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::with_best_bound_stop</definition>
+        <argsstring>(double t_best_bound_stop)</argsstring>
+        <name>with_best_bound_stop</name>
+        <param>
+          <type>double</type>
+          <declname>t_best_bound_stop</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets a threshold on the best bound for stopping the optimizer. When the optimizer have found a best bound which is greater than this threshold, the optimizer stops.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>my_known_best_obj<sp/>=<sp/>0.;</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_best_bound_stop(my_known_best_obj);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_best_bound_stop</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the threshold </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="149" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="338" bodyend="347"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad3e0bc7a6d07853f2f54b4b47aec52ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::with_best_obj_stop</definition>
+        <argsstring>(double t_user_best_obj)</argsstring>
+        <name>with_best_obj_stop</name>
+        <param>
+          <type>double</type>
+          <declname>t_user_best_obj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets a threshold on the best objective value for stopping the optimizer. When the optimizer have found a best objective value which is less than this threshold, the optimizer stops.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>my_known_best_bound<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_best_obj_stop(my_known_best_bound);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_user_best_obj</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the threshold </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="164" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="326" bodyend="335"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad18892029116d8e33e6731f0041be83d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::with_relative_gap_tolerance</definition>
+        <argsstring>(double t_relative_gap_tolerance)</argsstring>
+        <name>with_relative_gap_tolerance</name>
+        <param>
+          <type>double</type>
+          <declname>t_relative_gap_tolerance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the relative gap tolerance for the optimizer. When the optimizer proves that the relative optimality gap is less than this threshold, the optimizer stops.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_relative_gap_tolerance(.05);<sp/></highlight><highlight class="comment">//<sp/>sets<sp/>a<sp/>gap<sp/>tolerance<sp/>of<sp/>5%</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_relative_gap_tolerance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the relative gap tolerance </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="178" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="314" bodyend="323"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a799ede043bde76795f7f4fd9fac0880c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::with_absolute_gap_tolerance</definition>
+        <argsstring>(double t_absolute_gap_tolerance)</argsstring>
+        <name>with_absolute_gap_tolerance</name>
+        <param>
+          <type>double</type>
+          <declname>t_absolute_gap_tolerance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the absolute gap tolerance for the optimizer. When the optimizer proves that the absolute optimality gap is less than this threshold, the optimizer stops.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_absolute_gap_tolerance(1e-4);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_absolute_gap_tolerance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the absolute gap tolerance </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="192" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="302" bodyend="311"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a31b5bc10c1e96a84b4617b35bf137ea2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::with_presolve</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_presolve</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the get_param_presolve activation for the optimizer.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_presolve(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);<sp/></highlight><highlight class="comment">//<sp/>turns<sp/>off<sp/>get_param_presolve<sp/>phase</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the activation level for the optimizer&apos;s get_param_presolve (0 for disabling, 1 for enabling) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="205" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="290" bodyend="299"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae015603918a608ffe8ef04e6145e40e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::with_infeasible_or_unbounded_info</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_infeasible_or_unbounded_info</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the behaviour of the optimizer when a model is shown to be infeasible or unbounded. When set to true, the optimizer is forced to prove feasibility or unboundedness by providing a certificate.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.with_infeasible_or_unbounded_info(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the activation level </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="219" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="278" bodyend="287"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a3197aa27445d62fd0491104238275c97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::conditional</definition>
+        <argsstring>(bool t_conditional_value, const std::function&lt; void(Gurobi &amp;)&gt; &amp;t_if)</argsstring>
+        <name>conditional</name>
+        <param>
+          <type>bool</type>
+          <declname>t_conditional_value</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; void(<ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;)&gt; &amp;</type>
+          <declname>t_if</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executes the lambda function given as second parameter if and only if its first argument is true. This function can be used to build different optimizer factories depending on some external variable.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>use_presolve<sp/>:<sp/>{</highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">})<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.conditional(use_presolve,<sp/>[](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>x){<sp/>x.with_presolve(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/>})</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>model.use(algorithm);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>model.optimize();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_conditional_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, the t_if lambda function is executed, if false, nothing happens. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_if</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lambda function to execute in case t_conditional_value is true </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="238" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="273" bodyend="275"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae8fb4db490981b38547b5b6b86b3d6f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi  &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::conditional</definition>
+        <argsstring>(bool t_conditional_value, const std::function&lt; void(Gurobi &amp;)&gt; &amp;t_if, const std::function&lt; void(Gurobi &amp;)&gt; &amp;t_else)</argsstring>
+        <name>conditional</name>
+        <param>
+          <type>bool</type>
+          <declname>t_conditional_value</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; void(<ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;)&gt; &amp;</type>
+          <declname>t_if</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; void(<ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;)&gt; &amp;</type>
+          <declname>t_else</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executes the lambda function given as second parameter if and only if its first argument is true. This function can be used to build different optimizer factories depending on some external variable.</para>
+<para>Example: <programlisting filename=".cpp"><codeline><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>use_presolve<sp/>:<sp/>{</highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">})<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>algorithm<sp/>=<sp/>GLPK()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.conditional(use_presolve,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>x){<sp/>x.with_presolve(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>x){<sp/>x.with_presolve(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);<sp/>})</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>model.use(algorithm);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>model.optimize();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_conditional_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, the t_if lambda function is executed, if false, the t_else lambda function is. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_if</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lambda function to execute in case t_conditional_value is true </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t_else</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lambda function to execute in case t_conditional_value is false </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the optimizer factory itself </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="260" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="266" bodyend="269"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactory_1a997906f3b7db473a7368c48c4be595ac" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>T &amp;</type>
+        <definition>T&amp; idol::OptimizerFactory::as</definition>
+        <argsstring>()</argsstring>
+        <name>as</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="44" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="44" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactory_1a804f8415a57f2a2ae5c197139de2d236" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>const T &amp;</type>
+        <definition>const T&amp; idol::OptimizerFactory::as</definition>
+        <argsstring>() const</argsstring>
+        <name>as</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="52" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="52" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactory_1a8282a87bf2a07d6bf4d5f391632dc423" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool idol::OptimizerFactory::is</definition>
+        <argsstring>() const</argsstring>
+        <name>is</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="60" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="60" bodyend="62"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classidol_1_1Gurobi_1aaa1661a01fdfc61aaef768276725fda2" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref></type>
+        <definition>static Gurobi idol::Gurobi::ContinuousRelaxation</definition>
+        <argsstring>()</argsstring>
+        <name>ContinuousRelaxation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="46" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Gurobi_1a294af6465efa01bf9c5c155d40da2827" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref></type>
+        <definition>static Model idol::Gurobi::read_from_file</definition>
+        <argsstring>(Env &amp;t_env, const std::string &amp;t_filename)</argsstring>
+        <name>read_from_file</name>
+        <param>
+          <type><ref refid="classidol_1_1Env" kindref="compound">Env</ref> &amp;</type>
+          <declname>t_env</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="60" column="18"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1afa26d14ea2c1479683e1e832156fac2a" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>Gurobi &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::crtp</definition>
+        <argsstring>()</argsstring>
+        <name>crtp</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="78" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="78" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a71231955c8b77473a4dd13b630d52cab" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1Gurobi" kindref="compound">Gurobi</ref> &amp;</type>
+        <definition>const Gurobi &amp; idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::crtp</definition>
+        <argsstring>() const</argsstring>
+        <name>crtp</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="79" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="79" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a8a11a96b51aa42b6a8ec863d43bec00b" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi  &gt;::handle_default_parameters</definition>
+        <argsstring>(Optimizer *t_optimizer) const</argsstring>
+        <name>handle_default_parameters</name>
+        <param>
+          <type><ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref> *</type>
+          <declname>t_optimizer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" line="81" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerFactory.h" bodystart="398" bodyend="440"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="4">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; Gurobi &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::Gurobi</label>
+        <link refid="classidol_1_1Gurobi"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::OptimizerFactory</label>
+        <link refid="classidol_1_1OptimizerFactory"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="template-instance">
+          <edgelabel>&lt; Gurobi &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::Gurobi</label>
+        <link refid="classidol_1_1Gurobi"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::OptimizerFactory</label>
+        <link refid="classidol_1_1OptimizerFactory"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" line="27" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h" bodystart="27" bodyend="63"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Gurobi_1a03b9bb96a98bc93a434b55e12043d5a1" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>add_callback</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1a997906f3b7db473a7368c48c4be595ac" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>as</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1a804f8415a57f2a2ae5c197139de2d236" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>as</name></member>
+      <member refid="classidol_1_1Gurobi_1a59b695542c520ae3e659bd754d1aaaff" prot="public" virt="virtual"><scope>idol::Gurobi</scope><name>clone</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a3197aa27445d62fd0491104238275c97" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>conditional</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae8fb4db490981b38547b5b6b86b3d6f3" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>conditional</name></member>
+      <member refid="classidol_1_1Gurobi_1aaa1661a01fdfc61aaef768276725fda2" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>ContinuousRelaxation</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1afa26d14ea2c1479683e1e832156fac2a" prot="protected" virt="non-virtual"><scope>idol::Gurobi</scope><name>crtp</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a71231955c8b77473a4dd13b630d52cab" prot="protected" virt="non-virtual"><scope>idol::Gurobi</scope><name>crtp</name></member>
+      <member refid="classidol_1_1Gurobi_1a3b26b8535da50018808bd6ce24630cfa" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>Gurobi</name></member>
+      <member refid="classidol_1_1Gurobi_1a87afb6c064c7403c0c4e399f589d3b5c" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>Gurobi</name></member>
+      <member refid="classidol_1_1Gurobi_1a2a21c43504c46a48816174f66cb31d2a" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>Gurobi</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a8a11a96b51aa42b6a8ec863d43bec00b" prot="protected" virt="non-virtual"><scope>idol::Gurobi</scope><name>handle_default_parameters</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1a8282a87bf2a07d6bf4d5f391632dc423" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>is</name></member>
+      <member refid="classidol_1_1Gurobi_1a6ac464160b88b5c1480e0029845dce4b" prot="private" virt="non-virtual"><scope>idol::Gurobi</scope><name>m_callbacks</name></member>
+      <member refid="classidol_1_1Gurobi_1a32f3c46c3fbfaefe91b4a646117612a8" prot="private" virt="non-virtual"><scope>idol::Gurobi</scope><name>m_continuous_relaxation</name></member>
+      <member refid="classidol_1_1Gurobi_1aef054055c9418818d47b9b60b47bded6" prot="private" virt="non-virtual"><scope>idol::Gurobi</scope><name>m_double_params</name></member>
+      <member refid="classidol_1_1Gurobi_1ad37b699dcc14194d63b4c5c84cc40ca8" prot="private" virt="non-virtual"><scope>idol::Gurobi</scope><name>m_int_params</name></member>
+      <member refid="classidol_1_1Gurobi_1a70673d299ea1e9e683e3fc1d80c25eba" prot="private" virt="non-virtual"><scope>idol::Gurobi</scope><name>m_lazy_cuts</name></member>
+      <member refid="classidol_1_1Gurobi_1ab76994090ee9e6688df7f7755ddbb9f4" prot="private" virt="non-virtual"><scope>idol::Gurobi</scope><name>m_max_n_solution_in_pool</name></member>
+      <member refid="classidol_1_1Gurobi_1af4e1888d7b0df311a74a7bd07146383b" prot="public" virt="virtual"><scope>idol::Gurobi</scope><name>operator()</name></member>
+      <member refid="classidol_1_1Gurobi_1aeca6f85a7d1c98547eeeb3216112710e" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Gurobi_1a70484314eb18a567c6ecbe263a0e45f6" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Gurobi_1a294af6465efa01bf9c5c155d40da2827" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>read_from_file</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a799ede043bde76795f7f4fd9fac0880c" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_absolute_gap_tolerance</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a10a7490342b8cb9a0719f150ad70513d" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_best_bound_stop</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad3e0bc7a6d07853f2f54b4b47aec52ce" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_best_obj_stop</name></member>
+      <member refid="classidol_1_1Gurobi_1acaaa44a195844a96d7188079569c7bd2" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_continuous_relaxation_only</name></member>
+      <member refid="classidol_1_1Gurobi_1aecf91b84c060d9839423da9377eeb44e" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_external_param</name></member>
+      <member refid="classidol_1_1Gurobi_1a068b1f2b4662582244f9c6eee15bcd65" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_external_param</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae015603918a608ffe8ef04e6145e40e0" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_infeasible_or_unbounded_info</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ac342238df14873996a25d1182b5a2a7d" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_iteration_limit</name></member>
+      <member refid="classidol_1_1Gurobi_1ac9e60f4ef90d665a3beefeee0d0eebc3" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_lazy_cut</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a495f616340209e28fde87270f69ce28f" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_logs</name></member>
+      <member refid="classidol_1_1Gurobi_1a812ce7786490c1c920ea6c41a397adb5" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_max_n_solution_in_pool</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a31b5bc10c1e96a84b4617b35bf137ea2" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_presolve</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad18892029116d8e33e6731f0041be83d" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_relative_gap_tolerance</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a62819967487a06cacad8ca03d0891090" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_thread_limit</name></member>
+      <member refid="classidol_1_1OptimizerFactoryWithDefaultParameters_1a192ee8cb58e8e1b2d33b0d58df3b0123" prot="public" virt="non-virtual"><scope>idol::Gurobi</scope><name>with_time_limit</name></member>
+      <member refid="classidol_1_1OptimizerFactory_1aab1c822c36ac4c578bf451e544586c74" prot="public" virt="virtual"><scope>idol::Gurobi</scope><name>~OptimizerFactory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

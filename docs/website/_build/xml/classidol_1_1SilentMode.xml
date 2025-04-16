@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1SilentMode" kind="class" language="C++" prot="public">
+    <compoundname>idol::SilentMode</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1SilentMode_1a3a4f52fec258a1c32ce797ac9f1e837d" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int idol::SilentMode::m_original_stdout_fd</definition>
+        <argsstring></argsstring>
+        <name>m_original_stdout_fd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/SilentMode.h" line="17" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/SilentMode.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1SilentMode_1a4f51d006e315b1cb62b0137fe1e635bb" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int idol::SilentMode::m_null_fd</definition>
+        <argsstring></argsstring>
+        <name>m_null_fd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/SilentMode.h" line="18" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/SilentMode.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1SilentMode_1a2c5e4c442b1c7e22e297cebacb422bfb" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool idol::SilentMode::m_silent_mode</definition>
+        <argsstring></argsstring>
+        <name>m_silent_mode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/SilentMode.h" line="19" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/SilentMode.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1SilentMode_1a21d8cb674b8d95b36acaca89664ccc9f" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::SilentMode::SilentMode</definition>
+        <argsstring>(bool t_silent=true)</argsstring>
+        <name>SilentMode</name>
+        <param>
+          <type>bool</type>
+          <declname>t_silent</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/SilentMode.h" line="21" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/SilentMode.h" bodystart="21" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1SilentMode_1a3ca5cd7eeca1c35b898a91c0377c6231" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::SilentMode::~SilentMode</definition>
+        <argsstring>()</argsstring>
+        <name>~SilentMode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/SilentMode.h" line="28" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/SilentMode.h" bodystart="28" bodyend="33"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::SilentMode</label>
+        <link refid="classidol_1_1SilentMode"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/utils/SilentMode.h" line="16" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/SilentMode.h" bodystart="16" bodyend="34"/>
+    <listofallmembers>
+      <member refid="classidol_1_1SilentMode_1a4f51d006e315b1cb62b0137fe1e635bb" prot="private" virt="non-virtual"><scope>idol::SilentMode</scope><name>m_null_fd</name></member>
+      <member refid="classidol_1_1SilentMode_1a3a4f52fec258a1c32ce797ac9f1e837d" prot="private" virt="non-virtual"><scope>idol::SilentMode</scope><name>m_original_stdout_fd</name></member>
+      <member refid="classidol_1_1SilentMode_1a2c5e4c442b1c7e22e297cebacb422bfb" prot="private" virt="non-virtual"><scope>idol::SilentMode</scope><name>m_silent_mode</name></member>
+      <member refid="classidol_1_1SilentMode_1a21d8cb674b8d95b36acaca89664ccc9f" prot="public" virt="non-virtual"><scope>idol::SilentMode</scope><name>SilentMode</name></member>
+      <member refid="classidol_1_1SilentMode_1a3ca5cd7eeca1c35b898a91c0377c6231" prot="public" virt="non-virtual"><scope>idol::SilentMode</scope><name>~SilentMode</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1TempQCtr" kind="class" language="C++" prot="public">
+    <compoundname>idol::TempQCtr</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1TempQCtr_1a491aa1d647e6e086ac1e68e07d5b5647" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+        <definition>QuadExpr&lt;Var&gt; idol::TempQCtr::m_expr</definition>
+        <argsstring></argsstring>
+        <name>m_expr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="15" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1TempQCtr_1a97d55fb652113d938d86bc29eea8607f" prot="private" static="no" mutable="no">
+        <type>CtrType</type>
+        <definition>CtrType idol::TempQCtr::m_type</definition>
+        <argsstring></argsstring>
+        <name>m_type</name>
+        <initializer>= LessOrEqual</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="16" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1TempQCtr_1a7b55952cc4f8c7f989a96997feaaf7ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::TempQCtr::TempQCtr</definition>
+        <argsstring>()=default</argsstring>
+        <name>TempQCtr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="18" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempQCtr_1a7a3111e8d8faf50bb03ddc8f456ec967" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::TempQCtr::TempQCtr</definition>
+        <argsstring>(QuadExpr&lt; Var &gt; &amp;&amp;t_expr, CtrType t_type)</argsstring>
+        <name>TempQCtr</name>
+        <param>
+          <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_expr</declname>
+        </param>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="20" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" bodystart="20" bodyend="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempQCtr_1a3bb559a6fa856e88d48698913271b32b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::TempQCtr::TempQCtr</definition>
+        <argsstring>(const TempQCtr &amp;t_src)=default</argsstring>
+        <name>TempQCtr</name>
+        <param>
+          <type>const <ref refid="classidol_1_1TempQCtr" kindref="compound">TempQCtr</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="22" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempQCtr_1aeecfa270826979838da857e6f43db0c0" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::TempQCtr::TempQCtr</definition>
+        <argsstring>(TempQCtr &amp;&amp;) noexcept=default</argsstring>
+        <name>TempQCtr</name>
+        <param>
+          <type><ref refid="classidol_1_1TempQCtr" kindref="compound">TempQCtr</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="24" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempQCtr_1a31397a026cb8788fbd1599d585e1da23" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1TempQCtr" kindref="compound">TempQCtr</ref> &amp;</type>
+        <definition>TempQCtr&amp; idol::TempQCtr::operator=</definition>
+        <argsstring>(const TempQCtr &amp;t_rhs)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1TempQCtr" kindref="compound">TempQCtr</ref> &amp;</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="26" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempQCtr_1a39a79a90073f1e437e74e4accf606b58" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1TempQCtr" kindref="compound">TempQCtr</ref> &amp;</type>
+        <definition>TempQCtr&amp; idol::TempQCtr::operator=</definition>
+        <argsstring>(TempQCtr &amp;&amp;) noexcept=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1TempQCtr" kindref="compound">TempQCtr</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="28" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempQCtr_1a1b619525cad236fe744ce706d6575458" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>QuadExpr&lt;Var&gt;&amp; idol::TempQCtr::expr</definition>
+        <argsstring>()</argsstring>
+        <name>expr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="30" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" bodystart="30" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempQCtr_1acf27e6233c64e5df07a368d413972c4a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>const QuadExpr&lt;Var&gt;&amp; idol::TempQCtr::expr</definition>
+        <argsstring>() const</argsstring>
+        <name>expr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="32" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" bodystart="32" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempQCtr_1afff8244b120c2640caab8af94e9dbf90" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>CtrType</type>
+        <definition>CtrType idol::TempQCtr::type</definition>
+        <argsstring>() const</argsstring>
+        <name>type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="34" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" bodystart="34" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempQCtr_1a4d45a488f8e5c2d13b560e033ef79566" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::TempQCtr::set_expr</definition>
+        <argsstring>(QuadExpr&lt; Var &gt; &amp;&amp;t_expr)</argsstring>
+        <name>set_expr</name>
+        <param>
+          <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_expr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="36" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" bodystart="36" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1TempQCtr_1ac1b194673e4cd754cf4165025cf43949" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::TempQCtr::set_type</definition>
+        <argsstring>(CtrType t_type)</argsstring>
+        <name>set_type</name>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="38" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" bodystart="38" bodyend="38"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::TempQCtr</label>
+        <link refid="classidol_1_1TempQCtr"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" line="14" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h" bodystart="14" bodyend="40"/>
+    <listofallmembers>
+      <member refid="classidol_1_1TempQCtr_1a1b619525cad236fe744ce706d6575458" prot="public" virt="non-virtual"><scope>idol::TempQCtr</scope><name>expr</name></member>
+      <member refid="classidol_1_1TempQCtr_1acf27e6233c64e5df07a368d413972c4a" prot="public" virt="non-virtual"><scope>idol::TempQCtr</scope><name>expr</name></member>
+      <member refid="classidol_1_1TempQCtr_1a491aa1d647e6e086ac1e68e07d5b5647" prot="private" virt="non-virtual"><scope>idol::TempQCtr</scope><name>m_expr</name></member>
+      <member refid="classidol_1_1TempQCtr_1a97d55fb652113d938d86bc29eea8607f" prot="private" virt="non-virtual"><scope>idol::TempQCtr</scope><name>m_type</name></member>
+      <member refid="classidol_1_1TempQCtr_1a31397a026cb8788fbd1599d585e1da23" prot="public" virt="non-virtual"><scope>idol::TempQCtr</scope><name>operator=</name></member>
+      <member refid="classidol_1_1TempQCtr_1a39a79a90073f1e437e74e4accf606b58" prot="public" virt="non-virtual"><scope>idol::TempQCtr</scope><name>operator=</name></member>
+      <member refid="classidol_1_1TempQCtr_1a4d45a488f8e5c2d13b560e033ef79566" prot="public" virt="non-virtual"><scope>idol::TempQCtr</scope><name>set_expr</name></member>
+      <member refid="classidol_1_1TempQCtr_1ac1b194673e4cd754cf4165025cf43949" prot="public" virt="non-virtual"><scope>idol::TempQCtr</scope><name>set_type</name></member>
+      <member refid="classidol_1_1TempQCtr_1a7b55952cc4f8c7f989a96997feaaf7ed" prot="public" virt="non-virtual"><scope>idol::TempQCtr</scope><name>TempQCtr</name></member>
+      <member refid="classidol_1_1TempQCtr_1a7a3111e8d8faf50bb03ddc8f456ec967" prot="public" virt="non-virtual"><scope>idol::TempQCtr</scope><name>TempQCtr</name></member>
+      <member refid="classidol_1_1TempQCtr_1a3bb559a6fa856e88d48698913271b32b" prot="public" virt="non-virtual"><scope>idol::TempQCtr</scope><name>TempQCtr</name></member>
+      <member refid="classidol_1_1TempQCtr_1aeecfa270826979838da857e6f43db0c0" prot="public" virt="non-virtual"><scope>idol::TempQCtr</scope><name>TempQCtr</name></member>
+      <member refid="classidol_1_1TempQCtr_1afff8244b120c2640caab8af94e9dbf90" prot="public" virt="non-virtual"><scope>idol::TempQCtr</scope><name>type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,407 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1GenerationPattern" kind="class" language="C++" prot="public">
+    <compoundname>idol::GenerationPattern</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class GeneratedT</type>
+      </param>
+      <param>
+        <type>class CoefficientT</type>
+        <defval><ref refid="classidol_1_1Var" kindref="compound">idol::Var</ref></defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classidol_1_1GenerationPattern_1a0551806f0eeca7dc30dd3e6669e67f20" prot="public" static="no">
+        <type>std::conditional_t&lt; std::is_same_v&lt; GeneratedT, <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;, <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>, <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+        <definition>using idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::KeyT =  std::conditional_t&lt;std::is_same_v&lt;GeneratedT, Var&gt;, Ctr, Var&gt;</definition>
+        <argsstring></argsstring>
+        <name>KeyT</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="21" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classidol_1_1GenerationPattern_1a16e9084f3c6986eafbad3316de9ed262" prot="protected" static="no" mutable="no">
+        <type><ref refid="classidol_1_1AffExpr" kindref="compound">idol::AffExpr</ref>&lt; CoefficientT &gt;</type>
+        <definition>idol::AffExpr&lt;CoefficientT&gt; idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::m_constant</definition>
+        <argsstring></argsstring>
+        <name>m_constant</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="114" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1GenerationPattern_1a706f4e5fb91c9a3204130275022eb51f" prot="protected" static="no" mutable="no">
+        <type><ref refid="classidol_1_1SparseVector" kindref="compound">SparseVector</ref>&lt; KeyT, <ref refid="classidol_1_1AffExpr" kindref="compound">idol::AffExpr</ref>&lt; CoefficientT &gt; &gt;</type>
+        <definition>SparseVector&lt;KeyT, idol::AffExpr&lt;CoefficientT&gt; &gt; idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::m_linear</definition>
+        <argsstring></argsstring>
+        <name>m_linear</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="115" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1a1627563618267f8d3d81cbd15418d4cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::GenerationPattern</definition>
+        <argsstring>()=default</argsstring>
+        <name>GenerationPattern</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="23" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1aef2b6b62d31222c9b40de9a07bb3c55d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::GenerationPattern</definition>
+        <argsstring>(idol::AffExpr&lt; CoefficientT &gt; t_constant, SparseVector&lt; KeyT, idol::AffExpr&lt; CoefficientT &gt;&gt; t_linear)</argsstring>
+        <name>GenerationPattern</name>
+        <param>
+          <type><ref refid="classidol_1_1AffExpr" kindref="compound">idol::AffExpr</ref>&lt; CoefficientT &gt;</type>
+          <declname>t_constant</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1SparseVector" kindref="compound">SparseVector</ref>&lt; KeyT, <ref refid="classidol_1_1AffExpr" kindref="compound">idol::AffExpr</ref>&lt; CoefficientT &gt;&gt;</type>
+          <declname>t_linear</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="25" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="25" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1a1c9b9738d0b325440c43a70a864c241d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto &amp;</type>
+        <definition>auto&amp; idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::constant</definition>
+        <argsstring>()</argsstring>
+        <name>constant</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="28" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="28" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1ad58e3776977987d3850c0bfd1e3a6e6a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::constant</definition>
+        <argsstring>() const</argsstring>
+        <name>constant</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="30" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="30" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1a04bdb20f3604997d6e87ad836aac2fe6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto &amp;</type>
+        <definition>auto&amp; idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::linear</definition>
+        <argsstring>()</argsstring>
+        <name>linear</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="32" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="32" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1ac86c0dbb097c35d8acf95c34676b30e8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::linear</definition>
+        <argsstring>() const</argsstring>
+        <name>linear</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="34" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="34" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1a6b3b153f7ca5bc0df403f41446968dd6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::generate_constant</definition>
+        <argsstring>(const Point&lt; CoefficientT &gt; &amp;t_values) const</argsstring>
+        <name>generate_constant</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Point" kindref="compound">Point</ref>&lt; CoefficientT &gt; &amp;</type>
+          <declname>t_values</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="36" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="36" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1a2797e6d74392f2f7ff5590790e156bf9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; KeyT &gt;</type>
+        <definition>LinExpr&lt;KeyT&gt; idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::generate_linear</definition>
+        <argsstring>(const Point&lt; CoefficientT &gt; &amp;t_values) const</argsstring>
+        <name>generate_linear</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Point" kindref="compound">Point</ref>&lt; CoefficientT &gt; &amp;</type>
+          <declname>t_values</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="40" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="40" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1acdf56ce637215d0923d4d45ba3736d6e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref>&lt; KeyT &gt;</type>
+        <definition>AffExpr&lt;KeyT&gt; idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::operator()</definition>
+        <argsstring>(const Point&lt; CoefficientT &gt; &amp;t_values) const</argsstring>
+        <name>operator()</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Point" kindref="compound">Point</ref>&lt; CoefficientT &gt; &amp;</type>
+          <declname>t_values</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="50" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="50" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1a50ea578608ba7037ef2ff543bbc64f30" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1GenerationPattern" kindref="compound">GenerationPattern</ref></type>
+        <definition>GenerationPattern idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::operator+=</definition>
+        <argsstring>(const AffExpr&lt; CoefficientT &gt; &amp;t_other)</argsstring>
+        <name>operator+=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref>&lt; CoefficientT &gt; &amp;</type>
+          <declname>t_other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="56" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="56" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1acf3eda8fa291e4de95f253864d8ea696" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1GenerationPattern" kindref="compound">GenerationPattern</ref></type>
+        <definition>GenerationPattern idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::operator-=</definition>
+        <argsstring>(const AffExpr&lt; CoefficientT &gt; &amp;t_other)</argsstring>
+        <name>operator-=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref>&lt; CoefficientT &gt; &amp;</type>
+          <declname>t_other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="64" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="64" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1acd545ae6207830ab342f8a5046f02baa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1GenerationPattern" kindref="compound">GenerationPattern</ref></type>
+        <definition>GenerationPattern idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::operator+=</definition>
+        <argsstring>(const GenerationPattern &amp;t_other)</argsstring>
+        <name>operator+=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1GenerationPattern" kindref="compound">GenerationPattern</ref> &amp;</type>
+          <declname>t_other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="72" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="72" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1afd6c9c3783b7fc334e698378c13aa861" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1GenerationPattern" kindref="compound">GenerationPattern</ref></type>
+        <definition>GenerationPattern idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::operator+=</definition>
+        <argsstring>(double t_scalar)</argsstring>
+        <name>operator+=</name>
+        <param>
+          <type>double</type>
+          <declname>t_scalar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="78" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="78" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1a04150efdca27576984407086eaf57620" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1GenerationPattern" kindref="compound">GenerationPattern</ref></type>
+        <definition>GenerationPattern idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::operator-=</definition>
+        <argsstring>(const GenerationPattern &amp;t_other)</argsstring>
+        <name>operator-=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1GenerationPattern" kindref="compound">GenerationPattern</ref> &amp;</type>
+          <declname>t_other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="83" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="83" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1af13baaee69d0e6b8235e7062df68a801" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1GenerationPattern" kindref="compound">GenerationPattern</ref></type>
+        <definition>GenerationPattern idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::operator*=</definition>
+        <argsstring>(const double t_scalar)</argsstring>
+        <name>operator*=</name>
+        <param>
+          <type>const double</type>
+          <declname>t_scalar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="89" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="89" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1afcfa0142709c0d6a78e18a494c385f4b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1GenerationPattern" kindref="compound">GenerationPattern</ref></type>
+        <definition>GenerationPattern idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::operator/=</definition>
+        <argsstring>(const double t_scalar)</argsstring>
+        <name>operator/=</name>
+        <param>
+          <type>const double</type>
+          <declname>t_scalar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="95" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="95" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1GenerationPattern_1ab38a1543933ac27629b4eb192235a2c3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1GenerationPattern" kindref="compound">GenerationPattern</ref></type>
+        <definition>GenerationPattern idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;::operator*=</definition>
+        <argsstring>(const KeyT &amp;t_key)</argsstring>
+        <name>operator*=</name>
+        <param>
+          <type>const KeyT &amp;</type>
+          <declname>t_key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="101" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="101" bodyend="111"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;</label>
+        <link refid="classidol_1_1GenerationPattern"/>
+      </node>
+      <node id="2">
+        <label>idol::GenerationPattern&lt; idol::Ctr &gt;</label>
+        <link refid="classidol_1_1GenerationPattern"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; idol::Ctr &gt;</edgelabel>
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::GenerationPattern&lt; GeneratedT, CoefficientT &gt;</label>
+        <link refid="classidol_1_1GenerationPattern"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>#m_linear</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>#m_constant</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>idol::AffExpr&lt; idol::Var &gt;</label>
+        <link refid="classidol_1_1AffExpr"/>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; idol::Var &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::SparseVector&lt; IndexT, ValueT &gt;</label>
+        <link refid="classidol_1_1SparseVector"/>
+      </node>
+      <node id="5">
+        <label>idol::AffExpr&lt; KeyT, ValueT &gt;</label>
+        <link refid="classidol_1_1AffExpr"/>
+      </node>
+      <node id="2">
+        <label>idol::SparseVector&lt; KeyT, idol::AffExpr&lt; idol::Var &gt; &gt;</label>
+        <link refid="classidol_1_1SparseVector"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; KeyT, idol::AffExpr&lt; idol::Var &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" line="19" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h" bodystart="19" bodyend="116"/>
+    <listofallmembers>
+      <member refid="classidol_1_1GenerationPattern_1a1c9b9738d0b325440c43a70a864c241d" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>constant</name></member>
+      <member refid="classidol_1_1GenerationPattern_1ad58e3776977987d3850c0bfd1e3a6e6a" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>constant</name></member>
+      <member refid="classidol_1_1GenerationPattern_1a6b3b153f7ca5bc0df403f41446968dd6" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>generate_constant</name></member>
+      <member refid="classidol_1_1GenerationPattern_1a2797e6d74392f2f7ff5590790e156bf9" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>generate_linear</name></member>
+      <member refid="classidol_1_1GenerationPattern_1a1627563618267f8d3d81cbd15418d4cd" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>GenerationPattern</name></member>
+      <member refid="classidol_1_1GenerationPattern_1aef2b6b62d31222c9b40de9a07bb3c55d" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>GenerationPattern</name></member>
+      <member refid="classidol_1_1GenerationPattern_1a0551806f0eeca7dc30dd3e6669e67f20" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>KeyT</name></member>
+      <member refid="classidol_1_1GenerationPattern_1a04bdb20f3604997d6e87ad836aac2fe6" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>linear</name></member>
+      <member refid="classidol_1_1GenerationPattern_1ac86c0dbb097c35d8acf95c34676b30e8" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>linear</name></member>
+      <member refid="classidol_1_1GenerationPattern_1a16e9084f3c6986eafbad3316de9ed262" prot="protected" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>m_constant</name></member>
+      <member refid="classidol_1_1GenerationPattern_1a706f4e5fb91c9a3204130275022eb51f" prot="protected" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>m_linear</name></member>
+      <member refid="classidol_1_1GenerationPattern_1acdf56ce637215d0923d4d45ba3736d6e" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>operator()</name></member>
+      <member refid="classidol_1_1GenerationPattern_1af13baaee69d0e6b8235e7062df68a801" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>operator*=</name></member>
+      <member refid="classidol_1_1GenerationPattern_1ab38a1543933ac27629b4eb192235a2c3" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>operator*=</name></member>
+      <member refid="classidol_1_1GenerationPattern_1a50ea578608ba7037ef2ff543bbc64f30" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>operator+=</name></member>
+      <member refid="classidol_1_1GenerationPattern_1acd545ae6207830ab342f8a5046f02baa" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>operator+=</name></member>
+      <member refid="classidol_1_1GenerationPattern_1afd6c9c3783b7fc334e698378c13aa861" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>operator+=</name></member>
+      <member refid="classidol_1_1GenerationPattern_1acf3eda8fa291e4de95f253864d8ea696" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>operator-=</name></member>
+      <member refid="classidol_1_1GenerationPattern_1a04150efdca27576984407086eaf57620" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>operator-=</name></member>
+      <member refid="classidol_1_1GenerationPattern_1afcfa0142709c0d6a78e18a494c385f4b" prot="public" virt="non-virtual"><scope>idol::GenerationPattern</scope><name>operator/=</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

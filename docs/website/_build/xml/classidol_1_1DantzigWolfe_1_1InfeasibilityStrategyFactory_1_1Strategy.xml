@@ -1,0 +1,311 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</compoundname>
+    <derivedcompoundref refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1_1Strategy" prot="public" virt="non-virtual">idol::DantzigWolfe::ArtificialCosts::Strategy</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1DantzigWolfe_1_1FarkasPricing_1_1Strategy" prot="public" virt="non-virtual">idol::DantzigWolfe::FarkasPricing::Strategy</derivedcompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a7f33e4773ee854b2412d7b96e53675b1" prot="private" static="no" mutable="no">
+        <type>SolutionStatus</type>
+        <definition>SolutionStatus idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::m_status</definition>
+        <argsstring></argsstring>
+        <name>m_status</name>
+        <initializer>= Loaded</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="24" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a40811f107ecf4cbc24d434e762292d17" prot="private" static="no" mutable="no">
+        <type>SolutionReason</type>
+        <definition>SolutionReason idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::m_reason</definition>
+        <argsstring></argsstring>
+        <name>m_reason</name>
+        <initializer>= NotSpecified</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="25" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a86805686c8e307903d35778012e9343a" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::m_best_obj</definition>
+        <argsstring></argsstring>
+        <name>m_best_obj</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="26" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a589c613abc40f74366497b9d919e9e6c" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::m_best_bound</definition>
+        <argsstring></argsstring>
+        <name>m_best_bound</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="27" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a9428345eca0b7b6bb329285532d37633" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; <ref refid="classidol_1_1Point" kindref="compound">PrimalPoint</ref> &gt;</type>
+        <definition>std::optional&lt;PrimalPoint&gt; idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::m_primal_solution</definition>
+        <argsstring></argsstring>
+        <name>m_primal_solution</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="28" column="23" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a913a10230e235594d5e15c04c38874d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::~Strategy</definition>
+        <argsstring>()=default</argsstring>
+        <name>~Strategy</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="30" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1abadc57db4b5ab2183826461ad3df8f95" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::execute</definition>
+        <argsstring>(Optimizers::DantzigWolfeDecomposition &amp;t_parent)=0</argsstring>
+        <name>execute</name>
+        <reimplementedby refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1_1Strategy_1abd72a42410ea5c654519990a7a0ce748">execute</reimplementedby>
+        <reimplementedby refid="classidol_1_1DantzigWolfe_1_1FarkasPricing_1_1Strategy_1a2639f2ddc207938f556bd648fe0256d3">execute</reimplementedby>
+        <param>
+          <type><ref refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition" kindref="compound">Optimizers::DantzigWolfeDecomposition</ref> &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="32" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a7129fe65f7c0951bf750a85ebd06c394" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>SolutionStatus</type>
+        <definition>SolutionStatus idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::status</definition>
+        <argsstring>() const</argsstring>
+        <name>status</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="34" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="34" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a5478ac3e714259fe04451359be2b2d09" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>SolutionReason</type>
+        <definition>SolutionReason idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::reason</definition>
+        <argsstring>() const</argsstring>
+        <name>reason</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="36" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="36" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1afcad60a8812f48a904077bd0a40bd894" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::best_obj</definition>
+        <argsstring>() const</argsstring>
+        <name>best_obj</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="38" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="38" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a11e8dd51e09af0f7356c906f0dede711" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::best_bound</definition>
+        <argsstring>() const</argsstring>
+        <name>best_bound</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="40" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="40" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a61cb87a78d2e160c42fe8b2ea9c16b80" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1Point" kindref="compound">PrimalPoint</ref> &amp;</type>
+        <definition>const PrimalPoint&amp; idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::primal_solution</definition>
+        <argsstring>() const</argsstring>
+        <name>primal_solution</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="42" column="27"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a7e92486b91d764b9695b2399120d5e57" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::set_status</definition>
+        <argsstring>(SolutionStatus t_status)</argsstring>
+        <name>set_status</name>
+        <param>
+          <type>SolutionStatus</type>
+          <declname>t_status</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="44" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a05cb75fdb319a59dc94a905d54791eb4" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::set_reason</definition>
+        <argsstring>(SolutionReason t_reason)</argsstring>
+        <name>set_reason</name>
+        <param>
+          <type>SolutionReason</type>
+          <declname>t_reason</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="46" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="46" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1aec2640bd446a55cbba57910482ac70be" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::set_primal_solution</definition>
+        <argsstring>(PrimalPoint t_solution)</argsstring>
+        <name>set_primal_solution</name>
+        <param>
+          <type><ref refid="classidol_1_1Point" kindref="compound">PrimalPoint</ref></type>
+          <declname>t_solution</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="48" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="48" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a0066a1caa678e2492970f80e394d35e7" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::set_best_obj</definition>
+        <argsstring>(double t_best_obj)</argsstring>
+        <name>set_best_obj</name>
+        <param>
+          <type>double</type>
+          <declname>t_best_obj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="50" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="50" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a9ce02a8bf7ba7b6e18aadbd08dde6917" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::set_best_bound</definition>
+        <argsstring>(double t_best_bound)</argsstring>
+        <name>set_best_bound</name>
+        <param>
+          <type>double</type>
+          <declname>t_best_bound</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="52" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="52" bodyend="52"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy"/>
+      </node>
+      <node id="3">
+        <label>idol::DantzigWolfe::FarkasPricing::Strategy</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1FarkasPricing_1_1Strategy"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::DantzigWolfe::ArtificialCosts::Strategy</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts_1_1Strategy"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" line="23" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h" bodystart="23" bodyend="53"/>
+    <listofallmembers>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a11e8dd51e09af0f7356c906f0dede711" prot="public" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>best_bound</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1afcad60a8812f48a904077bd0a40bd894" prot="public" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>best_obj</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1abadc57db4b5ab2183826461ad3df8f95" prot="public" virt="pure-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>execute</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a589c613abc40f74366497b9d919e9e6c" prot="private" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>m_best_bound</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a86805686c8e307903d35778012e9343a" prot="private" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>m_best_obj</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a9428345eca0b7b6bb329285532d37633" prot="private" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>m_primal_solution</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a40811f107ecf4cbc24d434e762292d17" prot="private" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>m_reason</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a7f33e4773ee854b2412d7b96e53675b1" prot="private" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>m_status</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a61cb87a78d2e160c42fe8b2ea9c16b80" prot="public" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>primal_solution</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a5478ac3e714259fe04451359be2b2d09" prot="public" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>reason</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a9ce02a8bf7ba7b6e18aadbd08dde6917" prot="protected" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>set_best_bound</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a0066a1caa678e2492970f80e394d35e7" prot="protected" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>set_best_obj</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1aec2640bd446a55cbba57910482ac70be" prot="protected" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>set_primal_solution</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a05cb75fdb319a59dc94a905d54791eb4" prot="protected" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>set_reason</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a7e92486b91d764b9695b2399120d5e57" prot="protected" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>set_status</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a7129fe65f7c0951bf750a85ebd06c394" prot="public" virt="non-virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>status</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory_1_1Strategy_1a913a10230e235594d5e15c04c38874d7" prot="public" virt="virtual"><scope>idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy</scope><name>~Strategy</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

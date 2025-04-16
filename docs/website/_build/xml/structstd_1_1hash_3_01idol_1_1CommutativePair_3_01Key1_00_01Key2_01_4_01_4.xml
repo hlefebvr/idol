@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structstd_1_1hash_3_01idol_1_1CommutativePair_3_01Key1_00_01Key2_01_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>std::hash&lt; idol::CommutativePair&lt; Key1, Key2 &gt; &gt;</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class Key1</type>
+      </param>
+      <param>
+        <type>class Key2</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structstd_1_1hash_3_01idol_1_1CommutativePair_3_01Key1_00_01Key2_01_4_01_4_1addf0588c7fe58f43c5e59bad2a68b30b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::size_t</type>
+        <definition>std::size_t std::hash&lt; idol::CommutativePair&lt; Key1, Key2 &gt; &gt;::operator()</definition>
+        <argsstring>(const idol::CommutativePair&lt; Key1, Key2 &gt; &amp;t_pair) const</argsstring>
+        <name>operator()</name>
+        <param>
+          <type>const <ref refid="structidol_1_1CommutativePair" kindref="compound">idol::CommutativePair</ref>&lt; Key1, Key2 &gt; &amp;</type>
+          <declname>t_pair</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" line="62" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" bodystart="62" bodyend="64"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>std::hash&lt; idol::CommutativePair&lt; Key1, Key2 &gt; &gt;</label>
+        <link refid="structstd_1_1hash_3_01idol_1_1CommutativePair_3_01Key1_00_01Key2_01_4_01_4"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" line="61" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" bodystart="61" bodyend="65"/>
+    <listofallmembers>
+      <member refid="structstd_1_1hash_3_01idol_1_1CommutativePair_3_01Key1_00_01Key2_01_4_01_4_1addf0588c7fe58f43c5e59bad2a68b30b" prot="public" virt="non-virtual"><scope>std::hash&lt; idol::CommutativePair&lt; Key1, Key2 &gt; &gt;</scope><name>operator()</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

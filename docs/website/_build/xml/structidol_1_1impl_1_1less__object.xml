@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structidol_1_1impl_1_1less__object" kind="struct" language="C++" prot="public">
+    <compoundname>idol::impl::less_object</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structidol_1_1impl_1_1less__object_1a93a4af6a8e6525deede6a4b4942d0060" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto idol::impl::less_object&lt; T &gt;::operator()</definition>
+        <argsstring>(const T &amp;t_a, const T &amp;t_b) const</argsstring>
+        <name>operator()</name>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t_a</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/SparseVector.h" line="32" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/SparseVector.h" bodystart="32" bodyend="32"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>idol::impl::less_object&lt; T &gt;</label>
+        <link refid="structidol_1_1impl_1_1less__object"/>
+      </node>
+      <node id="3">
+        <label>std::less&lt; idol::Ctr &gt;</label>
+        <link refid="structstd_1_1less_3_01idol_1_1Ctr_01_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>idol::impl::less_object&lt; idol::Var &gt;</label>
+        <link refid="structidol_1_1impl_1_1less__object"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; idol::Var &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>std::less&lt; idol::Var &gt;</label>
+        <link refid="structstd_1_1less_3_01idol_1_1Var_01_4"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::impl::less_object&lt; idol::Ctr &gt;</label>
+        <link refid="structidol_1_1impl_1_1less__object"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; idol::Ctr &gt;</edgelabel>
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::impl::less_object&lt; T &gt;</label>
+        <link refid="structidol_1_1impl_1_1less__object"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/utils/SparseVector.h" line="31" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/SparseVector.h" bodystart="31" bodyend="33"/>
+    <listofallmembers>
+      <member refid="structidol_1_1impl_1_1less__object_1a93a4af6a8e6525deede6a4b4942d0060" prot="public" virt="non-virtual"><scope>idol::impl::less_object</scope><name>operator()</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

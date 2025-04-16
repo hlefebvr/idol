@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1Problems_1_1SRP" kind="namespace" language="C++">
+    <compoundname>idol::Problems::SRP</compoundname>
+    <innerclass refid="classidol_1_1Problems_1_1SRP_1_1Instance" prot="public">idol::Problems::SRP::Instance</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="SRP__Instance_8h_1abfe1aab94110040eb9689ce11dbe9bff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Problems_1_1SRP_1_1Instance" kindref="compound">Instance</ref></type>
+        <definition>Instance idol::Problems::SRP::generate_random_instance_Zhao_et_al_2012</definition>
+        <argsstring>(unsigned int t_n_regular_staff, unsigned int t_n_part_time_staff, unsigned int t_n_time_periods)</argsstring>
+        <name>generate_random_instance_Zhao_et_al_2012</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_regular_staff</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_part_time_staff</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_n_time_periods</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/staff-rostering-problem/SRP_Instance.h" line="15" column="14" declfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/staff-rostering-problem/SRP_Instance.h" declline="15" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="SRP__Instance_8h_1a370977f72d9ea6d360f13e84d53634d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Problems_1_1SRP_1_1Instance" kindref="compound">Instance</ref></type>
+        <definition>Instance idol::Problems::SRP::read_instance_from_file</definition>
+        <argsstring>(const std::string &amp;t_path_to_file)</argsstring>
+        <name>read_instance_from_file</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_path_to_file</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/staff-rostering-problem/SRP_Instance.h" line="16" column="14" declfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/staff-rostering-problem/SRP_Instance.h" declline="16" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="SRP__Instance_8h_1acaed64dbc06fa26d268ebd2fef60476a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream&amp; idol::Problems::SRP::operator&lt;&lt;</definition>
+        <argsstring>(std::ostream &amp;t_os, const Instance &amp;t_instance)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>t_os</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1Problems_1_1SRP_1_1Instance" kindref="compound">Instance</ref> &amp;</type>
+          <declname>t_instance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/staff-rostering-problem/SRP_Instance.h" line="18" column="5" declfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/staff-rostering-problem/SRP_Instance.h" declline="18" declcolumn="5"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/staff-rostering-problem/SRP_Instance.h" line="11" column="1"/>
+  </compounddef>
+</doxygen>

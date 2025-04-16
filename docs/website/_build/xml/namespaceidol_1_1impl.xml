@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1impl" kind="namespace" language="C++">
+    <compoundname>idol::impl</compoundname>
+    <innerclass refid="classidol_1_1impl_1_1MibS" prot="public">idol::impl::MibS</innerclass>
+    <innerclass refid="classidol_1_1impl_1_1Optimizer" prot="public">idol::impl::Optimizer</innerclass>
+    <innerclass refid="structidol_1_1impl_1_1hash__object" prot="public">idol::impl::hash_object</innerclass>
+    <innerclass refid="structidol_1_1impl_1_1equal__to__object" prot="public">idol::impl::equal_to_object</innerclass>
+    <innerclass refid="structidol_1_1impl_1_1less__object" prot="public">idol::impl::less_object</innerclass>
+    <innerclass refid="structidol_1_1impl_1_1Vector" prot="public">idol::impl::Vector</innerclass>
+    <innerclass refid="structidol_1_1impl_1_1Vector_3_01T_00_010_01_4" prot="public">idol::impl::Vector&lt; T, 0 &gt;</innerclass>
+    <innerclass refid="classidol_1_1impl_1_1Annotation" prot="public">idol::impl::Annotation</innerclass>
+    <innerclass refid="classidol_1_1impl_1_1IdProvider" prot="public">idol::impl::IdProvider</innerclass>
+    <innerclass refid="classidol_1_1impl_1_1Env" prot="public">idol::impl::Env</innerclass>
+    <innerclass refid="classidol_1_1impl_1_1CutSeparation" prot="public">idol::impl::CutSeparation</innerclass>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="Map_8h_1ab7c99d59a03c721302775a9cda5497d5" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>class A</type>
+          </param>
+        </templateparamlist>
+        <type>std::hash&lt; A &gt;</type>
+        <definition>using idol::impl::hash = typedef std::hash&lt;A&gt;</definition>
+        <argsstring></argsstring>
+        <name>hash</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" line="25" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="Map_8h_1a3baf746a1181cef9172318924915edad" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::impl::hash_combine</definition>
+        <argsstring>(std::size_t &amp;seed, const T &amp;val)</argsstring>
+        <name>hash_combine</name>
+        <param>
+          <type>std::size_t &amp;</type>
+          <declname>seed</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" line="29" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" bodystart="29" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="Map_8h_1af255310f96c2151dafd35e0c5e55fbc0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::impl::hash_val</definition>
+        <argsstring>(std::size_t &amp;seed, const T &amp;val)</argsstring>
+        <name>hash_val</name>
+        <param>
+          <type>std::size_t &amp;</type>
+          <declname>seed</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" line="34" column="29" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" bodystart="34" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="Map_8h_1a486466a460df1c4a8fa316e3681b37fa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Types</declname>
+            <defname>Types</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::impl::hash_val</definition>
+        <argsstring>(std::size_t &amp;seed, const T &amp;val, const Types &amp;... args)</argsstring>
+        <name>hash_val</name>
+        <param>
+          <type>std::size_t &amp;</type>
+          <declname>seed</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type>const Types &amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" line="39" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" bodystart="39" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="Map_8h_1a86af04d1c9a64b70495ce565b3b23b13" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Types</declname>
+            <defname>Types</defname>
+          </param>
+        </templateparamlist>
+        <type>std::size_t</type>
+        <definition>std::size_t idol::impl::hash_val</definition>
+        <argsstring>(const Types &amp;... args)</argsstring>
+        <name>hash_val</name>
+        <param>
+          <type>const Types &amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" line="45" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/Map.h" bodystart="45" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="Object_8h_1a047c9c09ac5932b9e139822b99b2e8ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class U</type>
+          </param>
+          <param>
+            <type>unsigned int</type>
+            <declname>N</declname>
+            <defname>N</defname>
+          </param>
+          <param>
+            <type>unsigned int</type>
+            <declname>I</declname>
+            <defname>I</defname>
+            <defval>0</defval>
+          </param>
+        </templateparamlist>
+        <type>::idol::Vector&lt; U, N - I &gt;</type>
+        <definition>static ::idol::Vector&lt;U, N - I&gt; idol::impl::create_many</definition>
+        <argsstring>(const Dim&lt; N &gt; &amp;t_dims, const std::string &amp;t_name, const std::function&lt; U(const std::string &amp;t_name)&gt; &amp;t_add_one)</argsstring>
+        <name>create_many</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Dim" kindref="compound">Dim</ref>&lt; N &gt; &amp;</type>
+          <declname>t_dims</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_name</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; U(const std::string &amp;t_name)&gt; &amp;</type>
+          <declname>t_add_one</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="111" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="111" bodyend="124"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h" line="8" column="1"/>
+  </compounddef>
+</doxygen>

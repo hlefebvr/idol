@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1DantzigWolfe" kind="namespace" language="C++">
+    <compoundname>idol::DantzigWolfe</compoundname>
+    <innerclass refid="classidol_1_1DantzigWolfe_1_1Formulation" prot="public">idol::DantzigWolfe::Formulation</innerclass>
+    <innerclass refid="classidol_1_1DantzigWolfe_1_1ArtificialCosts" prot="public">idol::DantzigWolfe::ArtificialCosts</innerclass>
+    <innerclass refid="classidol_1_1DantzigWolfe_1_1InfeasibilityStrategyFactory" prot="public">idol::DantzigWolfe::InfeasibilityStrategyFactory</innerclass>
+    <innerclass refid="classidol_1_1DantzigWolfe_1_1FarkasPricing" prot="public">idol::DantzigWolfe::FarkasPricing</innerclass>
+    <innerclass refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization" prot="public">idol::DantzigWolfe::DualPriceSmoothingStabilization</innerclass>
+    <innerclass refid="classidol_1_1DantzigWolfe_1_1Neame" prot="public">idol::DantzigWolfe::Neame</innerclass>
+    <innerclass refid="classidol_1_1DantzigWolfe_1_1NoStabilization" prot="public">idol::DantzigWolfe::NoStabilization</innerclass>
+    <innerclass refid="classidol_1_1DantzigWolfe_1_1Wentges" prot="public">idol::DantzigWolfe::Wentges</innerclass>
+    <innerclass refid="classidol_1_1DantzigWolfe_1_1SubProblem" prot="public">idol::DantzigWolfe::SubProblem</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/Formulation.h" line="13" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,2699 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Model" kind="class" language="C++" prot="public">
+    <compoundname>idol::Model</compoundname>
+    <includes refid="Model_8h" local="no">Model.h</includes>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="classidol_1_1Model_1a076e922b6608160548d502bd0930e235" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Storage</name>
+        <enumvalue id="classidol_1_1Model_1a076e922b6608160548d502bd0930e235a40d87b1b2ad10fc1a3878456d5f719e9" prot="public">
+          <name>ColumnOriented</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classidol_1_1Model_1a076e922b6608160548d502bd0930e235ac87c0f4033d411dcb691803cda624272" prot="public">
+          <name>RowOriented</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classidol_1_1Model_1a076e922b6608160548d502bd0930e235a10015fc18c42267bd166b5a64d387a36" prot="public">
+          <name>Both</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="45" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="45" bodyend="45"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Model_1abc5ad23d45c29a1a988e59e4b873fb20" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1Env" kindref="compound">Env</ref> &amp;</type>
+        <definition>Env&amp; idol::Model::m_env</definition>
+        <argsstring></argsstring>
+        <name>m_env</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="47" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1ae121b8288683ca8f0a4c7a19f5461380" prot="private" static="no" mutable="no">
+        <type>const unsigned int</type>
+        <definition>const unsigned int idol::Model::m_id</definition>
+        <argsstring></argsstring>
+        <name>m_id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="48" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1a10a1b6b44fb550cb00c90b7022e8e44a" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool idol::Model::m_has_been_moved</definition>
+        <argsstring></argsstring>
+        <name>m_has_been_moved</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="49" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1aad79c869ceb10c3ed90986149a13d287" prot="private" static="no" mutable="no">
+        <type>ObjectiveSense</type>
+        <definition>ObjectiveSense idol::Model::m_sense</definition>
+        <argsstring></argsstring>
+        <name>m_sense</name>
+        <initializer>= Minimize</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="51" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1ad39dab951f72911bd98a514b27e0d027" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+        <definition>QuadExpr&lt;Var&gt; idol::Model::m_objective</definition>
+        <argsstring></argsstring>
+        <name>m_objective</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="53" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1a19916e2c661d599799049776504b0510" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt;</type>
+        <definition>LinExpr&lt;Ctr&gt; idol::Model::m_rhs</definition>
+        <argsstring></argsstring>
+        <name>m_rhs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="54" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1ace59ecece4f4944f4cc836339c3f9fa5" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+        <definition>std::vector&lt;Var&gt; idol::Model::m_variables</definition>
+        <argsstring></argsstring>
+        <name>m_variables</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="55" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1ac5aa77a10f93860927e36e90efa4ff5a" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt;</type>
+        <definition>std::vector&lt;Ctr&gt; idol::Model::m_constraints</definition>
+        <argsstring></argsstring>
+        <name>m_constraints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="56" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1ae9573aa208aa65ffcdfda7bbb517bf5b" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &gt;</type>
+        <definition>std::vector&lt;QCtr&gt; idol::Model::m_qconstraints</definition>
+        <argsstring></argsstring>
+        <name>m_qconstraints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="57" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1a8848f7972d8b5c888f16e43057639762" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &gt;</type>
+        <definition>std::vector&lt;SOSCtr&gt; idol::Model::m_sosconstraints</definition>
+        <argsstring></argsstring>
+        <name>m_sosconstraints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="58" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1a06d26d049a4864d1e3fce516f86fb66a" prot="private" static="no" mutable="no">
+        <type>Storage</type>
+        <definition>Storage idol::Model::m_storage</definition>
+        <argsstring></argsstring>
+        <name>m_storage</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="60" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1a3944693a3908d9c80de0c5f19d940739" prot="private" static="no" mutable="yes">
+        <type>bool</type>
+        <definition>bool idol::Model::m_has_minor_representation</definition>
+        <argsstring></argsstring>
+        <name>m_has_minor_representation</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="61" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1a4d5d0ad216b87ba365906a396ac65742" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Optimizer&gt; idol::Model::m_optimizer</definition>
+        <argsstring></argsstring>
+        <name>m_optimizer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="63" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Model_1a11ee488553afc228fb0cd6c98ec932c9" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;OptimizerFactory&gt; idol::Model::m_optimizer_factory</definition>
+        <argsstring></argsstring>
+        <name>m_optimizer_factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="64" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classidol_1_1Model_1ab8f11c9d9fbb0544aa0cdfe13974b9dd" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::throw_if_no_optimizer</definition>
+        <argsstring>() const</argsstring>
+        <name>throw_if_no_optimizer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="66" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="66" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a89ef32117a09cdeaae8d5602735c5673" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Model::Model</definition>
+        <argsstring>(const Model &amp;t_src)</argsstring>
+        <name>Model</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="68" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ad2fd892ce1b3955b8848083b63db04c6" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::Model::throw_if_unknown_object</definition>
+        <argsstring>(const LinExpr&lt; T &gt; &amp;t_expr)</argsstring>
+        <name>throw_if_unknown_object</name>
+        <param>
+          <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; T &gt; &amp;</type>
+          <declname>t_expr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="70" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a4b075665527307841e18d36b8ee305a2" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::Model::throw_if_unknown_object</definition>
+        <argsstring>(const QuadExpr&lt; T &gt; &amp;t_expr)</argsstring>
+        <name>throw_if_unknown_object</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; T &gt; &amp;</type>
+          <declname>t_expr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="71" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a3b5348bf6c600aee682f655476d31f08" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::add_column_to_rows</definition>
+        <argsstring>(const Var &amp;t_var)</argsstring>
+        <name>add_column_to_rows</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="72" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a777b44a23a03282c66f7b9c8ccf95bb4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::add_row_to_columns</definition>
+        <argsstring>(const Ctr &amp;t_ctr)</argsstring>
+        <name>add_row_to_columns</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="73" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a3cb0cb428a01b10e58fe504f3008f25d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::build_row</definition>
+        <argsstring>(const Ctr &amp;t_ctr)</argsstring>
+        <name>build_row</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="74" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a496037901a2932e182f5809175a2eb37" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::build_column</definition>
+        <argsstring>(const Var &amp;t_var)</argsstring>
+        <name>build_column</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="75" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a0689429a6ae6e2cd7b346d4a4f65214a" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::build_rows</definition>
+        <argsstring>()</argsstring>
+        <name>build_rows</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="76" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a76eb46e56931b47c5c65580c8646ec05" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::build_columns</definition>
+        <argsstring>()</argsstring>
+        <name>build_columns</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="77" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a7b643461ef7819ac662495a64955a63f" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Model::column_storage_matters</definition>
+        <argsstring>() const</argsstring>
+        <name>column_storage_matters</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="79" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ab9181d98efa323e30ddd26025507f2e1" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Model::row_storage_matters</definition>
+        <argsstring>() const</argsstring>
+        <name>row_storage_matters</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="80" column="10"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Model_1a5b8772328f895699710549a57f80f871" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Model::Model</definition>
+        <argsstring>(Env &amp;t_env, Storage t_storage=Both)</argsstring>
+        <name>Model</name>
+        <param>
+          <type><ref refid="classidol_1_1Env" kindref="compound">Env</ref> &amp;</type>
+          <declname>t_env</declname>
+        </param>
+        <param>
+          <type>Storage</type>
+          <declname>t_storage</declname>
+          <defval>Both</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="82" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1add376f20b7fd7f46a3ef20c50b0d3a1e" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::Model::Model</definition>
+        <argsstring>(Model &amp;&amp;) noexcept</argsstring>
+        <name>Model</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="84" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a6e97fa219e21c8025d0764115e7053bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+        <definition>Model&amp; idol::Model::operator=</definition>
+        <argsstring>(const Model &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="86" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a049bb89c160174718e5d760f1381d7a5" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+        <definition>Model&amp; idol::Model::operator=</definition>
+        <argsstring>(Model &amp;&amp;) noexcept=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="87" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a691528a550f6d326baf1fad825da5a78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Model::~Model</definition>
+        <argsstring>()</argsstring>
+        <name>~Model</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="89" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ad50decb04ab687f282c7e0e4eee3e222" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Var" kindref="compound">Var</ref></type>
+        <definition>Var idol::Model::add_var</definition>
+        <argsstring>(double t_lb, double t_ub, VarType t_type, double t_obj=0., std::string t_name=&quot;&quot;)</argsstring>
+        <name>add_var</name>
+        <param>
+          <type>double</type>
+          <declname>t_lb</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_ub</declname>
+        </param>
+        <param>
+          <type>VarType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_obj</declname>
+          <defval>0.</defval>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="91" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ae286f293a300809ec773d8e2fedaf4b2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Var" kindref="compound">Var</ref></type>
+        <definition>Var idol::Model::add_var</definition>
+        <argsstring>(double t_lb, double t_ub, VarType t_type, double t_obj, LinExpr&lt; Ctr &gt; t_column, std::string t_name=&quot;&quot;)</argsstring>
+        <name>add_var</name>
+        <param>
+          <type>double</type>
+          <declname>t_lb</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_ub</declname>
+        </param>
+        <param>
+          <type>VarType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_obj</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt;</type>
+          <declname>t_column</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="93" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ac25986f8b40918c69a8be904b361c8e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>unsigned int</type>
+            <declname>N</declname>
+            <defname>N</defname>
+          </param>
+        </templateparamlist>
+        <type>Vector&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref>, N &gt;</type>
+        <definition>Vector&lt;Var, N&gt; idol::Model::add_vars</definition>
+        <argsstring>(Dim&lt; N &gt; t_dim, double t_lb, double t_ub, VarType t_type, double t_obj=0., const std::string &amp;t_name=&quot;&quot;)</argsstring>
+        <name>add_vars</name>
+        <param>
+          <type><ref refid="classidol_1_1Dim" kindref="compound">Dim</ref>&lt; N &gt;</type>
+          <declname>t_dim</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_lb</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_ub</declname>
+        </param>
+        <param>
+          <type>VarType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_obj</declname>
+          <defval>0.</defval>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="95" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a61f27f3afe631d3bd406c7155f6dcd0a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::add</definition>
+        <argsstring>(const Var &amp;t_var)</argsstring>
+        <name>add</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="97" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a02f6aa29129cb2a39f3dbf8fe25bd8b6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::add</definition>
+        <argsstring>(const Var &amp;t_var, TempVar t_temp_var)</argsstring>
+        <name>add</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1TempVar" kindref="compound">TempVar</ref></type>
+          <declname>t_temp_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="99" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ad466454150090af61e4891fe27556898" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Model::has</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>has</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="101" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a73e3910463afbe02945fe7b6746e98ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::remove</definition>
+        <argsstring>(const Var &amp;t_var)</argsstring>
+        <name>remove</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="103" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a8979f73434ff0dcedad78a677399e29c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1ConstIteratorForward" kindref="compound">ConstIteratorForward</ref>&lt; std::vector&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &gt;</type>
+        <definition>ConstIteratorForward&lt;std::vector&lt;Var&gt; &gt; idol::Model::vars</definition>
+        <argsstring>() const</argsstring>
+        <name>vars</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="105" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="105" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a6bac8c7fcaabb1cd3a6b2fed1f35e331" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref></type>
+        <definition>Ctr idol::Model::add_ctr</definition>
+        <argsstring>(TempCtr t_temp_ctr, std::string t_name=&quot;&quot;)</argsstring>
+        <name>add_ctr</name>
+        <param>
+          <type><ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref></type>
+          <declname>t_temp_ctr</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="107" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1adeb5ece32c7eb3df79e58e12b53b7062" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref></type>
+        <definition>Ctr idol::Model::add_ctr</definition>
+        <argsstring>(LinExpr&lt; Var &gt; &amp;&amp;t_lhs, CtrType t_type, double t_rhs, std::string t_name=&quot;&quot;)</argsstring>
+        <name>add_ctr</name>
+        <param>
+          <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_lhs</declname>
+        </param>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_rhs</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="109" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a30404faaf86a0ab7432e3b1ecc8cdcb0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>unsigned int</type>
+            <declname>N</declname>
+            <defname>N</defname>
+          </param>
+        </templateparamlist>
+        <type>Vector&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>, N &gt;</type>
+        <definition>Vector&lt;Ctr, N&gt; idol::Model::add_ctrs</definition>
+        <argsstring>(Dim&lt; N &gt; t_dim, CtrType t_type, double t_rhs, const std::string &amp;t_name=&quot;&quot;)</argsstring>
+        <name>add_ctrs</name>
+        <param>
+          <type><ref refid="classidol_1_1Dim" kindref="compound">Dim</ref>&lt; N &gt;</type>
+          <declname>t_dim</declname>
+        </param>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_rhs</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="111" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a403e59442470ee2c3fb65d7ebf5dffc9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::add</definition>
+        <argsstring>(const Ctr &amp;t_ctr)</argsstring>
+        <name>add</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="113" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a36a2cd5b197de19a81058f50f136a11d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::add</definition>
+        <argsstring>(const Ctr &amp;t_ctr, TempCtr t_temp_ctr)</argsstring>
+        <name>add</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref></type>
+          <declname>t_temp_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="115" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ae700362c208ed04714d47caa60be00c4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Model::has</definition>
+        <argsstring>(const Ctr &amp;t_ctr) const</argsstring>
+        <name>has</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="117" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a1c58fa0bb371aba629cd9372ec066e11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::remove</definition>
+        <argsstring>(const Ctr &amp;t_ctr)</argsstring>
+        <name>remove</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="119" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1adca381b2803ca59f852d8a5532ea34ed" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1ConstIteratorForward" kindref="compound">ConstIteratorForward</ref>&lt; std::vector&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt; &gt;</type>
+        <definition>ConstIteratorForward&lt;std::vector&lt;Ctr&gt; &gt; idol::Model::ctrs</definition>
+        <argsstring>() const</argsstring>
+        <name>ctrs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="121" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="121" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1af6310a9be14301dcd48d2dde42629747" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref></type>
+        <definition>QCtr idol::Model::add_qctr</definition>
+        <argsstring>(TempQCtr t_temp_ctr, std::string t_name=&quot;&quot;)</argsstring>
+        <name>add_qctr</name>
+        <param>
+          <type><ref refid="classidol_1_1TempQCtr" kindref="compound">TempQCtr</ref></type>
+          <declname>t_temp_ctr</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="123" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a90970cc6a71dc11e5eb0a6d97626e3fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref></type>
+        <definition>QCtr idol::Model::add_qctr</definition>
+        <argsstring>(QuadExpr&lt; Var &gt; &amp;&amp;t_expr, CtrType t_type, std::string t_name=&quot;&quot;)</argsstring>
+        <name>add_qctr</name>
+        <param>
+          <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_expr</declname>
+        </param>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="125" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a1481238aec37ec15c3855e0007677115" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>unsigned int</type>
+            <declname>N</declname>
+            <defname>N</defname>
+          </param>
+        </templateparamlist>
+        <type>Vector&lt; <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref>, N &gt;</type>
+        <definition>Vector&lt;QCtr, N&gt; idol::Model::add_qctrs</definition>
+        <argsstring>(Dim&lt; N &gt; t_dim, CtrType t_type, const std::string &amp;t_name=&quot;&quot;)</argsstring>
+        <name>add_qctrs</name>
+        <param>
+          <type><ref refid="classidol_1_1Dim" kindref="compound">Dim</ref>&lt; N &gt;</type>
+          <declname>t_dim</declname>
+        </param>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="127" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1abe349cdd65adbff9f303d51123f57fe8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::add</definition>
+        <argsstring>(const QCtr &amp;t_ctr)</argsstring>
+        <name>add</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="129" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a0cb7483db7e7b5e85278b0ece9790623" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::add</definition>
+        <argsstring>(const QCtr &amp;t_ctr, TempQCtr t_temp_ctr)</argsstring>
+        <name>add</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1TempQCtr" kindref="compound">TempQCtr</ref></type>
+          <declname>t_temp_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="131" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a409c66770259c3727400b829c0b6e1a7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Model::has</definition>
+        <argsstring>(const QCtr &amp;t_ctr) const</argsstring>
+        <name>has</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="133" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a40087a2545b4dc98e45de4fb0c15259f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::remove</definition>
+        <argsstring>(const QCtr &amp;t_ctr)</argsstring>
+        <name>remove</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="135" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a1e92dbe546c8759c4f1bf142b6831a35" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1ConstIteratorForward" kindref="compound">ConstIteratorForward</ref>&lt; std::vector&lt; <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &gt; &gt;</type>
+        <definition>ConstIteratorForward&lt;std::vector&lt;QCtr&gt; &gt; idol::Model::qctrs</definition>
+        <argsstring>() const</argsstring>
+        <name>qctrs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="137" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="137" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a0a2385e0b2cef5d45312248f5d33cd14" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref></type>
+        <definition>SOSCtr idol::Model::add_sosctr</definition>
+        <argsstring>(bool t_is_sos1, std::vector&lt; Var &gt; t_vars, std::vector&lt; double &gt; t_weights, std::string t_name=&quot;&quot;)</argsstring>
+        <name>add_sosctr</name>
+        <param>
+          <type>bool</type>
+          <declname>t_is_sos1</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt;</type>
+          <declname>t_vars</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt;</type>
+          <declname>t_weights</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="139" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a76b2704af6248a2e589912dc17e9bddd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::add</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr, bool t_is_sos1, const std::vector&lt; Var &gt; &amp;t_vars, const std::vector&lt; double &gt; &amp;t_weights)</argsstring>
+        <name>add</name>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>t_is_sos1</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+          <declname>t_vars</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; double &gt; &amp;</type>
+          <declname>t_weights</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="141" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a99332ad95fb17575e7eb670c1e69bf83" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::add</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr)</argsstring>
+        <name>add</name>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="143" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ad405def877c8ca1928f6f68726f97570" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::remove</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr)</argsstring>
+        <name>remove</name>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="145" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a890965704c2a05743ad969d236996921" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1ConstIteratorForward" kindref="compound">ConstIteratorForward</ref>&lt; std::vector&lt; <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &gt; &gt;</type>
+        <definition>ConstIteratorForward&lt;std::vector&lt;SOSCtr&gt; &gt; idol::Model::sosctrs</definition>
+        <argsstring>() const</argsstring>
+        <name>sosctrs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="147" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="147" bodyend="147"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ad8dd1c7b28e93c756d2e1933495e683e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Model::has</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr) const</argsstring>
+        <name>has</name>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="149" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ac55fb79cb47e51dcf00adbda537c4b1a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Model::id</definition>
+        <argsstring>() const</argsstring>
+        <name>id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="151" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="151" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a9f0d3e28e852b52d09564d61e70b8cd7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> *</type>
+        <definition>Model* idol::Model::clone</definition>
+        <argsstring>() const</argsstring>
+        <name>clone</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="153" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a6db013057e921eaf74123d96f7311458" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref></type>
+        <definition>Model idol::Model::copy</definition>
+        <argsstring>() const</argsstring>
+        <name>copy</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="155" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a819c8a9d3243347b7efb55574863ff63" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::reserve_vars</definition>
+        <argsstring>(unsigned int t_size)</argsstring>
+        <name>reserve_vars</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="157" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a947702e26251110fe467ba1cf18eae81" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::reserve_ctrs</definition>
+        <argsstring>(unsigned int t_size)</argsstring>
+        <name>reserve_ctrs</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="159" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a52dad105787522f434b0560e58f52e51" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::reserve_qctrs</definition>
+        <argsstring>(unsigned int t_size)</argsstring>
+        <name>reserve_qctrs</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="161" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a068f546800093b6b8cd8290fdfbbeb9c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::reserve_sos_ctrs</definition>
+        <argsstring>(unsigned int t_size)</argsstring>
+        <name>reserve_sos_ctrs</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="163" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a8205914bb4436e3d0ee3cde968b2680b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Env" kindref="compound">Env</ref> &amp;</type>
+        <definition>Env&amp; idol::Model::env</definition>
+        <argsstring>() const</argsstring>
+        <name>env</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="165" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="165" bodyend="165"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a12389942b1bb7182ef4eb934f7a52ad8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::use</definition>
+        <argsstring>(const OptimizerFactory &amp;t_optimizer_factory)</argsstring>
+        <name>use</name>
+        <param>
+          <type>const <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &amp;</type>
+          <declname>t_optimizer_factory</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="167" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a9928e57275d7ff9a7516d5facee8cab9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Model::has_optimizer</definition>
+        <argsstring>() const</argsstring>
+        <name>has_optimizer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="169" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a7a1a5b3bb169710d51741c2628d937e3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Model::has_optimizer_factory</definition>
+        <argsstring>() const</argsstring>
+        <name>has_optimizer_factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="171" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="171" bodyend="171"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1aa229a3c65c7d16605259de378a054358" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &amp;</type>
+        <definition>const OptimizerFactory&amp; idol::Model::optimizer_factory</definition>
+        <argsstring>() const</argsstring>
+        <name>optimizer_factory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="173" column="29" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="173" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a9f096a04590ec8c466d9d4c1e378fb16" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::unuse</definition>
+        <argsstring>()</argsstring>
+        <name>unuse</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="175" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ab0255fe2a1b393c29242c78975986ca1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>unsigned int</type>
+            <declname>N</declname>
+            <defname>N</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::Model::add_vector</definition>
+        <argsstring>(const Vector&lt; T, N &gt; &amp;t_vector)</argsstring>
+        <name>add_vector</name>
+        <param>
+          <type>const Vector&lt; T, N &gt; &amp;</type>
+          <declname>t_vector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="177" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="307" bodyend="317"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1aabb19eb5bc7dcf1215cfafdd44bf5658" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref> &amp;</type>
+        <definition>Optimizer&amp; idol::Model::optimizer</definition>
+        <argsstring>()</argsstring>
+        <name>optimizer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="179" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="179" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a6956799e60657fb06a2e9e753057d603" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref> &amp;</type>
+        <definition>const Optimizer&amp; idol::Model::optimizer</definition>
+        <argsstring>() const</argsstring>
+        <name>optimizer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="181" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="181" bodyend="181"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1abb6bbbfe49c480b5dd747d18fd971a01" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::optimize</definition>
+        <argsstring>()</argsstring>
+        <name>optimize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="183" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a60d4038814924623a55435f42b76186c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::write</definition>
+        <argsstring>(const std::string &amp;t_name)</argsstring>
+        <name>write</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="185" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a9b589bba512a598139e2fccda0c23720" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::update</definition>
+        <argsstring>()</argsstring>
+        <name>update</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="187" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a85fbdc421531a17e91627a8466d313b9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>ObjectiveSense</type>
+        <definition>ObjectiveSense idol::Model::get_obj_sense</definition>
+        <argsstring>() const</argsstring>
+        <name>get_obj_sense</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="189" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a1fb6b4f871170274ebdabb5fb255c57f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>const QuadExpr&lt;Var&gt;&amp; idol::Model::get_obj_expr</definition>
+        <argsstring>() const</argsstring>
+        <name>get_obj_expr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="191" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1acc5237824e65640729fa4cd789d6794c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt; &amp;</type>
+        <definition>const LinExpr&lt;Ctr&gt;&amp; idol::Model::get_rhs_expr</definition>
+        <argsstring>() const</argsstring>
+        <name>get_rhs_expr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="193" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a51c92f6ac3fb927ea7b88d616cd2d2e8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Model::get_mat_coeff</definition>
+        <argsstring>(const Ctr &amp;t_ctr, const Var &amp;t_var) const</argsstring>
+        <name>get_mat_coeff</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="195" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a1b9ecba96de430c0d308881d6a354eaa" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SolutionStatus</type>
+        <definition>SolutionStatus idol::Model::get_status</definition>
+        <argsstring>() const</argsstring>
+        <name>get_status</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="197" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1adc9cc063308283f3953d5cd902ac10a7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SolutionReason</type>
+        <definition>SolutionReason idol::Model::get_reason</definition>
+        <argsstring>() const</argsstring>
+        <name>get_reason</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="199" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1aac9a0ebf20382c4c1baf81d890c55b16" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Model::get_best_obj</definition>
+        <argsstring>() const</argsstring>
+        <name>get_best_obj</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="201" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1acd86a2ce603fde9531b8d31989fa4fd8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Model::get_best_bound</definition>
+        <argsstring>() const</argsstring>
+        <name>get_best_bound</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="203" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a41c4fa3b081274da2ea27da7a7c00b38" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_obj_sense</definition>
+        <argsstring>(ObjectiveSense t_value)</argsstring>
+        <name>set_obj_sense</name>
+        <param>
+          <type>ObjectiveSense</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="205" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a9af50b78ffc99c11958395531f48e3b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_obj_expr</definition>
+        <argsstring>(const QuadExpr&lt; Var &gt; &amp;t_objective)</argsstring>
+        <name>set_obj_expr</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+          <declname>t_objective</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="207" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a17399d57d65ea6c2adc10d36c2113716" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_obj_expr</definition>
+        <argsstring>(QuadExpr&lt; Var &gt; &amp;&amp;t_objective)</argsstring>
+        <name>set_obj_expr</name>
+        <param>
+          <type><ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_objective</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="209" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a2be711b5ff2c98302d84784b5370f00c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_rhs_expr</definition>
+        <argsstring>(LinExpr&lt; Ctr &gt; &amp;&amp;t_rhs)</argsstring>
+        <name>set_rhs_expr</name>
+        <param>
+          <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt; &amp;&amp;</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="211" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a8f290a9663ef6820599991ca3b6ad6b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_rhs_expr</definition>
+        <argsstring>(const LinExpr&lt; Ctr &gt; &amp;t_rhs)</argsstring>
+        <name>set_rhs_expr</name>
+        <param>
+          <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt; &amp;</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="213" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a932a4e2b8fcecdb8f615876b9ea53077" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_obj_const</definition>
+        <argsstring>(double t_constant)</argsstring>
+        <name>set_obj_const</name>
+        <param>
+          <type>double</type>
+          <declname>t_constant</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="215" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a24ffd0fbf33140f5d2759ad3286e9be3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_mat_coeff</definition>
+        <argsstring>(const Ctr &amp;t_ctr, const Var &amp;t_var, double t_coeff)</argsstring>
+        <name>set_mat_coeff</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_coeff</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="217" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a4dfc49c61a52db19c0b16ddd7e8fc10c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref></type>
+        <definition>QCtr idol::Model::get_qctr_by_index</definition>
+        <argsstring>(unsigned int t_index) const</argsstring>
+        <name>get_qctr_by_index</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="219" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a790cadb418873dfee8ee5ff89f539359" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref></type>
+        <definition>Ctr idol::Model::get_ctr_by_index</definition>
+        <argsstring>(unsigned int t_index) const</argsstring>
+        <name>get_ctr_by_index</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="221" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1adb32f8f70b77fffc2f71aaa6675c06c1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Var" kindref="compound">Var</ref></type>
+        <definition>Var idol::Model::get_var_by_index</definition>
+        <argsstring>(unsigned int t_index) const</argsstring>
+        <name>get_var_by_index</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="223" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ae70c9db991bdc08b84b19efca279c7ad" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref></type>
+        <definition>SOSCtr idol::Model::get_sosctr_by_index</definition>
+        <argsstring>(unsigned int t_index) const</argsstring>
+        <name>get_sosctr_by_index</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="225" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a5c35c19d27e4402578f85b5d41b92827" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Model::get_ctr_index</definition>
+        <argsstring>(const Ctr &amp;t_ctr) const</argsstring>
+        <name>get_ctr_index</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="227" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a2fb197f935e847b2421cbd8525e0ec80" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Model::get_qctr_index</definition>
+        <argsstring>(const QCtr &amp;tctr) const</argsstring>
+        <name>get_qctr_index</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>tctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="229" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a4ff0698e1ae26bb21d129195b64a7bc1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Model::get_sosctr_index</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr) const</argsstring>
+        <name>get_sosctr_index</name>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="231" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a8a4452945318bc512de7731e8470a9df" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>CtrType</type>
+        <definition>CtrType idol::Model::get_ctr_type</definition>
+        <argsstring>(const Ctr &amp;t_ctr) const</argsstring>
+        <name>get_ctr_type</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="233" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a1dec40f82dee9f41b72d21add0f4987f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Model::get_ctr_rhs</definition>
+        <argsstring>(const Ctr &amp;t_ctr) const</argsstring>
+        <name>get_ctr_rhs</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="235" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1aec25fc3137c5a949514463874042cb16" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>const LinExpr&lt;Var&gt;&amp; idol::Model::get_ctr_row</definition>
+        <argsstring>(const Ctr &amp;t_ctr) const</argsstring>
+        <name>get_ctr_row</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="237" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a52ab934f1e347c3b897aa8a25de490ae" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1QuadExpr" kindref="compound">QuadExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>const QuadExpr&lt;Var&gt;&amp; idol::Model::get_qctr_expr</definition>
+        <argsstring>(const QCtr &amp;t_ctr) const</argsstring>
+        <name>get_qctr_expr</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="239" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ab7a0c5d6bc08145276b73e9d24c841d8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>CtrType</type>
+        <definition>CtrType idol::Model::get_qctr_type</definition>
+        <argsstring>(const QCtr &amp;t_ctr) const</argsstring>
+        <name>get_qctr_type</name>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="241" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a967345d7a436753955e6976aabd50225" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Model::get_ctr_dual</definition>
+        <argsstring>(const Ctr &amp;t_ctr) const</argsstring>
+        <name>get_ctr_dual</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="243" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a43f84de795f59addb6fcf43f887cbeb9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Model::get_ctr_farkas</definition>
+        <argsstring>(const Ctr &amp;t_ctr) const</argsstring>
+        <name>get_ctr_farkas</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="245" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a48fd6de2712a6b19aa0ce9fbd9035242" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_ctr_rhs</definition>
+        <argsstring>(const Ctr &amp;t_ctr, double t_rhs)</argsstring>
+        <name>set_ctr_rhs</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="247" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a4902544a8cb8fc709839e5100f8ea171" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_ctr_type</definition>
+        <argsstring>(const Ctr &amp;t_ctr, CtrType t_type)</argsstring>
+        <name>set_ctr_type</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="249" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a275daac0e2ce0d0f0240e459980bf5e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_ctr_row</definition>
+        <argsstring>(const Ctr &amp;t_ctr, const LinExpr&lt; Var &gt; &amp;t_row)</argsstring>
+        <name>set_ctr_row</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+          <declname>t_row</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="251" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a1a740b029093ac39928b44eac19cdf68" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_ctr_row</definition>
+        <argsstring>(const Ctr &amp;t_ctr, LinExpr&lt; Var &gt; &amp;&amp;t_row)</argsstring>
+        <name>set_ctr_row</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_row</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="253" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1acfcb681df8efff993a6ef84d467cefe6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Model::get_var_index</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>get_var_index</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="255" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a6b9befee59c34f0d479af3dcaa67630f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>VarType</type>
+        <definition>VarType idol::Model::get_var_type</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>get_var_type</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="257" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a2940d9dfcc11db52ae54b532723c346d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Model::get_var_lb</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>get_var_lb</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="259" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a598956bd2ba54e4da7a43ecaa7a2717d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Model::get_var_ub</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>get_var_ub</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="261" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a649687fd95330dd0a505cb7c8fe4696e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Model::get_var_primal</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>get_var_primal</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="263" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a965e4d1f290304faf44ee299ecba45f5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Model::get_var_reduced_cost</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>get_var_reduced_cost</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="265" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a46bfcfa59641b42a820cc29bdfb2ebb0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Model::get_var_ray</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>get_var_ray</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="267" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a2e0d1652e2fb1a1a8b2b2d36057bc88c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt; &amp;</type>
+        <definition>const LinExpr&lt;Ctr&gt;&amp; idol::Model::get_var_column</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>get_var_column</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="269" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a1e99f08fe0cb99dcaa099833346a1505" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::Model::get_var_obj</definition>
+        <argsstring>(const Var &amp;t_var) const</argsstring>
+        <name>get_var_obj</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="271" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1afd5ea79e1d5041fe1d1d413920a41745" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_var_type</definition>
+        <argsstring>(const Var &amp;t_var, VarType t_type)</argsstring>
+        <name>set_var_type</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <param>
+          <type>VarType</type>
+          <declname>t_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="273" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a8f6b09dee038e281d36765d37f958b89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_var_lb</definition>
+        <argsstring>(const Var &amp;t_var, double t_lb)</argsstring>
+        <name>set_var_lb</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_lb</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="275" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a3f99fd1cfa63c66a60d02e547f79da1a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_var_ub</definition>
+        <argsstring>(const Var &amp;t_var, double t_ub)</argsstring>
+        <name>set_var_ub</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_ub</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="277" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a7701d7bbf418df5fce08f0a87a67fbd7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_var_obj</definition>
+        <argsstring>(const Var &amp;t_var, double t_obj)</argsstring>
+        <name>set_var_obj</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_obj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="279" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a74a1fa79fcb90d43eaa7cd2589521170" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_var_column</definition>
+        <argsstring>(const Var &amp;t_var, const LinExpr&lt; Ctr &gt; &amp;t_column)</argsstring>
+        <name>set_var_column</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt; &amp;</type>
+          <declname>t_column</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="281" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ab1d1334d2b5cc98d8b814487c87fd5d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_var_column</definition>
+        <argsstring>(const Var &amp;t_var, LinExpr&lt; Ctr &gt; &amp;&amp;t_column)</argsstring>
+        <name>set_var_column</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &gt; &amp;&amp;</type>
+          <declname>t_column</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="283" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1aaf2c354ae4f2cac30f145b7f4cae5c50" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
+        <definition>const std::vector&lt;Var&gt;&amp; idol::Model::get_sosctr_vars</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr) const</argsstring>
+        <name>get_sosctr_vars</name>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="285" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1abb3b4d533e685c06e21ce7bddcef0332" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; double &gt; &amp;</type>
+        <definition>const std::vector&lt;double&gt;&amp; idol::Model::get_sosctr_weights</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr) const</argsstring>
+        <name>get_sosctr_weights</name>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="287" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1aeee6a76931dcfe56a64635435a8ee92e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::Model::is_sos1</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr) const</argsstring>
+        <name>is_sos1</name>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="289" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ae76ea99b8df9838ec08cb067d28f4c68" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Model::get_n_solutions</definition>
+        <argsstring>() const</argsstring>
+        <name>get_n_solutions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="291" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a113c0e4f6f8ba7a7a33b387dd39cf446" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Model::get_solution_index</definition>
+        <argsstring>() const</argsstring>
+        <name>get_solution_index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="293" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a6be675351baaaf0b24add12fcb59cb29" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_solution_index</definition>
+        <argsstring>(unsigned int t_index)</argsstring>
+        <name>set_solution_index</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="295" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1adacb3e7783cbdbca373f0645763c85ca" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::dump</definition>
+        <argsstring>(std::ostream &amp;t_os=std::cout) const</argsstring>
+        <name>dump</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>t_os</declname>
+          <defval>std::cout</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="297" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1ad1df7f4faa564a6409370f67c8bf714e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>Storage</type>
+        <definition>Storage idol::Model::storage</definition>
+        <argsstring>() const</argsstring>
+        <name>storage</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="299" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="299" bodyend="299"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a427d1a7db7650dc9b9b094e7abf6013e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::set_storage</definition>
+        <argsstring>(Storage t_storage, bool t_reset_minor_representation=false)</argsstring>
+        <name>set_storage</name>
+        <param>
+          <type>Storage</type>
+          <declname>t_storage</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>t_reset_minor_representation</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="301" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a631c50930463c39e5b422d68f8ded646" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Model::reset_minor_representation</definition>
+        <argsstring>()</argsstring>
+        <name>reset_minor_representation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="303" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a71c4bd5fec0215fd144e3b51577d19ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>unsigned int</type>
+            <declname>N</declname>
+            <defname>N</defname>
+          </param>
+        </templateparamlist>
+        <type>idol::Vector&lt; <ref refid="classidol_1_1Var" kindref="compound">idol::Var</ref>, N &gt;</type>
+        <definition>idol::Vector&lt;idol::Var, N&gt; idol::Model::add_vars</definition>
+        <argsstring>(Dim&lt; N &gt; t_dim, double t_lb, double t_ub, VarType t_type, double t_obj, const std::string &amp;t_name)</argsstring>
+        <name>add_vars</name>
+        <param>
+          <type><ref refid="classidol_1_1Dim" kindref="compound">Dim</ref>&lt; N &gt;</type>
+          <declname>t_dim</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_lb</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_ub</declname>
+        </param>
+        <param>
+          <type>VarType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_obj</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="320" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="320" bodyend="324"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Model_1a9086814a69f962414ef39a0c2849c0ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>unsigned int</type>
+            <declname>N</declname>
+            <defname>N</defname>
+          </param>
+        </templateparamlist>
+        <type>idol::Vector&lt; <ref refid="classidol_1_1Ctr" kindref="compound">idol::Ctr</ref>, N &gt;</type>
+        <definition>idol::Vector&lt;idol::Ctr, N&gt; idol::Model::add_ctrs</definition>
+        <argsstring>(Dim&lt; N &gt; t_dim, CtrType t_type, double t_rhs, const std::string &amp;t_name)</argsstring>
+        <name>add_ctrs</name>
+        <param>
+          <type><ref refid="classidol_1_1Dim" kindref="compound">Dim</ref>&lt; N &gt;</type>
+          <declname>t_dim</declname>
+        </param>
+        <param>
+          <type>CtrType</type>
+          <declname>t_type</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t_rhs</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="327" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="327" bodyend="331"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This class is used to represent a mathematical optimization model. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Model</label>
+        <link refid="classidol_1_1Model"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" line="43" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h" bodystart="43" bodyend="304"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Model_1a61f27f3afe631d3bd406c7155f6dcd0a" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add</name></member>
+      <member refid="classidol_1_1Model_1a02f6aa29129cb2a39f3dbf8fe25bd8b6" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add</name></member>
+      <member refid="classidol_1_1Model_1a403e59442470ee2c3fb65d7ebf5dffc9" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add</name></member>
+      <member refid="classidol_1_1Model_1a36a2cd5b197de19a81058f50f136a11d" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add</name></member>
+      <member refid="classidol_1_1Model_1abe349cdd65adbff9f303d51123f57fe8" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add</name></member>
+      <member refid="classidol_1_1Model_1a0cb7483db7e7b5e85278b0ece9790623" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add</name></member>
+      <member refid="classidol_1_1Model_1a76b2704af6248a2e589912dc17e9bddd" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add</name></member>
+      <member refid="classidol_1_1Model_1a99332ad95fb17575e7eb670c1e69bf83" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add</name></member>
+      <member refid="classidol_1_1Model_1a3b5348bf6c600aee682f655476d31f08" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>add_column_to_rows</name></member>
+      <member refid="classidol_1_1Model_1a6bac8c7fcaabb1cd3a6b2fed1f35e331" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_ctr</name></member>
+      <member refid="classidol_1_1Model_1adeb5ece32c7eb3df79e58e12b53b7062" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_ctr</name></member>
+      <member refid="classidol_1_1Model_1a30404faaf86a0ab7432e3b1ecc8cdcb0" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_ctrs</name></member>
+      <member refid="classidol_1_1Model_1a9086814a69f962414ef39a0c2849c0ac" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_ctrs</name></member>
+      <member refid="classidol_1_1Model_1af6310a9be14301dcd48d2dde42629747" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_qctr</name></member>
+      <member refid="classidol_1_1Model_1a90970cc6a71dc11e5eb0a6d97626e3fb" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_qctr</name></member>
+      <member refid="classidol_1_1Model_1a1481238aec37ec15c3855e0007677115" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_qctrs</name></member>
+      <member refid="classidol_1_1Model_1a777b44a23a03282c66f7b9c8ccf95bb4" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>add_row_to_columns</name></member>
+      <member refid="classidol_1_1Model_1a0a2385e0b2cef5d45312248f5d33cd14" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_sosctr</name></member>
+      <member refid="classidol_1_1Model_1ad50decb04ab687f282c7e0e4eee3e222" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_var</name></member>
+      <member refid="classidol_1_1Model_1ae286f293a300809ec773d8e2fedaf4b2" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_var</name></member>
+      <member refid="classidol_1_1Model_1ac25986f8b40918c69a8be904b361c8e9" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_vars</name></member>
+      <member refid="classidol_1_1Model_1a71c4bd5fec0215fd144e3b51577d19ab" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_vars</name></member>
+      <member refid="classidol_1_1Model_1ab0255fe2a1b393c29242c78975986ca1" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>add_vector</name></member>
+      <member refid="classidol_1_1Model_1a076e922b6608160548d502bd0930e235a10015fc18c42267bd166b5a64d387a36" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>Both</name></member>
+      <member refid="classidol_1_1Model_1a496037901a2932e182f5809175a2eb37" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>build_column</name></member>
+      <member refid="classidol_1_1Model_1a76eb46e56931b47c5c65580c8646ec05" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>build_columns</name></member>
+      <member refid="classidol_1_1Model_1a3cb0cb428a01b10e58fe504f3008f25d" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>build_row</name></member>
+      <member refid="classidol_1_1Model_1a0689429a6ae6e2cd7b346d4a4f65214a" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>build_rows</name></member>
+      <member refid="classidol_1_1Model_1a9f0d3e28e852b52d09564d61e70b8cd7" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>clone</name></member>
+      <member refid="classidol_1_1Model_1a7b643461ef7819ac662495a64955a63f" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>column_storage_matters</name></member>
+      <member refid="classidol_1_1Model_1a076e922b6608160548d502bd0930e235a40d87b1b2ad10fc1a3878456d5f719e9" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>ColumnOriented</name></member>
+      <member refid="classidol_1_1Model_1a6db013057e921eaf74123d96f7311458" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>copy</name></member>
+      <member refid="classidol_1_1Model_1adca381b2803ca59f852d8a5532ea34ed" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>ctrs</name></member>
+      <member refid="classidol_1_1Model_1adacb3e7783cbdbca373f0645763c85ca" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>dump</name></member>
+      <member refid="classidol_1_1Model_1a8205914bb4436e3d0ee3cde968b2680b" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>env</name></member>
+      <member refid="classidol_1_1Model_1acd86a2ce603fde9531b8d31989fa4fd8" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_best_bound</name></member>
+      <member refid="classidol_1_1Model_1aac9a0ebf20382c4c1baf81d890c55b16" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_best_obj</name></member>
+      <member refid="classidol_1_1Model_1a790cadb418873dfee8ee5ff89f539359" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_ctr_by_index</name></member>
+      <member refid="classidol_1_1Model_1a967345d7a436753955e6976aabd50225" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_ctr_dual</name></member>
+      <member refid="classidol_1_1Model_1a43f84de795f59addb6fcf43f887cbeb9" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_ctr_farkas</name></member>
+      <member refid="classidol_1_1Model_1a5c35c19d27e4402578f85b5d41b92827" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_ctr_index</name></member>
+      <member refid="classidol_1_1Model_1a1dec40f82dee9f41b72d21add0f4987f" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_ctr_rhs</name></member>
+      <member refid="classidol_1_1Model_1aec25fc3137c5a949514463874042cb16" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_ctr_row</name></member>
+      <member refid="classidol_1_1Model_1a8a4452945318bc512de7731e8470a9df" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_ctr_type</name></member>
+      <member refid="classidol_1_1Model_1a51c92f6ac3fb927ea7b88d616cd2d2e8" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_mat_coeff</name></member>
+      <member refid="classidol_1_1Model_1ae76ea99b8df9838ec08cb067d28f4c68" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_n_solutions</name></member>
+      <member refid="classidol_1_1Model_1a1fb6b4f871170274ebdabb5fb255c57f" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_obj_expr</name></member>
+      <member refid="classidol_1_1Model_1a85fbdc421531a17e91627a8466d313b9" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_obj_sense</name></member>
+      <member refid="classidol_1_1Model_1a4dfc49c61a52db19c0b16ddd7e8fc10c" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_qctr_by_index</name></member>
+      <member refid="classidol_1_1Model_1a52ab934f1e347c3b897aa8a25de490ae" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_qctr_expr</name></member>
+      <member refid="classidol_1_1Model_1a2fb197f935e847b2421cbd8525e0ec80" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_qctr_index</name></member>
+      <member refid="classidol_1_1Model_1ab7a0c5d6bc08145276b73e9d24c841d8" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_qctr_type</name></member>
+      <member refid="classidol_1_1Model_1adc9cc063308283f3953d5cd902ac10a7" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_reason</name></member>
+      <member refid="classidol_1_1Model_1acc5237824e65640729fa4cd789d6794c" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_rhs_expr</name></member>
+      <member refid="classidol_1_1Model_1a113c0e4f6f8ba7a7a33b387dd39cf446" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_solution_index</name></member>
+      <member refid="classidol_1_1Model_1ae70c9db991bdc08b84b19efca279c7ad" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_sosctr_by_index</name></member>
+      <member refid="classidol_1_1Model_1a4ff0698e1ae26bb21d129195b64a7bc1" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_sosctr_index</name></member>
+      <member refid="classidol_1_1Model_1aaf2c354ae4f2cac30f145b7f4cae5c50" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_sosctr_vars</name></member>
+      <member refid="classidol_1_1Model_1abb3b4d533e685c06e21ce7bddcef0332" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_sosctr_weights</name></member>
+      <member refid="classidol_1_1Model_1a1b9ecba96de430c0d308881d6a354eaa" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_status</name></member>
+      <member refid="classidol_1_1Model_1adb32f8f70b77fffc2f71aaa6675c06c1" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_var_by_index</name></member>
+      <member refid="classidol_1_1Model_1a2e0d1652e2fb1a1a8b2b2d36057bc88c" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_var_column</name></member>
+      <member refid="classidol_1_1Model_1acfcb681df8efff993a6ef84d467cefe6" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_var_index</name></member>
+      <member refid="classidol_1_1Model_1a2940d9dfcc11db52ae54b532723c346d" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_var_lb</name></member>
+      <member refid="classidol_1_1Model_1a1e99f08fe0cb99dcaa099833346a1505" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_var_obj</name></member>
+      <member refid="classidol_1_1Model_1a649687fd95330dd0a505cb7c8fe4696e" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_var_primal</name></member>
+      <member refid="classidol_1_1Model_1a46bfcfa59641b42a820cc29bdfb2ebb0" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_var_ray</name></member>
+      <member refid="classidol_1_1Model_1a965e4d1f290304faf44ee299ecba45f5" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_var_reduced_cost</name></member>
+      <member refid="classidol_1_1Model_1a6b9befee59c34f0d479af3dcaa67630f" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_var_type</name></member>
+      <member refid="classidol_1_1Model_1a598956bd2ba54e4da7a43ecaa7a2717d" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>get_var_ub</name></member>
+      <member refid="classidol_1_1Model_1ad466454150090af61e4891fe27556898" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>has</name></member>
+      <member refid="classidol_1_1Model_1ae700362c208ed04714d47caa60be00c4" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>has</name></member>
+      <member refid="classidol_1_1Model_1a409c66770259c3727400b829c0b6e1a7" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>has</name></member>
+      <member refid="classidol_1_1Model_1ad8dd1c7b28e93c756d2e1933495e683e" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>has</name></member>
+      <member refid="classidol_1_1Model_1a9928e57275d7ff9a7516d5facee8cab9" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>has_optimizer</name></member>
+      <member refid="classidol_1_1Model_1a7a1a5b3bb169710d51741c2628d937e3" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>has_optimizer_factory</name></member>
+      <member refid="classidol_1_1Model_1ac55fb79cb47e51dcf00adbda537c4b1a" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>id</name></member>
+      <member refid="classidol_1_1Model_1aeee6a76931dcfe56a64635435a8ee92e" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>is_sos1</name></member>
+      <member refid="classidol_1_1Model_1ac5aa77a10f93860927e36e90efa4ff5a" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_constraints</name></member>
+      <member refid="classidol_1_1Model_1abc5ad23d45c29a1a988e59e4b873fb20" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_env</name></member>
+      <member refid="classidol_1_1Model_1a10a1b6b44fb550cb00c90b7022e8e44a" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_has_been_moved</name></member>
+      <member refid="classidol_1_1Model_1a3944693a3908d9c80de0c5f19d940739" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_has_minor_representation</name></member>
+      <member refid="classidol_1_1Model_1ae121b8288683ca8f0a4c7a19f5461380" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_id</name></member>
+      <member refid="classidol_1_1Model_1ad39dab951f72911bd98a514b27e0d027" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_objective</name></member>
+      <member refid="classidol_1_1Model_1a4d5d0ad216b87ba365906a396ac65742" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_optimizer</name></member>
+      <member refid="classidol_1_1Model_1a11ee488553afc228fb0cd6c98ec932c9" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_optimizer_factory</name></member>
+      <member refid="classidol_1_1Model_1ae9573aa208aa65ffcdfda7bbb517bf5b" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_qconstraints</name></member>
+      <member refid="classidol_1_1Model_1a19916e2c661d599799049776504b0510" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_rhs</name></member>
+      <member refid="classidol_1_1Model_1aad79c869ceb10c3ed90986149a13d287" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_sense</name></member>
+      <member refid="classidol_1_1Model_1a8848f7972d8b5c888f16e43057639762" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_sosconstraints</name></member>
+      <member refid="classidol_1_1Model_1a06d26d049a4864d1e3fce516f86fb66a" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_storage</name></member>
+      <member refid="classidol_1_1Model_1ace59ecece4f4944f4cc836339c3f9fa5" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>m_variables</name></member>
+      <member refid="classidol_1_1Model_1a89ef32117a09cdeaae8d5602735c5673" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>Model</name></member>
+      <member refid="classidol_1_1Model_1a5b8772328f895699710549a57f80f871" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>Model</name></member>
+      <member refid="classidol_1_1Model_1add376f20b7fd7f46a3ef20c50b0d3a1e" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>Model</name></member>
+      <member refid="classidol_1_1Model_1a6e97fa219e21c8025d0764115e7053bb" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Model_1a049bb89c160174718e5d760f1381d7a5" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>operator=</name></member>
+      <member refid="classidol_1_1Model_1abb6bbbfe49c480b5dd747d18fd971a01" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>optimize</name></member>
+      <member refid="classidol_1_1Model_1aabb19eb5bc7dcf1215cfafdd44bf5658" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>optimizer</name></member>
+      <member refid="classidol_1_1Model_1a6956799e60657fb06a2e9e753057d603" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>optimizer</name></member>
+      <member refid="classidol_1_1Model_1aa229a3c65c7d16605259de378a054358" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>optimizer_factory</name></member>
+      <member refid="classidol_1_1Model_1a1e92dbe546c8759c4f1bf142b6831a35" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>qctrs</name></member>
+      <member refid="classidol_1_1Model_1a73e3910463afbe02945fe7b6746e98ad" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>remove</name></member>
+      <member refid="classidol_1_1Model_1a1c58fa0bb371aba629cd9372ec066e11" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>remove</name></member>
+      <member refid="classidol_1_1Model_1a40087a2545b4dc98e45de4fb0c15259f" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>remove</name></member>
+      <member refid="classidol_1_1Model_1ad405def877c8ca1928f6f68726f97570" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>remove</name></member>
+      <member refid="classidol_1_1Model_1a947702e26251110fe467ba1cf18eae81" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>reserve_ctrs</name></member>
+      <member refid="classidol_1_1Model_1a52dad105787522f434b0560e58f52e51" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>reserve_qctrs</name></member>
+      <member refid="classidol_1_1Model_1a068f546800093b6b8cd8290fdfbbeb9c" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>reserve_sos_ctrs</name></member>
+      <member refid="classidol_1_1Model_1a819c8a9d3243347b7efb55574863ff63" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>reserve_vars</name></member>
+      <member refid="classidol_1_1Model_1a631c50930463c39e5b422d68f8ded646" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>reset_minor_representation</name></member>
+      <member refid="classidol_1_1Model_1ab9181d98efa323e30ddd26025507f2e1" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>row_storage_matters</name></member>
+      <member refid="classidol_1_1Model_1a076e922b6608160548d502bd0930e235ac87c0f4033d411dcb691803cda624272" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>RowOriented</name></member>
+      <member refid="classidol_1_1Model_1a48fd6de2712a6b19aa0ce9fbd9035242" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_ctr_rhs</name></member>
+      <member refid="classidol_1_1Model_1a275daac0e2ce0d0f0240e459980bf5e3" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_ctr_row</name></member>
+      <member refid="classidol_1_1Model_1a1a740b029093ac39928b44eac19cdf68" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_ctr_row</name></member>
+      <member refid="classidol_1_1Model_1a4902544a8cb8fc709839e5100f8ea171" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_ctr_type</name></member>
+      <member refid="classidol_1_1Model_1a24ffd0fbf33140f5d2759ad3286e9be3" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_mat_coeff</name></member>
+      <member refid="classidol_1_1Model_1a932a4e2b8fcecdb8f615876b9ea53077" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_obj_const</name></member>
+      <member refid="classidol_1_1Model_1a9af50b78ffc99c11958395531f48e3b8" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_obj_expr</name></member>
+      <member refid="classidol_1_1Model_1a17399d57d65ea6c2adc10d36c2113716" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_obj_expr</name></member>
+      <member refid="classidol_1_1Model_1a41c4fa3b081274da2ea27da7a7c00b38" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_obj_sense</name></member>
+      <member refid="classidol_1_1Model_1a2be711b5ff2c98302d84784b5370f00c" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_rhs_expr</name></member>
+      <member refid="classidol_1_1Model_1a8f290a9663ef6820599991ca3b6ad6b3" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_rhs_expr</name></member>
+      <member refid="classidol_1_1Model_1a6be675351baaaf0b24add12fcb59cb29" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_solution_index</name></member>
+      <member refid="classidol_1_1Model_1a427d1a7db7650dc9b9b094e7abf6013e" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_storage</name></member>
+      <member refid="classidol_1_1Model_1a74a1fa79fcb90d43eaa7cd2589521170" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_var_column</name></member>
+      <member refid="classidol_1_1Model_1ab1d1334d2b5cc98d8b814487c87fd5d4" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_var_column</name></member>
+      <member refid="classidol_1_1Model_1a8f6b09dee038e281d36765d37f958b89" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_var_lb</name></member>
+      <member refid="classidol_1_1Model_1a7701d7bbf418df5fce08f0a87a67fbd7" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_var_obj</name></member>
+      <member refid="classidol_1_1Model_1afd5ea79e1d5041fe1d1d413920a41745" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_var_type</name></member>
+      <member refid="classidol_1_1Model_1a3f99fd1cfa63c66a60d02e547f79da1a" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>set_var_ub</name></member>
+      <member refid="classidol_1_1Model_1a890965704c2a05743ad969d236996921" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>sosctrs</name></member>
+      <member refid="classidol_1_1Model_1a076e922b6608160548d502bd0930e235" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>Storage</name></member>
+      <member refid="classidol_1_1Model_1ad1df7f4faa564a6409370f67c8bf714e" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>storage</name></member>
+      <member refid="classidol_1_1Model_1ab8f11c9d9fbb0544aa0cdfe13974b9dd" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>throw_if_no_optimizer</name></member>
+      <member refid="classidol_1_1Model_1ad2fd892ce1b3955b8848083b63db04c6" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>throw_if_unknown_object</name></member>
+      <member refid="classidol_1_1Model_1a4b075665527307841e18d36b8ee305a2" prot="private" virt="non-virtual"><scope>idol::Model</scope><name>throw_if_unknown_object</name></member>
+      <member refid="classidol_1_1Model_1a9f096a04590ec8c466d9d4c1e378fb16" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>unuse</name></member>
+      <member refid="classidol_1_1Model_1a9b589bba512a598139e2fccda0c23720" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>update</name></member>
+      <member refid="classidol_1_1Model_1a12389942b1bb7182ef4eb934f7a52ad8" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>use</name></member>
+      <member refid="classidol_1_1Model_1a8979f73434ff0dcedad78a677399e29c" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>vars</name></member>
+      <member refid="classidol_1_1Model_1a60d4038814924623a55435f42b76186c" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>write</name></member>
+      <member refid="classidol_1_1Model_1a691528a550f6d326baf1fad825da5a78" prot="public" virt="non-virtual"><scope>idol::Model</scope><name>~Model</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

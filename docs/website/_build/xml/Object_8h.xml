@@ -1,0 +1,1243 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="Object_8h" kind="file" language="C++">
+    <compoundname>Object.h</compoundname>
+    <includes local="no">memory</includes>
+    <includes refid="ObjectId_8h" local="yes">ObjectId.h</includes>
+    <includes refid="Vector_8h" local="yes">idol/general/utils/Vector.h</includes>
+    <includes refid="Pair_8h" local="yes">idol/general/utils/Pair.h</includes>
+    <includes refid="Annotation_8h" local="yes">idol/mixed-integer/modeling/annotations/Annotation.h</includes>
+    <includes refid="Exception_8h" local="yes">idol/general/utils/exceptions/Exception.h</includes>
+    <includedby refid="Ctr_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/Ctr.h</includedby>
+    <includedby refid="QCtr_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtr.h</includedby>
+    <includedby refid="SOSCtr_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtr.h</includedby>
+    <includedby refid="Param_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/parameters/Param.h</includedby>
+    <includedby refid="Var_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/Var.h</includedby>
+    <incdepgraph>
+      <node id="4">
+        <label>list</label>
+      </node>
+      <node id="9">
+        <label>functional</label>
+      </node>
+      <node id="10">
+        <label>idol/general/utils/Pair.h</label>
+        <link refid="Pair_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>string</label>
+      </node>
+      <node id="13">
+        <label>impl_Annotation.h</label>
+        <link refid="impl__Annotation_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>any</label>
+      </node>
+      <node id="1">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h</label>
+        <link refid="Object_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>vector</label>
+      </node>
+      <node id="7">
+        <label>array</label>
+      </node>
+      <node id="12">
+        <label>idol/mixed-integer/modeling/annotations/Annotation.h</label>
+        <link refid="Annotation_8h_source"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>iostream</label>
+      </node>
+      <node id="15">
+        <label>idol/general/utils/exceptions/Exception.h</label>
+        <link refid="Exception_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>idol/general/utils/Vector.h</label>
+        <link refid="Vector_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>ObjectId.h</label>
+        <link refid="ObjectId_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>memory</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="56">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h</label>
+        <link refid="factories_2UniformlyRandom_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/Model.h</label>
+        <link refid="Model_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>/home/henri/Research/idol/lib/include/idol/solvers.h</label>
+        <link refid="solvers_8h_source"/>
+      </node>
+      <node id="19">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations/operators.h</label>
+        <link refid="operators_8h_source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="73">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/TempVar.h</label>
+        <link refid="TempVar_8h_source"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h</label>
+        <link refid="Optimizers__GLPK_8h_source"/>
+      </node>
+      <node id="80">
+        <label>/home/henri/Research/idol/lib/include/idol/general/linear-algebra/MatrixIndices.h</label>
+        <link refid="MatrixIndices_8h_source"/>
+      </node>
+      <node id="60">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h</label>
+        <link refid="branch-and-bound_2logs_2Info_8h_source"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+      </node>
+      <node id="108">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/LinExpr.h</label>
+        <link refid="LinExpr_8h_source"/>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h</label>
+        <link refid="Optimizers__DantzigWolfeDecomposition_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/CutSeparation.h</label>
+        <link refid="CutSeparation_8h_source"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="104">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/NoStabilization.h</label>
+        <link refid="NoStabilization_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyMethod.h</label>
+        <link refid="PenaltyMethod_8h_source"/>
+      </node>
+      <node id="81">
+        <label>/home/henri/Research/idol/lib/include/idol/general/utils/Point.h</label>
+        <link refid="Point_8h_source"/>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Versions.h</label>
+        <link refid="Versions_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="106">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/SubProblem.h</label>
+        <link refid="padm_2SubProblem_8h_source"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/LazyCutCallback.h</label>
+        <link refid="LazyCutCallback_8h_source"/>
+      </node>
+      <node id="3">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/modeling/Description.h</label>
+        <link refid="bilevel_2modeling_2Description_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/KKT.h</label>
+        <link refid="bilevel_2optimizers_2KKT_2KKT_8h_source"/>
+      </node>
+      <node id="28">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h</label>
+        <link refid="IntegerMaster_8h_source"/>
+      </node>
+      <node id="12">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/StrongDuality/StrongDuality.h</label>
+        <link refid="StrongDuality_8h_source"/>
+      </node>
+      <node id="16">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h</label>
+        <link refid="Optimizers__ColumnAndConstraintGeneration_8h_source"/>
+      </node>
+      <node id="66">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/ExportBranchAndBoundTreeToCSV.h</label>
+        <link refid="ExportBranchAndBoundTreeToCSV_8h_source"/>
+      </node>
+      <node id="10">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h</label>
+        <link refid="PessimisticAsOptimistic_8h_source"/>
+      </node>
+      <node id="37">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/models/KKT.h</label>
+        <link refid="mixed-integer_2modeling_2models_2KKT_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h</label>
+        <link refid="factories_2VariableBranching_8h_source"/>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/Formulation.h</label>
+        <link refid="mixed-integer_2optimizers_2dantzig-wolfe_2Formulation_8h_source"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.h</label>
+        <link refid="Optimizers__AffineDecisionRule_8h_source"/>
+      </node>
+      <node id="67">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeUpdator.h</label>
+        <link refid="DefaultNodeUpdator_8h_source"/>
+        <childnode refid="57" relation="include">
+        </childnode>
+      </node>
+      <node id="86">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/Diver.h</label>
+        <link refid="impls_2Diver_8h_source"/>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/UserCutCallback.h</label>
+        <link refid="UserCutCallback_8h_source"/>
+      </node>
+      <node id="55">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/StrongBranching.h</label>
+        <link refid="impls_2StrongBranching_8h_source"/>
+        <childnode refid="54" relation="include">
+        </childnode>
+      </node>
+      <node id="75">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/BranchingDecision.h</label>
+        <link refid="BranchingDecision_8h_source"/>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h</label>
+        <link refid="ArtificialCosts_8h_source"/>
+      </node>
+      <node id="58">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h</label>
+        <link refid="BranchAndBound_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibS.h</label>
+        <link refid="MibS_8h_source"/>
+      </node>
+      <node id="8">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h</label>
+        <link refid="Optimizers__KKT_8h_source"/>
+      </node>
+      <node id="11">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/StrongDuality/Optimizers_StrongDuality.h</label>
+        <link refid="Optimizers__StrongDuality_8h_source"/>
+      </node>
+      <node id="111">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h</label>
+        <link refid="AffExpr_8h_source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h</label>
+        <link refid="PenaltyUpdates_8h_source"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="91">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/UniformlyRandom.h</label>
+        <link refid="impls_2UniformlyRandom_8h_source"/>
+        <childnode refid="56" relation="include">
+        </childnode>
+      </node>
+      <node id="115">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtrVersion.h</label>
+        <link refid="SOSCtrVersion_8h_source"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="76">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h</label>
+        <link refid="robust_2modeling_2Description_8h_source"/>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.h</label>
+        <link refid="Optimizers__BranchAndCut_8h_source"/>
+      </node>
+      <node id="25">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h</label>
+        <link refid="DantzigWolfeDecomposition_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/PessimisticAsOptimistic/Optimizers_PessimisticAsOptimistic.h</label>
+        <link refid="Optimizers__PessimisticAsOptimistic_8h_source"/>
+      </node>
+      <node id="95">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/LocalBranching.h</label>
+        <link refid="LocalBranching_8h_source"/>
+      </node>
+      <node id="112">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/QuadExpr.h</label>
+        <link refid="QuadExpr_8h_source"/>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/VarVersion.h</label>
+        <link refid="VarVersion_8h_source"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/FirstInfeasibleFound.h</label>
+        <link refid="factories_2FirstInfeasibleFound_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="68">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/affine-decision-rule/AffineDecisionRule.h</label>
+        <link refid="AffineDecisionRule_8h_source"/>
+        <childnode refid="69" relation="include">
+        </childnode>
+      </node>
+      <node id="101">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h</label>
+        <link refid="FarkasPricing_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h</label>
+        <link refid="factories_2PseudoCost_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h</label>
+        <link refid="factories_2MostInfeasible_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h</label>
+        <link refid="Object_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h</label>
+        <link refid="DefaultNodeInfo_8h_source"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h</label>
+        <link refid="Env_8h_source"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="88">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/LeastInfeasible.h</label>
+        <link refid="impls_2LeastInfeasible_8h_source"/>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="70">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Deterministic.h</label>
+        <link refid="Deterministic_8h_source"/>
+      </node>
+      <node id="15">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h</label>
+        <link refid="robust_2optimizers_2column-and-constraint-generation_2Formulation_8h_source"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="97">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/SimpleRounding.h</label>
+        <link refid="SimpleRounding_8h_source"/>
+      </node>
+      <node id="92">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h</label>
+        <link refid="AbstractBranchAndBoundCallbackI_8h_source"/>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/RENS.h</label>
+        <link refid="RENS_8h_source"/>
+      </node>
+      <node id="62">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h</label>
+        <link refid="BranchAndBoundCallback_8h_source"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.h</label>
+        <link refid="ScenarioBasedKAdaptabilityProblemSolver_8h_source"/>
+      </node>
+      <node id="84">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/BranchingWithPriority.h</label>
+        <link refid="impls_2BranchingWithPriority_8h_source"/>
+        <childnode refid="48" relation="include">
+        </childnode>
+      </node>
+      <node id="99">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/GurobiCallbackI.h</label>
+        <link refid="GurobiCallbackI_8h_source"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="61">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/Optimizers_BranchAndBound.h</label>
+        <link refid="Optimizers__BranchAndBound_8h_source"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+      </node>
+      <node id="110">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempCtr.h</label>
+        <link refid="TempCtr_8h_source"/>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="89">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/MostInfeasible.h</label>
+        <link refid="impls_2MostInfeasible_8h_source"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="107">
+        <label>/home/henri/Research/idol/lib/include/idol/general/utils/SparseVector.h</label>
+        <link refid="SparseVector_8h_source"/>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+      </node>
+      <node id="100">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h</label>
+        <link refid="DantzigWolfeInfeasibilityStrategy_8h_source"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="105">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h</label>
+        <link refid="Wentges_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h</label>
+        <link refid="factories_2StrongBranching_8h_source"/>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h</label>
+        <link refid="GLPK_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="113">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtrVersion.h</label>
+        <link refid="QCtrVersion_8h_source"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/LeastInfeasible.h</label>
+        <link refid="factories_2LeastInfeasible_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Factory.h</label>
+        <link refid="branch-and-bound_2logs_2Factory_8h_source"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h</label>
+        <link refid="Optimizers__Gurobi_8h_source"/>
+      </node>
+      <node id="114">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/TempQCtr.h</label>
+        <link refid="TempQCtr_8h_source"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/modeling/read_from_file.h</label>
+        <link refid="read__from__file_8h_source"/>
+      </node>
+      <node id="87">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/FirstInfeasibleFound.h</label>
+        <link refid="impls_2FirstInfeasibleFound_8h_source"/>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/Ctr.h</label>
+        <link refid="Ctr_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+      </node>
+      <node id="65">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h</label>
+        <link refid="ReducedCostFixing_8h_source"/>
+      </node>
+      <node id="31">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Formulation.h</label>
+        <link refid="mixed-integer_2optimizers_2padm_2Formulation_8h_source"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="102">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h</label>
+        <link refid="DualPriceSmoothingStabilization_8h_source"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PADM.h</label>
+        <link refid="PADM_8h_source"/>
+      </node>
+      <node id="85">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/VariableBranching.h</label>
+        <link refid="impls_2VariableBranching_8h_source"/>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>/home/henri/Research/idol/lib/include/idol/modeling.h</label>
+        <link refid="modeling_8h_source"/>
+      </node>
+      <node id="94">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h</label>
+        <link refid="MibSCallbackI_8h_source"/>
+      </node>
+      <node id="83">
+        <label>/home/henri/Research/idol/lib/include/idol/general/utils/GeneratorPool.h</label>
+        <link refid="GeneratorPool_8h_source"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="109">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/CtrVersion.h</label>
+        <link refid="CtrVersion_8h_source"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h</label>
+        <link refid="Algorithm_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h</label>
+        <link refid="ColumnAndConstraintGeneration_8h_source"/>
+      </node>
+      <node id="64">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h</label>
+        <link refid="KnapsackCover_8h_source"/>
+      </node>
+      <node id="46">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h</label>
+        <link refid="Gurobi_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="90">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/PseudoCost.h</label>
+        <link refid="impls_2PseudoCost_8h_source"/>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h</label>
+        <link refid="Optimizers__Deterministic_8h_source"/>
+      </node>
+      <node id="48">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h</label>
+        <link refid="factories_2BranchingWithPriority_8h_source"/>
+      </node>
+      <node id="98">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h</label>
+        <link refid="Plots__OptimalityGap_8h_source"/>
+      </node>
+      <node id="78">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/SOSCtr.h</label>
+        <link refid="SOSCtr_8h_source"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h</label>
+        <link refid="CallbackAsBranchAndBoundCallback_8h_source"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h</label>
+        <link refid="OptimizerWithLazyUpdates_8h_source"/>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="77">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/constraints/QCtr.h</label>
+        <link refid="QCtr_8h_source"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h</label>
+        <link refid="Optimizers__ScenarioBasedKAdaptabilityProblemSolver_8h_source"/>
+      </node>
+      <node id="93">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/Callback.h</label>
+        <link refid="Callback_8h_source"/>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/Diver.h</label>
+        <link refid="factories_2Diver_8h_source"/>
+      </node>
+      <node id="103">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h</label>
+        <link refid="Neame_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="79">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/variables/Var.h</label>
+        <link refid="Var_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+      </node>
+      <node id="72">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/parameters/Param.h</label>
+        <link refid="Param_8h_source"/>
+      </node>
+      <node id="20">
+        <label>/home/henri/Research/idol/lib/include/idol/general/utils/GenerationPattern.h</label>
+        <link refid="GenerationPattern_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h</label>
+        <link refid="Cplex_8h_source"/>
+      </node>
+      <node id="5">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/modeling/write_to_file.h</label>
+        <link refid="write__to__file_8h_source"/>
+      </node>
+      <node id="32">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h</label>
+        <link refid="Optimizers__PADM_8h_source"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.h</label>
+        <link refid="ColumnGeneration_8h_source"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classidol_1_1Object" prot="public">idol::Object</innerclass>
+    <innernamespace refid="namespaceidol">idol</innernamespace>
+    <innernamespace refid="namespaceidol_1_1impl">idol::impl</innernamespace>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="Object_8h_1a46a81786c39fb448f0b8e80792bfa099" prot="public" static="no">
+        <name>IDOL_MAKE_HASHABLE</name>
+        <param><defname>name</defname></param>
+        <initializer>template&lt;&gt; \
+struct std::hash&lt;idol::name&gt; { \
+    std::size_t operator()(const idol::name&amp; t_variable) const { \
+        return std::hash&lt;unsigned int&gt;()(t_variable.id()); \
+    } \
+};                          \
+\
+template&lt;&gt; \
+struct std::equal_to&lt;idol::name&gt; { \
+    std::size_t operator()(const idol::name&amp; t_a, const idol::name&amp; t_b) const { \
+        return t_a.id() == t_b.id(); \
+    } \
+}; \
+template&lt;&gt; \
+struct std::less&lt;idol::name&gt; { \
+    std::size_t operator()(const idol::name&amp; t_a, const idol::name&amp; t_b) const { \
+        return t_a.id() &lt; t_b.id(); \
+    } \
+};                               \
+template&lt;&gt; \
+struct std::equal_to&lt;<ref refid="structidol_1_1Pair" kindref="compound">idol::Pair</ref>&lt;idol::name, idol::name&gt;&gt; { \
+    std::size_t operator()(const <ref refid="structidol_1_1Pair" kindref="compound">idol::Pair</ref>&lt;idol::name, idol::name&gt;&amp; t_a, const <ref refid="structidol_1_1Pair" kindref="compound">idol::Pair</ref>&lt;idol::name, idol::name&gt;&amp; t_b) const { \
+        return std::equal_to&lt;idol::name&gt;()(t_a.first, t_b.first) &amp;&amp; std::equal_to&lt;idol::name&gt;()(t_a.second, t_b.second); \
+    } \
+};</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" line="128" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Created<sp/>by<sp/>henri<sp/>on<sp/>27/01/23.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>IDOL_OBJECT_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>IDOL_OBJECT_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;memory&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;ObjectId.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/general/utils/Vector.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/general/utils/Pair.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/modeling/annotations/Annotation.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/general/utils/exceptions/Exception.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">idol<sp/>{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Model;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CRTP&gt;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Object;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Var;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Ctr;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CRTP&gt;</highlight></codeline>
+<codeline lineno="26" refid="classidol_1_1Object" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classidol_1_1Object" kindref="compound">idol::Object</ref><sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>std::shared_ptr&lt;ObjectId&lt;T&gt;&gt;<sp/>m_object_id;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>versions()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_object_id-&gt;versions();<sp/>}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>versions()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_object_id-&gt;versions();<sp/>}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">...ArgsT&gt;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>create_version(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>t_model,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t_index,<sp/>ArgsT&amp;&amp;<sp/>...t_args)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_object_id-&gt;versions().create(t_model,<sp/>t_index,<sp/>std::forward&lt;ArgsT&gt;(t_args)...);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>remove_version(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>t_model)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_object_id-&gt;versions().remove(t_model);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Object" kindref="compound">Object</ref>(<ref refid="classidol_1_1ObjectId" kindref="compound">ObjectId&lt;T&gt;</ref>&amp;&amp;<sp/>t_object_id)<sp/>:<sp/>m_object_id(std::make_shared&lt;<ref refid="classidol_1_1ObjectId" kindref="compound">ObjectId&lt;T&gt;</ref>&gt;(std::move(t_object_id)))<sp/>{}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Object" kindref="compound">Object</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Object" kindref="compound">Object</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Object" kindref="compound">Object</ref>(<ref refid="classidol_1_1Object" kindref="compound">Object</ref>&amp;&amp;)<sp/>noexcept<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Object" kindref="compound">Object</ref>&amp;<sp/>operator=(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Object" kindref="compound">Object</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Object" kindref="compound">Object</ref>&amp;<sp/>operator=(<ref refid="classidol_1_1Object" kindref="compound">Object</ref>&amp;&amp;)<sp/>noexcept<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="classidol_1_1Object_1a3cc33224269c4c20bd39931cbbbe3cd4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/><ref refid="classidol_1_1Object_1a3cc33224269c4c20bd39931cbbbe3cd4" kindref="member">name</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_object_id-&gt;name();<sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="classidol_1_1Object_1ac8e398b9b937f08b1c5dbd2b32414036" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Object_1ac8e398b9b937f08b1c5dbd2b32414036" kindref="member">id</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_object_id-&gt;id();<sp/>}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="classidol_1_1Object_1aa25899704860cb066f885015ec1f11f3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Object_1aa25899704860cb066f885015ec1f11f3" kindref="member">is_in</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>t_model)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_object_id-&gt;versions().has(t_model);<sp/>}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="classidol_1_1Object_1afcade3116fd43e168a1aba7138f5ac44" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>ValueT&gt;<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ValueT&amp;<sp/><ref refid="classidol_1_1Object_1afcade3116fd43e168a1aba7138f5ac44" kindref="member">get</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Annotation" kindref="compound">Annotation&lt;ValueT&gt;</ref>&amp;<sp/>t_annotation)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>result<sp/>=<sp/>m_object_id-&gt;versions().template<sp/>get_annotation&lt;ValueT&gt;(t_annotation.<ref refid="classidol_1_1impl_1_1Annotation_1ac26d9a3fd757d1af30bd2cf6edafe7ed" kindref="member">id</ref>());</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(result)<sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*result;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(t_annotation.<ref refid="classidol_1_1impl_1_1Annotation_1a0b4fb9e4586c9d3983eae4be0b1e946a" kindref="member">has_default</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>t_annotation.default_value();</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Exception" kindref="compound">Exception</ref>(</highlight><highlight class="stringliteral">&quot;No<sp/>value<sp/>could<sp/>be<sp/>found<sp/>and<sp/>no<sp/>default<sp/>value<sp/>was<sp/>given<sp/>for<sp/>annotation<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>t_annotation.<ref refid="classidol_1_1impl_1_1Annotation_1ae8656d3f3b7137a0560e92a72627db41" kindref="member">name</ref>());</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96" refid="classidol_1_1Object_1a7d1921eca2bb0e0453867839e80dde63" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">ValueT,<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">...ArgsT&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Object_1a7d1921eca2bb0e0453867839e80dde63" kindref="member">set</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Annotation" kindref="compound">Annotation&lt;ValueT&gt;</ref>&amp;<sp/>t_annotation,<sp/>ArgsT&amp;&amp;<sp/>...t_args)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/>m_object_id-&gt;versions().template<sp/>set_annotation&lt;ValueT,<sp/>ArgsT...&gt;(t_annotation.<ref refid="classidol_1_1impl_1_1Annotation_1ac26d9a3fd757d1af30bd2cf6edafe7ed" kindref="member">id</ref>(),<sp/>std::forward&lt;ArgsT&gt;(t_args)...);<sp/>}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">idol<sp/>{</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CRTP&gt;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::ostream<sp/>&amp;operator&lt;&lt;(std::ostream<sp/>&amp;t_os,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Object&lt;T,<sp/>CRTP&gt;<sp/>&amp;t_var)<sp/>{</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>t_os<sp/>&lt;&lt;<sp/>t_var.name();</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">idol::impl<sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>U,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>N,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>I<sp/>=<sp/>0&gt;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>static<sp/>::idol::Vector&lt;U,<sp/>N<sp/>-<sp/>I&gt;<sp/>create_many(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Dim&lt;N&gt;&amp;<sp/>t_dims,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>t_name,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::function&lt;U(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>t_name)&gt;&amp;<sp/>t_add_one)<sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>::idol::Vector&lt;U,<sp/>N<sp/>-<sp/>I&gt;<sp/>result;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>size<sp/>=<sp/>t_dims[I];</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>result.reserve(size);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0<sp/>;<sp/>i<sp/>&lt;<sp/>size<sp/>;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>name<sp/>=<sp/>t_name<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;_&quot;</highlight><highlight class="normal"><sp/>+<sp/>std::to_string(i);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>constexpr<sp/>(I<sp/>==<sp/>N<sp/>-<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>result.emplace_back(<sp/>t_add_one(name)<sp/>);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>result.emplace_back(<sp/>create_many&lt;U,<sp/>N,<sp/>I+1&gt;(t_dims,<sp/>name,<sp/>t_add_one)<sp/>);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>result;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>IDOL_MAKE_HASHABLE(name)<sp/>\</highlight></codeline>
+<codeline lineno="129"><highlight class="preprocessor">template&lt;&gt;<sp/>\</highlight></codeline>
+<codeline lineno="130"><highlight class="preprocessor">struct<sp/>std::hash&lt;idol::name&gt;<sp/>{<sp/>\</highlight></codeline>
+<codeline lineno="131"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>std::size_t<sp/>operator()(const<sp/>idol::name&amp;<sp/>t_variable)<sp/>const<sp/>{<sp/>\</highlight></codeline>
+<codeline lineno="132"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>std::hash&lt;unsigned<sp/>int&gt;()(t_variable.id());<sp/>\</highlight></codeline>
+<codeline lineno="133"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>}<sp/>\</highlight></codeline>
+<codeline lineno="134"><highlight class="preprocessor">};<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="135"><highlight class="preprocessor">\</highlight></codeline>
+<codeline lineno="136"><highlight class="preprocessor">template&lt;&gt;<sp/>\</highlight></codeline>
+<codeline lineno="137"><highlight class="preprocessor">struct<sp/>std::equal_to&lt;idol::name&gt;<sp/>{<sp/>\</highlight></codeline>
+<codeline lineno="138"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>std::size_t<sp/>operator()(const<sp/>idol::name&amp;<sp/>t_a,<sp/>const<sp/>idol::name&amp;<sp/>t_b)<sp/>const<sp/>{<sp/>\</highlight></codeline>
+<codeline lineno="139"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>t_a.id()<sp/>==<sp/>t_b.id();<sp/>\</highlight></codeline>
+<codeline lineno="140"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>}<sp/>\</highlight></codeline>
+<codeline lineno="141"><highlight class="preprocessor">};<sp/>\</highlight></codeline>
+<codeline lineno="142"><highlight class="preprocessor">template&lt;&gt;<sp/>\</highlight></codeline>
+<codeline lineno="143"><highlight class="preprocessor">struct<sp/>std::less&lt;idol::name&gt;<sp/>{<sp/>\</highlight></codeline>
+<codeline lineno="144"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>std::size_t<sp/>operator()(const<sp/>idol::name&amp;<sp/>t_a,<sp/>const<sp/>idol::name&amp;<sp/>t_b)<sp/>const<sp/>{<sp/>\</highlight></codeline>
+<codeline lineno="145"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>t_a.id()<sp/>&lt;<sp/>t_b.id();<sp/>\</highlight></codeline>
+<codeline lineno="146"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>}<sp/>\</highlight></codeline>
+<codeline lineno="147"><highlight class="preprocessor">};<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="148"><highlight class="preprocessor">template&lt;&gt;<sp/>\</highlight></codeline>
+<codeline lineno="149"><highlight class="preprocessor">struct<sp/>std::equal_to&lt;idol::Pair&lt;idol::name,<sp/>idol::name&gt;&gt;<sp/>{<sp/>\</highlight></codeline>
+<codeline lineno="150"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>std::size_t<sp/>operator()(const<sp/>idol::Pair&lt;idol::name,<sp/>idol::name&gt;&amp;<sp/>t_a,<sp/>const<sp/>idol::Pair&lt;idol::name,<sp/>idol::name&gt;&amp;<sp/>t_b)<sp/>const<sp/>{<sp/>\</highlight></codeline>
+<codeline lineno="151"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>std::equal_to&lt;idol::name&gt;()(t_a.first,<sp/>t_b.first)<sp/>&amp;&amp;<sp/>std::equal_to&lt;idol::name&gt;()(t_a.second,<sp/>t_b.second);<sp/>\</highlight></codeline>
+<codeline lineno="152"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>}<sp/>\</highlight></codeline>
+<codeline lineno="153"><highlight class="preprocessor">};</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//IDOL_OBJECT_H</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Object.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1DantzigWolfe_1_1Wentges" kind="class" language="C++" prot="public">
+    <compoundname>idol::DantzigWolfe::Wentges</compoundname>
+    <basecompoundref refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization" prot="public" virt="non-virtual">idol::DantzigWolfe::DualPriceSmoothingStabilization</basecompoundref>
+    <innerclass refid="classidol_1_1DantzigWolfe_1_1Wentges_1_1Strategy" prot="public">idol::DantzigWolfe::Wentges::Strategy</innerclass>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1DantzigWolfe_1_1Wentges_1a8d30c0d4222a4bfcbd852dec8cb47a39" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double idol::DantzigWolfe::Wentges::m_initial_factor</definition>
+        <argsstring></argsstring>
+        <name>m_initial_factor</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h" line="16" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1Wentges_1adbecd84c5b26be9dec9b65d43f7d02e3" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::DantzigWolfe::Wentges::Wentges</definition>
+        <argsstring>(double t_initial_factor)</argsstring>
+        <name>Wentges</name>
+        <param>
+          <type>double</type>
+          <declname>t_initial_factor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h" line="18" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h" bodystart="18" bodyend="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1Wentges_1af474a31a163928118f8696297688de9c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1_1Strategy" kindref="compound">DualPriceSmoothingStabilization::Strategy</ref> *</type>
+        <definition>DualPriceSmoothingStabilization::Strategy* idol::DantzigWolfe::Wentges::operator()</definition>
+        <argsstring>() const override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1a720effa06e6f5befd7e055ecd3882537">operator()</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h" line="50" column="47" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h" bodystart="50" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1DantzigWolfe_1_1Wentges_1a01364e0f03fdbc85c40dd38d83c1ae77" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization" kindref="compound">DualPriceSmoothingStabilization</ref> *</type>
+        <definition>DualPriceSmoothingStabilization* idol::DantzigWolfe::Wentges::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1a790f93b44bab32e04cb30ec6b7374ebe">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h" line="54" column="37" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h" bodystart="54" bodyend="56"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>idol::DantzigWolfe::DualPriceSmoothingStabilization</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization"/>
+      </node>
+      <node id="1">
+        <label>idol::DantzigWolfe::Wentges</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1Wentges"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>idol::DantzigWolfe::DualPriceSmoothingStabilization</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization"/>
+      </node>
+      <node id="1">
+        <label>idol::DantzigWolfe::Wentges</label>
+        <link refid="classidol_1_1DantzigWolfe_1_1Wentges"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h" line="15" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h" bodystart="15" bodyend="57"/>
+    <listofallmembers>
+      <member refid="classidol_1_1DantzigWolfe_1_1Wentges_1a01364e0f03fdbc85c40dd38d83c1ae77" prot="public" virt="virtual"><scope>idol::DantzigWolfe::Wentges</scope><name>clone</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1Wentges_1a8d30c0d4222a4bfcbd852dec8cb47a39" prot="private" virt="non-virtual"><scope>idol::DantzigWolfe::Wentges</scope><name>m_initial_factor</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1Wentges_1af474a31a163928118f8696297688de9c" prot="public" virt="virtual"><scope>idol::DantzigWolfe::Wentges</scope><name>operator()</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1Wentges_1adbecd84c5b26be9dec9b65d43f7d02e3" prot="public" virt="non-virtual"><scope>idol::DantzigWolfe::Wentges</scope><name>Wentges</name></member>
+      <member refid="classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1a9297387ee0dd0eb20b85f7c8b6f72ae3" prot="public" virt="virtual"><scope>idol::DantzigWolfe::Wentges</scope><name>~DualPriceSmoothingStabilization</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

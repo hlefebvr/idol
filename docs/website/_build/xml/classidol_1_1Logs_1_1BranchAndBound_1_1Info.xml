@@ -1,0 +1,436 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Logs_1_1BranchAndBound_1_1Info" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>idol::Logs::BranchAndBound::Info</compoundname>
+    <basecompoundref refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory" prot="public" virt="non-virtual">idol::Logs::BranchAndBound::Factory&lt; idol::DefaultNodeInfo &gt;</basecompoundref>
+    <innerclass refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1_1Strategy" prot="public">idol::Logs::BranchAndBound::Info::Strategy</innerclass>
+    <templateparamlist>
+      <param>
+        <type>class NodeInfoT</type>
+        <defval><ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref></defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a2618356180c537bac781ecb33e2dbd61" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::double_precision</definition>
+        <argsstring></argsstring>
+        <name>double_precision</name>
+        <initializer>= 5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="18" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aa18a742fc7d10658793ef01229f197f8" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::n_sections</definition>
+        <argsstring></argsstring>
+        <name>n_sections</name>
+        <initializer>= 3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="19" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a9c2b5fea22e6ca22b7c12768c06270e5" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_width_explored</definition>
+        <argsstring></argsstring>
+        <name>log_width_explored</name>
+        <initializer>= 6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="21" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a5527870c25ae96c150fd454d81686cb1" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_width_open</definition>
+        <argsstring></argsstring>
+        <name>log_width_open</name>
+        <initializer>= 6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="22" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a3feeca1d7650d4e5cbeff0608865aab7" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_width_total_time</definition>
+        <argsstring></argsstring>
+        <name>log_width_total_time</name>
+        <initializer>= 12</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="23" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a338ee69324d80b7806fcf163264a9958" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_width_current_node_depth</definition>
+        <argsstring></argsstring>
+        <name>log_width_current_node_depth</name>
+        <initializer>= 6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="25" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1af50c2d4d271426ae16c5ef8aea5888a7" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_width_problem_best_bound</definition>
+        <argsstring></argsstring>
+        <name>log_width_problem_best_bound</name>
+        <initializer>= 10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="26" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a68809c3bcb926cde06dd44a43a2a26bc" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_width_problem_best_obj</definition>
+        <argsstring></argsstring>
+        <name>log_width_problem_best_obj</name>
+        <initializer>= 10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="27" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a88174d45c5a8de0d7d8e555793f8741f" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_width_problem_rel_gap</definition>
+        <argsstring></argsstring>
+        <name>log_width_problem_rel_gap</name>
+        <initializer>= 10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="28" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aaf036c2eadf953ac705e71d7e6ef85a5" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_width_problem_abs_gap</definition>
+        <argsstring></argsstring>
+        <name>log_width_problem_abs_gap</name>
+        <initializer>= 10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="29" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aa1b03b5278e5a04d0f169453450a88f6" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_width_current_node_status</definition>
+        <argsstring></argsstring>
+        <name>log_width_current_node_status</name>
+        <initializer>= 12</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="31" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a694afed014129273ca57010254b7d99f" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_width_current_node_reason</definition>
+        <argsstring></argsstring>
+        <name>log_width_current_node_reason</name>
+        <initializer>= 12</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="32" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1afa25fc4037214d5c079ea44d5d38bcef" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_width_current_node_obj</definition>
+        <argsstring></argsstring>
+        <name>log_width_current_node_obj</name>
+        <initializer>= 10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="33" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1ab02a6d07461a64ff01e851ee297536ce" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_section_width_algorithm</definition>
+        <argsstring></argsstring>
+        <name>log_section_width_algorithm</name>
+        <initializer>= (log_width_explored + log_width_open + log_width_total_time)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="35" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a73712e93d9a416498729a1f9b92bc109" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::log_section_width_problem</definition>
+        <argsstring></argsstring>
+        <name>log_section_width_problem</name>
+        <initializer>= (log_width_problem_best_bound + log_width_problem_best_obj + log_width_problem_rel_gap + log_width_problem_abs_gap)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="36" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aa3ddd90f30757953299bea416eeb51c8" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::current_node_space</definition>
+        <argsstring></argsstring>
+        <name>current_node_space</name>
+        <initializer>= (log_width_current_node_status + log_width_current_node_reason + log_width_current_node_obj + log_width_current_node_depth)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="37" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a11c648e46de9a67cc5269f40c7a7a6c6" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr auto</type>
+        <definition>constexpr auto idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::table_space</definition>
+        <argsstring></argsstring>
+        <name>table_space</name>
+        <initializer>= log_section_width_algorithm + log_section_width_problem + current_node_space + n_sections * 3 + 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="38" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a9aa9d7a2093b4ecf574b97fa4ac7009a" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::m_log_frequency_in_seconds</definition>
+        <argsstring></argsstring>
+        <name>m_log_frequency_in_seconds</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="41" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a8a71149de1e13c14ddc9a5b685357ca0" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; double &gt;</type>
+        <definition>std::optional&lt;double&gt; idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::m_node_logs</definition>
+        <argsstring></argsstring>
+        <name>m_node_logs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="42" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aa6dbe7bd409a2dc20c6c96c0e3bdd55c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1_1Strategy" kindref="compound">Strategy</ref> *</type>
+        <definition>idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::Strategy * idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::operator()</definition>
+        <argsstring>(Optimizers::BranchAndBound&lt; NodeInfoT &gt; &amp;t_parent) const override</argsstring>
+        <name>operator()</name>
+        <param>
+          <type><ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound</ref>&lt; NodeInfoT &gt; &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="65" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="99" bodyend="103"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aec71ab9f6e1561a148230e603e722679" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory" kindref="compound">Factory</ref>&lt; NodeInfoT &gt; *</type>
+        <definition>idol::Logs::BranchAndBound::Factory&lt; NodeInfoT &gt; * idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory_1a69dd890e15f5d367c1ee88081ce6967b">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="67" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="106" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a1fda157459d1f0dc6fe761e61be4bcf7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info" kindref="compound">Info</ref> &amp;</type>
+        <definition>idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt; &amp; idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::with_frequency_in_seconds</definition>
+        <argsstring>(double t_frequency)</argsstring>
+        <name>with_frequency_in_seconds</name>
+        <param>
+          <type>double</type>
+          <declname>t_frequency</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="69" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="87" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a50b402d39caf96a031a7498cc62c206f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info" kindref="compound">Info</ref> &amp;</type>
+        <definition>idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt; &amp; idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;::with_node_logs</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>with_node_logs</name>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="71" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="75" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Logs_1_1BranchAndBound_1_1Factory_1ab1d5eced97c48ed9d8eb684fae7fcba1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1_1Strategy" kindref="compound">Strategy</ref> *</type>
+        <definition>virtual Strategy* idol::Logs::BranchAndBound::Factory&lt; idol::DefaultNodeInfo  &gt;::operator()</definition>
+        <argsstring>(Optimizers::BranchAndBound&lt; idol::DefaultNodeInfo &gt; &amp;t_parent) const=0</argsstring>
+        <name>operator()</name>
+        <param>
+          <type><ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Factory.h" line="41" column="22"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::Logs::BranchAndBound::Factory&lt; idol::DefaultNodeInfo &gt;</label>
+        <link refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; idol::DefaultNodeInfo &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::Logs::BranchAndBound::Factory&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::Logs::BranchAndBound::Info&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::Logs::BranchAndBound::Factory&lt; idol::DefaultNodeInfo &gt;</label>
+        <link refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; idol::DefaultNodeInfo &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::Logs::BranchAndBound::Factory&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" line="16" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h" bodystart="16" bodyend="72"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aec71ab9f6e1561a148230e603e722679" prot="public" virt="virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>clone</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aa3ddd90f30757953299bea416eeb51c8" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>current_node_space</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a2618356180c537bac781ecb33e2dbd61" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>double_precision</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1ab02a6d07461a64ff01e851ee297536ce" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_section_width_algorithm</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a73712e93d9a416498729a1f9b92bc109" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_section_width_problem</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a338ee69324d80b7806fcf163264a9958" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_width_current_node_depth</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1afa25fc4037214d5c079ea44d5d38bcef" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_width_current_node_obj</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a694afed014129273ca57010254b7d99f" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_width_current_node_reason</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aa1b03b5278e5a04d0f169453450a88f6" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_width_current_node_status</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a9c2b5fea22e6ca22b7c12768c06270e5" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_width_explored</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a5527870c25ae96c150fd454d81686cb1" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_width_open</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aaf036c2eadf953ac705e71d7e6ef85a5" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_width_problem_abs_gap</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1af50c2d4d271426ae16c5ef8aea5888a7" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_width_problem_best_bound</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a68809c3bcb926cde06dd44a43a2a26bc" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_width_problem_best_obj</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a88174d45c5a8de0d7d8e555793f8741f" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_width_problem_rel_gap</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a3feeca1d7650d4e5cbeff0608865aab7" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>log_width_total_time</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a9aa9d7a2093b4ecf574b97fa4ac7009a" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>m_log_frequency_in_seconds</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a8a71149de1e13c14ddc9a5b685357ca0" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>m_node_logs</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aa18a742fc7d10658793ef01229f197f8" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>n_sections</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1aa6dbe7bd409a2dc20c6c96c0e3bdd55c" prot="public" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>operator()</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory_1ab1d5eced97c48ed9d8eb684fae7fcba1" prot="public" virt="pure-virtual" ambiguityscope="Factory&lt; idol::DefaultNodeInfo &gt;::"><scope>idol::Logs::BranchAndBound::Info</scope><name>operator()</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a11c648e46de9a67cc5269f40c7a7a6c6" prot="private" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>table_space</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a1fda157459d1f0dc6fe761e61be4bcf7" prot="public" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>with_frequency_in_seconds</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Info_1a50b402d39caf96a031a7498cc62c206f" prot="public" virt="non-virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>with_node_logs</name></member>
+      <member refid="classidol_1_1Logs_1_1BranchAndBound_1_1Factory_1a0accdf4695c3b853c2b30f66530dd728" prot="public" virt="virtual"><scope>idol::Logs::BranchAndBound::Info</scope><name>~Factory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

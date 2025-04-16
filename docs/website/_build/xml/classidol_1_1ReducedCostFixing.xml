@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1ReducedCostFixing" kind="class" language="C++" prot="public">
+    <compoundname>idol::ReducedCostFixing</compoundname>
+    <basecompoundref refid="classidol_1_1BranchAndBoundCallbackFactory" prot="public" virt="non-virtual">idol::BranchAndBoundCallbackFactory&lt; idol::DefaultNodeInfo &gt;</basecompoundref>
+    <innerclass refid="classidol_1_1ReducedCostFixing_1_1Strategy" prot="public">idol::ReducedCostFixing::Strategy</innerclass>
+    <templateparamlist>
+      <param>
+        <type>class NodeInfoT</type>
+        <defval><ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref></defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1ReducedCostFixing_1aaa3769b3954d1d48a4845b900b1c5e22" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1BranchAndBoundCallback" kindref="compound">BranchAndBoundCallback</ref>&lt; NodeInfoT &gt; *</type>
+        <definition>BranchAndBoundCallback&lt;NodeInfoT&gt;* idol::ReducedCostFixing&lt; NodeInfoT &gt;::operator()</definition>
+        <argsstring>() override</argsstring>
+        <name>operator()</name>
+        <reimplements refid="classidol_1_1BranchAndBoundCallbackFactory_1a621c12413465f0d279df195f515382d9">operator()</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h" line="61" column="28" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h" bodystart="61" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1ReducedCostFixing_1aacdbc19c8a740ea4aad736d6aa1ad22f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1BranchAndBoundCallbackFactory" kindref="compound">BranchAndBoundCallbackFactory</ref>&lt; NodeInfoT &gt; *</type>
+        <definition>BranchAndBoundCallbackFactory&lt;NodeInfoT&gt;* idol::ReducedCostFixing&lt; NodeInfoT &gt;::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1BranchAndBoundCallbackFactory_1a068043d97a3a7cf36016eb2e373854ba">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h" line="65" column="35" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h" bodystart="65" bodyend="67"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>idol::BranchAndBoundCallbackFactory&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackFactory"/>
+      </node>
+      <node id="1">
+        <label>idol::ReducedCostFixing&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1ReducedCostFixing"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::BranchAndBoundCallbackFactory&lt; idol::DefaultNodeInfo &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackFactory"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; idol::DefaultNodeInfo &gt;</edgelabel>
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>idol::BranchAndBoundCallbackFactory&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackFactory"/>
+      </node>
+      <node id="1">
+        <label>idol::ReducedCostFixing&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1ReducedCostFixing"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>idol::BranchAndBoundCallbackFactory&lt; idol::DefaultNodeInfo &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackFactory"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; idol::DefaultNodeInfo &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h" line="15" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h" bodystart="15" bodyend="68"/>
+    <listofallmembers>
+      <member refid="classidol_1_1ReducedCostFixing_1aacdbc19c8a740ea4aad736d6aa1ad22f" prot="public" virt="virtual"><scope>idol::ReducedCostFixing</scope><name>clone</name></member>
+      <member refid="classidol_1_1ReducedCostFixing_1aaa3769b3954d1d48a4845b900b1c5e22" prot="public" virt="virtual"><scope>idol::ReducedCostFixing</scope><name>operator()</name></member>
+      <member refid="classidol_1_1BranchAndBoundCallbackFactory_1a3975f35ac10323fad20a2fde3a0cecc2" prot="public" virt="virtual"><scope>idol::ReducedCostFixing</scope><name>~BranchAndBoundCallbackFactory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Getting Access to The Underlying Optimizer</title>
+    
+          <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/mixed-integer/optimizers/access-optimizer.html" />
+    
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="next" title="Adding User Cuts and Lazy Constraints" href="universal-callbacks.html" />
+  <link rel="prev" title="Using an External Solver and Accessing the Solution" href="solving.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../../index.html">Tutorials</a> &raquo;</li>
+    
+      <li><a href="../index.html">Mixed-Integer Optimization</a> &raquo;</li>
+    
+      <li><a href="index.html">Solving MIPs</a> &raquo;</li>
+    
+    <li>Getting Access to The Underlying Optimizer</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="solving.html"
+       title="previous chapter">← Using an External Solver and Accessing the Solution</a>
+  </li>
+  <li class="next">
+    <a href="universal-callbacks.html"
+       title="next chapter">Adding User Cuts and Lazy Constraints →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="getting-access-to-the-underlying-optimizer">
+<h1>Getting Access to The Underlying Optimizer<a class="headerlink" href="#getting-access-to-the-underlying-optimizer" title="Link to this heading">¶</a></h1>
+<p>In some advanced situations, you may want to access the underlying optimizer of an optimization model.
+For instance, this could be the case if you want to get optimizer-specific information which are not exposed by the <code class="code docutils literal notranslate"><span class="pre">Model</span></code> interface.</p>
+<p>In this case, you can use the <code class="code docutils literal notranslate"><span class="pre">Model::optimizer</span></code> method. Note that this method
+will return a reference of type <code class="code docutils literal notranslate"><span class="pre">Optimizer&amp;</span></code>.</p>
+<p>To access optimizer-specific routines, you will need to cast the reference to the appropriate optimizer type.
+This is made easier  by the <code class="code docutils literal notranslate"><span class="pre">Optimizer::as</span></code> and <code class="code docutils literal notranslate"><span class="pre">Optimizer::is</span></code> methods, which allow you to cast the optimizer to a specific type or check if it is of a specific type.</p>
+<p>For instance, the following code shows how to access the underlying Gurobi optimizer of model.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+<span class="n">Model</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_var</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">Gurobi</span><span class="p">());</span>
+<span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">model</span><span class="p">.</span><span class="n">optimizer</span><span class="p">().</span><span class="n">is</span><span class="o">&lt;</span><span class="n">Optimizers</span><span class="o">::</span><span class="n">Gurobi</span><span class="o">&gt;</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">Exception</span><span class="p">(</span><span class="s">&quot;The optimizer is not Gurobi&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">gurobi_optimizer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">optimizer</span><span class="p">().</span><span class="n">as</span><span class="o">&lt;</span><span class="n">Optimizers</span><span class="o">::</span><span class="n">Gurobi</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="c1">// Access the optimizer-specific routines</span>
+<span class="n">GRBVar</span><span class="o">&amp;</span><span class="w"> </span><span class="n">var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gurobi_optimizer</span><span class="p">[</span><span class="n">x</span><span class="p">];</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A common mistake is to try to cast the optimizer to the wrong type. In particular, to cast optimizer to its
+optimizer factory type (e.g., <code class="code docutils literal notranslate"><span class="pre">Gurobi</span></code> instead of <code class="code docutils literal notranslate"><span class="pre">Optimizers::Gurobi</span></code>).
+If so, this will result in a runtime error.</p>
+</div>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="solving.html"
+       title="previous chapter">← Using an External Solver and Accessing the Solution</a>
+  </li>
+  <li class="next">
+    <a href="universal-callbacks.html"
+       title="next chapter">Adding User Cuts and Lazy Constraints →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

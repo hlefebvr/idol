@@ -228,7 +228,7 @@ jobs:
       - name: Move all xml inside _static
         run: |
           FILES=$(find . -type d -name "docs" -prune -o -type f -name "*.xml" -print)
-          mv -n $FILES docs/_static/reports/
+          mv -n $FILES docs/website/_static/reports/
 
       - name: Install dependencies
         run: |
@@ -247,5 +247,5 @@ jobs:
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/_build/html
+          publish_dir: docs/website/_build/html
           force_orphan: true

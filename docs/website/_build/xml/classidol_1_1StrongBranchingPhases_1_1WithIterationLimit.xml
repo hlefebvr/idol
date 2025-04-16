@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit" kind="class" language="C++" prot="public">
+    <compoundname>idol::StrongBranchingPhases::WithIterationLimit</compoundname>
+    <basecompoundref refid="classidol_1_1StrongBranchingPhaseType" prot="public" virt="non-virtual">idol::StrongBranchingPhaseType</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit_1aa250ac72b0010da44aea6c9d5f08b8a2" prot="private" static="no" mutable="no">
+        <type>const unsigned int</type>
+        <definition>const unsigned int idol::StrongBranchingPhases::WithIterationLimit::m_iteration_limit</definition>
+        <argsstring></argsstring>
+        <name>m_iteration_limit</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" line="71" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit_1a80b6e7e962fa7d11c476f9d3713759e4" prot="private" static="no" mutable="no">
+        <type>std::optional&lt; unsigned int &gt;</type>
+        <definition>std::optional&lt;unsigned int&gt; idol::StrongBranchingPhases::WithIterationLimit::m_old_iteration_limit</definition>
+        <argsstring></argsstring>
+        <name>m_old_iteration_limit</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" line="72" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit_1af2fde9d8ab9d0c9087eea5654846a1ea" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::StrongBranchingPhases::WithIterationLimit::WithIterationLimit</definition>
+        <argsstring>(unsigned int t_iteration_limit)</argsstring>
+        <name>WithIterationLimit</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_iteration_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" line="74" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" bodystart="74" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit_1adaa7092b209289556ca4fc35ee83c394" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void idol::StrongBranchingPhases::WithIterationLimit::build</definition>
+        <argsstring>(Optimizer &amp;t_optimizer) override</argsstring>
+        <name>build</name>
+        <reimplements refid="classidol_1_1StrongBranchingPhaseType_1a4990c556aba0ce4eeeb2b4b75b537c82">build</reimplements>
+        <param>
+          <type><ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref> &amp;</type>
+          <declname>t_optimizer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" line="76" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" bodystart="76" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit_1ac155ca6a287d515d73c45ad944a9fe25" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void idol::StrongBranchingPhases::WithIterationLimit::clean</definition>
+        <argsstring>(Optimizer &amp;t_optimizer) override</argsstring>
+        <name>clean</name>
+        <reimplements refid="classidol_1_1StrongBranchingPhaseType_1a783c85bb226a3bdbc23edec7f7c4af57">clean</reimplements>
+        <param>
+          <type><ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref> &amp;</type>
+          <declname>t_optimizer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" line="81" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" bodystart="81" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit_1a85583f12948bfea1c2e5841dda72e479" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit" kindref="compound">WithIterationLimit</ref> *</type>
+        <definition>WithIterationLimit* idol::StrongBranchingPhases::WithIterationLimit::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1StrongBranchingPhaseType_1a9691d944dc242c1205eaf57660dc61e7">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" line="86" column="25" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" bodystart="86" bodyend="88"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>idol::StrongBranchingPhaseType</label>
+        <link refid="classidol_1_1StrongBranchingPhaseType"/>
+      </node>
+      <node id="1">
+        <label>idol::StrongBranchingPhases::WithIterationLimit</label>
+        <link refid="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>idol::StrongBranchingPhaseType</label>
+        <link refid="classidol_1_1StrongBranchingPhaseType"/>
+      </node>
+      <node id="1">
+        <label>idol::StrongBranchingPhases::WithIterationLimit</label>
+        <link refid="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" line="70" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h" bodystart="70" bodyend="89"/>
+    <listofallmembers>
+      <member refid="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit_1adaa7092b209289556ca4fc35ee83c394" prot="public" virt="virtual"><scope>idol::StrongBranchingPhases::WithIterationLimit</scope><name>build</name></member>
+      <member refid="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit_1ac155ca6a287d515d73c45ad944a9fe25" prot="public" virt="virtual"><scope>idol::StrongBranchingPhases::WithIterationLimit</scope><name>clean</name></member>
+      <member refid="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit_1a85583f12948bfea1c2e5841dda72e479" prot="public" virt="virtual"><scope>idol::StrongBranchingPhases::WithIterationLimit</scope><name>clone</name></member>
+      <member refid="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit_1aa250ac72b0010da44aea6c9d5f08b8a2" prot="private" virt="non-virtual"><scope>idol::StrongBranchingPhases::WithIterationLimit</scope><name>m_iteration_limit</name></member>
+      <member refid="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit_1a80b6e7e962fa7d11c476f9d3713759e4" prot="private" virt="non-virtual"><scope>idol::StrongBranchingPhases::WithIterationLimit</scope><name>m_old_iteration_limit</name></member>
+      <member refid="classidol_1_1StrongBranchingPhases_1_1WithIterationLimit_1af2fde9d8ab9d0c9087eea5654846a1ea" prot="public" virt="non-virtual"><scope>idol::StrongBranchingPhases::WithIterationLimit</scope><name>WithIterationLimit</name></member>
+      <member refid="classidol_1_1StrongBranchingPhaseType_1a6680c676f26ee103640624ca429ac7d2" prot="public" virt="virtual"><scope>idol::StrongBranchingPhases::WithIterationLimit</scope><name>~StrongBranchingPhaseType</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

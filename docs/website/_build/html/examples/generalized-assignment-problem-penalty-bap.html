@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Combining branch-and-price, column generation, and a penalty method for the generalized assignment problem</title>
+    
+          <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../_static/theme-vendors.js"></script> -->
+      <script src="../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/examples/generalized-assignment-problem-penalty-bap.html" />
+    
+  <link rel="index" title="Index" href="../genindex.html" />
+  <link rel="search" title="Search" href="../search.html" />
+  <link rel="next" title="Solving an optimistic LP-LP bilevel problem with KKT reformulation" href="bilevel-kkt.html" />
+  <link rel="prev" title="Solving a generalized assignment problem by column generation and branch-and-price" href="generalized-assignment-problem-bap.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="index.html">Examples</a> &raquo;</li>
+    
+    <li>Combining branch-and-price, column generation, and a penalty method for the generalized assignment problem</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="generalized-assignment-problem-bap.html"
+       title="previous chapter">← Solving a generalized assignment problem by column generation and branch-and-price</a>
+  </li>
+  <li class="next">
+    <a href="bilevel-kkt.html"
+       title="next chapter">Solving an optimistic LP-LP bilevel problem with KKT reformulation →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="combining-branch-and-price-column-generation-and-a-penalty-method-for-the-generalized-assignment-problem">
+<h1>Combining branch-and-price, column generation, and a penalty method for the generalized assignment problem<a class="headerlink" href="#combining-branch-and-price-column-generation-and-a-penalty-method-for-the-generalized-assignment-problem" title="Link to this heading">¶</a></h1>
+<section id="problem-definition">
+<h2>Problem Definition<a class="headerlink" href="#problem-definition" title="Link to this heading">¶</a></h2>
+<p>We consider the Generalized Assignment Problem (GAP) already studied in the <a class="reference internal" href="generalized-assignment-problem-bap.html#example-gap-bap"><span class="std std-ref">branch-and-price example</span></a>.</p>
+<p>In this example, we solve the continuous relaxation of the GAP using a penalty method and column generation.
+Then possibly branch on the integer variables to solve the mixed-integer problem.</p>
+<p>First, we consider the continuous relaxation of the GAP:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+    \min_{x} \quad &amp; \sum_{i=1}^m \sum_{j=1}^n c_{ij} x_{ij} \\
+    \text{s.t.} \quad &amp; \sum_{j=1}^n r_{ij} x_{ij}, \le C_i &amp;&amp; i=1,\dotsc,m, \\
+                &amp; \sum_{i=1}^m x_{ij} = 1, &amp;&amp; j=1,\dotsc,n, \\
+                &amp; x_{ij} \in [0,1], &amp;&amp; i=1,\dotsc,m, j=1,\dotsc,n.
+\end{align*}\end{split}\]</div>
+<p>Then, we introduce penalty parameters <span class="math notranslate nohighlight">\(\rho_j\)</span> to penalize the constraints <span class="math notranslate nohighlight">\(\sum_{i=1}^m x_{ij} = 1\)</span> in the objective function.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+    \min_{x} \ &amp; \sum_{i=1}^m \sum_{j=1}^n c_{ij} x_{ij} + \sum_{j=1}^n \rho_j \left| \sum_{i=1}^m x_{ij} - 1 \right| \\
+    \text{s.t.} &amp; \sum_{j=1}^n r_{ij} x_{ij} \le C_i &amp;&amp; i=1,\dotsc,m \\
+                &amp; x_{ij} \in [0,1] &amp;&amp; i=1,\dotsc,m, j=1,\dotsc,n.
+\end{align*}\end{split}\]</div>
+<p>Throughout the optimization process, we update the penalty parameters <span class="math notranslate nohighlight">\(\rho_j\)</span> iteratively to enforce the feasibility of the solution.</p>
+<p>Finally, we solve the continuous relaxation of the GAP using column generation to generate new columns (variables) and improve the objective function.
+That is, we iteratively solve the master problem and the subproblems to generate new columns and update the master problem.</p>
+</section>
+<section id="implementation-with-idol">
+<h2>Implementation with idol<a class="headerlink" href="#implementation-with-idol" title="Link to this heading">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">//</span>
+<span class="c1">// Created by henri on 13/03/23.</span>
+<span class="c1">//</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/modeling.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/padm/PenaltyMethod.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h&quot;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">idol</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">t_argc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">t_argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Problems</span><span class="o">::</span><span class="n">GAP</span><span class="o">::</span><span class="n">read_instance</span><span class="p">(</span><span class="s">&quot;assignment-penalty-bap.data.txt&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n_agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">n_agents</span><span class="p">();</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n_jobs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">n_jobs</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Create optimization environment</span>
+<span class="w">    </span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Create model</span>
+<span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Create decomposition annotation</span>
+<span class="w">    </span><span class="n">Annotation</span><span class="w"> </span><span class="n">decomposition</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;decomposition&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MasterId</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Create penalized constraints annotation</span>
+<span class="w">    </span><span class="n">Annotation</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">initial_penalty_parameters</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;initial_penalty_parameters&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">);</span><span class="w"> </span><span class="c1">// By default, constraints are not penalized</span>
+
+<span class="w">    </span><span class="c1">// Create assignment variables (x_ij binaries)</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_vars</span><span class="p">(</span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n_agents</span><span class="p">,</span><span class="w"> </span><span class="n">n_jobs</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="mf">1.</span><span class="p">,</span><span class="w"> </span><span class="n">Binary</span><span class="p">,</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Create knapsack constraints (i.e., capacity constraints)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_agents</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_jobs</span><span class="p">),</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">resource_consumption</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">capacity</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;capacity_&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+
+<span class="w">        </span><span class="n">capacity</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">decomposition</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"> </span><span class="c1">// Assign constraint to i-th subproblem</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Create assignment constraints</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_jobs</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">assignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_agents</span><span class="p">),</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;assignment_&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">j</span><span class="p">));</span>
+
+<span class="w">        </span><span class="n">assignment</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">initial_penalty_parameters</span><span class="p">,</span><span class="w"> </span><span class="mf">1e2</span><span class="p">);</span><span class="w"> </span><span class="c1">// With an initial penalty value of 1e2</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Set the objective function</span>
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">set_obj_expr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_agents</span><span class="p">),</span><span class="w"> </span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_jobs</span><span class="p">),</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">cost</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])));</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">column_generation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DantzigWolfeDecomposition</span><span class="p">(</span><span class="n">decomposition</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_master_optimizer</span><span class="p">(</span><span class="n">GLPK</span><span class="o">::</span><span class="n">ContinuousRelaxation</span><span class="p">().</span><span class="n">with_logs</span><span class="p">(</span><span class="nb">false</span><span class="p">))</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_default_sub_problem_spec</span><span class="p">(</span>
+<span class="w">                    </span><span class="n">DantzigWolfe</span><span class="o">::</span><span class="n">SubProblem</span><span class="p">()</span>
+<span class="w">                            </span><span class="p">.</span><span class="n">add_optimizer</span><span class="p">(</span><span class="n">GLPK</span><span class="p">().</span><span class="n">with_logs</span><span class="p">(</span><span class="nb">false</span><span class="p">))</span>
+<span class="w">                            </span><span class="p">.</span><span class="n">with_column_pool_clean_up</span><span class="p">(</span><span class="mi">1500</span><span class="p">,</span><span class="w"> </span><span class="mf">.75</span><span class="p">)</span>
+<span class="w">            </span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_logger</span><span class="p">(</span><span class="n">Logs</span><span class="o">::</span><span class="n">DantzigWolfe</span><span class="o">::</span><span class="n">Info</span><span class="p">().</span><span class="n">with_frequency_in_seconds</span><span class="p">(</span><span class="mf">.00000001</span><span class="p">))</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_dual_price_smoothing_stabilization</span><span class="p">(</span><span class="n">DantzigWolfe</span><span class="o">::</span><span class="n">Neame</span><span class="p">(</span><span class="mf">.3</span><span class="p">))</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_infeasibility_strategy</span><span class="p">(</span><span class="n">DantzigWolfe</span><span class="o">::</span><span class="n">FarkasPricing</span><span class="p">())</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_hard_branching</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_logs</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">penalty_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PenaltyMethod</span><span class="p">(</span><span class="n">initial_penalty_parameters</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_penalty_update</span><span class="p">(</span><span class="n">PenaltyUpdates</span><span class="o">::</span><span class="n">Multiplicative</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_rescaling_threshold</span><span class="p">(</span><span class="mf">1e3</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_feasible_solution_status</span><span class="p">(</span><span class="n">Optimal</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">branch_and_bound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BranchAndBound</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_subtree_depth</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_branching_rule</span><span class="p">(</span><span class="n">MostInfeasible</span><span class="p">())</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_node_selection_rule</span><span class="p">(</span><span class="n">WorstBound</span><span class="p">())</span>
+<span class="w">            </span><span class="c1">//.add_callback(Heuristics::IntegerMaster().with_osi_interface(HiGHS().with_logs(false)))</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_logs</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Set optimizer</span>
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">branch_and_bound</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">penalty_method</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">column_generation</span><span class="p">));</span>
+
+<span class="w">    </span><span class="c1">// Solve</span>
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Print solution</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">save_primal</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="generalized-assignment-problem-bap.html"
+       title="previous chapter">← Solving a generalized assignment problem by column generation and branch-and-price</a>
+  </li>
+  <li class="next">
+    <a href="bilevel-kkt.html"
+       title="next chapter">Solving an optimistic LP-LP bilevel problem with KKT reformulation →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

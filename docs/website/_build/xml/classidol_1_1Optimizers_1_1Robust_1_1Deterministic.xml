@@ -1,0 +1,1466 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic" kind="class" language="C++" prot="public">
+    <compoundname>idol::Optimizers::Robust::Deterministic</compoundname>
+    <basecompoundref refid="classidol_1_1Algorithm" prot="public" virt="non-virtual">idol::Algorithm</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a9e382970287a4a14cfb4cf3a25e3f276" prot="private" static="no" mutable="no">
+        <type>const <ref refid="classidol_1_1Robust_1_1Description" kindref="compound">idol::Robust::Description</ref> &amp;</type>
+        <definition>const idol::Robust::Description&amp; idol::Optimizers::Robust::Deterministic::m_description</definition>
+        <argsstring></argsstring>
+        <name>m_description</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="18" column="37" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a10ed9dfba44e7e813c58aaf3a5ff8384" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;OptimizerFactory&gt; idol::Optimizers::Robust::Deterministic::m_deterministic_optimizer</definition>
+        <argsstring></argsstring>
+        <name>m_deterministic_optimizer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="19" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a70bdea216fa4ea42c158c71b7e84171e" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Model&gt; idol::Optimizers::Robust::Deterministic::m_deterministic_model</definition>
+        <argsstring></argsstring>
+        <name>m_deterministic_model</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="20" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a3fee61fe52b87bfde100efbfa7784b7d" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::throw_if_no_deterministic_model</definition>
+        <argsstring>() const</argsstring>
+        <name>throw_if_no_deterministic_model</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="22" column="10"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a84a27880dc8afa577dfcd33e33ac2a63" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Optimizers::Robust::Deterministic::Deterministic</definition>
+        <argsstring>(const Model &amp;t_parent, const idol::Robust::Description &amp;t_description, const OptimizerFactory &amp;t_deterministic_optimizer)</argsstring>
+        <name>Deterministic</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1Robust_1_1Description" kindref="compound">idol::Robust::Description</ref> &amp;</type>
+          <declname>t_description</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &amp;</type>
+          <declname>t_deterministic_optimizer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="24" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1ad2d1a0e3bcd2db5deb83eb3b388da522" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string idol::Optimizers::Robust::Deterministic::name</definition>
+        <argsstring>() const override</argsstring>
+        <name>name</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a1f208d4de2375b957812c36009a9a900">name</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="26" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1ad969dfe9ec5de34e8ba8ffdda7dcb389" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>SolutionStatus</type>
+        <definition>SolutionStatus idol::Optimizers::Robust::Deterministic::get_status</definition>
+        <argsstring>() const override</argsstring>
+        <name>get_status</name>
+        <reimplements refid="classidol_1_1Algorithm_1aca1da2a76fe7439c2e5d990860ef4e0d">get_status</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="28" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1afd1e761c1b12d90c6ff8a64d4c076a39" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>SolutionReason</type>
+        <definition>SolutionReason idol::Optimizers::Robust::Deterministic::get_reason</definition>
+        <argsstring>() const override</argsstring>
+        <name>get_reason</name>
+        <reimplements refid="classidol_1_1Algorithm_1ae7e31752554b7d0ec5f77aed4e0bc46c">get_reason</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="30" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a2c3b5d6558ad1177087354484c093cf4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double idol::Optimizers::Robust::Deterministic::get_best_obj</definition>
+        <argsstring>() const override</argsstring>
+        <name>get_best_obj</name>
+        <reimplements refid="classidol_1_1Algorithm_1a0f622ce8c74e2207050de31504c34ada">get_best_obj</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="32" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aabad8904383ae9f91221c2f374150afb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double idol::Optimizers::Robust::Deterministic::get_best_bound</definition>
+        <argsstring>() const override</argsstring>
+        <name>get_best_bound</name>
+        <reimplements refid="classidol_1_1Algorithm_1a4e6c0365b139516387e991f8e798e65e">get_best_bound</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="34" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a2c31ed1c67ee99ce9e214b9a54c1eef3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double idol::Optimizers::Robust::Deterministic::get_var_primal</definition>
+        <argsstring>(const Var &amp;t_var) const override</argsstring>
+        <name>get_var_primal</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a4067491b572c01dbd56944809c2ee26f">get_var_primal</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="36" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a1fe8eda3de94f0a508432686aa2356db" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double idol::Optimizers::Robust::Deterministic::get_var_reduced_cost</definition>
+        <argsstring>(const Var &amp;t_var) const override</argsstring>
+        <name>get_var_reduced_cost</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a251f4d7d32c83135d3997d72d1ed719c">get_var_reduced_cost</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="38" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1abac60449e9ad5b695d9846a937004261" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double idol::Optimizers::Robust::Deterministic::get_var_ray</definition>
+        <argsstring>(const Var &amp;t_var) const override</argsstring>
+        <name>get_var_ray</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1ad21a943630920c4e618b7f7450d2668b">get_var_ray</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="40" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a8e1d343848eb3cd32d9bc15840a0e894" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double idol::Optimizers::Robust::Deterministic::get_ctr_dual</definition>
+        <argsstring>(const Ctr &amp;t_ctr) const override</argsstring>
+        <name>get_ctr_dual</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a146aa552ab6c5442d7ca49d29d806427">get_ctr_dual</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="42" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a969c7edc0fe5f65d32be8c10cffbf9ed" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double idol::Optimizers::Robust::Deterministic::get_ctr_farkas</definition>
+        <argsstring>(const Ctr &amp;t_ctr) const override</argsstring>
+        <name>get_ctr_farkas</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1ae0cf7244a71914ddbb08ba8e0baba9ca">get_ctr_farkas</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="44" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1afb3487ce4f74cd6e4be38c562c068290" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Optimizers::Robust::Deterministic::get_n_solutions</definition>
+        <argsstring>() const override</argsstring>
+        <name>get_n_solutions</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a0e98fd1255617e98e988ee41ca896e71">get_n_solutions</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="46" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a5da5c1ddab355ea9b8015bce4cbc0c23" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::Optimizers::Robust::Deterministic::get_solution_index</definition>
+        <argsstring>() const override</argsstring>
+        <name>get_solution_index</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a4d4eb6b7c7885ecdfbae4c87da8d0661">get_solution_index</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="48" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Algorithm_1a424a643bf34fdc305e5e14c32c60ebde" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double idol::Algorithm::get_relative_gap</definition>
+        <argsstring>() const override</argsstring>
+        <name>get_relative_gap</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a17d096d345b47194e85cc210351f45d5">get_relative_gap</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" line="34" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Algorithm_1ad65545801432ff973e15a47da2cb230e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double idol::Algorithm::get_absolute_gap</definition>
+        <argsstring>() const override</argsstring>
+        <name>get_absolute_gap</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a266eddfc1b3aa4ee9a9231ecdf568337">get_absolute_gap</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" line="35" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a6e2887215b92e97a30a74f4aa53dd2f0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>const ::<ref refid="classidol_1_1Model" kindref="compound">idol::Model</ref> &amp;</type>
+        <definition>virtual const ::idol::Model&amp; idol::impl::Optimizer::parent</definition>
+        <argsstring>() const</argsstring>
+        <name>parent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="104" column="34" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="104" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1acc87454b609268dc1ecf65a1ced765d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::impl::Optimizer::get_param_logs</definition>
+        <argsstring>() const</argsstring>
+        <name>get_param_logs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="132" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="132" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a990981b38cd7f9338ab12ab383061861" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::set_param_logs</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>set_param_logs</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1af2ba152cf0597c5a727fd8679ede40c5">set_param_logs</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1a529ca155adff98d7422a8ce24d752ff1">set_param_logs</reimplementedby>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="134" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="134" bodyend="134"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a20be2e664e6a84bf404b39d768ff03e7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::impl::Optimizer::get_param_time_limit</definition>
+        <argsstring>() const</argsstring>
+        <name>get_param_time_limit</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="136" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="136" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab21a570955c865a255914bb1627053bb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::set_param_time_limit</definition>
+        <argsstring>(double t_time_limit)</argsstring>
+        <name>set_param_time_limit</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1a264054fd0e97f9c83eef48e430cdc8b3">set_param_time_limit</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1ab9dae3fb489153a964c3b9e5c493cd44">set_param_time_limit</reimplementedby>
+        <param>
+          <type>double</type>
+          <declname>t_time_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="138" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="138" bodyend="138"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a97f61564e390973a18874b8de4bd7cb5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::impl::Optimizer::get_param_thread_limit</definition>
+        <argsstring>() const</argsstring>
+        <name>get_param_thread_limit</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="140" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="140" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1acfa8aa084e883e7a191e3da770d5daa4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::set_param_threads</definition>
+        <argsstring>(unsigned int t_threads)</argsstring>
+        <name>set_param_threads</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1aab93f37ed1935bb910e960f8f154a624">set_param_threads</reimplementedby>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_threads</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="142" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="142" bodyend="142"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a513ef279419e11630421378aa83ca8a3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::impl::Optimizer::get_param_best_obj_stop</definition>
+        <argsstring>() const</argsstring>
+        <name>get_param_best_obj_stop</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="144" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a5babaec019d640cd7828b5ef213ec335" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::set_param_best_obj_stop</definition>
+        <argsstring>(double t_best_obj_stop)</argsstring>
+        <name>set_param_best_obj_stop</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1ad3e1a184a67679e3dd031661b693f2b0">set_param_best_obj_stop</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1a4b56aa363f7563f0ca8a56c4e53374b9">set_param_best_obj_stop</reimplementedby>
+        <param>
+          <type>double</type>
+          <declname>t_best_obj_stop</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="146" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="146" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1af2cec35235bbf3a746d604fd998ad636" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::impl::Optimizer::get_param_best_bound_stop</definition>
+        <argsstring>() const</argsstring>
+        <name>get_param_best_bound_stop</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="148" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab60bc3d2dd159d5f061b997771c91887" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::set_param_best_bound_stop</definition>
+        <argsstring>(double t_best_bound_stop)</argsstring>
+        <name>set_param_best_bound_stop</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1a8e12c71d452ae482bfafb4e5939b5d0f">set_param_best_bound_stop</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1a06cec1a335cecefa10d91365eccfc012">set_param_best_bound_stop</reimplementedby>
+        <param>
+          <type>double</type>
+          <declname>t_best_bound_stop</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="150" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="150" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab246bb155504651d93c91b2dc08da414" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::impl::Optimizer::get_tol_mip_relative_gap</definition>
+        <argsstring>() const</argsstring>
+        <name>get_tol_mip_relative_gap</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="152" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="152" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a566eb822d1a0707d50359b3e50fccbdf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::set_tol_mip_relative_gap</definition>
+        <argsstring>(double t_tol_mip_relative_gap)</argsstring>
+        <name>set_tol_mip_relative_gap</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1a88280645ce1379a569f5c4ab9647c6cd">set_tol_mip_relative_gap</reimplementedby>
+        <param>
+          <type>double</type>
+          <declname>t_tol_mip_relative_gap</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="154" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="154" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a79a3832a54c597121788782f1d49ba8c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::impl::Optimizer::get_tol_mip_absolute_gap</definition>
+        <argsstring>() const</argsstring>
+        <name>get_tol_mip_absolute_gap</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="156" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="156" bodyend="156"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1af67921d0ce90e1d5412dff5e068bbc71" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::set_tol_mip_absolute_gap</definition>
+        <argsstring>(double t_mip_tol_absolute_gap)</argsstring>
+        <name>set_tol_mip_absolute_gap</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1a4abc0ef54ea1a7e181b776b996ed0257">set_tol_mip_absolute_gap</reimplementedby>
+        <param>
+          <type>double</type>
+          <declname>t_mip_tol_absolute_gap</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="158" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="158" bodyend="158"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a5b48ff7b9c91cdfedfaa9e18afb3bde5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::impl::Optimizer::get_tol_feasibility</definition>
+        <argsstring>() const</argsstring>
+        <name>get_tol_feasibility</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="160" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="160" bodyend="160"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ad25478639b1ed1a258a7418da7ff6964" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::set_tol_feasibility</definition>
+        <argsstring>(double t_tol_feasibility)</argsstring>
+        <name>set_tol_feasibility</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1a3b03101cf613f63f222e9c6abe5402c6">set_tol_feasibility</reimplementedby>
+        <param>
+          <type>double</type>
+          <declname>t_tol_feasibility</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="162" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="162" bodyend="162"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a502d527b86eaa0a721e5b5bcc7dd482c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::impl::Optimizer::get_tol_optimality</definition>
+        <argsstring>() const</argsstring>
+        <name>get_tol_optimality</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="164" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="164" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ababdcbe906c67c4cae465962608ca93a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::set_tol_optimality</definition>
+        <argsstring>(double t_tol_optimality)</argsstring>
+        <name>set_tol_optimality</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1a1403ed7cb1cc90e9539227ae38f9e1d9">set_tol_optimality</reimplementedby>
+        <param>
+          <type>double</type>
+          <declname>t_tol_optimality</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="166" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="166" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a317360331767cc9d4edc94cce889e5f1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::impl::Optimizer::get_tol_integer</definition>
+        <argsstring>() const</argsstring>
+        <name>get_tol_integer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="168" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="168" bodyend="168"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab91250466dd2bed6c8982a0d37189da8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::set_tol_integer</definition>
+        <argsstring>(double t_tol_integer)</argsstring>
+        <name>set_tol_integer</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1aee69b69800ee55fa4d11a3a8c4ce1e19">set_tol_integer</reimplementedby>
+        <param>
+          <type>double</type>
+          <declname>t_tol_integer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="170" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="170" bodyend="170"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ade78f725110a641cd46ac675769f3765" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::impl::Optimizer::get_param_iteration_limit</definition>
+        <argsstring>() const</argsstring>
+        <name>get_param_iteration_limit</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="172" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="172" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a58af4d0f6c4fabd5f571b64138610779" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::impl::Optimizer::set_param_iteration_limit</definition>
+        <argsstring>(unsigned int t_iteration_limit)</argsstring>
+        <name>set_param_iteration_limit</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_iteration_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="174" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="174" bodyend="174"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ae453b0716b3c142104692873a0c1fe89" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::impl::Optimizer::get_param_presolve</definition>
+        <argsstring>() const</argsstring>
+        <name>get_param_presolve</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="176" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="176" bodyend="176"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ac673045c5d062878f2b75f3b09711f00" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::set_param_presolve</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>set_param_presolve</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1a68257d803dcde8606946909894eab118">set_param_presolve</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1aeee8716b23e81312cb98f3592b16a686">set_param_presolve</reimplementedby>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="178" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="178" bodyend="178"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a28959c3d0a53207028a4b6238604eb56" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::impl::Optimizer::get_param_infeasible_or_unbounded_info</definition>
+        <argsstring>() const</argsstring>
+        <name>get_param_infeasible_or_unbounded_info</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="180" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="180" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a8e0f2f3d560b3a54a9b06645b6668215" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::set_param_infeasible_or_unbounded_info</definition>
+        <argsstring>(bool t_value)</argsstring>
+        <name>set_param_infeasible_or_unbounded_info</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1ad74b099bb65667a81d117cef470058e1">set_param_infeasible_or_unbounded_info</reimplementedby>
+        <param>
+          <type>bool</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="182" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="182" bodyend="182"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a0cafae2af239bb5b7701dc8f2bc72acd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1Timer" kindref="compound">Timer</ref> &amp;</type>
+        <definition>const Timer&amp; idol::impl::Optimizer::time</definition>
+        <argsstring>() const</argsstring>
+        <name>time</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="184" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="184" bodyend="184"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a1b6a136e9db30ed85a55f32c58663ed4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double idol::impl::Optimizer::get_remaining_time</definition>
+        <argsstring>() const</argsstring>
+        <name>get_remaining_time</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="186" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a237aecc646c59f56fe7e0d406912f81a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::impl::Optimizer::is_terminated</definition>
+        <argsstring>() const</argsstring>
+        <name>is_terminated</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="188" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="188" bodyend="188"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a475c1533824aef4fb8f427bc6a45546b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::terminate</definition>
+        <argsstring>()</argsstring>
+        <name>terminate</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a4468720781d9278f1e2d6628a3a00e7b">terminate</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="190" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ad91c5c2c1bdac21e7d1db49afc37107c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>T &amp;</type>
+        <definition>T&amp; idol::impl::Optimizer::as</definition>
+        <argsstring>()</argsstring>
+        <name>as</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="192" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="192" bodyend="198"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a9aa8fef64de4f65b5462442e506594d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>const T &amp;</type>
+        <definition>const T&amp; idol::impl::Optimizer::as</definition>
+        <argsstring>() const</argsstring>
+        <name>as</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="200" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="200" bodyend="206"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a0455b8664cabb2579d93607446004afe" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool idol::impl::Optimizer::is</definition>
+        <argsstring>() const</argsstring>
+        <name>is</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="208" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="208" bodyend="210"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a06c61425968f683e3290fc7d86e79715" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::add</definition>
+        <argsstring>(const Var &amp;t_var) override</argsstring>
+        <name>add</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1ac5e35eec35d2dea0b90fcabd30485179">add</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="51" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a15585b3efc7409a049d6475b2011db0f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::add</definition>
+        <argsstring>(const Ctr &amp;t_ctr) override</argsstring>
+        <name>add</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1ae1266859ae2679d14d22bb7449dbbe8b">add</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="53" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a1e208acec08706fa90202b5bbb64a6f8" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::add</definition>
+        <argsstring>(const QCtr &amp;t_ctr) override</argsstring>
+        <name>add</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1afa9e27c1db69ebe4688fd4ba37ba3121">add</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="55" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aee10d6f19d5ac6309c1adcb4742cc113" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::remove</definition>
+        <argsstring>(const Var &amp;t_var) override</argsstring>
+        <name>remove</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a922c443d01523ee75f16f8cba99ee159">remove</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="57" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a23fd13992807566b41a50c661dc23903" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::remove</definition>
+        <argsstring>(const Ctr &amp;t_ctr) override</argsstring>
+        <name>remove</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a5c021fd9b686acbb6d3b8ee38c7eff9c">remove</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="59" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aed025fe51062db871112ac45f2367cc2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::remove</definition>
+        <argsstring>(const QCtr &amp;t_ctr) override</argsstring>
+        <name>remove</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a8f30740f64bd1bac13b7de206e781c7b">remove</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="61" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a7a7777da12ba8fded91c28742001eb35" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::update</definition>
+        <argsstring>() override</argsstring>
+        <name>update</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a96d15823685c0e6d2966ef35b26a9503">update</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="63" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1abf1685f850844c7d21c944c84d4c8db8" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::write</definition>
+        <argsstring>(const std::string &amp;t_name) override</argsstring>
+        <name>write</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a799b0b5d874b3558c48e4d1cef6013a8">write</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="65" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a4ff797fd3379f5ec71d5344c5589855c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::hook_optimize</definition>
+        <argsstring>() override</argsstring>
+        <name>hook_optimize</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1aac4fef8007f641e8226be51f92075fde">hook_optimize</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="67" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aa59d1abfeea220eb6bc60a90c4c34d18" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::set_solution_index</definition>
+        <argsstring>(unsigned int t_index) override</argsstring>
+        <name>set_solution_index</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a9ad3e14177821752eb86c58195f1df46">set_solution_index</reimplements>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="69" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a214feae53d8ac6c359158ca9a76fc347" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::update_obj_sense</definition>
+        <argsstring>() override</argsstring>
+        <name>update_obj_sense</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a25a53345053496a7fadd9648df49d254">update_obj_sense</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="71" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a0f76751c05dc77f3ae5f3526393d65db" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::update_obj</definition>
+        <argsstring>() override</argsstring>
+        <name>update_obj</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1ab0f43a11a4c92dbd420df4083f074fd5">update_obj</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="73" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aa6c654216fa018e73f14c2b1852cb9a9" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::update_rhs</definition>
+        <argsstring>() override</argsstring>
+        <name>update_rhs</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a1cbf5571c1dec27a41a6e9f0e19db124">update_rhs</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="75" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a9b620f0614016b5edd8539b8db7ea872" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::update_obj_constant</definition>
+        <argsstring>() override</argsstring>
+        <name>update_obj_constant</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a649970fd70f822ff3565118b23503a18">update_obj_constant</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="77" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a1227a5010ee65718253610b35d5e5e4f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::update_mat_coeff</definition>
+        <argsstring>(const Ctr &amp;t_ctr, const Var &amp;t_var) override</argsstring>
+        <name>update_mat_coeff</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1abbbeaecd791d91037912dbea1cc3abe4">update_mat_coeff</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="79" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a1c2ab3f67487bb9eb1f219bbee0ad3e2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::update_ctr_type</definition>
+        <argsstring>(const Ctr &amp;t_ctr) override</argsstring>
+        <name>update_ctr_type</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a052484a0897b8994517805c284b12cb6">update_ctr_type</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="81" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a253f6380274b4ecad9ed3e0947d09272" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::update_ctr_rhs</definition>
+        <argsstring>(const Ctr &amp;t_ctr) override</argsstring>
+        <name>update_ctr_rhs</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1abbdd8996efcaf9e25066f38ceb6d1a94">update_ctr_rhs</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="83" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a4880a12706b14ceb2a51f2422a939cb8" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::update_var_type</definition>
+        <argsstring>(const Var &amp;t_var) override</argsstring>
+        <name>update_var_type</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a06c4c149d5a16be2a7bf436e3c94cdc2">update_var_type</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="85" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a27403e7e683a8ce470f9a48c3d52ba44" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::update_var_lb</definition>
+        <argsstring>(const Var &amp;t_var) override</argsstring>
+        <name>update_var_lb</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1aef3dabf3018202b60d9ae6254c481700">update_var_lb</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="87" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aa11b4ddad9f8816c380ba8f041548737" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::update_var_ub</definition>
+        <argsstring>(const Var &amp;t_var) override</argsstring>
+        <name>update_var_ub</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1aa6384ec94a6006df19907e140b8e3f67">update_var_ub</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="89" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aec4c8ef8e4bd8ebb193abba47901c434" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::Robust::Deterministic::update_var_obj</definition>
+        <argsstring>(const Var &amp;t_var) override</argsstring>
+        <name>update_var_obj</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1ae226b270b4aafede630156e30f41fea7">update_var_obj</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="91" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Algorithm_1a7827fa271c95cd5bfd474af2a702c094" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Algorithm::build</definition>
+        <argsstring>() override</argsstring>
+        <name>build</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a8b1cfad93e3eb77c214aa2ff343fcb64">build</reimplements>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a6db70f15ec2cb0c8c984c06439277119">build</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" line="21" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" bodystart="21" bodyend="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Algorithm_1afa4fa983d18213614037fa92484bf24c" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::Algorithm::set_status</definition>
+        <argsstring>(SolutionStatus t_status)</argsstring>
+        <name>set_status</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a2bbe7a8e0e19e8b5b58854644abca316">set_status</reimplementedby>
+        <param>
+          <type>SolutionStatus</type>
+          <declname>t_status</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" line="23" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" bodystart="23" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Algorithm_1a82ae81a413801e3467a528d6723ef98b" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::Algorithm::set_reason</definition>
+        <argsstring>(SolutionReason t_reason)</argsstring>
+        <name>set_reason</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1aa5d39f44ee786a92f6e4e70010ba8cc3">set_reason</reimplementedby>
+        <param>
+          <type>SolutionReason</type>
+          <declname>t_reason</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" line="24" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" bodystart="24" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Algorithm_1a1a093633b2534aaea279a13506e15b94" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::Algorithm::set_best_bound</definition>
+        <argsstring>(double t_value)</argsstring>
+        <name>set_best_bound</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1abc95e0b9763d2184a1d2b2375f0856ba">set_best_bound</reimplementedby>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" line="25" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" bodystart="25" bodyend="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Algorithm_1a42b635afff87af2e867b53c66bf5bfc5" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::Algorithm::set_best_obj</definition>
+        <argsstring>(double t_value)</argsstring>
+        <name>set_best_obj</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a29b5fea1ee24213bc1995546a3d8a874">set_best_obj</reimplementedby>
+        <param>
+          <type>double</type>
+          <declname>t_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" line="26" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" bodystart="26" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a23401d6f4b9166f7d941a696d4cef2e9" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::impl::Optimizer::optimize</definition>
+        <argsstring>()</argsstring>
+        <name>optimize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="66" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a59c7ad8b4b2f9700649bbf008a7876ed" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::hook_before_optimize</definition>
+        <argsstring>()</argsstring>
+        <name>hook_before_optimize</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a6011ffe600f70985dbb808dda523ac73">hook_before_optimize</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a4956a2c6102aebf3a9484d0ff7f96e46">hook_before_optimize</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a4a855c27efcffefc8f78fd16dc9fe7ad">hook_before_optimize</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a4850843cd6b61588860a559650aac54d">hook_before_optimize</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1aab8be367942c63dc38b8d9b1a8d62fac">hook_before_optimize</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="68" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="68" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1aef37b30f99f5a244584039750d0ba140" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::hook_after_optimize</definition>
+        <argsstring>()</argsstring>
+        <name>hook_after_optimize</name>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1ab5e0516fa7a86d515d196c48f62d4444">hook_after_optimize</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a8678db892a87725f66c114c19443e07e">hook_after_optimize</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="72" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="72" bodyend="72"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="4">
+        <label>idol::impl::Optimizer</label>
+        <link refid="classidol_1_1impl_1_1Optimizer"/>
+      </node>
+      <node id="2">
+        <label>idol::Algorithm</label>
+        <link refid="classidol_1_1Algorithm"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::Optimizer</label>
+        <link refid="classidol_1_1Optimizer"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::Optimizers::Robust::Deterministic</label>
+        <link refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>idol::impl::Optimizer</label>
+        <link refid="classidol_1_1impl_1_1Optimizer"/>
+      </node>
+      <node id="2">
+        <label>idol::Algorithm</label>
+        <link refid="classidol_1_1Algorithm"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::Optimizer</label>
+        <link refid="classidol_1_1Optimizer"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::Optimizers::Robust::Deterministic</label>
+        <link refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" line="17" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h" bodystart="17" bodyend="92"/>
+    <listofallmembers>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a06c61425968f683e3290fc7d86e79715" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>add</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a15585b3efc7409a049d6475b2011db0f" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>add</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a1e208acec08706fa90202b5bbb64a6f8" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>add</name></member>
+      <member refid="classidol_1_1Algorithm_1a3238d95678aae714ebc20e4df3a7c023" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>Algorithm</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1ad91c5c2c1bdac21e7d1db49afc37107c" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>as</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a9aa8fef64de4f65b5462442e506594d2" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>as</name></member>
+      <member refid="classidol_1_1Algorithm_1a7827fa271c95cd5bfd474af2a702c094" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>build</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a84a27880dc8afa577dfcd33e33ac2a63" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>Deterministic</name></member>
+      <member refid="classidol_1_1Algorithm_1ad65545801432ff973e15a47da2cb230e" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_absolute_gap</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aabad8904383ae9f91221c2f374150afb" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_best_bound</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a2c3b5d6558ad1177087354484c093cf4" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_best_obj</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a8e1d343848eb3cd32d9bc15840a0e894" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_ctr_dual</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a969c7edc0fe5f65d32be8c10cffbf9ed" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_ctr_farkas</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1afb3487ce4f74cd6e4be38c562c068290" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_n_solutions</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1af2cec35235bbf3a746d604fd998ad636" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_param_best_bound_stop</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a513ef279419e11630421378aa83ca8a3" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_param_best_obj_stop</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a28959c3d0a53207028a4b6238604eb56" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_param_infeasible_or_unbounded_info</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1ade78f725110a641cd46ac675769f3765" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_param_iteration_limit</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1acc87454b609268dc1ecf65a1ced765d2" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_param_logs</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1ae453b0716b3c142104692873a0c1fe89" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_param_presolve</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a97f61564e390973a18874b8de4bd7cb5" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_param_thread_limit</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a20be2e664e6a84bf404b39d768ff03e7" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_param_time_limit</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1afd1e761c1b12d90c6ff8a64d4c076a39" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_reason</name></member>
+      <member refid="classidol_1_1Algorithm_1a424a643bf34fdc305e5e14c32c60ebde" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_relative_gap</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a1b6a136e9db30ed85a55f32c58663ed4" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_remaining_time</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a5da5c1ddab355ea9b8015bce4cbc0c23" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_solution_index</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1ad969dfe9ec5de34e8ba8ffdda7dcb389" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_status</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a5b48ff7b9c91cdfedfaa9e18afb3bde5" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_tol_feasibility</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a317360331767cc9d4edc94cce889e5f1" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_tol_integer</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a79a3832a54c597121788782f1d49ba8c" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_tol_mip_absolute_gap</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1ab246bb155504651d93c91b2dc08da414" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_tol_mip_relative_gap</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a502d527b86eaa0a721e5b5bcc7dd482c" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_tol_optimality</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a2c31ed1c67ee99ce9e214b9a54c1eef3" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_var_primal</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1abac60449e9ad5b695d9846a937004261" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_var_ray</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a1fe8eda3de94f0a508432686aa2356db" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>get_var_reduced_cost</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1aef37b30f99f5a244584039750d0ba140" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>hook_after_optimize</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a59c7ad8b4b2f9700649bbf008a7876ed" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>hook_before_optimize</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a4ff797fd3379f5ec71d5344c5589855c" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>hook_optimize</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a0455b8664cabb2579d93607446004afe" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>is</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a237aecc646c59f56fe7e0d406912f81a" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>is_terminated</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a9e382970287a4a14cfb4cf3a25e3f276" prot="private" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>m_description</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a70bdea216fa4ea42c158c71b7e84171e" prot="private" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>m_deterministic_model</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a10ed9dfba44e7e813c58aaf3a5ff8384" prot="private" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>m_deterministic_optimizer</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1ad2d1a0e3bcd2db5deb83eb3b388da522" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>name</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a23401d6f4b9166f7d941a696d4cef2e9" prot="protected" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>optimize</name></member>
+      <member refid="classidol_1_1Optimizer_1a8793c25aaba434c6b7e9a85bcca48e16" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>Optimizer</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a6e2887215b92e97a30a74f4aa53dd2f0" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>parent</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aee10d6f19d5ac6309c1adcb4742cc113" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>remove</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a23fd13992807566b41a50c661dc23903" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>remove</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aed025fe51062db871112ac45f2367cc2" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>remove</name></member>
+      <member refid="classidol_1_1Algorithm_1a1a093633b2534aaea279a13506e15b94" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_best_bound</name></member>
+      <member refid="classidol_1_1Algorithm_1a42b635afff87af2e867b53c66bf5bfc5" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_best_obj</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1ab60bc3d2dd159d5f061b997771c91887" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_param_best_bound_stop</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a5babaec019d640cd7828b5ef213ec335" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_param_best_obj_stop</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a8e0f2f3d560b3a54a9b06645b6668215" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_param_infeasible_or_unbounded_info</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a58af4d0f6c4fabd5f571b64138610779" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_param_iteration_limit</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a990981b38cd7f9338ab12ab383061861" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_param_logs</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1ac673045c5d062878f2b75f3b09711f00" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_param_presolve</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1acfa8aa084e883e7a191e3da770d5daa4" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_param_threads</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1ab21a570955c865a255914bb1627053bb" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_param_time_limit</name></member>
+      <member refid="classidol_1_1Algorithm_1a82ae81a413801e3467a528d6723ef98b" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_reason</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aa59d1abfeea220eb6bc60a90c4c34d18" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_solution_index</name></member>
+      <member refid="classidol_1_1Algorithm_1afa4fa983d18213614037fa92484bf24c" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_status</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1ad25478639b1ed1a258a7418da7ff6964" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_tol_feasibility</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1ab91250466dd2bed6c8982a0d37189da8" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_tol_integer</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1af67921d0ce90e1d5412dff5e068bbc71" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_tol_mip_absolute_gap</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a566eb822d1a0707d50359b3e50fccbdf" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_tol_mip_relative_gap</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1ababdcbe906c67c4cae465962608ca93a" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>set_tol_optimality</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a475c1533824aef4fb8f427bc6a45546b" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>terminate</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a3fee61fe52b87bfde100efbfa7784b7d" prot="private" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>throw_if_no_deterministic_model</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a0cafae2af239bb5b7701dc8f2bc72acd" prot="public" virt="non-virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>time</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a7a7777da12ba8fded91c28742001eb35" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>update</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a253f6380274b4ecad9ed3e0947d09272" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>update_ctr_rhs</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a1c2ab3f67487bb9eb1f219bbee0ad3e2" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>update_ctr_type</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a1227a5010ee65718253610b35d5e5e4f" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>update_mat_coeff</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a0f76751c05dc77f3ae5f3526393d65db" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>update_obj</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a9b620f0614016b5edd8539b8db7ea872" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>update_obj_constant</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a214feae53d8ac6c359158ca9a76fc347" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>update_obj_sense</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aa6c654216fa018e73f14c2b1852cb9a9" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>update_rhs</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a27403e7e683a8ce470f9a48c3d52ba44" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>update_var_lb</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aec4c8ef8e4bd8ebb193abba47901c434" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>update_var_obj</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a4880a12706b14ceb2a51f2422a939cb8" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>update_var_type</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aa11b4ddad9f8816c380ba8f041548737" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>update_var_ub</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1abf1685f850844c7d21c944c84d4c8db8" prot="protected" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>write</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a87f1a4dcd75963657f0577387bfa3dea" prot="public" virt="virtual"><scope>idol::Optimizers::Robust::Deterministic</scope><name>~Optimizer</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

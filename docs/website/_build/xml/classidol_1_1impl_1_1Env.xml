@@ -1,0 +1,618 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1impl_1_1Env" kind="class" language="C++" prot="public">
+    <compoundname>idol::impl::Env</compoundname>
+    <derivedcompoundref refid="classidol_1_1Env" prot="public" virt="non-virtual">idol::Env</derivedcompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1impl_1_1Env_1afb231cc4d8d9f671cca255ab2334abb5" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::impl::Env::m_max_object_id</definition>
+        <argsstring></argsstring>
+        <name>m_max_object_id</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="54" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1impl_1_1Env_1aced17ce4a444d9df7596abac6bcb1c81" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1impl_1_1IdProvider" kindref="compound">IdProvider</ref>&lt; 1 &gt;</type>
+        <definition>IdProvider&lt;1&gt; idol::impl::Env::m_model_ids</definition>
+        <argsstring></argsstring>
+        <name>m_model_ids</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="56" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1impl_1_1Env_1a96ba2a581402acdba3c6345c4d44765a" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1impl_1_1IdProvider" kindref="compound">IdProvider</ref>&lt; 0 &gt;</type>
+        <definition>IdProvider&lt;0&gt; idol::impl::Env::m_annotation_ids</definition>
+        <argsstring></argsstring>
+        <name>m_annotation_ids</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="57" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1impl_1_1Env_1a8761b42c9bc2decc4ab6f601f71b08d8" prot="private" static="no" mutable="no">
+        <type>std::list&lt; <ref refid="classidol_1_1Versions" kindref="compound">Versions</ref>&lt; <ref refid="classidol_1_1VarVersion" kindref="compound">VarVersion</ref> &gt; &gt;</type>
+        <definition>std::list&lt;Versions&lt;VarVersion&gt; &gt; idol::impl::Env::m_variables</definition>
+        <argsstring></argsstring>
+        <name>m_variables</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="59" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1impl_1_1Env_1a95fccfe873f29b8f007f5a98ebd3bfd0" prot="private" static="no" mutable="no">
+        <type>std::list&lt; <ref refid="classidol_1_1Versions" kindref="compound">Versions</ref>&lt; <ref refid="classidol_1_1CtrVersion" kindref="compound">CtrVersion</ref> &gt; &gt;</type>
+        <definition>std::list&lt;Versions&lt;CtrVersion&gt; &gt; idol::impl::Env::m_constraints</definition>
+        <argsstring></argsstring>
+        <name>m_constraints</name>
+        <briefdescription>
+<para>Every version of each variable in the environment is stored here. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="60" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1impl_1_1Env_1a35eb6dfb95144ada99ce4d4084098be5" prot="private" static="no" mutable="no">
+        <type>std::list&lt; <ref refid="classidol_1_1Versions" kindref="compound">Versions</ref>&lt; <ref refid="classidol_1_1QCtrVersion" kindref="compound">QCtrVersion</ref> &gt; &gt;</type>
+        <definition>std::list&lt;Versions&lt;QCtrVersion&gt; &gt; idol::impl::Env::m_qconstraints</definition>
+        <argsstring></argsstring>
+        <name>m_qconstraints</name>
+        <briefdescription>
+<para>Every version of each constraint in the environment is stored here. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="61" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1impl_1_1Env_1a00eaa282a089690edaecd85d19f9cb77" prot="private" static="no" mutable="no">
+        <type>std::list&lt; <ref refid="classidol_1_1Versions" kindref="compound">Versions</ref>&lt; <ref refid="classidol_1_1SOSCtrVersion" kindref="compound">SOSCtrVersion</ref> &gt; &gt;</type>
+        <definition>std::list&lt;Versions&lt;SOSCtrVersion&gt; &gt; idol::impl::Env::m_sosconstraints</definition>
+        <argsstring></argsstring>
+        <name>m_sosconstraints</name>
+        <briefdescription>
+<para>Every version of each quadratic constraint in the environment is stored here. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="62" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1ace0e5fcd41e9050fef11fceb010ffe6a" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class VersionT</type>
+          </param>
+          <param>
+            <type>class ...</type>
+            <declname>ArgsT</declname>
+            <defname>ArgsT</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classidol_1_1ObjectId" kindref="compound">ObjectId</ref>&lt; VersionT &gt;</type>
+        <definition>ObjectId&lt;VersionT&gt; idol::impl::Env::create</definition>
+        <argsstring>(std::string t_name, const std::string &amp;t_default_name, std::list&lt; Versions&lt; VersionT &gt;&gt; &amp;t_container, ArgsT &amp;&amp;...t_args)</argsstring>
+        <name>create</name>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>t_default_name</declname>
+        </param>
+        <param>
+          <type>std::list&lt; <ref refid="classidol_1_1Versions" kindref="compound">Versions</ref>&lt; VersionT &gt;&gt; &amp;</type>
+          <declname>t_container</declname>
+        </param>
+        <param>
+          <type>ArgsT &amp;&amp;...</type>
+          <declname>t_args</declname>
+        </param>
+        <briefdescription>
+<para>Every version of each sos constraint in the environment is stored here. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="65" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="65" bodyend="70"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a6ca7390e17d47f34f7462932b694ac84" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::impl::Env::create_model_id</definition>
+        <argsstring>()</argsstring>
+        <name>create_model_id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="72" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="72" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1aa9988ff4ed73ea964a08cc2c2619f2ea" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::impl::Env::free_model_id</definition>
+        <argsstring>(const ::idol::Model &amp;t_model)</argsstring>
+        <name>free_model_id</name>
+        <param>
+          <type>const ::<ref refid="classidol_1_1Model" kindref="compound">idol::Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="74" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a96b58d49ff150a9650c7e7ab3a12de38" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int idol::impl::Env::create_annotation_id</definition>
+        <argsstring>()</argsstring>
+        <name>create_annotation_id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="76" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="76" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a4dea6382b737485e6437e7b314d4387f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::impl::Env::free_annotation_id</definition>
+        <argsstring>(const impl::Annotation &amp;t_annotation)</argsstring>
+        <name>free_annotation_id</name>
+        <param>
+          <type>const <ref refid="classidol_1_1impl_1_1Annotation" kindref="compound">impl::Annotation</ref> &amp;</type>
+          <declname>t_annotation</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="78" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a9be8e1da4561d72af4782548ffcdd81d" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class ...</type>
+            <declname>ArgsT</declname>
+            <defname>ArgsT</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::impl::Env::create_version</definition>
+        <argsstring>(const Model &amp;t_model, const T &amp;t_object, unsigned int t_index, ArgsT &amp;&amp;...t_args)</argsstring>
+        <name>create_version</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t_object</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>t_index</declname>
+        </param>
+        <param>
+          <type>ArgsT &amp;&amp;...</type>
+          <declname>t_args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="81" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="81" bodyend="83"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1ae74f543a48990dc8ff47cb31ef59e166" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void idol::impl::Env::remove_version</definition>
+        <argsstring>(const Model &amp;t_model, const T &amp;t_object)</argsstring>
+        <name>remove_version</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t_object</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="86" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="86" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a4267e2fa2257bdcf6cdbb735ec194155" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool idol::impl::Env::has_version</definition>
+        <argsstring>(const Model &amp;t_model, const T &amp;t_object) const</argsstring>
+        <name>has_version</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t_object</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="91" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="91" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a1591eb0494d9ec4af4ba535b167dd09e" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::impl::Env::version</definition>
+        <argsstring>(const Model &amp;t_model, const T &amp;t_object) const</argsstring>
+        <name>version</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t_object</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="96" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="96" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a0ec7d8250d995a5e11b4faefc640e54f" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>auto &amp;</type>
+        <definition>auto&amp; idol::impl::Env::version</definition>
+        <argsstring>(const Model &amp;t_model, const T &amp;t_object)</argsstring>
+        <name>version</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
+          <declname>t_model</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t_object</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="101" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="101" bodyend="103"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a569164d013365f3b9282d364cfd43da9" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1ObjectId" kindref="compound">ObjectId</ref>&lt; <ref refid="classidol_1_1VarVersion" kindref="compound">VarVersion</ref> &gt;</type>
+        <definition>ObjectId&lt;VarVersion&gt; idol::impl::Env::create_var</definition>
+        <argsstring>(std::string t_name, TempVar &amp;&amp;t_temp_var)</argsstring>
+        <name>create_var</name>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1TempVar" kindref="compound">TempVar</ref> &amp;&amp;</type>
+          <declname>t_temp_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="105" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="105" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1aafee9c45282c3a5d1d2b6fc38b7debcc" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1ObjectId" kindref="compound">ObjectId</ref>&lt; <ref refid="classidol_1_1CtrVersion" kindref="compound">CtrVersion</ref> &gt;</type>
+        <definition>ObjectId&lt;CtrVersion&gt; idol::impl::Env::create_ctr</definition>
+        <argsstring>(std::string t_name, TempCtr &amp;&amp;t_temp_ctr)</argsstring>
+        <name>create_ctr</name>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1TempCtr" kindref="compound">TempCtr</ref> &amp;&amp;</type>
+          <declname>t_temp_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="109" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="109" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a5e844cb5748678b2df955c818ff2f043" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1ObjectId" kindref="compound">ObjectId</ref>&lt; <ref refid="classidol_1_1QCtrVersion" kindref="compound">QCtrVersion</ref> &gt;</type>
+        <definition>ObjectId&lt;QCtrVersion&gt; idol::impl::Env::create_qctr</definition>
+        <argsstring>(std::string t_name, TempQCtr &amp;&amp;t_temp_ctr)</argsstring>
+        <name>create_qctr</name>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1TempQCtr" kindref="compound">TempQCtr</ref> &amp;&amp;</type>
+          <declname>t_temp_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="113" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="113" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a9f85af92636bd77baa5cc3429317d8a1" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1ObjectId" kindref="compound">ObjectId</ref>&lt; <ref refid="classidol_1_1SOSCtrVersion" kindref="compound">SOSCtrVersion</ref> &gt;</type>
+        <definition>ObjectId&lt;SOSCtrVersion&gt; idol::impl::Env::create_sosctr</definition>
+        <argsstring>(std::string t_name, bool t_is_sos1, std::vector&lt; Var &gt; &amp;&amp;t_vars, std::vector&lt; double &gt; &amp;&amp;t_weights)</argsstring>
+        <name>create_sosctr</name>
+        <param>
+          <type>std::string</type>
+          <declname>t_name</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>t_is_sos1</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;&amp;</type>
+          <declname>t_vars</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt; &amp;&amp;</type>
+          <declname>t_weights</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="117" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="117" bodyend="119"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a34caa585572142bfcf9aa2a6aa0c90ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::impl::Env::Env</definition>
+        <argsstring>()=default</argsstring>
+        <name>Env</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="122" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a0cdd4bd48a1118c97f499c8ccbd50f0f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::impl::Env::Env</definition>
+        <argsstring>(const Env &amp;)=delete</argsstring>
+        <name>Env</name>
+        <param>
+          <type>const <ref refid="classidol_1_1impl_1_1Env" kindref="compound">Env</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="124" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a6db846ee77dc1dea1cb80dd5f82c7a76" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::impl::Env::Env</definition>
+        <argsstring>(Env &amp;&amp;) noexcept=delete</argsstring>
+        <name>Env</name>
+        <param>
+          <type><ref refid="classidol_1_1impl_1_1Env" kindref="compound">Env</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="125" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a7a95446c1669a4fd350b4af75d4edd89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1impl_1_1Env" kindref="compound">Env</ref> &amp;</type>
+        <definition>Env&amp; idol::impl::Env::operator=</definition>
+        <argsstring>(const Env &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1impl_1_1Env" kindref="compound">Env</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="127" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a7b41c892b8690cab4275ddffc315d6b6" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1impl_1_1Env" kindref="compound">Env</ref> &amp;</type>
+        <definition>Env&amp; idol::impl::Env::operator=</definition>
+        <argsstring>(Env &amp;&amp;) noexcept=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1impl_1_1Env" kindref="compound">Env</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="128" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Env_1a6c9544fad9c9cb2b27a8d72b3d9dc0f6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::impl::Env::operator[]</definition>
+        <argsstring>(const T &amp;t_object) const</argsstring>
+        <name>operator[]</name>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t_object</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the default version of an optimization object. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of object queried. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t_object</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The object. @returnthe The default version of an optimization object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="137" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="137" bodyend="139"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>idol::Env</label>
+        <link refid="classidol_1_1Env"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::impl::Env</label>
+        <link refid="classidol_1_1impl_1_1Env"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::impl::Env</label>
+        <link refid="classidol_1_1impl_1_1Env"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" line="53" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/objects/Env.h" bodystart="53" bodyend="141"/>
+    <listofallmembers>
+      <member refid="classidol_1_1impl_1_1Env_1ace0e5fcd41e9050fef11fceb010ffe6a" prot="private" virt="non-virtual"><scope>idol::impl::Env</scope><name>create</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a96b58d49ff150a9650c7e7ab3a12de38" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>create_annotation_id</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1aafee9c45282c3a5d1d2b6fc38b7debcc" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>create_ctr</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a6ca7390e17d47f34f7462932b694ac84" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>create_model_id</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a5e844cb5748678b2df955c818ff2f043" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>create_qctr</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a9f85af92636bd77baa5cc3429317d8a1" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>create_sosctr</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a569164d013365f3b9282d364cfd43da9" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>create_var</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a9be8e1da4561d72af4782548ffcdd81d" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>create_version</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a34caa585572142bfcf9aa2a6aa0c90ce" prot="public" virt="non-virtual"><scope>idol::impl::Env</scope><name>Env</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a0cdd4bd48a1118c97f499c8ccbd50f0f" prot="public" virt="non-virtual"><scope>idol::impl::Env</scope><name>Env</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a6db846ee77dc1dea1cb80dd5f82c7a76" prot="public" virt="non-virtual"><scope>idol::impl::Env</scope><name>Env</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a4dea6382b737485e6437e7b314d4387f" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>free_annotation_id</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1aa9988ff4ed73ea964a08cc2c2619f2ea" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>free_model_id</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a4267e2fa2257bdcf6cdbb735ec194155" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>has_version</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a96ba2a581402acdba3c6345c4d44765a" prot="private" virt="non-virtual"><scope>idol::impl::Env</scope><name>m_annotation_ids</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a95fccfe873f29b8f007f5a98ebd3bfd0" prot="private" virt="non-virtual"><scope>idol::impl::Env</scope><name>m_constraints</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1afb231cc4d8d9f671cca255ab2334abb5" prot="private" virt="non-virtual"><scope>idol::impl::Env</scope><name>m_max_object_id</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1aced17ce4a444d9df7596abac6bcb1c81" prot="private" virt="non-virtual"><scope>idol::impl::Env</scope><name>m_model_ids</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a35eb6dfb95144ada99ce4d4084098be5" prot="private" virt="non-virtual"><scope>idol::impl::Env</scope><name>m_qconstraints</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a00eaa282a089690edaecd85d19f9cb77" prot="private" virt="non-virtual"><scope>idol::impl::Env</scope><name>m_sosconstraints</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a8761b42c9bc2decc4ab6f601f71b08d8" prot="private" virt="non-virtual"><scope>idol::impl::Env</scope><name>m_variables</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a7a95446c1669a4fd350b4af75d4edd89" prot="public" virt="non-virtual"><scope>idol::impl::Env</scope><name>operator=</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a7b41c892b8690cab4275ddffc315d6b6" prot="public" virt="non-virtual"><scope>idol::impl::Env</scope><name>operator=</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a6c9544fad9c9cb2b27a8d72b3d9dc0f6" prot="public" virt="non-virtual"><scope>idol::impl::Env</scope><name>operator[]</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1ae74f543a48990dc8ff47cb31ef59e166" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>remove_version</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a1591eb0494d9ec4af4ba535b167dd09e" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>version</name></member>
+      <member refid="classidol_1_1impl_1_1Env_1a0ec7d8250d995a5e11b4faefc640e54f" prot="protected" virt="non-virtual"><scope>idol::impl::Env</scope><name>version</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

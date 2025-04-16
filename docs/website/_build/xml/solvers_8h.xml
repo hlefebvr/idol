@@ -1,0 +1,1239 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="solvers_8h" kind="file" language="C++">
+    <compoundname>solvers.h</compoundname>
+    <includes refid="BranchAndBound_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h</includes>
+    <includes refid="factories_2UniformlyRandom_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h</includes>
+    <includes refid="factories_2FirstInfeasibleFound_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/FirstInfeasibleFound.h</includes>
+    <includes refid="factories_2MostInfeasible_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h</includes>
+    <includes refid="factories_2PseudoCost_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h</includes>
+    <includes refid="factories_2StrongBranching_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h</includes>
+    <includes refid="factories_2LeastInfeasible_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/LeastInfeasible.h</includes>
+    <includes refid="factories_2BreadthFirst_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h</includes>
+    <includes refid="factories_2DepthFirst_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h</includes>
+    <includes refid="factories_2WorstBound_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h</includes>
+    <includes refid="factories_2BestBound_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h</includes>
+    <includes refid="factories_2BestEstimate_8h" local="yes">idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h</includes>
+    <includes refid="DantzigWolfeDecomposition_8h" local="yes">idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h</includes>
+    <includes refid="FarkasPricing_8h" local="yes">idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h</includes>
+    <includes refid="NoStabilization_8h" local="yes">idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/NoStabilization.h</includes>
+    <includes refid="Neame_8h" local="yes">idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h</includes>
+    <includes refid="Wentges_8h" local="yes">idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h</includes>
+    <includes refid="GLPK_8h" local="yes">idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h</includes>
+    <includes refid="HiGHS_8h" local="yes">idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h</includes>
+    <includes refid="Mosek_8h" local="yes">idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h</includes>
+    <includes refid="Gurobi_8h" local="yes">idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h</includes>
+    <incdepgraph>
+      <node id="33">
+        <label>list</label>
+      </node>
+      <node id="5">
+        <label>Optimizer.h</label>
+        <link refid="Optimizer_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="77">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h</label>
+        <link refid="factories_2UniformlyRandom_8h_source"/>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>idol/mixed-integer/modeling/models/Model.h</label>
+        <link refid="Model_8h_source"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h</label>
+        <link refid="BranchAndBoundCallbackFactory_8h_source"/>
+      </node>
+      <node id="1">
+        <label>/home/henri/Research/idol/lib/include/idol/solvers.h</label>
+        <link refid="solvers_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="118" relation="include">
+        </childnode>
+        <childnode refid="119" relation="include">
+        </childnode>
+        <childnode refid="127" relation="include">
+        </childnode>
+        <childnode refid="128" relation="include">
+        </childnode>
+        <childnode refid="129" relation="include">
+        </childnode>
+      </node>
+      <node id="110">
+        <label>idol/mixed-integer/modeling/expressions/operations/operators.h</label>
+        <link refid="operators_8h_source"/>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+      </node>
+      <node id="121">
+        <label>idol/mixed-integer/modeling/variables/TempVar.h</label>
+        <link refid="TempVar_8h_source"/>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>functional</label>
+      </node>
+      <node id="14">
+        <label>iomanip</label>
+      </node>
+      <node id="75">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h</label>
+        <link refid="branch-and-bound_2logs_2Info_8h_source"/>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>limits</label>
+      </node>
+      <node id="53">
+        <label>idol/mixed-integer/modeling/expressions/LinExpr.h</label>
+        <link refid="LinExpr_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="116">
+        <label>idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/NoStabilization.h</label>
+        <link refid="NoStabilization_8h_source"/>
+        <childnode refid="113" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>idol/general/utils/Point.h</label>
+        <link refid="Point_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="122">
+        <label>Versions.h</label>
+        <link refid="Versions_8h_source"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="123" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>idol/general/utils/Pair.h</label>
+        <link refid="Pair_8h_source"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingRuleFactory.h</label>
+        <link refid="BranchingRuleFactory_8h_source"/>
+      </node>
+      <node id="97">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h</label>
+        <link refid="factories_2DepthFirst_8h_source"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+      </node>
+      <node id="114">
+        <label>idol/mixed-integer/optimizers/dantzig-wolfe/logs/Factory.h</label>
+        <link refid="dantzig-wolfe_2logs_2Factory_8h_source"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="107">
+        <label>Formulation.h</label>
+        <link refid="mixed-integer_2optimizers_2dantzig-wolfe_2Formulation_8h_source"/>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="78">
+        <label>VariableBranching.h</label>
+        <link refid="factories_2VariableBranching_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>cmath</label>
+      </node>
+      <node id="4">
+        <label>idol/general/optimizers/OptimizerFactory.h</label>
+        <link refid="OptimizerFactory_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>cassert</label>
+      </node>
+      <node id="67">
+        <label>DefaultNodeUpdator.h</label>
+        <link refid="DefaultNodeUpdator_8h_source"/>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>stdexcept</label>
+      </node>
+      <node id="15">
+        <label>numeric</label>
+      </node>
+      <node id="98">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/DepthFirst.h</label>
+        <link refid="impls_2DepthFirst_8h_source"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>string</label>
+      </node>
+      <node id="38">
+        <label>impl_Annotation.h</label>
+        <link refid="impl__Annotation_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="92">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/StrongBranching.h</label>
+        <link refid="impls_2StrongBranching_8h_source"/>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+      </node>
+      <node id="68">
+        <label>BranchingDecision.h</label>
+        <link refid="BranchingDecision_8h_source"/>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeUpdator.h</label>
+        <link refid="NodeUpdator_8h_source"/>
+      </node>
+      <node id="24">
+        <label>map</label>
+      </node>
+      <node id="2">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h</label>
+        <link refid="BranchAndBound_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/nodes/Node.h</label>
+        <link refid="Node_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="103">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h</label>
+        <link refid="factories_2BestEstimate_8h_source"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>idol/general/numericals.h</label>
+        <link refid="numericals_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>AffExpr.h</label>
+        <link refid="AffExpr_8h_source"/>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="80">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/UniformlyRandom.h</label>
+        <link refid="impls_2UniformlyRandom_8h_source"/>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+      </node>
+      <node id="70">
+        <label>fstream</label>
+      </node>
+      <node id="126">
+        <label>idol/mixed-integer/modeling/constraints/SOSCtrVersion.h</label>
+        <link refid="SOSCtrVersion_8h_source"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="91">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h</label>
+        <link refid="StrongBranchingPhase_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>ostream</label>
+      </node>
+      <node id="100">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/WorstBound.h</label>
+        <link refid="impls_2WorstBound_8h_source"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="105">
+        <label>idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h</label>
+        <link refid="DantzigWolfeDecomposition_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>idol/mixed-integer/modeling/expressions/QuadExpr.h</label>
+        <link refid="QuadExpr_8h_source"/>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/FirstInfeasibleFound.h</label>
+        <link refid="factories_2FirstInfeasibleFound_8h_source"/>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>idol/mixed-integer/modeling/variables/VarVersion.h</label>
+        <link refid="VarVersion_8h_source"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+      </node>
+      <node id="104">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/BestEstimate.h</label>
+        <link refid="impls_2BestEstimate_8h_source"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>idol/mixed-integer/optimizers/callbacks/CallbackFactory.h</label>
+        <link refid="CallbackFactory_8h_source"/>
+      </node>
+      <node id="39">
+        <label>any</label>
+      </node>
+      <node id="115">
+        <label>idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h</label>
+        <link refid="FarkasPricing_8h_source"/>
+        <childnode refid="112" relation="include">
+        </childnode>
+      </node>
+      <node id="81">
+        <label>random</label>
+      </node>
+      <node id="86">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h</label>
+        <link refid="factories_2PseudoCost_8h_source"/>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+      </node>
+      <node id="88">
+        <label>NodeScoreFunction.h</label>
+        <link refid="NodeScoreFunction_8h_source"/>
+        <childnode refid="89" relation="include">
+        </childnode>
+      </node>
+      <node id="84">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h</label>
+        <link refid="factories_2MostInfeasible_8h_source"/>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/BranchingRule.h</label>
+        <link refid="BranchingRule_8h_source"/>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>idol/mixed-integer/modeling/objects/Object.h</label>
+        <link refid="Object_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h</label>
+        <link refid="DefaultNodeInfo_8h_source"/>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/NodeSelectionRuleFactory.h</label>
+        <link refid="NodeSelectionRuleFactory_8h_source"/>
+      </node>
+      <node id="120">
+        <label>idol/mixed-integer/modeling/objects/Env.h</label>
+        <link refid="Env_8h_source"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="124" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="125" relation="include">
+        </childnode>
+        <childnode refid="126" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+      </node>
+      <node id="102">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/BestBound.h</label>
+        <link refid="impls_2BestBound_8h_source"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="94">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/LeastInfeasible.h</label>
+        <link refid="impls_2LeastInfeasible_8h_source"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>optional</label>
+      </node>
+      <node id="48">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h</label>
+        <link refid="AbstractBranchAndBoundCallbackI_8h_source"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/NodeSelectionRule.h</label>
+        <link refid="NodeSelectionRule_8h_source"/>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>vector</label>
+      </node>
+      <node id="128">
+        <label>idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h</label>
+        <link refid="Mosek_8h_source"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+      </node>
+      <node id="127">
+        <label>idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h</label>
+        <link refid="HiGHS_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="72">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h</label>
+        <link refid="BranchAndBoundCallback_8h_source"/>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>streambuf</label>
+      </node>
+      <node id="22">
+        <label>Optimizers_BranchAndBound.h</label>
+        <link refid="Optimizers__BranchAndBound_8h_source"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+      </node>
+      <node id="95">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h</label>
+        <link refid="factories_2BreadthFirst_8h_source"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>idol/mixed-integer/modeling/constraints/TempCtr.h</label>
+        <link refid="TempCtr_8h_source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>utility</label>
+      </node>
+      <node id="85">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/MostInfeasible.h</label>
+        <link refid="impls_2MostInfeasible_8h_source"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>array</label>
+      </node>
+      <node id="28">
+        <label>SparseVector.h</label>
+        <link refid="SparseVector_8h_source"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="61">
+        <label>sstream</label>
+      </node>
+      <node id="112">
+        <label>idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h</label>
+        <link refid="DantzigWolfeInfeasibilityStrategy_8h_source"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="118">
+        <label>idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h</label>
+        <link refid="Wentges_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+      </node>
+      <node id="90">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h</label>
+        <link refid="factories_2StrongBranching_8h_source"/>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+      </node>
+      <node id="119">
+        <label>idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h</label>
+        <link refid="GLPK_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="120" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>idol/general/utils/IteratorForward.h</label>
+        <link refid="IteratorForward_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>idol/mixed-integer/modeling/Types.h</label>
+        <link refid="Types_8h_source"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>idol/mixed-integer/modeling/annotations/Annotation.h</label>
+        <link refid="Annotation_8h_source"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="76">
+        <label>idol/general/optimizers/logs.h</label>
+        <link refid="logs_8h_source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="123">
+        <label>idol/general/utils/Optional.h</label>
+        <link refid="Optional_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="124">
+        <label>idol/mixed-integer/modeling/constraints/QCtrVersion.h</label>
+        <link refid="QCtrVersion_8h_source"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+      </node>
+      <node id="93">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/LeastInfeasible.h</label>
+        <link refid="factories_2LeastInfeasible_8h_source"/>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+      </node>
+      <node id="65">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/logs/Factory.h</label>
+        <link refid="branch-and-bound_2logs_2Factory_8h_source"/>
+        <childnode refid="66" relation="include">
+        </childnode>
+      </node>
+      <node id="125">
+        <label>idol/mixed-integer/modeling/constraints/TempQCtr.h</label>
+        <link refid="TempQCtr_8h_source"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+      </node>
+      <node id="83">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/FirstInfeasibleFound.h</label>
+        <link refid="impls_2FirstInfeasibleFound_8h_source"/>
+        <childnode refid="79" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>iostream</label>
+      </node>
+      <node id="56">
+        <label>idol/mixed-integer/modeling/constraints/Ctr.h</label>
+        <link refid="Ctr_8h_source"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+      </node>
+      <node id="106">
+        <label>SubProblem.h</label>
+        <link refid="dantzig-wolfe_2SubProblem_8h_source"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="113">
+        <label>idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h</label>
+        <link refid="DualPriceSmoothingStabilization_8h_source"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="99">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h</label>
+        <link refid="factories_2WorstBound_8h_source"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>idol/mixed-integer/modeling/objects/Version.h</label>
+        <link refid="Version_8h_source"/>
+      </node>
+      <node id="41">
+        <label>unordered_map</label>
+      </node>
+      <node id="79">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/VariableBranching.h</label>
+        <link refid="impls_2VariableBranching_8h_source"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>chrono</label>
+      </node>
+      <node id="130">
+        <label>gurobi_c++.h</label>
+      </node>
+      <node id="8">
+        <label>Timer.h</label>
+        <link refid="Timer_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="108">
+        <label>idol/general/utils/GeneratorPool.h</label>
+        <link refid="GeneratorPool_8h_source"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>idol/mixed-integer/modeling/constraints/CtrVersion.h</label>
+        <link refid="CtrVersion_8h_source"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>idol/general/optimizers/Algorithm.h</label>
+        <link refid="Algorithm_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>idol/general/utils/exceptions/Exception.h</label>
+        <link refid="Exception_8h_source"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h</label>
+        <link refid="NodeSet_8h_source"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="129">
+        <label>idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h</label>
+        <link refid="Gurobi_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="120" relation="include">
+        </childnode>
+        <childnode refid="130" relation="include">
+        </childnode>
+      </node>
+      <node id="87">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/PseudoCost.h</label>
+        <link refid="impls_2PseudoCost_8h_source"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>idol/general/utils/Vector.h</label>
+        <link refid="Vector_8h_source"/>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="89">
+        <label>algorithm</label>
+      </node>
+      <node id="64">
+        <label>idol/mixed-integer/modeling/constraints/SOSCtr.h</label>
+        <link refid="SOSCtr_8h_source"/>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="101">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h</label>
+        <link refid="factories_2BestBound_8h_source"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+      </node>
+      <node id="73">
+        <label>CallbackAsBranchAndBoundCallback.h</label>
+        <link refid="CallbackAsBranchAndBoundCallback_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>ObjectId.h</label>
+        <link refid="ObjectId_8h_source"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/BreadthFirst.h</label>
+        <link refid="impls_2BreadthFirst_8h_source"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>idol/mixed-integer/modeling/constraints/QCtr.h</label>
+        <link refid="QCtr_8h_source"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>idol/mixed-integer/optimizers/callbacks/Callback.h</label>
+        <link refid="Callback_8h_source"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="117">
+        <label>idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h</label>
+        <link refid="Neame_8h_source"/>
+        <childnode refid="113" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>idol/mixed-integer/modeling/variables/Var.h</label>
+        <link refid="Var_8h_source"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="109">
+        <label>idol/general/utils/GenerationPattern.h</label>
+        <link refid="GenerationPattern_8h_source"/>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+      </node>
+      <node id="111">
+        <label>operators_utils.h</label>
+        <link refid="operators__utils_8h_source"/>
+      </node>
+      <node id="3">
+        <label>memory</label>
+      </node>
+      <node id="60">
+        <label>idol/general/utils/LimitedWidthStream.h</label>
+        <link refid="LimitedWidthStream_8h_source"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>idol/general/utils/types.h</label>
+        <link refid="types_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>idol/general/utils/Map.h</label>
+        <link refid="Map_8h_source"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Created<sp/>by<sp/>henri<sp/>on<sp/>12/09/22.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>OPTIMIZE_OPTIMIZERS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>OPTIMIZE_OPTIMIZERS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Branch-and-Bound</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/FirstInfeasibleFound.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/LeastInfeasible.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Dantzig-Wolfe<sp/>decomposition</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/NoStabilization.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Wrappers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//OPTIMIZE_OPTIMIZERS_H</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/henri/Research/idol/lib/include/idol/solvers.h"/>
+  </compounddef>
+</doxygen>

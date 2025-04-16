@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Modeling a Bilevel Problem</title>
+    
+          <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../_static/theme-vendors.js"></script> -->
+      <script src="../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/bilevel/modeling.html" />
+    
+  <link rel="index" title="Index" href="../../genindex.html" />
+  <link rel="search" title="Search" href="../../search.html" />
+  <link rel="next" title="Reading and Writing Bilevel Instances (BOBILib)" href="files.html" />
+  <link rel="prev" title="Bilevel Optimization" href="index.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../index.html">Tutorials</a> &raquo;</li>
+    
+      <li><a href="index.html">Bilevel Optimization</a> &raquo;</li>
+    
+    <li>Modeling a Bilevel Problem</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="index.html"
+       title="previous chapter">← Bilevel Optimization</a>
+  </li>
+  <li class="next">
+    <a href="files.html"
+       title="next chapter">Reading and Writing Bilevel Instances (BOBILib) →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="modeling-a-bilevel-problem">
+<span id="tutorial-optimistic-bilevel"></span><h1>Modeling a Bilevel Problem<a class="headerlink" href="#modeling-a-bilevel-problem" title="Link to this heading">¶</a></h1>
+<p>In this tutorial, we will see how to model a bilevel problem in idol.</p>
+<p>To follow this tutorial, you should be familiar with bilevel optimization and modeling optimization problems in idol.
+If this is not the case, we recommend you to read the tutorial on <a class="reference internal" href="../mixed-integer/modeling/index.html#mip-modeling"><span class="std std-ref">MIP modeling</span></a>.</p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#problem-definition-and-main-steps" id="id2">Problem Definition and Main Steps</a></p></li>
+<li><p><a class="reference internal" href="#modeling-the-high-point-relaxation" id="id3">Modeling the High-Point Relaxation</a></p></li>
+<li><p><a class="reference internal" href="#describing-the-lower-level-problem" id="id4">Describing the Lower-Level Problem</a></p></li>
+<li><p><a class="reference internal" href="#defining-the-lower-level-objective-function" id="id5">Defining the Lower-Level Objective Function</a></p></li>
+<li><p><a class="reference internal" href="#complete-example" id="id6">Complete Example</a></p></li>
+</ul>
+</nav>
+<section id="problem-definition-and-main-steps">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Problem Definition and Main Steps</a><a class="headerlink" href="#problem-definition-and-main-steps" title="Link to this heading">¶</a></h2>
+<p>We consider the optimistic bilevel problem</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    \min_{x, y} \quad &amp; -x + -10 y \\
+    \text{s.t.} \quad &amp; x \in \mathbb Z_{\ge 0} \\
+    &amp; y\in
+        \begin{array}[t]{rl}
+            \displaystyle \underset{y}{\text{arg min}} \quad &amp; y \\
+            \text{s.t.} \quad &amp; -25 x + 20 y \leq 30, \\
+            &amp; x + 2 y \leq 10, \\
+            &amp; 2 x - y \leq 15, \\
+            &amp; 2 x + 10 y \geq 15, \\
+            &amp; y \geq 0, \\
+            &amp; y \in \mathbb Z_{\ge 0}.
+        \end{array}
+\end{align}\end{split}\]</div>
+<p>This is an ILP-ILP bilevel problem which is taken from <span id="id1">[<a class="reference internal" href="../../references.html#id14" title="James T. Moore and Jonathan F. Bard. The mixed integer linear bilevel programming problem. Operations Research, 38(5):911–921, 1990. doi:10.1287/opre.38.5.911.">10</a>]</span> (Example 1).</p>
+<p>To model this problem in idol, there are three main steps:</p>
+<ol class="arabic simple">
+<li><p>Define the high-point relaxation (HPR) model,</p></li>
+<li><p>Describe which variables and constraints are part of the lower-level problem,</p></li>
+<li><p>Define the lower-level objective function.</p></li>
+</ol>
+</section>
+<section id="modeling-the-high-point-relaxation">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Modeling the High-Point Relaxation</a><a class="headerlink" href="#modeling-the-high-point-relaxation" title="Link to this heading">¶</a></h2>
+<p>The HPR can be modeled in the same way as a classical optimization problem.
+If you are not familiar with modeling optimization problems in idol,
+we recommend you to read the tutorial on <a class="reference internal" href="../mixed-integer/modeling/index.html#mip-modeling"><span class="std std-ref">MIP modeling</span></a>.</p>
+<p>In our example, the HPR reads</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    \min_{x, y} \ &amp; -x + -10 y \\
+    \text{s.t.} \ &amp; x \in \mathbb Z_+ \\
+    &amp; -25 x + 20 y \leq 30, \\
+    &amp; x + 2 y \leq 10, \\
+    &amp; 2 x - y \leq 15, \\
+    &amp; 2 x + 10 y \geq 15, \\
+    &amp; y \geq 0, \\
+    &amp; y \in \mathbb Z_+.
+\end{align}\end{split}\]</div>
+<p>Here is the code to model the HPR of the bilevel problem.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+<span class="n">Model</span><span class="w"> </span><span class="nf">high_point_relaxation</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_var</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_var</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p">);</span>
+
+<span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">set_obj_expr</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">lower_c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="mi">-25</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">20</span><span class="o">*</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">30</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">lower_c2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">lower_c3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">15</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">lower_c4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">15</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="describing-the-lower-level-problem">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Describing the Lower-Level Problem</a><a class="headerlink" href="#describing-the-lower-level-problem" title="Link to this heading">¶</a></h2>
+<p>To describe the lower-level problem, we need to specify which variables and constraints are part of it.
+This is done by creating an object of type <code class="code docutils literal notranslate"><span class="pre">Bilevel::Description</span></code> and calling the methods <code class="code docutils literal notranslate"><span class="pre">make_lower_level</span></code>.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Bilevel</span><span class="o">::</span><span class="n">Description</span><span class="w"> </span><span class="nf">description</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+<span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+<span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">lower_c1</span><span class="p">);</span>
+<span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">lower_c2</span><span class="p">);</span>
+<span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">lower_c3</span><span class="p">);</span>
+<span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">lower_c4</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that this does nothing more but to create a new <code class="code docutils literal notranslate"><span class="pre">Annotation&lt;unsigned</span> <span class="pre">int&gt;</span></code> to indicate variables and constraints that are part of the lower-level problem.
+These annotations are used by the bilevel solvers to identify the lower-level problem.
+In particular, all variables and constraints that are not annotated as lower-level variables or constraints are considered as upper-level variables or constraints, respectively.
+Upper-level variables and constraints have an annotation which is set to <code class="code docutils literal notranslate"><span class="pre">MasterId</span></code> by default.</p>
+<p>Also note that it is possible to create and use your own annotation. For instance, the following code is equivalent to the previous one.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Annotation</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lower_level</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">MasterId</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lower_level&quot;</span><span class="p">);</span>
+
+<span class="n">y</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">lower_level</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="n">lower_c1</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">lower_level</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="n">lower_c2</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">lower_level</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="n">lower_c3</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">lower_level</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="n">lower_c4</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">lower_level</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+
+
+<span class="n">Bilevel</span><span class="o">::</span><span class="n">Description</span><span class="w"> </span><span class="nf">description</span><span class="p">(</span><span class="n">lower_level</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="defining-the-lower-level-objective-function">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Defining the Lower-Level Objective Function</a><a class="headerlink" href="#defining-the-lower-level-objective-function" title="Link to this heading">¶</a></h2>
+<p>Finally, we need to define the lower-level objective function.
+This is done by calling the method <code class="code docutils literal notranslate"><span class="pre">set_lower_level_obj</span></code> on the object of type <code class="code docutils literal notranslate"><span class="pre">Bilevel::Description</span></code>.
+A <code class="code docutils literal notranslate"><span class="pre">QuadExpr</span></code> object is passed as argument to this method.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">description</span><span class="p">.</span><span class="n">set_lower_level_obj</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="complete-example">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Complete Example</a><a class="headerlink" href="#complete-example" title="Link to this heading">¶</a></h2>
+<p>A complete example is available <a class="reference internal" href="../../examples/bilevel-mibs.html#example-mibs"><span class="std std-ref">here</span></a> and uses the MibS solver.</p>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="index.html"
+       title="previous chapter">← Bilevel Optimization</a>
+  </li>
+  <li class="next">
+    <a href="files.html"
+       title="next chapter">Reading and Writing Bilevel Instances (BOBILib) →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

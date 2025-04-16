@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1AbstractBranchAndBoundCallbackI" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>idol::AbstractBranchAndBoundCallbackI</compoundname>
+    <derivedcompoundref refid="classidol_1_1BranchAndBoundCallbackI" prot="public" virt="non-virtual">idol::BranchAndBoundCallbackI&lt; NodeInfoT &gt;</derivedcompoundref>
+    <templateparamlist>
+      <param>
+        <type>class NodeInfoT</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classidol_1_1AbstractBranchAndBoundCallbackI_1a79712ccf833a9ecb7e361d582eee0715" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class Optimizers::BranchAndBound&lt; NodeInfoT &gt;</definition>
+        <argsstring></argsstring>
+        <name>Optimizers::BranchAndBound&lt; NodeInfoT &gt;</name>
+        <param>
+          <type><ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound</ref>&lt; NodeInfoT &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h" line="49" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1AbstractBranchAndBoundCallbackI_1a90935acf56a7717ec508d7b459509caa" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual idol::AbstractBranchAndBoundCallbackI&lt; NodeInfoT &gt;::~AbstractBranchAndBoundCallbackI</definition>
+        <argsstring>()=default</argsstring>
+        <name>~AbstractBranchAndBoundCallbackI</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h" line="37" column="13"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classidol_1_1AbstractBranchAndBoundCallbackI_1ae83aa447c1db18961eb866e7409f3141" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structidol_1_1SideEffectRegistry" kindref="compound">SideEffectRegistry</ref></type>
+        <definition>virtual SideEffectRegistry idol::AbstractBranchAndBoundCallbackI&lt; NodeInfoT &gt;::operator()</definition>
+        <argsstring>(Optimizers::BranchAndBound&lt; NodeInfoT &gt; *t_parent, CallbackEvent t_event, const Node&lt; NodeInfoT &gt; &amp;t_current_node, Model *t_relaxation)=0</argsstring>
+        <name>operator()</name>
+        <reimplementedby refid="classidol_1_1BranchAndBoundCallbackI_1a4b865a1af501c6acf03d550da5e2e3f4">operator()</reimplementedby>
+        <param>
+          <type><ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound</ref>&lt; NodeInfoT &gt; *</type>
+          <declname>t_parent</declname>
+        </param>
+        <param>
+          <type>CallbackEvent</type>
+          <declname>t_event</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1Node" kindref="compound">Node</ref>&lt; NodeInfoT &gt; &amp;</type>
+          <declname>t_current_node</declname>
+        </param>
+        <param>
+          <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref> *</type>
+          <declname>t_relaxation</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h" line="39" column="32"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AbstractBranchAndBoundCallbackI_1a9c61590858595bb8462ab80730700771" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void idol::AbstractBranchAndBoundCallbackI&lt; NodeInfoT &gt;::add_callback</definition>
+        <argsstring>(BranchAndBoundCallback&lt; NodeInfoT &gt; *t_cb)=0</argsstring>
+        <name>add_callback</name>
+        <reimplementedby refid="classidol_1_1BranchAndBoundCallbackI_1aed848d624b25acf8f3f5cb5d64929f2e">add_callback</reimplementedby>
+        <param>
+          <type><ref refid="classidol_1_1BranchAndBoundCallback" kindref="compound">BranchAndBoundCallback</ref>&lt; NodeInfoT &gt; *</type>
+          <declname>t_cb</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h" line="45" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AbstractBranchAndBoundCallbackI_1a7aeb8f84557528cfd166e9769cc15beb" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void idol::AbstractBranchAndBoundCallbackI&lt; NodeInfoT &gt;::initialize</definition>
+        <argsstring>(Optimizers::BranchAndBound&lt; NodeInfoT &gt; *t_parent)=0</argsstring>
+        <name>initialize</name>
+        <reimplementedby refid="classidol_1_1BranchAndBoundCallbackI_1a3fa12f736a0b28558012f8c099572f8f">initialize</reimplementedby>
+        <param>
+          <type><ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound</ref>&lt; NodeInfoT &gt; *</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h" line="47" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AbstractBranchAndBoundCallbackI_1acafce33ac1243b2877e7b5437fc6cece" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void idol::AbstractBranchAndBoundCallbackI&lt; NodeInfoT &gt;::log_after_termination</definition>
+        <argsstring>()=0</argsstring>
+        <name>log_after_termination</name>
+        <reimplementedby refid="classidol_1_1BranchAndBoundCallbackI_1a4ae2d19f3fb897365e083ecfe597ffeb">log_after_termination</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h" line="49" column="18"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>idol::AbstractBranchAndBoundCallbackI&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1AbstractBranchAndBoundCallbackI"/>
+      </node>
+      <node id="2">
+        <label>idol::BranchAndBoundCallbackI&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1BranchAndBoundCallbackI"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::AbstractBranchAndBoundCallbackI&lt; NodeInfoT &gt;</label>
+        <link refid="classidol_1_1AbstractBranchAndBoundCallbackI"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h" line="35" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h" bodystart="35" bodyend="52"/>
+    <listofallmembers>
+      <member refid="classidol_1_1AbstractBranchAndBoundCallbackI_1a9c61590858595bb8462ab80730700771" prot="protected" virt="pure-virtual"><scope>idol::AbstractBranchAndBoundCallbackI</scope><name>add_callback</name></member>
+      <member refid="classidol_1_1AbstractBranchAndBoundCallbackI_1a7aeb8f84557528cfd166e9769cc15beb" prot="protected" virt="pure-virtual"><scope>idol::AbstractBranchAndBoundCallbackI</scope><name>initialize</name></member>
+      <member refid="classidol_1_1AbstractBranchAndBoundCallbackI_1acafce33ac1243b2877e7b5437fc6cece" prot="protected" virt="pure-virtual"><scope>idol::AbstractBranchAndBoundCallbackI</scope><name>log_after_termination</name></member>
+      <member refid="classidol_1_1AbstractBranchAndBoundCallbackI_1ae83aa447c1db18961eb866e7409f3141" prot="protected" virt="pure-virtual"><scope>idol::AbstractBranchAndBoundCallbackI</scope><name>operator()</name></member>
+      <member refid="classidol_1_1AbstractBranchAndBoundCallbackI_1a79712ccf833a9ecb7e361d582eee0715" prot="public" virt="non-virtual"><scope>idol::AbstractBranchAndBoundCallbackI</scope><name>Optimizers::BranchAndBound&lt; NodeInfoT &gt;</name></member>
+      <member refid="classidol_1_1AbstractBranchAndBoundCallbackI_1a90935acf56a7717ec508d7b459509caa" prot="public" virt="virtual"><scope>idol::AbstractBranchAndBoundCallbackI</scope><name>~AbstractBranchAndBoundCallbackI</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

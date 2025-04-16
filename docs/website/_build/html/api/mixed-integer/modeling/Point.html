@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Point</title>
+    
+          <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/api/mixed-integer/modeling/Point.html" />
+    
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="next" title="QCtr" href="QCtr.html" />
+  <link rel="prev" title="Model" href="Model.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../../index.html">API</a> &raquo;</li>
+    
+      <li><a href="../index.html">Mixed-integer Optimization</a> &raquo;</li>
+    
+    <li>Point</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="Model.html"
+       title="previous chapter">← Model</a>
+  </li>
+  <li class="next">
+    <a href="QCtr.html"
+       title="next chapter">QCtr →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="point">
+<span id="api-point"></span><h1>Point<a class="headerlink" href="#point" title="Link to this heading">¶</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4idol5PointE">
+<span id="_CPPv3I0EN4idol5PointE"></span><span id="_CPPv2I0EN4idol5PointE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1Point"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">Point</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">SparseVector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN4idol5PointE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point8iteratorE">
+<span id="_CPPv3N4idol5Point8iteratorE"></span><span id="_CPPv2N4idol5Point8iteratorE"></span><span class="target" id="classidol_1_1SparseVector_1acc6881fa129094c02512d0ef5a79e13c"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iterator</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">map_t</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">iterator</span></span><a class="headerlink" href="#_CPPv4N4idol5Point8iteratorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point14const_iteratorE">
+<span id="_CPPv3N4idol5Point14const_iteratorE"></span><span id="_CPPv2N4idol5Point14const_iteratorE"></span><span class="target" id="classidol_1_1SparseVector_1a3e7762adf8580706d251fadfe8807fb2"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_iterator</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">map_t</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">const_iterator</span></span><a class="headerlink" href="#_CPPv4N4idol5Point14const_iteratorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point5PointEv">
+<span id="_CPPv3N4idol5Point5PointEv"></span><span id="_CPPv2N4idol5Point5PointEv"></span><span id="idol::Point::Point"></span><span class="target" id="classidol_1_1Point_1a2ea5f8b5d1e3820410245970e1ee7be4"></span><span class="sig-name descname"><span class="n"><span class="pre">Point</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol5Point5PointEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point5PointERK12SparseVectorI1TdE">
+<span id="_CPPv3N4idol5Point5PointERK12SparseVectorI1TdE"></span><span id="_CPPv2N4idol5Point5PointERK12SparseVectorI1TdE"></span><span id="idol::Point::Point__SparseVector:T.double:CR"></span><span class="target" id="classidol_1_1Point_1a4ba6c4b3b2d323f4d364cfc7ebb779e8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Point</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">SparseVector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_vector</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point5PointERK12SparseVectorI1TdE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point5PointERR12SparseVectorI1TdE">
+<span id="_CPPv3N4idol5Point5PointERR12SparseVectorI1TdE"></span><span id="_CPPv2N4idol5Point5PointERR12SparseVectorI1TdE"></span><span id="idol::Point::Point__SparseVector:T.double:RR"></span><span class="target" id="classidol_1_1Point_1a6867d663309eaac46f8b169469b0c7f5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Point</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">SparseVector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_vector</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point5PointERR12SparseVectorI1TdE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point6statusEv">
+<span id="_CPPv3NK4idol5Point6statusEv"></span><span id="_CPPv2NK4idol5Point6statusEv"></span><span id="idol::Point::statusC"></span><span class="target" id="classidol_1_1Point_1ac9c3c0bbe054732c9a416b4fbbe06f56"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">SolutionStatus</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">status</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point6statusEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point10set_statusE14SolutionStatus">
+<span id="_CPPv3N4idol5Point10set_statusE14SolutionStatus"></span><span id="_CPPv2N4idol5Point10set_statusE14SolutionStatus"></span><span id="idol::Point::set_status__SolutionStatus"></span><span class="target" id="classidol_1_1Point_1ab51797aa215d6949277be364dc20d70c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_status</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">SolutionStatus</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_status</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point10set_statusE14SolutionStatus" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point6reasonEv">
+<span id="_CPPv3NK4idol5Point6reasonEv"></span><span id="_CPPv2NK4idol5Point6reasonEv"></span><span id="idol::Point::reasonC"></span><span class="target" id="classidol_1_1Point_1a073001a558fe5ab991e1fda9e21cd4a1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">SolutionReason</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reason</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point6reasonEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point10set_reasonE14SolutionReason">
+<span id="_CPPv3N4idol5Point10set_reasonE14SolutionReason"></span><span id="_CPPv2N4idol5Point10set_reasonE14SolutionReason"></span><span id="idol::Point::set_reason__SolutionReason"></span><span class="target" id="classidol_1_1Point_1ab70707cc0263e005e5d2093fe9af1658"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_reason</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">SolutionReason</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_reason</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point10set_reasonE14SolutionReason" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point15objective_valueEv">
+<span id="_CPPv3NK4idol5Point15objective_valueEv"></span><span id="_CPPv2NK4idol5Point15objective_valueEv"></span><span id="idol::Point::objective_valueC"></span><span class="target" id="classidol_1_1Point_1ac26972695bbffcd9c86cebc0a891d966"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">objective_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point15objective_valueEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point19set_objective_valueEd">
+<span id="_CPPv3N4idol5Point19set_objective_valueEd"></span><span id="_CPPv2N4idol5Point19set_objective_valueEd"></span><span id="idol::Point::set_objective_value__double"></span><span class="target" id="classidol_1_1Point_1ae334f42826fb0561ad62eccfbfe45296"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_objective_value</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_objective_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point19set_objective_valueEd" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point19has_objective_valueEv">
+<span id="_CPPv3NK4idol5Point19has_objective_valueEv"></span><span id="_CPPv2NK4idol5Point19has_objective_valueEv"></span><span id="idol::Point::has_objective_valueC"></span><span class="target" id="classidol_1_1Point_1a4f1a64b45ce5491e72b2901a61b42813"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">has_objective_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point19has_objective_valueEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point21reset_objective_valueEv">
+<span id="_CPPv3N4idol5Point21reset_objective_valueEv"></span><span id="_CPPv2N4idol5Point21reset_objective_valueEv"></span><span id="idol::Point::reset_objective_value"></span><span class="target" id="classidol_1_1Point_1a2f6910c48caea73537a119f12f34e7c5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reset_objective_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point21reset_objective_valueEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5PointmLEd">
+<span id="_CPPv3N4idol5PointmLEd"></span><span id="_CPPv2N4idol5PointmLEd"></span><span id="idol::Point::mul-assign-operator__double"></span><span class="target" id="classidol_1_1Point_1a6606e123ed7be32d3b2d0387bfc97ce8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point"><span class="n"><span class="pre">Point</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*=</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_factor</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N4idol5PointmLEd" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5PointpLERK5Point">
+<span id="_CPPv3N4idol5PointpLERK5Point"></span><span id="_CPPv2N4idol5PointpLERK5Point"></span><span id="idol::Point::add-assign-operator__PointCR"></span><span class="target" id="classidol_1_1Point_1ac3b874f6b5dc184a7c7d52ebd6445b6e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point"><span class="n"><span class="pre">Point</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point"><span class="n"><span class="pre">Point</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5PointpLERK5Point" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5PointpLERR5Point">
+<span id="_CPPv3N4idol5PointpLERR5Point"></span><span id="_CPPv2N4idol5PointpLERR5Point"></span><span id="idol::Point::add-assign-operator__PointRR"></span><span class="target" id="classidol_1_1Point_1a66049886a3bba03a3f5a61029ca0a767"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point"><span class="n"><span class="pre">Point</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point"><span class="n"><span class="pre">Point</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5PointpLERR5Point" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5PointmIERK5Point">
+<span id="_CPPv3N4idol5PointmIERK5Point"></span><span id="_CPPv2N4idol5PointmIERK5Point"></span><span id="idol::Point::sub-assign-operator__PointCR"></span><span class="target" id="classidol_1_1Point_1aebfec0d164d17defda0d23f89d0efbc9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point"><span class="n"><span class="pre">Point</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point"><span class="n"><span class="pre">Point</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5PointmIERK5Point" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5PointmIERR5Point">
+<span id="_CPPv3N4idol5PointmIERR5Point"></span><span id="_CPPv2N4idol5PointmIERR5Point"></span><span id="idol::Point::sub-assign-operator__PointRR"></span><span class="target" id="classidol_1_1Point_1ad60df17c7dde4d0c3e24df2eadb607fe"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point"><span class="n"><span class="pre">Point</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point"><span class="n"><span class="pre">Point</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5PointmIERR5Point" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5PointpLERK12SparseVector">
+<span id="_CPPv3N4idol5PointpLERK12SparseVector"></span><span id="_CPPv2N4idol5PointpLERK12SparseVector"></span><span id="idol::Point::add-assign-operator__SparseVectorCR"></span><span class="target" id="classidol_1_1SparseVector_1a25e20bc440d157ff11fb37f99793addb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">SparseVector</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">SparseVector</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_vector</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5PointpLERK12SparseVector" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5PointmIERK12SparseVector">
+<span id="_CPPv3N4idol5PointmIERK12SparseVector"></span><span id="_CPPv2N4idol5PointmIERK12SparseVector"></span><span id="idol::Point::sub-assign-operator__SparseVectorCR"></span><span class="target" id="classidol_1_1SparseVector_1ab6889b650524c621dc142e799c9ff7c8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">SparseVector</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">SparseVector</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_vector</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5PointmIERK12SparseVector" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5PointmLENSt13conditional_tINSt15is_arithmetic_vIdEEddEE">
+<span id="_CPPv3N4idol5PointmLENSt13conditional_tINSt15is_arithmetic_vIdEEddEE"></span><span id="_CPPv2N4idol5PointmLENSt13conditional_tINSt15is_arithmetic_vIdEEddEE"></span><span id="idol::Point::mul-assign-operator__std::conditional_t:std::is_arithmetic_v:double:.double.double:"></span><span class="target" id="classidol_1_1SparseVector_1aa3e67a6ca43ab25a5a68d02dbbaed840"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">SparseVector</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*=</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">conditional_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_arithmetic_v</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_scalar</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5PointmLENSt13conditional_tINSt15is_arithmetic_vIdEEddEE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5PointdVENSt13conditional_tINSt15is_arithmetic_vIdEEddEE">
+<span id="_CPPv3N4idol5PointdVENSt13conditional_tINSt15is_arithmetic_vIdEEddEE"></span><span id="_CPPv2N4idol5PointdVENSt13conditional_tINSt15is_arithmetic_vIdEEddEE"></span><span id="idol::Point::div-assign-operator__std::conditional_t:std::is_arithmetic_v:double:.double.double:"></span><span class="target" id="classidol_1_1SparseVector_1a76863d02db4858a78942c8f32d929c4a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">SparseVector</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">/=</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">conditional_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_arithmetic_v</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_scalar</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5PointdVENSt13conditional_tINSt15is_arithmetic_vIdEEddEE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5PointmiEv">
+<span id="_CPPv3NK4idol5PointmiEv"></span><span id="_CPPv2NK4idol5PointmiEv"></span><span id="idol::Point::sub-operatorC"></span><span class="target" id="classidol_1_1SparseVector_1a0d0bb8bebeaa2692e7fe0f4b345e1c87"></span><span class="n"><span class="pre">SparseVector</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5PointmiEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point4sizeEv">
+<span id="_CPPv3NK4idol5Point4sizeEv"></span><span id="_CPPv2NK4idol5Point4sizeEv"></span><span id="idol::Point::sizeC"></span><span class="target" id="classidol_1_1SparseVector_1a10973acd1ba2f0d03ed6f23aa2da8ba0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point4sizeEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point5emptyEv">
+<span id="_CPPv3NK4idol5Point5emptyEv"></span><span id="_CPPv2NK4idol5Point5emptyEv"></span><span id="idol::Point::emptyC"></span><span class="target" id="classidol_1_1SparseVector_1abf70b5c41a77a676f63dc9382370f008"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">empty</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point5emptyEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point9has_indexERK1T">
+<span id="_CPPv3NK4idol5Point9has_indexERK1T"></span><span id="_CPPv2NK4idol5Point9has_indexERK1T"></span><span id="idol::Point::has_index__TCRC"></span><span class="target" id="classidol_1_1SparseVector_1ad71afc1061a3dc5f84bf8aa568ce9985"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">has_index</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_index</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point9has_indexERK1T" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point3getERK1T">
+<span id="_CPPv3NK4idol5Point3getERK1T"></span><span id="_CPPv2NK4idol5Point3getERK1T"></span><span id="idol::Point::get__TCRC"></span><span class="target" id="classidol_1_1SparseVector_1af9f5439a3c22822fab911157401744c0"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_index1</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point3getERK1T" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point3setERK1TRKd">
+<span id="_CPPv3N4idol5Point3setERK1TRKd"></span><span id="_CPPv2N4idol5Point3setERK1TRKd"></span><span id="idol::Point::set__TCR.doubleCR"></span><span class="target" id="classidol_1_1SparseVector_1a46fd679d337d038c3627628b292f58c1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_index</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point3setERK1TRKd" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point7is_zeroEd">
+<span id="_CPPv3NK4idol5Point7is_zeroEd"></span><span id="_CPPv2NK4idol5Point7is_zeroEd"></span><span id="idol::Point::is_zero__doubleC"></span><span class="target" id="classidol_1_1SparseVector_1a3750db27bdd4d6653ab81eafc20cd8ae"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_zero</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_tolerance</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point7is_zeroEd" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point6removeERK1T">
+<span id="_CPPv3N4idol5Point6removeERK1T"></span><span id="_CPPv2N4idol5Point6removeERK1T"></span><span id="idol::Point::remove__TCR"></span><span class="target" id="classidol_1_1SparseVector_1a16b43a0159393f1052025b6cdea6d73f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol5PointE" title="idol::Point::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_index</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point6removeERK1T" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point5clearEv">
+<span id="_CPPv3N4idol5Point5clearEv"></span><span id="_CPPv2N4idol5Point5clearEv"></span><span id="idol::Point::clear"></span><span class="target" id="classidol_1_1SparseVector_1a603b7a810ea49295d992f58e4dd6a3a0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point5clearEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point7reserveEj">
+<span id="_CPPv3N4idol5Point7reserveEj"></span><span id="_CPPv2N4idol5Point7reserveEj"></span><span id="idol::Point::reserve__unsigned-i"></span><span class="target" id="classidol_1_1SparseVector_1a4a7022646bd0dcdb0995f5de40db02cb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserve</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_capacity</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point7reserveEj" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point5beginEv">
+<span id="_CPPv3N4idol5Point5beginEv"></span><span id="_CPPv2N4idol5Point5beginEv"></span><span id="idol::Point::begin"></span><span class="target" id="classidol_1_1SparseVector_1a6c31b1015417dc4841c8476e734a5ea5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol5Point8iteratorE" title="idol::Point::iterator"><span class="n"><span class="pre">iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">begin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point5beginEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point5beginEv">
+<span id="_CPPv3NK4idol5Point5beginEv"></span><span id="_CPPv2NK4idol5Point5beginEv"></span><span id="idol::Point::beginC"></span><span class="target" id="classidol_1_1SparseVector_1ae8a626759377bfca91428a4bdb5b39e5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol5Point14const_iteratorE" title="idol::Point::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">begin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point5beginEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point3endEv">
+<span id="_CPPv3N4idol5Point3endEv"></span><span id="_CPPv2N4idol5Point3endEv"></span><span id="idol::Point::end"></span><span class="target" id="classidol_1_1SparseVector_1aa73d2ecd9a097221d2d5f38e8fb7e1c5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol5Point8iteratorE" title="idol::Point::iterator"><span class="n"><span class="pre">iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point3endEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point3endEv">
+<span id="_CPPv3NK4idol5Point3endEv"></span><span id="_CPPv2NK4idol5Point3endEv"></span><span id="idol::Point::endC"></span><span class="target" id="classidol_1_1SparseVector_1adfbda2f774a6bf63e023a9eb7e5fc345"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol5Point14const_iteratorE" title="idol::Point::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point3endEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point6cbeginEv">
+<span id="_CPPv3NK4idol5Point6cbeginEv"></span><span id="_CPPv2NK4idol5Point6cbeginEv"></span><span id="idol::Point::cbeginC"></span><span class="target" id="classidol_1_1SparseVector_1aeeb03e20bd12b9411663a57c9fd2db8f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol5Point14const_iteratorE" title="idol::Point::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cbegin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point6cbeginEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol5Point4cendEv">
+<span id="_CPPv3NK4idol5Point4cendEv"></span><span id="_CPPv2NK4idol5Point4cendEv"></span><span id="idol::Point::cendC"></span><span class="target" id="classidol_1_1SparseVector_1a305e0237d0b64e95f63f82f2da7ac214"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol5Point14const_iteratorE" title="idol::Point::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cend</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol5Point4cendEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol5Point22merge_without_conflictERK12SparseVector">
+<span id="_CPPv3N4idol5Point22merge_without_conflictERK12SparseVector"></span><span id="_CPPv2N4idol5Point22merge_without_conflictERK12SparseVector"></span><span id="idol::Point::merge_without_conflict__SparseVectorCR"></span><span class="target" id="classidol_1_1SparseVector_1aec57b6e046097f51c09982dd05d4bfbf"></span><span class="n"><span class="pre">SparseVector</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">merge_without_conflict</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">SparseVector</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_vec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol5Point22merge_without_conflictERK12SparseVector" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="Model.html"
+       title="previous chapter">← Model</a>
+  </li>
+  <li class="next">
+    <a href="QCtr.html"
+       title="next chapter">QCtr →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

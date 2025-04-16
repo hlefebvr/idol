@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_63ca376b08ede512fb032cbeab58ce3e" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions</compoundname>
+    <innerdir refid="dir_6f696f5bef416022417f72faffe26f7b">/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/operations</innerdir>
+    <innerfile refid="AffExpr_8h">AffExpr.h</innerfile>
+    <innerfile refid="LinExpr_8h">LinExpr.h</innerfile>
+    <innerfile refid="QuadExpr_8h">QuadExpr.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/"/>
+  </compounddef>
+</doxygen>

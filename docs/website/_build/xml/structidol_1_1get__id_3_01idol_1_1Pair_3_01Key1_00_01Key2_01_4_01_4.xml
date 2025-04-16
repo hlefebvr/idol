@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structidol_1_1get__id_3_01idol_1_1Pair_3_01Key1_00_01Key2_01_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>idol::get_id&lt; idol::Pair&lt; Key1, Key2 &gt; &gt;</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class Key1</type>
+      </param>
+      <param>
+        <type>class Key2</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structidol_1_1get__id_3_01idol_1_1Pair_3_01Key1_00_01Key2_01_4_01_4_1a0774b3c54dbb449963ac4fe1b55c0cb0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto idol::get_id&lt; idol::Pair&lt; Key1, Key2 &gt; &gt;::operator()</definition>
+        <argsstring>(const idol::Pair&lt; Key1, Key2 &gt; &amp;t) const</argsstring>
+        <name>operator()</name>
+        <param>
+          <type>const <ref refid="structidol_1_1Pair" kindref="compound">idol::Pair</ref>&lt; Key1, Key2 &gt; &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/utils/sort.h" line="29" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/sort.h" bodystart="29" bodyend="29"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::get_id&lt; idol::Pair&lt; Key1, Key2 &gt; &gt;</label>
+        <link refid="structidol_1_1get__id_3_01idol_1_1Pair_3_01Key1_00_01Key2_01_4_01_4"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/utils/sort.h" line="28" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/general/utils/sort.h" bodystart="28" bodyend="30"/>
+    <listofallmembers>
+      <member refid="structidol_1_1get__id_3_01idol_1_1Pair_3_01Key1_00_01Key2_01_4_01_4_1a0774b3c54dbb449963ac4fe1b55c0cb0" prot="public" virt="non-virtual"><scope>idol::get_id&lt; idol::Pair&lt; Key1, Key2 &gt; &gt;</scope><name>operator()</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

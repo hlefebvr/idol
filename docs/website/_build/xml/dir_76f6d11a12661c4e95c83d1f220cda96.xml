@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_76f6d11a12661c4e95c83d1f220cda96" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs</compoundname>
+    <innerfile refid="dantzig-wolfe_2logs_2Factory_8h">Factory.h</innerfile>
+    <innerfile refid="dantzig-wolfe_2logs_2Info_8h">Info.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/"/>
+  </compounddef>
+</doxygen>

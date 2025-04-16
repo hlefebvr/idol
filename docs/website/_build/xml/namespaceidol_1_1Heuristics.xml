@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceidol_1_1Heuristics" kind="namespace" language="C++">
+    <compoundname>idol::Heuristics</compoundname>
+    <innerclass refid="classidol_1_1Heuristics_1_1IntegerMaster" prot="public">idol::Heuristics::IntegerMaster</innerclass>
+    <innerclass refid="classidol_1_1Heuristics_1_1LocalBranching" prot="public">idol::Heuristics::LocalBranching</innerclass>
+    <innerclass refid="classidol_1_1Heuristics_1_1RENS" prot="public">idol::Heuristics::RENS</innerclass>
+    <innerclass refid="classidol_1_1Heuristics_1_1SimpleRounding" prot="public">idol::Heuristics::SimpleRounding</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h" line="13" column="1"/>
+  </compounddef>
+</doxygen>

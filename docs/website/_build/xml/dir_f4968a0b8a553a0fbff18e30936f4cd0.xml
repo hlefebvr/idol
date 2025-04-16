@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_f4968a0b8a553a0fbff18e30936f4cd0" kind="dir">
+    <compoundname>/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem</compoundname>
+    <innerfile refid="GAP__Instance_8h">GAP_Instance.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/problems/generalized-assignment-problem/"/>
+  </compounddef>
+</doxygen>

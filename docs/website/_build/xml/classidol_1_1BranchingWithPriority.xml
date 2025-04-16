@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1BranchingWithPriority" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>idol::BranchingWithPriority</compoundname>
+    <basecompoundref refid="classidol_1_1BranchingRuleFactory" prot="public" virt="non-virtual">idol::BranchingRuleFactory&lt; idol::DefaultNodeInfo &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>class NodeT</type>
+        <defval><ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref></defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classidol_1_1BranchingWithPriority_1ab11f9b9f30678cbf42b131d3c7573470" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>class ReturnT</type>
+          </param>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>typename std::pair&lt; typename T::template Strategy&lt; NodeT &gt;, ReturnT &gt;::second_type</type>
+        <definition>using idol::BranchingWithPriority&lt; NodeT &gt;::only_if_has_Strategy =  typename std::pair&lt;typename T::template Strategy&lt;NodeT&gt;, ReturnT&gt;::second_type</definition>
+        <argsstring></argsstring>
+        <name>only_if_has_Strategy</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This type is used to exploit <ulink url="https://en.wikipedia.org/wiki/Substitution_failure_is_not_an_error">SFINAE</ulink> in order to identify classes having a sub-class named <computeroutput>Strategy&lt;NodeInfoT&gt;</computeroutput>. This is used to make calls like <computeroutput>.with_node_selection_rule(DepthFirst());</computeroutput> which will actually call <computeroutput>.with_node_selection_rule(<ref refid="classidol_1_1DepthFirst_1_1Strategy" kindref="compound">DepthFirst::Strategy</ref>&lt;NodeInfoT&gt;())</computeroutput>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" line="39" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1BranchingWithPriority_1a3be890f272ccbea944f9c4c013363d46" prot="private" static="no" mutable="no">
+        <type>std::list&lt; std::unique_ptr&lt; <ref refid="classidol_1_1BranchingRuleFactory" kindref="compound">BranchingRuleFactory</ref>&lt; NodeT &gt; &gt; &gt;</type>
+        <definition>std::list&lt;std::unique_ptr&lt;BranchingRuleFactory&lt;NodeT&gt; &gt; &gt; idol::BranchingWithPriority&lt; NodeT &gt;::m_branching_rules</definition>
+        <argsstring></argsstring>
+        <name>m_branching_rules</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" line="21" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1BranchingWithPriority_1a3d3a6b995dc5255dec6c9bd113ce4306" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::BranchingWithPriority&lt; NodeT &gt;::BranchingWithPriority</definition>
+        <argsstring>()=default</argsstring>
+        <name>BranchingWithPriority</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" line="23" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchingWithPriority_1ad37082b6fe7721cd4d0c31b9bca5cb75" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::BranchingWithPriority&lt; NodeT &gt;::BranchingWithPriority</definition>
+        <argsstring>(const BranchingWithPriority &amp;t_src)</argsstring>
+        <name>BranchingWithPriority</name>
+        <param>
+          <type>const <ref refid="classidol_1_1BranchingWithPriority" kindref="compound">BranchingWithPriority</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" line="25" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" bodystart="25" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchingWithPriority_1a35087249200a20604b270637786e4957" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchingWithPriority" kindref="compound">BranchingWithPriority</ref>&lt; NodeT &gt; &amp;</type>
+        <definition>BranchingWithPriority&lt;NodeT&gt;&amp; idol::BranchingWithPriority&lt; NodeT &gt;::add_branching_rule</definition>
+        <argsstring>(const BranchingRuleFactory&lt; NodeT &gt; &amp;t_branching_rule)</argsstring>
+        <name>add_branching_rule</name>
+        <param>
+          <type>const <ref refid="classidol_1_1BranchingRuleFactory" kindref="compound">BranchingRuleFactory</ref>&lt; NodeT &gt; &amp;</type>
+          <declname>t_branching_rule</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" line="41" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" bodystart="41" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchingWithPriority_1ac5184e965f6997e47fa47dbc510835dc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class BranchingRuleFactoryT</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classidol_1_1BranchingWithPriority_1ab11f9b9f30678cbf42b131d3c7573470" kindref="member">only_if_has_Strategy</ref>&lt; <ref refid="classidol_1_1BranchingWithPriority" kindref="compound">BranchingWithPriority</ref>&lt; NodeT &gt; &amp;, BranchingRuleFactoryT &gt;</type>
+        <definition>only_if_has_Strategy&lt;BranchingWithPriority&lt;NodeT&gt;&amp;, BranchingRuleFactoryT&gt; idol::BranchingWithPriority&lt; NodeT &gt;::add_branching_rule</definition>
+        <argsstring>(const BranchingRuleFactoryT &amp;t_branching_rule)</argsstring>
+        <name>add_branching_rule</name>
+        <param>
+          <type>const BranchingRuleFactoryT &amp;</type>
+          <declname>t_branching_rule</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" line="47" column="26" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" bodystart="47" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchingWithPriority_1a289a54905775d0eb2b61b2273c5314e4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1BranchingRule" kindref="compound">BranchingRule</ref>&lt; NodeT &gt; *</type>
+        <definition>BranchingRule&lt;NodeT&gt;* idol::BranchingWithPriority&lt; NodeT &gt;::operator()</definition>
+        <argsstring>(const Optimizers::BranchAndBound&lt; NodeT &gt; &amp;t_parent) const override</argsstring>
+        <name>operator()</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound</ref>&lt; NodeT &gt; &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" line="51" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" bodystart="51" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchingWithPriority_1ac142827067ebe4ee6a808c0cc69a5699" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classidol_1_1BranchingRuleFactory" kindref="compound">BranchingRuleFactory</ref>&lt; NodeT &gt; *</type>
+        <definition>BranchingRuleFactory&lt;NodeT&gt;* idol::BranchingWithPriority&lt; NodeT &gt;::clone</definition>
+        <argsstring>() const override</argsstring>
+        <name>clone</name>
+        <reimplements refid="classidol_1_1BranchingRuleFactory_1a4b88a3128af210b4c6ce21886662fede">clone</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" line="55" column="26" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" bodystart="55" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1BranchingRuleFactory_1a769332fb039e7db9bb7f7aa2a4178848" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classidol_1_1BranchingRule" kindref="compound">BranchingRule</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; *</type>
+        <definition>virtual BranchingRule&lt;idol::DefaultNodeInfo &gt;* idol::BranchingRuleFactory&lt; idol::DefaultNodeInfo  &gt;::operator()</definition>
+        <argsstring>(const Optimizers::BranchAndBound&lt; idol::DefaultNodeInfo &gt; &amp;t_parent) const=0</argsstring>
+        <name>operator()</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Optimizers_1_1BranchAndBound" kindref="compound">Optimizers::BranchAndBound</ref>&lt; <ref refid="classidol_1_1DefaultNodeInfo" kindref="compound">idol::DefaultNodeInfo</ref> &gt; &amp;</type>
+          <declname>t_parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingRuleFactory.h" line="25" column="27"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>idol::BranchingRuleFactory&lt; idol::DefaultNodeInfo &gt;</label>
+        <link refid="classidol_1_1BranchingRuleFactory"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; idol::DefaultNodeInfo &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::BranchingRuleFactory&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1BranchingRuleFactory"/>
+      </node>
+      <node id="1">
+        <label>idol::BranchingWithPriority&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1BranchingWithPriority"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>idol::BranchingRuleFactory&lt; idol::DefaultNodeInfo &gt;</label>
+        <link refid="classidol_1_1BranchingRuleFactory"/>
+        <childnode refid="3" relation="template-instance">
+          <edgelabel>&lt; idol::DefaultNodeInfo &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::BranchingRuleFactory&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1BranchingRuleFactory"/>
+      </node>
+      <node id="1">
+        <label>idol::BranchingWithPriority&lt; NodeT &gt;</label>
+        <link refid="classidol_1_1BranchingWithPriority"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" line="20" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h" bodystart="20" bodyend="58"/>
+    <listofallmembers>
+      <member refid="classidol_1_1BranchingWithPriority_1a35087249200a20604b270637786e4957" prot="public" virt="non-virtual"><scope>idol::BranchingWithPriority</scope><name>add_branching_rule</name></member>
+      <member refid="classidol_1_1BranchingWithPriority_1ac5184e965f6997e47fa47dbc510835dc" prot="public" virt="non-virtual"><scope>idol::BranchingWithPriority</scope><name>add_branching_rule</name></member>
+      <member refid="classidol_1_1BranchingWithPriority_1a3d3a6b995dc5255dec6c9bd113ce4306" prot="public" virt="non-virtual"><scope>idol::BranchingWithPriority</scope><name>BranchingWithPriority</name></member>
+      <member refid="classidol_1_1BranchingWithPriority_1ad37082b6fe7721cd4d0c31b9bca5cb75" prot="public" virt="non-virtual"><scope>idol::BranchingWithPriority</scope><name>BranchingWithPriority</name></member>
+      <member refid="classidol_1_1BranchingWithPriority_1ac142827067ebe4ee6a808c0cc69a5699" prot="public" virt="virtual"><scope>idol::BranchingWithPriority</scope><name>clone</name></member>
+      <member refid="classidol_1_1BranchingWithPriority_1a3be890f272ccbea944f9c4c013363d46" prot="private" virt="non-virtual"><scope>idol::BranchingWithPriority</scope><name>m_branching_rules</name></member>
+      <member refid="classidol_1_1BranchingWithPriority_1ab11f9b9f30678cbf42b131d3c7573470" prot="public" virt="non-virtual"><scope>idol::BranchingWithPriority</scope><name>only_if_has_Strategy</name></member>
+      <member refid="classidol_1_1BranchingWithPriority_1a289a54905775d0eb2b61b2273c5314e4" prot="public" virt="non-virtual"><scope>idol::BranchingWithPriority</scope><name>operator()</name></member>
+      <member refid="classidol_1_1BranchingRuleFactory_1a769332fb039e7db9bb7f7aa2a4178848" prot="public" virt="pure-virtual" ambiguityscope="BranchingRuleFactory&lt; idol::DefaultNodeInfo &gt;::"><scope>idol::BranchingWithPriority</scope><name>operator()</name></member>
+      <member refid="classidol_1_1BranchingRuleFactory_1a0b5dda2debdc1c4f6729f90449b3377f" prot="public" virt="virtual"><scope>idol::BranchingWithPriority</scope><name>~BranchingRuleFactory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

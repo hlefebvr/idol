@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Robust::Description</title>
+    
+          <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/api/robust/modeling/Description.html" />
+    
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="next" title="FAQ" href="../../../faq/index.html" />
+  <link rel="prev" title="Robust Optimization" href="../index.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../../index.html">API</a> &raquo;</li>
+    
+      <li><a href="../index.html">Robust Optimization</a> &raquo;</li>
+    
+    <li>Robust::Description</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="../index.html"
+       title="previous chapter">← Robust Optimization</a>
+  </li>
+  <li class="next">
+    <a href="../../../faq/index.html"
+       title="next chapter">FAQ →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="robust-description">
+<h1>Robust::Description<a class="headerlink" href="#robust-description" title="Link to this heading">¶</a></h1>
+<section id="doxygen">
+<h2>Doxygen<a class="headerlink" href="#doxygen" title="Link to this heading">¶</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Robust11DescriptionE">
+<span id="_CPPv3N4idol6Robust11DescriptionE"></span><span id="_CPPv2N4idol6Robust11DescriptionE"></span><span id="idol::Robust::Description"></span><span class="target" id="classidol_1_1Robust_1_1Description"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../../mixed-integer/misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Robust</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">Description</span></span></span><a class="headerlink" href="#_CPPv4N4idol6Robust11DescriptionE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Robust11Description11DescriptionERK5Model">
+<span id="_CPPv3N4idol6Robust11Description11DescriptionERK5Model"></span><span id="_CPPv2N4idol6Robust11Description11DescriptionERK5Model"></span><span id="idol::Robust::Description::Description__ModelCR"></span><span class="target" id="classidol_1_1Robust_1_1Description_1afec8318d4f85fd6604553833b7602570"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Description</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Model.html#_CPPv4N4idol5ModelE" title="idol::Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_uncertainty_set</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Robust11Description11DescriptionERK5Model" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description16stage_annotationEv">
+<span id="_CPPv3NK4idol6Robust11Description16stage_annotationEv"></span><span id="_CPPv2NK4idol6Robust11Description16stage_annotationEv"></span><span id="idol::Robust::Description::stage_annotationC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1a35d652000fe2f6e707fdb519ccc6e2b1"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Annotation.html#_CPPv4I0EN4idol10AnnotationE" title="idol::Annotation"><span class="n"><span class="pre">Annotation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">stage_annotation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description16stage_annotationEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Robust11Description9set_stageERK3Varj">
+<span id="_CPPv3N4idol6Robust11Description9set_stageERK3Varj"></span><span id="_CPPv2N4idol6Robust11Description9set_stageERK3Varj"></span><span id="idol::Robust::Description::set_stage__VarCR.unsigned-i"></span><span class="target" id="classidol_1_1Robust_1_1Description_1a0982ec69a0fc96e163065e36d19531dd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_stage</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_stage</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Robust11Description9set_stageERK3Varj" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description5stageERK3Var">
+<span id="_CPPv3NK4idol6Robust11Description5stageERK3Var"></span><span id="_CPPv2NK4idol6Robust11Description5stageERK3Var"></span><span id="idol::Robust::Description::stage__VarCRC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1a1a672d666838ccc40dc5b4f514019532"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stage</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description5stageERK3Var" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description5stageERK3Ctr">
+<span id="_CPPv3NK4idol6Robust11Description5stageERK3Ctr"></span><span id="_CPPv2NK4idol6Robust11Description5stageERK3Ctr"></span><span id="idol::Robust::Description::stage__CtrCRC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1af6d753653e14f553170cd8972eb61259"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stage</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description5stageERK3Ctr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description15uncertainty_setEv">
+<span id="_CPPv3NK4idol6Robust11Description15uncertainty_setEv"></span><span id="_CPPv2NK4idol6Robust11Description15uncertainty_setEv"></span><span id="idol::Robust::Description::uncertainty_setC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1ab35e6a1068ef9145337ea569cd038965"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Model.html#_CPPv4N4idol5ModelE" title="idol::Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">uncertainty_set</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description15uncertainty_setEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description20uncertain_mat_coeffsEv">
+<span id="_CPPv3NK4idol6Robust11Description20uncertain_mat_coeffsEv"></span><span id="_CPPv2NK4idol6Robust11Description20uncertain_mat_coeffsEv"></span><span id="idol::Robust::Description::uncertain_mat_coeffsC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1a633d9310c68766796899bf64fbd11715"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uncertain_mat_coeffs</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description20uncertain_mat_coeffsEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description13uncertain_rhsEv">
+<span id="_CPPv3NK4idol6Robust11Description13uncertain_rhsEv"></span><span id="_CPPv2NK4idol6Robust11Description13uncertain_rhsEv"></span><span id="idol::Robust::Description::uncertain_rhsC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1aac75017fd672e98ea8c632d970192b8d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uncertain_rhs</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description13uncertain_rhsEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description13uncertain_objEv">
+<span id="_CPPv3NK4idol6Robust11Description13uncertain_objEv"></span><span id="_CPPv2NK4idol6Robust11Description13uncertain_objEv"></span><span id="idol::Robust::Description::uncertain_objC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1ad3aea476759f0e1fe9ac5bd87be52916"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uncertain_obj</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description13uncertain_objEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description19uncertain_mat_coeffERK3CtrRK3Var">
+<span id="_CPPv3NK4idol6Robust11Description19uncertain_mat_coeffERK3CtrRK3Var"></span><span id="_CPPv2NK4idol6Robust11Description19uncertain_mat_coeffERK3CtrRK3Var"></span><span id="idol::Robust::Description::uncertain_mat_coeff__CtrCR.VarCRC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1a50fdb1d6deeec357997a65fe9da8f155"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/LinExpr.html#_CPPv4I00EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">uncertain_mat_coeff</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description19uncertain_mat_coeffERK3CtrRK3Var" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description20uncertain_mat_coeffsERK3Ctr">
+<span id="_CPPv3NK4idol6Robust11Description20uncertain_mat_coeffsERK3Ctr"></span><span id="_CPPv2NK4idol6Robust11Description20uncertain_mat_coeffsERK3Ctr"></span><span id="idol::Robust::Description::uncertain_mat_coeffs__CtrCRC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1a815d221cd8650b41959f982e1e08cfe6"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/LinExpr.html#_CPPv4I00EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/LinExpr.html#_CPPv4I00EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">uncertain_mat_coeffs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description20uncertain_mat_coeffsERK3Ctr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description13uncertain_rhsERK3Ctr">
+<span id="_CPPv3NK4idol6Robust11Description13uncertain_rhsERK3Ctr"></span><span id="_CPPv2NK4idol6Robust11Description13uncertain_rhsERK3Ctr"></span><span id="idol::Robust::Description::uncertain_rhs__CtrCRC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1a5d2aafbeef90595ece1d2cf51e3df683"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/LinExpr.html#_CPPv4I00EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">uncertain_rhs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description13uncertain_rhsERK3Ctr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description13uncertain_objERK3Var">
+<span id="_CPPv3NK4idol6Robust11Description13uncertain_objERK3Var"></span><span id="_CPPv2NK4idol6Robust11Description13uncertain_objERK3Var"></span><span id="idol::Robust::Description::uncertain_obj__VarCRC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1ac43982feefc57c2274cde2d398558907"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/LinExpr.html#_CPPv4I00EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">uncertain_obj</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description13uncertain_objERK3Var" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Robust11Description23set_uncertain_mat_coeffERK3CtrRK3VarRK7LinExprI3VarE">
+<span id="_CPPv3N4idol6Robust11Description23set_uncertain_mat_coeffERK3CtrRK3VarRK7LinExprI3VarE"></span><span id="_CPPv2N4idol6Robust11Description23set_uncertain_mat_coeffERK3CtrRK3VarRK7LinExprI3VarE"></span><span id="idol::Robust::Description::set_uncertain_mat_coeff__CtrCR.VarCR.LinExpr:Var:CR"></span><span class="target" id="classidol_1_1Robust_1_1Description_1a66eea16d69f5e2176db92ba7658eb444"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_uncertain_mat_coeff</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/LinExpr.html#_CPPv4I00EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_coeff</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Robust11Description23set_uncertain_mat_coeffERK3CtrRK3VarRK7LinExprI3VarE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Robust11Description17set_uncertain_rhsERK3CtrRK7LinExprI3VarE">
+<span id="_CPPv3N4idol6Robust11Description17set_uncertain_rhsERK3CtrRK7LinExprI3VarE"></span><span id="_CPPv2N4idol6Robust11Description17set_uncertain_rhsERK3CtrRK7LinExprI3VarE"></span><span id="idol::Robust::Description::set_uncertain_rhs__CtrCR.LinExpr:Var:CR"></span><span class="target" id="classidol_1_1Robust_1_1Description_1a43e9c46ec0d2db49d0020c1a3225264b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_uncertain_rhs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/LinExpr.html#_CPPv4I00EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Robust11Description17set_uncertain_rhsERK3CtrRK7LinExprI3VarE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Robust11Description17set_uncertain_objERK3VarRK7LinExprI3VarE">
+<span id="_CPPv3N4idol6Robust11Description17set_uncertain_objERK3VarRK7LinExprI3VarE"></span><span id="_CPPv2N4idol6Robust11Description17set_uncertain_objERK3VarRK7LinExprI3VarE"></span><span id="idol::Robust::Description::set_uncertain_obj__VarCR.LinExpr:Var:CR"></span><span class="target" id="classidol_1_1Robust_1_1Description_1ab075a1ad2bf82c1b7e38b550e8de849f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_uncertain_obj</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/LinExpr.html#_CPPv4I00EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Robust11Description17set_uncertain_objERK3VarRK7LinExprI3VarE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Robust11Description17set_uncertain_objE7LinExprI3Var7LinExprI3VarEE">
+<span id="_CPPv3N4idol6Robust11Description17set_uncertain_objE7LinExprI3Var7LinExprI3VarEE"></span><span id="_CPPv2N4idol6Robust11Description17set_uncertain_objE7LinExprI3Var7LinExprI3VarEE"></span><span id="idol::Robust::Description::set_uncertain_obj__LinExpr:Var.LinExpr:Var::"></span><span class="target" id="classidol_1_1Robust_1_1Description_1af256e56d60bf1d3d25505cbbf1eafc64"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_uncertain_obj</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../mixed-integer/modeling/LinExpr.html#_CPPv4I00EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/LinExpr.html#_CPPv4I00EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Robust11Description17set_uncertain_objE7LinExprI3Var7LinExprI3VarEE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Robust11Description17set_uncertain_rhsE7LinExprI3Ctr7LinExprI3VarEE">
+<span id="_CPPv3N4idol6Robust11Description17set_uncertain_rhsE7LinExprI3Ctr7LinExprI3VarEE"></span><span id="_CPPv2N4idol6Robust11Description17set_uncertain_rhsE7LinExprI3Ctr7LinExprI3VarEE"></span><span id="idol::Robust::Description::set_uncertain_rhs__LinExpr:Ctr.LinExpr:Var::"></span><span class="target" id="classidol_1_1Robust_1_1Description_1ace4c9217573cc3831d57b37effecd5d6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_uncertain_rhs</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../mixed-integer/modeling/LinExpr.html#_CPPv4I00EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/LinExpr.html#_CPPv4I00EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Robust11Description17set_uncertain_rhsE7LinExprI3Ctr7LinExprI3VarEE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Robust11Description4ViewE">
+<span id="_CPPv3N4idol6Robust11Description4ViewE"></span><span id="_CPPv2N4idol6Robust11Description4ViewE"></span><span id="idol::Robust::Description::View"></span><span class="target" id="classidol_1_1Robust_1_1Description_1_1View"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">View</span></span></span><a class="headerlink" href="#_CPPv4N4idol6Robust11Description4ViewE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Robust11Description4View4ViewERK5ModelRK11Description">
+<span id="_CPPv3N4idol6Robust11Description4View4ViewERK5ModelRK11Description"></span><span id="_CPPv2N4idol6Robust11Description4View4ViewERK5ModelRK11Description"></span><span id="idol::Robust::Description::View::View__ModelCR.DescriptionCR"></span><span class="target" id="classidol_1_1Robust_1_1Description_1_1View_1ab6d8a5d7c223af6b33db029ee0fc63c3"></span><span class="sig-name descname"><span class="n"><span class="pre">View</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Model.html#_CPPv4N4idol5ModelE" title="idol::Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_deterministic_model</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol6Robust11DescriptionE" title="idol::Robust::Description"><span class="n"><span class="pre">Description</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_description</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Robust11Description4View4ViewERK5ModelRK11Description" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description4View11descriptionEv">
+<span id="_CPPv3NK4idol6Robust11Description4View11descriptionEv"></span><span id="_CPPv2NK4idol6Robust11Description4View11descriptionEv"></span><span id="idol::Robust::Description::View::descriptionC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1_1View_1adb8e0ba6531e8a1e3a95eab8b3f63171"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol6Robust11DescriptionE" title="idol::Robust::Description"><span class="n"><span class="pre">Description</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description4View11descriptionEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Robust11Description4View19deterministic_modelEv">
+<span id="_CPPv3NK4idol6Robust11Description4View19deterministic_modelEv"></span><span id="_CPPv2NK4idol6Robust11Description4View19deterministic_modelEv"></span><span id="idol::Robust::Description::View::deterministic_modelC"></span><span class="target" id="classidol_1_1Robust_1_1Description_1_1View_1a43766470235fac73657bb096bd4ba9e8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Model.html#_CPPv4N4idol5ModelE" title="idol::Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">deterministic_model</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Robust11Description4View19deterministic_modelEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="../index.html"
+       title="previous chapter">← Robust Optimization</a>
+  </li>
+  <li class="next">
+    <a href="../../../faq/index.html"
+       title="next chapter">FAQ →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

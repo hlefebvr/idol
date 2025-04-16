@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Bilevel::Description</title>
+    
+          <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/api/bilevel/modeling/Description.html" />
+    
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="next" title="Bilevel::MibS" href="../external-solvers/MibS.html" />
+  <link rel="prev" title="Bilevel Optimization" href="../index.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../../index.html">API</a> &raquo;</li>
+    
+      <li><a href="../index.html">Bilevel Optimization</a> &raquo;</li>
+    
+    <li>Bilevel::Description</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="../index.html"
+       title="previous chapter">← Bilevel Optimization</a>
+  </li>
+  <li class="next">
+    <a href="../external-solvers/MibS.html"
+       title="next chapter">Bilevel::MibS →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="bilevel-description">
+<h1>Bilevel::Description<a class="headerlink" href="#bilevel-description" title="Link to this heading">¶</a></h1>
+<section id="doxygen">
+<h2>Doxygen<a class="headerlink" href="#doxygen" title="Link to this heading">¶</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7Bilevel11DescriptionE">
+<span id="_CPPv3N4idol7Bilevel11DescriptionE"></span><span id="_CPPv2N4idol7Bilevel11DescriptionE"></span><span id="idol::Bilevel::Description"></span><span class="target" id="classidol_1_1Bilevel_1_1Description"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../../mixed-integer/misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Bilevel</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">Description</span></span></span><a class="headerlink" href="#_CPPv4N4idol7Bilevel11DescriptionE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7Bilevel11Description11DescriptionER3EnvRKNSt6stringE">
+<span id="_CPPv3N4idol7Bilevel11Description11DescriptionER3EnvRKNSt6stringE"></span><span id="_CPPv2N4idol7Bilevel11Description11DescriptionER3EnvRKNSt6stringE"></span><span id="idol::Bilevel::Description::Description__EnvR.ssCR"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a490d6e52c6fc3ca2a5d417040eb41203"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Description</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../mixed-integer/modeling/Env.html#_CPPv4N4idol3EnvE" title="idol::Env"><span class="n"><span class="pre">Env</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_env</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7Bilevel11Description11DescriptionER3EnvRKNSt6stringE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7Bilevel11Description11DescriptionER3Env">
+<span id="_CPPv3N4idol7Bilevel11Description11DescriptionER3Env"></span><span id="_CPPv2N4idol7Bilevel11Description11DescriptionER3Env"></span><span id="idol::Bilevel::Description::Description__EnvR"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a163506c9ac1a2e853522cc5b74755415"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Description</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../mixed-integer/modeling/Env.html#_CPPv4N4idol3EnvE" title="idol::Env"><span class="n"><span class="pre">Env</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_env</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7Bilevel11Description11DescriptionER3Env" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7Bilevel11Description11DescriptionERK10AnnotationIjE">
+<span id="_CPPv3N4idol7Bilevel11Description11DescriptionERK10AnnotationIjE"></span><span id="_CPPv2N4idol7Bilevel11Description11DescriptionERK10AnnotationIjE"></span><span id="idol::Bilevel::Description::Description__Annotation:unsigned-i:CR"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a885a9dcfcb38a889d627bef0fe929348"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Description</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Annotation.html#_CPPv4I0EN4idol10AnnotationE" title="idol::Annotation"><span class="n"><span class="pre">Annotation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_lower_level</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7Bilevel11Description11DescriptionERK10AnnotationIjE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7Bilevel11Description11DescriptionERK10AnnotationIjE7AffExprI3VarE">
+<span id="_CPPv3N4idol7Bilevel11Description11DescriptionERK10AnnotationIjE7AffExprI3VarE"></span><span id="_CPPv2N4idol7Bilevel11Description11DescriptionERK10AnnotationIjE7AffExprI3VarE"></span><span id="idol::Bilevel::Description::Description__Annotation:unsigned-i:CR.AffExpr:Var:"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a7f645f27795306b42c34285b1de0ee6d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Description</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Annotation.html#_CPPv4I0EN4idol10AnnotationE" title="idol::Annotation"><span class="n"><span class="pre">Annotation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_lower_level</span></span>, <a class="reference internal" href="../../mixed-integer/modeling/Expr.html#_CPPv4I00EN4idol7AffExprE" title="idol::AffExpr"><span class="n"><span class="pre">AffExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_follower_objective</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7Bilevel11Description11DescriptionERK10AnnotationIjE7AffExprI3VarE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol7Bilevel11Description11lower_levelEv">
+<span id="_CPPv3NK4idol7Bilevel11Description11lower_levelEv"></span><span id="_CPPv2NK4idol7Bilevel11Description11lower_levelEv"></span><span id="idol::Bilevel::Description::lower_levelC"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a7ecb4b7393ae4b7c32e5aeecdadf9665"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Annotation.html#_CPPv4I0EN4idol10AnnotationE" title="idol::Annotation"><span class="n"><span class="pre">Annotation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">lower_level</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol7Bilevel11Description11lower_levelEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol7Bilevel11Description15lower_level_objEv">
+<span id="_CPPv3NK4idol7Bilevel11Description15lower_level_objEv"></span><span id="_CPPv2NK4idol7Bilevel11Description15lower_level_objEv"></span><span id="idol::Bilevel::Description::lower_level_objC"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a9933b15a850aba646d41223a666ba2dd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/QuadExpr.html#_CPPv4I00EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">lower_level_obj</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol7Bilevel11Description15lower_level_objEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7Bilevel11Description16make_upper_levelERK3Var">
+<span id="_CPPv3N4idol7Bilevel11Description16make_upper_levelERK3Var"></span><span id="_CPPv2N4idol7Bilevel11Description16make_upper_levelERK3Var"></span><span id="idol::Bilevel::Description::make_upper_level__VarCR"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a4121127f6defeabad4ce8ac5143581a6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_upper_level</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7Bilevel11Description16make_upper_levelERK3Var" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7Bilevel11Description16make_upper_levelERK3Ctr">
+<span id="_CPPv3N4idol7Bilevel11Description16make_upper_levelERK3Ctr"></span><span id="_CPPv2N4idol7Bilevel11Description16make_upper_levelERK3Ctr"></span><span id="idol::Bilevel::Description::make_upper_level__CtrCR"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1ac98ce99467853a222593c96a02ee2cf1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_upper_level</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7Bilevel11Description16make_upper_levelERK3Ctr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7Bilevel11Description16make_upper_levelERK4QCtr">
+<span id="_CPPv3N4idol7Bilevel11Description16make_upper_levelERK4QCtr"></span><span id="_CPPv2N4idol7Bilevel11Description16make_upper_levelERK4QCtr"></span><span id="idol::Bilevel::Description::make_upper_level__QCtrCR"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1acb699e0c9ed7797a415342a78320ccf9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_upper_level</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/QCtr.html#_CPPv4N4idol4QCtrE" title="idol::QCtr"><span class="n"><span class="pre">QCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7Bilevel11Description16make_upper_levelERK4QCtr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7Bilevel11Description16make_lower_levelERK3Var">
+<span id="_CPPv3N4idol7Bilevel11Description16make_lower_levelERK3Var"></span><span id="_CPPv2N4idol7Bilevel11Description16make_lower_levelERK3Var"></span><span id="idol::Bilevel::Description::make_lower_level__VarCR"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a6fb966c89235accfc64133921a6d8df9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_lower_level</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7Bilevel11Description16make_lower_levelERK3Var" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_jEN4idol7Bilevel11Description16make_lower_levelEvRK6VectorI3Var1NE">
+<span id="_CPPv3I_jEN4idol7Bilevel11Description16make_lower_levelERK6VectorI3Var1NE"></span><span id="_CPPv2I_jEN4idol7Bilevel11Description16make_lower_levelERK6VectorI3Var1NE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1Bilevel_1_1Description_1a4cb24f4e7f4ff0344f35af4b7e0fc752"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_lower_level</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_jEN4idol7Bilevel11Description16make_lower_levelEvRK6VectorI3Var1NE" title="idol::Bilevel::Description::make_lower_level::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_vars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_jEN4idol7Bilevel11Description16make_lower_levelEvRK6VectorI3Var1NE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7Bilevel11Description16make_lower_levelERK3Ctr">
+<span id="_CPPv3N4idol7Bilevel11Description16make_lower_levelERK3Ctr"></span><span id="_CPPv2N4idol7Bilevel11Description16make_lower_levelERK3Ctr"></span><span id="idol::Bilevel::Description::make_lower_level__CtrCR"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a5deaab2bc88a399511334b169fca3cd5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_lower_level</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7Bilevel11Description16make_lower_levelERK3Ctr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7Bilevel11Description16make_lower_levelERK4QCtr">
+<span id="_CPPv3N4idol7Bilevel11Description16make_lower_levelERK4QCtr"></span><span id="_CPPv2N4idol7Bilevel11Description16make_lower_levelERK4QCtr"></span><span id="idol::Bilevel::Description::make_lower_level__QCtrCR"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a57f75e306790faa313c0dbd5440e6d62"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_lower_level</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/QCtr.html#_CPPv4N4idol4QCtrE" title="idol::QCtr"><span class="n"><span class="pre">QCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7Bilevel11Description16make_lower_levelERK4QCtr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7Bilevel11Description19set_lower_level_objE8QuadExprI3VarE">
+<span id="_CPPv3N4idol7Bilevel11Description19set_lower_level_objE8QuadExprI3VarE"></span><span id="_CPPv2N4idol7Bilevel11Description19set_lower_level_objE8QuadExprI3VarE"></span><span id="idol::Bilevel::Description::set_lower_level_obj__QuadExpr:Var:"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a56573d425ca3f630c4291c92f483236b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_lower_level_obj</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../mixed-integer/modeling/QuadExpr.html#_CPPv4I00EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_objective</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7Bilevel11Description19set_lower_level_objE8QuadExprI3VarE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol7Bilevel11Description8is_upperERK3Var">
+<span id="_CPPv3NK4idol7Bilevel11Description8is_upperERK3Var"></span><span id="_CPPv2NK4idol7Bilevel11Description8is_upperERK3Var"></span><span id="idol::Bilevel::Description::is_upper__VarCRC"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a1c581286b11498d42ed2685fbb63e229"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_upper</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol7Bilevel11Description8is_upperERK3Var" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol7Bilevel11Description8is_upperERK3Ctr">
+<span id="_CPPv3NK4idol7Bilevel11Description8is_upperERK3Ctr"></span><span id="_CPPv2NK4idol7Bilevel11Description8is_upperERK3Ctr"></span><span id="idol::Bilevel::Description::is_upper__CtrCRC"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a7f561604a713e88876dc963f66bee7a1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_upper</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol7Bilevel11Description8is_upperERK3Ctr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol7Bilevel11Description8is_upperERK4QCtr">
+<span id="_CPPv3NK4idol7Bilevel11Description8is_upperERK4QCtr"></span><span id="_CPPv2NK4idol7Bilevel11Description8is_upperERK4QCtr"></span><span id="idol::Bilevel::Description::is_upper__QCtrCRC"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1ae6d3a23b8675df1c2353d8307a16dc68"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_upper</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/QCtr.html#_CPPv4N4idol4QCtrE" title="idol::QCtr"><span class="n"><span class="pre">QCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol7Bilevel11Description8is_upperERK4QCtr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol7Bilevel11Description8is_lowerERK3Var">
+<span id="_CPPv3NK4idol7Bilevel11Description8is_lowerERK3Var"></span><span id="_CPPv2NK4idol7Bilevel11Description8is_lowerERK3Var"></span><span id="idol::Bilevel::Description::is_lower__VarCRC"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a3230475185375f49ecaabf041ff7e1dd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_lower</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol7Bilevel11Description8is_lowerERK3Var" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol7Bilevel11Description8is_lowerERK3Ctr">
+<span id="_CPPv3NK4idol7Bilevel11Description8is_lowerERK3Ctr"></span><span id="_CPPv2NK4idol7Bilevel11Description8is_lowerERK3Ctr"></span><span id="idol::Bilevel::Description::is_lower__CtrCRC"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a8b1c780c15e47bef6d70506d9b6e6302"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_lower</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol7Bilevel11Description8is_lowerERK3Ctr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol7Bilevel11Description8is_lowerERK4QCtr">
+<span id="_CPPv3NK4idol7Bilevel11Description8is_lowerERK4QCtr"></span><span id="_CPPv2NK4idol7Bilevel11Description8is_lowerERK4QCtr"></span><span id="idol::Bilevel::Description::is_lower__QCtrCRC"></span><span class="target" id="classidol_1_1Bilevel_1_1Description_1a55843af42e51b8ea9d1329e3b064d8e4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_lower</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/QCtr.html#_CPPv4N4idol4QCtrE" title="idol::QCtr"><span class="n"><span class="pre">QCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol7Bilevel11Description8is_lowerERK4QCtr" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="../index.html"
+       title="previous chapter">← Bilevel Optimization</a>
+  </li>
+  <li class="next">
+    <a href="../external-solvers/MibS.html"
+       title="next chapter">Bilevel::MibS →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

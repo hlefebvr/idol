@@ -22,4 +22,4 @@
 
 )
 
-sphinx-build -M html ../docs ../docs/_build
+sphinx-build -M html ../docs/website ../docs/website/_build

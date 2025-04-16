@@ -1,0 +1,425 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classidol_1_1AffExpr" kind="class" language="C++" prot="public">
+    <compoundname>idol::AffExpr</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class KeyT</type>
+        <defval><ref refid="classidol_1_1Var" kindref="compound">idol::Var</ref></defval>
+      </param>
+      <param>
+        <type>class ValueT</type>
+        <defval>double</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classidol_1_1AffExpr_1aa9a0433019a033f15931643ca0e9770f" prot="private" static="no" mutable="no">
+        <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; KeyT, ValueT &gt;</type>
+        <definition>LinExpr&lt;KeyT, ValueT&gt; idol::AffExpr&lt; KeyT, ValueT &gt;::m_linear</definition>
+        <argsstring></argsstring>
+        <name>m_linear</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="20" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classidol_1_1AffExpr_1a6293ccf56680173f396d132da5c39eb6" prot="private" static="no" mutable="no">
+        <type>ValueT</type>
+        <definition>ValueT idol::AffExpr&lt; KeyT, ValueT &gt;::m_constant</definition>
+        <argsstring></argsstring>
+        <name>m_constant</name>
+        <initializer>= 0.</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="21" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classidol_1_1AffExpr_1a999435c04e85a26eb7fb9108b872a307" prot="public" static="yes" mutable="no">
+        <type>const <ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref>&lt; KeyT, ValueT &gt;</type>
+        <definition>const idol::AffExpr&lt; KeyT, ValueT &gt; idol::AffExpr&lt; KeyT, ValueT &gt;::Zero</definition>
+        <argsstring></argsstring>
+        <name>Zero</name>
+        <initializer>{}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="57" column="26" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classidol_1_1AffExpr_1aac13f59a1365077fcd2443e53cd890e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::AffExpr&lt; Key1, ValueT &gt;::AffExpr</definition>
+        <argsstring>()</argsstring>
+        <name>AffExpr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="23" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="76" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1ad038b3ba0a793c0ada966a751c27de66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::AffExpr&lt; Key1, ValueT &gt;::AffExpr</definition>
+        <argsstring>(ValueT t_constant)</argsstring>
+        <name>AffExpr</name>
+        <param>
+          <type>ValueT</type>
+          <declname>t_constant</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="24" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="81" bodyend="83"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1a8a0cc48d9892d1c4e05b5f2e39f7cb45" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::AffExpr&lt; KeyT, ValueT &gt;::AffExpr</definition>
+        <argsstring>(const KeyT &amp;t_key)</argsstring>
+        <name>AffExpr</name>
+        <param>
+          <type>const KeyT &amp;</type>
+          <declname>t_key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="25" column="5" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="63" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1a0da07ca438409b0d07408852f4bbb08b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::AffExpr&lt; KeyT, ValueT &gt;::AffExpr</definition>
+        <argsstring>(LinExpr&lt; KeyT &gt; t_expr)</argsstring>
+        <name>AffExpr</name>
+        <param>
+          <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; KeyT &gt;</type>
+          <declname>t_expr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="26" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1ac660080057be1a98216a58c2f1cc719f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual idol::AffExpr&lt; KeyT, ValueT &gt;::~AffExpr</definition>
+        <argsstring>()=default</argsstring>
+        <name>~AffExpr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="28" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1ac4b93224e593a0cf7bceb6bd0a0c83d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::AffExpr&lt; KeyT, ValueT &gt;::AffExpr</definition>
+        <argsstring>(const AffExpr &amp;t_src)=default</argsstring>
+        <name>AffExpr</name>
+        <param>
+          <type>const <ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref> &amp;</type>
+          <declname>t_src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="30" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1ade64f5c261c6f4d9023b8103259e124d" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>idol::AffExpr&lt; KeyT, ValueT &gt;::AffExpr</definition>
+        <argsstring>(AffExpr &amp;&amp;) noexcept=default</argsstring>
+        <name>AffExpr</name>
+        <param>
+          <type><ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="31" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1ad96309100fa2383955809fe69297ceeb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref> &amp;</type>
+        <definition>AffExpr&amp; idol::AffExpr&lt; KeyT, ValueT &gt;::operator=</definition>
+        <argsstring>(const AffExpr &amp;t_rhs)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref> &amp;</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="33" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1a62f60c8d9aeb397afbec1b902dd99974" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref> &amp;</type>
+        <definition>AffExpr&amp; idol::AffExpr&lt; KeyT, ValueT &gt;::operator=</definition>
+        <argsstring>(AffExpr &amp;&amp;) noexcept=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="34" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1a64c7f6eb697ef9a4c93165e39dc612c6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref> &amp;</type>
+        <definition>idol::AffExpr&lt; Key1, ValueT &gt; &amp; idol::AffExpr&lt; Key1, ValueT &gt;::operator+=</definition>
+        <argsstring>(const AffExpr &amp;t_rhs)</argsstring>
+        <name>operator+=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref> &amp;</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="36" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="91" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1a2a920f70a7efab53d4359e21851bfd92" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref> &amp;</type>
+        <definition>idol::AffExpr&lt; Key1, ValueT &gt; &amp; idol::AffExpr&lt; Key1, ValueT &gt;::operator-=</definition>
+        <argsstring>(const AffExpr &amp;t_rhs)</argsstring>
+        <name>operator-=</name>
+        <param>
+          <type>const <ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref> &amp;</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="38" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="98" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1a793185a3d427873b478c2143293ae46a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref> &amp;</type>
+        <definition>idol::AffExpr&lt; Key1, ValueT &gt; &amp; idol::AffExpr&lt; Key1, ValueT &gt;::operator*=</definition>
+        <argsstring>(double t_rhs)</argsstring>
+        <name>operator*=</name>
+        <param>
+          <type>double</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="39" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="105" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1a8c7781c4b98d04c45e34a8f76db95715" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref> &amp;</type>
+        <definition>idol::AffExpr&lt; Key1, ValueT &gt; &amp; idol::AffExpr&lt; Key1, ValueT &gt;::operator/=</definition>
+        <argsstring>(double t_rhs)</argsstring>
+        <name>operator/=</name>
+        <param>
+          <type>double</type>
+          <declname>t_rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="40" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="112" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1a19fefdbab5412e7d02f55105ee9256c4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1AffExpr" kindref="compound">AffExpr</ref></type>
+        <definition>idol::AffExpr&lt; Key1, ValueT &gt; idol::AffExpr&lt; Key1, ValueT &gt;::operator-</definition>
+        <argsstring>() const</argsstring>
+        <name>operator-</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="41" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="68" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1a88159e4d9392bcd35ac7b04107f7e913" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; KeyT, ValueT &gt; &amp;</type>
+        <definition>LinExpr&lt;KeyT, ValueT&gt;&amp; idol::AffExpr&lt; KeyT, ValueT &gt;::linear</definition>
+        <argsstring>()</argsstring>
+        <name>linear</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="43" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="43" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1a0d92b5e11b32ce9e69bfaa315c58767a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; KeyT, ValueT &gt; &amp;</type>
+        <definition>const LinExpr&lt;KeyT, ValueT&gt;&amp; idol::AffExpr&lt; KeyT, ValueT &gt;::linear</definition>
+        <argsstring>() const</argsstring>
+        <name>linear</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="44" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1a063c7af72796c3737bcbb480f68874f6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>ValueT &amp;</type>
+        <definition>ValueT&amp; idol::AffExpr&lt; KeyT, ValueT &gt;::constant</definition>
+        <argsstring>()</argsstring>
+        <name>constant</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="46" column="12" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="46" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1a82aaaf73073c998d2da544ca928d378f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const ValueT &amp;</type>
+        <definition>const ValueT&amp; idol::AffExpr&lt; KeyT, ValueT &gt;::constant</definition>
+        <argsstring>() const</argsstring>
+        <name>constant</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="48" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="48" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1abac42723dfb46ce3a90a2c4cbe47c380" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::AffExpr&lt; KeyT, ValueT &gt;::is_zero</definition>
+        <argsstring>(double t_tolerance) const</argsstring>
+        <name>is_zero</name>
+        <param>
+          <type>double</type>
+          <declname>t_tolerance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="50" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="50" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1AffExpr_1ac917d10e8fb0de9eb10c1396a6e3752b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::AffExpr&lt; KeyT, ValueT &gt;::clear</definition>
+        <argsstring>()</argsstring>
+        <name>clear</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="52" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="52" bodyend="55"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>idol::AffExpr&lt; idol::Var &gt;</label>
+        <link refid="classidol_1_1AffExpr"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; idol::Var &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>idol::AffExpr&lt; idol::Var, double &gt;</label>
+        <link refid="classidol_1_1AffExpr"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; idol::Var, double &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>idol::AffExpr&lt; KeyT, ValueT &gt;</label>
+        <link refid="classidol_1_1AffExpr"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>idol::AffExpr&lt; KeyT, ValueT &gt;</label>
+        <link refid="classidol_1_1AffExpr"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" line="19" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/modeling/expressions/AffExpr.h" bodystart="19" bodyend="58"/>
+    <listofallmembers>
+      <member refid="classidol_1_1AffExpr_1aac13f59a1365077fcd2443e53cd890e0" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>AffExpr</name></member>
+      <member refid="classidol_1_1AffExpr_1ad038b3ba0a793c0ada966a751c27de66" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>AffExpr</name></member>
+      <member refid="classidol_1_1AffExpr_1a8a0cc48d9892d1c4e05b5f2e39f7cb45" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>AffExpr</name></member>
+      <member refid="classidol_1_1AffExpr_1a0da07ca438409b0d07408852f4bbb08b" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>AffExpr</name></member>
+      <member refid="classidol_1_1AffExpr_1ac4b93224e593a0cf7bceb6bd0a0c83d8" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>AffExpr</name></member>
+      <member refid="classidol_1_1AffExpr_1ade64f5c261c6f4d9023b8103259e124d" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>AffExpr</name></member>
+      <member refid="classidol_1_1AffExpr_1ac917d10e8fb0de9eb10c1396a6e3752b" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>clear</name></member>
+      <member refid="classidol_1_1AffExpr_1a063c7af72796c3737bcbb480f68874f6" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>constant</name></member>
+      <member refid="classidol_1_1AffExpr_1a82aaaf73073c998d2da544ca928d378f" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>constant</name></member>
+      <member refid="classidol_1_1AffExpr_1abac42723dfb46ce3a90a2c4cbe47c380" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>is_zero</name></member>
+      <member refid="classidol_1_1AffExpr_1a88159e4d9392bcd35ac7b04107f7e913" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>linear</name></member>
+      <member refid="classidol_1_1AffExpr_1a0d92b5e11b32ce9e69bfaa315c58767a" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>linear</name></member>
+      <member refid="classidol_1_1AffExpr_1a6293ccf56680173f396d132da5c39eb6" prot="private" virt="non-virtual"><scope>idol::AffExpr</scope><name>m_constant</name></member>
+      <member refid="classidol_1_1AffExpr_1aa9a0433019a033f15931643ca0e9770f" prot="private" virt="non-virtual"><scope>idol::AffExpr</scope><name>m_linear</name></member>
+      <member refid="classidol_1_1AffExpr_1a793185a3d427873b478c2143293ae46a" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>operator*=</name></member>
+      <member refid="classidol_1_1AffExpr_1a64c7f6eb697ef9a4c93165e39dc612c6" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>operator+=</name></member>
+      <member refid="classidol_1_1AffExpr_1a19fefdbab5412e7d02f55105ee9256c4" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>operator-</name></member>
+      <member refid="classidol_1_1AffExpr_1a2a920f70a7efab53d4359e21851bfd92" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>operator-=</name></member>
+      <member refid="classidol_1_1AffExpr_1a8c7781c4b98d04c45e34a8f76db95715" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>operator/=</name></member>
+      <member refid="classidol_1_1AffExpr_1ad96309100fa2383955809fe69297ceeb" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>operator=</name></member>
+      <member refid="classidol_1_1AffExpr_1a62f60c8d9aeb397afbec1b902dd99974" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>operator=</name></member>
+      <member refid="classidol_1_1AffExpr_1a999435c04e85a26eb7fb9108b872a307" prot="public" virt="non-virtual"><scope>idol::AffExpr</scope><name>Zero</name></member>
+      <member refid="classidol_1_1AffExpr_1ac660080057be1a98216a58c2f1cc719f" prot="public" virt="virtual"><scope>idol::AffExpr</scope><name>~AffExpr</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
