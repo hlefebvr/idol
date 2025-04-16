@@ -6,4 +6,41 @@
     \min_{x\in X} \ c^\top x + \max_{ u\in U } \ \min_{y\in Y(x,u)} \ d^\top y
 \end{equation*}
 
+\begin{equation*}
+    X \define \Defset{ x\in \tilde{X} }{ Ax \ge a }
+\end{equation*}
+
+\begin{equation*}
+    Y(x,u) \define \Defset{ y\in \tilde{Y} }{ Cx + Dy + Eu \ge b }
+\end{equation*}
+
+\begin{equation*}
+    U \define \Defset{ u\in\tilde{U} }{ Fu \le g }
+\end{equation*}
+
+\begin{subequations}
+    \begin{align*}
+        \min_{x,x_0} \quad & c^\top x + x_0 \\
+        \text{s.t.} \quad & x\in X, \\
+        & \forall x\in X, \ \exists y\in Y(x,u), \ x_0 \ge d^\top y.
+    \end{align*}
+\end{subequations}
+
 \section{Bilevel problems with wait-and-see follower}
+
+$S(x)$ the set of optimal solutions to the follower problem
+\begin{equation*}
+    \min_{y\in Y(x,u)} \ f^\top y.
+\end{equation*}
+
+\begin{equation*}
+    \min_{x\in X} \ c^\top x + \max_{ u\in U } \ \min_{y} \ \Defset{ d^\top y }{ y\in S(x,u), \ Gx + Hy + Ju \ge g }.
+\end{equation*}
+
+\begin{subequations}
+    \begin{align*}
+        \min_{x,x_0} \quad & c^\top x + x_0 \\
+        \text{s.t.} \quad & x\in X, \\
+        & \forall x\in X, \ \exists y\in S(x,u), \ x_0 \ge d^\top y, \ Gx + Hy + Ju \ge h.
+    \end{align*}
+\end{subequations}

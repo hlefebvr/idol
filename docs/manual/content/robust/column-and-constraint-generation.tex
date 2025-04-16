@@ -1,4 +1,108 @@
-\section{Example: The facility location problem with facility disruption}
+\section{Introduction}
+
+\section{Two-stage robust problems}
+
+\section{Example: The robust uncapacitated facility location problem with facility disruption}
+
+
+\begin{subequations}
+    \begin{align}
+        \min_{x,y} \quad & \sum_{i\in V_1} f_ix_i + \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij} \\
+        \text{s.t.} \quad & \sum_{i\in V_1} y_{ij} = 1, \quad \text{for all } j\in V_2, \label{eq:ccg:uflp:assignment} \\
+        & y_{ij} \le x_i, \quad \text{for all } i\in V_1,  \label{eq:ccg:uflp:activation} \\
+        & y_{ij} \ge 0, \quad \text{for all } i\in V_1, j\in V_2, \label{eq:ccg:uflp:non-negative} \\
+        & x_i\in\{0,1\}, \quad \text{for all } i\in V_1.
+    \end{align}
+\end{subequations}
+
+\begin{equation*}
+    Y(x,u) \define \Defset{ y\in\mathbb{R}^{|V_1|\times|V_2|} }{
+    \text{\eqref{eq:ccg:uflp:assignment}--\eqref{eq:ccg:uflp:non-negative} and }
+    y_{ij} \le 1 - \xi_i, \quad \text{for all }i\in V_1 }.
+\end{equation*}
+
+\begin{equation*}
+    U \define \Defset{ u\in\{0,1\}^{|V_1|} }{ \sum_{i\in V_1} u_i \le \Gamma }.
+\end{equation*}
+
+\begin{equation*}
+    \min_{x\in\{0,1\}^{|V_1|}} \Set{
+        \sum_{i\in V_1} f_ix_i +
+        \max_{u\in U} \ 
+        \min_{ y\in Y(x,u) } \ 
+        \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij}
+    }
+\end{equation*}
+
+\subsection{Solving the separation problem}
+
+\subsubsection{Feasibility separation}
+
+The KKT conditions read 
+\begin{align*}
+    \text{primal feasibility} = & 
+    \begin{cases}
+        \sum_{i\in V_1} y_{ij} = 1, & \text{for all } j\in V_2, \\
+        y_{ij} \le x_i(1 - \xi_i), & \text{for all } i\in V_1,  \\
+        y_{ij} \ge 0, & \text{for all } i\in V_1, j\in V_2,  \\
+    \end{cases} \\
+    \text{dual feasibility} = & 
+    \begin{cases}
+        \beta_{ij} \le 0, & \text{for all } i\in V_1, \text{for all } j\in V_2, \\
+        \gamma_{ij} \ge 0 & \text{for all } i\in V_1, \text{for all } j\in V_2, \\
+    \end{cases} \\
+    \text{stationarity} = & 
+    \begin{cases}
+        \alpha_j + \beta_{ij} + \gamma_{ij} = c_{ij}, & \text{for all } i\in V_1, \text{for all } j\in V_2, \\
+    \end{cases} \\
+    \text{complementarity} = & 
+    \begin{cases}
+        \beta_{ij}( y_{ij} - x_i + x_i\xi_i ) = 0, & \text{for all } i\in V_1, \text{for all } j\in V_2, \\
+        \gamma_{ij}y_{ij} = 0, & \text{for all } i\in V_1, \text{for all } j\in V_2. \\
+    \end{cases}
+\end{align*}
+
+Strong duality implies 
+\begin{equation*}
+    \sum_{j\in V_2} \alpha_j + \sum_{i\in V_1} \sum_{j\in V_2} x_i(1 - x_i) \beta_{ij} = \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij}.
+\end{equation*}
+
+\begin{proposition}
+    Bounds
+\end{proposition}
+\begin{proof}
+    We first derive bonds on $\alpha$. First, consider any $(i,j)\in V_1\times
+    V_2$ with $x_i(1 - u_i) = 1$ and assume that $y_{ij} < 1$. Then, by the
+    complementarity constraints, it holds that $\beta_{ij} = 0$. Hence, the
+    stationarity conditions read
+    \begin{align*}
+        \alpha_j + \underbrace{\beta_{ij}}_{=0} + \underbrace{\gamma_{ij}}_{\ge 0} = c_{ij} 
+        \implies 
+        & \alpha_j \le c_{ij}.
+    \end{align*}
+    Hence, the bound $\alpha_j \le \min\{ c_{ij} : i\in V_1 \}$ is valid. {\color{red}If
+    $y_{ij} = 1$, then complementarity conditions imply $\gamma_{ij} = 0$.
+    Hence, stationarity conditions read 
+    \begin{align*}
+        \alpha_j + \beta_{ij} + \underbrace{\gamma_{ij}}_{=0} = c_{ij}
+        \implies
+        \alpha_j + \beta_{ij} \le c_{ij}.
+    \end{align*}
+    Note that $\beta_{ij}$ only appears in this constraint and not in the
+    objective function. Hence, fixing it to $0$ does not change the optimal
+    objective value.} Next, we show bounds on $\beta_{ij}$. To this end, note
+    that if $y_{ij} > 0$, then $\gamma_{ij} = 0$ by the complementarity
+    constraints.  Otherwise, $y_{ij} = 0$. Then it only appears in the
+    objective function if it not interdiction, but if it not interdicted
+    $y_{ij} = 0$ leads to $\beta_{ij} = 0$. Hence,
+    \begin{equation*}
+        \beta_{ij} \ge c_{ij} - \min\{ c_{ij} : i\in V_1 \}.
+    \end{equation*}
+\end{proof}
+
+\newpage
+
+\section{Example: The capacitated facility location problem with facility disruption}
 
 \subsection{Problem statement}
 
@@ -28,6 +132,8 @@ $$U \define \Defset{ u\in\{0,1\}^{|V_1|} }{ \sum_{i\in V_1} u_i \le \Gamma }.$$
 \end{equation*}
 
 \subsection{Solving the separation problem}
+
+\subsubsection{Optimality separation}
 
 The KKT conditions read
 \begin{align*}
@@ -61,8 +167,6 @@ Strong duality implies
     = \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij}.
 \end{equation}
 
-\subsection*{Bounds on $\alpha_j$} 
-
 \begin{proposition}
     $\alpha \ge 0$.
 \end{proposition}
@@ -77,3 +181,36 @@ Strong duality implies
         \implies\quad & \alpha_j \underbrace{\sum_{i\in V_1} y_{ij}}_{=1} \ge 0, \quad \text{for all } j\in V_2.
     \end{align*}
 \end{proof}
+
+\subsubsection{Feasibility separation}
+
+\begin{subequations}
+    \begin{align*}
+        \min_{y,u^+, u^-, v, w} \quad & \sum_{j\in V_2} u_j^+ + u_j^- + \sum_{i\in V_1} v_i + \sum_{i\in V_1}\sum_{j\in V_2} w_{ij} \\
+        \text{s.t.} \quad & \sum_{i\in V_1} y_{ij} = 1 + u^+_j - u^-_j, \quad \text{for all } j\in V_2, \\
+        & \sum_{j\in V_2} d_jy_{ij} \le q_i x_i + v_i, \quad \text{for all} i\in V_1, \\
+        & y_{ij} \le 1 - \xi_i + w_{ij}, \quad \text{for all } i\in V_1, j\in V_2, \\
+        & y_{ij}, u_j^+, u_j^-, v_i, w_{ij} \ge 0, \quad \text{for all } i\in V_1, j\in V_2.
+    \end{align*}
+\end{subequations}
+
+\subsubsection{An alternative approach: Farkas separation}
+
+\begin{subequations}
+    \begin{align}
+        & \sum_{i\in V_1} f_ix_i + \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij} \le x_0, \\
+        & \sum_{i\in V_1} y_{ij} = 1, \quad \text{for all } j\in V_2, \\
+        & \sum_{j\in V_2} d_jy_{ij} \le q_ix_i, \quad \text{for all } i\in V_1, \\
+        & y_{ij} \ge 0, \quad \text{for all } i\in V_1, j\in V_2.
+    \end{align}
+\end{subequations}
+
+\section{Robust bilevel problems with wait-and-see followers}
+
+\section{Example: The facility location problem with wait-and-see follower and facility disruption}
+
+\subsection{Solving the separation problem}
+
+\subsubsection{Feasibility separation}
+
+\subsubsection{Optimality separation}
