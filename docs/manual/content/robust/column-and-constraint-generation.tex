@@ -2,212 +2,476 @@
 
 \section{Two-stage robust problems}
 
-\section{Example: The robust uncapacitated facility location problem with facility disruption}
+\section[Example: The robust UFLP with facility disruption]{Example: The robust uncapacitated facility location problem with facility disruption}
 
-
+We consider an uncapacitated facility location problem (UFLP) in which
+facilities are subject to uncertain disruptions as studied
+in~\textcite{Cheng2021}. To that end, let $V_1$ be a set of facilities
+location and let $V_2$ be a set customers. For each facility $i\in V_1$, we
+let $f_i$ denote the opening cost and $q_i$ its capacity. Each customer~$j\in
+V_2$ is associated to a given demand $d_j$ and a marginal penalty for unmet
+demand $p_j$. Each connection $(i,j)\in V_1\times V_2$ has a unitary
+transportation cost noted $c_{ij}$. The deterministic uncapacitated facility
+location problem can be modeled as 
+%
 \begin{subequations}
+    \label{eq:ccg:uflp}
     \begin{align}
-        \min_{x,y} \quad & \sum_{i\in V_1} f_ix_i + \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij} \\
-        \text{s.t.} \quad & \sum_{i\in V_1} y_{ij} = 1, \quad \text{for all } j\in V_2, \label{eq:ccg:uflp:assignment} \\
-        & y_{ij} \le x_i, \quad \text{for all } i\in V_1,  \label{eq:ccg:uflp:activation} \\
-        & y_{ij} \ge 0, \quad \text{for all } i\in V_1, j\in V_2, \label{eq:ccg:uflp:non-negative} \\
+        \min_{x,y,z} \quad & \sum_{i\in V_1} f_ix_i + \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} d_j y_{ij} + \sum_{j\in V_2} p_jd_jz_j \\
+        \text{s.t.} \quad & \sum_{i\in V_1} y_{ij} + z_j = 1, \quad \text{for all } j\in V_2, \label{eq:ccg:uflp:assignment} \\
+        & y_{ij} \le x_i, \quad \text{for all } i\in V_1, \text{for all } j\in V_2,  \label{eq:ccg:uflp:activation} \\
+        & y_{ij}\ge 0, z_j \ge 0, \quad \text{for all } i\in V_1, j\in V_2, \label{eq:ccg:uflp:non-negative} \\
         & x_i\in\{0,1\}, \quad \text{for all } i\in V_1.
     \end{align}
 \end{subequations}
 
+The uncertain ingredient of the problem under consideration is that some
+facilities can be made unavaible. If this is the case, we say that a given
+facility is disrupted.
+We consider the binary budgeted knapsack uncertainty set 
+\begin{equation*}
+    U \define \Defset{ u\in\{0,1\}^{|V_1|} }{ \sum_{i\in V_1} u_i \le \Gamma },
+\end{equation*}
+where, for all facility $i\in V_1$, $u_i = 1$ if and only if faciltiy $i$ is
+disrupted. The parameter $\Gamma$ controls the maximum number of facilities
+which can be disrupted at the same time and is part of the model. As it
+typically occurs in real-world applications, we assume that facilities have to
+be planned before any disruption can be anticipated while deciding the
+operational decisions of serving customers from facilities can be delayed at a
+later instant, where disrupted facilities are known. Hence, the two-stage
+robust problem reads 
+\begin{equation*}
+    \min_{x\in\{0,1\}^{|V_1|}} \Set{
+        \sum_{i\in V_1} f_ix_i +
+        \max_{u\in U} \ 
+        \min_{ y\in Y(x,u) } \ 
+        \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij}
+    },
+\end{equation*}
+where the second-stage feasible set $Y(x,u)$ is defined for a given
+first-stage decision $x\in\{0,1\}^{|V_1|}$ and a given scenario $u\in U$ as
 \begin{equation*}
     Y(x,u) \define \Defset{ y\in\mathbb{R}^{|V_1|\times|V_2|} }{
     \text{\eqref{eq:ccg:uflp:assignment}--\eqref{eq:ccg:uflp:non-negative} and }
-    y_{ij} \le 1 - \xi_i, \quad \text{for all }i\in V_1 }.
+    y_{ij} \le 1 - u_i, \quad \text{for all }i\in V_1 }.
 \end{equation*}
 
-\begin{equation*}
-    U \define \Defset{ u\in\{0,1\}^{|V_1|} }{ \sum_{i\in V_1} u_i \le \Gamma }.
-\end{equation*}
+The goal of this example is to show how to implement a CCG algorithm to solve
+this problem. To do this, we first need to describe how the adversarial
+problem can be solved. This is the subject of the next section.
 
-\begin{equation*}
-    \min_{x\in\{0,1\}^{|V_1|}} \Set{
-        \sum_{i\in V_1} f_ix_i +
-        \max_{u\in U} \ 
-        \min_{ y\in Y(x,u) } \ 
-        \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij}
+\subsection{Modeling the robust UFLP with facility disruption in~\textsf{idol}}
+
+As presented in Chapter~\ref{chapter:robust:modeling}, we first need to model
+the deterministic model~\eqref{eq:ccg:uflp}. To this end, we will use the
+method \textsf{Problems::FLP::read\_instance\_2021\_Cheng\_et\_al(const
+std::string\&)} to read an instance file from~\textcite{Cheng2021}. Such
+instances can be found
+at~\url{https://drive.google.com/drive/folders/1Gy_guJIuLv52ruY89m4Tgrz49FiMspzn?usp=sharing}.
+With this, we can read an instance as follows. 
+%
+\begin{lstlisting}
+    const auto instance = Problems::FLP::read_instance_2021_Cheng_et_al("/path/to/instance.txt");
+    const unsigned int n_customers = instance.n_customers();
+    const unsigned int n_facilities = instance.n_facilities();
+\end{lstlisting}
+
+The deterministic model is rather straightforward to model. 
+%
+\begin{lstlisting}
+    Env env;
+    Model model(env):
+
+    // Create variables
+    const auto x = model.add_vars(Dim<1>(n_facilities), 
+                                  0, 1, Binary, 0, "x");
+    const auto y = model.add_vars(Dim<2>(n_facilities, n_customers),
+                                  0, Inf, Continuous, 0, "y");
+    const auto z = model.add_vars(Dim<1>(n_customers),
+                                  0, Inf, Continuous, 0, "z");
+
+    // Create assignment constraints
+    for (auto j : Range(n_customers)) {
+        auto lhs = idol_Sum(i, Range(n_facilities), y[i][j]) + z[j];
+        model.add_ctr(lhs <= instance.capacity(i));
     }
+
+    // Create activation constraints
+    for (auto i : Range(n_facilities)) {
+        for (auto j : Range(n_customers)) {
+            model.add_ctr(y[i][j] <= x[i]);
+        }
+    }
+
+    // Create objective function
+    auto objective = 
+        idol_Sum(i, Range(n_facilities), 
+            instance.fixed_cost(i) * x[i] +
+            idol_Sum(j, Range(n_customers),
+                instance.per_unit_transportation_cost(i,j) * instance.demand(j) * y[i][j]
+            )
+        ) + 
+        idol_Sum(j, Range(n_customers), 
+            instance.per_unit_penalty(j) * instance.demand(j) * z[j]
+        );
+    model.set_obj_expr(std::move(objective));
+\end{lstlisting}
+
+Next, we need to declare the two-stage structure, i.e., describe what variable
+and what constraint is part of the second-stage problem. This is done through
+the \textsf{Bilevel::Description} class. By default, all variables and
+constraints are defined as first-stage variables and constraints. Here, the
+second-stage variabels are $y$ and $z$ while all constraints are second-stage
+constraints. Hence, the following code snippet.
+%
+\begin{lstlisting}
+    Bilevel::Description bilevel_description(env);
+    for (auto j : Range(n_customers)) {
+        bilevel_description.make_lower_level(z[j]);
+        for (auto i : Range(n_facilities)) {
+            bilevel_description.make_lower_level(y[i][j]);
+        }
+    }
+\end{lstlisting}
+Note that, here, we do not define any coupling constraint.
+
+To end our modeling of the robust UFLP, we need to define two more things: the
+uncertainty set and the uncertain coefficients in the second-stage. Let's
+start with the uncertainty set. Here, we use $\Gamma = 2$.
+%
+\begin{lstlisting}
+    Model uncertainty_set(env);
+    const double Gamma = 2;
+    const auto u = uncertainty_set.add_vars(Dim<1>(n_facilities), 
+                                            0, 1, Binary, 0, "u");
+    uncertainty_set.add_ctr(
+        idol_Sum(i, Range(n_facilities), u[i]) <= Gamma
+    );
+\end{lstlisting}
+Finally, we need to describe where this parameter appears in the deterministic
+model. We do this through the \textsf{Robust::Description} class. To do this,
+we will first need to identify the constraints which are uncertain, i.e., the
+activation constraints~\eqref{eq:ccg:uflp:activation}. We can do so, e.g., by
+relying on the indices of the constraints within the model we just created.
+Indeed, we know that the constraint ``$y_{ij} \le x_i$ '' has an index equal
+to $|V_1| + i|V_2| + j$ for all $i\in V_1$ and all $j\in V_2$. Another way
+could have been to store these constraints in a separate container or to rely
+on the constraints' name. In the uncertain version, the activation
+constraint~``$y_{ij} \le x_i$ '' is changed by adding the term ``$- x_i u_i$''
+to it. Hence, the following code snippet.
+%
+\begin{lstlisting}
+    Robust::Description robust_description(uncertainty_set);
+    for (auto i : Range(n_facilities)) {
+        for (auto j : Range(n_customers)) {
+            
+          // Get activation constraint (i,j)
+          const auto index = n_customers + i * n_customers + j;
+          const auto& c = model.get_ctr_by_index(index);
+
+          // Add uncertain term
+          robust_description.set_uncertain_mat_coeff(c, x[i], u[i]);
+        }
+    }
+\end{lstlisting}
+In a nutshell, the call to
+\textsf{Robust::Description::set\_uncertain\_mat\_coeff} tells idol that an
+uncertain coefficient for $x$ should be added and equals $u_i$, i.e., 
+\begin{equation*}
+    y_{ij} - x_i \le 0 \quad \longrightarrow \quad y_{ij} - x_i + x_iu_i \le 0.
 \end{equation*}
+
+That's it, our robust UFLP is now completely modeled in \textsf{idol}.
+
+\subsection{Preparing the column-and-constraint optimizer}
+
+We are now ready to create our optimizer for solving
+problem~\eqref{eq:ccg:uflp}. For CCG, the optimizer has an optimizer factory
+called \textsf{Robust::ColumnAndConstraintGeneration} which can be used as
+follows. 
+%
+\begin{lstlisting}
+    auto ccg = Robust::ColumnAndConstraintGeneration(
+                            robust_description,
+                            bilevel_description
+                        );
+\end{lstlisting}
+As you can see, it is necessary to provide both the bilevel description---so
+that~\textsf{idol} knows what variables and constraints are in the first- or
+second-stage---, and the robust description---so that uncertain coefficients
+as well as the uncertainty set are also known. When we are done configuring
+the CCG algorithm, we will be able to call the \textsf{Model::use} method to
+set up the optimizer factory and the \textsf{Model::optimize} method to solve
+the problem.
+%
+\begin{lstlisting}
+    // Once we are done configuring ccg
+    model.use(ccg);
+    model.optimize();
+\end{lstlisting}
+Before we can do so, we need to at least give some information on how to solve
+each optimization problems that appear as a sub-problem in the CCG algorithm.
+There are essentially two types of problems to solve: the master problem and
+the adversarial problem. For the master problem, we will simply
+use~\textsf{Gurobi}. We do this through the following code.
+%
+\begin{lstlisting}
+    ccg.with_master_optimizer(Gurobi());
+\end{lstlisting}
+Then, we need to describe how to solve the adversarial problem, a.k.a., the
+separation problem. This is the subject of the next section.
 
 \subsection{Solving the separation problem}
 
-\subsubsection{Feasibility separation}
+During the CCG algorithm, at every iteration, the master problem is solved. If
+the master problem is infeasible, we know that the original two-stage robust
+problem is infeasible. Otherwise, let $(x,y^1,\dotsc,y^k)$ for some $k$
+corresponding to the number of scenarios present in the master problem. Given
+this point, and a current estimate on the second-stage costs $x_0$, we need to
+show that either $x$ is a feasible first-stage decision with a second-stage
+cost no more than $x_0$, or exhibit a scenario $\hat{u}\in U$ such that either
+$Y(x,\hat{u}) = \emptyset$ or the best second-stage decision $y^*$ given $x$
+and $\hat{u}$ is such that $d^\top y^* > x_0$.
 
-The KKT conditions read 
+We describe five different ways to perform this separation exactly and one
+heuristic approach along with their implementation in~\textsf{idol}. Note
+that, in the case of the UFLP, the second-stage problem is always feasible.
+Thus, we ``only'' need to check that $x$ is an optimal first-stage decision. 
+
+\subsubsection{Duality-based separation}
+
+The first approach is the well-known duality-based approach which consists in
+replacing the second-stage primal problem by its dual and linearize products
+between dual and uncertain variables in the objective function. Let's see how
+it's done. First, since the second-stage problem is always feasible and
+bounded, the primal problem attains the same objective value as its dual.
+Hence, the primal second-stage problem can be replaced by its dual problem
+% 
+\begin{subequations}
+    \begin{align}
+        \max_{\alpha,\beta,\gamma,\delta} \quad & \sum_{ j\in V_2 } \alpha_j + \sum_{i\in V_1} \sum_{j\in V_2} x_i(1 - u_i) \beta_{ij} \\
+        \text{s.t.} \quad & \alpha_j + \beta_{ij} + \gamma_{ij} = c_{ij}d_j, \quad \text{for all }i\in V_1, j\in V_2,
+        \label{eq:ccg:uflp:dual:y} \\
+        & \alpha_j + \delta_j = p_jd_j, \quad\text{for all } j\in V_2, \\
+        & \alpha_j\in\mathbb{R}, \beta_{ij} \le 0, \gamma_{ij} \ge 0, \delta_j \ge 0, \quad \text{for all } i\in V_1, j\in V_2.
+        \label{eq:ccg:uflp:dual:domains}
+    \end{align}
+\end{subequations}
+Hence, the separation problem reads 
 \begin{align*}
-    \text{primal feasibility} = & 
-    \begin{cases}
-        \sum_{i\in V_1} y_{ij} = 1, & \text{for all } j\in V_2, \\
-        y_{ij} \le x_i(1 - \xi_i), & \text{for all } i\in V_1,  \\
-        y_{ij} \ge 0, & \text{for all } i\in V_1, j\in V_2,  \\
-    \end{cases} \\
-    \text{dual feasibility} = & 
-    \begin{cases}
-        \beta_{ij} \le 0, & \text{for all } i\in V_1, \text{for all } j\in V_2, \\
-        \gamma_{ij} \ge 0 & \text{for all } i\in V_1, \text{for all } j\in V_2, \\
-    \end{cases} \\
-    \text{stationarity} = & 
-    \begin{cases}
-        \alpha_j + \beta_{ij} + \gamma_{ij} = c_{ij}, & \text{for all } i\in V_1, \text{for all } j\in V_2, \\
-    \end{cases} \\
-    \text{complementarity} = & 
-    \begin{cases}
-        \beta_{ij}( y_{ij} - x_i + x_i\xi_i ) = 0, & \text{for all } i\in V_1, \text{for all } j\in V_2, \\
-        \gamma_{ij}y_{ij} = 0, & \text{for all } i\in V_1, \text{for all } j\in V_2. \\
-    \end{cases}
+    \max_{u,\alpha,\beta,\gamma,\delta} \quad & \sum_{ j\in V_2 } \alpha_j + \sum_{i\in V_1} \sum_{j\in V_2} x_i(1 - u_i)\beta_{ij} \\
+    \text{s.t.} \quad & u\in U, \text{\eqref{eq:ccg:uflp:dual:y}--\eqref{eq:ccg:uflp:dual:domains}}.
 \end{align*}
 
-Strong duality implies 
-\begin{equation*}
-    \sum_{j\in V_2} \alpha_j + \sum_{i\in V_1} \sum_{j\in V_2} x_i(1 - x_i) \beta_{ij} = \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij}.
-\end{equation*}
+To implement this technique in \textsf{idol}, we can use the
+\textsf{Bilevel::MinMax::StrongDuality} optimizer factory. It can be
+configured as follows.
+%
+\begin{lstlisting}
+    auto duality_based = Bilevel::MinMax::StrongDuality();
+    duality_based.with_optimizer(Gurobi());
 
-\begin{proposition}
-    Bounds
-\end{proposition}
-\begin{proof}
-    We first derive bonds on $\alpha$. First, consider any $(i,j)\in V_1\times
-    V_2$ with $x_i(1 - u_i) = 1$ and assume that $y_{ij} < 1$. Then, by the
-    complementarity constraints, it holds that $\beta_{ij} = 0$. Hence, the
-    stationarity conditions read
-    \begin{align*}
-        \alpha_j + \underbrace{\beta_{ij}}_{=0} + \underbrace{\gamma_{ij}}_{\ge 0} = c_{ij} 
-        \implies 
-        & \alpha_j \le c_{ij}.
-    \end{align*}
-    Hence, the bound $\alpha_j \le \min\{ c_{ij} : i\in V_1 \}$ is valid. {\color{red}If
-    $y_{ij} = 1$, then complementarity conditions imply $\gamma_{ij} = 0$.
-    Hence, stationarity conditions read 
-    \begin{align*}
-        \alpha_j + \beta_{ij} + \underbrace{\gamma_{ij}}_{=0} = c_{ij}
-        \implies
-        \alpha_j + \beta_{ij} \le c_{ij}.
-    \end{align*}
-    Note that $\beta_{ij}$ only appears in this constraint and not in the
-    objective function. Hence, fixing it to $0$ does not change the optimal
-    objective value.} Next, we show bounds on $\beta_{ij}$. To this end, note
-    that if $y_{ij} > 0$, then $\gamma_{ij} = 0$ by the complementarity
-    constraints.  Otherwise, $y_{ij} = 0$. Then it only appears in the
-    objective function if it not interdiction, but if it not interdicted
-    $y_{ij} = 0$ leads to $\beta_{ij} = 0$. Hence,
-    \begin{equation*}
-        \beta_{ij} \ge c_{ij} - \min\{ c_{ij} : i\in V_1 \}.
-    \end{equation*}
-\end{proof}
+    ccg.add_optimality_separation_optimizer(duality_based);
+\end{lstlisting}
 
-\newpage
+By doing so, the optimizer factory \textsf{duality\_based} will be called
+every time a new separation problem needs to be solved. Note that, as such, we
+did not provide any bounds on the dual variables. Hence, the dualized model
+will be solved as a nonlinear problem by~\textsf{Gurobi}; see also
+Chapter~\ref{chapter:bilevel:continuous} on bilevel problems with continuous
+lower-level problems. However, computational experiments have shown that
+linearizing those terms is beneficial whenever possible. Hence, we now show
+how such bounds can be passed and exploited by~\textsf{idol}.
 
-\section{Example: The capacitated facility location problem with facility disruption}
+It is shown in appendix B.1 of~\textcite{Cheng2021} that a dual solution
+always exists with $\beta_{ij} \ge \min\{ 0, d_j(c_{ij} - p_j) \} \enifed
+M_{ij}$. Thus, we can linearize the products $w_{ij} \define u_i\beta_{ij}$ by
+introducing binary variables $v_{ij}$ such that 
+\begin{equation}
+    M_{ij}v_{ij} \le w_{ij} \le 0, \quad 
+    \beta_{ij} \le w_{ij} \le \beta_{ij} - M_{ij}(1 - v_{ij}), \quad 
+    v_{ij} \in \{0,1\},
+    \label{eq:ccg:uflp:dual:mccormick}
+\end{equation}
+for all $i\in V_1$ and all $j\in V_2$. Note that~\textsf{idol} can do this
+automatically. To use this feature, we simply need to provide these bounds
+to~\textsf{idol}. As discussed in Chapter~\ref{chapter:bilevel:continuous},
+this can be done by means of a child class of the
+\textsf{Reformulators::KKT::BoundProvider} class which will return the
+necessary bounds. Here is one possible implementation. Note that the only
+bounds which need to be returned in this case are those on $\beta$ since
+$\beta$ is the variable involved in a product.
+%
+\begin{lstlisting}
+    class UFLPBoundProvider 
+        : public idol::Reformulators::KKT::BoundProvider {
+    public:
+        // TODO
+    };
+\end{lstlisting}
+
+The complete code for configuring the CCG algorithm reads as follows. 
+
+\begin{lstlisting}
+    auto ccg = Robust::ColumnAndConstraintGeneration(
+                            robust_description,
+                            bilevel_description
+                        );
+    
+    ccg.with_master_optimizer(Gurobi());
+
+    auto duality_based = Bilevel::MinMax::StrongDuality();
+    duality_based.with_optimizer(Gurobi());
+    duality_based.with_bound_provider(UFLPBoundProvider());
+
+    ccg.add_optimality_separation_optimizer(duality_based);
+
+    model.use(ccg);
+    model.optimize();
+\end{lstlisting}
+
+With this code, the dualized model is now being linearized before being solved
+by~\textsf{Gurobi}, i.e., it is solved as a mixed-integer linear problem. Note
+that there is also a third way to solve the dualized model which is by means
+of SOS1 constraints. This can be implemented by using the following code. 
+%
+\begin{lstlisting}
+    auto duality_based = Bilevel::MinMax::StrongDuality();
+    duality_based.with_optimizer(Gurobi());
+    duality_based.with_sos1_constraints();
+\end{lstlisting} 
+
+\subsubsection{KKT-based separation}
+Another way to solve the separation problem is to exploit the KKT optimality
+conditions of the second-stage problem. These conditions are necessary and
+sufficient for a primal-dual point to be optimal for the second-stage primal
+and dual problems. These conditions are stated as 
+\begin{equation}
+    \label{eq:ccg:uflp:kkt}
+    \begin{aligned}
+        \text{primal feasibility} = & 
+        \begin{cases}
+            \sum_{i\in V_1} y_{ij} + z_j = 1, & \text{for all } j\in V_2, \\
+            y_{ij} \le x_i(1 - u_i), & \text{for all } i\in V_1, \text{for all } j\in V_2,  \\
+            y_{ij}\ge 0, z_j \ge 0, & \text{for all } i\in V_1, j\in V_2, \\
+        \end{cases} \\
+        \text{dual feasibility} = & 
+        \begin{cases}
+            \alpha_j + \beta_{ij} + \gamma_{ij} = c_{ij}d_j, & \text{for all }i\in V_1, j\in V_2, \\
+            \alpha_j + \delta_j = p_jd_j, & \text{for all } j\in V_2, \\
+        \end{cases} \\
+        \text{stationarity} = &
+        \begin{cases}
+            \alpha_j\in\mathbb{R}, \beta_{ij} \le 0, \gamma_{ij} \ge 0, \delta_j \ge 0, & \text{for all } i\in V_1, j\in V_2.
+        \end{cases} \\
+        \text{complementarity} = & 
+        \begin{cases}
+            \beta_{ij}(y_{ij} - x_i(1 - u_i)) = 0, & \text{for all } i\in V_1, \text{for all } j\in V_2, \\
+            \gamma_{ij}y_{ij} = 0, & \text{for all } i\in V_1, \text{for all } j\in V_2, \\
+            \delta_jz_j = 0, & \text{for all } i\in V_1, \text{for all } j\in V_2. \\
+        \end{cases}
+    \end{aligned}
+\end{equation}
+Hence, the separation problem can be formulated as 
+\begin{align*}
+    \max_{u,y,\alpha,\beta,\gamma,\delta} \Defset{ d^\top y }{ u\in U, \eqref{eq:ccg:uflp:kkt} }.
+\end{align*}
+
+To implement this technique in~\textsf{idol}, we can use the
+\textsf{Bilevel::KKT} optimizer factory. It can be configured as follows. 
+%
+\begin{lstlisting}
+    auto kkt = Bilevel::KKT();
+    kkt.with_optimizer(Gurobi());
+
+    ccg.add_optimality_separation_optimizer(kkt);
+\end{lstlisting}
+
+By doing so, the optimizer factory \textsf{kkt} will be called every time a
+new separation problem needs to be solved. Note that, as such, we did not
+provide any bounds on the dual variables. Hence, the KKT reformulation will be
+solved as a nonlinear problem by~\textsf{Gurobi}. However, it is well-known
+that linearizing the complementarity constraints with binary variables yields
+much better performance. Hence, we now show how such bounds can be passed and
+exploited by~\textsf{idol}.
+
+Recall from the previous section that there always exists a dual solution such
+that $\beta_{ij} \ge \min\{ 0, d_j(c_{ij} - p_j) \}$. From that, we easily show that
+there exists a dual solution satisfying
+\begin{align*}
+    & 0 \le \alpha_j \le p_jd_j, \quad \text{for all }j\in V_2, \\
+    & 0 \ge \beta_{ij} \ge \min\{ 0, d_j(c_{ij} - p_j) \}, \quad \text{for all } i\in V_1, \text{for all } j\in V_2, \\
+    & 0 \le \gamma_{ij} \le c_{ij}d_j + \max\{ 0, d_j( p_j - c_{ij} ) \}, \quad \text{for all } i\in V_1, \text{for all } j\in V_2, \\
+    & 0 \le \delta_j \le p_jd_j, \quad \text{for all } j\in V_2.
+\end{align*}
+We also have the trivial bounds 
+\begin{align*}
+    & 0\le y_{ij} \le 1, \quad \text{for all } i\in V_1, j\in V_2, \\
+    & 0\le z_j \le 1, \quad \text{for all } j\in V_2, \\
+    & 0 \le x_i(1 - u_i) - y_{ij} \le 1 , \quad \text{for all } i\in V_1, \text{for all } j\in V_2.
+\end{align*}
+With these, the complementarity constraints can be linearized by means of
+binary variables. In the following code snippet, we enrich our implementation
+of the \textsf{UFLPBoundProvider} class so that it returns bounds for all dual
+variables.
+%
+\begin{lstlisting}
+    // TODO ...
+\end{lstlisting}
+
+The complete code for configuring the CCG algorithm reads as follows.
+\begin{lstlisting}
+    auto ccg = Robust::ColumnAndConstraintGeneration(
+                            robust_description,
+                            bilevel_description
+                        );
+    
+    ccg.with_master_optimizer(Gurobi());
+
+    auto kkt = Bilevel::KKT();
+    kkt.with_optimizer(Gurobi());
+    kkt.with_bound_provider(UFLPBoundProvider());
+
+    ccg.add_optimality_separation_optimizer(kkt);
+
+    model.use(ccg);
+    model.optimize();
+\end{lstlisting}
+
+With this code, the KKT single-level reformulation is now being linearized
+before being solved by~\textsf{Gurobi}, i.e., it is solved as a mixed-integer
+linear problem. Note that there is also a third way to solve the KKT
+reformulation which is by means of SOS1 constraints. This can be implemented
+by using the following code.
+%
+\begin{lstlisting}
+    auto ktk = Bilevel::KKT();
+    kkt.with_optimizer(Gurobi());
+    kkt.with_sos1_constraints();   
+\end{lstlisting}
+
+\subsubsection{Farkas-based separation for binary uncertainty sets}
+
+\subsubsection{Farkas-based separation for general polytopes}
+
+\subsubsection{Branch-and-cut for bilevel problems (\textsf{MibS})}
+
+\subsubsection{Heuristic separation with PADM}
+
+\section[Example: The robust CFLP with facility disruption]{Example: The robust capacitated facility location problem with facility disruption}
 
 \subsection{Problem statement}
 
-\begin{subequations}
-    \begin{align}
-        \min_{x,y} \quad & \sum_{i\in V_1} f_ix_i + \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij} \\
-        \text{s.t.} \quad & \sum_{i\in V_1} y_{ij} = 1, \quad \text{for all } j\in V_2, \label{eq:ccg:flp:assignment} \\
-        & \sum_{j\in V_2} d_jy_{ij} \le q_ix_i, \quad \text{for all } i\in V_1, \label{eq:ccg:flp:capacity} \\
-        & y_{ij} \ge 0, \quad \text{for all } i\in V_1, j\in V_2, \label{eq:ccg:flp:non-negative} \\
-        & x_i\in\{0,1\}, \quad \text{for all } i\in V_1.
-    \end{align}
-\end{subequations}
-
-$$Y(x,u) \define \Defset{ y\in\mathbb{R}^{|V_1|\times|V_2|} }{
-\text{\eqref{eq:ccg:flp:assignment}--\eqref{eq:ccg:flp:non-negative} and }
-y_{ij} \le 1 - \xi_i, \quad \text{for all }i\in V_1 }.$$
-
-$$U \define \Defset{ u\in\{0,1\}^{|V_1|} }{ \sum_{i\in V_1} u_i \le \Gamma }.$$
-
+We now consider a capacitated variant of the facility location problem studied
+in the previous section. This problem can be modeled as
+model~\eqref{eq:ccg:uflp} with the following additional constraint:
 \begin{equation*}
-    \min_{x\in\{0,1\}^{|V_1|}} \Set{
-        \sum_{i\in V_1} f_ix_i +
-        \max_{u\in U} \ 
-        \min_{ y\in Y(x,u) } \ 
-        \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij}
-    }
+    \sum_{j\in V_2} d_jy_{ij} \le q_i, \quad \text{for all } i\in V_1.
 \end{equation*}
-
-\subsection{Solving the separation problem}
-
-\subsubsection{Optimality separation}
-
-The KKT conditions read
-\begin{align*}
-    \text{primal feasibility} = & 
-    \begin{cases}
-        \sum_{i\in V_1} y_{ij} = 1, & \text{for all } j\in V_2, \\
-        \sum_{j\in V_2} d_jy_{ij} \le q_ix_i, & \text{for all } i\in V_1, \\
-        y_{ij} \le 1 - \xi_i, & \text{for all } i\in V_1, j\in V_2, \\
-        y_{ij} \ge 0, & \text{for all } i\in V_1, j\in V_2,
-    \end{cases} \\
-    \text{dual feasibility} = & 
-    \begin{cases}
-        \beta_i, \gamma_{ij} \le 0, &\text{for all } i\in V_1, j\in V_2, \\
-        \delta_{ij} \ge 0, &\text{for all } i\in V_1, j\in V_2,
-    \end{cases} \\
-    \text{stationarity} = & 
-    \begin{cases}
-        \alpha_j + d_j\beta_i + \gamma_{ij} + \delta_{ij} = c_{ij}, & \text{for all } i\in V_1, j\in V_2,
-    \end{cases} \\
-    \text{complementarity} = & 
-    \begin{cases}
-        \left( \sum_{j\in V_2} d_jy_{ij} - q_ix_i \right) \beta_i \le 0, & \text{for all } i\in V_1, \\
-        \left( y_{ij} - 1 + \xi_i \right) \gamma_{ij} \le 0, & \text{for all } i\in V_1, j\in V_2, \\
-        y_{ij}\delta_{ij} \le 0, & \text{for all } i\in V_1, j\in V_2.
-    \end{cases}
-\end{align*}
-
-Strong duality implies
-\begin{equation}
-    \sum_{j\in V_2} \alpha_j + \sum_{i\in V_1} q_ix_i\beta_i + \sum_{i\in V_1}\sum_{j\in V_2} \left( 1 - \xi_i \right)\gamma_{ij}
-    = \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij}.
-\end{equation}
-
-\begin{proposition}
-    $\alpha \ge 0$.
-\end{proposition}
-\begin{proof}
-    We start with the lower bound. By the stationaty conditions, the following
-    holds.
-    \begin{align*}
-        & \alpha_j y_{ij} + d_j \underbrace{\beta_j y_{ij}}_{\le 0} + \underbrace{\gamma_{ij} y_{ij}}_{\le 0} + \underbrace{\delta_{ij} y_{ij}}_{= 0} 
-        = c_{ij} y_{ij}, \quad \text{for all } i\in V_1, j\in V_2,  \\
-        \implies\quad & \alpha_j y_{ij} \ge c_{ij} y_{ij} \ge 0, \quad \text{for all } i\in V_1, j\in V_2, \\
-        \implies\quad & \sum_{i\in V_1} \alpha_j y_{ij} \ge 0, \quad\text{for all } j\in V_2, \\
-        \implies\quad & \alpha_j \underbrace{\sum_{i\in V_1} y_{ij}}_{=1} \ge 0, \quad \text{for all } j\in V_2.
-    \end{align*}
-\end{proof}
-
-\subsubsection{Feasibility separation}
-
-\begin{subequations}
-    \begin{align*}
-        \min_{y,u^+, u^-, v, w} \quad & \sum_{j\in V_2} u_j^+ + u_j^- + \sum_{i\in V_1} v_i + \sum_{i\in V_1}\sum_{j\in V_2} w_{ij} \\
-        \text{s.t.} \quad & \sum_{i\in V_1} y_{ij} = 1 + u^+_j - u^-_j, \quad \text{for all } j\in V_2, \\
-        & \sum_{j\in V_2} d_jy_{ij} \le q_i x_i + v_i, \quad \text{for all} i\in V_1, \\
-        & y_{ij} \le 1 - \xi_i + w_{ij}, \quad \text{for all } i\in V_1, j\in V_2, \\
-        & y_{ij}, u_j^+, u_j^-, v_i, w_{ij} \ge 0, \quad \text{for all } i\in V_1, j\in V_2.
-    \end{align*}
-\end{subequations}
-
-\subsubsection{An alternative approach: Farkas separation}
-
-\begin{subequations}
-    \begin{align}
-        & \sum_{i\in V_1} f_ix_i + \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij} \le x_0, \\
-        & \sum_{i\in V_1} y_{ij} = 1, \quad \text{for all } j\in V_2, \\
-        & \sum_{j\in V_2} d_jy_{ij} \le q_ix_i, \quad \text{for all } i\in V_1, \\
-        & y_{ij} \ge 0, \quad \text{for all } i\in V_1, j\in V_2.
-    \end{align}
-\end{subequations}
 
 \section{Robust bilevel problems with wait-and-see followers}
 
-\section{Example: The facility location problem with wait-and-see follower and facility disruption}
+\section[Example: The robust bilevel UFLP with wait-and-see follower]{Example: The uncapacitated facility location problem with wait-and-see follower and facility disruption}
 
 \subsection{Solving the separation problem}
 
