@@ -7,6 +7,7 @@
 #include "idol/mixed-integer/problems/helpers/parse_delimited.h"
 #include "idol/mixed-integer/problems/helpers/distances.h"
 #include <random>
+#include <algorithm>
 
 idol::Problems::FLP::Instance::Instance(unsigned int t_n_facilities, unsigned int t_n_customers)
         : m_fixed_costs(t_n_facilities),
