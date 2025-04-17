@@ -7,7 +7,7 @@
 
 const idol::Annotation<unsigned int> &idol::Robust::Description::stage_annotation() const {
     if (!m_stages) {
-        auto& env = m_uncertainty_set.env();
+        auto& env = m_uncertainty_set->env();
         m_stages = Annotation<unsigned int>(env, "stage", 0);
     }
     return *m_stages;

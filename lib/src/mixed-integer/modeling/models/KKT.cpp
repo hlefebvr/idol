@@ -599,6 +599,8 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination,
     add_primal_constraints(t_destination);
     add_dual_constraints(t_destination);
 
+    t_bound_provider.m_model = &m_primal;
+
     for (const auto& ctr : m_primal.ctrs())  {
 
         if (!m_primal_constraint_indicator(ctr)) {
@@ -619,9 +621,11 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination,
         const auto z = t_destination.add_var(0, 1, Binary, 0, "complementarity_" + ctr.name());
 
         if (type == LessOrEqual) {
+
             t_destination.add_ctr(dual_var >= t_bound_provider.get_ctr_dual_lb(ctr) * z);
             t_destination.add_ctr(row - rhs >= t_bound_provider.get_ctr_slack_lb(ctr) * (1 - z));
         } else {
+
             t_destination.add_ctr(dual_var <= t_bound_provider.get_ctr_dual_ub(ctr) * z);
             t_destination.add_ctr(row - rhs <= t_bound_provider.get_ctr_slack_ub(ctr) * (1 - z));
         }
@@ -635,19 +639,22 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination,
         const auto index = m_primal.get_var_index(var);
         const double lb = m_primal.get_var_lb(var);
         const double ub = m_primal.get_var_ub(var);
-        const double slack_bound = ub - lb;
+        const double user_lb = t_bound_provider.get_var_lb(var);
+        const double user_ub = t_bound_provider.get_var_ub(var);
+        const double slack_bound = user_ub - user_lb;
 
         if (is_neg_inf(lb) && is_pos_inf(ub)) {
             continue;
         }
 
-        if (is_neg_inf(lb) || is_pos_inf(ub)) {
+        if (is_neg_inf(user_lb) || is_pos_inf(user_ub)) {
             throw Exception("KKT reformulation requires finite bounds on variables.");
         }
 
         if (!is_neg_inf(lb)) {
             const auto& dual_var = *m_dual_variables_for_lower_bounds[index];
             const auto z = t_destination.add_var(0, 1, Binary, 0, "complementarity_lb_" + var.name());
+
             t_destination.add_ctr(dual_var <= t_bound_provider.get_var_lb_dual_ub(var) * z);
             t_destination.add_ctr(var - lb <= slack_bound * (1 - z));
         }
@@ -655,10 +662,13 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination,
         if (!is_pos_inf(ub)) {
             const auto& dual_var = *m_dual_variables_for_upper_bounds[index];
             const auto z = t_destination.add_var(0, 1, Binary, 0, "complementarity_ub_" + var.name());
+
             t_destination.add_ctr(dual_var >= t_bound_provider.get_var_ub_dual_lb(var) * z);
             t_destination.add_ctr(var - ub >= -slack_bound * (1 - z));
         }
 
     }
+
+    t_bound_provider.m_model = nullptr;
 
 }

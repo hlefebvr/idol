@@ -379,34 +379,38 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_
     const unsigned int n_optimality_separation_optimizers = m_optimizer_optimality_separation.size();
 
     unsigned int n_added_scenario;
-    for (;;) {
+    if (n_feasibility_separation_optimizers > 0) {
+        for (;;) {
 
-        const bool is_last_optimizer = m_index_feasibility_separation + 1 == n_feasibility_separation_optimizers;
-        n_added_scenario = solve_feasibility_adversarial_problem();
+            const bool is_last_optimizer = m_index_feasibility_separation + 1 == n_feasibility_separation_optimizers;
+            n_added_scenario = solve_feasibility_adversarial_problem();
 
-        if (n_added_scenario > 0 || is_terminated()) {
-            return;
+            if (n_added_scenario > 0 || is_terminated()) {
+                return;
+            }
+
+            if (is_last_optimizer) {
+                break;
+            }
+
         }
-
-        if (is_last_optimizer) {
-            break;
-        }
-
     }
 
-    for (;;) {
+    if (n_optimality_separation_optimizers > 0) {
+        for (;;) {
 
-        const bool is_last_optimizer = m_index_optimality_separation + 1 == n_optimality_separation_optimizers;
-        n_added_scenario = solve_optimality_adversarial_problem();
+            const bool is_last_optimizer = m_index_optimality_separation + 1 == n_optimality_separation_optimizers;
+            n_added_scenario = solve_optimality_adversarial_problem();
 
-        if (n_added_scenario > 0 || is_terminated()) {
-            return;
+            if (n_added_scenario > 0 || is_terminated()) {
+                return;
+            }
+
+            if (is_last_optimizer) {
+                break;
+            }
+
         }
-
-        if (is_last_optimizer) {
-            break;
-        }
-
     }
 
 }

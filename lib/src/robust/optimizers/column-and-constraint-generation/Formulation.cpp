@@ -145,7 +145,12 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
 
         const auto uncertainties = m_robust_description.uncertain_mat_coeffs(ctr);
         for (const auto& [var, coeff] : uncertainties) {
-            new_row += evaluate(coeff, t_scenario) * new_vars[m_parent.get_var_index(var)].value();
+            const double coeff_value = evaluate(coeff, t_scenario);
+            if (m_bilevel_description.is_upper(var)) {
+                new_row += coeff_value * var;
+            } else {
+                new_row += coeff_value * new_vars[m_parent.get_var_index(var)].value();
+            }
         }
 
         rhs += evaluate(m_robust_description.uncertain_rhs(ctr), t_scenario);
@@ -196,22 +201,23 @@ void idol::CCG::Formulation::add_separation_problem_constraints(idol::Model &t_m
                                                                 const idol::Point<idol::Var> &t_first_stage_decision) {
 
     // Add uncertainty variables
-    for (const auto& var : m_robust_description.uncertainty_set().vars()) {
+    const auto& uncertainty_set = m_robust_description.uncertainty_set();
+    for (const auto& var : uncertainty_set.vars()) {
 
-        const double lb = m_robust_description.uncertainty_set().get_var_lb(var);
-        const double ub = m_robust_description.uncertainty_set().get_var_ub(var);
-        const auto type = m_robust_description.uncertainty_set().get_var_type(var);
+        const double lb = uncertainty_set.get_var_lb(var);
+        const double ub = uncertainty_set.get_var_ub(var);
+        const auto type = uncertainty_set.get_var_type(var);
 
         t_model.add(var, TempVar(lb, ub, type, 0, LinExpr<Ctr>()));
 
     }
 
     // Add uncertainty constraints
-    for (const auto& ctr : m_robust_description.uncertainty_set().ctrs()) {
+    for (const auto& ctr : uncertainty_set.ctrs()) {
 
-        const auto& row = m_robust_description.uncertainty_set().get_ctr_row(ctr);
-        const auto type = m_robust_description.uncertainty_set().get_ctr_type(ctr);
-        double rhs = m_robust_description.uncertainty_set().get_ctr_rhs(ctr);
+        const auto& row = uncertainty_set.get_ctr_row(ctr);
+        const auto type = uncertainty_set.get_ctr_type(ctr);
+        double rhs = uncertainty_set.get_ctr_rhs(ctr);
 
         LinExpr<Var> new_row;
         for (const auto& [var, coeff] : row) {
@@ -253,6 +259,13 @@ void idol::CCG::Formulation::add_separation_problem_constraints(idol::Model &t_m
             new_row -= coeff * var;
         }
 
+        for (const auto& [var, coeff] : m_robust_description.uncertain_mat_coeffs(ctr)) {
+            if (m_bilevel_description.is_lower(var)) {
+                throw Exception("Uncertain matrix coefficients cannot be handled.");
+            }
+            new_row += t_first_stage_decision.get(var) * coeff;
+        }
+
         t_model.add(ctr, TempCtr(std::move(new_row), type, rhs));
 
     }
@@ -261,9 +274,6 @@ void idol::CCG::Formulation::add_separation_problem_constraints(idol::Model &t_m
         throw Exception("Uncertain objectives not yet implemented");
     }
 
-    if (m_robust_description.uncertain_mat_coeffs().size() > 0) {
-        throw Exception("Uncertain matrix coefficients cannot be handled.");
-    }
 }
 
 idol::Model idol::CCG::Formulation::build_optimality_separation_problem_for_adjustable_robust_problem(
