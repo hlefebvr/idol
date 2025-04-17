@@ -9,6 +9,7 @@
 #include "idol/mixed-integer/modeling/annotations/Annotation.h"
 #include "idol/mixed-integer/modeling/constraints/Ctr.h"
 #include "idol/mixed-integer/modeling/expressions/AffExpr.h"
+#include "idol/mixed-integer/modeling/models/Model.h"
 
 namespace idol::Robust {
     class Description;
@@ -19,9 +20,11 @@ class idol::Robust::Description {
     Map<Ctr, LinExpr<Var, LinExpr<Var>>> m_uncertain_mat_coeff;
     LinExpr<Ctr, LinExpr<Var>> m_uncertain_rhs;
     LinExpr<Var, LinExpr<Var>> m_uncertain_obj;
-    const Model& m_uncertainty_set;
+    std::unique_ptr<Model> m_uncertainty_set;
 public:
-    explicit Description(const Model& t_uncertainty_set) : m_uncertainty_set(t_uncertainty_set) {}
+    explicit Description(const Model& t_uncertainty_set) : m_uncertainty_set(t_uncertainty_set.clone()) {}
+
+    Description(Description&&) = default;
 
     [[nodiscard]] const Annotation<unsigned int>& stage_annotation() const;
 
@@ -31,7 +34,7 @@ public:
 
     unsigned int stage(const Ctr& t_var) const;
 
-    const Model& uncertainty_set() const { return m_uncertainty_set; }
+    const Model& uncertainty_set() const { return *m_uncertainty_set; }
 
     auto uncertain_mat_coeffs() const { return ConstIteratorForward(m_uncertain_mat_coeff); }
 

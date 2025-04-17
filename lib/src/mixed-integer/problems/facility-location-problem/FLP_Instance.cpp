@@ -7,17 +7,24 @@
 #include "idol/mixed-integer/problems/helpers/parse_delimited.h"
 #include "idol/mixed-integer/problems/helpers/distances.h"
 #include <random>
+#include <algorithm>
 
 idol::Problems::FLP::Instance::Instance(unsigned int t_n_facilities, unsigned int t_n_customers)
         : m_fixed_costs(t_n_facilities),
           m_capacities(t_n_facilities),
           m_demands(t_n_customers),
-          m_per_unit_penalties(t_n_customers),
           m_per_unit_transportation_costs(t_n_facilities, std::vector<double>(t_n_customers)) {
 
 }
 
-idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_2021_Cheng_et_al(const std::string &t_filename) {
+void idol::Problems::FLP::Instance::set_per_unit_penalty(unsigned int t_j, double t_value) {
+    if (!m_per_unit_penalties.has_value()) {
+        m_per_unit_penalties = std::vector<double>(n_customers());
+    }
+    (*m_per_unit_penalties)[t_j] = t_value;
+}
+
+idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_2021_Cheng_et_al(const std::string &t_filename, double t_d, bool t_use_haversine) {
 
     auto data = parse_delimited(t_filename, '\t');
 
@@ -39,19 +46,33 @@ idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_2021_Cheng_et_a
         result.set_capacity(i, std::stod(data[i+1][5]));
     }
 
+    std::vector<double> costs;
+    costs.reserve(n_facilities * n_customers);
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         for (unsigned int j = 0 ; j < n_customers ; ++j) {
             const double lon_i = std::stod(data[i+1][1]);
             const double lat_i = std::stod(data[i+1][2]);
             const double lon_j = std::stod(data[j+1][1]);
             const double lat_j = std::stod(data[j+1][2]);
-            const double distance = haversine({lat_i, lon_i}, {lat_j, lon_j});
+            const double distance = t_use_haversine ?
+                    std::floor(20 * haversine({lat_i, lon_i}, {lat_j, lon_j}))
+                    :
+                    std::floor(20 * euclidean({lat_i, lon_i}, {lat_j, lon_j}));
             result.set_per_unit_transportation_cost(i, j, distance);
+            costs.emplace_back(distance);
         }
     }
 
     for (unsigned int j = 0 ; j < n_customers ; ++j) {
-        result.set_demand(j, std::stod(data[j+1][3]) * 1e-5);
+        const double d_j = std::floor(std::stod(data[j+1][3]) * 1e-5);
+        result.set_demand(j, d_j);
+    }
+
+    std::sort(costs.begin(), costs.end());
+    const unsigned int index = std::max<unsigned int>(1, std::ceil(t_d * n_facilities * n_customers)) - 1;
+    const double penalty = costs[index];
+    for (unsigned int j = 0 ; j < n_customers ; ++j) {
+        result.set_per_unit_penalty(j, penalty);
     }
 
     return result;

@@ -7,6 +7,8 @@
 
 #include <vector>
 #include <variant>
+#include <cassert>
+#include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/variables/Var.h"
 #include "idol/mixed-integer/modeling/constraints/Ctr.h"
 #include "idol/mixed-integer/modeling/constraints/QCtr.h"
@@ -112,16 +114,10 @@ public:
 
 class idol::Reformulators::KKT::BoundProvider {
     const Model* m_model = nullptr;
-    const Bilevel::Description* m_bilevel_description = nullptr;
-    virtual void set_model(const Model& t_hpr, const Bilevel::Description& t_bilevel_description) {
-        m_model = &t_hpr;
-        m_bilevel_description = &t_bilevel_description;
-    }
 public:
     virtual ~BoundProvider() = default;
 
     [[nodiscard]] const Model& model() const { return *m_model; }
-    [[nodiscard]] const Bilevel::Description& bilevel_description() const { return *m_bilevel_description; }
 
     virtual double get_ctr_dual_lb(const Ctr& t_ctr) = 0;
     virtual double get_ctr_dual_ub(const Ctr& t_ctr) = 0;
@@ -129,8 +125,12 @@ public:
     virtual double get_ctr_slack_ub(const Ctr& t_ctr) = 0;
     virtual double get_var_lb_dual_ub(const Var& t_var) = 0;
     virtual double get_var_ub_dual_lb(const Var& t_var) = 0;
+    virtual double get_var_lb(const Var& t_var) { assert(m_model); return m_model->get_var_lb(t_var); }
+    virtual double get_var_ub(const Var& t_var) { assert(m_model); return m_model->get_var_ub(t_var); }
 
     [[nodiscard]] virtual BoundProvider* clone() const = 0;
+
+    friend class idol::Reformulators::KKT;
 };
 
 #endif //IDOL_KKT_H
