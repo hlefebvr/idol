@@ -64,12 +64,12 @@ idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_2021_Cheng_et_a
     }
 
     for (unsigned int j = 0 ; j < n_customers ; ++j) {
-        const double d_j = std::stod(data[j+1][3]) * 1e-5;
+        const double d_j = std::floor(std::stod(data[j+1][3]) * 1e-5);
         result.set_demand(j, d_j);
     }
 
     std::sort(costs.begin(), costs.end());
-    const unsigned int index = std::ceil(t_d * n_facilities * n_customers);
+    const unsigned int index = std::max<unsigned int>(1, std::ceil(t_d * n_facilities * n_customers)) - 1;
     const double penalty = costs[index];
     for (unsigned int j = 0 ; j < n_customers ; ++j) {
         result.set_per_unit_penalty(j, penalty);

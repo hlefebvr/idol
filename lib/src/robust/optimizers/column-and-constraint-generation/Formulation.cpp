@@ -316,7 +316,6 @@ idol::Model idol::CCG::Formulation::build_optimality_separation_problem_for_adju
         m_bilevel_description_separation.set_lower_level_obj(m_bilevel_description.lower_level_obj());
     }
 
-
     return result;
 }
 
