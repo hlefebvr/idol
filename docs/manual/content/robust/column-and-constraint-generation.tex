@@ -2,7 +2,243 @@
 
 \section{Two-stage robust problems}
 
-\section[Example: The robust UFLP with facility disruption]{Example: The robust uncapacitated facility location problem with facility disruption}
+\subsection{Problem statement and assumptions}
+
+\begin{equation*}
+    \min_{x\in X} \ c^\top x + \max_{ u\in U } \ \min_{y\in Y(x,u)} \ d^\top y
+\end{equation*}
+
+\begin{equation*}
+    X \define \Defset{ x\in \tilde{X} }{ Ax \ge a }
+\end{equation*}
+
+\begin{equation*}
+    Y(x,u) \define \Defset{ y\in \tilde{Y} }{ Cx + Dy + E(x)u \ge b }
+\end{equation*}
+
+\begin{equation*}
+    U \define \Defset{ u\in\tilde{U} }{ Fu \le g }
+\end{equation*}
+
+\subsection{The procedure}
+
+\HLil{
+    todo:
+    \begin{itemize}
+        \item State pseudo-cost;
+        \item State feasibility and optimality separation problems;
+        \item Discuss avoiding optimality separation (problems: unboundedness
+        of RMP, no upper bound).
+    \end{itemize}
+}
+
+\subsection{Solving the separation problem with continuous second stage}
+
+In this section, we focus on the specific case in which $\tilde{Y} =
+\mathbb{R}^{n_y}$. In particular, we discuss different ways to solve the
+separation problem. 
+
+\subsubsection{Optimality separation}
+
+\HLil{todo: recall max-min formulation with $\tilde{Y} = \mathbb{R}^{n_y}$}
+
+\subsubsection*{KKT-based separation}
+
+Recall the second-stage primal problem
+\begin{subequations}
+    \begin{align*}
+        \min_{y} \quad & d^\top y \\
+        \text{s.t.} \quad & Cx + Dy + E(x)u \ge b.
+    \end{align*}
+\end{subequations}
+Because it is linear, the KKT conditions are both necessary and sufficient.
+Hence, any point $(y,\lambda)$ is a primal-dual solution to the second-stage
+problem if and only if it satisfies the following KKT system:
+\begin{equation*}
+    Cx + Dy + E(x)u \ge b, \quad 
+    D^\top \lambda = d, \quad 
+    \lambda\ge 0, \quad
+    (Cx + Dy + E(x)u - b)^\top \lambda = 0.
+\end{equation*}
+In the seminal paper~\textcite{Zeng2013}, the authors propose to replace the
+second-stage problem by its KKT conditions. The resulting separation problem
+then reads 
+\begin{subequations}
+    \begin{align}
+        \max_{u,y,\lambda} \quad & d^\top y \\
+        \text{s.t.} \quad & u\in U, \\
+        & Cx + Dy + E(x)u \ge b, \\ 
+        & D^\top \lambda = d, \quad \lambda\ge 0, \\
+        & (Cx + Dy + E(x)u - b)^\top \lambda = 0. \label{eq:ccg:kkt}
+    \end{align}
+\end{subequations}
+This problem is a bilinear optimization problem which can be solved using
+standard nonlinear techniques. An alternative approach is to linearize
+constraints~\eqref{eq:ccg:kkt} by introducing auxiliary binary variables.
+However, this approach requires to compute bounds on the dual variables
+$\lambda$ which, to the best of our knowledge, cannot be efficiently done
+without exploiting problem-specific knowledge. Nevertheless, this additional
+work has been shown to be benificial since solving the resulting mixed-integer
+linear problem is typically easier than solving the nonlinear problem. Now,
+assume that you know that there always exists dual solutions which satisfy
+$\lambda \le M$ for some diagonal matrix $M \ge 0$. Then, the complementarity
+constraints~\eqref{eq:ccg:kkt} can be replaced by
+\begin{equation*}
+    0 \le \lambda \le Mz, \quad 
+    0 \le Cx + Dy + E(x)u - b \le M\circ(e - z), \quad 
+    z\in\{0,1\}^{m_y}.
+\end{equation*}
+One final note. In practice, choosing a wrong value for $M$ may result in a
+CCG scheme which is no longer convergent. Hence, it is necessary that the
+bounds $M$ be valid. On the contrary, choosing a too large value for $M$ leads
+to bad performance. 
+
+\subsubsection*{Duality-based separation}
+
+Recall the primal second-stage problem
+\begin{subequations}
+    \begin{align*}
+        \min_{y} \quad & d^\top y \\
+        \text{s.t.} \quad & Cx + Dy + E(x)u \ge b.
+    \end{align*}
+\end{subequations}
+Assume that it is feasible and bounded. Then, it attains the same optimal
+objective value as its dual
+\begin{subequations}
+    \begin{align*}
+        \max_{\lambda} \quad & (b - Cx - E(x)u)^\top\lambda \\
+        \text{s.t.} \quad & D^\top \lambda = d, \\
+        & \lambda \ge 0.
+    \end{align*}
+\end{subequations}
+
+\subsubsection{Feasibility separation}
+
+\HLil{todo: add max-min formulation with $\tilde{Y} = \mathbb{R}^{n_y}$}
+
+
+\begin{equation*}
+    Y^{+}(x,u) \define 
+    \Defset{
+        (y,z)
+    }{
+        Cx + Dy + E(x)u + ze \ge b, \quad
+        z \ge 0
+    }.
+\end{equation*}
+
+\begin{equation*}
+    \max_{u\in U} \quad \min_{(y,s)\in Y^{+}(x,x_0,u)} \ z.
+\end{equation*}
+
+
+\subsubsection*{KKT-based separation}
+
+\HLil{todo}
+
+\subsubsection*{Duality-based separation}
+
+\HLil{todo}
+
+\subsubsection{Avoiding optimality separation}
+
+\HLil{todo: recall max-min formaultion with $\tilde{Y} = \mathbb{R}^{n_y}$}
+
+\begin{equation*}
+    Y^{*+}(x,x_0,u) \define 
+    \Defset{
+        (y,z)
+    }{
+        x_0 + z \ge d^\top y, \quad
+        Cx + Dy + E(x)u + ze \ge b, \quad
+        z \ge 0
+    }.
+\end{equation*}
+
+\begin{equation*}
+    \max_{u\in U} \quad \min_{(y,s)\in Y^{*+}(x,x_0,u)} \ z.
+\end{equation*}
+
+\subsubsection*{KKT-based separation}
+
+\begin{subequations}
+    \begin{align}
+        \min_{y,z} \quad & z, \\
+        \text{s.t.} \quad & x_0 + z \ge d^\top y, \\
+        & Cx + Dy + E(x)u + ze \ge b, \\
+        & z \ge 0.
+    \end{align}
+\end{subequations}
+
+The dual reads 
+\begin{subequations}
+    \label{eq:ccg:farkas}
+    \begin{align}
+        \max_{\lambda,\lambda_0,\mu} \quad & -x_0\lambda_0 + (b - Cx - E(x)u)^\top \lambda \\
+        \text{s.t.} \quad & D^\top\lambda - d\lambda_0 = 0, \\
+        & \lambda_0 + e^\top\lambda + \mu = 1, \\
+        & \lambda_0, \lambda, \mu \ge 0.
+    \end{align}
+\end{subequations}
+Complementarity constraints are given as 
+\begin{equation*}
+    (x_0 + z - d^\top y)\lambda_0 = 0, \quad 
+    (Cx + Dy + E(x)u + ze - b)^\top \lambda = 0, \quad 
+    z\mu = 0.
+\end{equation*}
+
+\subsubsection*{Duality-based separation}
+
+\HLil{todo}
+
+\subsubsection*{Duality-based separation for 0/1 uncertainty sets} 
+
+In the special case where the uncertainty set is either a binary set, i.e., $U
+\subseteq \{0,1\}^{n_u}$, or a polytope whose extreme points are all binary,
+i.e., $\text{vert}(U) \subseteq \{0,1\}^{n_u}$, \textcite{Ayoub2016} develop
+an alternative approach to solve the separation problem. Consider again the
+dual problem~\eqref{eq:ccg:farkas}. The authors exploit the fact that
+worst-case scenarios are always extreme points of the uncertainty set. Hence,
+the separation problem can be modeled as
+\begin{subequations}
+    \begin{align}
+        \max_{u,\lambda,\lambda_0} \quad & -x_0\lambda_0 + (b - Cx - E(x)u)^\top \lambda \\
+        \text{s.t.} \quad & D^\top \lambda - d\lambda_0 = 0, \quad \lambda, \lambda_0 \ge 0, \quad \lambda + \lambda_0 \le 1, \label{eq:ccg:farkas-0-1:dual} \\
+        & u\in U\cap\{0,1\}^{n_u} \label{eq:ccg:farkas-0-1:uncertainty}.
+    \end{align}
+\end{subequations}
+Then, observe that products between $u_k$ and $\lambda_i$ can be linearized
+exactly using the following constraints ensuring $w_{ik} = \lambda_iu_k$
+\begin{equation}
+    0 \le w_{ik} \le \lambda_i, \quad 
+    w_{ik} \le u_k, \quad 
+    w_{ik} \ge \lambda_i - 1 + u_k,
+    \label{eq:ccg:farkas-0-1:mccormick}
+\end{equation}
+for all $i=1,\dotsc,m_y$ and all $k = 1,\dotsc,n_u$. Overall, the separation
+problem is given by 
+\begin{subequations}
+    \begin{align*}
+        \max_{u,\lambda,\lambda_0,w} \quad & -x_0\lambda_0 + (b - Cx)^\top \lambda - \sum_{i=1}^{m_y} \sum_{k=1}^{n_u} E_{ik}(x)w_{ij} \\
+        \text{s.t.} \quad & \text{\eqref{eq:ccg:farkas-0-1:dual}--\eqref{eq:ccg:farkas-0-1:uncertainty}}, \eqref{eq:ccg:farkas-0-1:mccormick}. 
+    \end{align*}
+\end{subequations}
+
+\subsection{Solving the separation problem with mixed-integer second stage}
+
+We now consider the general case in which $\tilde{Y} =
+\mathbb{R}^{p_y}\times\mathbb{Z}^{n_y - p_y}$. 
+
+\HLil{
+Approaches are
+\begin{itemize}
+    \item \textsf{MibS}
+    \item CCG Anirudh with big-M and warning with ref to new paper
+    \item Farkas and cut generation with binary uncertainty set (new)
+\end{itemize}
+}
+
+\section[Example: The UFLP with facility disruption]{Example: The uncapacitated facility location problem with facility disruption}
 
 We consider an uncapacitated facility location problem (UFLP) in which
 facilities are subject to uncertain disruptions as studied
@@ -121,7 +357,7 @@ Next, we need to declare the two-stage structure, i.e., describe what variable
 and what constraint is part of the second-stage problem. This is done through
 the \textsf{Bilevel::Description} class. By default, all variables and
 constraints are defined as first-stage variables and constraints. Here, the
-second-stage variabels are $y$ and $z$ while all constraints are second-stage
+second-stage variables are $y$ and $z$ while all constraints are second-stage
 constraints. Hence, the following code snippet.
 %
 \begin{lstlisting}
@@ -238,7 +474,9 @@ heuristic approach along with their implementation in~\textsf{idol}. Note
 that, in the case of the UFLP, the second-stage problem is always feasible.
 Thus, we ``only'' need to check that $x$ is an optimal first-stage decision. 
 
-\subsubsection{Duality-based separation}
+\subsubsection{Optimality separation}
+
+\subsubsection*{Duality-based separation}
 
 The first approach is the well-known duality-based approach which consists in
 replacing the second-stage primal problem by its dual and linearize products
@@ -341,7 +579,7 @@ of SOS1 constraints. This can be implemented by using the following code.
     duality_based.with_sos1_constraints();
 \end{lstlisting} 
 
-\subsubsection{KKT-based separation}
+\subsubsection*{KKT-based separation}
 Another way to solve the separation problem is to exploit the KKT optimality
 conditions of the second-stage problem. These conditions are necessary and
 sufficient for a primal-dual point to be optimal for the second-stage primal
@@ -450,15 +688,29 @@ by using the following code.
     kkt.with_sos1_constraints();   
 \end{lstlisting}
 
-\subsubsection{Farkas-based separation for binary uncertainty sets}
+\subsubsection*{Separation by the external bilevel solver \textsf{MibS}}
 
-\subsubsection{Farkas-based separation for general polytopes}
+\HLil{todo}
 
-\subsubsection{Branch-and-cut for bilevel problems (\textsf{MibS})}
+\subsubsection*{Heuristic separation with PADM}
 
-\subsubsection{Heuristic separation with PADM}
+\HLil{todo}
 
-\section[Example: The robust CFLP with facility disruption]{Example: The robust capacitated facility location problem with facility disruption}
+\subsubsection{Avoiding optimality separation}
+
+\subsubsection*{KKT-based separation}
+
+\HLil{todo}
+
+\subsubsection*{KKT-based separation for 0/1 uncertainty sets}
+
+\HLil{todo}
+
+\subsubsection*{Heuristic separation with PADM}
+
+\HLil{todo}
+
+\section[Example: The CFLP with facility disruption]{Example: The capacitated facility location problem with facility disruption}
 
 \subsection{Problem statement}
 
@@ -471,10 +723,8 @@ model~\eqref{eq:ccg:uflp} with the following additional constraint:
 
 \section{Robust bilevel problems with wait-and-see followers}
 
-\section[Example: The robust bilevel UFLP with wait-and-see follower]{Example: The uncapacitated facility location problem with wait-and-see follower and facility disruption}
+\section[Example: The bilevel UFLP with facility location]{Example: The uncapacitated facility location problem with wait-and-see follower and facility disruption}
 
 \subsection{Solving the separation problem}
-
-\subsubsection{Feasibility separation}
 
 \subsubsection{Optimality separation}
