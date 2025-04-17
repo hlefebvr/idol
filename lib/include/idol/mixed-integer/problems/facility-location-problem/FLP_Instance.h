@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include <optional>
 
 namespace idol::Problems::FLP {
     class Instance;
@@ -23,7 +24,7 @@ namespace idol::Problems::FLP {
       https://doi.org/10.1016/j.omega.2021.102429.
      * @param t_filename the filename
      */
-    Instance read_instance_2021_Cheng_et_al(const std::string& t_filename);
+    Instance read_instance_2021_Cheng_et_al(const std::string& t_filename, double t_d, bool t_use_haversine = false);
 
     Instance read_instance_1991_Cornuejols_et_al(const std::string& t_filename);
 
@@ -37,7 +38,7 @@ class idol::Problems::FLP::Instance {
 
     // For each customer
     std::vector<double> m_demands;
-    std::vector<double> m_per_unit_penalties;
+    std::optional<std::vector<double>> m_per_unit_penalties;
 
     // For each (facility, customer)
     std::vector<std::vector<double>> m_per_unit_transportation_costs;
@@ -51,11 +52,14 @@ public:
     [[nodiscard]] virtual double capacity(unsigned int t_i) const { return m_capacities[t_i]; }
     [[nodiscard]] virtual double demand(unsigned int t_j) const { return m_demands[t_j]; }
     [[nodiscard]] virtual double per_unit_transportation_cost(unsigned int t_i, unsigned int t_j) const { return m_per_unit_transportation_costs[t_i][t_j]; }
+    [[nodiscard]] virtual bool has_penalties() const { return m_per_unit_penalties.has_value(); }
+    [[nodiscard]] virtual double per_unit_penalty(unsigned int t_j) const { return (*m_per_unit_penalties)[t_j]; }
 
     void set_fixed_cost(unsigned int t_i, double t_value) { m_fixed_costs[t_i] = t_value; }
     void set_capacity(unsigned int t_i, double t_value) { m_capacities[t_i] = t_value; }
     void set_demand(unsigned int t_j, double t_value) { m_demands[t_j] = t_value; }
     void set_per_unit_transportation_cost(unsigned int t_i, unsigned int t_j, double t_value) { m_per_unit_transportation_costs[t_i][t_j] = t_value; }
+    void set_per_unit_penalty(unsigned int t_j, double t_value);
 
 };
 
