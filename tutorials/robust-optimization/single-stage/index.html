@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Single-stage Robust Optimization</title>
+    
+          <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/robust-optimization/single-stage/index.html" />
+    
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="next" title="Two-stage Robust Optimization (Adjustable)" href="../two-stage/index.html" />
+  <link rel="prev" title="Robust Optimization" href="../index.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../../index.html">Tutorials</a> &raquo;</li>
+    
+      <li><a href="../index.html">Robust Optimization</a> &raquo;</li>
+    
+    <li>Single-stage Robust Optimization</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="../index.html"
+       title="previous chapter">← Robust Optimization</a>
+  </li>
+  <li class="next">
+    <a href="../two-stage/index.html"
+       title="next chapter">Two-stage Robust Optimization (Adjustable) →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="single-stage-robust-optimization">
+<span id="robust-single"></span><h1>Single-stage Robust Optimization<a class="headerlink" href="#single-stage-robust-optimization" title="Link to this heading">¶</a></h1>
+<p>A classic robust optimization model can be formulated as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\min_{x} \quad &amp; c^\top x \\
+\text{s.t.} \quad &amp; \sum_{i=1}^j (\bar a_{ij} + \hat a_{ij}u_j)x_j \ge b_i \qquad \text{for all }u\in U_i, \qquad i=1,\dotsc,m,  \\
+ &amp; x\in X.\end{split}\]</div>
+<p>Here:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x\)</span> represents the decision variables.</p></li>
+<li><p><span class="math notranslate nohighlight">\(c^\top x\)</span> is the objective function to be minimized.</p></li>
+<li><p>The constraints involve uncertain coefficients <span class="math notranslate nohighlight">\(a_{ij}\)</span>, which are modeled as <span class="math notranslate nohighlight">\(\bar a_{ij} + \hat a_{ij} u_j\)</span>, where <span class="math notranslate nohighlight">\(\bar a_{ij}\)</span> is the nominal value, and <span class="math notranslate nohighlight">\(\hat a_{ij} u_j\)</span> represents the uncertainty.</p></li>
+<li><p><span class="math notranslate nohighlight">\(U_i\)</span> is the uncertainty set, specifying the range of possible values for the uncertain parameters <span class="math notranslate nohighlight">\(u_j\)</span>.</p></li>
+<li><p>The goal is to find a solution <span class="math notranslate nohighlight">\(x\)</span> that satisfies the constraints for all possible values of <span class="math notranslate nohighlight">\(u\)</span> within <span class="math notranslate nohighlight">\(U_i\)</span> for row <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+</ul>
+<p>This formulation ensures that the solution is robust against the worst-case realizations of the uncertain parameters within the given uncertainty set.
+The choice of <span class="math notranslate nohighlight">\(U\)</span> significantly impacts the conservatism of the solution: a larger uncertainty set leads to a more
+robust but potentially more conservative solution, while a smaller set provides less protection against extreme variations.</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="../index.html"
+       title="previous chapter">← Robust Optimization</a>
+  </li>
+  <li class="next">
+    <a href="../two-stage/index.html"
+       title="next chapter">Two-stage Robust Optimization (Adjustable) →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

@@ -1,0 +1,68 @@
+Modeling a MIP with 
+===================
+
+Introduction
+------------
+
+In idol, a mixed-integer optimization problem (MIP) is assumed to be of
+the form:
+
+.. math::
+
+   \begin{aligned}
+           \min_x \quad & c^\top x + x^\top D x + c_0 \\
+           \text{s.t.} \quad 
+           & a_{i\cdot}^\top x + x^\top Q^i x \le b_i, \quad \text{for all } i=1,\dotsc,m, \\
+           & \ell_j \le x_j \le u_j, \quad \text{for all } j = 1,\dotsc,n, \\
+           & x_j\in \mathbb{Z}, \quad \text{for all } j\in J \subseteq\{1,\dotsc,n\}.
+       \end{aligned}
+
+[eq:mip]
+
+Here, :math:`x` is the decision-variable vector while vectors and
+matrices :math:`c\in\mathbb{Q}^n`, :math:`D\in\mathbb{Q}^{n\times n}`,
+:math:`A\in\mathbb{Q}^{m\times
+n}`, :math:`Q^i\in\mathbb{Q}^i` (:math:`i=1,\dotsc,m`),
+:math:`b\in\mathbb{Q}^m`, :math:`\ell\in\mathbb{Q}^n\cup\{-\infty\}` and
+:math:`u\in\mathbb{Q}^n\cup\{\infty\}` are input data. As usual,
+variables are classified depending on their type (continuous, integer or
+binary) and bounds; see Table `1.1 <#tab:var-types>`__. A constraint in
+which :math:`Q^i
+= 0` is called a linear constraint, otherwise, it is a quadratic
+constraint.
+
+.. container::
+   :name: tab:var-types
+
+   .. table:: Terminology for variables in a MIP
+
+      +----------------------+----------------------+----------------------+
+      | A variable           | if its index         | and its bounds       |
+      | :math:`x_j` is said  | :math:`j` satisfies  | satisfy ...          |
+      | ...                  | ...                  |                      |
+      +======================+======================+======================+
+      | integer              | :math:`j\in J`       | —                    |
+      +----------------------+----------------------+----------------------+
+      | binary               | :math:`j\in J`       | :math:`0 \           |
+      |                      |                      | le \ell \le u \le 1` |
+      +----------------------+----------------------+----------------------+
+      | continuous           | :math:`j\notin J`    | —                    |
+      +----------------------+----------------------+----------------------+
+      | free                 | —                    | :math:`l=-\infty`    |
+      |                      |                      | and                  |
+      |                      |                      | :math:`u = \infty`   |
+      +----------------------+----------------------+----------------------+
+      | non-negative         | —                    | :math:`\ell \ge 0`   |
+      +----------------------+----------------------+----------------------+
+      | non-positive         | —                    | :math:`u \le 0`      |
+      +----------------------+----------------------+----------------------+
+      | bounded              | —                    | :math:`-\infty <     |
+      |                      |                      | \ell \le u < \infty` |
+      +----------------------+----------------------+----------------------+
+      | fixed                | —                    | :math:`\ell = u`     |
+      +----------------------+----------------------+----------------------+
+
+An important class of problems is when all constraints are linear and
+the objective function is linear, i.e., :math:`Q^i=0` for all
+:math:`i=1,\dotsc,m` and :math:`D=0`. In this case, we say
+that `[eq:mip] <#eq:mip>`__ is a mixed-integer linear problem (MILP).

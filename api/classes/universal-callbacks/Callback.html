@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Callback</title>
+    
+          <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/api/classes/universal-callbacks/Callback.html" />
+    
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+    
+    <li>Callback</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="callback">
+<span id="api-callback"></span><h1>Callback<a class="headerlink" href="#callback" title="Link to this heading">¶</a></h1>
+<p>Callbacks are user-defined functions which are invoked during the execution of branch-and-bound algorithms at certain
+key steps of the procedure. These key m_n_points_bound are called <a class="reference internal" href="../../types/universal-callbacks/CallbackEvent.html#api-callbackevent"><span class="std std-ref">events</span></a> in idol.
+Callback functions can be used to monitor the algorithm’s progress, control its behavior, or perform additional processing.</p>
+<section id="usercutcallback-and-lazycutcallback">
+<h2>UserCutCallback and LazyCutCallback<a class="headerlink" href="#usercutcallback-and-lazycutcallback" title="Link to this heading">¶</a></h2>
+<p>A common use of callbacks is to implement custom cut generation procedures at each node of the branch-and-bound tree. Note that
+idol offers out-of-the-box callback routines for cut separation. Namely, <a class="reference internal" href="UserCutCallback.html#api-usercutcallback"><span class="std std-ref">UserCutCallback</span></a>
+and <a class="reference internal" href="LazyCutCallback.html#api-lazycutcallback"><span class="std std-ref">LazyCutCallback</span></a>. Yet, it is totally possible to define your own cut generation procedure
+by using the <code class="docutils literal notranslate"><span class="pre">Callback::add_user_cut</span></code> and  <code class="docutils literal notranslate"><span class="pre">Callback::add_lazy_cut</span></code> methods inside your callback.</p>
+<p>In a nutshell, <a class="reference internal" href="UserCutCallback.html#api-usercutcallback"><span class="std std-ref">UserCutCallback</span></a> (or, similarly, <code class="docutils literal notranslate"><span class="pre">Callback::add_user_cut</span></code>) are intended for
+cuts which have a potential to improve the quality of the relaxation but whose presence in the model is not necessary for the
+branch-and-bound to converge to an optimal solution. <a class="reference internal" href="UserCutCallback.html#api-usercutcallback"><span class="std std-ref">UserCutCallback</span></a> callbacks are called when
+a non-valid solution has been found.</p>
+<p><a class="reference internal" href="LazyCutCallback.html#api-lazycutcallback"><span class="std std-ref">LazyCutCallback</span></a> (or, similarly, <code class="docutils literal notranslate"><span class="pre">Callback::add_lazy_cut</span></code>),
+instead, are intended to generate constraints which should be part of the model but which were omitted in the model for some reason.
+A typical reason for omitting constraints in a model’s definition is the large number of such constraints.
+<a class="reference internal" href="LazyCutCallback.html#api-lazycutcallback"><span class="std std-ref">LazyCutCallback</span></a> callbacks are called when a valid solution has been found.</p>
+</section>
+<section id="creating-your-own-callback">
+<h2>Creating your own callback<a class="headerlink" href="#creating-your-own-callback" title="Link to this heading">¶</a></h2>
+<p>If you want to create your own callback, you should first create a new class which inherits the <code class="docutils literal notranslate"><span class="pre">Callback</span></code> class and
+overrides the <code class="docutils literal notranslate"><span class="pre">operator()(CallbackEvent)</span></code> method.</p>
+<p>Note that callbacks cannot be given “as-is” to an optimizer but must be passed through a <code class="docutils literal notranslate"><span class="pre">CallbackFactory</span></code>. A callback
+factory is a class whose role is to create a new callback object whenever it is needed. Every callback factories must be
+a child (or little child) of the <code class="docutils literal notranslate"><span class="pre">CallbackFactory</span></code> class.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>We now give an example of callback which prints out every valid solution found.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MyCallback</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">CallbackFactory</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">Strategy</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Real callback implementation</span>
+<span class="w">    </span><span class="k">protected</span><span class="o">:</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">CallbackEvent</span><span class="w"> </span><span class="n">t_event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">               </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">t_event</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">IncumbentSolution</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">               </span><span class="p">}</span>
+
+<span class="w">               </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">primal_solution</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">Callback</span><span class="o">*</span><span class="w"> </span><span class="k">operator</span><span class="p">()()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Creates a new callback object</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Strategy</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">CallbackFactory</span><span class="o">*</span><span class="w"> </span><span class="n">clone</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Creates a copy of the callback factory</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyCallback</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Later, it is then possible to use this callback in compliant optimizers like <a class="reference internal" href="../../mixed-integer/external-solvers/Gurobi.html#api-gurobi"><span class="std std-ref">Gurobi</span></a> or <a class="reference internal" href="../../mixed-integer/branch-and-bound/BranchAndBound.html#api-branchandbound"><span class="std std-ref">BranchAndBound</span></a>.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Gurobi</span><span class="p">().</span><span class="n">with_callback</span><span class="p">(</span><span class="n">MyCallback</span><span class="p">();</span>
+<span class="p">);</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Note that there also exists more advanced callbacks which are specific to idol’s branch-and-bound implementation.
+For these advanced feature, see <a class="reference internal" href="../../mixed-integer/branch-and-bound/BranchAndBoundCallback.html#api-branchandboundcallback"><span class="std std-ref">BranchAndBoundCallback</span></a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenclass: Cannot find class “idol::Callback” in doxygen xml output for project “idol” from directory: _build/xml/</p>
+</div>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Solving A Dantzig-Wolfe Reformulation</title>
+    
+          <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/mixed-integer-programming/dantzig-wolfe/dantzig-wolfe.html" />
+    
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="next" title="Writing A Branch-and-Price Algorithm" href="writing-branch-and-price.html" />
+  <link rel="prev" title="Column Generation and Branch-and-Price Algorithm" href="index.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../../index.html">Tutorials</a> &raquo;</li>
+    
+      <li><a href="../index.html">Mixed-Integer Optimization</a> &raquo;</li>
+    
+      <li><a href="index.html">Column Generation and Branch-and-Price Algorithm</a> &raquo;</li>
+    
+    <li>Solving A Dantzig-Wolfe Reformulation</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="index.html"
+       title="previous chapter">← Column Generation and Branch-and-Price Algorithm</a>
+  </li>
+  <li class="next">
+    <a href="writing-branch-and-price.html"
+       title="next chapter">Writing A Branch-and-Price Algorithm →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="solving-a-dantzig-wolfe-reformulation">
+<span id="tutorial-column-generation"></span><h1>Solving A Dantzig-Wolfe Reformulation<a class="headerlink" href="#solving-a-dantzig-wolfe-reformulation" title="Link to this heading">¶</a></h1>
+<p>In this tutorial, we will see how to implement a column generation algorithm to solve a continuous relaxation of the Generalized Assignment Problem (GAP).
+This relaxation is obtained by relaxing the Dantzig-Wolfe reformulation of the GAP.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>This tutorial regards the <cite>advanced topic</cite> of Column Generation and Dantzig-Wolfe decomposition.
+Rudimentary notions in the following subjects are recommended:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Column_generation">Column Generation algorithms</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Dantzig%E2%80%93Wolfe_decomposition">Dantzig-Wolfe decomposition</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Generalized_assignment_problem">Generalized Assignment Problem</a>.</p></li>
+</ul>
+</div>
+<p>A complete example which includes branching is available <a class="reference internal" href="../../../examples/generalized-assignment-problem-bap.html#example-gap-bap"><span class="std std-ref">here</span></a>.</p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#problem-definition" id="id2">Problem Definition</a></p>
+<ul>
+<li><p><a class="reference internal" href="#the-natural-formulation" id="id3">The Natural Formulation</a></p></li>
+<li><p><a class="reference internal" href="#the-dantzig-wolfe-reformulation" id="id4">The Dantzig-Wolfe Reformulation</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#automatic-reformulation" id="id5">Automatic Reformulation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id6">The Natural Formulation</a></p></li>
+<li><p><a class="reference internal" href="#giving-decomposition-instructions" id="id7">Giving Decomposition Instructions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#creating-the-column-generation-algorithm" id="id8">Creating the Column Generation Algorithm</a></p></li>
+<li><p><a class="reference internal" href="#solving" id="id9">Solving</a></p></li>
+</ul>
+</nav>
+<section id="problem-definition">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Problem Definition</a><a class="headerlink" href="#problem-definition" title="Link to this heading">¶</a></h2>
+<p>Given a set of <span class="math notranslate nohighlight">\(m\)</span> agents and <span class="math notranslate nohighlight">\(n\)</span> jobs, the goal is to assign each job to exactly one agent in such a
+way that the total cost is minimized, while respecting the capacity constraints of each agent.</p>
+<p>Each agent <span class="math notranslate nohighlight">\(i\in\{1,\dotsc,m\}\)</span> has a capacity <span class="math notranslate nohighlight">\(C_i\)</span>.
+Each job <span class="math notranslate nohighlight">\(j\in\{1,\dotsc,n\}\)</span> has a resource consumption <span class="math notranslate nohighlight">\(r_{ij}\)</span> and a cost <span class="math notranslate nohighlight">\(c_{ij}\)</span> when assigned to agent <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<section id="the-natural-formulation">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">The Natural Formulation</a><a class="headerlink" href="#the-natural-formulation" title="Link to this heading">¶</a></h3>
+<p>We model the GAP with the following binary linear program:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+    \min_{x} \quad &amp; \sum_{i=1}^m \sum_{j=1}^n c_{ij} x_{ij} \\
+    \text{s.t.}  \quad &amp; \sum_{j=1}^n r_{ij} x_{ij} \le C_i, &amp;&amp; i=1,\dotsc,m, \\
+                &amp; \sum_{i=1}^m x_{ij} = 1, &amp;&amp; j=1,\dotsc,n, \\
+                &amp; x_{ij} \in \{0,1\}, &amp;&amp; i=1,\dotsc,m, j=1,\dotsc,n.
+\end{align*}\end{split}\]</div>
+<p>Here, variable <span class="math notranslate nohighlight">\(x_{ij}\)</span> encodes the assignment decision and equals 1 if and only if task <span class="math notranslate nohighlight">\(j\)</span> is assigned to
+agent <span class="math notranslate nohighlight">\(i\)</span>.</p>
+</section>
+<section id="the-dantzig-wolfe-reformulation">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">The Dantzig-Wolfe Reformulation</a><a class="headerlink" href="#the-dantzig-wolfe-reformulation" title="Link to this heading">¶</a></h3>
+<p>Let us enumerate the list of all feasible assignments, i.e., let</p>
+<div class="math notranslate nohighlight">
+\[\{\bar x^e_{ij} \}_{e\in E} = \left\{ x \in \{ 0,1 \}^{mn} : \sum_{j=1}^n r_{ij}x_{ij} \le C_i \quad i=1,...,m \right\},\]</div>
+<p>in which <span class="math notranslate nohighlight">\(E\)</span> denotes a list for their indices.</p>
+<p>The Dantzig-Wolfe reformulation of GAP reads</p>
+<div class="math notranslate nohighlight" id="equation-eq-dantzig-wolfe-reformulation">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq-dantzig-wolfe-reformulation" title="Link to this equation">¶</a></span>\[\begin{split}\min_{\lambda} \quad &amp; \sum_{e\in E} \lambda_e\left( \sum_{i=1}^m\sum_{j=1}^n c_{ij}\bar x_{ij}^e \right) \\
+\textrm{s.t.} \quad &amp; \sum_{e\in E} \lambda_e \left( \sum_{i=1}^m \bar x_{ij}^e \right) = 1 \quad j=1,...,n, \\
+&amp; \sum_{e\in E} \lambda_e = 1, \\
+&amp; \lambda_e \in \{ 0, 1 \} &amp; \text{for all } e\in E.\end{split}\]</div>
+<p>Though this model contains an exponential number of variables, it can be solved efficiently using
+Column Generation and Branch-and-price. In such a case, the pricing problem is a Knapsack Problem.</p>
+<p>In this tutorial, we focus on the continuous relaxation of <a class="reference internal" href="#equation-eq-dantzig-wolfe-reformulation">(1)</a>.</p>
+</section>
+</section>
+<section id="automatic-reformulation">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Automatic Reformulation</a><a class="headerlink" href="#automatic-reformulation" title="Link to this heading">¶</a></h2>
+<p>The simplest way to solve a problem using Column Generation and idol is through its automatic reformulation feature.
+To use this, one simply needs to give the <em>original space formulation</em> of the problem
+and to indicate which constraints should be moved to the pricing problem (here, the knapsack constraints).</p>
+<p>We will start by modeling the problem in its natural form and then indicate which constraints should be moved to the pricing problem.</p>
+<section id="id1">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">The Natural Formulation</a><a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<p>Before we start, we will use a GAP instance stored in a file. This file reads as follows.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span><span class="w">   </span><span class="mi">8</span>
+<span class="mi">-27</span><span class="w"> </span><span class="mi">-12</span><span class="w"> </span><span class="mi">-12</span><span class="w"> </span><span class="mi">-16</span><span class="w"> </span><span class="mi">-24</span><span class="w"> </span><span class="mi">-31</span><span class="w"> </span><span class="mi">-41</span><span class="w"> </span><span class="mi">-13</span>
+<span class="mi">-14</span><span class="w">  </span><span class="mi">-5</span><span class="w"> </span><span class="mi">-37</span><span class="w">  </span><span class="mi">-9</span><span class="w"> </span><span class="mi">-36</span><span class="w"> </span><span class="mi">-25</span><span class="w">  </span><span class="mi">-1</span><span class="w"> </span><span class="mi">-35</span>
+<span class="mi">-34</span><span class="w"> </span><span class="mi">-34</span><span class="w"> </span><span class="mi">-20</span><span class="w">  </span><span class="mi">-9</span><span class="w"> </span><span class="mi">-19</span><span class="w"> </span><span class="mi">-19</span><span class="w">  </span><span class="mi">-3</span><span class="w"> </span><span class="mi">-24</span>
+<span class="mi">21</span><span class="w"> </span><span class="mi">13</span><span class="w">  </span><span class="mi">9</span><span class="w">  </span><span class="mi">5</span><span class="w">  </span><span class="mi">7</span><span class="w"> </span><span class="mi">15</span><span class="w">  </span><span class="mi">5</span><span class="w"> </span><span class="mi">24</span>
+<span class="mi">20</span><span class="w">  </span><span class="mi">8</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="mi">25</span><span class="w">  </span><span class="mi">6</span><span class="w">  </span><span class="mi">6</span><span class="w">  </span><span class="mi">9</span><span class="w">  </span><span class="mi">6</span>
+<span class="mi">16</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="mi">18</span>
+<span class="mi">26</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="mi">34</span>
+
+<span class="nl">http</span><span class="p">:</span><span class="c1">//www.or.deis.unibo.it/kp/Chapter7.pdf Example 7.3</span>
+</pre></div>
+</div>
+<p>To read an instance of the GAP, we need to include the header file located in <code class="code docutils literal notranslate"><span class="pre">idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h</span></code>.</p>
+<p>Then, we can use the <code class="code docutils literal notranslate"><span class="pre">Problems::GAP::read_instance</span></code> function to read the instance file.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">Problems</span><span class="o">::</span><span class="n">GAP</span><span class="o">::</span><span class="n">read_instance</span><span class="p">(</span><span class="s">&quot;assignment-bap.data.txt&quot;</span><span class="p">);</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n_agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">n_agents</span><span class="p">();</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n_jobs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">n_jobs</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>We are now ready to model our problem (for more details, refer to <a class="reference internal" href="../modeling/index.html#mip-modeling"><span class="std std-ref">this tutorial on modeling</span></a>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Create optimization environment</span>
+<span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+
+<span class="c1">// Create model</span>
+<span class="n">Model</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+
+<span class="c1">// Create assignment variables (x_ij binaries)</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_vars</span><span class="p">(</span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n_agents</span><span class="p">,</span><span class="w"> </span><span class="n">n_jobs</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="mf">1.</span><span class="p">,</span><span class="w"> </span><span class="n">Binary</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+
+<span class="c1">// Create knapsack constraints (i.e., capacity constraints)</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_agents</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_jobs</span><span class="p">),</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">resource_consumption</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">capacity</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;capacity_&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="c1">// Create assignment constraints</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_jobs</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_agents</span><span class="p">),</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;assignment_&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">j</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="c1">// Set the objective function</span>
+<span class="n">model</span><span class="p">.</span><span class="n">set_obj_expr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_agents</span><span class="p">),</span><span class="w"> </span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_jobs</span><span class="p">),</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">cost</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])));</span>
+</pre></div>
+</div>
+</section>
+<section id="giving-decomposition-instructions">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Giving Decomposition Instructions</a><a class="headerlink" href="#giving-decomposition-instructions" title="Link to this heading">¶</a></h3>
+<p>We are now at the crucial step of indicating which constraint should be moved to the pricing problem. In idol, this is done by using
+<em>annotations</em>. Annotations are additional information associated to an optimization object (e.g., a constraint or a variable).
+Note that annotations are global, i.e., they do not relate to a given optimization model.</p>
+<p>Every annotation is formed with a template argument which is the value type of the annotation. Here, the Dantzig-Wolfe
+decomposition expects an annotation with a value of type <code class="code docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span></code> and which corresponds
+to the sub-problem index to which the constraint will be moved to.</p>
+<p>We create the annotation as follows.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Annotation</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">decomposition</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;decomposition&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MasterId</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Here, we pass three arguments to the constructor of <code class="code docutils literal notranslate"><span class="pre">Annotation&lt;unsigned</span> <span class="pre">int&gt;</span></code>. First, we pass the optimization
+environment which will store the annotation. Then, a name is given to the annotation: here, “decomposition”.
+Finally, a default value is given and is set to <code class="code docutils literal notranslate"><span class="pre">MasterId</span></code>. This will tell idol that constraints which have not been annotated
+should remain in the master problem.</p>
+<p>Now, observe how the annotation is applied to the capacity constraints.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_agents</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_jobs</span><span class="p">),</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">resource_consumption</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">capacity</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;capacity_&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+<span class="w">    </span><span class="n">capacity</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">decomposition</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"> </span><span class="c1">// &lt;== Annotating the capacity constraint</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here, the first capacity constraint is moved to the first pricing problem (id: 0),
+the second constraint to the second pricing problem (id: 1), and so on.</p>
+<p>Note that another decomposition would be materialized as follows.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_agents</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Ctr</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_jobs</span><span class="p">),</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">resource_consumption</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">capacity</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;capacity_&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+<span class="w">    </span><span class="n">capacity</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">decomposition</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// &lt;== Annotating the capacity constraint</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here, all the knapsack constraints would be moved to the same pricing problem (id: 0).</p>
+</section>
+</section>
+<section id="creating-the-column-generation-algorithm">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Creating the Column Generation Algorithm</a><a class="headerlink" href="#creating-the-column-generation-algorithm" title="Link to this heading">¶</a></h2>
+<p>Now that the desired decomposition has been specified, we can set the desired optimizer to solve our model.
+Here, we want to solve our the continuous relaxation of the Dantzig-Wolfe reformulation using column generation.</p>
+<p>To begin with, we need to give some instructions about how each sub-problem will be solved. In other words, we need
+to specify the optimizer(s) used for pricing during the column generation process. This is done by first creating a
+<code class="code docutils literal notranslate"><span class="pre">DantzigWolfe::SubProblem</span></code> object.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">sub_problem_specifications</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DantzigWolfe</span><span class="o">::</span><span class="n">SubProblem</span><span class="p">()</span>
+<span class="w">                                            </span><span class="p">.</span><span class="n">add_optimizer</span><span class="p">(</span><span class="n">Gurobi</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Then, we can create the column generation algorithm (factory) in the following way.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">column_generation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DantzigWolfeDecomposition</span><span class="p">(</span><span class="n">decomposition</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="n">with_master_optimizer</span><span class="p">(</span><span class="n">Gurobi</span><span class="o">::</span><span class="n">ContinuousRelaxation</span><span class="p">())</span>
+<span class="w">        </span><span class="p">.</span><span class="n">with_default_sub_problem_spec</span><span class="p">(</span><span class="n">sub_problem_specifications</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>We can now tell idol to use this algorithm for solving our model by using the <code class="code docutils literal notranslate"><span class="pre">Model::use</span></code> method.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">column_generation</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="solving">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Solving</a><a class="headerlink" href="#solving" title="Link to this heading">¶</a></h2>
+<p>As usual, one can simply call the <code class="code docutils literal notranslate"><span class="pre">Model::optimize</span></code> method to solve the problem.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>That’s it! The problem is being solved by column generation, and possibly branching on fractional variables.</p>
+<p>The rest remains unchanged and one can retrieve the solution
+through the usual methods such as <code class="code docutils literal notranslate"><span class="pre">Model::get_status</span></code> and <code class="code docutils literal notranslate"><span class="pre">Model::get_var_primal</span></code>.</p>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="index.html"
+       title="previous chapter">← Column Generation and Branch-and-Price Algorithm</a>
+  </li>
+  <li class="next">
+    <a href="writing-branch-and-price.html"
+       title="next chapter">Writing A Branch-and-Price Algorithm →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

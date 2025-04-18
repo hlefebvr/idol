@@ -1,0 +1,14 @@
+Robust Optimization
+===================
+
+Modeling a robust problem
+-------------------------
+
+Deterministic reformulations
+----------------------------
+
+Affine decision rules
+---------------------
+
+Column and constraint generation
+--------------------------------
