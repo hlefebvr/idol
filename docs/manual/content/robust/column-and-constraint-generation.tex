@@ -1,5 +1,3 @@
-\section{Introduction}
-
 \section{Two-stage robust problems}
 
 \subsection{Problem statement and assumptions}
@@ -200,34 +198,35 @@ problem is continuous or mixed-integer.
 \subsection{Solving the separation problem with continuous second stage}
 
 In this section, we focus on the specific case in which $\tilde{Y} =
-\mathbb{R}^{n_y}$. In particular, we discuss different ways to solve the
-separation problem. 
+\mathbb{R}^{n_y}$ and discuss various techniques to solve the separation
+problem. 
 
 \subsubsection{Optimality separation}
 
-\HLil{todo: recall max-min formulation with $\tilde{Y} = \mathbb{R}^{n_y}$}
+We first consider optimality separation of a current first-stage decision $x$
+with second-stage cost estimate $x_0$. We recall that optimality separation is
+only performed if $Y(x,u) \neq \emptyset$ for all $u\in U$, i.e., after
+feasibility separation or if it is known that $Y(x,u) \neq\emptyset$ for all
+$x\in X$ and all $u\in U$. 
 
-\subsubsection*{KKT-based separation}
+\bulletparagraph{KKT-based separation}
 
-Recall the second-stage primal problem
-\begin{subequations}
-    \begin{align*}
-        \min_{y} \quad & d^\top y \\
-        \text{s.t.} \quad & Cx + Dy + E(x)u \ge b.
-    \end{align*}
-\end{subequations}
-Because it is linear, the KKT conditions are both necessary and sufficient.
-Hence, any point $(y,\lambda)$ is a primal-dual solution to the second-stage
-problem if and only if it satisfies the following KKT system:
+Recall that the second-stage primal problem reads
+\begin{equation*}
+    \min_y\Defset{ f^\top y }{ Cx + Dy + E(x)u \ge b }.
+\end{equation*}
+Because it is linear, the KKT conditions are both necessary and sufficient for
+optimality. Hence, any point $(y,\lambda)$ is a primal-dual solution to the
+second-stage problem if and only if it satisfies its associated KKT system
 \begin{equation*}
     Cx + Dy + E(x)u \ge b, \quad 
     D^\top \lambda = d, \quad 
     \lambda\ge 0, \quad
     (Cx + Dy + E(x)u - b)^\top \lambda = 0.
 \end{equation*}
-In the seminal paper~\textcite{Zeng2013}, the authors propose to replace the
-second-stage problem by its KKT conditions. The resulting separation problem
-then reads 
+Thus, one can equivalently replace the lower-level problem in the separation
+problem~\eqref{eq:ccg:optimality-separation} by its KKT conditions, leading to
+the nonlinear problem
 \begin{subequations}
     \begin{align}
         \max_{u,y,\lambda} \quad & d^\top y \\
@@ -237,15 +236,15 @@ then reads
         & (Cx + Dy + E(x)u - b)^\top \lambda = 0. \label{eq:ccg:kkt}
     \end{align}
 \end{subequations}
-This problem is a bilinear optimization problem which can be solved using
-standard nonlinear techniques. An alternative approach is to linearize
+Note that this problem is a bilinear optimization problem which can be solved
+using standard nonlinear techniques. An alternative approach is to linearize
 constraints~\eqref{eq:ccg:kkt} by introducing auxiliary binary variables.
 However, this approach requires to compute bounds on the dual variables
-$\lambda$ which, to the best of our knowledge, cannot be efficiently done
+$\lambda$ which, to the best of our knowledge, cannot be done efficiently
 without exploiting problem-specific knowledge. Nevertheless, this additional
 work has been shown to be benificial since solving the resulting mixed-integer
-linear problem is typically easier than solving the nonlinear problem. Now,
-assume that you know that there always exists dual solutions which satisfy
+linear problem is typically much easier than solving the nonlinear problem.
+Thus, assume that we know that there always exists dual solutions satisfying
 $\lambda \le M$ for some diagonal matrix $M \ge 0$. Then, the complementarity
 constraints~\eqref{eq:ccg:kkt} can be replaced by
 \begin{equation*}
@@ -253,31 +252,57 @@ constraints~\eqref{eq:ccg:kkt} can be replaced by
     0 \le Cx + Dy + E(x)u - b \le M\circ(e - z), \quad 
     z\in\{0,1\}^{m_y}.
 \end{equation*}
-One final note. In practice, choosing a wrong value for $M$ may result in a
-CCG scheme which is no longer convergent. Hence, it is necessary that the
-bounds $M$ be valid. On the contrary, choosing a too large value for $M$ leads
-to bad performance. 
+Replaxing constraints~\eqref{eq:ccg:kkt} by these new constraints lead to a
+mixed-integer linear problem. This approach was considered in the seminal
+paper~\textcite{Zeng2013} and is a standard approach for solving the
+separation problem. One final note. In practice, choosing a wrong value for
+$M$ may result in a CCG scheme which is no longer convergent. Hence, it is
+necessary that the bounds $M$ be valid. On the contrary, choosing a too large
+value for $M$ leads to bad performance in terms of computational time and/or
+numerical stability. 
 
-\subsubsection*{Duality-based separation}
+\bulletparagraph{Duality-based separation}
 
-Recall the primal second-stage problem
+Another approach for solving the separation problem is to exploit strong
+duality. Recall that the second-stage problem is feasible for all $u\in U$
+given $x$. Hence, the lower-level problem
+in~\eqref{eq:ccg:optimality-separation} is feasible and bounded and attains
+the same optimal objective function value as its dual problem. The dual reads
+\begin{equation*}
+    \max_{\lambda} \Defset{ (b - Cx - E(x)u)^\top\lambda }{ D^\top \lambda = d, \ \lambda \ge 0 }.
+\end{equation*}
+By replacing the lower-level problem by its dual in~\eqref{eq:ccg:optimality-separation} leads to the nonlinear model
+\begin{equation}
+    \label{eq:ccg:optimality-duality-separation}
+    \max_{u\in U, \lambda} \Defset{ (b - Cx - E(x)u)^\top\lambda }{ D^\top \lambda = d, \ \lambda \ge 0 }
+\end{equation}
+which can be solved by standard nonlinear approaches. 
+
+\bulletparagraph{Duality-KKT-based separation}
+
+Building uppon the duality-based separation, consider
+problem~\eqref{eq:ccg:optimality-duality-separation} and let us write it as 
 \begin{subequations}
     \begin{align*}
-        \min_{y} \quad & d^\top y \\
-        \text{s.t.} \quad & Cx + Dy + E(x)u \ge b.
+        \max_{\lambda} \quad & (b - Cx)^\top\lambda + 
+        \max_{u\in U} \lambda^\top E(x)^\top u \\
+        \text{s.t.} \quad & D^\top \lambda = d, \quad \lambda \ge 0.
     \end{align*}
 \end{subequations}
-Assume that it is feasible and bounded. Then, it attains the same optimal
-objective value as its dual
+Note that the inner maximization problem is feasible and bounded since $U$ is
+nonempty and compact. Hence, we may replace it by its KKT conditions
+\begin{equation*}
+    Fu \le g, \quad \mu \ge 0, \quad F^\top\mu = E(x)^\top\lambda, \quad \mu^\top( Fu - g ) = 0.
+\end{equation*}
+The resulting formulation for the separation problem is then the nonlinear
+problem
 \begin{subequations}
     \begin{align*}
-        \max_{\lambda} \quad & (b - Cx - E(x)u)^\top\lambda \\
-        \text{s.t.} \quad & D^\top \lambda = d, \\
-        & \lambda \ge 0.
+        \max_{u\in U,\lambda,\mu} \quad & (b - Cx)^\top\lambda + g^\top\mu \\
+        \text{s.t.} \quad & D^\top \lambda = d, \quad \lambda \ge 0, \\
+        & \mu \ge 0, \quad F^\top\mu = E(x)^\top\lambda, \quad \mu^\top( Fu - g ) = 0.
     \end{align*}
 \end{subequations}
-
-\subsubsection*{Duality-KKT-based separation}
 
 \HLil{ Dualize inner min, take KKT of the max over $u$.}
 
