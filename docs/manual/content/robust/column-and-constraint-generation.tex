@@ -51,26 +51,44 @@ Note that vectors $u^k$ with $k=1,\dotsc,K$ are inputs of this model. Also
 note that the algorithm requires (at least) one initial scenario $u^1$ so that
 the master problem~\eqref{eq:ccg:master} is lower bounded. Several strategies
 exist to find this initial scenario and are discussed in
-Section~\ref{sec:ccg:initial-scenario}. \HL{discuss unboundedness}
+Section~\ref{sec:ccg:initial-scenario}. \HL{discuss unboundedness} Also note
+that if, at any iteration $K$, the restricted master
+problem~\eqref{eq:ccg:master} is infeasible,
+then~\eqref{eq:ccg:two-stage-problem} is infeasible and the algorithm stops.
 
-Now, let $(x,x_0,y^1,\dotsc,y^K)$ denote a solution to the restricted master
-problem~\eqref{eq:ccg:master}. We need to check that the point $x$ is feasilbe
-for Problem~\eqref{eq:ccg:two-stage-problem}, i.e., that for all $u\in U$,
-there exists $y\in Y(x,u)$, otherwise identify a scenario $u$ for which
-$Y(x,u)$ is empty. This is called the ``feasibility separation''. If $x$ is a
-feasible first-stage decision, we need to check that the optimal objective
-value of the restricted master problem~\eqref{eq:ccg:master} $c^\top x + x_0$
-is, indeed, the correct cost associated to $x$, i.e., that for all $u\in U$,
-there exists $y\in Y(x,u)$ such that $d^\top y \le x_0$, otherwise identify a
-scenario $u\in U$ with $\min_y\defset{ f^\top y }{ y\in Y(x,u) } > x_0$. This
-is called the ``optimality separation''. 
+Now, assume that the restricted master problem~\eqref{eq:ccg:master} is
+feasible and let a solution be denoted by $(x,x_0,y^1,\dotsc,y^K)$. We need to
+check that the point $x$ is feasilbe for
+Problem~\eqref{eq:ccg:two-stage-problem}, i.e., that for all $u\in U$, there
+exists $y\in Y(x,u)$, otherwise identify a scenario $u$ for which $Y(x,u)$ is
+empty. This is called the ``feasibility separation''. If $x$ is a feasible
+first-stage decision, we need to check that the optimal objective value of the
+restricted master problem~\eqref{eq:ccg:master} $c^\top x + x_0$ is, indeed,
+the correct cost associated to $x$, i.e., that for all $u\in U$, there exists
+$y\in Y(x,u)$ such that $d^\top y \le x_0$, otherwise identify a scenario
+$u\in U$ with $\min_y\defset{ f^\top y }{ y\in Y(x,u) } > x_0$. This is called
+the ``optimality separation''. We now discuss how these two separation tasks
+are performed.
 
+In~\textsf{idol}, feasibility separation is done by solving the bilevel
+optimization problem
+%
 \begin{equation}
+    \label{eq:ccg:feasibility-separation}
     v_\text{feas} \define \max_{u\in U} \ \min_{y,z} \Defset{ z }{
         y\in\tilde{Y}, \ z\ge 0, \ Cx + Dy + E(x)u + ze \ge b
     }.
 \end{equation}
-
+It can be easily checked that if $v_\text{feas} > 0$, then the upper-level
+solution $u\in U$ is such that $Y(x,u) = \emptyset$, i.e., $x$ is not a
+feasible first-stage decision, and the point $u$ is added to the master
+problem~\eqref{eq:ccg:master} for the next iteration. Otherwise, the algorithm
+continues with optimality separation (if any). Note that it is not necessary
+to solve the separation problen to global optimality to show that
+$v_\text{feas}$, any bilevel feasible point would do if its associated
+upper-level objective value is strictly greater than 0. Internally,
+Problem~\eqref{eq:ccg:feasibility-separation} is always formulated as
+%
 \begin{subequations}
     \begin{align*}
         - \min_{u\in U,y,z} \quad & -z \\
@@ -79,17 +97,35 @@ is called the ``optimality separation''.
         }.
     \end{align*}
 \end{subequations}
+Clearly, the two formulations are equivalent on the level of global solutions.
+This formulation allows~\textsf{idol} to rely on any optimizer designed for
+general bilevel solver, i.e., solvers implementing
+the~\textsf{Bilevel::SolverInterface} interface. Note that this does not
+prevent a specific solver to exploit the structure of this specific problem
+such as the zero-sum property or the absence of coupling constraints.
 
+Similary, optimality separation is performed by solving the bilevel problem
 \begin{equation}
+    \label{eq:ccg:optimality-separation}
     v_\text{opt} \define
     \max_{u\in U} \ \min_{y} \Defset{ f^\top y }{
         y\in\tilde{Y}, \ Cx + Dy + E(x)u \ge b
     }.
 \end{equation}
-
-$c^\top x + v_\text{opt}$ is an upper bound on the optimal objective function
-value of Problem~\eqref{eq:ccg:two-stage-problem}.
-
+Note that this problem is only solved if either feasibility separation has
+been turned off---e.g., because the problem is known to have complete
+recourse---or the second-stage problem is feasible for all $u\in U$ given $x$.
+Hence, Problem~\eqref{eq:ccg:optimality-separation} is always feasible. Note
+that $c^\top x + v_\text{opt}$ yields an upper bound on the optimal objective
+function value of Problem~\eqref{eq:ccg:two-stage-problem}. This upper bound
+is used to show that the algorithm has converged by comparing this upper bound
+to the lower bound given, at each iteration, by the master
+problem~\eqref{eq:ccg:master}. A scenario $u$ which disproves the optimality
+of $x$ is always added to the master problem~\eqref{eq:ccg:master} for the
+next iteration. Otherwise, the algorithm stops with a proof of optimality for
+$x$. Just like the feasibility separation problem, the optimality separation
+problem is internally modeled as the following bilevel problem
+%
 \begin{subequations}
     \begin{align*}
         - \min_{u\in U,y} \quad & -f^\top y \\
@@ -98,21 +134,68 @@ value of Problem~\eqref{eq:ccg:two-stage-problem}.
         }.
     \end{align*}
 \end{subequations}
+Again, this allows~\textsf{idol} to rely on general bilevel solvers without
+restricting the possibility of exploiting its structure. A complete
+description of the procedzre is presented in
+Algorithm~\ref{alg:ccg:two-step-separation}.
 
-So far, we discussed a sort of ``two-step'' separation strategy: first,
-checking feasibility, then optimality. Actually, this two-step strategy can be
-replaced by solving a single optimization problem. We call this approach
-``Farkas separation''. Given a current first-stage decision $x$ and a
-second-stage cost estimate $x_0$, one solves the bilevel problem 
+\begin{algorithm}
+    \caption{Column-and-constraint generation with two-step separation}
+    \label{alg:ccg:two-step-separation}
+    \begin{algorithmic}[1]
+        \State ...
+        \While {}
+        \State ...
+        \If{true}
+            \State ... 
+        \EndIf
+        \State ...
+        \EndWhile
+    \end{algorithmic}
+\end{algorithm}
+
+As we discussed it so far, separation is alwyas done in a ``two-step'' manner:
+first, feasibility is checked, then optimality is checked. Another possibility
+is to perform a single separation which checks both feasibility and optimality
+at the same time. We call this separation approach the ``Joint separation''. 
+
+Actually, this
+two-step strategy can be replaced by solving a single optimization problem. We
+call this approach ``Farkas separation''. Given a current first-stage decision
+$x$ and a second-stage cost estimate $x_0$, one solves the bilevel problem 
 \begin{equation*}
-    \max_{u\in U} \ \min_{y,z} \ \Defset{ z }{ y\in\tilde{Y}, \ z \ge 0, \ d^\top y - z \le x_0, \ Cx + Dy + E(x)u + ze \ge b }
+    v_\text{joint} \define \max_{u\in U} \ \min_{y,z} \ \Defset{ z }{ y\in\tilde{Y}, \ z \ge 0, \ d^\top y - z \le x_0, \ Cx + Dy + E(x)u + ze \ge b }.
 \end{equation*}
+Let $(u,y,z)$ denote a solution to this bilevel problem---$(y,z)$ denoting an
+optimal point of the inner minimization problem given $u$---if $z = 0$, then
+the first-stage decision $x$ is both feasible and optimal. Otherwise, one
+checks if $y\in Y(x,u)$ holds. If so, then $z = d^\top y - x_0$ and $x_0 +
+v_\text{joint}$ is an upper bound on the optimal objective function value of
+Problem~\eqref{eq:ccg:two-stage-problem}. Otherwise, $u$ is such that $Y(x,u)
+= \emptyset$, which results in a feasibility separation. Joint separation was
+introduced by~\textcite{Ayoub2016} for linear problems and was extended to
+convex problems by~\textcite{lefebvre2022convex}.
+Algorithm~\ref{alg:ccg:joint-separation} presents the overall algorithm.
 
-\HLil{Actually, we get an UB if $y$ is feaisble for the second stage... and the dual is directly bounded...}
+\begin{algorithm}
+    \caption{Column-and-constraint generation with joint separation}
+    \label{alg:ccg:joint-separation}
+    \begin{algorithmic}[1]
+        \State ...
+        \While {}
+        \State ...
+        \If{true}
+            \State ... 
+        \EndIf
+        \State ...
+        \EndWhile
+    \end{algorithmic}
+\end{algorithm}
 
-\begin{remark}
-    \HLil{Comment on the name ``Farkas separation''.}
-\end{remark}
+We have seen that the CCG algorithm requires solving a bilevel optimization
+problem at every iteration. In the following two sections, we describe how
+these bilevel problems can be solved depending on wether the second-stage
+problem is continuous or mixed-integer. 
 
 \subsection{Solving the separation problem with continuous second stage}
 
