@@ -14,6 +14,7 @@
 \usepackage{booktabs}
 \usepackage{algpseudocode}
 \usepackage{listings}
+\usepackage{minitoc}
 \usepackage[style = authoryear-comp,
             maxbibnames = 100,
             maxcitenames = 2,
@@ -52,5 +53,13 @@
 \@namedef{subjclassname@2020}{%
   \textup{2020} Mathematics Subject Classification}
 \makeatother
+
+\setcounter{minitocdepth}{2}
+\dominitoc
+
+\newcommand{\mychapter}[1]{
+  \chapter{#1}
+  \minitoc
+}
 
 \input{setup/commands.tex}

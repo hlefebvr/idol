@@ -4,9 +4,10 @@
 
 \subsection{Problem statement and assumptions}
 
-\begin{equation*}
+\begin{equation}
+    \label{eq:ccg:two-stage-problem}
     \min_{x\in X} \ c^\top x + \max_{ u\in U } \ \min_{y\in Y(x,u)} \ d^\top y
-\end{equation*}
+\end{equation}
 
 \begin{equation*}
     X \define \Defset{ x\in \tilde{X} }{ Ax \ge a }
@@ -20,17 +21,98 @@
     U \define \Defset{ u\in\tilde{U} }{ Fu \le g }
 \end{equation*}
 
+\begin{assumption}
+    \label{assumption:ccg:lower-bounded}
+    Problem~\eqref{eq:ccg:two-stage-problem} either has a solution or is
+    infeasible. 
+\end{assumption}
+
+Note that a sufficient condition for
+Assumption~\ref{assumption:ccg:lower-bounded} to hold is that the uncertainty
+set $U$ is nonempty and that, for all $u\in U$, the set $\Defset{ (x,y) }{
+x\in X, y\in Y(x,u) }$ is compact, possibly empty.
+
 \subsection{The procedure}
 
-\HLil{
-    todo:
-    \begin{itemize}
-        \item State pseudo-cost;
-        \item State feasibility and optimality separation problems;
-        \item Discuss avoiding optimality separation (problems: unboundedness
-        of RMP, no upper bound).
-    \end{itemize}
-}
+At each iteration $K$, the CCG algorithm solves the so-called restricted
+master problem which consists in solving
+Problem~\eqref{eq:ccg:two-stage-problem} having replaced the uncertainty set
+$U$ by a discrete subset of scenarios $\{ u^1, \dotsc, u^K \}$. This problem
+can be formulated as  
+\begin{subequations}
+    \label{eq:ccg:master}
+    \begin{align}
+        \min_{x\in X, x_0, y^1, \dotsc, y^K\in\tilde{Y}} \quad & c^\top x + x_0 \\
+        \text{s.t.} \quad & x_0 \ge d^\top y^k, \quad \text{for all } k=1,\dotsc,K, \\
+        & Cx + Dy^k + E(x)u^k \ge b, \quad \text{for all } k=1,\dotsc,K.
+    \end{align}
+\end{subequations}
+Note that vectors $u^k$ with $k=1,\dotsc,K$ are inputs of this model. Also
+note that the algorithm requires (at least) one initial scenario $u^1$ so that
+the master problem~\eqref{eq:ccg:master} is lower bounded. Several strategies
+exist to find this initial scenario and are discussed in
+Section~\ref{sec:ccg:initial-scenario}. \HL{discuss unboundedness}
+
+Now, let $(x,x_0,y^1,\dotsc,y^K)$ denote a solution to the restricted master
+problem~\eqref{eq:ccg:master}. We need to check that the point $x$ is feasilbe
+for Problem~\eqref{eq:ccg:two-stage-problem}, i.e., that for all $u\in U$,
+there exists $y\in Y(x,u)$, otherwise identify a scenario $u$ for which
+$Y(x,u)$ is empty. This is called the ``feasibility separation''. If $x$ is a
+feasible first-stage decision, we need to check that the optimal objective
+value of the restricted master problem~\eqref{eq:ccg:master} $c^\top x + x_0$
+is, indeed, the correct cost associated to $x$, i.e., that for all $u\in U$,
+there exists $y\in Y(x,u)$ such that $d^\top y \le x_0$, otherwise identify a
+scenario $u\in U$ with $\min_y\defset{ f^\top y }{ y\in Y(x,u) } > x_0$. This
+is called the ``optimality separation''. 
+
+\begin{equation}
+    v_\text{feas} \define \max_{u\in U} \ \min_{y,z} \Defset{ z }{
+        y\in\tilde{Y}, \ z\ge 0, \ Cx + Dy + E(x)u + ze \ge b
+    }.
+\end{equation}
+
+\begin{subequations}
+    \begin{align*}
+        - \min_{u\in U,y,z} \quad & -z \\
+        \text{s.t.} \quad & (y,z) \in \argmin_{\bar{y},\bar{z}} \Defset{ \bar{z} }{
+            \bar{y}\in\tilde{Y}, \ \bar{z}\ge 0, \ Cx + D\bar{y} + E(x)\bar{u} + \bar{z}e \ge b
+        }.
+    \end{align*}
+\end{subequations}
+
+\begin{equation}
+    v_\text{opt} \define
+    \max_{u\in U} \ \min_{y} \Defset{ f^\top y }{
+        y\in\tilde{Y}, \ Cx + Dy + E(x)u \ge b
+    }.
+\end{equation}
+
+$c^\top x + v_\text{opt}$ is an upper bound on the optimal objective function
+value of Problem~\eqref{eq:ccg:two-stage-problem}.
+
+\begin{subequations}
+    \begin{align*}
+        - \min_{u\in U,y} \quad & -f^\top y \\
+        \text{s.t.} \quad & y \in \argmin_{\bar{y}} \Defset{ f^\top \bar{y} }{
+            \bar{y}\in\tilde{Y}, \ Cx + D\bar{y} + E(x)\bar{u} \ge b
+        }.
+    \end{align*}
+\end{subequations}
+
+So far, we discussed a sort of ``two-step'' separation strategy: first,
+checking feasibility, then optimality. Actually, this two-step strategy can be
+replaced by solving a single optimization problem. We call this approach
+``Farkas separation''. Given a current first-stage decision $x$ and a
+second-stage cost estimate $x_0$, one solves the bilevel problem 
+\begin{equation*}
+    \max_{u\in U} \ \min_{y,z} \ \Defset{ z }{ y\in\tilde{Y}, \ z \ge 0, \ d^\top y - z \le x_0, \ Cx + Dy + E(x)u + ze \ge b }
+\end{equation*}
+
+\HLil{Actually, we get an UB if $y$ is feaisble for the second stage... and the dual is directly bounded...}
+
+\begin{remark}
+    \HLil{Comment on the name ``Farkas separation''.}
+\end{remark}
 
 \subsection{Solving the separation problem with continuous second stage}
 
@@ -111,6 +193,10 @@ objective value as its dual
         & \lambda \ge 0.
     \end{align*}
 \end{subequations}
+
+\subsubsection*{Duality-KKT-based separation}
+
+\HLil{ Dualize inner min, take KKT of the max over $u$.}
 
 \subsubsection{Feasibility separation}
 
@@ -236,6 +322,23 @@ Approaches are
     \item CCG Anirudh with big-M and warning with ref to new paper
     \item Farkas and cut generation with binary uncertainty set (new)
 \end{itemize}
+}
+
+\subsection{Initializing the scenario pool}
+\label{sec:ccg:initial-scenario}
+
+\subsubsection{Min and max initialization}
+
+\HLil{todo}
+
+\subsubsection{User scenarios}
+
+\HLil{todo}
+
+\subsubsection{The zero-th iteration}
+
+\HLil{
+    Omitting epigraph to get one $x\in X$ and separate.
 }
 
 \section[Example: The UFLP with facility disruption]{Example: The uncapacitated facility location problem with facility disruption}
