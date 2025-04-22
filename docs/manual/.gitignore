@@ -9,3 +9,6 @@ idol-a-c-framework-for-optimization-main-blx.bib
 *.fls
 *.blg
 rst
+*.mtc*
+*-blx.bib
+*.maf
