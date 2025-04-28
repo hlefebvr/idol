@@ -1,34 +1,77 @@
 \section{Introduction}
 
-\subsection{Problem statement and assumptions}
+In this chapter, we dive into the column-and-constraint (CCG) algorithm which
+is a state-of-the-art method for tackling two-stage robust problems. It was
+first introduced by \textcite{Zeng2013} in the context of linear two-stage
+problems and was later on extended to broader settings such as mixed-integer
+second-stage decisions (see, e.g.,~\cite{zeng2012exact},
+\cite{Subramanyam2022} and~\cite{lefebvre2025correctiontolagrangiandual}) or
+convex second-stage constraints (see, e.g,~\cite{khademi2022dual}
+and~\cite{lefebvre2022convex}).
 
+In a nutshell, the CCG algorithm iteratively constructs and solves a sequence
+of restricted master problems which approximates the original problem. To do
+this, it considers a finite subset of scenarios in place of the---typically
+infinite---original uncertainty set. Then, by solving a separation
+problem---the so-called adversarial problem---it identifies a new critical
+scenario where the current first-stage solution might fail to satisfy the
+second-stage constraints under the full uncertainty set. If such a scenario is
+found, it is incorporated into the master problem, and the process repeats.
+Otherwise, the algorithm terminates, having found a robust feasible
+first-stage decision.
+
+The rest of this chapter is organized as follows...\HL{todo}
+
+\subsection{Problem statement and assumptions}
+We consider two-stage robust problems of the form
 \begin{equation}
     \label{eq:ccg:two-stage-problem}
     \min_{x\in X} \ c^\top x + \max_{ u\in U } \ \min_{y\in Y(x,u)} \ d^\top y
 \end{equation}
+where $X$ denotes the set of feasible first-stage decisions, $U$ denotes the
+uncertainy set and $Y(x,u)$ denotes the set of feasible second-stage decisions
+given a first-stage decision $x\in X$ and a scenario $u\in U$. In what
+follows, we consider the fairly general case described by 
+\begin{align*}
+    X \define & \Defset{ x\in \tilde{X} }{ Ax \ge a }, \\
+    U \define & \Defset{ u\in\tilde{U} }{ Fu \le g }, \\
+    Y(x,u) \define & \Defset{ y\in \tilde{Y} }{ Cx + Dy + E(x)u \ge b },
+\end{align*}
+where the sets $\tilde{X}$, $\tilde{U}$ and $\tilde{Y}$ are used to impose
+simple restrictions on the first-stage decisions, the uncertain parameters and
+the second-stage decisions, respectively. We denote by $n_x$, $n_u$ and $n_y$
+the number of first-stage decisions, uncertain parameters and second-stage
+decisions, respectively. For instance, with $\tilde{X} = \mathbb{R}^{n_x}$,
+$\tilde{U} = \mathbb{R}^{n_u}$ and $\tilde{Y} = \mathbb{R}^{n_y}$,
+Problem~\eqref{eq:ccg:two-stage-problem} is a linear two-stage robust problem.
 
-\begin{equation*}
-    X \define \Defset{ x\in \tilde{X} }{ Ax \ge a }
-\end{equation*}
-
-\begin{equation*}
-    Y(x,u) \define \Defset{ y\in \tilde{Y} }{ Cx + Dy + E(x)u \ge b }
-\end{equation*}
-
-\begin{equation*}
-    U \define \Defset{ u\in\tilde{U} }{ Fu \le g }
-\end{equation*}
+We make the following assumptions which are sufficient to ensure convergence
+of the column-and-constraint algorithm. 
 
 \begin{assumption}
-    \label{assumption:ccg:lower-bounded}
-    Problem~\eqref{eq:ccg:two-stage-problem} either has a solution or is
-    infeasible. 
+    \label{assumption:ccg:compact}
+    The sets $X$, $U$ and $Y(x,u)$ are compact, possibly empty, for all~$x\in
+    X$ and~\mbox{$u\in U$}.
 \end{assumption}
 
-Note that a sufficient condition for
-Assumption~\ref{assumption:ccg:lower-bounded} to hold is that the uncertainty
-set $U$ is nonempty and compact and that, for all $u\in U$, the set $\Defset{
-(x,y) }{ x\in X, y\in Y(x,u) }$ is compact, possibly empty.
+\begin{assumption}
+    \label{assumption:ccg:supremum}
+    For all $x\in X$, the adversarial problem $\sup_{u\in U} \min_{y\in
+    Y(x,u)} d^\top y$ is either infeasible or attains its supremum. 
+\end{assumption}
+
+One note about these assumptions. They are sufficient conditions to ensure the
+convergence of the CCG algorithm. If they are not satisfied, the CCG algorithm
+is not guaranteed to converge and extra care should be taken. Also note that
+Assumption~\ref{assumption:ccg:supremum} is \emph{hard} to check at least from
+an implementation viewpoint. Thus, \textsf{idol} will not check this
+assumption for you. However, the following proposition holds.
+
+\begin{proposition}
+    Let Assumption~\ref{assumption:ccg:compact} be satisfied and assume that
+    $\tilde{Y} = \mathbb{R}^{n_y}$. Then,
+    Assumption~\ref{assumption:ccg:supremum} holds.
+\end{proposition}
 
 \subsection{The procedure}
 
@@ -49,9 +92,8 @@ Note that vectors $u^k$ with $k=1,\dotsc,K$ are inputs of this model. Also
 note that the algorithm requires (at least) one initial scenario $u^1$ so that
 the master problem~\eqref{eq:ccg:master} is lower bounded. Several strategies
 exist to find this initial scenario and are discussed in
-Section~\ref{sec:ccg:initial-scenario}. \HL{discuss unboundedness} Also note
-that if, at any iteration $K$, the restricted master
-problem~\eqref{eq:ccg:master} is infeasible,
+Section~\ref{sec:ccg:initial-scenario}. Also note that if, at any iteration
+$K$, the restricted master problem~\eqref{eq:ccg:master} is infeasible,
 then~\eqref{eq:ccg:two-stage-problem} is infeasible and the algorithm stops.
 
 Now, assume that the restricted master problem~\eqref{eq:ccg:master} is
@@ -83,21 +125,19 @@ feasible first-stage decision, and the point $u$ is added to the master
 problem~\eqref{eq:ccg:master} for the next iteration. Otherwise, the algorithm
 continues with optimality separation (if any). Note that it is not necessary
 to solve the separation problen to global optimality to show that
-$v_\text{feas}$, any bilevel feasible point would do if its associated
+$v_\text{feas} > 0$: any bilevel feasible point would do if its associated
 upper-level objective value is strictly greater than 0. Internally,
-Problem~\eqref{eq:ccg:feasibility-separation} is always formulated as
+Problem~\eqref{eq:ccg:feasibility-separation} is formulated as
 %
-\begin{subequations}
-    \begin{align*}
-        - \min_{u\in U,y,z} \quad & -z \\
-        \text{s.t.} \quad & (y,z) \in \argmin_{\bar{y},\bar{z}} \Defset{ \bar{z} }{
-            \bar{y}\in\tilde{Y}, \ \bar{z}\ge 0, \ Cx + D\bar{y} + E(x)\bar{u} + \bar{z}e \ge b
-        }.
-    \end{align*}
-\end{subequations}
+\begin{align*}
+    - \min_{u\in U,y,z} \quad & -z \\
+    \text{s.t.} \quad & (y,z) \in \argmin_{\bar{y},\bar{z}} \Defset{ \bar{z} }{
+        \bar{y}\in\tilde{Y}, \ \bar{z}\ge 0, \ Cx + D\bar{y} + E(x)\bar{u} + \bar{z}e \ge b
+    }.
+\end{align*}
 Clearly, the two formulations are equivalent on the level of global solutions.
 This formulation allows~\textsf{idol} to rely on any optimizer designed for
-general bilevel solver, i.e., solvers implementing
+general bilevel problems, i.e., solvers implementing
 the~\textsf{Bilevel::SolverInterface} interface. Note that this does not
 prevent a specific solver to exploit the structure of this specific problem
 such as the zero-sum property or the absence of coupling constraints.
@@ -124,17 +164,15 @@ next iteration. Otherwise, the algorithm stops with a proof of optimality for
 $x$. Just like the feasibility separation problem, the optimality separation
 problem is internally modeled as the following bilevel problem
 %
-\begin{subequations}
-    \begin{align*}
-        - \min_{u\in U,y} \quad & -f^\top y \\
-        \text{s.t.} \quad & y \in \argmin_{\bar{y}} \Defset{ f^\top \bar{y} }{
-            \bar{y}\in\tilde{Y}, \ Cx + D\bar{y} + E(x)\bar{u} \ge b
-        }.
-    \end{align*}
-\end{subequations}
+\begin{align*}
+    - \min_{u\in U,y} \quad & -f^\top y \\
+    \text{s.t.} \quad & y \in \argmin_{\bar{y}} \Defset{ f^\top \bar{y} }{
+        \bar{y}\in\tilde{Y}, \ Cx + D\bar{y} + E(x)\bar{u} \ge b
+    }.
+\end{align*}
 Again, this allows~\textsf{idol} to rely on general bilevel solvers without
 restricting the possibility of exploiting its structure. A complete
-description of the procedzre is presented in
+description of the procedure is presented in
 Algorithm~\ref{alg:ccg:two-step-separation}.
 
 \begin{algorithm}
@@ -152,15 +190,12 @@ Algorithm~\ref{alg:ccg:two-step-separation}.
     \end{algorithmic}
 \end{algorithm}
 
-As we discussed it so far, separation is alwyas done in a ``two-step'' manner:
+As we discussed it so far, separation is always done in a ``two-step'' manner:
 first, feasibility is checked, then optimality is checked. Another possibility
 is to perform a single separation which checks both feasibility and optimality
-at the same time. We call this separation approach the ``Joint separation''. 
-
-Actually, this
-two-step strategy can be replaced by solving a single optimization problem. We
-call this approach ``Farkas separation''. Given a current first-stage decision
-$x$ and a second-stage cost estimate $x_0$, one solves the bilevel problem 
+at the same time. We call this separation approach the ``joint separation''.
+Given a current first-stage decision $x$ and a second-stage cost estimate
+$x_0$, one solves the bilevel problem 
 \begin{equation*}
     v_\text{joint} \define \max_{u\in U} \ \min_{y,z} \ \Defset{ z }{ y\in\tilde{Y}, \ z \ge 0, \ d^\top y - z \le x_0, \ Cx + Dy + E(x)u + ze \ge b }.
 \end{equation*}
@@ -252,7 +287,7 @@ constraints~\eqref{eq:ccg:kkt} can be replaced by
     0 \le Cx + Dy + E(x)u - b \le M\circ(e - z), \quad 
     z\in\{0,1\}^{m_y}.
 \end{equation*}
-Replaxing constraints~\eqref{eq:ccg:kkt} by these new constraints lead to a
+Replacing constraints~\eqref{eq:ccg:kkt} by these new constraints leads to a
 mixed-integer linear problem. This approach was considered in the seminal
 paper~\textcite{Zeng2013} and is a standard approach for solving the
 separation problem. One final note. In practice, choosing a wrong value for
@@ -271,7 +306,8 @@ the same optimal objective function value as its dual problem. The dual reads
 \begin{equation*}
     \max_{\lambda} \Defset{ (b - Cx - E(x)u)^\top\lambda }{ D^\top \lambda = d, \ \lambda \ge 0 }.
 \end{equation*}
-By replacing the lower-level problem by its dual in~\eqref{eq:ccg:optimality-separation} leads to the nonlinear model
+Replacing the lower-level problem by its dual
+in~\eqref{eq:ccg:optimality-separation} leads to the nonlinear model
 \begin{equation}
     \label{eq:ccg:optimality-duality-separation}
     \max_{u\in U, \lambda} \Defset{ (b - Cx - E(x)u)^\top\lambda }{ D^\top \lambda = d, \ \lambda \ge 0 }
@@ -285,14 +321,14 @@ problem~\eqref{eq:ccg:optimality-duality-separation} and let us write it as
 \begin{subequations}
     \begin{align*}
         \max_{\lambda} \quad & (b - Cx)^\top\lambda + 
-        \max_{u\in U} \lambda^\top E(x)^\top u \\
+        \max_{u\in U} -\lambda^\top E(x)^\top u \\
         \text{s.t.} \quad & D^\top \lambda = d, \quad \lambda \ge 0.
     \end{align*}
 \end{subequations}
 Note that the inner maximization problem is feasible and bounded since $U$ is
 nonempty and compact. Hence, we may replace it by its KKT conditions
 \begin{equation*}
-    Fu \le g, \quad \mu \ge 0, \quad F^\top\mu = E(x)^\top\lambda, \quad \mu^\top( Fu - g ) = 0.
+    Fu \le g, \quad \mu \ge 0, \quad F^\top\mu = -E(x)^\top\lambda, \quad \mu^\top( Fu - g ) = 0.
 \end{equation*}
 The resulting formulation for the separation problem is then the nonlinear
 problem
@@ -300,41 +336,85 @@ problem
     \begin{align*}
         \max_{u\in U,\lambda,\mu} \quad & (b - Cx)^\top\lambda + g^\top\mu \\
         \text{s.t.} \quad & D^\top \lambda = d, \quad \lambda \ge 0, \\
-        & \mu \ge 0, \quad F^\top\mu = E(x)^\top\lambda, \quad \mu^\top( Fu - g ) = 0.
+        & \mu \ge 0, \quad F^\top\mu = -E(x)^\top\lambda, \quad \mu^\top( Fu - g ) = 0.
     \end{align*}
 \end{subequations}
 
-\HLil{ Add comment on linearization.}
+Here again, the nonlinear terms arising from the complementarity constraints
+of the KKT conditions can be linearized using auxiliary binary variables and
+valid bounds on the dual variables $\mu$. In such a case, the resulting
+problem is a mixed-integer linear problem. 
 
 \subsubsection{Feasibility separation}
 
-\HLil{todo: add max-min formulation with $\tilde{Y} = \mathbb{R}^{n_y}$}
+We now consider solving the feasibility separation problem. The techniques are
+similar to those presented in the previous section. Nevertheless, we give a
+complete and detailed description of each approach.
 
+\bulletparagraph{KKT-based separation}
 
+Recall the lower-level problem of the separation
+problem~\eqref{eq:ccg:feasibility-separation}:
 \begin{equation*}
-    Y^{+}(x,u) \define 
-    \Defset{
-        (y,z)
-    }{
-        Cx + Dy + E(x)u + ze \ge b, \quad
+    \min_{y,z} \Defset{ z }{
+        Cx + Dy + E(x)u + ze \ge b, \quad 
         z \ge 0
     }.
 \end{equation*}
+By construction, it is feasible and bounded. Hence, its KKT conditions are
+necessary and sufficient to characterize all optimal points. In other words, a
+point $(y,\lambda,\mu)$ is a solution to the above problem if and only if it
+satisfies the KKT system 
+\begin{align*}
+    & Cx + Dy + E(x)u + ze \ge b, \quad z \ge 0, \quad 
+    D^\top \lambda = 0, \quad \lambda + \mu = 1, \\
+    & (Cx + Dy + E(x)u + z - b)^\top\lambda = 0, \quad \mu^\top z = 0.
+\end{align*}
+Thus, one can equivalently replace the lower-level problem by its KKT
+conditions, leading to the nonlinear problem 
+\begin{align*}
+    \max_{u\in U,y,z,\lambda,\mu} \quad & z \\
+    \text{s.t.} \quad 
+    & Cx + Dy + E(x)u + ze \ge b, \quad z \ge 0, \quad 
+    D^\top \lambda = 0, \quad \lambda + \mu = 1, \\
+    & (Cx + Dy + E(x)u + z - b)^\top\lambda = 0, \quad z^\top\mu = 0.
+\end{align*}
+Again, this problen can be solved ``as is'' using standard nonlinear
+approaches. However, introducing auxiliary binary variables to linearize the
+complementarity constraints typically leads to better performance. Note that,
+contrary to the optimality separation, identifying valid bounds on the dual
+variables $\lambda$ and $\mu$ is trivial since $1$ is clearly a valid choice.
+Hence, this approach should often be preferred over the nonlinear formulation. 
 
-\begin{equation*}
-    \max_{u\in U} \quad \min_{(y,s)\in Y^{+}(x,x_0,u)} \ z.
-\end{equation*}
+\bulletparagraph{Duality-based separation}
 
+Replacing the lower-level problem by its dual leads to the duality-based
+separation approach. This formulation reads 
+\begin{align*}
+    \max_{u\in U,\lambda,\mu} \quad & (b - Cx - E(x)u)^\top\lambda \\
+    \text{s.t.} \quad
+    & D^\top\lambda = 0, \quad \lambda + \mu = 1, \quad \lambda,\mu\ge 0.
+\end{align*}
+Note that this is a nonlinear problem.
 
-\subsubsection*{KKT-based separation}
+\bulletparagraph{Duality-KKT-based separation}
 
-\HLil{todo}
+Building uppon the duality-based separation, we may also write the dual problem as 
+\begin{align*}
+    \max_{\lambda,\mu} \quad & (b - Cx)^\top\lambda + \max_{u\in U} -\lambda^\top E(x)^\top u \\
+    \text{s.t.} \quad & D^\top\lambda = 0, \quad \lambda + \mu = 1, \quad \lambda,\mu\ge 0.
+\end{align*}
+Replacing the inner problem by its KKT conditions leads to the following
+formulation of the separation problem
+\begin{align*}
+    \max_{u,\lambda,\mu,\nu} \quad & (b - Cx)^\top\lambda + g^\top\nu \\
+    \text{s.t.} \quad & D^\top\lambda = 0, \quad \lambda + \mu = 1, \quad \lambda,\mu\ge 0, \\
+    & \nu \ge 0, \quad F^\top\nu = -E(x)^\top\lambda, \quad \nu^\top(Fu - g) = 0.
+\end{align*}
+Again, bounds on the dual variables $\nu$ can be exploited to linearize the
+complementarity constraints by introducing auxiliary binary variables.
 
-\subsubsection*{Duality-based separation}
-
-\HLil{todo}
-
-\subsubsection{Avoiding optimality separation}
+\subsubsection{Joint separation}
 
 \HLil{todo: recall max-min formaultion with $\tilde{Y} = \mathbb{R}^{n_y}$}
 
@@ -353,7 +433,7 @@ problem
     \max_{u\in U} \quad \min_{(y,s)\in Y^{*+}(x,x_0,u)} \ z.
 \end{equation*}
 
-\subsubsection*{KKT-based separation}
+\bulletparagraph{KKT-based separation}
 
 \begin{subequations}
     \begin{align}
@@ -381,11 +461,15 @@ Complementarity constraints are given as
     z\mu = 0.
 \end{equation*}
 
-\subsubsection*{Duality-based separation}
+\bulletparagraph{Duality-based separation}
 
 \HLil{todo}
 
-\subsubsection*{Duality-based separation for 0/1 uncertainty sets} 
+\bulletparagraph{Duality-KKT-based separation}
+
+\HLil{todo}
+
+\bulletparagraph{Duality-based separation for 0/1 uncertainty sets} 
 
 In the special case where the uncertainty set is either a binary set, i.e., $U
 \subseteq \{0,1\}^{n_u}$, or a polytope whose extreme points are all binary,
