@@ -272,6 +272,10 @@ add_library(idol STATIC
         include/idol/mixed-integer/modeling/constraints/SOSCtr.h
         include/idol/mixed-integer/modeling/constraints/SOSCtrVersion.h
         src/mixed-integer/modeling/constraints/SOSCtr.cpp
+        include/idol/bilevel/optimizers/MinMaxDualize/MinMax_Dualize.h
+        include/idol/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.h
+        src/bilevel/optimizers/MinMaxDualize/MinMax_Dualize.cpp
+        src/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.cpp
 )
 
 find_package(OpenMP REQUIRED)

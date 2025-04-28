@@ -418,58 +418,84 @@ complementarity constraints by introducing auxiliary binary variables.
 
 \subsubsection{Joint separation}
 
-\HLil{todo: recall max-min formaultion with $\tilde{Y} = \mathbb{R}^{n_y}$}
+In this section, we consider joint separation, i.e., performing both the
+feasibility separation and the optimality separation by solving a single
+bilevel problem.
 
-\begin{equation*}
-    Y^{*+}(x,x_0,u) \define 
-    \Defset{
-        (y,z)
-    }{
-        x_0 + z \ge d^\top y, \quad
-        Cx + Dy + E(x)u + ze \ge b, \quad
-        z \ge 0
-    }.
-\end{equation*}
-
-\begin{equation*}
-    \max_{u\in U} \quad \min_{(y,s)\in Y^{*+}(x,x_0,u)} \ z.
-\end{equation*}
 
 \bulletparagraph{KKT-based separation}
 
+Recall the lower-level problem of the joint separation problem:
+%
 \begin{subequations}
     \begin{align}
-        \min_{y,z} \quad & z, \\
+        \min_{y,z} \quad & z \\
         \text{s.t.} \quad & x_0 + z \ge d^\top y, \\
         & Cx + Dy + E(x)u + ze \ge b, \\
         & z \ge 0.
     \end{align}
 \end{subequations}
-
-The dual reads 
-\begin{subequations}
-    \label{eq:ccg:farkas}
-    \begin{align}
-        \max_{\lambda,\lambda_0,\mu} \quad & -x_0\lambda_0 + (b - Cx - E(x)u)^\top \lambda \\
-        \text{s.t.} \quad & D^\top\lambda - d\lambda_0 = 0, \\
-        & \lambda_0 + e^\top\lambda + \mu = 1, \\
-        & \lambda_0, \lambda, \mu \ge 0.
-    \end{align}
-\end{subequations}
-Complementarity constraints are given as 
-\begin{equation*}
-    (x_0 + z - d^\top y)\lambda_0 = 0, \quad 
+By construction, it is feasible and bounded. Hence, a point
+$(y,z,\lambda_0,\lambda,\mu)$ is a primal-dual solution if and only if it
+satisfies the KKT system 
+\begin{align*}
+    & x_0 + z \ge d^\top y, \quad Cx + Dy + E(x)u + ze \ge b, \quad z \ge 0, \\
+    & D^\top\lambda - d \lambda_0 = 0, \quad \lambda_0 + e^\top\lambda + \mu = 1, \\
+    & (x_0 + z - d^\top y)\lambda_0 = 0, \quad 
     (Cx + Dy + E(x)u + ze - b)^\top \lambda = 0, \quad 
     z\mu = 0.
-\end{equation*}
+\end{align*}
+Hence, the separation problem can be written as 
+\begin{align*}
+    \max_{u\in U, y,z,\lambda_0,\lambda,\mu} \quad & z \\
+    \text{s.t.} \quad & x_0 + z \ge d^\top y, \quad Cx + Dy + E(x)u + ze \ge b, \quad z \ge 0, \\
+    & D^\top\lambda - d \lambda_0 = 0, \quad \lambda_0 + e^\top\lambda + \mu = 1, \\
+    & (x_0 + z - d^\top y)\lambda_0 = 0, \quad 
+    (Cx + Dy + E(x)u + ze - b)^\top \lambda = 0, \\
+    & z\mu = 0.
+\end{align*}
+%
+This is a nonlinear model which can be solved by standard nonlinear
+approaches. Moreover, the only nonlinear constraints are the complementarity
+constraints which can be linearized by introducing auxiliary binary variables.
+Note that this requires bounds on the dual variables $\lambda_0$, $\lambda$
+and $\mu$ as well as on the slack variable $z$. Note that the dual variables
+are trivially bounded by $1$ while $z$ is typically easy to bound, in
+particular if $x$ and $y$ are explicitly bounded. 
 
 \bulletparagraph{Duality-based separation}
 
-\HLil{todo}
+Replacing the lower-level problem by its dual leads to the duality-based
+separation approach. This formulation reads 
+\begin{align*}
+    \max_{u\in U,\lambda,\lambda_0,\mu} \quad & -x_0\lambda_0 + (b - Cx - E(x)u)^\top \lambda \\
+    \text{s.t.} \quad & D^\top\lambda - d\lambda_0 = 0, \\
+    & \lambda_0 + e^\top\lambda + \mu = 1, \\
+    & \lambda_0, \lambda, \mu \ge 0.
+\end{align*}
+Note that this is a nonlinear problem. 
 
 \bulletparagraph{Duality-KKT-based separation}
 
-\HLil{todo}
+Building uppon the duality-based approach, we may also write the separation
+probem as 
+\begin{align*}
+    \max_{\lambda,\lambda_0,\mu} \quad & -x_0\lambda_0 + (b - Cx)^\top \lambda + \max_{u\in U}- \lambda^\top E(x)^\top u \\
+    \text{s.t.} \quad & D^\top\lambda - d\lambda_0 = 0, \\
+    & \lambda_0 + e^\top\lambda + \mu = 1, \\
+    & \lambda_0, \lambda, \mu \ge 0.
+\end{align*}
+Replacing the inner maximization problem by its KKT conditions leads to the
+following formulation of the separation problem
+\begin{align*}
+    \max_{\lambda,\lambda_0,\mu,\nu} \quad & -x_0\lambda_0 + (b - Cx)^\top \lambda + g^\top\nu \\
+    \text{s.t.} \quad & D^\top\lambda - d\lambda_0 = 0, \\
+    & \lambda_0 + e^\top\lambda + \mu = 1, \\
+    & \lambda_0, \lambda, \mu \ge 0, \\
+    & \nu\ge 0, \quad F^\top\nu = -E(x)^\top\lambda, \quad \nu^\top(Fu - g) = 0.
+\end{align*}
+Here again, bounds on $\nu$ can be exploited to linearize the complementarity
+constraints and obtain a mixed-integer linear formulation.
 
 \bulletparagraph{Duality-based separation for 0/1 uncertainty sets} 
 
@@ -477,9 +503,9 @@ In the special case where the uncertainty set is either a binary set, i.e., $U
 \subseteq \{0,1\}^{n_u}$, or a polytope whose extreme points are all binary,
 i.e., $\text{vert}(U) \subseteq \{0,1\}^{n_u}$, \textcite{Ayoub2016} develop
 an alternative approach to solve the separation problem. Consider again the
-dual problem~\eqref{eq:ccg:farkas}. The authors exploit the fact that
-worst-case scenarios are always extreme points of the uncertainty set. Hence,
-the separation problem can be modeled as
+dual of the lower-level problem in the joint separtion problem. The authors
+exploit the fact that worst-case scenarios are always extreme points of the
+uncertainty set. Hence, the separation problem can be modeled as
 \begin{subequations}
     \begin{align}
         \max_{u,\lambda,\lambda_0} \quad & -x_0\lambda_0 + (b - Cx - E(x)u)^\top \lambda \\
@@ -517,6 +543,27 @@ Approaches are
     \item Farkas and cut generation with binary uncertainty set (new)
 \end{itemize}
 }
+
+\renewcommand{\arraystretch}{1.3} % <-- 1.3 = 30% more spacing
+\begin{sidewaystable}
+    \vspace{12cm}
+    \caption{Approaches to solve the separation problem in the CCG algorithm}
+    \centering
+    \begin{tabular}{lllp{4cm}llp{4cm}}
+        \toprule
+        & \multicolumn{3}{c}{$\tilde{Y} = \mathbb{R}^{n_y}$} & \multicolumn{3}{c}{$\tilde{Y} = \mathbb{R}^{n_y - p_y}\times\mathbb{Z}^{p_y}$} \\\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+        & Approach & Problem type & References & Approach & Problem Type & References \\\toprule
+        $\tilde{U}=\mathbb{R}^{n_u}$ & KKT & NLP/MILP & \textcite{Zeng2013} & Nested-CCG & min-max-min & \textcite{zeng2012exact} \\
+        & Duality & NLP & \textcite{Zeng2013} \\
+        & Duality-KKT & NLP/MILP & \textcite{Ayoub2016}, \textcite{lefebvre2022convex} & & \\[0.5ex]\hdashline{}
+        with $\text{vert}(U) \subseteq [0,1]^{n_u}$ & Duality & MILP & \textcite{Ayoub2016}, \textcite{lefebvre2022convex} & --- & --- & --- \\\midrule
+        $\tilde{U}=\mathbb{R}^{n_u-p_u}\times\mathbb{Z}^{p_u}$ & KKT & MINLP/MILP & \textcite{Zeng2013} & \textsf{MibS} & Bilevel & \textcite{Tahernejad2020} \\
+        & Duality & MINLP & \textcite{Zeng2013} & Nested-CCG & min-max-min & \textcite{zeng2012exact} \\[0.5ex]\hdashline{}
+        with only binaries & Duality & MILP & \textcite{Ayoub2016}, \textcite{lefebvre2022convex} & Nested-CGG & min-max-min & \textcite{Subramanyam2022}, \textcite{lefebvre2025correctiontolagrangiandual} \\
+        & & & & DW-Duality & MILP & \textcite{pfetsch2021generic} \\\bottomrule 
+    \end{tabular}
+\end{sidewaystable}
+\renewcommand{\arraystretch}{1.0}
 
 \subsection{Initializing the scenario pool}
 \label{sec:ccg:initial-scenario}
@@ -764,16 +811,16 @@ this point, and a current estimate on the second-stage costs $x_0$, we need to
 show that either $x$ is a feasible first-stage decision with a second-stage
 cost no more than $x_0$, or exhibit a scenario $\hat{u}\in U$ such that either
 $Y(x,\hat{u}) = \emptyset$ or the best second-stage decision $y^*$ given $x$
-and $\hat{u}$ is such that $d^\top y^* > x_0$.
-
-We describe five different ways to perform this separation exactly and one
-heuristic approach along with their implementation in~\textsf{idol}. Note
-that, in the case of the UFLP, the second-stage problem is always feasible.
-Thus, we ``only'' need to check that $x$ is an optimal first-stage decision. 
+and $\hat{u}$ is such that $d^\top y^* > x_0$. Note that, in the case of the
+UFLP, the second-stage problem is always feasible. Thus, we ``only'' need to
+check that $x$ is an optimal first-stage decision. 
 
 \subsubsection{Optimality separation}
 
-\subsubsection*{Duality-based separation}
+In this section, we focus on optimality separation and present various
+approaches to implement it with~\textsf{idol}. 
+
+\bulletparagraph{Duality-based separation}
 
 The first approach is the well-known duality-based approach which consists in
 replacing the second-stage primal problem by its dual and linearize products
@@ -876,7 +923,7 @@ of SOS1 constraints. This can be implemented by using the following code.
     duality_based.with_sos1_constraints();
 \end{lstlisting} 
 
-\subsubsection*{KKT-based separation}
+\bulletparagraph{KKT-based separation}
 Another way to solve the separation problem is to exploit the KKT optimality
 conditions of the second-stage problem. These conditions are necessary and
 sufficient for a primal-dual point to be optimal for the second-stage primal
@@ -985,25 +1032,25 @@ by using the following code.
     kkt.with_sos1_constraints();   
 \end{lstlisting}
 
-\subsubsection*{Separation by the external bilevel solver \textsf{MibS}}
+\bulletparagraph{Separation by the external bilevel solver \textsf{MibS}}
 
 \HLil{todo}
 
-\subsubsection*{Heuristic separation with PADM}
+\bulletparagraph{Heuristic separation with PADM}
 
 \HLil{todo}
 
-\subsubsection{Avoiding optimality separation}
+\subsubsection{Joint separation}
 
-\subsubsection*{KKT-based separation}
-
-\HLil{todo}
-
-\subsubsection*{KKT-based separation for 0/1 uncertainty sets}
+\bulletparagraph{KKT-based separation}
 
 \HLil{todo}
 
-\subsubsection*{Heuristic separation with PADM}
+\bulletparagraph{KKT-based separation for 0/1 uncertainty sets}
+
+\HLil{todo}
+
+\bulletparagraph{Heuristic separation with PADM}
 
 \HLil{todo}
 
