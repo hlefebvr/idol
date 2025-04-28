@@ -64,7 +64,8 @@ idol::Bilevel::MinMax::Dualize::make_model(const idol::Model &t_model, const ido
     reformulator.add_coupling_variables(result);
     reformulator.add_coupling_constraints(result);
     reformulator.add_dual(result, true);
-    result.set_obj_expr(t_model.get_obj_expr());
+    result.set_obj_sense(Minimize);
+    result.set_obj_expr(-result.get_obj_expr());
 
     return result;
 }
