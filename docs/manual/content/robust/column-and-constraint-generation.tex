@@ -399,7 +399,9 @@ Note that this is a nonlinear problem.
 
 \bulletparagraph{Duality-KKT-based separation}
 
-Building uppon the duality-based separation, we may also write the dual problem as 
+Building uppon the duality-based separation, we may also write the separation
+problem as 
+%
 \begin{align*}
     \max_{\lambda,\mu} \quad & (b - Cx)^\top\lambda + \max_{u\in U} -\lambda^\top E(x)^\top u \\
     \text{s.t.} \quad & D^\top\lambda = 0, \quad \lambda + \mu = 1, \quad \lambda,\mu\ge 0.
