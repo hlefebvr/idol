@@ -17,6 +17,7 @@ namespace idol::Bilevel::MinMax {
 class idol::Bilevel::MinMax::Dualize : public OptimizerFactoryWithDefaultParameters<Dualize>, public Bilevel::OptimizerInterface {
     const Bilevel::Description* m_description = nullptr;
     std::unique_ptr<OptimizerFactory> m_single_level_optimizer;
+    std::unique_ptr<Reformulators::KKT::BoundProvider> m_bound_provider;
 public:
     Dualize();
 
@@ -31,6 +32,8 @@ public:
     void set_bilevel_description(const Description &t_bilevel_description) override;
 
     Dualize& with_single_level_optimizer(const OptimizerFactory& t_deterministic_optimizer);
+
+    Dualize& with_bound_provider(const Reformulators::KKT::BoundProvider& t_bound_provider);
 
     Dualize& operator+=(const OptimizerFactory& t_optimizer) { return with_single_level_optimizer(t_optimizer); }
 

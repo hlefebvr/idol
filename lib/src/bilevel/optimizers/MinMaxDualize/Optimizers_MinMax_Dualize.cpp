@@ -6,10 +6,12 @@
 
 idol::Optimizers::Bilevel::MinMax::Dualize::Dualize(const Model& t_parent,
                                                        const idol::Bilevel::Description &t_description,
-                                                       const OptimizerFactory &t_deterministic_optimizer)
+                                                       const OptimizerFactory &t_deterministic_optimizer,
+                                                       const std::unique_ptr<Reformulators::KKT::BoundProvider>& t_bound_provider)
         : Algorithm(t_parent),
           m_description(t_description),
-          m_deterministic_optimizer(t_deterministic_optimizer.clone()) {
+          m_deterministic_optimizer(t_deterministic_optimizer.clone()),
+          m_bound_provider(t_bound_provider ? t_bound_provider->clone() : nullptr) {
 
 }
 
@@ -88,7 +90,11 @@ void idol::Optimizers::Bilevel::MinMax::Dualize::write(const std::string &t_name
 void idol::Optimizers::Bilevel::MinMax::Dualize::hook_optimize() {
 
     if (!m_deterministic_model) {
-        m_deterministic_model = std::make_unique<Model>(idol::Bilevel::MinMax::Dualize::make_model(parent(), m_description));
+        if (m_bound_provider) {
+            m_deterministic_model = std::make_unique<Model>(idol::Bilevel::MinMax::Dualize::make_model(parent(), m_description, *m_bound_provider));
+        } else {
+            m_deterministic_model = std::make_unique<Model>(idol::Bilevel::MinMax::Dualize::make_model(parent(), m_description));
+        }
         m_deterministic_model->use(*m_deterministic_optimizer);
     }
 

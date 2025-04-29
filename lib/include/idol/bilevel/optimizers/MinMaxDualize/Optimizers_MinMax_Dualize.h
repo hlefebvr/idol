@@ -7,6 +7,7 @@
 
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/general/optimizers/Algorithm.h"
+#include "idol/mixed-integer/modeling/models/KKT.h"
 
 namespace idol::Optimizers::Bilevel::MinMax {
     class Dualize;
@@ -16,10 +17,14 @@ class idol::Optimizers::Bilevel::MinMax::Dualize : public Algorithm {
     const idol::Bilevel::Description& m_description;
     std::unique_ptr<OptimizerFactory> m_deterministic_optimizer;
     std::unique_ptr<Model> m_deterministic_model;
+    std::unique_ptr<Reformulators::KKT::BoundProvider> m_bound_provider;
 
     void throw_if_no_deterministic_model() const;
 public:
-    Dualize(const Model& t_parent, const idol::Bilevel::Description& t_description, const OptimizerFactory& t_deterministic_optimizer);
+    Dualize(const Model& t_parent,
+            const idol::Bilevel::Description& t_description,
+            const OptimizerFactory& t_deterministic_optimizer,
+            const std::unique_ptr<Reformulators::KKT::BoundProvider>& t_bound_provider);
 
     [[nodiscard]] std::string name() const override;
 

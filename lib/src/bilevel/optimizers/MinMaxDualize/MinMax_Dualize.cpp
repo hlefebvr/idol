@@ -23,7 +23,10 @@ idol::Optimizer *idol::Bilevel::MinMax::Dualize::operator()(const idol::Model &t
         throw Exception("No deterministic optimizer has been set.");
     }
 
-    auto* result = new Optimizers::Bilevel::MinMax::Dualize(t_model, *m_description, *m_single_level_optimizer);
+    auto* result = new Optimizers::Bilevel::MinMax::Dualize(t_model,
+                                                            *m_description,
+                                                            *m_single_level_optimizer,
+                                                            m_bound_provider);
 
     handle_default_parameters(result);
 
@@ -46,7 +49,8 @@ idol::Bilevel::MinMax::Dualize::with_single_level_optimizer(const idol::Optimize
 idol::Bilevel::MinMax::Dualize::Dualize(const idol::Bilevel::MinMax::Dualize &t_src)
         : OptimizerFactoryWithDefaultParameters<Dualize>(t_src),
           m_description(t_src.m_description),
-          m_single_level_optimizer(t_src.m_single_level_optimizer ? t_src.m_single_level_optimizer->clone() : nullptr) {
+          m_single_level_optimizer(t_src.m_single_level_optimizer ? t_src.m_single_level_optimizer->clone() : nullptr),
+          m_bound_provider(t_src.m_bound_provider ? t_src.m_bound_provider->clone() : nullptr) {
 
 }
 
@@ -137,4 +141,16 @@ idol::Bilevel::MinMax::Dualize::make_model(const idol::Model &t_model, const ido
     result.set_obj_expr(std::move(linearized_objective));
 
     return std::move(result);
+}
+
+idol::Bilevel::MinMax::Dualize &
+idol::Bilevel::MinMax::Dualize::with_bound_provider(const idol::Reformulators::KKT::BoundProvider &t_bound_provider) {
+
+    if (m_bound_provider) {
+        throw Exception("Bound provider has already been set.");
+    }
+
+    m_bound_provider.reset(t_bound_provider.clone());
+
+    return *this;
 }

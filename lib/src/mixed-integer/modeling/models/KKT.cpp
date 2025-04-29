@@ -677,6 +677,10 @@ void idol::Reformulators::KKT::add_bounds_on_dual_variables(idol::Model &t_desti
 
     for (const auto& ctr : m_primal.ctrs())  {
 
+        if (!m_primal_constraint_indicator(ctr)) {
+            continue;
+        }
+
         const auto index = m_primal.get_ctr_index(ctr);
         const auto& dual_var = *m_dual_variables_for_constraints[index];
 
