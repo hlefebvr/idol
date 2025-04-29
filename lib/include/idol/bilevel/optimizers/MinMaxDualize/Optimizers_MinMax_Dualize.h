@@ -17,9 +17,13 @@ class idol::Optimizers::Bilevel::MinMax::Dualize : public Algorithm {
     const idol::Bilevel::Description& m_description;
     std::unique_ptr<OptimizerFactory> m_deterministic_optimizer;
     std::unique_ptr<Model> m_deterministic_model;
+    std::unique_ptr<Model> m_lower_level_model;
     std::unique_ptr<Reformulators::KKT::BoundProvider> m_bound_provider;
 
+    const bool m_skip_solving_lower_level = false;
+
     void throw_if_no_deterministic_model() const;
+    void solve_lower_level();
 public:
     Dualize(const Model& t_parent,
             const idol::Bilevel::Description& t_description,

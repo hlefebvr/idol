@@ -3,6 +3,8 @@
 //
 #include "idol/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.h"
 #include "idol/bilevel/optimizers/MinMaxDualize/MinMax_Dualize.h"
+#include "idol/mixed-integer/modeling/variables/TempVar.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
 idol::Optimizers::Bilevel::MinMax::Dualize::Dualize(const Model& t_parent,
                                                        const idol::Bilevel::Description &t_description,
@@ -21,32 +23,47 @@ std::string idol::Optimizers::Bilevel::MinMax::Dualize::name() const {
 
 double idol::Optimizers::Bilevel::MinMax::Dualize::get_var_primal(const idol::Var &t_var) const {
     throw_if_no_deterministic_model();
+    if (m_lower_level_model && m_lower_level_model->has(t_var)) {
+        return m_lower_level_model->get_var_primal(t_var);
+    }
     return m_deterministic_model->get_var_primal(t_var);
 }
 
 double idol::Optimizers::Bilevel::MinMax::Dualize::get_var_reduced_cost(const idol::Var &t_var) const {
     throw_if_no_deterministic_model();
+    if (m_lower_level_model && m_lower_level_model->has(t_var)) {
+        return m_lower_level_model->get_var_reduced_cost(t_var);
+    }
     return m_deterministic_model->get_var_reduced_cost(t_var);
 }
 
 double idol::Optimizers::Bilevel::MinMax::Dualize::get_var_ray(const idol::Var &t_var) const {
     throw_if_no_deterministic_model();
+    if (m_lower_level_model && m_lower_level_model->has(t_var)) {
+        return m_lower_level_model->get_var_ray(t_var);
+    }
     return m_deterministic_model->get_var_ray(t_var);
 }
 
 double idol::Optimizers::Bilevel::MinMax::Dualize::get_ctr_dual(const idol::Ctr &t_ctr) const {
     throw_if_no_deterministic_model();
+    if (m_lower_level_model && m_lower_level_model->has(t_ctr)) {
+        return m_lower_level_model->get_ctr_dual(t_ctr);
+    }
     return m_deterministic_model->get_ctr_dual(t_ctr);
 }
 
 double idol::Optimizers::Bilevel::MinMax::Dualize::get_ctr_farkas(const idol::Ctr &t_ctr) const {
     throw_if_no_deterministic_model();
+    if (m_lower_level_model && m_lower_level_model->has(t_ctr)) {
+        return m_lower_level_model->get_ctr_farkas(t_ctr);
+    }
     return m_deterministic_model->get_ctr_farkas(t_ctr);
 }
 
 unsigned int idol::Optimizers::Bilevel::MinMax::Dualize::get_n_solutions() const {
     throw_if_no_deterministic_model();
-    return m_deterministic_model->get_n_solutions();
+    return 1;
 }
 
 unsigned int idol::Optimizers::Bilevel::MinMax::Dualize::get_solution_index() const {
@@ -56,30 +73,37 @@ unsigned int idol::Optimizers::Bilevel::MinMax::Dualize::get_solution_index() co
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::add(const idol::Var &t_var) {
     m_deterministic_model.reset();
+    m_lower_level_model.reset();
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::add(const idol::Ctr &t_ctr) {
     m_deterministic_model.reset();
+    m_lower_level_model.reset();
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::add(const idol::QCtr &t_ctr) {
     m_deterministic_model.reset();
+    m_lower_level_model.reset();
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::remove(const idol::Var &t_var) {
     m_deterministic_model.reset();
+    m_lower_level_model.reset();
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::remove(const idol::Ctr &t_ctr) {
     m_deterministic_model.reset();
+    m_lower_level_model.reset();
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::remove(const idol::QCtr &t_ctr) {
     m_deterministic_model.reset();
+    m_lower_level_model.reset();
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::update() {
     m_deterministic_model.reset();
+    m_lower_level_model.reset();
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::write(const std::string &t_name) {
@@ -100,6 +124,12 @@ void idol::Optimizers::Bilevel::MinMax::Dualize::hook_optimize() {
 
     m_deterministic_model->optimize();
 
+    if (m_skip_solving_lower_level) {
+        return;
+    }
+
+    solve_lower_level();
+
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::set_solution_index(unsigned int t_index) {
@@ -109,14 +139,17 @@ void idol::Optimizers::Bilevel::MinMax::Dualize::set_solution_index(unsigned int
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::update_obj_sense() {
     m_deterministic_model.reset();
+    m_lower_level_model.reset();
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::update_obj() {
     m_deterministic_model.reset();
+    m_lower_level_model.reset();
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::update_rhs() {
     m_deterministic_model.reset();
+    m_lower_level_model.reset();
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::update_obj_constant() {
@@ -126,10 +159,12 @@ void idol::Optimizers::Bilevel::MinMax::Dualize::update_obj_constant() {
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::update_mat_coeff(const idol::Ctr &t_ctr, const idol::Var &t_var) {
     m_deterministic_model.reset();
+    m_lower_level_model.reset();
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::update_ctr_type(const idol::Ctr &t_ctr) {
     m_deterministic_model.reset();
+    m_lower_level_model.reset();
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::update_ctr_rhs(const idol::Ctr &t_ctr) {
@@ -189,4 +224,57 @@ double idol::Optimizers::Bilevel::MinMax::Dualize::get_best_bound() const {
         return Algorithm::get_best_bound();
     }
     return m_deterministic_model->get_best_bound();
+}
+
+void idol::Optimizers::Bilevel::MinMax::Dualize::solve_lower_level() {
+
+    const auto& parent = this->parent();
+    auto& env = parent.env();
+    m_lower_level_model = std::make_unique<Model>(env);
+
+    for (const auto& var : parent.vars()) {
+
+        if (m_description.is_upper(var)) {
+            continue;
+        }
+
+        const double lb = parent.get_var_lb(var);
+        const double ub = parent.get_var_ub(var);
+        const auto type = parent.get_var_type(var);
+        m_lower_level_model->add(var, TempVar(lb, ub, type, 0., LinExpr<Ctr>()));
+
+    }
+
+    for (const auto& ctr : parent.ctrs()) {
+
+        LinExpr<Var> lhs;
+        double rhs = parent.get_ctr_rhs(ctr);
+
+        for (const auto& [var, coeff] : parent.get_ctr_row(ctr)) {
+            if (m_description.is_upper(var)) {
+                rhs -= coeff * m_deterministic_model->get_var_primal(var);
+                continue;
+            }
+            lhs += coeff * var;
+        }
+
+        m_lower_level_model->add(ctr, TempCtr(std::move(lhs), parent.get_ctr_type(ctr), rhs));
+
+    }
+
+    m_lower_level_model->set_obj_expr(m_description.lower_level_obj());
+
+    if (parent.qctrs().size() > 0) {
+        throw Exception("Quadratic constraints are not supported.");
+    }
+
+    m_lower_level_model->use(*m_deterministic_optimizer);
+    m_lower_level_model->optimize();
+
+    if (m_lower_level_model->get_status() != Optimal) {
+        set_status(Fail);
+        set_reason(NotSpecified);
+        return;
+    }
+
 }
