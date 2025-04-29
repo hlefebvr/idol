@@ -161,6 +161,13 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
         ++m_n_iterations;
     }
 
+    if (get_param_logs()) {
+        std::cout << "Done in " << m_n_iterations << " iterations and " << time().count() << " seconds." << std::endl;
+        std::cout << "Reported status is " << get_status() << " (" << get_reason() << ")." << std::endl;
+        std::cout << "Spent " << m_master_timer.cumulative_count() << " solving the master problem and "
+                  << m_separation_timer.cumulative_count() << " solving the separation problem." << std::endl;
+    }
+
 }
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::set_solution_index(unsigned int t_index) {
