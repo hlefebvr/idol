@@ -39,6 +39,11 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
     std::vector<std::unique_ptr<OptimizerFactory>> m_optimizer_optimality_separation;
     unsigned int m_index_optimality_separation = 0;
 
+    // Joint Separation
+    const bool m_with_joint_separation_loop_reset = false;
+    std::vector<std::unique_ptr<OptimizerFactory>> m_optimizer_joint_separation;
+    unsigned int m_index_joint_separation = 0;
+
     // Timers
     Timer m_master_timer;
     Timer m_separation_timer;
@@ -51,7 +56,8 @@ public:
                                   OptimizerFactory* t_initial_scenario_by_minimization,
                                   OptimizerFactory* t_initial_scenario_by_maximization,
                                   const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_feasibility_separation,
-                                  const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_optimality_separation);
+                                  const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_optimality_separation,
+                                  const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_joint_separation);
 
     [[nodiscard]] std::string name() const override;
 
@@ -143,6 +149,7 @@ protected:
     unsigned int solve_optimality_adversarial_problem();
     unsigned int solve_optimality_adversarial_problem(const Point<Var>& t_upper_level_solution);
     unsigned int solve_optimality_adversarial_problem(const idol::Point<idol::Var> &t_upper_level_solution, unsigned int t_coupling_constraint_index);
+    unsigned int solve_joint_adversarial_problem();
 
 };
 

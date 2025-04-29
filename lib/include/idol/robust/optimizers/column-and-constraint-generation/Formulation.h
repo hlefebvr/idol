@@ -24,9 +24,10 @@ class idol::CCG::Formulation {
     std::vector<Var> m_second_stage_variables;
     std::vector<Ctr> m_second_stage_constraints;
     std::vector<Ctr> m_linking_constraints;
-    std::vector<Ctr> m_coupling_constraints; // TODO: so far, these are not handled, i.e., detected
+    std::vector<Ctr> m_coupling_constraints;
 
     unsigned int m_n_added_scenario = 0;
+    bool m_has_second_stage_objective = false;
     std::optional<Var> m_second_stage_epigraph;
 
     void parse_variables();
@@ -34,6 +35,7 @@ class idol::CCG::Formulation {
     void parse_constraints();
     void copy_bilevel_description(const ::idol::Bilevel::Description& t_src, const ::idol::Bilevel::Description& t_dest) const;
     void add_separation_problem_constraints(idol::Model &t_model, const idol::Point<idol::Var> &t_first_stage_decision);
+    QuadExpr<Var> compute_second_stage_objective(const Point<Var>& t_first_stage_decision) const;
 public:
     Formulation(const Model& t_parent,
                 const ::idol::Robust::Description &t_robust_description,
@@ -48,7 +50,9 @@ public:
 
     Model build_optimality_separation_problem_for_adjustable_robust_problem(const Point<Var>& t_first_stage_decision, unsigned int t_coupling_constraint_index);
 
-    Model build_feasibility_separation_problem(const Point<Var>& t_first_stage_decision);
+    std::pair<Model, std::vector<Var>> build_feasibility_separation_problem(const Point<Var>& t_first_stage_decision);
+
+    std::pair<Model, std::vector<Var>> build_joint_separation_problem(const Point<Var>& t_first_stage_decision);
 
     unsigned int n_coupling_constraints() const { return 1 + m_coupling_constraints.size(); }
 
@@ -61,6 +65,10 @@ public:
     bool is_adjustable_robust_problem() const;
 
     bool is_wait_and_see_follower() const { return !is_adjustable_robust_problem(); }
+
+    bool should_have_epigraph_and_epigraph_is_not_in_master() const;
+
+    const Var& second_stage_epigraph() const { return *m_second_stage_epigraph; }
 };
 
 #endif //IDOL_CCG_FORMULATION_H

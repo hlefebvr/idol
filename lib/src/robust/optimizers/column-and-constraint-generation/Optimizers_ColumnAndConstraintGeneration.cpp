@@ -16,7 +16,8 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
                                                                                        OptimizerFactory* t_initial_scenario_by_minimization,
                                                                                        OptimizerFactory* t_initial_scenario_by_maximization,
                                                                                        const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_feasibility_separation,
-                                                                                       const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_optimality_separation)
+                                                                                       const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_optimality_separation,
+                                                                                       const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_joint_separation)
                                                                                        : Algorithm(t_parent),
                                                                                          m_robust_description(t_robust_description),
                                                                                          m_bilevel_description(t_bilevel_description),
@@ -33,6 +34,11 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
     m_optimizer_optimality_separation.reserve(t_optimizer_optimality_separation.size());
     for (const auto& optimizer : t_optimizer_optimality_separation) {
         m_optimizer_optimality_separation.emplace_back(optimizer->clone());
+    }
+
+    m_optimizer_joint_separation.reserve(t_optimizer_joint_separation.size());
+    for (const auto& optimizer : t_optimizer_joint_separation) {
+        m_optimizer_joint_separation.emplace_back(optimizer->clone());
     }
 
 }
@@ -122,6 +128,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimi
 
     m_index_feasibility_separation = 0;
     m_index_optimality_separation = 0;
+    m_index_joint_separation = 0;
 
 }
 
@@ -375,8 +382,13 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_
         m_index_optimality_separation = 0;
     }
 
+    if (m_with_joint_separation_loop_reset) {
+        m_index_joint_separation = 0;
+    }
+
     const unsigned int n_feasibility_separation_optimizers = m_optimizer_feasibility_separation.size();
     const unsigned int n_optimality_separation_optimizers = m_optimizer_optimality_separation.size();
+    const unsigned int n_joint_separation_optimizers = m_optimizer_joint_separation.size();
 
     unsigned int n_added_scenario;
     if (n_feasibility_separation_optimizers > 0) {
@@ -413,6 +425,23 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_
         }
     }
 
+    if (n_joint_separation_optimizers > 0) {
+        for (;;) {
+
+            const bool is_last_optimizer = m_index_joint_separation + 1 == n_joint_separation_optimizers;
+            n_added_scenario = solve_joint_adversarial_problem();
+
+            if (n_added_scenario > 0 || is_terminated()) {
+                return;
+            }
+
+            if (is_last_optimizer) {
+                break;
+            }
+
+        }
+    }
+
 }
 
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feasibility_adversarial_problem() {
@@ -420,7 +449,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
     const auto& master = m_formulation->master();
     const auto upper_level_solution = save_primal(master);
 
-    Model high_point_relaxation = m_formulation->build_feasibility_separation_problem(upper_level_solution);
+    auto [high_point_relaxation, slack_variables] = m_formulation->build_feasibility_separation_problem(upper_level_solution);
 
     // Set bilevel description
     const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
@@ -497,6 +526,93 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_advers
     }
 
     return total_n_added_scenarios;
+}
+
+unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_joint_adversarial_problem() {
+
+    const auto& master = m_formulation->master();
+    const auto upper_level_solution = save_primal(master);
+
+    auto [high_point_relaxation, slack_variables] = m_formulation->build_joint_separation_problem(upper_level_solution);
+
+    // Set bilevel description
+    const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
+    m_optimizer_joint_separation[m_index_joint_separation]->as<Bilevel::OptimizerInterface>().set_bilevel_description(separation_bilevel_description);
+
+    // Set optimizer
+    high_point_relaxation.use(*m_optimizer_joint_separation[m_index_joint_separation]);
+    high_point_relaxation.optimizer().set_param_time_limit(get_remaining_time());
+
+    // Solve adversarial problem
+    m_separation_timer.start();
+    high_point_relaxation.optimize();
+    m_separation_timer.stop();
+
+    // Analyze results
+    const auto status = high_point_relaxation.get_status();
+
+    const bool is_last_optimizer = m_index_feasibility_separation == m_optimizer_feasibility_separation.size() - 1;
+
+    if (status != Optimal && status != Feasible) {
+        if (!is_last_optimizer) { // If we can, skip this optimizer
+            ++m_index_feasibility_separation;
+        } else { // otherwise, it's a fail
+            set_status(Fail);
+            set_reason(high_point_relaxation.get_reason());
+            terminate();
+            return 0;
+        }
+    }
+
+    if (is_last_optimizer && status != Optimal) { // if the last optimizer is not reporting optimal, it's a fail
+        set_status(Fail);
+        set_reason(high_point_relaxation.get_reason());
+        terminate();
+        return 0;
+    }
+
+    const auto scenario = save_primal(m_robust_description.uncertainty_set(), high_point_relaxation);
+
+    if (m_formulation->should_have_epigraph_and_epigraph_is_not_in_master()) {
+        log_iteration(true, high_point_relaxation.optimizer().name(), status, high_point_relaxation.get_reason(), false);
+        m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario);
+        return 1;
+    }
+
+    bool is_feasible = true;
+    for (unsigned int i = 0, n = std::max<unsigned int>(slack_variables.size(), 1) - 1 ; i < n ; ++i) {
+        if (high_point_relaxation.get_var_primal(slack_variables[i]) > Tolerance::Feasibility) {
+            is_feasible = false;
+            break;
+        }
+    }
+
+    if (!is_feasible) {
+        log_iteration(true, high_point_relaxation.optimizer().name(), status, high_point_relaxation.get_reason(), is_feasible);
+        m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario);
+        return 1;
+    }
+
+    log_iteration(false, high_point_relaxation.optimizer().name(), status, high_point_relaxation.get_reason(), is_feasible);
+
+    const double LB = m_formulation->master().get_best_obj();
+    const double UB = LB - high_point_relaxation.get_best_obj();
+    const bool add_scenario = UB > LB && (absolute_gap(LB, UB) > Tolerance::MIPAbsoluteGap || relative_gap(LB, UB) > Tolerance::MIPRelativeGap);
+
+    if (status == Optimal) {
+        set_best_obj(std::min(get_best_obj(), UB));
+    }
+
+    if (add_scenario) {
+        m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario);
+        return 1;
+    }
+
+    if (status == Feasible) {
+        ++m_index_joint_separation;
+    }
+
+    return 0;
 }
 
 unsigned int

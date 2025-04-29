@@ -26,6 +26,7 @@ class idol::Robust::ColumnAndConstraintGeneration : public OptimizerFactoryWithD
     // Separation
     std::list<std::unique_ptr<OptimizerFactory>> m_optimizer_feasibility_separation;
     std::list<std::unique_ptr<OptimizerFactory>> m_optimizer_optimality_separation;
+    std::list<std::unique_ptr<OptimizerFactory>> m_optimizer_joint_separation;
 public:
     ColumnAndConstraintGeneration(const Robust::Description& t_robust_description,
                                   const Bilevel::Description& t_bilevel_description);
@@ -49,6 +50,8 @@ public:
     ColumnAndConstraintGeneration& add_feasibility_separation_optimizer(const OptimizerFactory& t_optimizer);
 
     ColumnAndConstraintGeneration& add_optimality_separation_optimizer(const OptimizerFactory& t_optimizer);
+
+    ColumnAndConstraintGeneration& add_joint_separation_optimizer(const OptimizerFactory& t_optimizer);
 };
 
 #endif //IDOL_COLUMNANDCONSTRAINTGENERATION_H

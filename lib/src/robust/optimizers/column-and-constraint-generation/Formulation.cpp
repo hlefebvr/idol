@@ -31,15 +31,19 @@ void idol::CCG::Formulation::parse_variables() {
 
     for (const auto& var : m_parent.vars()) {
 
-        if (m_bilevel_description.is_lower(var) > 0) {
+        const double obj = m_parent.get_var_obj(var);
+
+        if (m_bilevel_description.is_lower(var)) {
             m_second_stage_variables.emplace_back(var);
+            if (!is_zero(obj, Tolerance::Sparsity)) {
+                m_has_second_stage_objective = true;
+            }
             continue;
         }
 
         const double lb = m_parent.get_var_lb(var);
         const double ub = m_parent.get_var_ub(var);
         const auto type = m_parent.get_var_type(var);
-        const double obj = m_parent.get_var_obj(var);
 
         m_master.add(var, TempVar(lb, ub, type, obj, LinExpr<Ctr>()));
 
@@ -60,10 +64,12 @@ void idol::CCG::Formulation::parse_objective() {
     for (const auto& [pair, coeff] : objective) {
 
         if (m_bilevel_description.is_lower(pair.first)) {
+            m_has_second_stage_objective = true;
             continue;
         }
 
         if (m_bilevel_description.is_lower(pair.second)) {
+            m_has_second_stage_objective = true;
             continue;
         }
 
@@ -87,9 +93,18 @@ void idol::CCG::Formulation::parse_constraints() {
         });
 
         if (has_second_stage || !m_robust_description.uncertain_mat_coeffs(ctr).empty()) {
+
             if (has_first_stage) {
-                m_linking_constraints.emplace_back(ctr);
+
+                // A coupling constraint is an upper-level constraint with a lower-level variable or with uncertainty
+                if (m_bilevel_description.is_upper(ctr)) {
+                    m_coupling_constraints.emplace_back(ctr);
+                } else {
+                    m_linking_constraints.emplace_back(ctr);
+                }
+
             }
+
             m_second_stage_constraints.emplace_back(ctr);
             continue;
         }
@@ -285,26 +300,9 @@ idol::Model idol::CCG::Formulation::build_optimality_separation_problem_for_adju
     add_separation_problem_constraints(result, t_first_stage_decision);
 
     // Compute objective
-    QuadExpr objective;
-    if (t_coupling_constraint_index == 0) {
-
-        const auto& src_objective = m_parent.get_obj_expr();
-
-        objective += src_objective.affine().constant();
-        for (const auto& [var, coeff] : src_objective.affine().linear()) {
-            if (m_bilevel_description.is_upper(var)) {
-                objective += coeff * t_first_stage_decision.get(var);
-                continue;
-            }
-            objective += coeff * var;
-        }
-
-        if (src_objective.has_quadratic()) {
-            throw Exception("Quadratic objectives not yet implemented");
-        }
-
-    } else {
-        throw Exception("Coupling constraints not yet implemented");
+    QuadExpr objective = compute_second_stage_objective(t_first_stage_decision);
+    if (t_coupling_constraint_index > 0) {
+        throw Exception("Coupling constraints have no meaning for two-stage robust problems");
     }
 
     result.set_obj_expr(-1. * objective);
@@ -334,19 +332,19 @@ void idol::CCG::Formulation::copy_bilevel_description(const ::idol::Bilevel::Des
 
 }
 
-idol::Model
+std::pair<idol::Model, std::vector<idol::Var>>
 idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<idol::Var> &t_first_stage_decision) {
 
     auto& env = m_master.env();
     Model result(env);
+    std::vector<Var> slack_variables;
 
     add_separation_problem_constraints(result, t_first_stage_decision);
 
-    const auto compute_range = [&](const Ctr& t_ctr) {
+    const auto compute_range = [&](const Ctr& t_ctr, CtrType t_type) {
         double bound = 0;
-        const auto type = result.get_ctr_type(t_ctr);
 
-        if (type == LessOrEqual) {
+        if (t_type == LessOrEqual) {
             bound -= result.get_ctr_rhs(t_ctr);
             for (const auto& [var, coeff] : m_robust_description.uncertain_rhs(t_ctr)) {
                 if (coeff > 0 ) {
@@ -362,7 +360,7 @@ idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<i
                     bound += coeff * result.get_var_lb(var);
                 }
             }
-        } else if (type == GreaterOrEqual) {
+        } else if (t_type == GreaterOrEqual) {
             bound += result.get_ctr_rhs(t_ctr);
             for (const auto& [var, coeff] : m_robust_description.uncertain_rhs(t_ctr)) {
                 if (coeff > 0 ) {
@@ -391,10 +389,12 @@ idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<i
     };
 
     const auto add_slack = [&](const Ctr& t_ctr, double t_coeff) {
-        const double range = compute_range(t_ctr);
+        const double range = compute_range(t_ctr, t_coeff < 0 ? LessOrEqual : GreaterOrEqual);
         LinExpr<Ctr> column = t_coeff * t_ctr;
-        const auto s = result.add_var(0, range, Continuous, -1, column, "slack_" + t_ctr.name());
+        auto name = "__slack_" + t_ctr.name() + "_" + (t_coeff < 0 ? "lower" : "upper");
+        const auto s = result.add_var(0, range, Continuous, -1, column, std::move(name));
         m_bilevel_description_separation.make_lower_level(s);
+        slack_variables.emplace_back(s);
     };
 
     for (const auto& ctr : m_second_stage_constraints) {
@@ -418,9 +418,70 @@ idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<i
 
     m_bilevel_description_separation.set_lower_level_obj(-1. * result.get_obj_expr());
 
-    return std::move(result);
+    return {
+        std::move(result),
+        std::move(slack_variables)
+    };
 }
 
 bool idol::CCG::Formulation::is_adjustable_robust_problem() const {
     return m_bilevel_description.lower_level_obj().is_zero(Tolerance::Feasibility);
+}
+
+std::pair<idol::Model, std::vector<idol::Var>>
+idol::CCG::Formulation::build_joint_separation_problem(const idol::Point<idol::Var> &t_first_stage_decision) {
+
+    auto [model, slack_variables] = build_feasibility_separation_problem(t_first_stage_decision);
+
+    if (!m_second_stage_epigraph) {
+        return {
+            std::move(model),
+            std::move(slack_variables)
+        };
+    }
+
+    const auto s = model.add_var(0, Inf, Continuous, -1, LinExpr<Ctr>(), "__slack_objective");
+    m_bilevel_description_separation.make_lower_level(s);
+    m_bilevel_description_separation.set_lower_level_obj(-1. * model.get_obj_expr());
+
+    auto objective = compute_second_stage_objective(t_first_stage_decision);
+    if (objective.has_quadratic()) {
+        throw Exception("Quadratic objectives in second stage are not yet implemented");
+    }
+    const auto c = model.add_ctr(std::move(objective.affine().linear()) <= m_master.get_var_primal(*m_second_stage_epigraph) + s, "__epigraph_constraint");
+    m_bilevel_description_separation.make_lower_level(c);
+
+    slack_variables.emplace_back(s);
+
+    return {
+            std::move(model),
+            std::move(slack_variables)
+    };
+}
+
+idol::QuadExpr<idol::Var>
+idol::CCG::Formulation::compute_second_stage_objective(const idol::Point<idol::Var> &t_first_stage_decision) const {
+
+    QuadExpr<Var> result;
+
+    const auto& src_objective = m_parent.get_obj_expr();
+
+    result += src_objective.affine().constant();
+    for (const auto& [var, coeff] : src_objective.affine().linear()) {
+        if (m_bilevel_description.is_upper(var)) {
+            result += coeff * t_first_stage_decision.get(var);
+            continue;
+        }
+        result += coeff * var;
+    }
+
+    if (src_objective.has_quadratic()) {
+        throw Exception("Quadratic objectives not yet implemented");
+    }
+
+    return result;
+}
+
+bool idol::CCG::Formulation::should_have_epigraph_and_epigraph_is_not_in_master() const {
+    return m_has_second_stage_objective && (!m_second_stage_epigraph || !m_master.has(*m_second_stage_epigraph));
 }

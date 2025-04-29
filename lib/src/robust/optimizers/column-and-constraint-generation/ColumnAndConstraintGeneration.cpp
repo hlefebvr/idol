@@ -30,6 +30,10 @@ idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
         m_optimizer_optimality_separation.emplace_back(optimizer->clone());
     }
 
+    for (const auto& optimizer : t_src.m_optimizer_joint_separation) {
+        m_optimizer_joint_separation.emplace_back(optimizer->clone());
+    }
+
 }
 
 idol::OptimizerFactory *idol::Robust::ColumnAndConstraintGeneration::clone() const {
@@ -54,8 +58,8 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
         throw Exception("Master optimizer not set");
     }
 
-    if (m_optimizer_feasibility_separation.empty() && m_optimizer_optimality_separation.empty()) {
-        throw Exception("At least one of feasibility or optimality separation optimizers must be set");
+    if (m_optimizer_feasibility_separation.empty() && m_optimizer_optimality_separation.empty() && m_optimizer_joint_separation.empty()) {
+        throw Exception("At least one of feasibility, optimality or joint separation optimizers must be set");
     }
 
     auto* result = new Optimizers::Robust::ColumnAndConstraintGeneration(t_model,
@@ -66,7 +70,8 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
                                                                          m_initial_scenario_by_minimization ? m_initial_scenario_by_minimization->clone() : nullptr,
                                                                          m_initial_scenario_by_maximization ? m_initial_scenario_by_maximization->clone() : nullptr,
                                                                          m_optimizer_feasibility_separation,
-                                                                         m_optimizer_optimality_separation
+                                                                         m_optimizer_optimality_separation,
+                                                                         m_optimizer_joint_separation
                                                                          );
 
     handle_default_parameters(result);
@@ -132,6 +137,18 @@ idol::Robust::ColumnAndConstraintGeneration::add_optimality_separation_optimizer
     }
 
     m_optimizer_optimality_separation.emplace_back(t_optimizer.clone());
+
+    return *this;
+}
+
+idol::Robust::ColumnAndConstraintGeneration &
+idol::Robust::ColumnAndConstraintGeneration::add_joint_separation_optimizer(const idol::OptimizerFactory &t_optimizer) {
+
+    if (!t_optimizer.is<Bilevel::OptimizerInterface>()) {
+        throw Exception("Joint separation optimizer must be a bilevel optimizer");
+    }
+
+    m_optimizer_joint_separation.emplace_back(t_optimizer.clone());
 
     return *this;
 }
