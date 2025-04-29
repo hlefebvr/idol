@@ -128,7 +128,9 @@ void idol::Optimizers::Bilevel::MinMax::Dualize::hook_optimize() {
         return;
     }
 
-    solve_lower_level();
+    if (get_status() == Optimal || get_status() == Feasible) {
+        solve_lower_level();
+    }
 
 }
 
@@ -269,6 +271,7 @@ void idol::Optimizers::Bilevel::MinMax::Dualize::solve_lower_level() {
     }
 
     m_lower_level_model->use(*m_deterministic_optimizer);
+    m_lower_level_model->optimizer().set_param_time_limit(get_remaining_time());
     m_lower_level_model->optimize();
 
     if (m_lower_level_model->get_status() != Optimal) {

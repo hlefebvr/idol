@@ -558,11 +558,11 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_join
     // Analyze results
     const auto status = high_point_relaxation.get_status();
 
-    const bool is_last_optimizer = m_index_feasibility_separation == m_optimizer_feasibility_separation.size() - 1;
+    const bool is_last_optimizer = m_index_joint_separation == m_optimizer_joint_separation.size() - 1;
 
     if (status != Optimal && status != Feasible) {
         if (!is_last_optimizer) { // If we can, skip this optimizer
-            ++m_index_feasibility_separation;
+            ++m_index_joint_separation;
         } else { // otherwise, it's a fail
             set_status(Fail);
             set_reason(high_point_relaxation.get_reason());
