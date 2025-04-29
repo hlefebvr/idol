@@ -110,6 +110,8 @@ public:
     void add_kkt_reformulation(idol::Model &t_destination);
 
     void add_kkt_reformulation(idol::Model &t_destination, BoundProvider& t_bound_provider);
+
+    void add_bounds_on_dual_variables(idol::Model &t_destination, BoundProvider& t_bound_provider);
 };
 
 class idol::Reformulators::KKT::BoundProvider {

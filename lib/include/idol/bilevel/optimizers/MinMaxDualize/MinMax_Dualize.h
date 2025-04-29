@@ -8,6 +8,7 @@
 #include "idol/general/optimizers/OptimizerFactory.h"
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/bilevel/optimizers/BilevelOptimizerInterface.h"
+#include "idol/mixed-integer/modeling/models/KKT.h"
 
 namespace idol::Bilevel::MinMax {
     class Dualize;
@@ -34,6 +35,8 @@ public:
     Dualize& operator+=(const OptimizerFactory& t_optimizer) { return with_single_level_optimizer(t_optimizer); }
 
     static Model make_model(const Model& t_model, const Bilevel::Description& t_description);
+
+    static Model make_model(const Model& t_model, const Bilevel::Description& t_description, ::idol::Reformulators::KKT::BoundProvider& t_bound_provider);
 };
 
 namespace idol {

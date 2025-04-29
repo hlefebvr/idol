@@ -672,3 +672,22 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination,
     t_bound_provider.m_model = nullptr;
 
 }
+
+void idol::Reformulators::KKT::add_bounds_on_dual_variables(idol::Model &t_destination, idol::Reformulators::KKT::BoundProvider &t_bound_provider) {
+
+    for (const auto& ctr : m_primal.ctrs())  {
+
+        const auto index = m_primal.get_ctr_index(ctr);
+        const auto& dual_var = *m_dual_variables_for_constraints[index];
+
+        if (is_neg_inf(t_destination.get_var_lb(dual_var))) {
+            t_destination.set_var_lb(dual_var, t_bound_provider.get_ctr_dual_lb(ctr));
+        }
+
+        if (is_pos_inf(t_destination.get_var_ub(dual_var))) {
+            t_destination.set_var_ub(dual_var, t_bound_provider.get_ctr_dual_ub(ctr));
+        }
+
+    }
+
+}
