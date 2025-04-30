@@ -415,4 +415,12 @@ void idol::Optimizers::Osi::hook_remove(const idol::QCtr &t_ctr) {
     throw Exception("Quadratic expressions are not supported by Osi.");
 }
 
+int idol::Optimizers::Osi::hook_add(const idol::SOSCtr &t_ctr) {
+    throw Exception("SOS constraints are not supported by Osi.");
+}
+
+void idol::Optimizers::Osi::hook_remove(const idol::SOSCtr &t_ctr) {
+    throw Exception("SOS constraints are not supported by Osi.");
+}
+
 #endif

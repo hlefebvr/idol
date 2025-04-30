@@ -45,6 +45,7 @@ protected:
     GRBVar hook_add(const Var& t_var, bool t_add_column) override;
     GRBConstr hook_add(const Ctr& t_ctr) override;
     GRBQConstr hook_add(const QCtr& t_ctr) override;
+    GRBSOS hook_add(const SOSCtr& t_ctr) override;
     void hook_update(const Var& t_var) override;
     void hook_update(const Ctr& t_ctr) override;
     void hook_update_objective_sense() override;
@@ -55,6 +56,7 @@ protected:
     void hook_remove(const Var& t_var) override;
     void hook_remove(const Ctr& t_ctr) override;
     void hook_remove(const QCtr& t_ctr) override;
+    void hook_remove(const SOSCtr& t_ctr) override;
     void update_objective_constant();
 
     [[nodiscard]] SolutionStatus get_status() const override;

@@ -22,67 +22,40 @@ class idol::Optimizers::Osi : public OptimizerWithLazyUpdates<int, int, int, int
     std::unique_ptr<OsiSolverInterface> m_solver_interface;
 public:
     [[nodiscard]] std::string name() const override;
-
     [[nodiscard]] SolutionStatus get_status() const override;
-
     [[nodiscard]] SolutionReason get_reason() const override;
-
     [[nodiscard]] double get_best_obj() const override;
-
     [[nodiscard]] double get_best_bound() const override;
-
     [[nodiscard]] double get_var_primal(const Var &t_var) const override;
-
     [[nodiscard]] double get_var_reduced_cost(const Var &t_var) const override;
-
     [[nodiscard]] double get_var_ray(const Var &t_var) const override;
-
     [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
-
     [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
-
     [[nodiscard]] double get_relative_gap() const override;
-
     [[nodiscard]] double get_absolute_gap() const override;
-
     [[nodiscard]] unsigned int get_n_solutions() const override;
-
     [[nodiscard]] unsigned int get_solution_index() const override;
 
 protected:
     void hook_optimize() override;
-
     void set_solution_index(unsigned int t_index) override;
-
     void hook_build() override;
-
     void hook_write(const std::string &t_name) override;
-
     int hook_add(const Var &t_var, bool t_add_column) override;
-
     int hook_add(const Ctr &t_ctr) override;
-
     int hook_add(const QCtr &t_ctr) override;
-
+    int hook_add(const SOSCtr &t_ctr) override;
     void hook_update_objective_sense() override;
-
     void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) override;
-
     void hook_update() override;
-
     void hook_update(const Var &t_var) override;
-
     void hook_update(const Ctr &t_ctr) override;
-
     void hook_update_objective() override;
-
     void hook_update_rhs() override;
-
     void hook_remove(const Var &t_var) override;
-
     void hook_remove(const Ctr &t_ctr) override;
-
     void hook_remove(const QCtr &t_ctr) override;
+    void hook_remove(const SOSCtr &t_ctr) override;
 public:
     Osi(const Model& t_model, const OsiSolverInterface& t_solver_interface, bool t_continuous_relaxation);
 

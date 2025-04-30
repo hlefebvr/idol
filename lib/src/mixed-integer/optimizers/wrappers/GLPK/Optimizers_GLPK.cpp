@@ -828,4 +828,12 @@ void idol::Optimizers::GLPK::hook_remove(const idol::QCtr &t_ctr) {
     throw Exception("Removing quadratic constraints is not implemeted.");
 }
 
+int idol::Optimizers::GLPK::hook_add(const idol::SOSCtr &t_ctr) {
+    throw Exception("SOS constraints are not supported by GLPK.");
+}
+
+void idol::Optimizers::GLPK::hook_remove(const idol::SOSCtr &t_ctr) {
+    throw Exception("SOS constraints are not supported by GLPK.");
+}
+
 #endif

@@ -681,4 +681,44 @@ idol::CplexCallbackI &idol::Optimizers::Cplex::get_cplex_callback_interface() {
     return *m_cplex_callback;
 }
 
+std::variant<IloSOS1, IloSOS2> idol::Optimizers::Cplex::hook_add(const idol::SOSCtr &t_ctr) {
+
+    const auto& model = parent();
+
+    const auto& src_vars = model.get_sosctr_vars(t_ctr);
+    const auto n = src_vars.size();
+    IloNumVarArray vars(m_env, (int) n);
+    for (unsigned int i = 0 ; i < n ; ++i) {
+        vars[i] = lazy(src_vars[i]).impl();
+    }
+
+    const auto& src_weights = model.get_sosctr_weights(t_ctr);
+    IloNumArray weights(m_env, (int) n);
+    for (unsigned int i = 0 ; i < n ; ++i) {
+        weights[i] = cplex_numeric(src_weights[i]);
+    }
+
+    if (model.is_sos1(t_ctr)) {
+        auto c = IloSOS1(m_env, vars, weights, t_ctr.name().c_str());
+        m_model.add(c);
+        return c;
+    }
+
+    auto c = IloSOS2(m_env, vars, weights, t_ctr.name().c_str());
+    m_model.add(c);
+    return c;
+
+}
+
+void idol::Optimizers::Cplex::hook_remove(const idol::SOSCtr &t_ctr) {
+    const auto& impl = lazy(t_ctr).impl();
+
+    if (std::holds_alternative<IloSOS1>(impl)) {
+        m_model.remove(std::get<IloSOS1>(impl));
+    } else {
+        m_model.remove(std::get<IloSOS2>(impl));
+    }
+
+}
+
 #endif

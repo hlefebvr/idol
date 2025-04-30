@@ -49,6 +49,7 @@ protected:
     IloNumVar hook_add(const Var& t_var, bool t_add_column) override;
     IloRange hook_add(const Ctr& t_ctr) override;
     IloRange hook_add(const QCtr& t_ctr) override;
+    std::variant<IloSOS1, IloSOS2> hook_add(const SOSCtr& t_ctr) override;
     void hook_update(const Var& t_var) override;
     void hook_update(const Ctr& t_ctr) override;
     void hook_update_objective_sense() override;
@@ -59,6 +60,7 @@ protected:
     void hook_remove(const Var& t_var) override;
     void hook_remove(const Ctr& t_ctr) override;
     void hook_remove(const QCtr& t_ctr) override;
+    void hook_remove(const SOSCtr& t_ctr) override;
     void update_objective_constant();
 
     [[nodiscard]] SolutionStatus get_status() const override;

@@ -27,45 +27,27 @@ class idol::Optimizers::HiGHS  : public OptimizerWithLazyUpdates<int, int, int, 
     double* m_farkas_certificate = nullptr;
 protected:
     void hook_build() override;
-
     void hook_optimize() override;
-
     void run_without_presolve();
-
     void hook_write(const std::string &t_name) override;
-
     int hook_add(const Var &t_var, bool t_add_column) override;
-
     int hook_add(const Ctr &t_ctr) override;
-
     int hook_add(const QCtr &t_ctr) override;
-
+    int hook_add(const SOSCtr &t_ctr) override;
     void hook_update_objective_sense() override;
-
     void update_objective_constant();
-
     void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) override;
-
     void hook_update() override;
-
     void hook_update(const Var &t_var) override;
-
     void hook_update(const Ctr &t_ctr) override;
-
     void hook_update_objective() override;
-
     void hook_update_rhs() override;
-
     void hook_remove(const Var &t_var) override;
-
     void hook_remove(const Ctr &t_ctr) override;
-
     void hook_remove(const QCtr &t_ctr) override;
-
+    void hook_remove(const SOSCtr &t_ctr) override;
     void set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj);
-
     void set_var_type(int t_index, int t_type);
-
     void set_ctr_attr(int t_index, int t_type, double t_rhs);
 
     [[nodiscard]] SolutionStatus get_status() const override;
