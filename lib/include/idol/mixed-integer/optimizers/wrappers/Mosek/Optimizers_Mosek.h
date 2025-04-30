@@ -34,7 +34,7 @@ namespace idol {
     }
 }
 
-class idol::Optimizers::Mosek : public OptimizerWithLazyUpdates<MosekVar, MosekCtr, MosekCtr> {
+class idol::Optimizers::Mosek : public OptimizerWithLazyUpdates<MosekVar, MosekCtr, MosekCtr, bool> {
     bool m_continuous_relaxation;
 
     mosek::fusion::Model::t m_model;

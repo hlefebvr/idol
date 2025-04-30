@@ -16,7 +16,7 @@ namespace idol::Optimizers {
     class GLPK;
 }
 
-class idol::Optimizers::GLPK  : public OptimizerWithLazyUpdates<int, int, int> {
+class idol::Optimizers::GLPK  : public OptimizerWithLazyUpdates<int, int, int, int> {
 
     bool m_continuous_relaxation;
 

@@ -15,7 +15,7 @@ namespace idol::Optimizers {
     class HiGHS;
 }
 
-class idol::Optimizers::HiGHS  : public OptimizerWithLazyUpdates<int, int, int> {
+class idol::Optimizers::HiGHS  : public OptimizerWithLazyUpdates<int, int, int, int> {
 
     bool m_continuous_relaxation;
 

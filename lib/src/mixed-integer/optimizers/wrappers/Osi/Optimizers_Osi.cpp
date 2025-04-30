@@ -10,7 +10,7 @@
 idol::Optimizers::Osi::Osi(const idol::Model &t_model,
                            const OsiSolverInterface &t_solver_interface,
                            bool t_continuous_relaxation)
-                           : OptimizerWithLazyUpdates<int, int, int>(t_model),
+                           : OptimizerWithLazyUpdates(t_model),
                              m_solver_interface(t_solver_interface.clone()),
                              m_continuous_relaxation(t_continuous_relaxation) {
 

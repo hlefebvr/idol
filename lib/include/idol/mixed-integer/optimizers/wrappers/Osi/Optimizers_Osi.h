@@ -15,39 +15,39 @@ namespace idol::Optimizers {
     class Osi;
 }
 
-class idol::Optimizers::Osi : public OptimizerWithLazyUpdates<int, int, int> {
+class idol::Optimizers::Osi : public OptimizerWithLazyUpdates<int, int, int, int> {
     bool m_continuous_relaxation;
     bool m_is_resolve = false;
 
     std::unique_ptr<OsiSolverInterface> m_solver_interface;
 public:
-    std::string name() const override;
+    [[nodiscard]] std::string name() const override;
 
-    SolutionStatus get_status() const override;
+    [[nodiscard]] SolutionStatus get_status() const override;
 
-    SolutionReason get_reason() const override;
+    [[nodiscard]] SolutionReason get_reason() const override;
 
-    double get_best_obj() const override;
+    [[nodiscard]] double get_best_obj() const override;
 
-    double get_best_bound() const override;
+    [[nodiscard]] double get_best_bound() const override;
 
-    double get_var_primal(const Var &t_var) const override;
+    [[nodiscard]] double get_var_primal(const Var &t_var) const override;
 
-    double get_var_reduced_cost(const Var &t_var) const override;
+    [[nodiscard]] double get_var_reduced_cost(const Var &t_var) const override;
 
-    double get_var_ray(const Var &t_var) const override;
+    [[nodiscard]] double get_var_ray(const Var &t_var) const override;
 
-    double get_ctr_dual(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
 
-    double get_ctr_farkas(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
 
-    double get_relative_gap() const override;
+    [[nodiscard]] double get_relative_gap() const override;
 
-    double get_absolute_gap() const override;
+    [[nodiscard]] double get_absolute_gap() const override;
 
-    unsigned int get_n_solutions() const override;
+    [[nodiscard]] unsigned int get_n_solutions() const override;
 
-    unsigned int get_solution_index() const override;
+    [[nodiscard]] unsigned int get_solution_index() const override;
 
 protected:
     void hook_optimize() override;

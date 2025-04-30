@@ -27,7 +27,7 @@ struct idol::Optimizers::impl::CplexEnvKiller {
     ~CplexEnvKiller() { env.end(); }
 };
 
-class idol::Optimizers::Cplex : public OptimizerWithLazyUpdates<IloNumVar, IloRange, IloRange> {
+class idol::Optimizers::Cplex : public OptimizerWithLazyUpdates<IloNumVar, IloRange, IloRange, std::variant<IloSOS1, IloSOS2>> {
     static std::unique_ptr<impl::CplexEnvKiller> s_global_env;
 
     IloEnv m_env;

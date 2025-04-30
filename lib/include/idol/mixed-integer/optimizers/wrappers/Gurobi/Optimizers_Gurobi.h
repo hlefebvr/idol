@@ -18,7 +18,7 @@ namespace idol::Optimizers {
     class Gurobi;
 }
 
-class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, GRBConstr, GRBQConstr> {
+class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, GRBConstr, GRBQConstr, GRBSOS> {
     friend class ::idol::GurobiCallbackI;
     static std::unique_ptr<GRBEnv> s_global_env;
 
