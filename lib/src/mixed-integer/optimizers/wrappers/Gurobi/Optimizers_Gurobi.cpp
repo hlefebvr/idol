@@ -694,4 +694,25 @@ void idol::Optimizers::Gurobi::hook_remove(const idol::QCtr &t_ctr) {
     m_model.remove(lazy(t_ctr).impl());
 }
 
+GRBSOS idol::Optimizers::Gurobi::hook_add(const idol::SOSCtr &t_ctr) {
+
+    const auto& model = parent();
+    const auto src_vars = model.get_sosctr_vars(t_ctr);
+    const auto n = src_vars.size();
+
+    auto* vars = new GRBVar[n];
+    for (unsigned int i = 0 ; i < n ; ++i) {
+        vars[i] = lazy(src_vars[i]).impl();
+    }
+
+    auto* weights = model.get_sosctr_weights(t_ctr).data();
+    const auto type = model.is_sos1(t_ctr) == 1 ? GRB_SOS_TYPE1 : GRB_SOS_TYPE2;
+
+    return m_model.addSOS(vars, weights, (int) n, type);
+}
+
+void idol::Optimizers::Gurobi::hook_remove(const idol::SOSCtr &t_ctr) {
+    m_model.remove(lazy(t_ctr).impl());
+}
+
 #endif

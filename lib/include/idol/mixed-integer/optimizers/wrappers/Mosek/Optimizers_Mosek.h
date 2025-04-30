@@ -34,7 +34,7 @@ namespace idol {
     }
 }
 
-class idol::Optimizers::Mosek : public OptimizerWithLazyUpdates<MosekVar, MosekCtr, MosekCtr> {
+class idol::Optimizers::Mosek : public OptimizerWithLazyUpdates<MosekVar, MosekCtr, MosekCtr, bool> {
     bool m_continuous_relaxation;
 
     mosek::fusion::Model::t m_model;
@@ -50,36 +50,23 @@ protected:
     [[nodiscard]] mosek::fusion::Expression::t to_mosek_expression(const AffExpr<Var>& t_expr) const;
 
     void hook_build() override;
-
     void hook_optimize() override;
-
     void hook_write(const std::string &t_name) override;
-
     MosekVar hook_add(const Var &t_var, bool t_add_column) override;
-
     MosekCtr hook_add(const Ctr &t_ctr) override;
-
     MosekCtr hook_add(const QCtr &t_ctr) override;
-
+    bool hook_add(const SOSCtr &t_ctr) override;
     void hook_update_objective_sense() override;
-
     void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) override;
-
     void hook_update() override;
-
     void hook_update(const Var &t_var) override;
-
     void hook_update(const Ctr &t_ctr) override;
-
     void hook_update_objective() override;
-
     void hook_update_rhs() override;
-
     void hook_remove(const Var &t_var) override;
-
     void hook_remove(const Ctr &t_ctr) override;
-
     void hook_remove(const QCtr &t_ctr) override;
+    void hook_remove(const SOSCtr &t_ctr) override;
 
     [[nodiscard]] SolutionStatus get_status() const override;
     [[nodiscard]] SolutionReason get_reason() const override;

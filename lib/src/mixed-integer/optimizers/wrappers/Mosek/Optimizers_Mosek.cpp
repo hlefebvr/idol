@@ -593,11 +593,19 @@ void idol::Optimizers::Mosek::add_callback(idol::Callback *t_ptr_to_callback) {
 }
 
 idol::MosekCtr idol::Optimizers::Mosek::hook_add(const idol::QCtr &t_ctr) {
-    throw Exception("Quadratic constraints are not implemented");
+    throw Exception("Quadratic constraints are not implemented.");
 }
 
 void idol::Optimizers::Mosek::hook_remove(const idol::QCtr &t_ctr) {
-    throw Exception("Quadratic constraints are not implemented");
+    throw Exception("Quadratic constraints are not implemented.");
+}
+
+bool idol::Optimizers::Mosek::hook_add(const idol::SOSCtr &t_ctr) {
+    throw Exception("SOS constraints are not supported by Mosek.");
+}
+
+void idol::Optimizers::Mosek::hook_remove(const idol::SOSCtr &t_ctr) {
+    throw Exception("SOS constraints are not supported by Mosek.");
 }
 
 idol::MosekKiller::~MosekKiller() {

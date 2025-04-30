@@ -1145,7 +1145,7 @@ void idol::Model::add(const idol::SOSCtr &t_ctr,
     m_sosconstraints.emplace_back(t_ctr);
 
     if (has_optimizer()) {
-        throw Exception("SOS constraints are not supported by the optimizers.");
+        optimizer().add(t_ctr);
     }
 
 }
@@ -1166,8 +1166,7 @@ void idol::Model::add(const idol::SOSCtr &t_ctr) {
 void idol::Model::remove(const idol::SOSCtr &t_ctr) {
 
     if (has_optimizer()) {
-        throw Exception("SOS constraints are not supported by the optimizers.");
-        // optimizer().remove(t_ctr);
+        optimizer().remove(t_ctr);
     }
 
     const auto index = m_env.version(*this, t_ctr).index();

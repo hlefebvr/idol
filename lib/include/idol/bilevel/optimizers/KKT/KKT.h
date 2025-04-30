@@ -42,7 +42,7 @@ public:
 
     KKT& operator+=(const OptimizerFactory& t_optimizer) { return with_single_level_optimizer(t_optimizer); }
 
-    static Model make_model(const Model& t_model, const Bilevel::Description& t_description);
+    static Model make_model(const Model& t_model, const Bilevel::Description& t_description, bool t_use_sos1 = false);
 
     static Model make_model(const Model& t_model, const Bilevel::Description& t_description, Reformulators::KKT::BoundProvider& t_bound_provider);
 };

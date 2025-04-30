@@ -17,7 +17,7 @@ namespace idol {
     class Var;
     class Ctr;
     class QCtr;
-    class Constant;
+    class SOSCtr;
 
     namespace impl {
         class Optimizer;
@@ -54,10 +54,16 @@ protected:
     virtual void add(const Var& t_var) = 0;
     virtual void add(const Ctr& t_ctr) = 0;
     virtual void add(const QCtr& t_ctr) = 0;
+    virtual void add(const SOSCtr& t_ctr) {
+        throw Exception("SOS constraints are not supported by this optimizer.");
+    }
 
     virtual void remove(const Var& t_var) = 0;
     virtual void remove(const Ctr& t_ctr) = 0;
     virtual void remove(const QCtr& t_ctr) = 0;
+    virtual void remove(const SOSCtr& t_ctr) {
+        throw Exception("SOS constraints are not supported by this optimizer.");
+    }
 
     virtual void update() = 0;
 

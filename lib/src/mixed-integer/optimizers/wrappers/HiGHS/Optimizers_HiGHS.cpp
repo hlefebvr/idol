@@ -526,4 +526,12 @@ void idol::Optimizers::HiGHS::hook_remove(const idol::QCtr &t_ctr) {
     throw Exception("Quadratic expressions are not implemented.");
 }
 
+int idol::Optimizers::HiGHS::hook_add(const idol::SOSCtr &t_ctr) {
+    throw Exception("SOS constraints are not supported by HiGHS.");
+}
+
+void idol::Optimizers::HiGHS::hook_remove(const idol::SOSCtr &t_ctr) {
+    throw Exception("SOS constraints are not supported by HiGHS.");
+}
+
 #endif

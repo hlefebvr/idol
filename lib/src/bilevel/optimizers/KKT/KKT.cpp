@@ -71,7 +71,7 @@ idol::Bilevel::KKT::KKT(const idol::Bilevel::KKT &t_src)
 }
 
 idol::Model
-idol::Bilevel::KKT::make_model(const idol::Model &t_model, const idol::Bilevel::Description &t_description) {
+idol::Bilevel::KKT::make_model(const idol::Model &t_model, const idol::Bilevel::Description &t_description, bool t_use_sos1) {
 
     if (t_model.get_obj_sense() != Minimize) {
         throw Exception("Only minimization problems are supported.");
@@ -83,7 +83,7 @@ idol::Bilevel::KKT::make_model(const idol::Model &t_model, const idol::Bilevel::
 
     Model result(env);
     reformulator.add_coupling_variables(result);
-    reformulator.add_kkt_reformulation(result);
+    reformulator.add_kkt_reformulation(result, t_use_sos1);
     reformulator.add_coupling_constraints(result);
     result.set_obj_expr(t_model.get_obj_expr());
 
