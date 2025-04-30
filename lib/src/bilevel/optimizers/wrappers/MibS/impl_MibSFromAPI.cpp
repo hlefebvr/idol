@@ -48,6 +48,8 @@ void idol::impl::MibSFromAPI::load_auxiliary_data() {
     auto lower_level_objective_coefficients = find_lower_level_objective_coefficients(lower_level_variables_indices);
     auto [lower_level_lower_bounds, lower_level_upper_bounds] = find_lower_level_bounds(lower_level_variables_indices);
 
+    assert(upper_level_constraints_indices.size() + lower_level_constraints_indices.size() == m_n_ctr_in_mibs);
+
     m_mibs.loadAuxiliaryData(
             (int) lower_level_variables_indices.size(),
             (int) lower_level_constraints_indices.size(),
@@ -76,6 +78,14 @@ void idol::impl::MibSFromAPI::load_problem_data() {
     auto matrix = parse_matrix();
     auto objective = parse_objective();
 
+    assert(constraint_lower_bounds.size() == m_n_ctr_in_mibs);
+    assert(constraint_upper_bounds.size() == m_n_ctr_in_mibs);
+    assert(constraint_types.size() == m_n_ctr_in_mibs);
+    assert(matrix.getNumRows() == m_n_ctr_in_mibs);
+    assert(variable_lower_bounds.size() == m_model.vars().size());
+    assert(variable_upper_bounds.size() == m_model.vars().size());
+    assert(variable_types.size() == m_model.vars().size());
+
     m_mibs.loadProblemData(
             matrix,
             variable_lower_bounds.data(),
@@ -95,7 +105,7 @@ void idol::impl::MibSFromAPI::solve() {
 
     m_osi_solver->messageHandler()->setLogLevel(0);
     m_mibs.setSolver(m_osi_solver.get());
-    const auto time_limit = std::to_string(m_model.optimizer().get_remaining_time());
+    const auto time_limit = std::to_string(std::ceil(m_model.optimizer().get_remaining_time()));
 
     int argc = 5;
     const char* argv[] = {"./mibs",
@@ -171,16 +181,30 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibSFromAPI::dispatch_
     std::vector<int> upper_level;
     std::vector<int> lower_level;
 
-    for (const auto& ctr : m_model.ctrs()) {
+    const unsigned int n_ctrs = m_model.ctrs().size();
+    m_ctr_indices_in_mibs.resize(n_ctrs);
 
+    unsigned int index_in_mibs = 0;
+    for (unsigned int i = 0 ; i < n_ctrs ; ++i) {
+
+        const auto& ctr = m_model.get_ctr_by_index(i);
         auto& level = m_description.is_upper(ctr) ? upper_level : lower_level;
-        const auto index = m_model.get_ctr_index(ctr);
+        auto type = m_model.get_ctr_type(ctr);
 
-        level.emplace_back(index);
+        level.emplace_back(index_in_mibs);
+        ++index_in_mibs;
+
+        if (type == Equal) {
+            m_ctr_indices_in_mibs[i] = { index_in_mibs - 1, index_in_mibs };
+            level.emplace_back(index_in_mibs);
+            ++index_in_mibs;
+        } else {
+            m_ctr_indices_in_mibs[i] = { index_in_mibs - 1 };
+        }
+
+        m_n_ctr_in_mibs += m_ctr_indices_in_mibs[i].size();
 
     }
-
-    assert(upper_level.size() + lower_level.size() == m_model.ctrs().size());
 
     return {
             std::move(upper_level),
@@ -222,8 +246,8 @@ idol::impl::MibSFromAPI::find_lower_level_bounds(const std::vector<int> &t_lower
         const double lower_bound = m_model.get_var_lb(var);
         const double upper_bound = m_model.get_var_ub(var);
 
-        lb.emplace_back(lower_bound);
-        ub.emplace_back(upper_bound);
+        lb.emplace_back(is_neg_inf(lower_bound) ? -m_osi_solver->getInfinity() : lower_bound);
+        ub.emplace_back(is_pos_inf(upper_bound) ? m_osi_solver->getInfinity() : upper_bound);
 
     }
 
@@ -271,21 +295,21 @@ std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> idol::im
 std::tuple<std::vector<double>, std::vector<double>, std::vector<char>>
 idol::impl::MibSFromAPI::parse_constraints() {
 
-    const auto n_constraints = m_model.ctrs().size();
-
     std::vector<double> lower_bounds;
     std::vector<double> upper_bounds;
     std::vector<char> types;
 
-    lower_bounds.reserve(n_constraints);
-    upper_bounds.reserve(n_constraints);
-    types.reserve(n_constraints);
+    lower_bounds.reserve(m_n_ctr_in_mibs);
+    upper_bounds.reserve(m_n_ctr_in_mibs);
+    types.reserve(m_n_ctr_in_mibs);
 
-    for (const auto& ctr : m_model.ctrs()) {
+    for (unsigned int i = 0, n = m_model.ctrs().size() ; i < n ; ++i) {
 
-        const auto& row = m_model.get_ctr_row(ctr);
+        const auto ctr = m_model.get_ctr_by_index(i);
         const auto type = m_model.get_ctr_type(ctr);
         const auto rhs = m_model.get_ctr_rhs(ctr);
+
+        assert(!is_inf(rhs));
 
         switch (type) {
             case LessOrEqual:
@@ -300,8 +324,12 @@ idol::impl::MibSFromAPI::parse_constraints() {
                 break;
             case Equal:
                 lower_bounds.emplace_back(rhs);
+                upper_bounds.emplace_back(std::numeric_limits<double>::infinity());
+                types.emplace_back('G');
+
+                lower_bounds.emplace_back(-std::numeric_limits<double>::infinity());
                 upper_bounds.emplace_back(rhs);
-                types.emplace_back('E');
+                types.emplace_back('L');
                 break;
             default:
                 throw Exception("Enum out of bounds.");
@@ -332,9 +360,9 @@ CoinPackedMatrix idol::impl::MibSFromAPI::parse_matrix() {
         CoinPackedVector vector;
         vector.reserve((int) lin.size());
         for (const auto& [ctr, constant] : lin) {
-            const auto index = m_model.get_ctr_index(ctr);
-            const double coefficient = constant;
-            vector.insert((int) index, coefficient);
+            for (auto index : m_ctr_indices_in_mibs[m_model.get_ctr_index(ctr)]) {
+                vector.insert((int) index, constant);
+            }
         }
 
         vector.sortIncrIndex();

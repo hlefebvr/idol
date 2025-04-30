@@ -31,6 +31,9 @@ class idol::impl::MibSFromAPI : public idol::impl::MibS {
     std::unique_ptr<AlpsKnowledgeBroker> m_broker;
     std::unique_ptr<OsiSolverInterface> m_osi_solver;
 
+    std::vector<std::vector<unsigned int>> m_ctr_indices_in_mibs;
+    unsigned int m_n_ctr_in_mibs = 0;
+
     static char to_mibs_type(VarType t_type);
 
     void load_auxiliary_data();

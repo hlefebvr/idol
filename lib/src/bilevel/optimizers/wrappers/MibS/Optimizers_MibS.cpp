@@ -107,7 +107,7 @@ void idol::Optimizers::Bilevel::MibS::write(const std::string &t_name) {
 void idol::Optimizers::Bilevel::MibS::hook_optimize() {
 
     if (m_mibs) {
-        //return;
+        return;
     }
 
     if (m_use_file) {
