@@ -107,7 +107,7 @@ public:
      * The KKT reformulation is considered only for the indicated constraints and variables.
      * @param t_destination
      */
-    void add_kkt_reformulation(idol::Model &t_destination);
+    void add_kkt_reformulation(idol::Model &t_destination, bool t_use_sos1 = false);
 
     void add_kkt_reformulation(idol::Model &t_destination, BoundProvider& t_bound_provider);
 

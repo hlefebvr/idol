@@ -79,7 +79,7 @@ void idol::Reformulators::KKT::create_dual_variables() {
 
         const auto [lb, ub] = bounds_for_dual_variable(type);
 
-        m_dual_variables_for_constraints[index] = Var(env,  lb, ub, Continuous, 0, m_prefix + "dual_" + ctr.name());
+        m_dual_variables_for_constraints[index] = Var(env,  lb, ub, Continuous, 0, m_prefix + "__dual_" + ctr.name());
 
     }
 
@@ -97,7 +97,7 @@ void idol::Reformulators::KKT::create_dual_variables() {
 
         const auto [lb, ub] = bounds_for_dual_variable(type);
 
-        m_dual_variables_for_qconstraints[index] = Var(env, lb, ub, Continuous, 0, m_prefix + "dual_" + qctr.name());
+        m_dual_variables_for_qconstraints[index] = Var(env, lb, ub, Continuous, 0, m_prefix + "__dual_" + qctr.name());
 
     }
 
@@ -117,7 +117,7 @@ void idol::Reformulators::KKT::create_dual_variables() {
             continue;
         }
 
-        m_dual_variables_for_lower_bounds[index] = Var(env, 0, Inf, Continuous, 0, m_prefix + "dual_lb_" + var.name());
+        m_dual_variables_for_lower_bounds[index] = Var(env, 0, Inf, Continuous, 0, m_prefix + "__dual_lb_" + var.name());
 
     }
 
@@ -137,7 +137,7 @@ void idol::Reformulators::KKT::create_dual_variables() {
             continue;
         }
 
-        m_dual_variables_for_upper_bounds[index] = Var(env, -Inf, 0, Continuous, 0, "dual_ub_" + var.name());
+        m_dual_variables_for_upper_bounds[index] = Var(env, -Inf, 0, Continuous, 0, "__dual_ub_" + var.name());
 
     }
 
@@ -338,13 +338,13 @@ void idol::Reformulators::KKT::create_dual_constraints() {
                                                     std::move(dual_constraint_expression.affine().linear()),
                                                     Equal,
                                                     -dual_constraint_expression.affine().constant()),
-                                            "dual_" + var.name());
+                                            "__dual_" + var.name());
         } else {
             m_dual_constraints[index] = QCtr(env,
                                              TempQCtr(
                                                      std::move(dual_constraint_expression),
                                                      Equal),
-                                             "dual_" + var.name());
+                                             "__dual_" + var.name());
         }
 
     }
@@ -533,13 +533,14 @@ void idol::Reformulators::KKT::add_strong_duality_reformulation(idol::Model &t_d
     auto duality_gap = m_primal_objective - m_dual_objective;
 
     if (duality_gap.has_quadratic()) {
-        t_destination.add_qctr(std::move(duality_gap), LessOrEqual, "strong_duality");
+        t_destination.add_qctr(std::move(duality_gap), LessOrEqual, "__strong_duality");
     } else {
-        t_destination.add_ctr(std::move(duality_gap.affine()) <= 0, "strong_duality");
+        t_destination.add_ctr(std::move(duality_gap.affine()) <= 0, "__strong_duality");
     }
 }
 
-void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination) {
+void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination,
+                                                     bool t_use_sos1) {
 
     add_primal_variables(t_destination);
     add_dual_variables(t_destination);
@@ -547,8 +548,19 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination)
     add_primal_constraints(t_destination);
     add_dual_constraints(t_destination);
 
-    for (const auto& ctr : m_primal.ctrs())  {
+    const auto add_qctr =
+            [&](const AffExpr<Var>& t_ctr_expr, const Var& t_dual_var, std::string t_name) {
+                t_destination.add_qctr(t_ctr_expr * t_dual_var, Equal, std::move(t_name));
+            };
 
+    const auto add_sos1 =
+            [&](const AffExpr<Var>& t_ctr_expr, const Var& t_dual_var, std::string t_name) {
+                const auto slack = t_destination.add_var(-Inf, Inf, Continuous, 0, "__slack_" + t_name);
+                t_destination.add_ctr(t_ctr_expr == slack, std::move(t_name));
+                t_destination.add_sosctr(true, { slack, t_dual_var }, {1, 2}, "__complementarity_" + std::move(t_name));
+            };
+
+    for (const auto& ctr : m_primal.ctrs())  {
 
         if (!m_primal_constraint_indicator(ctr)) {
             continue;
@@ -561,11 +573,18 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination)
         }
 
         const auto index = m_primal.get_ctr_index(ctr);
-        const auto& dual_var = *m_dual_variables_for_constraints[index];
         const auto& row = m_primal.get_ctr_row(ctr);
         const auto rhs = m_primal.get_ctr_rhs(ctr);
 
-        t_destination.add_qctr((row - rhs) * dual_var, Equal, "complementarity_" + ctr.name());
+        const auto& dual_var = *m_dual_variables_for_constraints[index];
+        const auto ctr_expr = row - rhs;
+
+        if (t_use_sos1) {
+            add_sos1(ctr_expr, dual_var, ctr.name());
+        } else {
+            add_qctr(ctr_expr, dual_var, ctr.name());
+        }
+
     }
 
     for (const auto& var : m_primal.vars()) {
@@ -577,13 +596,30 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination)
         const double ub = m_primal.get_var_ub(var);
 
         if (!is_neg_inf(lb)) {
+
             const auto& dual_var = *m_dual_variables_for_lower_bounds[index];
-            t_destination.add_qctr((var - lb) * dual_var, Equal, "complementarity_lb_" + var.name());
+            const auto ctr_expr = var - lb;
+            auto name = "lb_" + var.name();
+
+            if (t_use_sos1) {
+                add_sos1(ctr_expr, dual_var, std::move(name));
+            } else {
+                add_qctr(ctr_expr, dual_var, std::move(name));
+            }
         }
 
         if (!is_pos_inf(ub)) {
+
             const auto& dual_var = *m_dual_variables_for_upper_bounds[index];
-            t_destination.add_qctr((ub - var) * dual_var, Equal, "complementarity_ub_" + var.name());
+            const auto ctr_expr = var - ub;
+            auto name = "ub_" + var.name();
+
+            if (t_use_sos1) {
+                add_sos1(ctr_expr, dual_var, std::move(name));
+            } else {
+                add_qctr(ctr_expr, dual_var, std::move(name));
+            }
+
         }
 
     }
@@ -618,7 +654,7 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination,
         const auto& row = m_primal.get_ctr_row(ctr);
         const auto rhs = m_primal.get_ctr_rhs(ctr);
 
-        const auto z = t_destination.add_var(0, 1, Binary, 0, "complementarity_" + ctr.name());
+        const auto z = t_destination.add_var(0, 1, Binary, 0, "__complementarity_aux_" + ctr.name());
 
         if (type == LessOrEqual) {
 
@@ -653,7 +689,7 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination,
 
         if (!is_neg_inf(lb)) {
             const auto& dual_var = *m_dual_variables_for_lower_bounds[index];
-            const auto z = t_destination.add_var(0, 1, Binary, 0, "complementarity_lb_" + var.name());
+            const auto z = t_destination.add_var(0, 1, Binary, 0, "__complementarity_aux_lb_" + var.name());
 
             t_destination.add_ctr(dual_var <= t_bound_provider.get_var_lb_dual_ub(var) * z);
             t_destination.add_ctr(var - lb <= slack_bound * (1 - z));
@@ -661,7 +697,7 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination,
 
         if (!is_pos_inf(ub)) {
             const auto& dual_var = *m_dual_variables_for_upper_bounds[index];
-            const auto z = t_destination.add_var(0, 1, Binary, 0, "complementarity_ub_" + var.name());
+            const auto z = t_destination.add_var(0, 1, Binary, 0, "__complementarity_aux_ub_" + var.name());
 
             t_destination.add_ctr(dual_var >= t_bound_provider.get_var_ub_dual_lb(var) * z);
             t_destination.add_ctr(var - ub >= -slack_bound * (1 - z));

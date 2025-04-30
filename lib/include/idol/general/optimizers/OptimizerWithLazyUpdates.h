@@ -389,7 +389,7 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>:
 
     }
 
-    m_sosconstraints.clear();
+    m_sosconstraints_to_update.clear();
 
 }
 
