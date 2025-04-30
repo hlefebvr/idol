@@ -19,6 +19,7 @@ class idol::Optimizers::Bilevel::MinMax::Dualize : public Algorithm {
     std::unique_ptr<Model> m_deterministic_model;
     std::unique_ptr<Model> m_lower_level_model;
     std::unique_ptr<Reformulators::KKT::BoundProvider> m_bound_provider;
+    const bool m_use_sos1;
 
     const bool m_skip_solving_lower_level = false;
 
@@ -28,7 +29,8 @@ public:
     Dualize(const Model& t_parent,
             const idol::Bilevel::Description& t_description,
             const OptimizerFactory& t_deterministic_optimizer,
-            const std::unique_ptr<Reformulators::KKT::BoundProvider>& t_bound_provider);
+            const std::unique_ptr<Reformulators::KKT::BoundProvider>& t_bound_provider,
+            bool t_use_sos1);
 
     [[nodiscard]] std::string name() const override;
 

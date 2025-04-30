@@ -23,10 +23,15 @@ idol::Optimizer *idol::Bilevel::MinMax::Dualize::operator()(const idol::Model &t
         throw Exception("No deterministic optimizer has been set.");
     }
 
+    if (m_bound_provider && m_use_sos1) {
+        throw Exception("Cannot use both bound provider and SOS1 constraints.");
+    }
+
     auto* result = new Optimizers::Bilevel::MinMax::Dualize(t_model,
                                                             *m_description,
                                                             *m_single_level_optimizer,
-                                                            m_bound_provider);
+                                                            m_bound_provider,
+                                                            m_use_sos1.value_or(false));
 
     handle_default_parameters(result);
 
@@ -40,7 +45,7 @@ idol::OptimizerFactory *idol::Bilevel::MinMax::Dualize::clone() const {
 idol::Bilevel::MinMax::Dualize &
 idol::Bilevel::MinMax::Dualize::with_single_level_optimizer(const idol::OptimizerFactory &t_deterministic_optimizer) {
     if (m_single_level_optimizer) {
-        throw Exception("StrongDuality optimizer has already been set.");
+        throw Exception("Single-level optimizer has already been set.");
     }
     m_single_level_optimizer.reset(t_deterministic_optimizer.clone());
     return *this;
@@ -50,12 +55,13 @@ idol::Bilevel::MinMax::Dualize::Dualize(const idol::Bilevel::MinMax::Dualize &t_
         : OptimizerFactoryWithDefaultParameters<Dualize>(t_src),
           m_description(t_src.m_description),
           m_single_level_optimizer(t_src.m_single_level_optimizer ? t_src.m_single_level_optimizer->clone() : nullptr),
-          m_bound_provider(t_src.m_bound_provider ? t_src.m_bound_provider->clone() : nullptr) {
+          m_bound_provider(t_src.m_bound_provider ? t_src.m_bound_provider->clone() : nullptr),
+          m_use_sos1(t_src.m_use_sos1) {
 
 }
 
 idol::Model
-idol::Bilevel::MinMax::Dualize::make_model(const idol::Model &t_model, const idol::Bilevel::Description &t_description) {
+idol::Bilevel::MinMax::Dualize::make_model(const idol::Model &t_model, const idol::Bilevel::Description &t_description, bool t_use_sos1) {
 
     if (t_model.get_obj_sense() != Minimize) {
         throw Exception("Only minimization problems are supported.");
@@ -72,7 +78,37 @@ idol::Bilevel::MinMax::Dualize::make_model(const idol::Model &t_model, const ido
     result.set_obj_sense(Minimize);
     result.set_obj_expr(-result.get_obj_expr());
 
-    return result;
+    if (!t_use_sos1) {
+        return std::move(result);
+    }
+
+    for (const auto& [pair, coefficient] : result.get_obj_expr()) {
+
+        if (t_model.has(pair.first) && t_model.has(pair.second)) {
+            continue;
+        }
+
+        std::optional<Var> original_var, dual_var;
+
+        if (t_model.has(pair.first) && result.get_var_type(pair.first) == Binary) {
+            original_var = pair.first;
+            dual_var = pair.second;
+        }
+
+        if (t_model.has(pair.second) && result.get_var_type(pair.second) == Binary) {
+            original_var = pair.second;
+            dual_var = pair.first;
+        }
+
+        if (!original_var || !dual_var) {
+            throw Exception("Cannot linearize products involving non-binary variables.");
+        }
+
+        result.add_sosctr(true, {*original_var, *dual_var}, {1., 2.}, "__prod_" + original_var->name() + "_" + dual_var->name());
+
+    }
+
+    return std::move(result);
 }
 
 void idol::Bilevel::MinMax::Dualize::set_bilevel_description(const idol::Bilevel::Description &t_bilevel_description) {
@@ -151,6 +187,17 @@ idol::Bilevel::MinMax::Dualize::with_bound_provider(const idol::Reformulators::K
     }
 
     m_bound_provider.reset(t_bound_provider.clone());
+
+    return *this;
+}
+
+idol::Bilevel::MinMax::Dualize &idol::Bilevel::MinMax::Dualize::with_sos1_constraints(bool t_value) {
+
+    if (m_bound_provider) {
+        throw Exception("Cannot use both bound provider and SOS1 constraints.");
+    }
+
+    m_use_sos1 = t_value;
 
     return *this;
 }

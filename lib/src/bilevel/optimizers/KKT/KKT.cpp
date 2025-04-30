@@ -26,6 +26,10 @@ idol::Optimizer *idol::Bilevel::KKT::operator()(const idol::Model &t_model) cons
         throw Exception("No bilevel description has been set.");
     }
 
+    if (m_bound_provider && m_use_sos1) {
+        throw Exception("Cannot use both bound provider and SOS1 constraints.");
+    }
+
     auto* result = new Optimizers::Bilevel::KKT(t_model,
                                                 *m_description,
                                                 *m_single_level_optimizer,

@@ -15,7 +15,7 @@ namespace idol::Bilevel {
 }
 
 class idol::Bilevel::KKT : public OptimizerFactoryWithDefaultParameters<KKT>, public Bilevel::OptimizerInterface {
-    const Bilevel::Description* m_description;
+    const Bilevel::Description* m_description = nullptr;
     std::unique_ptr<OptimizerFactory> m_single_level_optimizer;
     std::unique_ptr<Reformulators::KKT::BoundProvider> m_bound_provider;
     std::optional<bool> m_use_sos1;
