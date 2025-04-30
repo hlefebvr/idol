@@ -29,7 +29,8 @@ idol::Optimizer *idol::Bilevel::KKT::operator()(const idol::Model &t_model) cons
     auto* result = new Optimizers::Bilevel::KKT(t_model,
                                                 *m_description,
                                                 *m_single_level_optimizer,
-                                                m_bound_provider);
+                                                m_bound_provider,
+                                                m_use_sos1.value_or(false));
 
     handle_default_parameters(result);
 
@@ -64,7 +65,8 @@ idol::Bilevel::KKT::KKT(const idol::Bilevel::KKT &t_src)
         : OptimizerFactoryWithDefaultParameters<KKT>(t_src),
           m_description(t_src.m_description),
           m_single_level_optimizer(t_src.m_single_level_optimizer ? t_src.m_single_level_optimizer->clone() : nullptr),
-          m_bound_provider(t_src.m_bound_provider ? t_src.m_bound_provider->clone() : nullptr) {
+          m_bound_provider(t_src.m_bound_provider ? t_src.m_bound_provider->clone() : nullptr),
+          m_use_sos1(t_src.m_use_sos1) {
 
 }
 
@@ -111,4 +113,15 @@ idol::Model idol::Bilevel::KKT::make_model(const idol::Model &t_model,
 
 void idol::Bilevel::KKT::set_bilevel_description(const idol::Bilevel::Description &t_bilevel_description) {
     m_description = &t_bilevel_description;
+}
+
+idol::Bilevel::KKT &idol::Bilevel::KKT::with_sos1_constraints(bool t_value) {
+
+    if (m_use_sos1) {
+        throw Exception("SOS1 has already been set.");
+    }
+
+    m_use_sos1 = t_value;
+
+    return *this;
 }

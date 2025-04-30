@@ -18,6 +18,7 @@ class idol::Bilevel::KKT : public OptimizerFactoryWithDefaultParameters<KKT>, pu
     const Bilevel::Description* m_description;
     std::unique_ptr<OptimizerFactory> m_single_level_optimizer;
     std::unique_ptr<Reformulators::KKT::BoundProvider> m_bound_provider;
+    std::optional<bool> m_use_sos1;
 public:
     KKT() = default;
 
@@ -36,6 +37,8 @@ public:
     KKT& with_single_level_optimizer(const OptimizerFactory& t_deterministic_optimizer);
 
     KKT& with_bound_provider(const Reformulators::KKT::BoundProvider& t_bound_provider);
+
+    KKT& with_sos1_constraints(bool t_value);
 
     KKT& operator+=(const OptimizerFactory& t_optimizer) { return with_single_level_optimizer(t_optimizer); }
 

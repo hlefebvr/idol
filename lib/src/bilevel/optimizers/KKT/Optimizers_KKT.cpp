@@ -7,11 +7,15 @@
 idol::Optimizers::Bilevel::KKT::KKT(const Model& t_parent,
                                     const idol::Bilevel::Description &t_description,
                                     const OptimizerFactory &t_deterministic_optimizer,
-                                    const std::unique_ptr<Reformulators::KKT::BoundProvider>& t_bound_provider)
+                                    const std::unique_ptr<Reformulators::KKT::BoundProvider>& t_bound_provider,
+                                    bool t_use_sos1)
         : Algorithm(t_parent),
           m_description(t_description),
           m_deterministic_optimizer(t_deterministic_optimizer.clone()),
-          m_bound_provider(t_bound_provider ? t_bound_provider->clone() : nullptr) {
+          m_bound_provider(t_bound_provider ? t_bound_provider->clone() : nullptr),
+          m_use_sos1(t_use_sos1) {
+
+    assert(!m_use_sos1 || !m_bound_provider);
 
 }
 
