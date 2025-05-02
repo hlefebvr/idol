@@ -210,6 +210,7 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
         }
 
         m_bilevel_description_master->set_lower_level_obj(std::move(lower_objective));
+
         m_master.update();
 
     }
