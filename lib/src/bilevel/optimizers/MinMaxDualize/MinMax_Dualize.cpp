@@ -90,17 +90,17 @@ idol::Bilevel::MinMax::Dualize::make_model(const idol::Model &t_model, const ido
 
         std::optional<Var> original_var, dual_var;
 
-        if (t_model.has(pair.first) && result.get_var_type(pair.first) == Binary) {
+        if (pair.second.name().starts_with("__dual") || t_model.has(pair.first) && result.get_var_type(pair.first) == Binary) {
             original_var = pair.first;
             dual_var = pair.second;
         }
 
-        if (t_model.has(pair.second) && result.get_var_type(pair.second) == Binary) {
+        if (pair.first.name().starts_with("__dual") || t_model.has(pair.second) && result.get_var_type(pair.second) == Binary) {
             original_var = pair.second;
             dual_var = pair.first;
         }
 
-        if (!original_var || !dual_var) {
+        if ((!original_var || !dual_var)) {
             throw Exception("Cannot linearize products involving non-binary variables.");
         }
 
