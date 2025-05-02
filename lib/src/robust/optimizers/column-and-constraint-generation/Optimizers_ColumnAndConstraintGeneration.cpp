@@ -519,12 +519,14 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
 
     Model high_point_relaxation = m_formulation->build_optimality_separation_problem(upper_level_solution);
 
-    // Set bilevel description
+    // Set bilevel description and optimizer
     const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
-    m_optimizer_optimality_separation[m_index_optimality_separation]->as<Bilevel::OptimizerInterface>().set_bilevel_description(separation_bilevel_description);
-
-    // Set optimizer
-    high_point_relaxation.use(*m_optimizer_optimality_separation[m_index_optimality_separation]);
+    if (m_formulation->is_adjustable_robust_problem()) {
+        m_optimizer_optimality_separation[m_index_optimality_separation]->as<Bilevel::OptimizerInterface>().set_bilevel_description(separation_bilevel_description);
+        high_point_relaxation.use(*m_optimizer_optimality_separation[m_index_optimality_separation]);
+    } else {
+        high_point_relaxation.use(Bilevel::PessimisticAsOptimistic(separation_bilevel_description) + *m_optimizer_optimality_separation[m_index_optimality_separation]);
+    }
     high_point_relaxation.optimizer().set_param_time_limit(get_remaining_time());
 
     // Solve adversarial problem

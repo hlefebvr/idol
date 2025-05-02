@@ -20,6 +20,10 @@ idol::CCG::Formulation::Formulation(const idol::Model &t_parent, const idol::Rob
     parse_constraints();
     copy_bilevel_description(t_bilevel_description, m_bilevel_description_separation);
 
+    if (!m_coupling_constraints.empty()) {
+        throw Exception("Coupling constraints make no sense for two-stage robust problems and are not supported for robust bilevel problems.");
+    }
+
     if (is_wait_and_see_follower()) {
         auto& env = m_parent.env();
         m_bilevel_description_master = std::make_optional<::idol::Bilevel::Description>(env);
@@ -308,17 +312,9 @@ idol::Model idol::CCG::Formulation::build_optimality_separation_problem(const id
         return result;
     }
 
-    if (!m_coupling_constraints.empty()) {
-        throw Exception("Cannot have coupling constraints in the optimality separation problem for robust bilevel problems with wait-and-see follower.");
-    }
-
     m_bilevel_description_separation.set_lower_level_obj(m_bilevel_description.lower_level_obj());
-    auto [model, pessimistic_description] = Bilevel::PessimisticAsOptimistic::make_model(result, m_bilevel_description_separation);
+    return result;
 
-    m_bilevel_description_separation = std::move(pessimistic_description);
-    // TODO clear old annotation or always use the same annotation
-
-    return std::move(model);
 }
 
 void idol::CCG::Formulation::copy_bilevel_description(const ::idol::Bilevel::Description& t_src, const ::idol::Bilevel::Description& t_dest) const {
