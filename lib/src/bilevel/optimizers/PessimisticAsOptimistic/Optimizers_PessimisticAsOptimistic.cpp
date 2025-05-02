@@ -14,7 +14,7 @@ idol::Optimizers::Bilevel::PessimisticAsOptimistic::PessimisticAsOptimistic(cons
 }
 
 std::string idol::Optimizers::Bilevel::PessimisticAsOptimistic::name() const {
-    return "pessimistic as optimistic";
+    return "bo-zeng";
 }
 
 double idol::Optimizers::Bilevel::PessimisticAsOptimistic::get_var_primal(const idol::Var &t_var) const {

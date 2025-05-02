@@ -19,7 +19,7 @@ public:
         check_no_coupling_constraints();
 
         copy_description();
-        auto lower_level_copy = add_lower_level_copy();
+        const auto lower_level_copy = add_lower_level_copy();
         add_objective_constraint(lower_level_copy);
         m_dest_description.set_lower_level_obj(-m_src_model.get_obj_expr());
 
@@ -66,7 +66,7 @@ std::vector<std::optional<idol::Var>> Helper::add_lower_level_copy() {
                 m_src_model.get_var_ub(var),
                 m_src_model.get_var_type(var),
                 0,
-                "copy_" + std::to_string(m_copy_counter) + "_" + var.name()
+                "__copy_" + std::to_string(m_copy_counter) + "_" + var.name()
                 );
         result[m_src_model.get_var_index(var)] = copy;
 
@@ -115,12 +115,11 @@ std::vector<std::optional<idol::Var>> Helper::add_lower_level_copy() {
 
 void Helper::add_objective_constraint(const std::vector<std::optional<idol::Var>> &t_lower_level_copy) {
 
-    const auto& original_lower_objective = m_src_description.lower_level_obj().affine();
+    const auto& original_lower_objective = m_src_description.lower_level_obj().affine().linear();
 
-    // Create objective function in terms of the copied variables
-    idol::AffExpr copy_objective;
-    copy_objective += original_lower_objective.constant();
-    for (const auto& [var, constant] : original_lower_objective.linear()) {
+    // Create the objective function in terms of the copied variables
+    idol::LinExpr copy_objective;
+    for (const auto& [var, constant] : original_lower_objective) {
         if (m_src_description.is_upper(var)) {
             copy_objective += constant * var;
         } else {
