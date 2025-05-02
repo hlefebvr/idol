@@ -4,6 +4,7 @@
 #include <idol/robust/optimizers/column-and-constraint-generation/Formulation.h>
 #include <idol/mixed-integer/modeling/variables/TempVar.h>
 #include <idol/mixed-integer/modeling/expressions/operations/operators.h>
+#include "idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h"
 
 
 idol::CCG::Formulation::Formulation(const idol::Model &t_parent, const idol::Robust::Description &t_robust_description,
@@ -291,8 +292,7 @@ void idol::CCG::Formulation::add_separation_problem_constraints(idol::Model &t_m
 
 }
 
-idol::Model idol::CCG::Formulation::build_optimality_separation_problem_for_adjustable_robust_problem(
-        const idol::Point<idol::Var> &t_first_stage_decision, unsigned int t_coupling_constraint_index) {
+idol::Model idol::CCG::Formulation::build_optimality_separation_problem(const idol::Point<idol::Var> &t_first_stage_decision) {
 
     auto& env = m_master.env();
     Model result(env);
@@ -301,20 +301,24 @@ idol::Model idol::CCG::Formulation::build_optimality_separation_problem_for_adju
 
     // Compute objective
     QuadExpr objective = compute_second_stage_objective(t_first_stage_decision);
-    if (t_coupling_constraint_index > 0) {
-        throw Exception("Coupling constraints have no meaning for two-stage robust problems");
-    }
-
     result.set_obj_expr(-1. * objective);
 
     if (is_adjustable_robust_problem()) {
         m_bilevel_description_separation.set_lower_level_obj(std::move(objective));
-    } else {
-        // std::cerr << "Assuming pessimistic separator" << std::endl;
-        m_bilevel_description_separation.set_lower_level_obj(m_bilevel_description.lower_level_obj());
+        return result;
     }
 
-    return result;
+    if (!m_coupling_constraints.empty()) {
+        throw Exception("Cannot have coupling constraints in the optimality separation problem for robust bilevel problems with wait-and-see follower.");
+    }
+
+    m_bilevel_description_separation.set_lower_level_obj(m_bilevel_description.lower_level_obj());
+    auto [model, pessimistic_description] = Bilevel::PessimisticAsOptimistic::make_model(result, m_bilevel_description_separation);
+
+    m_bilevel_description_separation = std::move(pessimistic_description);
+    // TODO clear old annotation or always use the same annotation
+
+    return std::move(model);
 }
 
 void idol::CCG::Formulation::copy_bilevel_description(const ::idol::Bilevel::Description& t_src, const ::idol::Bilevel::Description& t_dest) const {
@@ -378,7 +382,7 @@ idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<i
             }
             bound *= -1;
         } else {
-            throw Exception("Equal constraints not yet implemented");
+            throw Exception("Equal constraints not yet implemented.");
         }
 
         if (is_inf(bound) || is_inf(bound)) {
@@ -446,7 +450,7 @@ idol::CCG::Formulation::build_joint_separation_problem(const idol::Point<idol::V
 
     auto objective = compute_second_stage_objective(t_first_stage_decision);
     if (objective.has_quadratic()) {
-        throw Exception("Quadratic objectives in second stage are not yet implemented");
+        throw Exception("Quadratic objectives in second stage are not yet implemented.");
     }
 
     // Try to bound s
@@ -467,10 +471,14 @@ idol::CCG::Formulation::build_joint_separation_problem(const idol::Point<idol::V
 
     slack_variables.emplace_back(s);
 
-    return {
-            std::move(model),
-            std::move(slack_variables)
-    };
+    if (is_adjustable_robust_problem()) {
+        return {
+                std::move(model),
+                std::move(slack_variables)
+        };
+    }
+
+    throw Exception("Joint separation is not implemented for robust bilevel problems with wait-and-see follower.");
 }
 
 idol::QuadExpr<idol::Var>
@@ -490,7 +498,7 @@ idol::CCG::Formulation::compute_second_stage_objective(const idol::Point<idol::V
     }
 
     if (src_objective.has_quadratic()) {
-        throw Exception("Quadratic objectives not yet implemented");
+        throw Exception("Quadratic objectives not yet implemented.");
     }
 
     return result;

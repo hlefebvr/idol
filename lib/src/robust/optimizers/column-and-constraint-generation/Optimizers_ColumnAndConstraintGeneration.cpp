@@ -517,22 +517,63 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
     const auto& master = m_formulation->master();
     const auto upper_level_solution = save_primal(master);
 
-    return solve_optimality_adversarial_problem(upper_level_solution);
+    Model high_point_relaxation = m_formulation->build_optimality_separation_problem(upper_level_solution);
 
-}
+    // Set bilevel description
+    const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
+    m_optimizer_optimality_separation[m_index_optimality_separation]->as<Bilevel::OptimizerInterface>().set_bilevel_description(separation_bilevel_description);
 
-unsigned int
-idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_adversarial_problem(const Point<Var>& t_upper_level_solution) {
+    // Set optimizer
+    high_point_relaxation.use(*m_optimizer_optimality_separation[m_index_optimality_separation]);
+    high_point_relaxation.optimizer().set_param_time_limit(get_remaining_time());
 
-    const unsigned int n_coupling_constraints = m_formulation->n_coupling_constraints();
-    unsigned int total_n_added_scenarios = 0;
+    // Solve adversarial problem
+    m_separation_timer.start();
+    high_point_relaxation.optimize();
+    m_separation_timer.stop();
 
-    for (unsigned int k = 0 ; k < n_coupling_constraints ; ++k) {
-        const unsigned int n_added_scenarios = solve_optimality_adversarial_problem(t_upper_level_solution, k);
-        total_n_added_scenarios += n_added_scenarios;
+    // Analyze results
+    const auto status = high_point_relaxation.get_status();
+    const bool is_last_optimizer = m_index_optimality_separation == m_optimizer_optimality_separation.size() - 1;
+
+    if (status != Optimal && status != Feasible) {
+        if (!is_last_optimizer) { // If we can, skip this optimizer
+            ++m_index_feasibility_separation;
+        } else { // otherwise, it's a failure
+            set_status(Fail);
+            set_reason(high_point_relaxation.get_reason());
+            terminate();
+            return 1;
+        }
     }
 
-    return total_n_added_scenarios;
+    if (is_last_optimizer && status != Optimal) { // if the last optimizer is not reporting optimal, it's a fail
+        set_status(Fail);
+        set_reason(high_point_relaxation.get_reason());
+        terminate();
+        return 1;
+    }
+
+    const double LB = m_formulation->master().get_best_obj();
+    const double UB = -high_point_relaxation.get_best_obj();
+    const bool add_scenario = UB > LB && (absolute_gap(LB, UB) > Tolerance::MIPAbsoluteGap || relative_gap(LB, UB) > Tolerance::MIPRelativeGap);
+
+    if (status == Optimal) {
+        set_best_obj(std::min(get_best_obj(), -high_point_relaxation.get_best_obj()));
+    } else if (status == Feasible) {
+        ++m_index_optimality_separation;
+    }
+
+    log_iteration(false, high_point_relaxation.optimizer().name(), status, high_point_relaxation.get_reason(), add_scenario);
+
+    if (add_scenario) {
+        const auto scenario = save_primal(m_robust_description.uncertainty_set(), high_point_relaxation);
+        m_formulation->add_scenario_to_master(scenario, true);
+        return 1;
+    }
+
+    return 0;
+
 }
 
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_joint_adversarial_problem() {
@@ -617,79 +658,6 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_join
 
     if (status == Feasible) {
         ++m_index_joint_separation;
-    }
-
-    return 0;
-}
-
-unsigned int
-idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_adversarial_problem(
-        const idol::Point<idol::Var> &t_upper_level_solution, unsigned int t_coupling_constraint_index) {
-
-    Model high_point_relaxation = m_formulation->build_optimality_separation_problem_for_adjustable_robust_problem(
-            t_upper_level_solution,
-            t_coupling_constraint_index
-    );
-
-    // Set bilevel description
-    const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
-    m_optimizer_optimality_separation[m_index_optimality_separation]->as<Bilevel::OptimizerInterface>().set_bilevel_description(separation_bilevel_description);
-
-    // Set optimizer
-    high_point_relaxation.use(*m_optimizer_optimality_separation[m_index_optimality_separation]);
-    high_point_relaxation.optimizer().set_param_time_limit(get_remaining_time());
-
-    // Solve adversarial problem
-    m_separation_timer.start();
-    high_point_relaxation.optimize();
-    m_separation_timer.stop();
-
-    // Analyze results
-    const auto status = high_point_relaxation.get_status();
-
-    const bool is_last_optimizer = m_index_optimality_separation == m_optimizer_optimality_separation.size() - 1;
-
-    if (status != Optimal && status != Feasible) {
-        if (!is_last_optimizer) { // If we can, skip this optimizer
-            ++m_index_feasibility_separation;
-        } else { // otherwise, it's a fail
-            set_status(Fail);
-            set_reason(high_point_relaxation.get_reason());
-            terminate();
-            return 1;
-        }
-    }
-
-    if (is_last_optimizer && status != Optimal) { // if the last optimizer is not reporting optimal, it's a fail
-        set_status(Fail);
-        set_reason(high_point_relaxation.get_reason());
-        terminate();
-        return 1;
-    }
-
-    bool add_scenario;
-    if (t_coupling_constraint_index == 0) {
-        const double LB = m_formulation->master().get_best_obj();
-        const double UB = -high_point_relaxation.get_best_obj();
-        add_scenario = UB > LB && (absolute_gap(LB, UB) > Tolerance::MIPAbsoluteGap || relative_gap(LB, UB) > Tolerance::MIPRelativeGap);
-        if (status == Optimal) {
-            set_best_obj(std::min(get_best_obj(), -high_point_relaxation.get_best_obj()));
-        }
-    } else {
-        // TODO check with Tolerance::Feasiblity
-        throw Exception("Coupling constraints not yet implemented");
-    }
-
-    log_iteration(false, high_point_relaxation.optimizer().name(), status, high_point_relaxation.get_reason(), add_scenario);
-
-    if (add_scenario) {
-        const auto scenario = save_primal(m_robust_description.uncertainty_set(), high_point_relaxation);
-        m_formulation->add_scenario_to_master(scenario, true);
-        return 1;
-    }
-
-    if (status == Feasible) {
-        ++m_index_optimality_separation;
     }
 
     return 0;

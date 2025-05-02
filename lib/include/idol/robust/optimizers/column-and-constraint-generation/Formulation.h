@@ -48,13 +48,13 @@ public:
 
     void add_scenario_to_master(const Point<Var>& t_scenario, bool t_add_annotation);
 
-    Model build_optimality_separation_problem_for_adjustable_robust_problem(const Point<Var>& t_first_stage_decision, unsigned int t_coupling_constraint_index);
+    Model build_optimality_separation_problem(const idol::Point<idol::Var> &t_first_stage_decision);
 
     std::pair<Model, std::vector<Var>> build_feasibility_separation_problem(const Point<Var>& t_first_stage_decision);
 
     std::pair<Model, std::vector<Var>> build_joint_separation_problem(const Point<Var>& t_first_stage_decision);
 
-    unsigned int n_coupling_constraints() const { return 1 + m_coupling_constraints.size(); }
+    unsigned int n_coupling_constraints() const { return m_coupling_constraints.size(); }
 
     unsigned int n_added_scenarios() const { return m_n_added_scenario; }
 
