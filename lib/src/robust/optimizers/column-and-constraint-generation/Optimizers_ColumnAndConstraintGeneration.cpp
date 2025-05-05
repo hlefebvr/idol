@@ -271,7 +271,9 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
         return;
     }
 
-    set_best_bound(master.get_best_bound());
+    if (!m_formulation->should_have_epigraph_and_epigraph_is_not_in_master()) {
+        set_best_bound(master.get_best_bound());
+    }
 
 }
 
@@ -560,7 +562,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
 
     const double LB = get_best_bound();
     const double UB = -high_point_relaxation.get_best_obj();
-    const bool add_scenario = (absolute_gap(LB, UB) >= Tolerance::MIPAbsoluteGap || relative_gap(LB, UB) >= Tolerance::MIPRelativeGap);
+    const bool add_scenario = m_formulation->should_have_epigraph_and_epigraph_is_not_in_master() || (absolute_gap(LB, UB) >= Tolerance::MIPAbsoluteGap || relative_gap(LB, UB) >= Tolerance::MIPRelativeGap);
 
     if (status == Optimal) {
         set_best_obj(std::min(get_best_obj(), UB));
