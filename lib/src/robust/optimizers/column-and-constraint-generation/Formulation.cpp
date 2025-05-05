@@ -4,6 +4,7 @@
 #include <idol/robust/optimizers/column-and-constraint-generation/Formulation.h>
 #include <idol/mixed-integer/modeling/variables/TempVar.h>
 #include <idol/mixed-integer/modeling/expressions/operations/operators.h>
+#include <cassert>
 #include "idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h"
 
 

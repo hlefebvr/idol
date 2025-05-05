@@ -24,6 +24,8 @@ class idol::Optimizers::Bilevel::MinMax::Dualize : public Algorithm {
 
     void throw_if_no_deterministic_model() const;
     void solve_lower_level();
+
+    void create_deterministic_model_if_not_exists();
 public:
     Dualize(const Model& t_parent,
             const idol::Bilevel::Description& t_description,
