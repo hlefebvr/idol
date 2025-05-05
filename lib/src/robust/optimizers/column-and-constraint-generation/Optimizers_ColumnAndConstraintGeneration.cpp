@@ -517,7 +517,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
     const auto& master = m_formulation->master();
     const auto upper_level_solution = save_primal(master);
 
-    Model high_point_relaxation = m_formulation->build_optimality_separation_problem(upper_level_solution);
+    auto high_point_relaxation = m_formulation->build_optimality_separation_problem(upper_level_solution);
 
     // Set bilevel description and optimizer
     const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
@@ -563,7 +563,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
     const bool add_scenario = UB > LB && (absolute_gap(LB, UB) > Tolerance::MIPAbsoluteGap || relative_gap(LB, UB) > Tolerance::MIPRelativeGap);
 
     if (status == Optimal) {
-        set_best_obj(std::min(get_best_obj(), -high_point_relaxation.get_best_obj()));
+        set_best_obj(std::min(get_best_obj(), UB));
     } else if (status == Feasible) {
         ++m_index_optimality_separation;
     }

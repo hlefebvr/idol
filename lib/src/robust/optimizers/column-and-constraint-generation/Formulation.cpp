@@ -305,11 +305,11 @@ idol::Model idol::CCG::Formulation::build_optimality_separation_problem(const id
     add_separation_problem_constraints(result, t_first_stage_decision);
 
     // Compute objective
-    QuadExpr objective = compute_second_stage_objective(t_first_stage_decision);
-    result.set_obj_expr(-1. * objective);
+    auto objective = compute_second_stage_objective(t_first_stage_decision);
+    result.set_obj_expr(-objective);
 
     if (is_adjustable_robust_problem()) {
-        m_bilevel_description_separation.set_lower_level_obj(std::move(objective));
+        m_bilevel_description_separation.set_lower_level_obj(std::move(objective.affine().linear()));
         return result;
     }
 
