@@ -1,10 +1,10 @@
 \section{Introduction}
 
-In this chapter, we dive into the column-and-constraint (CCG) algorithm which
-is a state-of-the-art method for tackling two-stage robust problems. It was
-first introduced by \textcite{Zeng2013} in the context of linear two-stage
-problems and was later on extended to broader settings such as mixed-integer
-second-stage decisions (see, e.g.,~\cite{zeng2012exact},
+In this chapter, we dive into the column-and-constraint generation (CCG)
+algorithm which is a state-of-the-art method for tackling two-stage robust
+problems. It was first introduced by \textcite{Zeng2013} in the context of
+linear two-stage problems and was later on extended to broader settings such
+as mixed-integer second-stage decisions (see, e.g.,~\cite{zeng2012exact},
 \cite{Subramanyam2022} and~\cite{lefebvre2025correctiontolagrangiandual}) or
 convex second-stage constraints (see, e.g,~\cite{khademi2022dual}
 and~\cite{lefebvre2022convex}).
@@ -14,7 +14,7 @@ of restricted master problems which approximates the original problem. To do
 this, it considers a finite subset of scenarios in place of the---typically
 infinite---original uncertainty set. Then, by solving a separation
 problem---the so-called adversarial problem---it identifies a new critical
-scenario where the current first-stage solution might fail to satisfy the
+scenario where the current first-stage solution fails to satisfy the
 second-stage constraints under the full uncertainty set. If such a scenario is
 found, it is incorporated into the master problem, and the process repeats.
 Otherwise, the algorithm terminates, having found a robust feasible
@@ -73,9 +73,9 @@ assumption for you. However, the following proposition holds.
     Assumption~\ref{assumption:ccg:supremum} holds.
 \end{proposition}
 
-\subsection{The procedure}
+\subsection{The overall procedure}
 
-At each iteration $K$, the CCG algorithm solves the so-called restricted
+At each iteration $K \ge 1$, the CCG algorithm solves the so-called restricted
 master problem which consists in solving
 Problem~\eqref{eq:ccg:two-stage-problem} having replaced the uncertainty set
 $U$ by a discrete subset of scenarios $\{ u^1, \dotsc, u^K \}$. This problem
@@ -104,9 +104,9 @@ exists $y\in Y(x,u)$, otherwise identify a scenario $u$ for which $Y(x,u)$ is
 empty. This is called the ``feasibility separation''. If $x$ is a feasible
 first-stage decision, we need to check that the optimal objective value of the
 restricted master problem~\eqref{eq:ccg:master} $c^\top x + x_0$ is, indeed,
-the correct cost associated to $x$, i.e., that for all $u\in U$, there exists
-$y\in Y(x,u)$ such that $d^\top y \le x_0$, otherwise identify a scenario
-$u\in U$ with $\min_y\defset{ f^\top y }{ y\in Y(x,u) } > x_0$. This is called
+the correct cost associated to $x$, i.e., that for all $u\in U$, $x_0 =
+\min\defset{d^\top y}{y\in Y(x,u)}$ holds, otherwise identify a scenario $u\in
+U$ such that $\min_y\defset{ f^\top y }{ y\in Y(x,u) } > x_0$. This is called
 the ``optimality separation''. We now discuss how these two separation tasks
 are performed.
 
@@ -115,8 +115,8 @@ optimization problem
 %
 \begin{equation}
     \label{eq:ccg:feasibility-separation}
-    v_\text{feas} \define \max_{u\in U} \ \min_{y,z} \Defset{ z }{
-        y\in\tilde{Y}, \ z\ge 0, \ Cx + Dy + E(x)u + ze \ge b
+    v_\text{feas} \define \max_{u\in U} \ \min_{y,z} \Defset{ e^\top z }{
+        y\in\tilde{Y}, \ z\ge 0, \ Cx + Dy + E(x)u + z \ge b
     }.
 \end{equation}
 It can be easily checked that if $v_\text{feas} > 0$, then the upper-level
@@ -130,9 +130,9 @@ upper-level objective value is strictly greater than 0. Internally,
 Problem~\eqref{eq:ccg:feasibility-separation} is formulated as
 %
 \begin{align*}
-    - \min_{u\in U,y,z} \quad & -z \\
-    \text{s.t.} \quad & (y,z) \in \argmin_{\bar{y},\bar{z}} \Defset{ \bar{z} }{
-        \bar{y}\in\tilde{Y}, \ \bar{z}\ge 0, \ Cx + D\bar{y} + E(x)\bar{u} + \bar{z}e \ge b
+    - \min_{u\in U,y,z} \quad & -e^\top z \\
+    \text{s.t.} \quad & (y,z) \in \argmin_{\bar{y},\bar{z}} \Defset{ e^\top\bar{z} }{
+        \bar{y}\in\tilde{Y}, \ \bar{z}\ge 0, \ Cx + D\bar{y} + E(x)\bar{u} + \bar{z} \ge b
     }.
 \end{align*}
 Clearly, the two formulations are equivalent on the level of global solutions.
@@ -146,7 +146,7 @@ Similary, optimality separation is performed by solving the bilevel problem
 \begin{equation}
     \label{eq:ccg:optimality-separation}
     v_\text{opt} \define
-    \max_{u\in U} \ \min_{y} \Defset{ f^\top y }{
+    \max_{u\in U} \ \min_{y} \Defset{ d^\top y }{
         y\in\tilde{Y}, \ Cx + Dy + E(x)u \ge b
     }.
 \end{equation}
@@ -164,12 +164,15 @@ next iteration. Otherwise, the algorithm stops with a proof of optimality for
 $x$. Just like the feasibility separation problem, the optimality separation
 problem is internally modeled as the following bilevel problem
 %
-\begin{align*}
-    - \min_{u\in U,y} \quad & -f^\top y \\
-    \text{s.t.} \quad & y \in \argmin_{\bar{y}} \Defset{ f^\top \bar{y} }{
-        \bar{y}\in\tilde{Y}, \ Cx + D\bar{y} + E(x)\bar{u} \ge b
-    }.
-\end{align*}
+\begin{equation}
+    \begin{aligned}
+        - \min_{u\in U,y} \quad & -d^\top y \\
+        \text{s.t.} \quad & y \in \argmin_{\bar{y}} \Defset{ d^\top \bar{y} }{
+            \bar{y}\in\tilde{Y}, \ Cx + D\bar{y} + E(x)\bar{u} \ge b
+        }.
+    \end{aligned}
+    \label{eq:ccg:optimality-separation-bilevel}
+\end{equation}
 Again, this allows~\textsf{idol} to rely on general bilevel solvers without
 restricting the possibility of exploiting its structure. A complete
 description of the procedure is presented in
@@ -197,17 +200,20 @@ at the same time. We call this separation approach the ``joint separation''.
 Given a current first-stage decision $x$ and a second-stage cost estimate
 $x_0$, one solves the bilevel problem 
 \begin{equation*}
-    v_\text{joint} \define \max_{u\in U} \ \min_{y,z} \ \Defset{ z }{ y\in\tilde{Y}, \ z \ge 0, \ d^\top y - z \le x_0, \ Cx + Dy + E(x)u + ze \ge b }.
+    v_\text{joint} \define \max_{u\in U} \ \min_{(y,z_0,z)\in Y^{*+}(x,u)} \ { z_0 + e^\top z },
 \end{equation*}
-Let $(u,y,z)$ denote a solution to this bilevel problem---$(y,z)$ denoting an
-optimal point of the inner minimization problem given $u$---if $z = 0$, then
-the first-stage decision $x$ is both feasible and optimal. Otherwise, one
-checks if $y\in Y(x,u)$ holds. If so, then $z = d^\top y - x_0$ and $x_0 +
-v_\text{joint}$ is an upper bound on the optimal objective function value of
-Problem~\eqref{eq:ccg:two-stage-problem}. Otherwise, $u$ is such that $Y(x,u)
-= \emptyset$, which results in a feasibility separation. Joint separation was
-introduced by~\textcite{Ayoub2016} for linear problems and was extended to
-convex problems by~\textcite{lefebvre2022convex}.
+with $Y^{*}(x,u)$ defined by
+\begin{equation*}
+    Y^{*}(x,u) \define \Defset{ (y,z_0,z)\in\tilde{Y}\times\mathbb{R}^{m_y+1}_{\ge 0} }{ d^\top y - z_0 \le x_0, \ Cx + Dy + E(x)u + z \ge b}.
+\end{equation*}
+Let $(u,y,z_0,z)$ denote a solution to this bilevel problem---$(y,z_0z)$ being
+an optimal point of the inner minimization problem given $u$---if $z > 0$,
+then the first-stage decision $x$ is not feasible for $u$. Otherwise ($z=0$),
+then $z_0 = d^\top y - x_0$ and $x_0 + v_\text{joint}$ is an upper bound on
+the optimal objective function value of
+Problem~\eqref{eq:ccg:two-stage-problem}. Joint separation was introduced
+by~\textcite{Ayoub2016} for linear problems and was extended to convex
+problems by~\textcite{lefebvre2022convex}.
 Algorithm~\ref{alg:ccg:joint-separation} presents the overall algorithm.
 
 \begin{algorithm}
@@ -225,10 +231,64 @@ Algorithm~\ref{alg:ccg:joint-separation} presents the overall algorithm.
     \end{algorithmic}
 \end{algorithm}
 
-We have seen that the CCG algorithm requires solving a bilevel optimization
-problem at every iteration. In the following two sections, we describe how
-these bilevel problems can be solved depending on wether the second-stage
-problem is continuous or mixed-integer. 
+\section{How to implement it with~\textsf{idol}}
+
+In this section, we discuss how to implement a column-and-constraint
+generation algorithm to solve two-stage robust problems. The reader should be
+familiar with modeling two-stage robust problems in~\textsf{idol}. If this is
+not the case, please refer to Chapter~\ref{chapter:robust:modeling}. 
+
+\subsection{The \textsf{Robust::ColumnAndConstraintGeneration} optimizer}
+
+In~\textsf{idol}, a column-and-constraint generation algorithm can be
+implemented by using the class \textsf{Robust::ColumnAndConstraintGeneration}
+which is an optimizer factory. It can be created as follows.
+
+\begin{lstlisting}
+    auto ccg = Robust::ColumnAndConstraintGeneration(
+        robust_description, bilevel_description
+    );
+\end{lstlisting}
+%
+Here, \textsf{robust\_description} is an object of the
+class~\textsf{Robust::Description} which contains the uncertainty set as well
+the uncertain coefficients in the model. The \textsf{bilevel\_description}
+argument is a~\textsf{Bilevel::Description} object which describes which
+variable and constraint is part of the first and second stage. Recall that all
+``upper-level'' variables and constraints are considered as first-stage
+variables and constraints. Similary, all ``lower-level'' variables and
+constraints are second-stage variables and constraints. Also recall that the
+lower-level objective function must NOT be defined here. If a lower-level
+objective function were to be defined, \textsf{idol} would interpret the
+problem as a robust bilevel problem with wait-and-see follower instead of a
+two-stage robust problem, leading to a different algorithmic scheme. 
+
+There are two necessary ingredients to be specified for a
+column-and-constraint generation algorithm to run: how to sovle the master
+problem and how to solve the separation problem. We will dive into the
+separation problem in the next sections. Let's focus on the master problem.
+The master problem is a single-level model presented in~\eqref{eq:ccg:master}.
+Thus, we need to specify an optimizer to be used for finding an optimal point
+at every iteration.  This can be achieved with the
+\textsf{with\_master\_optimizer} method. In the following example, we use
+\textsf{Gurobi}.
+%
+\begin{lstlisting}
+    ccg.with_master_optimizer(Gurobi());
+\end{lstlisting}
+%
+In the next sections, we will discuss how the same can be achieved for the
+separation problem. For now, let's assume that our algorithm is entirely
+configured and ready to be executed. Then, assuming that~\textsf{model} is an
+object of the class~\textsf{Model} storing the deterministic version of our
+problem, we may do the following.
+%
+\begin{lstlisting}
+    model.use(ccg);
+    model.optimize();
+\end{lstlisting}
+That's it! Now the column-and-constraint generation algorithm will be
+executed.
 
 \subsection{Solving the separation problem with continuous second stage}
 
@@ -239,10 +299,36 @@ problem.
 \subsubsection{Optimality separation}
 
 We first consider optimality separation of a current first-stage decision $x$
-with second-stage cost estimate $x_0$. We recall that optimality separation is
+with second-stage cost estimate $x_0$. Recall that optimality separation is
 only performed if $Y(x,u) \neq \emptyset$ for all $u\in U$, i.e., after
 feasibility separation or if it is known that $Y(x,u) \neq\emptyset$ for all
-$x\in X$ and all $u\in U$. 
+$x\in X$ and all $u\in U$. Hence, the separation
+problem~\eqref{eq:ccg:optimality-separation}---which, internally is modeled
+as~\eqref{eq:ccg:optimality-separation-bilevel}---is always feasible.
+
+At every iteration, after the master problem is solved, the bilevel
+problem~\eqref{eq:ccg:optimality-separation-bilevel} is automatically
+formulated by~\textsf{idol} and the specified optimizer is created and called
+for solving Problem~\eqref{eq:ccg:optimality-separation-bilevel}. Hence, we
+only need to specfiy which optimizer shall be used during the algorithm. This
+can be done by calling the~\textsf{add\_optimality\_separation\_optimizer}
+method. As a first example, here is how to add an optimizer for solving the
+optimality separation problem which will perform a KKT single-level
+reformulation of the problem based on SOS1 constraints to ``linearize'' the
+complementarity constraints.
+%
+\begin{lstlisting}
+    auto kkt = Bilevel::KKT();
+    kkt.with_sos1_constraints(true);
+
+    ccg.add_optimality_separation_optimizer(kkt + Gurobi());
+\end{lstlisting}
+
+Arguably, there are many alternatives to solve the separation problem. In the
+following sub-sections, we detail the most common approaches and give
+guidelines to implement them. In Section~\ref{sec:ccg:twp-stage-uflp}, we will
+fully implement a column-and-constraint generation algorithm to solve the
+two-stage robust facility location problem with facility disruption. 
 
 \bulletparagraph{KKT-based separation}
 
@@ -294,7 +380,10 @@ separation problem. One final note. In practice, choosing a wrong value for
 $M$ may result in a CCG scheme which is no longer convergent. Hence, it is
 necessary that the bounds $M$ be valid. On the contrary, choosing a too large
 value for $M$ leads to bad performance in terms of computational time and/or
-numerical stability. 
+numerical stability. Another approach to tackle the nonlinear
+constraints~\eqref{eq:ccg:kkt} that does not require computing big-M values is
+through SOS1 constraints, we refer to Chapter~\ref{chapter:bilevel:continuous}
+for more details.
 
 \bulletparagraph{Duality-based separation}
 
@@ -349,25 +438,26 @@ problem is a mixed-integer linear problem.
 
 We now consider solving the feasibility separation problem. The techniques are
 similar to those presented in the previous section. Nevertheless, we give a
-complete and detailed description of each approach.
+complete description of each approach. An alternative approach is to use SOS1
+constraints to enforce the complementarity constraints by branching.
 
 \bulletparagraph{KKT-based separation}
 
-Recall the lower-level problem of the separation
+Recall the lower level of the separation
 problem~\eqref{eq:ccg:feasibility-separation}:
 \begin{equation*}
-    \min_{y,z} \Defset{ z }{
-        Cx + Dy + E(x)u + ze \ge b, \quad 
+    \min_{y,z} \Defset{ e^\top z }{
+        Cx + Dy + E(x)u + z \ge b, \, 
         z \ge 0
     }.
 \end{equation*}
 By construction, it is feasible and bounded. Hence, its KKT conditions are
 necessary and sufficient to characterize all optimal points. In other words, a
-point $(y,\lambda,\mu)$ is a solution to the above problem if and only if it
+point $(y,z,\lambda,\mu)$ is a solution to the above problem if and only if it
 satisfies the KKT system 
 \begin{align*}
-    & Cx + Dy + E(x)u + ze \ge b, \quad z \ge 0, \quad 
-    D^\top \lambda = 0, \quad \lambda + \mu = 1, \\
+    & Cx + Dy + E(x)u + z \ge b, \quad z \ge 0, \quad 
+    D^\top \lambda = 0, \quad \lambda + \mu = 1, \quad \lambda,\mu \ge 0, \\
     & (Cx + Dy + E(x)u + z - b)^\top\lambda = 0, \quad \mu^\top z = 0.
 \end{align*}
 Thus, one can equivalently replace the lower-level problem by its KKT
@@ -375,9 +465,9 @@ conditions, leading to the nonlinear problem
 \begin{align*}
     \max_{u\in U,y,z,\lambda,\mu} \quad & z \\
     \text{s.t.} \quad 
-    & Cx + Dy + E(x)u + ze \ge b, \quad z \ge 0, \quad 
+    & Cx + Dy + E(x)u + z \ge b, \quad z \ge 0, \quad 
     D^\top \lambda = 0, \quad \lambda + \mu = 1, \\
-    & (Cx + Dy + E(x)u + z - b)^\top\lambda = 0, \quad z^\top\mu = 0.
+    & (Cx + Dy + E(x)u + z - b)^\top\lambda = 0, \quad z^\top\mu = 0 \quad \lambda,\mu \ge 0.
 \end{align*}
 Again, this problen can be solved ``as is'' using standard nonlinear
 approaches. However, introducing auxiliary binary variables to linearize the
@@ -429,17 +519,17 @@ Recall the lower-level problem of the joint separation problem:
 %
 \begin{subequations}
     \begin{align}
-        \min_{y,z} \quad & z \\
-        \text{s.t.} \quad & x_0 + z \ge d^\top y, \\
-        & Cx + Dy + E(x)u + ze \ge b, \\
-        & z \ge 0.
+        \min_{y,z_0,z} \quad & z_0 + e^\top z \\
+        \text{s.t.} \quad & x_0 + z_0 \ge d^\top y, \\
+        & Cx + Dy + E(x)u + z \ge b, \\
+        & z, z_0 \ge 0.
     \end{align}
 \end{subequations}
 By construction, it is feasible and bounded. Hence, a point
 $(y,z,\lambda_0,\lambda,\mu)$ is a primal-dual solution if and only if it
 satisfies the KKT system 
 \begin{align*}
-    & x_0 + z \ge d^\top y, \quad Cx + Dy + E(x)u + ze \ge b, \quad z \ge 0, \\
+    & x_0 + z \ge d^\top y, \quad Cx + Dy + E(x)u + z \ge b, \quad z \ge 0, \\
     & D^\top\lambda - d \lambda_0 = 0, \quad \lambda_0 + e^\top\lambda + \mu = 1, \\
     & (x_0 + z - d^\top y)\lambda_0 = 0, \quad 
     (Cx + Dy + E(x)u + ze - b)^\top \lambda = 0, \quad 
@@ -447,12 +537,12 @@ satisfies the KKT system
 \end{align*}
 Hence, the separation problem can be written as 
 \begin{align*}
-    \max_{u\in U, y,z,\lambda_0,\lambda,\mu} \quad & z \\
-    \text{s.t.} \quad & x_0 + z \ge d^\top y, \quad Cx + Dy + E(x)u + ze \ge b, \quad z \ge 0, \\
+    \max_{u\in U, y,z_0,z,\lambda_0,\lambda,\mu} \quad & z_0 + e^\top z \\
+    \text{s.t.} \quad & x_0 + z_0 \ge d^\top y, \quad Cx + Dy + E(x)u + ze \ge b, \quad z, z_0 \ge 0, \\
     & D^\top\lambda - d \lambda_0 = 0, \quad \lambda_0 + e^\top\lambda + \mu = 1, \\
-    & (x_0 + z - d^\top y)\lambda_0 = 0, \quad 
+    & (x_0 + z_0 - d^\top y)\lambda_0 = 0, \quad 
     (Cx + Dy + E(x)u + ze - b)^\top \lambda = 0, \\
-    & z\mu = 0.
+    & z^\top\mu = 0.
 \end{align*}
 %
 This is a nonlinear model which can be solved by standard nonlinear
@@ -583,6 +673,7 @@ Approaches are
 }
 
 \section[Example: the UFLP with disruption]{Example: the uncapacitated facility location problem with disruption}
+\label{sec:ccg:twp-stage-uflp}
 
 We consider an uncapacitated facility location problem (UFLP) in which
 facilities are subject to uncertain disruptions as studied
