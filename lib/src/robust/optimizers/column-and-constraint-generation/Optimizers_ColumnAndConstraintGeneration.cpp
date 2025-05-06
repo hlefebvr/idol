@@ -263,10 +263,15 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
     m_master_timer.stop();
 
     const auto status = master.get_status();
+    const auto reason = master.get_reason();
 
     if (status != Optimal) {
-        set_status(status);
-        set_reason(master.get_reason());
+        if (reason == TimeLimit) {
+            set_status(is_pos_inf(get_best_obj()) ? Infeasible : Feasible);
+        } else {
+            set_status(status);
+        }
+        set_reason(reason);
         terminate();
         return;
     }
@@ -285,6 +290,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_
         terminate();
         return;
     }
+
+    set_status(is_pos_inf(get_best_obj()) ? Infeasible : Feasible);
 
     if (get_remaining_time() == 0) {
         set_reason(TimeLimit);
