@@ -319,9 +319,9 @@
       </memberdef>
       <memberdef kind="function" id="classidol_1_1CCG_1_1Formulation_1ade3b1abfb1dbc984892aa9cc610f6f12" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref></type>
-        <definition>Model idol::CCG::Formulation::build_optimality_separation_problem_for_adjustable_robust_problem</definition>
+        <definition>Model idol::CCG::Formulation::build_optimality_separation_problem</definition>
         <argsstring>(const Point&lt; Var &gt; &amp;t_first_stage_decision, unsigned int t_coupling_constraint_index)</argsstring>
-        <name>build_optimality_separation_problem_for_adjustable_robust_problem</name>
+        <name>build_optimality_separation_problem</name>
         <param>
           <type>const <ref refid="classidol_1_1Point" kindref="compound">Point</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
           <declname>t_first_stage_decision</declname>
@@ -451,7 +451,7 @@
       <member refid="classidol_1_1CCG_1_1Formulation_1a41fc60dac7957f3b77d7ee84e57bb41a" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>bilevel_description_master</name></member>
       <member refid="classidol_1_1CCG_1_1Formulation_1a95c349f47fccc1eb8dc7de27a81b75c9" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>bilevel_description_separation</name></member>
       <member refid="classidol_1_1CCG_1_1Formulation_1a80a48c25ab8faaa5c42edfcd158c6fb2" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>build_feasibility_separation_problem</name></member>
-      <member refid="classidol_1_1CCG_1_1Formulation_1ade3b1abfb1dbc984892aa9cc610f6f12" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>build_optimality_separation_problem_for_adjustable_robust_problem</name></member>
+      <member refid="classidol_1_1CCG_1_1Formulation_1ade3b1abfb1dbc984892aa9cc610f6f12" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>build_optimality_separation_problem</name></member>
       <member refid="classidol_1_1CCG_1_1Formulation_1abe7c96c259690fa780ae1f83032373fd" prot="private" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>copy_bilevel_description</name></member>
       <member refid="classidol_1_1CCG_1_1Formulation_1a43516bd18ae2eacdb0cdc39197bde767" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>Formulation</name></member>
       <member refid="classidol_1_1CCG_1_1Formulation_1a95c4c44e3655c74a23eb35954ab6465e" prot="public" virt="non-virtual"><scope>idol::CCG::Formulation</scope><name>is_adjustable_robust_problem</name></member>

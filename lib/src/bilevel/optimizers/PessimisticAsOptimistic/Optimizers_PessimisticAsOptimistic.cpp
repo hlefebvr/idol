@@ -14,7 +14,7 @@ idol::Optimizers::Bilevel::PessimisticAsOptimistic::PessimisticAsOptimistic(cons
 }
 
 std::string idol::Optimizers::Bilevel::PessimisticAsOptimistic::name() const {
-    return "pessimistic as optimistic";
+    return "bo-zeng";
 }
 
 double idol::Optimizers::Bilevel::PessimisticAsOptimistic::get_var_primal(const idol::Var &t_var) const {
@@ -89,6 +89,7 @@ void idol::Optimizers::Bilevel::PessimisticAsOptimistic::hook_optimize() {
 
     m_optimistic_bilevel_optimizer->as<::idol::Bilevel::OptimizerInterface>().set_bilevel_description(*m_optimistic_bilevel_annotation);
     m_optimistic_bilevel_model->use(*m_optimistic_bilevel_optimizer);
+    m_optimistic_bilevel_model->optimizer().set_param_time_limit(get_remaining_time());
     m_optimistic_bilevel_model->optimize();
 
 }

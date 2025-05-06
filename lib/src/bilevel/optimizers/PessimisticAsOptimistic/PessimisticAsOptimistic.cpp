@@ -19,9 +19,9 @@ public:
         check_no_coupling_constraints();
 
         copy_description();
-        auto lower_level_copy = add_lower_level_copy();
+        const auto lower_level_copy = add_lower_level_copy();
         add_objective_constraint(lower_level_copy);
-        m_dest_description.set_lower_level_obj(-m_src_model.get_obj_expr());
+        m_dest_description.set_lower_level_obj(-1. * m_src_model.get_obj_expr().affine().linear());
 
     }
 
@@ -66,7 +66,7 @@ std::vector<std::optional<idol::Var>> Helper::add_lower_level_copy() {
                 m_src_model.get_var_ub(var),
                 m_src_model.get_var_type(var),
                 0,
-                "copy_" + std::to_string(m_copy_counter) + "_" + var.name()
+                "__copy_" + std::to_string(m_copy_counter) + "_" + var.name()
                 );
         result[m_src_model.get_var_index(var)] = copy;
 
@@ -90,7 +90,7 @@ std::vector<std::optional<idol::Var>> Helper::add_lower_level_copy() {
 
         const double rhs = m_src_model.get_ctr_rhs(ctr);
         const auto type = m_src_model.get_ctr_type(ctr);
-        auto name = "copy_" + std::to_string(m_copy_counter) + "_" +  ctr.name();
+        auto name = "__copy_" + std::to_string(m_copy_counter) + "_" +  ctr.name();
 
         switch (type) {
             case idol::Equal:
@@ -115,12 +115,11 @@ std::vector<std::optional<idol::Var>> Helper::add_lower_level_copy() {
 
 void Helper::add_objective_constraint(const std::vector<std::optional<idol::Var>> &t_lower_level_copy) {
 
-    const auto& original_lower_objective = m_src_description.lower_level_obj().affine();
+    const auto& original_lower_objective = m_src_description.lower_level_obj().affine().linear();
 
-    // Create objective function in terms of the copied variables
-    idol::AffExpr copy_objective;
-    copy_objective += original_lower_objective.constant();
-    for (const auto& [var, constant] : original_lower_objective.linear()) {
+    // Create the objective function in terms of the copied variables
+    idol::LinExpr copy_objective;
+    for (const auto& [var, constant] : original_lower_objective) {
         if (m_src_description.is_upper(var)) {
             copy_objective += constant * var;
         } else {
@@ -131,7 +130,7 @@ void Helper::add_objective_constraint(const std::vector<std::optional<idol::Var>
     // Add objective constraint
     const auto c = m_dest_model.add_ctr(
             original_lower_objective <= copy_objective,
-            "objective_constraint"
+            "__objective_constraint"
             );
     m_dest_description.make_lower_level(c);
 
@@ -159,7 +158,7 @@ idol::Bilevel::PessimisticAsOptimistic::make_model(const Model &t_model, const B
     Model result = t_model.copy();
     Bilevel::Description description(env);
 
-    Helper helper(t_model, t_description, result, description);
+    auto helper = std::make_unique<Helper>(t_model, t_description, result, description);
 
     return {
         std::move(result),

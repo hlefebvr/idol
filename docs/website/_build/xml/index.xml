@@ -1672,7 +1672,7 @@
     <member refid="classidol_1_1CCG_1_1Formulation_1ac0c9bd02a273830fb9aeee49b7d7eb6c" kind="function"><name>master</name></member>
     <member refid="classidol_1_1CCG_1_1Formulation_1a5913ec8f8261f6b1c3edc467532ea5ae" kind="function"><name>master</name></member>
     <member refid="classidol_1_1CCG_1_1Formulation_1ab7043dd3b225cd1ded77dddfd37adebc" kind="function"><name>add_scenario_to_master</name></member>
-    <member refid="classidol_1_1CCG_1_1Formulation_1ade3b1abfb1dbc984892aa9cc610f6f12" kind="function"><name>build_optimality_separation_problem_for_adjustable_robust_problem</name></member>
+    <member refid="classidol_1_1CCG_1_1Formulation_1ade3b1abfb1dbc984892aa9cc610f6f12" kind="function"><name>build_optimality_separation_problem</name></member>
     <member refid="classidol_1_1CCG_1_1Formulation_1a80a48c25ab8faaa5c42edfcd158c6fb2" kind="function"><name>build_feasibility_separation_problem</name></member>
     <member refid="classidol_1_1CCG_1_1Formulation_1a262cf2d91fe896355f3671fe49e9a2b5" kind="function"><name>n_coupling_constraints</name></member>
     <member refid="classidol_1_1CCG_1_1Formulation_1a954ec2afa06a5fe1c30109427ef85a78" kind="function"><name>n_added_scenarios</name></member>

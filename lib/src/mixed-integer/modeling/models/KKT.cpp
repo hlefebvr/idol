@@ -556,7 +556,7 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination,
     const auto add_sos1 =
             [&](const AffExpr<Var>& t_ctr_expr, const Var& t_dual_var, std::string t_name) {
                 const auto slack = t_destination.add_var(-Inf, Inf, Continuous, 0, "__slack_" + t_name);
-                t_destination.add_ctr(t_ctr_expr == slack, std::move(t_name));
+                t_destination.add_ctr(t_ctr_expr == slack, t_name);
                 t_destination.add_sosctr(true, { slack, t_dual_var }, {1, 2}, "__complementarity_" + std::move(t_name));
             };
 

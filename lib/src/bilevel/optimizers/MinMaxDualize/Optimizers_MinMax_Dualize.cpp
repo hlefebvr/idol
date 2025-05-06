@@ -9,15 +9,11 @@
 idol::Optimizers::Bilevel::MinMax::Dualize::Dualize(const Model& t_parent,
                                                        const idol::Bilevel::Description &t_description,
                                                        const OptimizerFactory &t_deterministic_optimizer,
-                                                       const std::unique_ptr<Reformulators::KKT::BoundProvider>& t_bound_provider,
-                                                       bool t_use_sos1)
+                                                       const std::unique_ptr<Reformulators::KKT::BoundProvider>& t_bound_provider)
         : Algorithm(t_parent),
           m_description(t_description),
           m_deterministic_optimizer(t_deterministic_optimizer.clone()),
-          m_bound_provider(t_bound_provider ? t_bound_provider->clone() : nullptr),
-          m_use_sos1(t_use_sos1) {
-
-    assert(!m_use_sos1 || !m_bound_provider);
+          m_bound_provider(t_bound_provider ? t_bound_provider->clone() : nullptr) {
 
 }
 
@@ -111,20 +107,13 @@ void idol::Optimizers::Bilevel::MinMax::Dualize::update() {
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::write(const std::string &t_name) {
-    throw_if_no_deterministic_model();
+    create_deterministic_model_if_not_exists();
     m_deterministic_model->write(t_name);
 }
 
 void idol::Optimizers::Bilevel::MinMax::Dualize::hook_optimize() {
 
-    if (!m_deterministic_model) {
-        if (m_bound_provider) {
-            m_deterministic_model = std::make_unique<Model>(idol::Bilevel::MinMax::Dualize::make_model(parent(), m_description, *m_bound_provider));
-        } else {
-            m_deterministic_model = std::make_unique<Model>(idol::Bilevel::MinMax::Dualize::make_model(parent(), m_description, m_use_sos1));
-        }
-        m_deterministic_model->use(*m_deterministic_optimizer);
-    }
+    create_deterministic_model_if_not_exists();
 
     m_deterministic_model->optimize();
 
@@ -282,6 +271,19 @@ void idol::Optimizers::Bilevel::MinMax::Dualize::solve_lower_level() {
         set_status(Fail);
         set_reason(NotSpecified);
         return;
+    }
+
+}
+
+void idol::Optimizers::Bilevel::MinMax::Dualize::create_deterministic_model_if_not_exists() {
+
+    if (!m_deterministic_model) {
+        if (m_bound_provider) {
+            m_deterministic_model = std::make_unique<Model>(idol::Bilevel::MinMax::Dualize::make_model(parent(), m_description, *m_bound_provider));
+        } else {
+            m_deterministic_model = std::make_unique<Model>(idol::Bilevel::MinMax::Dualize::make_model(parent(), m_description));
+        }
+        m_deterministic_model->use(*m_deterministic_optimizer);
     }
 
 }

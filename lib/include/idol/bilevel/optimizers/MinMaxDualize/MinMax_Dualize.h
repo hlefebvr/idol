@@ -18,7 +18,6 @@ class idol::Bilevel::MinMax::Dualize : public OptimizerFactoryWithDefaultParamet
     const Bilevel::Description* m_description = nullptr;
     std::unique_ptr<OptimizerFactory> m_single_level_optimizer;
     std::unique_ptr<Reformulators::KKT::BoundProvider> m_bound_provider;
-    std::optional<bool> m_use_sos1;
 public:
     Dualize();
 
@@ -36,11 +35,9 @@ public:
 
     Dualize& with_bound_provider(const Reformulators::KKT::BoundProvider& t_bound_provider);
 
-    Dualize& with_sos1_constraints(bool t_value);
-
     Dualize& operator+=(const OptimizerFactory& t_optimizer) { return with_single_level_optimizer(t_optimizer); }
 
-    static Model make_model(const Model& t_model, const Bilevel::Description& t_description, bool t_use_sos1 = false);
+    static Model make_model(const Model& t_model, const Bilevel::Description& t_description);
 
     static Model make_model(const Model& t_model, const Bilevel::Description& t_description, ::idol::Reformulators::KKT::BoundProvider& t_bound_provider);
 };

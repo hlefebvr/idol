@@ -706,7 +706,7 @@ GRBSOS idol::Optimizers::Gurobi::hook_add(const idol::SOSCtr &t_ctr) {
     }
 
     auto* weights = model.get_sosctr_weights(t_ctr).data();
-    const auto type = model.is_sos1(t_ctr) == 1 ? GRB_SOS_TYPE1 : GRB_SOS_TYPE2;
+    const auto type = model.is_sos1(t_ctr) ? GRB_SOS_TYPE1 : GRB_SOS_TYPE2;
 
     return m_model.addSOS(vars, weights, (int) n, type);
 }

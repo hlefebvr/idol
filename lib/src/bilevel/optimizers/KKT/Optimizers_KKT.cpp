@@ -98,7 +98,7 @@ void idol::Optimizers::Bilevel::KKT::hook_optimize() {
         if (m_bound_provider) {
             m_deterministic_model = std::make_unique<Model>(idol::Bilevel::KKT::make_model(parent(), m_description, *m_bound_provider));
         } else {
-            m_deterministic_model = std::make_unique<Model>(idol::Bilevel::KKT::make_model(parent(), m_description));
+            m_deterministic_model = std::make_unique<Model>(idol::Bilevel::KKT::make_model(parent(), m_description, m_use_sos1));
         }
 
         m_deterministic_model->use(*m_deterministic_optimizer);

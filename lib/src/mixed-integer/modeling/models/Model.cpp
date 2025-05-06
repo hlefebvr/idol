@@ -16,6 +16,7 @@ idol::Model::Model(idol::Model && t_src) noexcept
       m_variables(std::move(t_src.m_variables)),
       m_constraints(std::move(t_src.m_constraints)),
       m_qconstraints(std::move(t_src.m_qconstraints)),
+      m_sosconstraints(std::move(t_src.m_sosconstraints)),
       m_optimizer_factory(std::move(t_src.m_optimizer_factory)),
       m_objective(std::move(t_src.m_objective)),
       m_rhs(std::move(t_src.m_rhs)),
@@ -361,6 +362,8 @@ idol::Model::Model(const Model& t_src) : Model(t_src.m_env) {
 
     reserve_vars(t_src.vars().size());
     reserve_ctrs(t_src.ctrs().size());
+    reserve_qctrs(t_src.qctrs().size());
+    reserve_sos_ctrs(t_src.sosctrs().size());
 
     m_storage = t_src.m_storage;
     m_has_minor_representation = t_src.m_has_minor_representation;
@@ -420,6 +423,13 @@ idol::Model::Model(const Model& t_src) : Model(t_src.m_env) {
                 QuadExpr(t_src.get_qctr_expr(qctr)),
                 t_src.get_qctr_type(qctr)
         ));
+    }
+
+    for (const auto& sos : t_src.sosctrs()) {
+        const bool is_sos1 = t_src.is_sos1(sos);
+        const auto& vars = t_src.get_sosctr_vars(sos);
+        const auto& weights = t_src.get_sosctr_weights(sos);
+        add(sos, is_sos1, vars, weights);
     }
 
     if (t_src.m_optimizer_factory) {
