@@ -289,6 +289,7 @@ That's it! Now the column-and-constraint generation algorithm is being
 executed.
 
 \section{Separation with continuous second stage}
+\label{sec:ccg:separation-continuous}
 
 In this section, we focus on the specific case in which $\tilde{Y} =
 \mathbb{R}^{n_y}$ and discuss various techniques to solve the separation
@@ -969,14 +970,36 @@ by using the following code.
 \section{Separation with mixed-integer second stage}
 
 We now consider the general case in which $\tilde{Y} =
-\mathbb{R}^{p_y}\times\mathbb{Z}^{n_y - p_y}$ and assume that $\tilde{U} =
-\{0,1\}^{n_u}$. Note that if $\tilde{U}$ is mixed-integer, then
-Assumption~\ref{assumption:ccg:supremum} may not be satisfied. Hence, we only
-consider binary uncertainty.
+\mathbb{R}^{p_y}\times\mathbb{Z}^{n_y - p_y}$. Note that if $\tilde{U}$ is
+mixed-integer, then Assumption~\ref{assumption:ccg:supremum} may not be
+satisfied. Hence, we only consider discrete uncertainty sets. Similarly to
+Section~\ref{sec:ccg:separation-continuous}, we only discuss optimality
+separation in details. Feasibility and joint separation can be handled in a
+similar way.
 
 \subsection{The bilevel solver \textsf{MibS}}
 
-\textcite{Tahernejad2020}
+A very simple approach to solve the separation problem is to rely on the
+external mixed-integer bilevel solver \textsf{MibS} from the \textsf{coin-or}
+project \parencite{Tahernejad2020}. To implement this, one can simply use the
+optimizer factory \textsf{Bilevel::MibS}. Here is a code snippet to
+demonstrate how to configure optimality separation with \textsf{MibS}.
+%
+\begin{lstlisting}
+    ccg.add_optimality_separation_optimizer(Bilevel::MibS());
+\end{lstlisting}
+
+Recall that \textsf{MibS} can also internally use \textsf{IBM CPLEX} for
+checking bilevel feasibility of a given point throughout the branch-and-bound
+search instead of \textsf{SYMPHONY}. To activate this, use the
+\textsf{with\_cplex\_for\_feasibility} method as follows.
+%
+\begin{lstlisting}
+    auto mibs = Bilevel::MibS();
+    mibs.with_cplex_for_feasibility(true);
+
+    ccg.add_optimality_separation_optimizer(mibs);
+\end{lstlisting}
 
 \subsection{Nested column-and-constraint generation}
 
