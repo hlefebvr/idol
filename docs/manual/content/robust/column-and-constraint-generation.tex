@@ -575,7 +575,7 @@ problem can be solved. This is the subject of the next section.
 
 \subsection{Modeling the robust UFLP with facility disruption in~\textsf{idol}}
 
-As presented in Chapter~\ref{chapter:robust:modeling}, we first need to model
+As presented in Chapter~\ref{chapter:robust:modeling}, we first need to create
 the deterministic model~\eqref{eq:ccg:uflp}. To this end, we will use the
 method \textsf{Problems::FLP::read\_instance\_2021\_Cheng\_et\_al(const
 std::string\&)} to read an instance file from~\textcite{Cheng2021}. Such
@@ -589,7 +589,7 @@ With this, we can read an instance as follows.
     const unsigned int n_facilities = instance.n_facilities();
 \end{lstlisting}
 
-The deterministic model is rather straightforward to model. 
+The deterministic model is rather straightforward to build. 
 %
 \begin{lstlisting}
     Env env;
@@ -630,23 +630,29 @@ The deterministic model is rather straightforward to model.
     model.set_obj_expr(std::move(objective));
 \end{lstlisting}
 
-Next, we need to declare the two-stage structure, i.e., describe what variable
-and what constraint is part of the second-stage problem. This is done through
-the \textsf{Bilevel::Description} class. By default, all variables and
-constraints are defined as first-stage variables and constraints. Here, the
-second-stage variables are $y$ and $z$ while all constraints are second-stage
-constraints. Hence, the following code snippet.
+Next, we need to declare the two-stage structure, i.e., describe which
+variables and which constraints are part of the second-stage problem. This is
+done through the \textsf{Bilevel::Description} class. By default, all
+variables and constraints are defined as first-stage variables and
+constraints. Here, the second-stage variables are $y$ and $z$ while all
+constraints are second-stage constraints. Hence, the following code snippet.
 %
 \begin{lstlisting}
     Bilevel::Description bilevel_description(env);
+
+    // Make y and z second-stage variables
     for (auto j : Range(n_customers)) {
         bilevel_description.make_lower_level(z[j]);
         for (auto i : Range(n_facilities)) {
             bilevel_description.make_lower_level(y[i][j]);
         }
     }
+
+    // Make all constraints second-stage constraints
+    for (const auto& ctr : model.ctrs()) {
+        bilevel_description.make_lower_level(ctr);
+    }
 \end{lstlisting}
-Note that, here, we do not define any coupling constraint.
 
 To end our modeling of the robust UFLP, we need to define two more things: the
 uncertainty set and the uncertain coefficients in the second-stage. Let's
@@ -661,9 +667,10 @@ start with the uncertainty set. Here, we use $\Gamma = 2$.
         idol_Sum(i, Range(n_facilities), u[i]) <= Gamma
     );
 \end{lstlisting}
-Finally, we need to describe where this parameter appears in the deterministic
-model. We do this through the \textsf{Robust::Description} class. To do this,
-we will first need to identify the constraints which are uncertain, i.e., the
+Finally, we need to describe where these parameters appears in the
+deterministic model, i.e., where does $u$ impact the deterministic model. We
+do this through the \textsf{Robust::Description} class. To do this, we will
+first need to identify the constraints which are uncertain, i.e., the
 activation constraints~\eqref{eq:ccg:uflp:activation}. We can do so, e.g., by
 relying on the indices of the constraints within the model we just created.
 Indeed, we know that the constraint ``$y_{ij} \le x_i$ '' has an index equal
@@ -699,9 +706,9 @@ That's it, our robust UFLP is now completely modeled in \textsf{idol}.
 \subsection{Preparing the column-and-constraint optimizer}
 
 We are now ready to create our optimizer for solving
-problem~\eqref{eq:ccg:uflp}. For CCG, the optimizer has an optimizer factory
-called \textsf{Robust::ColumnAndConstraintGeneration} which can be used as
-follows. 
+problem~\eqref{eq:ccg:uflp}. Recall that the optimizer has an optimizer
+factory called \textsf{Robust::ColumnAndConstraintGeneration} which can be
+used as follows. 
 %
 \begin{lstlisting}
     auto ccg = Robust::ColumnAndConstraintGeneration(
@@ -710,7 +717,7 @@ follows.
                         );
 \end{lstlisting}
 As you can see, it is necessary to provide both the bilevel description---so
-that~\textsf{idol} knows what variables and constraints are in the first- or
+that~\textsf{idol} knows which variables and constraints are in the first- or
 second-stage---, and the robust description---so that uncertain coefficients
 as well as the uncertainty set are also known. When we are done configuring
 the CCG algorithm, we will be able to call the \textsf{Model::use} method to
@@ -723,16 +730,17 @@ the problem.
     model.optimize();
 \end{lstlisting}
 Before we can do so, we need to at least give some information on how to solve
-each optimization problems that appear as a sub-problem in the CCG algorithm.
-There are essentially two types of problems to solve: the master problem and
-the adversarial problem. For the master problem, we will simply
-use~\textsf{Gurobi}. We do this through the following code.
+each optimization problems that appear as a sub-problem in the
+column-and-constraint algorithm. There are essentially two types of problems
+to solve: the master problem and the adversarial problem. For the master
+problem, we will simply use~\textsf{Gurobi}. We do this through the following
+code.
 %
 \begin{lstlisting}
     ccg.with_master_optimizer(Gurobi());
 \end{lstlisting}
-Then, we need to describe how to solve the adversarial problem, a.k.a., the
-separation problem. This is the subject of the next section.
+Then, we need to describe how to solve the separation problem. This is the
+subject of the next section.
 
 \subsection{Solving the separation problem}
 
@@ -747,10 +755,9 @@ $Y(x,\hat{u}) = \emptyset$ or the best second-stage decision $y^*$ given $x$
 and $\hat{u}$ is such that $d^\top y^* > x_0$. Note that, in the case of the
 UFLP, the second-stage problem is always feasible. Thus, we ``only'' need to
 check that $x$ is an optimal first-stage decision. In what follows, we discuss
-how to implement the duality-based separation and the KKT-based separation for
-the facility location problem. 
+how to implement this separation for the UFLP. 
 
-\subsubsection{Duality-based separation}
+\subsubsection{Dualized second-stage problem}
 
 The first approach is the well-known duality-based approach which consists in
 replacing the second-stage primal problem by its dual and linearize products
@@ -810,15 +817,80 @@ automatically. To use this feature, we simply need to provide these bounds
 to~\textsf{idol}. As discussed in Chapter~\ref{chapter:bilevel:continuous},
 this can be done by means of a child class of the
 \textsf{Reformulators::KKT::BoundProvider} class which will return the
-necessary bounds. Here is one possible implementation. Note that the only
-bounds which need to be returned in this case are those on $\beta$ since
-$\beta$ is the variable involved in a product.
+necessary bounds. Here is one possible implementation which relies on a map
+between the constraints' names and their corresponding bounds on dual
+variables. Note that the only bounds which need to be returned in this case
+are those on $\beta$ since $\beta$ is the only variable involved in a product.
+For that reason, only the \textsf{get\_ctr\_dual\_lb} method is implemented
+($\beta$ is known to be non-negative).
 %
 \begin{lstlisting}
     class UFLPBoundProvider
         : public idol::Reformulators::KKT::BoundProvider {
+            idol::Map<std::string, double> m_ctr_dual_bounds;
     public:
-        // TODO
+
+        // Constructor which computes bounds on the dual variables 
+        // and fills the m_ctr_dual_bounds map.
+        UFLPBoundProvider(
+            const idol::Problems::FLP::Instance& t_instance,
+            const idol::Vector<idol::Ctr, 2>& t_activation_ctrs) {
+
+            compute_bounds(t_instance, t_activation_ctrs);
+
+        }
+
+        double get_ctr_dual_lb(const idol::Ctr &t_ctr) override {
+            return m_ctr_dual_bounds.at(t_ctr.name());
+        }
+
+        double get_ctr_dual_ub(const idol::Ctr &t_ctr) override {
+            throw idol::Exception("This method will not be called");
+        }
+
+        double get_ctr_slack_lb(const idol::Ctr &t_ctr) override {
+            throw idol::Exception("This method will not be called");
+        }
+
+        double get_ctr_slack_ub(const idol::Ctr &t_ctr) override {
+            throw idol::Exception("This method will not be called");
+        }
+
+        double get_var_lb_dual_ub(const idol::Var &t_var) override {
+            throw idol::Exception("This method will not be called");
+        }
+
+        double get_var_ub_dual_lb(const idol::Var &t_var) override {
+            throw idol::Exception("This method will not be called");
+        }
+
+        double get_var_ub(const idol::Var &t_var) override {
+            throw idol::Exception("This method will not be called");
+        }
+
+        [[nodiscard]] BoundProvider *clone() const override {
+            return new UFLPBoundProvider(*this);
+        }
+
+        void compute_bounds(
+            const idol::Problems::FLP::Instance& t_instance,
+            const idol::Vector<idol::Ctr, 2>& t_activation_ctrs) {
+
+            const auto n_facilities = t_instance.n_facilities();
+            const auto n_customers = t_instance.n_customers();
+
+            // Compute bounds for the activation constraints
+            for (auto i : idol::Range(n_facilities)) {
+                for (auto j : idol::Range(n_customers)) {
+                    const auto& name=t_activation_ctrs[i][j].name();
+                    m_ctr_dual_bounds[name] = std::min(
+                            0.,
+                            t_instance.demand(j) * (t_instance.per_unit_transportation_cost(i, j) - t_instance.per_unit_penalty(j) )
+                    );
+                }
+            }
+
+        }
     };
 \end{lstlisting}
 
@@ -832,11 +904,12 @@ The complete code for configuring the CCG algorithm reads as follows.
     
     ccg.with_master_optimizer(Gurobi());
 
-    auto duality_based = Bilevel::MinMax::StrongDuality();
-    duality_based.with_optimizer(Gurobi());
-    duality_based.with_bound_provider(UFLPBoundProvider());
+    auto dualize = Bilevel::MinMax::StrongDuality();
+    duality_based.with_bound_provider(
+        UFLPBoundProvider(instance, activations_constraints)
+    );
 
-    ccg.add_optimality_separation_optimizer(duality_based);
+    ccg.add_optimality_separation_optimizer(dualize + Gurobi());
 
     model.use(ccg);
     model.optimize();
@@ -849,7 +922,6 @@ of SOS1 constraints. This can be implemented by using the following code.
 %
 \begin{lstlisting}
     auto duality_based = Bilevel::MinMax::StrongDuality();
-    duality_based.with_optimizer(Gurobi());
     duality_based.with_sos1_constraints();
 \end{lstlisting} 
 
@@ -929,8 +1001,121 @@ of the \textsf{UFLPBoundProvider} class so that it returns bounds for all dual
 variables.
 %
 \begin{lstlisting}
-    // TODO ...
+    class UFLPMasterBoundProvider 
+        : public idol::Reformulators::KKT::BoundProvider {
+        idol::Map<std::string, double> m_ctr_dual_bounds;
+        idol::Map<std::string, double> m_ctr_slack_bounds;
+        idol::Map<std::string, double> m_var_bound_dual_bounds;
+
+    public:
+        UFLPMasterBoundProvider(
+            const Instance& t_instance,
+            const idol::Vector<idol::Var, 2>& t_y,
+            const idol::Vector<idol::Var, 1>& t_z,
+            const idol::Vector<idol::Ctr, 1>& t_assignment_ctrs,
+            const idol::Vector<idol::Ctr, 2>& t_activation_ctrs) {
+
+            compute_bounds(t_instance, 
+                           t_y, 
+                           t_z,
+                           t_assignment_ctrs,
+                           t_activation_ctrs);
+
+        }
+
+        double get_ctr_dual_lb(const idol::Ctr &t_ctr) override {
+            return m_ctr_dual_bounds.at(t_ctr.name());
+        }
+
+        double get_ctr_dual_ub(const idol::Ctr &t_ctr) override {
+            return m_ctr_dual_bounds.at(t_ctr.name());
+        }
+
+        double get_ctr_slack_lb(const idol::Ctr &t_ctr) override {
+            return m_ctr_slack_bounds.at(t_ctr.name());
+        }
+
+        double get_ctr_slack_ub(const idol::Ctr &t_ctr) override {
+            return m_ctr_slack_bounds.at(t_ctr.name());
+        }
+
+        double get_var_lb_dual_ub(const idol::Var &t_var) override {
+            return m_var_bound_dual_bounds.at(t_var.name());
+        }
+
+        double get_var_ub_dual_lb(const idol::Var &t_var) override {
+            return m_var_bound_dual_bounds.at(t_var.name());
+        }
+
+        double get_var_ub(const idol::Var &t_var) override {
+            return 1;
+        }
+
+        [[nodiscard]] BoundProvider *clone() const override {
+            return new UFLPMasterBoundProvider(*this);
+        }
+
+        void compute_bounds(const Instance& t_instance,
+                            const idol::Vector<idol::Var, 2>& t_y,
+                            const idol::Vector<idol::Var, 1>& t_z,
+                            const idol::Vector<idol::Ctr, 1>& t_assignment_ctrs,
+                            const idol::Vector<idol::Ctr, 2>& t_activation_ctrs) {
+
+            const auto n_facilities = t_instance.n_facilities();
+            const auto n_customers = t_instance.n_customers();
+
+            // Compute bounds for the assignment constraints
+            for (auto j : idol::Range(n_customers)) {
+                const auto name = t_assignment_ctrs[j].name();
+                m_ctr_dual_bounds[name] = t_instance.per_unit_penalty(j) * t_instance.demand(j);
+                m_ctr_slack_bounds[name] = 1;
+            }
+
+            // Compute bounds for the activation constraints
+            for (auto i : idol::Range(n_facilities)) {
+                for (auto j : idol::Range(n_customers)) {
+                    const auto name= t_activation_ctrs[i][j].name();
+                    m_ctr_dual_bounds[name] = std::min(0.,
+                        t_instance.demand(j) * (
+                        t_instance.per_unit_transportation_cost(i,j) 
+                        - t_instance.per_unit_penalty(j) 
+                        )
+                    );
+                    m_ctr_slack_bounds[name] = -1;
+                }
+            }
+
+            // Compute bounds for the y variables
+            for (auto i : idol::Range(n_facilities)) {
+                for (auto j : idol::Range(n_customers)) {
+                    const auto name = t_y[i][j].name();
+                    m_var_bound_dual_bounds[name] =
+                        t_instance.per_unit_transportation_cost(i,j)
+                        * t_instance.demand(j)
+                        + std::max(0.,
+                        t_instance.demand(j) * (
+                        t_instance.per_unit_penalty(j) -
+                        t_instance.per_unit_transportation_cost(i,j)
+                        )
+                        );
+                }
+            }
+
+            // Compute bounds for the z variables
+            for (auto j : idol::Range(n_customers)) {
+                const auto name = t_z[j].name();
+                m_var_bound_dual_bounds[name] = t_instance.per_unit_penalty(j) 
+                    * t_instance.demand(j);
+            }
+
+        }
+
+    };
 \end{lstlisting}
+Arguably, the core of this approach lies in the \textsf{compute\_bounds}
+method which effectively computes the bounds on all dual variables and slacks
+to fill the corresponding map. Then, each \textsf{get\_X} method returns the
+corresponding bound stored in the map. 
 
 The complete code for configuring the CCG algorithm reads as follows.
 \begin{lstlisting}
@@ -942,10 +1127,14 @@ The complete code for configuring the CCG algorithm reads as follows.
     ccg.with_master_optimizer(Gurobi());
 
     auto kkt = Bilevel::KKT();
-    kkt.with_optimizer(Gurobi());
-    kkt.with_bound_provider(UFLPBoundProvider());
+    kkt.with_bound_provider(UFLPBoundProvider(
+        instance,
+        y,
+        z,
+        assignment_constraints,
+        activation_constraints));
 
-    ccg.add_optimality_separation_optimizer(kkt);
+    ccg.add_optimality_separation_optimizer(kkt + Gurobi());
 
     model.use(ccg);
     model.optimize();
