@@ -231,14 +231,12 @@ Algorithm~\ref{alg:ccg:joint-separation} presents the overall algorithm.
     \end{algorithmic}
 \end{algorithm}
 
-\section{How to implement it with~\textsf{idol}}
-
-In this section, we discuss how to implement a column-and-constraint
-generation algorithm to solve two-stage robust problems. The reader should be
-familiar with modeling two-stage robust problems in~\textsf{idol}. If this is
-not the case, please refer to Chapter~\ref{chapter:robust:modeling}. 
-
 \subsection{The \textsf{Robust::ColumnAndConstraintGeneration} optimizer}
+
+We now move on to implementing a column-and-constraint generation algorithm
+with~\textsf{idol}. Thus, the reader should be familiar with modeling
+two-stage robust problems in~\textsf{idol}. If this is not the case, please
+refer to Chapter~\ref{chapter:robust:modeling}. Let's start. 
 
 In~\textsf{idol}, a column-and-constraint generation algorithm can be
 implemented by using the class \textsf{Robust::ColumnAndConstraintGeneration}
@@ -254,17 +252,17 @@ Here, \textsf{robust\_description} is an object of the
 class~\textsf{Robust::Description} which contains the uncertainty set as well
 the uncertain coefficients in the model. The \textsf{bilevel\_description}
 argument is a~\textsf{Bilevel::Description} object which describes which
-variable and constraint is part of the first and second stage. Recall that all
-``upper-level'' variables and constraints are considered as first-stage
-variables and constraints. Similary, all ``lower-level'' variables and
-constraints are second-stage variables and constraints. Also recall that the
-lower-level objective function must NOT be defined here. If a lower-level
-objective function were to be defined, \textsf{idol} would interpret the
-problem as a robust bilevel problem with wait-and-see follower instead of a
-two-stage robust problem, leading to a different algorithmic scheme. 
+variables and constraints are part of the first and second stage. Recall that
+all ``upper-level'' variables and constraints are considered to belong to the
+first stage while all ``lower-level'' variables and constraints are
+second-stage entities. Also recall that the lower-level objective function
+must not be defined here. If a lower-level objective function were to be
+defined, \textsf{idol} would interpret the problem as a robust bilevel problem
+with wait-and-see follower instead of a two-stage robust problem, leading to a
+different algorithmic scheme. 
 
 There are two necessary ingredients to be specified for a
-column-and-constraint generation algorithm to run: how to sovle the master
+column-and-constraint generation algorithm to run: how to solve the master
 problem and how to solve the separation problem. We will dive into the
 separation problem in the next sections. Let's focus on the master problem.
 The master problem is a single-level model presented in~\eqref{eq:ccg:master}.
@@ -277,42 +275,45 @@ at every iteration.  This can be achieved with the
     ccg.with_master_optimizer(Gurobi());
 \end{lstlisting}
 %
-In the next sections, we will discuss how the same can be achieved for the
-separation problem. For now, let's assume that our algorithm is entirely
-configured and ready to be executed. Then, assuming that~\textsf{model} is an
-object of the class~\textsf{Model} storing the deterministic version of our
-problem, we may do the following.
+For now, let's assume that our algorithm is entirely configured and ready to
+be executed, i.e., assume that a method for solving the separation problem has
+been configured. Then, with~\textsf{model} being an object of the
+class~\textsf{Model} storing the deterministic version of our problem, we can
+do the following to run the column-and-constraint generation algorithm.
 %
 \begin{lstlisting}
     model.use(ccg);
     model.optimize();
 \end{lstlisting}
-That's it! Now the column-and-constraint generation algorithm will be
+That's it! Now the column-and-constraint generation algorithm is being
 executed.
 
-\subsection{Solving the separation problem with continuous second stage}
+\section{Separation with continuous second stage}
 
 In this section, we focus on the specific case in which $\tilde{Y} =
-\mathbb{R}^{n_y}$ and discuss various techniques to solve the optimality
-separation problem, the feasibility separation problem and the joint
-separation problemm. Note that the separation problem is automatically done
-by~\textsf{idol}. Thus, the only input from the user that is required is how
-to solve the corresponding bilevel problem. Depending on the separation type,
-this can be done with the \textsf{add\_optimality\_separation\_optimizer}
-method, the \textsf{add\_feasibility\_separation\_optimizer} method or the
+\mathbb{R}^{n_y}$ and discuss various techniques to solve the separation
+problem. To this end, we focus on optimality separation. The feasibility
+separation and the joint separation can be handled in a much similar way. Note
+that the separation problem is automatically formulated by~\textsf{idol}.
+Thus, the only input from the user that is required is how to solve the
+corresponding bilevel problem. Depending on the separation type, this can be
+done with the \textsf{add\_optimality\_separation\_optimizer} method, the
+\textsf{add\_feasibility\_separation\_optimizer} method or the
 \textsf{add\_joint\_separation\_optimizer} method. These methods take only one
 argument which is an optimizer factory implementing the
 \textsf{Bilevel::SolverInterface} interface. At each iteration, the
 appropriate bilevel model is built by~\textsf{idol} and the corresponding
-optimizer factory used to create an optimizer and solve this bilevel problem.
+optimizer factory is used to create an optimizer for solving this bilevel
+problem.
+
 Note that a separation phase is only triggered if at least one optimizer for
 this phase has been specified. For instance, if a problem is known to have
 complete recourse---meaning that the second-stage problem is always
 feasible---then not specifying an optimizer for the feasibility separation
-will skip produce a column-and-constraint generation algorithm which does not
-check for feasibility. Also note that more than one optimizer per phase can be
-specified. Hence, heuristic approaches can be added too. The last optimizer
-should always be an exact solver to prove convergence of the method.
+will produce a column-and-constraint generation algorithm which does not check
+for feasibility. Also note that more than one optimizer per separation type
+can be specified. Hence, heuristic approaches can be added too. The last
+optimizer should always be an exact solver to prove convergence of the method.
 
 We end with a simple example which prepares the column-and-constraint
 algorithm to solve the optimality separation problems by means of a KKT
@@ -325,22 +326,20 @@ means of SOS1 constraints.
 
     ccg.add_optimality_separation_optimizer(kkt + Gurobi());
 \end{lstlisting}
+As you can see, it is very easy to configure. For more details on bilevel
+optimizers, the reader my refer to the section on bilevel optimization.
 
-We now give a more detailed description on how to perform each separation. 
-
-\subsubsection{Optimality separation}
-
-We first consider optimality separation of a current first-stage decision $x$
-with second-stage cost estimate $x_0$. Recall that optimality separation is
+We now give a more detailed description on how to perform optimality
+separation using different approaches. Recall that optimality separation is
 only performed if $Y(x,u) \neq \emptyset$ for all $u\in U$, i.e., after
 feasibility separation or if it is known that $Y(x,u) \neq\emptyset$ for all
 $x\in X$ and all $u\in U$. Hence, the separation
 problem~\eqref{eq:ccg:optimality-separation}---which, internally is modeled
 as~\eqref{eq:ccg:optimality-separation-bilevel}---is always feasible.
 
-\bulletparagraph{KKT-based separation}
+\subsection{KKT single-level reformulation}
 
-Recall that the second-stage primal problem reads
+Recall that the second-stage primal problem:
 \begin{equation*}
     \min_y\Defset{ f^\top y }{ Cx + Dy + E(x)u \ge b }.
 \end{equation*}
@@ -365,9 +364,9 @@ the nonlinear problem
         & (Cx + Dy + E(x)u - b)^\top \lambda = 0. \label{eq:ccg:kkt}
     \end{align}
 \end{subequations}
-Note that this problem is a bilinear optimization problem which can be solved
-using standard nonlinear techniques.
-
+This problem is a bilinear optimization problem which can be solved using
+standard nonlinear techniques.
+%
 To implement this method, simply call
 the~\textsf{add\_optimality\_separation\_optimizer} with an optimizer factory
 of the class~\textsf{Bilevel::KKT}. The following code snippet shows you how
@@ -378,10 +377,10 @@ it's done.
     ccg.add_optimality_separation_optimizer(kkt + Gurobi());
 \end{lstlisting}
 
-Here, \text{idol} will automatically create this optimizer at every iteration
-to solve the separation problem. This optimizer automatically performs a KKT
-single-level reformulation of the corresponding bilevel problem and solves it
-with \textsf{Gurobi}.
+Here, \textsf{idol} will automatically create this optimizer at every
+iteration to solve the separation problem. This optimizer then automatically
+performs a KKT single-level reformulation of the corresponding bilevel problem
+and solves it with \textsf{Gurobi}.
 
 An alternative approach is to linearize
 constraints~\eqref{eq:ccg:kkt} by introducing auxiliary binary variables.
@@ -400,9 +399,10 @@ constraints~\eqref{eq:ccg:kkt} can be replaced by
 \end{equation*}
 Replacing constraints~\eqref{eq:ccg:kkt} by these new constraints leads to a
 mixed-integer linear problem. To implement this, one needs to provide bounds
-to~\text{idol} that will, then, automatically do the linearization. We refer
-to Chapter~\ref{chapter:bilevel:continuous} for more details on bound
-providers. Assuming that~\textsf{bound\_provider} is an object of a child
+to~\textsf{idol} that will, then, use them to perform the linearization. For a
+complete description, we refer to Chapter~\ref{chapter:bilevel:continuous} and
+the related section on bound providers. Now, assuming
+that~\textsf{bound\_provider} is an object of a child class
 of~\textsf{Reformulators::KKT::BoundProvider}, one implements this methods as
 follows.
 %
@@ -412,19 +412,18 @@ follows.
     ccg.add_optimality_separation_optimizer(kkt + Gurobi());
 \end{lstlisting}
 %
-Again, the rest is done automatically by~\textsf{idol}.
+In the next section, a complete example is given to solve an uncapacitated
+facility location problem with facility disruption. 
 
-This later approach was considered in the seminal paper~\textcite{Zeng2013}
-and is a standard approach for solving the separation problem. One final note.
-In practice, choosing a wrong value for $M$ may result in a CCG scheme which
-is no longer convergent. Hence, it is necessary that the bounds $M$ be valid.
-On the contrary, choosing a too large value for $M$ leads to bad performance
-in terms of computational time and/or numerical stability. 
-
-Another approach to tackle the nonlinear constraints~\eqref{eq:ccg:kkt} that
-does not require computing big-M values is through SOS1 constraints, we refer
-to Chapter~\ref{chapter:bilevel:continuous} for more details. Here is how it
-can be implemented.
+One important note. In practice, choosing a wrong value for $M$ may result in
+a column-and-constraint generation scheme that is no longer convergent. Hence,
+it is necessary that the bounds $M$ be valid. On the contrary, choosing a too
+large value for $M$ leads to bad performance in terms of computational time
+and/or numerical stability. Another approach to tackle the nonlinear
+constraints~\eqref{eq:ccg:kkt} that does not require computing big-M values is
+through SOS1 constraints. Again, we refer to
+Chapter~\ref{chapter:bilevel:continuous} for more details. Here is how it can
+be implemented.
 %
 \begin{lstlisting}
     auto kkt = Bilevel::KKT();
@@ -432,7 +431,7 @@ can be implemented.
     ccg.add_optimality_separation_optimizer(kkt + Gurobi());
 \end{lstlisting}
 
-\bulletparagraph{Strong-duality-based separation}
+\subsection{Strong-duality single-level reformulation}
 
 Similar to the KKT-based separation, one can exploit the strong-duality
 single-level reformulation of the bilevel separation problem. This model reads
@@ -445,9 +444,7 @@ single-level reformulation of the bilevel separation problem. This model reads
 \end{align*}
 %
 This model can be solved using a nonlinear optimization solver
-like~\textsf{Gurobi}.
-
-Implementing this technique is straightforward with the
+like~\textsf{Gurobi}. Implementing this technique is straightforward with the
 \textsf{Bilevel::StrongDuality} optimizer factory.
 %
 \begin{lstlisting}
@@ -457,13 +454,14 @@ Implementing this technique is straightforward with the
     );
 \end{lstlisting}
 
-\bulletparagraph{Duality-based separation}
+\subsection{Dualized second-stage problem}
 
-Another approach for solving the separation problem is to exploit strong
-duality. Recall that the second-stage problem is feasible for all $u\in U$
-given $x$. Hence, the lower-level problem
-in~\eqref{eq:ccg:optimality-separation} is feasible and bounded and attains
-the same optimal objective function value as its dual problem. The dual reads
+Another approach for solving the separation problem is to exploit linear
+duality and the max-min structure of the separation problem. Recall that the
+second-stage problem is feasible for all $u\in U$ given $x$. Hence, the
+lower-level problem in~\eqref{eq:ccg:optimality-separation} is feasible and
+bounded and attains the same optimal objective function value as its dual
+problem. The dual reads
 \begin{equation*}
     \max_{\lambda} \Defset{ (b - Cx - E(x)u)^\top\lambda }{ D^\top \lambda = d, \ \lambda \ge 0 }.
 \end{equation*}
@@ -473,22 +471,19 @@ in~\eqref{eq:ccg:optimality-separation} leads to the nonlinear model
     \label{eq:ccg:optimality-duality-separation}
     \max_{u\in U, \lambda} \Defset{ (b - Cx - E(x)u)^\top\lambda }{ D^\top \lambda = d, \ \lambda \ge 0 }
 \end{equation}
-which can be solved by standard nonlinear approaches. 
-
-To implement this technique, we will make use of the
-\textsf{Bilevel::MinMax::Dualize} optimizer factory. The following code
-snippet gives you an easy-to-read example.
+which can be solved by standard nonlinear approaches. To implement this
+technique, we will make use of the \textsf{Bilevel::MinMax::Dualize} optimizer
+factory. The following code snippet gives you an easy-to-read example.
 %
 \begin{lstlisting}
     auto dualize = Bilevel::MinMax::Dualize();
     ccg.add_optimality_separation_optimizer(dualize + Gurobi());
 \end{lstlisting}
 
-\bulletparagraph{Duality-KKT-based separation}
+\subsection{Dualized second-stage problem with KKT reformulation}
 
-\HLil{Not yet implemented.}
+\HL{Not yet implemented.}
 
-{\color{red}
 Building uppon the duality-based separation, consider
 problem~\eqref{eq:ccg:optimality-duality-separation} and let us write it as 
 \begin{subequations}
@@ -517,278 +512,9 @@ Here again, the nonlinear terms arising from the complementarity constraints
 of the KKT conditions can be linearized using auxiliary binary variables and
 valid bounds on the dual variables $\mu$. In such a case, the resulting
 problem is a mixed-integer linear problem. 
-}
 
-\subsubsection{Feasibility separation}
-
-We now consider solving the feasibility separation problem. The techniques are
-similar to those presented in the previous section. Recall that if your
-problem is known to have complete recourse, i.e., you know that the
-second-stage problem is always feasible, you do not need to provider an
-optimizer for feasibility separation.
-
-\bulletparagraph{KKT-based separation}
-
-Recall the lower level of the separation
-problem~\eqref{eq:ccg:feasibility-separation}:
-\begin{equation*}
-    \min_{y,z} \Defset{ e^\top z }{
-        Cx + Dy + E(x)u + z \ge b, \, 
-        z \ge 0
-    }.
-\end{equation*}
-By construction, it is feasible and bounded. Hence, its KKT conditions are
-necessary and sufficient to characterize all optimal points. In other words, a
-point $(y,z,\lambda,\mu)$ is a solution to the above problem if and only if it
-satisfies the KKT system 
-\begin{align*}
-    & Cx + Dy + E(x)u + z \ge b, \quad z \ge 0, \quad 
-    D^\top \lambda = 0, \quad \lambda + \mu = 1, \quad \lambda,\mu \ge 0, \\
-    & (Cx + Dy + E(x)u + z - b)^\top\lambda = 0, \quad \mu^\top z = 0.
-\end{align*}
-Thus, one can equivalently replace the lower-level problem by its KKT
-conditions, leading to the nonlinear problem 
-\begin{align*}
-    \max_{u\in U,y,z,\lambda,\mu} \quad & z \\
-    \text{s.t.} \quad 
-    & Cx + Dy + E(x)u + z \ge b, \quad z \ge 0, \quad 
-    D^\top \lambda = 0, \quad \lambda + \mu = 1, \\
-    & (Cx + Dy + E(x)u + z - b)^\top\lambda = 0, \quad z^\top\mu = 0 \quad \lambda,\mu \ge 0.
-\end{align*}
-Again, this problen can be solved ``as is'' using standard nonlinear
-approaches. To implement this, use the following.
-%
-\begin{lstlisting}
-    auto kkt = Bilevel::KKT();
-    ccg.add_feasibility_separation_optimizer(kkt + Gurobi());
-\end{lstlisting}
-
-While this approach is exact, introducing auxiliary binary variables to
-linearize the complementarity constraints typically leads to better
-performance. Also note that, contrary to the optimality separation,
-identifying valid bounds on the dual variables $\lambda$ and $\mu$ is trivial
-since $1$ is clearly a valid choice. Hence, this approach should often be
-preferred over the nonlinear formulation. As an alternative approach, one
-could also make use of SOS1 constraints to enforce the complementarity
-constraints by branching. The following code snippet shows how this can be
-implemented.
-%
-\begin{lstlisting}
-    auto kkt = Bilevel::KKT();
-    kkt.with_sos1_constraints(true);
-    // if you wish to linearize complementarity constraints using binary variables, do the following:
-    // kkt.with_bound_provider(bound_provider); 
-    kkt.add_feasibility_separation_optimizer(kkt + Gurobi());
-\end{lstlisting} 
-
-\bulletparagraph{Duality-based separation}
-
-Replacing the lower-level problem by its dual leads to the duality-based
-separation approach. This formulation reads 
-\begin{align*}
-    \max_{u\in U,\lambda,\mu} \quad & (b - Cx - E(x)u)^\top\lambda \\
-    \text{s.t.} \quad
-    & D^\top\lambda = 0, \quad \lambda + \mu = 1, \quad \lambda,\mu\ge 0.
-\end{align*}
-Note that this is a nonlinear problem. Here is how to implement it.
-%
-\begin{lstlisting}
-    auto dualize = Bilevel::MinMax::Dualize();
-    kkt.add_feasibility_separation_optimizer(dualize + Gurobi());
-\end{lstlisting}
-
-\bulletparagraph{Duality-KKT-based separation}
-
-\HLil{Not implemented yet.}
-
-{
-\color{red}
-Building uppon the duality-based separation, we may also write the separation
-problem as 
-%
-\begin{align*}
-    \max_{\lambda,\mu} \quad & (b - Cx)^\top\lambda + \max_{u\in U} -\lambda^\top E(x)^\top u \\
-    \text{s.t.} \quad & D^\top\lambda = 0, \quad \lambda + \mu = 1, \quad \lambda,\mu\ge 0.
-\end{align*}
-Replacing the inner problem by its KKT conditions leads to the following
-formulation of the separation problem
-\begin{align*}
-    \max_{u,\lambda,\mu,\nu} \quad & (b - Cx)^\top\lambda + g^\top\nu \\
-    \text{s.t.} \quad & D^\top\lambda = 0, \quad \lambda + \mu = 1, \quad \lambda,\mu\ge 0, \\
-    & \nu \ge 0, \quad F^\top\nu = -E(x)^\top\lambda, \quad \nu^\top(Fu - g) = 0.
-\end{align*}
-Again, bounds on the dual variables $\nu$ can be exploited to linearize the
-complementarity constraints by introducing auxiliary binary variables.
-}
-
-\subsubsection{Joint separation}
-
-In this section, we consider joint separation, i.e., performing both the
-feasibility separation and the optimality separation by solving a single
-bilevel problem.
-
-
-\bulletparagraph{KKT-based separation}
-
-Recall the lower-level problem of the joint separation problem:
-%
-\begin{subequations}
-    \begin{align}
-        \min_{y,z_0,z} \quad & z_0 + e^\top z \\
-        \text{s.t.} \quad & x_0 + z_0 \ge d^\top y, \\
-        & Cx + Dy + E(x)u + z \ge b, \\
-        & z, z_0 \ge 0.
-    \end{align}
-\end{subequations}
-By construction, it is feasible and bounded. Hence, a point
-$(y,z,\lambda_0,\lambda,\mu)$ is a primal-dual solution if and only if it
-satisfies the KKT system 
-\begin{align*}
-    & x_0 + z \ge d^\top y, \quad Cx + Dy + E(x)u + z \ge b, \quad z \ge 0, \\
-    & D^\top\lambda - d \lambda_0 = 0, \quad \lambda_0 + e^\top\lambda + \mu = 1, \\
-    & (x_0 + z - d^\top y)\lambda_0 = 0, \quad 
-    (Cx + Dy + E(x)u + ze - b)^\top \lambda = 0, \quad 
-    z\mu = 0.
-\end{align*}
-Hence, the separation problem can be written as 
-\begin{align*}
-    \max_{u\in U, y,z_0,z,\lambda_0,\lambda,\mu} \quad & z_0 + e^\top z \\
-    \text{s.t.} \quad & x_0 + z_0 \ge d^\top y, \quad Cx + Dy + E(x)u + ze \ge b, \quad z, z_0 \ge 0, \\
-    & D^\top\lambda - d \lambda_0 = 0, \quad \lambda_0 + e^\top\lambda + \mu = 1, \\
-    & (x_0 + z_0 - d^\top y)\lambda_0 = 0, \quad 
-    (Cx + Dy + E(x)u + ze - b)^\top \lambda = 0, \\
-    & z^\top\mu = 0.
-\end{align*}
-%
-This is a nonlinear model which can be solved by standard nonlinear
-approaches. Moreover, the only nonlinear constraints are the complementarity
-constraints which can be linearized by introducing auxiliary binary variables.
-Note that this requires bounds on the dual variables $\lambda_0$, $\lambda$
-and $\mu$ as well as on the slack variable $z$. Note that the dual variables
-are trivially bounded by $1$ while $z$ is typically easy to bound, in
-particular if $x$ and $y$ are explicitly bounded. 
-
-\bulletparagraph{Duality-based separation}
-
-Replacing the lower-level problem by its dual leads to the duality-based
-separation approach. This formulation reads 
-\begin{align*}
-    \max_{u\in U,\lambda,\lambda_0,\mu} \quad & -x_0\lambda_0 + (b - Cx - E(x)u)^\top \lambda \\
-    \text{s.t.} \quad & D^\top\lambda - d\lambda_0 = 0, \\
-    & \lambda_0 + e^\top\lambda + \mu = 1, \\
-    & \lambda_0, \lambda, \mu \ge 0.
-\end{align*}
-Note that this is a nonlinear problem. 
-
-\bulletparagraph{Duality-KKT-based separation}
-
-Building uppon the duality-based approach, we may also write the separation
-probem as 
-\begin{align*}
-    \max_{\lambda,\lambda_0,\mu} \quad & -x_0\lambda_0 + (b - Cx)^\top \lambda + \max_{u\in U}- \lambda^\top E(x)^\top u \\
-    \text{s.t.} \quad & D^\top\lambda - d\lambda_0 = 0, \\
-    & \lambda_0 + e^\top\lambda + \mu = 1, \\
-    & \lambda_0, \lambda, \mu \ge 0.
-\end{align*}
-Replacing the inner maximization problem by its KKT conditions leads to the
-following formulation of the separation problem
-\begin{align*}
-    \max_{\lambda,\lambda_0,\mu,\nu} \quad & -x_0\lambda_0 + (b - Cx)^\top \lambda + g^\top\nu \\
-    \text{s.t.} \quad & D^\top\lambda - d\lambda_0 = 0, \\
-    & \lambda_0 + e^\top\lambda + \mu = 1, \\
-    & \lambda_0, \lambda, \mu \ge 0, \\
-    & \nu\ge 0, \quad F^\top\nu = -E(x)^\top\lambda, \quad \nu^\top(Fu - g) = 0.
-\end{align*}
-Here again, bounds on $\nu$ can be exploited to linearize the complementarity
-constraints and obtain a mixed-integer linear formulation.
-
-\bulletparagraph{Duality-based separation for 0/1 uncertainty sets} 
-
-In the special case where the uncertainty set is either a binary set, i.e., $U
-\subseteq \{0,1\}^{n_u}$, or a polytope whose extreme points are all binary,
-i.e., $\text{vert}(U) \subseteq \{0,1\}^{n_u}$, \textcite{Ayoub2016} develop
-an alternative approach to solve the separation problem. Consider again the
-dual of the lower-level problem in the joint separtion problem. The authors
-exploit the fact that worst-case scenarios are always extreme points of the
-uncertainty set. Hence, the separation problem can be modeled as
-\begin{subequations}
-    \begin{align}
-        \max_{u,\lambda,\lambda_0} \quad & -x_0\lambda_0 + (b - Cx - E(x)u)^\top \lambda \\
-        \text{s.t.} \quad & D^\top \lambda - d\lambda_0 = 0, \quad \lambda, \lambda_0 \ge 0, \quad \lambda + \lambda_0 \le 1, \label{eq:ccg:farkas-0-1:dual} \\
-        & u\in U\cap\{0,1\}^{n_u} \label{eq:ccg:farkas-0-1:uncertainty}.
-    \end{align}
-\end{subequations}
-Then, observe that products between $u_k$ and $\lambda_i$ can be linearized
-exactly using the following constraints ensuring $w_{ik} = \lambda_iu_k$
-\begin{equation}
-    0 \le w_{ik} \le \lambda_i, \quad 
-    w_{ik} \le u_k, \quad 
-    w_{ik} \ge \lambda_i - 1 + u_k,
-    \label{eq:ccg:farkas-0-1:mccormick}
-\end{equation}
-for all $i=1,\dotsc,m_y$ and all $k = 1,\dotsc,n_u$. Overall, the separation
-problem is given by 
-\begin{subequations}
-    \begin{align*}
-        \max_{u,\lambda,\lambda_0,w} \quad & -x_0\lambda_0 + (b - Cx)^\top \lambda - \sum_{i=1}^{m_y} \sum_{k=1}^{n_u} E_{ik}(x)w_{ij} \\
-        \text{s.t.} \quad & \text{\eqref{eq:ccg:farkas-0-1:dual}--\eqref{eq:ccg:farkas-0-1:uncertainty}}, \eqref{eq:ccg:farkas-0-1:mccormick}. 
-    \end{align*}
-\end{subequations}
-
-\subsection{Solving the separation problem with mixed-integer second stage}
-
-We now consider the general case in which $\tilde{Y} =
-\mathbb{R}^{p_y}\times\mathbb{Z}^{n_y - p_y}$. 
-
-\HLil{
-Approaches are
-\begin{itemize}
-    \item \textsf{MibS}
-    \item CCG Anirudh with big-M and warning with ref to new paper
-    \item Farkas and cut generation with binary uncertainty set (new)
-\end{itemize}
-}
-
-\renewcommand{\arraystretch}{1.3} % <-- 1.3 = 30% more spacing
-\begin{sidewaystable}
-    \vspace{12cm}
-    \caption{Approaches to solve the separation problem in the CCG algorithm}
-    \centering
-    \begin{tabular}{lllp{4cm}llp{4cm}}
-        \toprule
-        & \multicolumn{3}{c}{$\tilde{Y} = \mathbb{R}^{n_y}$} & \multicolumn{3}{c}{$\tilde{Y} = \mathbb{R}^{n_y - p_y}\times\mathbb{Z}^{p_y}$} \\\cmidrule(lr){2-4}\cmidrule(lr){5-7}
-        & Approach & Problem type & References & Approach & Problem Type & References \\\toprule
-        $\tilde{U}=\mathbb{R}^{n_u}$ & KKT & NLP/MILP & \textcite{Zeng2013} & Nested-CCG & min-max-min & \textcite{zeng2012exact} \\
-        & Duality & NLP & \textcite{Zeng2013} \\
-        & Duality-KKT & NLP/MILP & \textcite{Ayoub2016}, \textcite{lefebvre2022convex} & & \\[0.5ex]\hdashline{}
-        with $\text{vert}(U) \subseteq [0,1]^{n_u}$ & Duality & MILP & \textcite{Ayoub2016}, \textcite{lefebvre2022convex} & --- & --- & --- \\\midrule
-        $\tilde{U}=\mathbb{R}^{n_u-p_u}\times\mathbb{Z}^{p_u}$ & KKT & MINLP/MILP & \textcite{Zeng2013} & \textsf{MibS} & Bilevel & \textcite{Tahernejad2020} \\
-        & Duality & MINLP & \textcite{Zeng2013} & Nested-CCG & min-max-min & \textcite{zeng2012exact} \\[0.5ex]\hdashline{}
-        with only binaries & Duality & MILP & \textcite{Ayoub2016}, \textcite{lefebvre2022convex} & Nested-CGG & min-max-min & \textcite{Subramanyam2022}, \textcite{lefebvre2025correctiontolagrangiandual} \\
-        & & & & DW-Duality & MILP & \textcite{pfetsch2021generic} \\\bottomrule 
-    \end{tabular}
-\end{sidewaystable}
-\renewcommand{\arraystretch}{1.0}
-
-\subsection{Initializing the scenario pool}
-\label{sec:ccg:initial-scenario}
-
-\subsubsection{Min and max initialization}
-
-\HLil{todo}
-
-\subsubsection{User scenarios}
-
-\HLil{todo}
-
-\subsubsection{The zero-th iteration}
-
-\HLil{
-    Omitting epigraph to get one $x\in X$ and separate.
-}
-
-\section[Example: the UFLP with disruption]{Example: the uncapacitated facility location problem with disruption}
-\label{sec:ccg:twp-stage-uflp}
+\exsection{the uncapacitated facility location problem}
+\label{sec:ccg:two-stage-uflp}
 
 We consider an uncapacitated facility location problem (UFLP) in which
 facilities are subject to uncertain disruptions as studied
@@ -1236,13 +962,48 @@ by using the following code.
     kkt.with_sos1_constraints();   
 \end{lstlisting}
 
-\section{Heuristic separation with PADM}
+\subsection{Heuristic separation with PADM}
 
 \HLil{todo}
 
+\section{Separation with mixed-integer second stage}
+
+We now consider the general case in which $\tilde{Y} =
+\mathbb{R}^{p_y}\times\mathbb{Z}^{n_y - p_y}$ and assume that $\tilde{U} =
+\{0,1\}^{n_u}$. Note that if $\tilde{U}$ is mixed-integer, then
+Assumption~\ref{assumption:ccg:supremum} may not be satisfied. Hence, we only
+consider binary uncertainty.
+
+\subsection{The bilevel solver \textsf{MibS}}
+
+\textcite{Tahernejad2020}
+
+\subsection{Nested column-and-constraint generation}
+
+\textcite{Subramanyam2022}, \textcite{lefebvre2025correctiontolagrangiandual}.\HL{Not yet implemented.}
+
+\exsection{the capacitated facility location problem}
+
+\section{Initializing the scenario pool}
+\label{sec:ccg:initial-scenario}
+
+\subsection{Min and max initialization}
+
+\HLil{todo}
+
+\subsection{User scenarios}
+
+\HLil{todo}
+
+\subsection{The zero-th iteration}
+
+\HLil{
+    Omitting epigraph to get one $x\in X$ and separate.
+}
+
 \section{Robust bilevel problems with wait-and-see followers}
 
-\section[Example: the bilevel UFLP with disruption]{Example: the uncapacitated facility location problem with disruption and wait-and-see follower}
+\exsection{the uncapacitated facility location problem continued}
 
 \subsection{Solving the separation problem}
 
