@@ -14,26 +14,26 @@
 namespace idol {
 
     enum SolutionStatus {
-        Loaded,
-        Optimal,
-        Feasible,
-        Infeasible,
-        InfOrUnbnd,
-        Unbounded,
-        Fail,
-        SubOptimal
+        Loaded = 0,
+        Optimal = 1,
+        Feasible = 2,
+        Infeasible = 3,
+        InfOrUnbnd = 4,
+        Unbounded = 5,
+        Fail = 6,
+        SubOptimal = 7
     };
 
     enum SolutionReason {
-        NotSpecified,
-        Proved,
-        TimeLimit,
-        IterLimit,
-        ObjLimit,
-        Numerical,
-        MemoryLimit,
-        Cycling,
-        SolutionLimit
+        NotSpecified = 0,
+        Proved = 1,
+        TimeLimit = 2,
+        IterLimit = 3,
+        ObjLimit = 4,
+        Numerical = 5,
+        MemoryLimit = 6,
+        Cycling = 7,
+        SolutionLimit = 8
     };
 
     template<class T>
