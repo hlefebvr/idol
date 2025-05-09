@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Solving Mixed-Integer Bilevel Problems with coin-or/MibS</title>
+    
+          <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../_static/theme-vendors.js"></script> -->
+      <script src="../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/bilevel-optimization/mibs.html" />
+    
+  <link rel="index" title="Index" href="../../genindex.html" />
+  <link rel="search" title="Search" href="../../search.html" />
+  <link rel="next" title="From Pessimistic Bilevel Optimization to Optimistic Bilevel Optimization" href="pessimistic.html" />
+  <link rel="prev" title="Deriving Single-level Reformulations" href="kkt.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../index.html">Tutorials</a> &raquo;</li>
+    
+      <li><a href="index.html">Bilevel Optimization</a> &raquo;</li>
+    
+    <li>Solving Mixed-Integer Bilevel Problems with coin-or/MibS</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="kkt.html"
+       title="previous chapter">← Deriving Single-level Reformulations</a>
+  </li>
+  <li class="next">
+    <a href="pessimistic.html"
+       title="next chapter">From Pessimistic Bilevel Optimization to Optimistic Bilevel Optimization →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="solving-mixed-integer-bilevel-problems-with-coin-or-mibs">
+<h1>Solving Mixed-Integer Bilevel Problems with coin-or/MibS<a class="headerlink" href="#solving-mixed-integer-bilevel-problems-with-coin-or-mibs" title="Link to this heading">¶</a></h1>
+<p>MibS is an optimization solver for mixed-integer bilevel problems; for more information, please refer to the <a class="reference external" href="https://projects.coin-or.org/MibS">MibS website</a>.
+Idol seamlessly interfaces with MibS to solve bilevel problems.</p>
+<p>We will see that solving bilevel problems with MibS is very similar to solving any optimization problem in idol.</p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#setup" id="id1">Setup</a></p></li>
+<li><p><a class="reference internal" href="#using-mibs" id="id2">Using MibS</a></p></li>
+<li><p><a class="reference internal" href="#using-cplex-for-feasibility-check" id="id3">Using CPLEX for Feasibility Check</a></p></li>
+</ul>
+</nav>
+<section id="setup">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Link to this heading">¶</a></h2>
+<p>We will assume that you have your bilevel problem already modeled in idol. In particular, we consider that you have
+two variables:</p>
+<ol class="arabic simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">high_point_relaxation</span></code> which is a <code class="code docutils literal notranslate"><span class="pre">Model</span></code> representing the high-point relaxation of your bilevel problem.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">description</span></code> which is a <code class="code docutils literal notranslate"><span class="pre">Bilevel:Description</span></code> object representing the bilevel problem. If you do not know what this is or how to create it, please refer to the <a class="reference internal" href="modeling.html#tutorial-optimistic-bilevel"><span class="std std-ref">previous tutorial</span></a>.</p></li>
+</ol>
+</section>
+<section id="using-mibs">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Using MibS</a><a class="headerlink" href="#using-mibs" title="Link to this heading">¶</a></h2>
+<p>To solve your bilevel problem, you can use the <code class="code docutils literal notranslate"><span class="pre">MibS</span></code> optimizer factory as follows:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">Bilevel</span><span class="o">::</span><span class="n">MibS</span><span class="p">(</span><span class="n">description</span><span class="p">));</span>
+
+<span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">save_primal</span><span class="p">(</span><span class="n">high_point_relaxation</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Notice how the MibS optimizer factory is attached to the high-point relaxation model and that the bilevel description
+is passed as an argument.</p>
+<p>The rest of the code is the same as with any other solver.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>To use MibS, you need to have the MibS library installed on your system and idol linked against it.
+You can download MibS from <a class="reference external" href="https://projects.coin-or.org/MibS">here</a>.</p>
+<p>Then, idol should be compiled with the options <code class="code docutils literal notranslate"><span class="pre">USE_MIBS=YES</span></code>, <code class="code docutils literal notranslate"><span class="pre">USE_CLP=YES</span></code>.</p>
+</div>
+</section>
+<section id="using-cplex-for-feasibility-check">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Using CPLEX for Feasibility Check</a><a class="headerlink" href="#using-cplex-for-feasibility-check" title="Link to this heading">¶</a></h2>
+<p>Note that it is also possible to use MibS in combination with CPLEX for the feasibility check. This can be done as follows:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">mibs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bilevel</span><span class="o">::</span><span class="n">MibS</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">.</span><span class="n">with_cplex_for_feasibility</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">.</span><span class="n">with_time_limit</span><span class="p">(</span><span class="mi">3600</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">.</span><span class="n">with_logs</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+
+<span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">mibs</span><span class="p">);</span>
+
+<span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">save_primal</span><span class="p">(</span><span class="n">high_point_relaxation</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Off course, MibS must have been installed with CPLEX for this to work.</p>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="kkt.html"
+       title="previous chapter">← Deriving Single-level Reformulations</a>
+  </li>
+  <li class="next">
+    <a href="pessimistic.html"
+       title="next chapter">From Pessimistic Bilevel Optimization to Optimistic Bilevel Optimization →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

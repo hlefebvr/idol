@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Using Strong Branching</title>
+    
+          <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../../../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../../_static/theme-vendors.js"></script> -->
+      <script src="../../../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/mixed-integer-programming/dantzig-wolfe/strong-branching.html" />
+    
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="next" title="Bilevel Optimization" href="../../bilevel-optimization/index.html" />
+  <link rel="prev" title="Writing A Branch-and-Price Algorithm" href="writing-branch-and-price.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../examples/index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../../index.html">Tutorials</a> &raquo;</li>
+    
+      <li><a href="../index.html">Mixed-Integer Optimization</a> &raquo;</li>
+    
+      <li><a href="index.html">Column Generation and Branch-and-Price Algorithm</a> &raquo;</li>
+    
+    <li>Using Strong Branching</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="writing-branch-and-price.html"
+       title="previous chapter">← Writing A Branch-and-Price Algorithm</a>
+  </li>
+  <li class="next">
+    <a href="../../bilevel-optimization/index.html"
+       title="next chapter">Bilevel Optimization →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="using-strong-branching">
+<h1>Using Strong Branching<a class="headerlink" href="#using-strong-branching" title="Link to this heading">¶</a></h1>
+<p>Strong Branching is a technique that falls into the category of <em>variable selection rules</em>, a crucial aspect of
+Branch-and-Bound algorithms.</p>
+<p>More specifically, the task is to decide which variable to branch on at each node of the Branch-and-Bound tree, i.e,
+among a set of branching candidates whose value must be integer, one must
+decide which variable with fractional value in the current solution of the relaxation to choose for creating
+child nodes.</p>
+<p>The most common rule is the so-called <em>Most-Infeasible</em> rule, which selects a variable whose fractional
+part is closest to <cite>0.5</cite>. Unfortunately, this rule performs badly in practice. Most importantly, if solving a node is
+computationally hard, it makes sense to spend some time in carefully choosing the variable to branch on. This is typically
+the case when nodes are solved using Column Generation.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Clearly, Strong Branching is not only used in the context of column generation. It is a general technique that can be
+used in any context where solving a node is computationally expensive. Thus, this tutorial is not specific to the
+context of column generation, though we will use it as an example.</p>
+</div>
+<p>The idea of Strong Branching is to evaluate the effect of branching on a variable before branching actually happens.</p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#formal-definition" id="id3">Formal Definition</a></p>
+<ul>
+<li><p><a class="reference internal" href="#scoring-functions" id="id4">Scoring Functions</a></p></li>
+<li><p><a class="reference internal" href="#variants" id="id5">Variants</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#implementation" id="id6">Implementation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#full-strong-branching" id="id7">Full Strong Branching</a></p></li>
+<li><p><a class="reference internal" href="#restricted-strong-branching" id="id8">Restricted Strong Branching</a></p></li>
+<li><p><a class="reference internal" href="#phases" id="id9">Phases</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#changing-the-scoring-function" id="id10">Changing the Scoring Function</a></p></li>
+</ul>
+</nav>
+<section id="formal-definition">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Formal Definition</a><a class="headerlink" href="#formal-definition" title="Link to this heading">¶</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(C\)</span> be a set of indices for branching candidates at a given node, i.e., for each <span class="math notranslate nohighlight">\(j\in C\)</span>,
+<span class="math notranslate nohighlight">\(x_j\)</span> is an integer variable in the original problem but with <span class="math notranslate nohighlight">\(x_j^*\notin\mathbb Z\)</span> at the current node.
+Strong Branching tries to evaluate the effect of applying branching constraints <span class="math notranslate nohighlight">\(x_j \le \lfloor x_j^* \rfloor\)</span> and
+<span class="math notranslate nohighlight">\(x_j \ge \lceil x_j^* \rceil\)</span> to the current node. To do so, it solves, before branching happens, and for each <span class="math notranslate nohighlight">\(j\in C\)</span>,
+both the left and right child node. Let <span class="math notranslate nohighlight">\(z_i^\le\)</span> and <span class="math notranslate nohighlight">\(z_i^\ge\)</span> denote the (optimal) value of the
+left and right nodes if branching is performed on <span class="math notranslate nohighlight">\(x_j\)</span>. The “effect of branching on <span class="math notranslate nohighlight">\(x_j\)</span>” is then estimated by
+computing a score, noted <span class="math notranslate nohighlight">\(\text{Score}(j)\)</span>, based on <span class="math notranslate nohighlight">\(z_j^\le\)</span> and <span class="math notranslate nohighlight">\(z_j^\ge\)</span>. Then Strong Branching
+selects the variable with an index <span class="math notranslate nohighlight">\(j^*\)</span> such that (for minimization problems)</p>
+<div class="math notranslate nohighlight">
+\[j^* \in \text{argmax}\{ \text{Score}(j) : j\in C \}.\]</div>
+<p>Empirically, Strong Branching is known to produce substantially smaller Branch-and-Bound trees compared to other
+branching rules. Unfortunately, computing <span class="math notranslate nohighlight">\(\text{Score}(j)\)</span> typically requires a lot of time. To avoid this,
+several techniques have been designed such as <em>Restricted Strong Branching</em> and <em>Strong Branching with Phases</em> (see below).</p>
+<p>For more details, please refer to <span id="id1">[<a class="reference internal" href="../../../references.html#id2" title="Tobias Achterberg, Thorsten Koch, and Alexander Martin. Branching rules revisited. Operations Research Letters, 33(1):42-54, 2005. doi:https://doi.org/10.1016/j.orl.2004.04.002.">1</a>]</span>.</p>
+<section id="scoring-functions">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Scoring Functions</a><a class="headerlink" href="#scoring-functions" title="Link to this heading">¶</a></h3>
+<p>Two common scoring functions <span class="math notranslate nohighlight">\(\text{Score}(j)\)</span> are found in the literature. The <em>linear</em> formula <span id="id2">[<a class="reference internal" href="../../../references.html#id3" title="J. T. Linderoth and M. W. P. Savelsbergh. A computational study of search strategies for mixed integer programming. INFORMS Journal on Computing, 11(2):173–187, 1999. doi:10.1287/ijoc.11.2.173.">9</a>]</span></p>
+<div class="math notranslate nohighlight">
+\[\text{LinearScore}(j) := (1 - \mu) \min(\Delta_j^\le, \Delta_j^\ge) + \mu \max(\Delta_j^\le, \Delta_j^\ge),\]</div>
+<p>and the <em>product</em> formula</p>
+<div class="math notranslate nohighlight">
+\[\text{ProductScore}(j) := \max(\Delta_j^\le, \varepsilon) \max(\Delta_j^\ge, \varepsilon),\]</div>
+<p>in which <span class="math notranslate nohighlight">\(\Delta_j^\le := z_j^\le - z^*\)</span> and <span class="math notranslate nohighlight">\(\Delta_j^\ge := z_j^\ge - z^*\)</span> with <span class="math notranslate nohighlight">\(z^*\)</span> denoting the
+(optimal) value of the current node. Parameters <span class="math notranslate nohighlight">\(\mu\in[0,1]\)</span> and <span class="math notranslate nohighlight">\(\varepsilon &gt; 0\)</span> are given.
+In idol, <span class="math notranslate nohighlight">\(\mu = 1/6\)</span> and <span class="math notranslate nohighlight">\(\varepsilon = 10^{-6}\)</span>.</p>
+</section>
+<section id="variants">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Variants</a><a class="headerlink" href="#variants" title="Link to this heading">¶</a></h3>
+<p>There are several variants of Strong Branching. The most common ones are:</p>
+<ul class="simple">
+<li><p><strong>Full Strong Branching</strong> denotes the standard Strong Branching rule which solves all <span class="math notranslate nohighlight">\(2|C|\)</span> nodes at each branching
+decision. The drawback of this approach is that it may take a lot of time to solve all these sub-problems before branching
+actually happens.</p></li>
+<li><p><strong>Restricted Strong Branching</strong> is an attempt to reduce the computational burden of Full Strong Branching. The idea is to
+consider only a maximum of <span class="math notranslate nohighlight">\(K\)</span> branching candidates at each branching decision instead of the whole set <span class="math notranslate nohighlight">\(C\)</span>.
+Thus, <span class="math notranslate nohighlight">\(C\)</span> is replaced by a smaller set <span class="math notranslate nohighlight">\(R\subseteq C\)</span> such that <span class="math notranslate nohighlight">\(|R| = K\)</span> with <span class="math notranslate nohighlight">\(K\)</span> fixed.
+The “restricted branching candidate set” <span class="math notranslate nohighlight">\(R\)</span> is created by taking the <span class="math notranslate nohighlight">\(K\)</span> first variables selected by, yet
+another, branching rule, e.g., the most-infeasible rule.</p></li>
+<li><p><strong>Strong Branching with Look Ahead</strong> is similar to <em>Restricted Strong Branching</em> yet differs from it by not specifying a
+fixed size for the “restricted branching candidate set” <span class="math notranslate nohighlight">\(R\)</span>. Instead, it considers a look ahead parameter, noted
+<span class="math notranslate nohighlight">\(L\)</span>, and applies the Full Strong Branching rule. However, if the branching candidate does not change after <span class="math notranslate nohighlight">\(L\)</span>
+iterations, the algorithm stops and the current branching candidate is returned.</p></li>
+<li><p><strong>Strong Branching with Phases</strong> is a combination of the above three approaches which applies different schemes depending
+on the level of the current node in the Branch-and-Bound tree. Additionally, it allows to solve each node only approximately
+by, e.g., imposing a maximum number of iterations for the underlying Column Generation algorithm.</p></li>
+</ul>
+</section>
+</section>
+<section id="implementation">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
+<p>This section explains how to use the Strong Branching rule in idol.
+It is based on the Generalized Assignment Problem example from the <a class="reference internal" href="dantzig-wolfe.html#tutorial-column-generation"><span class="std std-ref">Column Generation</span></a>.
+More specifically, we will assume that you have a variable
+<code class="code docutils literal notranslate"><span class="pre">model</span></code> of type <code class="code docutils literal notranslate"><span class="pre">Model</span></code> which has a decomposable structure specified by the annotation <code class="code docutils literal notranslate"><span class="pre">(Annotation&lt;unsigned</span> <span class="pre">int&gt;)</span> <span class="pre">decomposition</span></code>.</p>
+<section id="full-strong-branching">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Full Strong Branching</a><a class="headerlink" href="#full-strong-branching" title="Link to this heading">¶</a></h3>
+<p>Recall that the Branch-and-Price algorithm is created by the following code.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">column_generation</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">DantzigWolfeDecomposition</span><span class="p">(</span><span class="n">decomposition</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="n">with_master_optimizer</span><span class="p">(</span><span class="n">Gurobi</span><span class="o">::</span><span class="n">ContinuousRelaxation</span><span class="p">())</span>
+<span class="w">        </span><span class="p">.</span><span class="n">with_default_sub_problem_spec</span><span class="p">(</span>
+<span class="w">            </span><span class="n">DantzigWolfe</span><span class="o">::</span><span class="n">SubProblem</span><span class="p">()</span>
+<span class="w">                </span><span class="p">.</span><span class="n">add_optimizer</span><span class="p">(</span><span class="n">Gurobi</span><span class="p">())</span>
+<span class="w">        </span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Now, we will show how to use Strong Branching as a branching rule. This is done while creating our Branch-and-Bound algorithm. In
+particular, we will use the <code class="code docutils literal notranslate"><span class="pre">StrongBranching</span></code> class to define our branching rule. We can, for instance, simply
+declare</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">branching_rule</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">StrongBranching</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>which will create a new Full Strong Branching rule. Just like any other branching rule, it can be used by calling the
+<code class="code docutils literal notranslate"><span class="pre">BranchAndBound::with_branching_rule</span></code> method.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">branch_and_bound</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">BranchAndBound</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="n">with_branching_rule</span><span class="p">(</span><span class="n">branching_rule</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="n">with_node_selection_strategy</span><span class="p">(</span><span class="n">BestBound</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Then, we can write a Branch-and-Price algorithm and solve our problem as follows.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">branch_and_price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">branch_and_bound</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">column_generation</span><span class="p">;</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">branch_and_price</span><span class="p">);</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Beware that here, we only implemented Full Strong Branching which, as we saw, is not computationally convenient…
+Let’s see how to implemented Restricted Strong Branching.</p>
+</section>
+<section id="restricted-strong-branching">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Restricted Strong Branching</a><a class="headerlink" href="#restricted-strong-branching" title="Link to this heading">¶</a></h3>
+<p>To implement Restricted Branching, one simply needs to call the <code class="code docutils literal notranslate"><span class="pre">StrongBranching::with_max_n_variables</span></code> method.
+This is done as follows.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">branching_rule</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">StrongBranching</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">with_max_n_variables</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Here, we set the maximum number of considered variables equal to <span class="math notranslate nohighlight">\(K = 50\)</span>.</p>
+</section>
+<section id="phases">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Phases</a><a class="headerlink" href="#phases" title="Link to this heading">¶</a></h3>
+<p>In this section, we will discuss how to implement phases with the strong branching rule. This is done by using the
+<code class="code docutils literal notranslate"><span class="pre">StrongBranching::add_phase</span></code> method. This method takes three arguments: a phase type, which is used to indicate
+how each node should be solved, e.g., with some iteration limit, a maximum number of variables to consider, for restricted
+strong branching, and a maximum depth, used to trigger the phase based on the level of the current node in the Branch-and-Bound
+tree.</p>
+<p>Here is an instance of strong branching with phases which, for nodes whose level is below or equal to 3, applies Full
+Strong Branching, then switches to Restricted Strong Branching with <span class="math notranslate nohighlight">\(K = 30\)</span> and which solves nodes with an iteration
+limit of 20.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">branching_rule</span><span class="w"> </span><span class="o">=</span>
+<span class="w">            </span><span class="n">StrongBranching</span><span class="p">()</span>
+<span class="w">                </span><span class="p">.</span><span class="n">add_phase</span><span class="p">(</span><span class="n">StrongBranchingPhases</span><span class="o">::</span><span class="n">WithNodeOptimizer</span><span class="p">(),</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">(),</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="n">add_phase</span><span class="p">(</span><span class="n">StrongBranchingPhases</span><span class="o">::</span><span class="n">WithIterationLimit</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Observe how we used <code class="code docutils literal notranslate"><span class="pre">std::numeric_limits&lt;unsigned</span> <span class="pre">int&gt;::max()</span></code> to remove restrictions on the number of
+considered variables and on the maximum depth for the final phase. Note that, by default, if no phase is triggered for a
+given depth, e.g., because it was not specified, Full Strong Branching is applied. Here, however, we make sure that the
+second phase is always triggered.</p>
+</section>
+</section>
+<section id="changing-the-scoring-function">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Changing the Scoring Function</a><a class="headerlink" href="#changing-the-scoring-function" title="Link to this heading">¶</a></h2>
+<p>The scoring function can be changed by calling the <code class="code docutils literal notranslate"><span class="pre">StrongBranching::with_scoring_function</span></code> method. This method
+takes a scoring function as an argument. The scoring function is a sub-class of <code class="code docutils literal notranslate"><span class="pre">NodeScoreFunction</span></code> and can be
+<code class="code docutils literal notranslate"><span class="pre">Linear</span></code> or <code class="code docutils literal notranslate"><span class="pre">Product</span></code>.</p>
+<p>By default, idol uses the product scoring function. To change it to the linear scoring function, one can simply write</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">branching_rule</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">StrongBranching</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="n">with_scoring_function</span><span class="p">(</span><span class="n">NodeScoreFunctions</span><span class="o">::</span><span class="n">Linear</span><span class="p">());</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="writing-branch-and-price.html"
+       title="previous chapter">← Writing A Branch-and-Price Algorithm</a>
+  </li>
+  <li class="next">
+    <a href="../../bilevel-optimization/index.html"
+       title="next chapter">Bilevel Optimization →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

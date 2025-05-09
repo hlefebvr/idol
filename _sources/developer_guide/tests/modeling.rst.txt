@@ -1,0 +1,4 @@
+Modeling
+========
+
+.. testreport:: _static/reports/modeling.xml

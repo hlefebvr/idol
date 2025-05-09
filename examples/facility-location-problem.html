@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Solving a facility location problem with a custom branch-and-bound</title>
+    
+          <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/theme.css " type="text/css" />
+          <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/design.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/pseudocode-js/pseudocode.min.css" type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9bcbadda"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../_static/theme-vendors.js"></script> -->
+      <script src="../_static/theme.js" defer></script>
+      <link rel="canonical" href="https://hlefebvr.github.io/idol/examples/facility-location-problem.html" />
+    
+  <link rel="index" title="Index" href="../genindex.html" />
+  <link rel="search" title="Search" href="../search.html" />
+  <link rel="next" title="Solving a generalized assignment problem by column generation and branch-and-price" href="generalized-assignment-problem-bap.html" />
+  <link rel="prev" title="Solving a knapsack problem with HiGHS" href="knapsack-problem.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../index.html" class="home-link">
+    
+      <span class="site-name">idol</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+  
+    <div class="nav-item">
+      <a href="https://github.com/hlefebvr/idol"
+        class="nav-link external">
+          Github <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../installation/index.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../tutorials/index.html" class="reference internal ">Tutorials</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="index.html" class="reference internal ">Examples</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../tests/index.html" class="reference internal ">Stable Features</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../benchmark/index.html" class="reference internal ">Benchmark</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../api/index.html" class="reference internal ">API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../faq/index.html" class="reference internal ">FAQ</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../developer_guide/index.html" class="reference internal ">Developers</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../references.html" class="reference internal ">References</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="index.html">Examples</a> &raquo;</li>
+    
+    <li>Solving a facility location problem with a custom branch-and-bound</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="knapsack-problem.html"
+       title="previous chapter">← Solving a knapsack problem with HiGHS</a>
+  </li>
+  <li class="next">
+    <a href="generalized-assignment-problem-bap.html"
+       title="next chapter">Solving a generalized assignment problem by column generation and branch-and-price →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="solving-a-facility-location-problem-with-a-custom-branch-and-bound">
+<span id="example-flp"></span><h1>Solving a facility location problem with a custom branch-and-bound<a class="headerlink" href="#solving-a-facility-location-problem-with-a-custom-branch-and-bound" title="Link to this heading">¶</a></h1>
+<section id="problem-definition">
+<h2>Problem Definition<a class="headerlink" href="#problem-definition" title="Link to this heading">¶</a></h2>
+<p>We consider the capacitated Facility Location Problem (FLP).
+Given a set of potential facility locations <span class="math notranslate nohighlight">\(V_1\)</span> and a set of customers <span class="math notranslate nohighlight">\(V_2\)</span>, the goal is to select
+a subset of facility location to activate in order to serve all customers’ demand, while minimizing the total cost.</p>
+<p>Each facility <span class="math notranslate nohighlight">\(i\in V_1\)</span> has an opening cost <span class="math notranslate nohighlight">\(f_i\)</span> and a maximum capacity <span class="math notranslate nohighlight">\(q_i\)</span>.
+Each customer <span class="math notranslate nohighlight">\(j\in V_2\)</span> has a demand <span class="math notranslate nohighlight">\(d_j\)</span>.
+The unitary cost for serving customer <span class="math notranslate nohighlight">\(j\in V_2\)</span> from facility <span class="math notranslate nohighlight">\(i\in V_1\)</span> is <span class="math notranslate nohighlight">\(t_{ij}\)</span>.</p>
+<p>We model the capacitated FLP with the MILP:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+    \min_{x,y} \quad &amp; \sum_{i\in V_1} f_i x_i + \sum_{i\in V_1} \sum_{j\in V_2} t_{ij} y_{ij} \\
+    \text{s.t.} \quad &amp; \sum_{j\in V_2} d_j y_{ij} \le q_i, &amp;&amp; i\in V_1, \\
+                      &amp; \sum_{i\in V_1} y_{ij} = 1, &amp;&amp; j\in V_2, \\
+                      &amp; y_{ij} \le x_i &amp;&amp; i\in V_1, j\in V_2, \\
+                      &amp; x_i \in \{0,1\}, &amp;&amp; i\in V_1, \\
+                      &amp; y_{ij} \in \{0,1\}, &amp;&amp; i\in V_1, j\in V_2.
+\end{align*}\end{split}\]</div>
+</section>
+<section id="instance">
+<h2>Instance<a class="headerlink" href="#instance" title="Link to this heading">¶</a></h2>
+<p>We will use an instance stored in a file called <cite>facility.data.txt</cite>. This file reads</p>
+<p>On the first line, the number of facilities and the numbers of customers are specified.
+Then, for each facility, the opening cost and the capacity are given.
+For each customer, the demand is given.
+Finally, the cost of serving each customer from each facility is given.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="knapsack-problem.html"
+       title="previous chapter">← Solving a knapsack problem with HiGHS</a>
+  </li>
+  <li class="next">
+    <a href="generalized-assignment-problem-bap.html"
+       title="next chapter">Solving a generalized assignment problem by column generation and branch-and-price →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2025, Henri Lefebvre.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>
