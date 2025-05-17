@@ -1,8 +1,3 @@
-if (NOT DEFINED MOSEK_DIR)
-    set(MOSEK_DIR $ENV{MOSEK_HOME})
-endif()
-
-
 find_path(
         MOSEK_INCLUDE_DIRS
         NAMES fusion.h

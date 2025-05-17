@@ -43,32 +43,20 @@ public:
                 );
 
     Model& master() { return m_master; }
-
     const Model& master() const { return m_master; }
-
     void add_scenario_to_master(const Point<Var>& t_scenario, bool t_add_annotation);
-
     Model build_optimality_separation_problem(const idol::Point<idol::Var> &t_first_stage_decision);
-
     std::pair<Model, std::vector<Var>> build_feasibility_separation_problem(const Point<Var>& t_first_stage_decision);
-
     std::pair<Model, std::vector<Var>> build_joint_separation_problem(const Point<Var>& t_first_stage_decision);
-
     unsigned int n_coupling_constraints() const { return m_coupling_constraints.size(); }
-
     unsigned int n_added_scenarios() const { return m_n_added_scenario; }
-
     const Bilevel::Description& bilevel_description_separation() const { return m_bilevel_description_separation; }
-
     const Bilevel::Description& bilevel_description_master() const { return *m_bilevel_description_master; }
-
     bool is_adjustable_robust_problem() const;
-
     bool is_wait_and_see_follower() const { return !is_adjustable_robust_problem(); }
-
     bool should_have_epigraph_and_epigraph_is_not_in_master() const;
-
     const Var& second_stage_epigraph() const { return *m_second_stage_epigraph; }
+    void add_epigraph_to_master();
 };
 
 #endif //IDOL_CCG_FORMULATION_H

@@ -276,19 +276,44 @@ add_library(idol STATIC
         include/idol/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.h
         src/bilevel/optimizers/MinMaxDualize/MinMax_Dualize.cpp
         src/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.cpp
+        include/idol/robust/optimizers/benders/Benders.h
+        include/idol/robust/optimizers/benders/Optimizers_Benders.h
+        src/robust/optimizers/benders/Benders.cpp
+        src/robust/optimizers/benders/Optimizers_Benders.cpp
+        include/idol/robust/optimizers/column-and-constraint-generation/AdversarialProblemSolver.h
 )
 
 find_package(OpenMP REQUIRED)
 target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)
 
+function(set_DIR_variable PREFIX)
+    string(TOUPPER "${PREFIX}" PREFIX_UPPER)
+    set(VAR_NAME "${PREFIX_UPPER}_DIR")
+    set(ENV_NAME "${PREFIX_UPPER}_HOME")
+
+    if(NOT DEFINED ${VAR_NAME} OR "${${VAR_NAME}}" STREQUAL "")
+        set(${VAR_NAME} "$ENV{${ENV_NAME}}" CACHE STRING "Path to ${PREFIX}")
+    else()
+        set(${VAR_NAME} "${${VAR_NAME}}" CACHE STRING "Path to ${PREFIX}")
+    endif()
+endfunction()
+
+
+set(USE_ROOT OFF CACHE BOOL "Build idol with ROOT for plotting capabilities (https://root.cern/)")
 if (${USE_ROOT})
 
     find_package(ROOT REQUIRED)
     target_link_libraries(idol PUBLIC ROOT::Core ROOT::Gpad ROOT::Graf)
     target_compile_definitions(idol PUBLIC IDOL_USE_ROOT)
+    unset(ROOT_DIR)
+    unset(ROOT_rootdraw_CMD)
+    unset(ROOT_genmap_CMD)
 
 endif()
 
+set(USE_TSL OFF CACHE BOOL "Build idol with TSL for hash maps (https://github.com/Tessil/ordered-map and https://github.com/Tessil/sparse-map)")
+set(TSL_SPARSE_MAP_INCLUDE_DIRS "${TSL_SPARSE_MAP_INCLUDE_DIRS}" CACHE STRING "Path to TSL sparse_map.h")
+set(TSL_ORDERED_MAP_INCLUDE_DIRS "${TSL_ORDERED_MAP_INCLUDE_DIRS}" CACHE STRING "Path to TSL ordered_map.h")
 if (${USE_TSL})
 
     find_package(TSL REQUIRED)
@@ -297,6 +322,8 @@ if (${USE_TSL})
 
 endif ()
 
+set(USE_ROBINHOOD OFF CACHE BOOL "Build idol with Robinhood for hash maps (https://github.com/martinus/robin-hood-hashing)")
+set(ROBINHOOD_INCLUDE_DIRS "${ROBINHOOD_INCLUDE_DIRS}" CACHE STRING "Path to Robinhood robin_hood.h")
 if (${USE_ROBINHOOD})
 
     find_package(ROBINHOOD REQUIRED)
@@ -305,6 +332,11 @@ if (${USE_ROBINHOOD})
 
 endif()
 
+set(USE_EIGEN OFF CACHE BOOL "Build idol with Eigen for linear algebra (https://eigen.tuxfamily.org)")
+set(EIGEN_DIR "${EIGEN_DIR}" CACHE STRING "Path to Eigen")
+if (NOT EIGEN_DIR)
+    set(EIGEN_DIR $ENV{EIGEN_HOME})
+endif()
 if (${USE_EIGEN})
 
     find_package(EIGEN REQUIRED)
@@ -313,6 +345,8 @@ if (${USE_EIGEN})
 
 endif()
 
+set(USE_GUROBI OFF CACHE BOOL "Build idol with Gurobi (https://www.gurobi.com)")
+set_DIR_variable(Gurobi)
 if (${USE_GUROBI})
 
     find_package(GUROBI REQUIRED)
@@ -322,6 +356,8 @@ if (${USE_GUROBI})
 
 endif()
 
+set(USE_MOSEK OFF CACHE BOOL "Build idol with Mosek (https://www.mosek.com)")
+set_DIR_variable(Mosek)
 if (${USE_MOSEK})
 
     find_package(MOSEK REQUIRED)
@@ -331,6 +367,8 @@ if (${USE_MOSEK})
 
 endif()
 
+set(USE_GLPK OFF CACHE BOOL "Build idol with GLPK (https://www.gnu.org/software/glpk/)")
+set_DIR_variable(GLPK)
 if (${USE_GLPK})
 
     find_package(GLPK REQUIRED)
@@ -340,6 +378,7 @@ if (${USE_GLPK})
 
 endif()
 
+set(USE_HIGHS OFF CACHE BOOL "Build idol with HiGHS (https://highs.dev/)")
 if (${USE_HIGHS})
 
     find_package(Threads REQUIRED)
@@ -350,76 +389,70 @@ if (${USE_HIGHS})
 
 endif()
 
+set(USE_CPLEX OFF CACHE BOOL "Build idol with CPLEX (https://www.ibm.com/analytics/cplex-optimizer)")
+set_DIR_variable(CPLEX)
+if ("${CPLEX_DIR}" STREQUAL "")
+    file(GLOB CPLEX_IN_OPT "/opt/ibm/ILOG/CPLEX_Studio*")
+    if(CPLEX_IN_OPT_LEN GREATER 0)
+        list(GET CPLEX_IN_OPT 0 CPLEX_IN_OPT)
+    endif ()
+    set(CPLEX_DIR "${CPLEX_IN_OPT}" CACHE STRING "Path to CPLEX" FORCE)
+endif()
 if (${USE_CPLEX})
 
     find_package(CPLEX REQUIRED)
     target_link_libraries(idol PUBLIC cplex)
     target_compile_definitions(idol PUBLIC IDOL_USE_CPLEX)
-    list(APPEND AVAILABLE_MILP_SOLVERS "OsiCplex")
     list(APPEND AVAILABLE_MILP_SOLVERS "Cplex")
 
 endif()
 
-if (${USE_SYMPHONY})
+set(USE_OSI_CPLEX OFF CACHE BOOL "Build idol with OsiCplex (https://projects.coin-or.org/OsiCplex)")
+if (${USE_OSI_CPLEX})
 
-    if (NOT DEFINED USE_OSI OR NOT USE_OSI)
-        message(WARNING "Symphony can only be used through coin-or/Osi. USE_OSI is automatically switched to YES.")
-        set(USE_OSI YES)
-    endif()
+    set(USE_OSI ON)
+    target_compile_definitions(idol PUBLIC IDOL_USE_OSI_CPLEX)
+    list(APPEND AVAILABLE_MILP_SOLVERS "OsiCplex")
+
+endif()
+
+set_DIR_variable(coin_or)
+
+set(USE_OSI_SYMPHONY OFF CACHE BOOL "Build idol with SYMPHONY (https://projects.coin-or.org/SYMPHONY)")
+if (${USE_OSI_SYMPHONY})
 
     find_package(SYMPHONY REQUIRED)
+    set(USE_OSI ON)
     target_link_libraries(idol PUBLIC symphony)
     target_compile_definitions(idol PUBLIC IDOL_USE_SYMPHONY)
     list(APPEND AVAILABLE_MILP_SOLVERS "OsiSymphony")
 
 endif()
 
-#if (${USE_CBC})
-
-#    if (NOT DEFINED USE_OSI OR NOT USE_OSI)
-#        message(WARNING "Cbc can only be used through coin-or/Osi. USE_OSI is automatically switched to YES.")
-#        set(USE_OSI YES)
-#    endif()
-
-#    find_package(CBC REQUIRED)
-#    target_link_libraries(idol PUBLIC cbc)
-#    target_compile_definitions(idol PUBLIC IDOL_USE_CBC)
-#    list(APPEND AVAILABLE_MILP_SOLVERS "OsiCbc")
-
-#endif()
-
+set(USE_MIBS OFF CACHE BOOL "Build idol with MibS (https://github.com/coin-or/MibS)")
 if (${USE_MIBS})
-
-    set(USE_OSI YES)
 
     find_package(ALPS REQUIRED)
     find_package(BCPS REQUIRED)
     find_package(BLIS REQUIRED)
     find_package(CGL REQUIRED)
+    set(USE_OSI_CLP ON)
+    set(USE_OSI ON)
+    target_link_libraries(idol PUBLIC alps bcps blis cgl)
 
     find_package(MIBS REQUIRED)
-    target_link_libraries(idol PUBLIC alps)
-    target_link_libraries(idol PUBLIC bcps)
-    target_link_libraries(idol PUBLIC blis)
-    target_link_libraries(idol PUBLIC cgl)
-
     target_link_libraries(idol PUBLIC mibs)
     target_compile_definitions(idol PUBLIC IDOL_USE_MIBS)
 
     list(APPEND AVAILABLE_BILEVEL_SOLVERS "MibS")
 
-    set(USE_CLP YES)
-
 endif()
 
-if (${USE_CLP})
-
-    if (NOT DEFINED USE_OSI OR NOT USE_OSI)
-        message(WARNING "Clp can only be used through coin-or/Osi. USE_OSI is automatically switched to YES.")
-        set(USE_OSI YES)
-    endif()
+set(USE_OSI_CLP OFF CACHE BOOL "Build idol with OsiClp (https://projects.coin-or.org/OsiClp)")
+if (${USE_OSI_CLP})
 
     find_package(CLP REQUIRED)
+    set(USE_OSI ON)
     target_link_libraries(idol PUBLIC clp)
     target_compile_definitions(idol PUBLIC IDOL_USE_CLP)
     list(APPEND AVAILABLE_MILP_SOLVERS "OsiClp")
@@ -431,13 +464,8 @@ if (${USE_OSI})
     find_package(COINUTILS REQUIRED)
     find_package(OSI REQUIRED)
 
-    target_link_libraries(idol PUBLIC coinUtils)
-    target_link_libraries(idol PUBLIC osi)
+    target_link_libraries(idol PUBLIC osi coinUtils)
     target_compile_definitions(idol PUBLIC IDOL_USE_OSI)
-
-    if (${USE_GUROBI})
-        #list(APPEND AVAILABLE_MILP_SOLVERS "OsiGurobi")
-    endif ()
 
 endif()
 

@@ -1,14 +1,10 @@
-if (NOT DEFINED COIN_OR_DIR)
-    set(COIN_OR_DIR $ENV{COIN_OR_HOME})
-endif()
-
 find_path(
         OSI_INCLUDE_DIRS
         NAMES OsiConfig.h
         HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES include/coin)
 
-if (${USE_CBC})
+if (${USE_OSI_CBC})
     find_library(
             OSI_CBC_LIBRARY
             NAMES OsiCbc
@@ -17,7 +13,7 @@ if (${USE_CBC})
     list(APPEND REQUIRED_FILES "OSI_CBC_LIBRARY")
 endif()
 
-if (${USE_CLP})
+if (${USE_OSI_CLP})
     find_library(
             OSI_CLP_LIBRARY
             NAMES OsiClp
@@ -26,7 +22,7 @@ if (${USE_CLP})
     list(APPEND REQUIRED_FILES "OSI_CLP_LIBRARY")
 endif()
 
-if (${USE_CPLEX})
+if (${USE_OSI_CPLEX})
     find_library(
             OSI_CPX_LIBRARY
             NAMES OsiCpx
@@ -35,16 +31,16 @@ if (${USE_CPLEX})
     list(APPEND REQUIRED_FILES "OSI_CPX_LIBRARY")
 endif()
 
-if (${USE_GUROBI})
+if (${USE_OSI_GUROBI})
     find_library(
             OSI_GRB_LIBRARY
             NAMES OsiGrb
             HINTS ${COIN_OR_DIR}
             PATH_SUFFIXES lib)
-    #list(APPEND REQUIRED_FILES "OSI_GRB_LIBRARY")
+    list(APPEND REQUIRED_FILES "OSI_GRB_LIBRARY")
 endif()
 
-if (${USE_SYMPHONY})
+if (${USE_OSI_SYMPHONY})
     find_library(
             OSI_SYM_LIBRARY
             NAMES OsiSym

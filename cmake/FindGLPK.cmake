@@ -1,7 +1,3 @@
-if (NOT DEFINED GLPK_DIR)
-    set(GLPK_DIR $ENV{GLPK_HOME})
-endif()
-
 find_path(
         GLPK_INCLUDE_DIRS
         NAMES glpk.h

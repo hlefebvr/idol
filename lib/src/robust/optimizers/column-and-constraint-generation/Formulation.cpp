@@ -184,8 +184,7 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
     }
 
     if (!m_second_stage_epigraph) {
-        m_second_stage_epigraph = m_master.add_var(-Inf, Inf, Continuous, 1, "second_stage_epigraph");
-        m_master.update();
+        add_epigraph_to_master();
     }
 
     // Add Objective
@@ -505,4 +504,9 @@ idol::CCG::Formulation::compute_second_stage_objective(const idol::Point<idol::V
 
 bool idol::CCG::Formulation::should_have_epigraph_and_epigraph_is_not_in_master() const {
     return m_has_second_stage_objective && (!m_second_stage_epigraph || !m_master.has(*m_second_stage_epigraph));
+}
+
+void idol::CCG::Formulation::add_epigraph_to_master() {
+    m_second_stage_epigraph = m_master.add_var(-Inf, Inf, Continuous, 1, "second_stage_epigraph");
+    //m_master.update();
 }

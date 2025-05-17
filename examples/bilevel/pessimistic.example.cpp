@@ -55,9 +55,8 @@ int main(int t_argc, const char** t_argv) {
     description.make_lower_level(follower_c3);
 
     auto [opt_model, opt_description] = Bilevel::PessimisticAsOptimistic::make_model(high_point_relaxation, description);
-    Annotation<double> big_M(env, "big_M", 1e4); // By default, we will set our big-M value to 1e4
 
-    opt_model.use(Bilevel::KKT(opt_description).with_big_M(big_M) + Gurobi());
+    opt_model.use(Bilevel::KKT(opt_description).with_sos1_constraints(true) + Gurobi());
 
     // Optimize and print solution
     opt_model.optimize();

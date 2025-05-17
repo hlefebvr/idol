@@ -15,6 +15,7 @@
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/mixed-integer/optimizers/padm/PADM.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/robust/optimizers/benders/Benders.h"
 
 using namespace idol;
 
@@ -36,7 +37,7 @@ int main(int t_argc, const char** t_argv) {
 
     Model model(env);
     const auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, 0., "x");
-    const auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, 0., "y");
+    const auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Continuous, 0., "y");
     std::list<Ctr> second_stage_constraints;
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
@@ -138,22 +139,27 @@ int main(int t_argc, const char** t_argv) {
     /* Creating the column-and-constraint optimizer */
     /************************************************/
 
+    auto ccg = Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description)
+
+            .with_initial_scenario_by_maximization(Gurobi())
+            .with_initial_scenario_by_minimization(Gurobi())
+
+            .with_master_optimizer(Gurobi())
+
+            .add_feasibility_separation_optimizer(padm)
+            .add_feasibility_separation_optimizer(mibs)
+
+            .add_optimality_separation_optimizer(padm)
+            .add_optimality_separation_optimizer(mibs)
+            .with_logs(true);
+
+    auto benders = Robust::Benders(robust_description, bilevel_description)
+            .add_feasibility_separation_optimizer(mibs)
+            .add_optimality_separation_optimizer(mibs);
+
     model.use(
-            Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description)
-
-                    .with_initial_scenario_by_maximization(Gurobi())
-                    .with_initial_scenario_by_minimization(Gurobi())
-
-                    .with_master_optimizer(Gurobi())
-
-                    .add_feasibility_separation_optimizer(padm)
-                    .add_feasibility_separation_optimizer(mibs)
-
-                    .add_optimality_separation_optimizer(padm)
-                    .add_optimality_separation_optimizer(mibs)
-                    .with_logs(true)
+            benders
     );
-
 
     /***********/
     /* Solving */

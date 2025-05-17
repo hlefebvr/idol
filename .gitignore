@@ -5,3 +5,5 @@ docs/_build
 coverage/_build
 venv
 install
+CMakeCache.txt
+CMakeFiles

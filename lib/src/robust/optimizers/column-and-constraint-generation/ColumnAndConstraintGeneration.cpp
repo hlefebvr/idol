@@ -18,6 +18,7 @@ idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
           m_robust_description(t_src.m_robust_description),
           m_bilevel_description(t_src.m_bilevel_description),
           m_initial_scenarios(t_src.m_initial_scenarios),
+          m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
           m_initial_scenario_by_minimization(t_src.m_initial_scenario_by_minimization ? t_src.m_initial_scenario_by_minimization->clone() : nullptr),
           m_initial_scenario_by_maximization(t_src.m_initial_scenario_by_maximization ? t_src.m_initial_scenario_by_maximization->clone() : nullptr)
           {

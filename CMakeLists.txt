@@ -7,6 +7,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${idol_SOURCE_DIR}/cmake/coin-or")
 
 add_subdirectory(lib)
 
+set(BUILD_EXAMPLES OFF CACHE BOOL "Build the example targets")
+set(BUILD_TESTS OFF CACHE BOOL "Build the test targets")
+set(TEST_COVERAGE OFF CACHE BOOL "Build in test coverage mode (must have BUILD_TESTS=ON)")
+
 if (${BUILD_DEV})
     add_subdirectory(dev)
 endif()
@@ -20,5 +24,7 @@ if (${BUILD_TESTS})
 elseif(${TEST_COVERAGE})
     message(FATAL "Must have BUILD_TESTS=YES in order to build code coverage")
 endif()
+
+set(BUILD_DEV OFF CACHE BOOL "Build the development target (advanced users only)")
 
 add_custom_target(doc COMMAND ./build_docs.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/scripts)

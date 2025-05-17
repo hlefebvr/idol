@@ -1,7 +1,3 @@
-if (NOT DEFINED GUROBI_DIR)
-    set(GUROBI_DIR $ENV{GUROBI_HOME})
-endif()
-
 find_path(
         GUROBI_INCLUDE_DIRS
         NAMES gurobi_c.h

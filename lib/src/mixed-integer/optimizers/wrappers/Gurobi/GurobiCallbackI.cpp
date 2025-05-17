@@ -112,7 +112,7 @@ idol::PrimalPoint idol::GurobiCallbackI::primal_solution() const {
         throw Exception("Primal solution not accessible in this context.");
     }
 
-    result.set_status(Optimal);
+    result.set_status(is_neg_inf(result.objective_value()) ? Unbounded : Optimal);
     result.set_reason(Proved);
 
     return result;
