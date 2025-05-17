@@ -411,14 +411,14 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>:
 template<class VarImplT, class CtrImplT, class QCtrImplT, class SOSCtrImplT>
 void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>::lazy_update(const Var &t_var) {
     const unsigned int index = parent().get_var_index(t_var);
-    m_variables_to_update.emplace_front(index);
+    m_variables_to_update.emplace_back(index);
     m_variables[index].set_as_to_be_updated(m_variables_to_update.begin());
 }
 
 template<class VarImplT, class CtrImplT, class QCtrImplT, class SOSCtrImplT>
 void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>::lazy_update(const Ctr &t_ctr) {
     const unsigned int index = parent().get_ctr_index(t_ctr);
-    m_constraints_to_update.emplace_front(index);
+    m_constraints_to_update.emplace_back(index);
     m_constraints[index].set_as_to_be_updated(m_constraints_to_update.begin());
 }
 
@@ -435,7 +435,7 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>:
     }
 
     const unsigned int index = parent().get_ctr_index(t_ctr);
-    m_constraints_to_update.emplace_front(index);
+    m_constraints_to_update.emplace_back(index);
     m_constraints.emplace_back(t_ctr, m_constraints_to_update.begin());
 }
 
@@ -447,7 +447,7 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>:
     }
 
     const unsigned int index = parent().get_qctr_index(t_ctr);
-    m_qconstraints_to_update.emplace_front(index);
+    m_qconstraints_to_update.emplace_back(index);
     m_qconstraints.emplace_back(t_ctr, m_qconstraints_to_update.begin());
 
 }
@@ -460,7 +460,7 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>:
     }
 
     const unsigned int index = parent().get_sosctr_index(t_ctr);
-    m_sosconstraints_to_update.emplace_front(index);
+    m_sosconstraints_to_update.emplace_back(index);
     m_sosconstraints.emplace_back(t_ctr, m_sosconstraints_to_update.begin());
 
 }
@@ -473,7 +473,7 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>:
     }
 
     const unsigned int index = parent().get_var_index(t_var);
-    m_variables_to_update.emplace_front(index);
+    m_variables_to_update.emplace_back(index);
     m_variables.emplace_back(t_var, m_variables_to_update.begin());
 }
 
