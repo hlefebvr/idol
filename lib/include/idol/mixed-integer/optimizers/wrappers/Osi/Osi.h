@@ -10,7 +10,7 @@
 #ifdef IDOL_USE_OSI
 #include <OsiSolverInterface.hpp>
 
-#if IDOL_USE_CPLEX
+#if IDOL_USE_OSI_CPLEX
 #include <OsiCpxSolverInterface.hpp>
 #endif
 
@@ -18,11 +18,11 @@
 //#include <OsiGrbSolverInterface.hpp>
 #endif
 
-#ifdef IDOL_USE_SYMPHONY
+#ifdef IDOL_USE_OSI_SYMPHONY
 #include <OsiSymSolverInterface.hpp>
 #endif
 
-#ifdef IDOL_USE_CLP
+#ifdef IDOL_USE_OSI_CLP
 #include <OsiClpSolverInterface.hpp>
 #endif
 
@@ -81,22 +81,22 @@ public:
 
 };
 
-#ifdef IDOL_USE_CPLEX
+#ifdef IDOL_USE_OSI_CPLEX
 ADD_SHORTCUT(OsiCplex, OsiCpxSolverInterface)
 #else
 ADD_FAKE_SHORTCUT(OsiCplex)
 #endif
 
-#ifdef IDOL_USE_SYMPHONY
+#ifdef IDOL_USE_OSI_SYMPHONY
 ADD_SHORTCUT(OsiSymphony, OsiSymSolverInterface)
 #else
 ADD_FAKE_SHORTCUT(OsiSymphony)
 #endif
 
-#ifdef IDOL_USE_CLP
+#ifdef IDOL_USE_OSI_CLP
 ADD_SHORTCUT(OsiClp, OsiClpSolverInterface)
 #else
-ADD_FAKE_SHORTCUT(OsiCbc)
+ADD_FAKE_SHORTCUT(OsiClp)
 #endif
 
 #endif //IDOL_OSI_H
