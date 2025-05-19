@@ -459,6 +459,7 @@ if (${USE_OSI_CLP})
 
 endif()
 
+set(USE_OSI OFF CACHE BOOL "Build idol with Osi (https://projects.coin-or.org/Osi)")
 if (${USE_OSI})
 
     find_package(COINUTILS REQUIRED)
@@ -466,6 +467,15 @@ if (${USE_OSI})
 
     target_link_libraries(idol PUBLIC osi coinUtils)
     target_compile_definitions(idol PUBLIC IDOL_USE_OSI)
+
+endif()
+
+set(USE_JULIA OFF CACHE BOOL "Build idol with Julia (https://julialang.org)")
+set_DIR_variable(Julia)
+if (${USE_JULIA})
+
+    find_package(Julia REQUIRED)
+    target_link_libraries(idol PUBLIC julia)
 
 endif()
 
@@ -488,7 +498,7 @@ target_include_directories(
 install(DIRECTORY "${idol_SOURCE_DIR}/lib/include/"
         DESTINATION include/idol
         FILES_MATCHING
-        PATTERN "*.h"
+        PATTERN "*.h *.jl"
 )
 
 install(TARGETS idol
