@@ -127,7 +127,7 @@ jobs:
             UPPER_CASE=${{ matrix.test }}
             UPPER_CASE=$(echo "$UPPER_CASE" | tr 'a-z' 'A-Z')
             echo "UPPER_CASE: $UPPER_CASE"
-            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_OSI=YES -DUSE_${UPPER_CASE}=YES
+            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_OSI=YES -DUSE_OSI_${UPPER_CASE}=YES
           
           elif [ "${{ matrix.test }}" == "MibS" ]; then
           
