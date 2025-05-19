@@ -7,10 +7,6 @@
 #include <utility>
 #include "idol/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.h"
 
-#ifdef IDOL_USE_OSI_CPLEX
-#include <OsiCpxSolverInterface.hpp>
-#endif
-
 #ifdef IDOL_USE_OSI_CLP
 #include <OsiClpSolverInterface.hpp>
 #endif
