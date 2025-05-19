@@ -312,8 +312,8 @@ if (${USE_ROOT})
 endif()
 
 set(USE_TSL OFF CACHE BOOL "Build idol with TSL for hash maps (https://github.com/Tessil/ordered-map and https://github.com/Tessil/sparse-map)")
-set(TSL_SPARSE_MAP_INCLUDE_DIRS "${TSL_SPARSE_MAP_INCLUDE_DIRS}" CACHE STRING "Path to TSL sparse_map.h")
-set(TSL_ORDERED_MAP_INCLUDE_DIRS "${TSL_ORDERED_MAP_INCLUDE_DIRS}" CACHE STRING "Path to TSL ordered_map.h")
+set_DIR_variable(tsl_sparse_map)
+set_DIR_variable(tsl_oredered_map)
 if (${USE_TSL})
 
     find_package(TSL REQUIRED)
@@ -323,7 +323,7 @@ if (${USE_TSL})
 endif ()
 
 set(USE_ROBINHOOD OFF CACHE BOOL "Build idol with Robinhood for hash maps (https://github.com/martinus/robin-hood-hashing)")
-set(ROBINHOOD_INCLUDE_DIRS "${ROBINHOOD_INCLUDE_DIRS}" CACHE STRING "Path to Robinhood robin_hood.h")
+set_DIR_variable(RobinHood)
 if (${USE_ROBINHOOD})
 
     find_package(ROBINHOOD REQUIRED)
@@ -476,6 +476,12 @@ if (${USE_JULIA})
 
     find_package(Julia REQUIRED)
     target_link_libraries(idol PUBLIC julia)
+
+    add_custom_command(TARGET idol POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_CURRENT_SOURCE_DIR}/include/idol/mixed-integer/optimizers/wrappers/JuMP/module
+            $<TARGET_FILE_DIR:idol>/julia
+    )
 
 endif()
 

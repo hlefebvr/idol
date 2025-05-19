@@ -13,4 +13,3 @@ foreach (OPTIMIZER ${AVAILABLE_MILP_SOLVERS})
     target_link_libraries(${target_name} PRIVATE idol Catch2::Catch2WithMain)
 
 endforeach ()
-
