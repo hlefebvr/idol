@@ -5,7 +5,6 @@
 #ifndef IDOL_JUMP_H
 #define IDOL_JUMP_H
 
-#include <julia.h>
 #include "idol/general/optimizers/OptimizerFactory.h"
 
 namespace idol {

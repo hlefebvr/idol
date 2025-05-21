@@ -44,7 +44,9 @@ public:
     [[nodiscard]] unsigned int get_solution_index() const override;
     void debug_print() const;
 
-    struct JuliaSessionManager {
+    class JuliaSessionManager {
+        bool m_module_is_loaded = false;
+    public:
         JuliaSessionManager();
         ~JuliaSessionManager();
     };
