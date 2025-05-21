@@ -74,6 +74,9 @@ void idol::Optimizers::JuMP::JuliaSessionManager::load_idol_jump_module() {
         return;
     }
 
+    std::cout << IDOL_JULIA_MODULE_BASE64 << std::endl;
+    std::cout << base64_decode(IDOL_JULIA_MODULE_BASE64) << std::endl;
+
     jl_eval_string(base64_decode(IDOL_JULIA_MODULE_BASE64).c_str());
     throw_if_julia_error();
 

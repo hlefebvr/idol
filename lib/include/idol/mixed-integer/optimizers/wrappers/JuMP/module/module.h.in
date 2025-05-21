@@ -1,10 +1,10 @@
-//
-// Created by henri on 21.05.25.
-//
-
 #ifndef IDOL_JULIA_MODULE_H
 #define IDOL_JULIA_MODULE_H
 
+#ifdef IDOL_USE_JULIA
 #define IDOL_JULIA_MODULE_BASE64 "@IDOL_JULIA_MODULE_BASE64@"
+#else
+#define IDOL_JULIA_MODULE_BASE64 ""
+#endif
 
-#endif //IDOL_JULIA_MODULE_H
+#endif
