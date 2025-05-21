@@ -36,6 +36,7 @@ void idol::Optimizers::JuMP::JuliaSessionManager::load_idol_jump_module() {
     }
 
     std::cout << "Loading idol's julia module from: " << julia_module_path << std::endl;
+    julia_module_path = "/home/runner/work/idol/idol/build/lib/julia/main.jl";
     jl_eval_string(("include(\"" + julia_module_path + "\")").c_str());
     throw_if_julia_error();
 

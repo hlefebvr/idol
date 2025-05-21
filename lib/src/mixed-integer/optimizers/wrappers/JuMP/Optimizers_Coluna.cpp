@@ -8,7 +8,7 @@
 #ifdef IDOL_USE_JULIA
 
 idol::Optimizers::Coluna::Coluna(const idol::Model &t_parent, const idol::Annotation<unsigned int> &t_annotation)
-    : Optimizers::JuMP(t_parent, "Gurobi", "Gurobi.Optimizer", false),
+    : Optimizers::JuMP(t_parent, "HiGHS", "HiGHS.Optimizer", false),
       m_annotation(t_annotation) {
 
 }
