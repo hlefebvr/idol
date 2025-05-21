@@ -45,23 +45,6 @@ public:
     [[nodiscard]] unsigned int get_n_solutions() const override;
     [[nodiscard]] unsigned int get_solution_index() const override;
     void debug_print() const;
-
-    class JuliaSessionManager {
-        bool m_idol_jump_module_is_loaded = false;
-        bool m_idol_coluna_is_loaded = false;
-        Set<std::string> m_loaded_modules;
-    public:
-        JuliaSessionManager();
-
-        void load_idol_jump_module();
-        void load_idol_coluna_module();
-        void load_module(const std::string &t_module);
-
-        ~JuliaSessionManager();
-
-        static void throw_if_julia_error();
-    };
-
 protected:
     void hook_optimize() override;
     virtual uint64_t hook_create_julia_model(jl_value_t* t_optimizer);
@@ -101,11 +84,29 @@ protected:
 
         return (jl_value_t*) result;
     }
-
-protected:
-    static JuliaSessionManager s_julia_session_manager;
 };
 
+namespace idol::impl {
+
+    class JuliaSessionManager {
+        bool m_idol_jump_module_is_loaded = false;
+        bool m_idol_coluna_is_loaded = false;
+        Set<std::string> m_loaded_modules;
+    public:
+        JuliaSessionManager();
+
+        void load_idol_jump_module();
+        void load_idol_coluna_module();
+        void load_module(const std::string &t_module);
+
+        ~JuliaSessionManager();
+
+        static void throw_if_julia_error();
+    };
+
+
+    static JuliaSessionManager s_julia_session_manager;
+}
 
 #endif
 
