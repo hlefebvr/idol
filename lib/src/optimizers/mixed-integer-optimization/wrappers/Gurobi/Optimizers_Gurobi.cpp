@@ -67,6 +67,7 @@ std::pair<idol::SolutionStatus, idol::SolutionReason> idol::Optimizers::Gurobi::
         case GRB_USER_OBJ_LIMIT: return {Feasible, ObjLimit };
         case GRB_TIME_LIMIT: return { m_model.get(GRB_IntAttr_SolCount) > 0 ? Feasible : Infeasible, TimeLimit };
         case GRB_NUMERIC: return {Fail, NotSpecified };
+        case GRB_SOLUTION_LIMIT: return {Feasible, SolutionLimit };
         default:;
     }
     throw Exception("Unsupported Gurobi status: " + std::to_string(t_status));

@@ -32,7 +32,8 @@ namespace idol {
         ObjLimit,
         Numerical,
         MemoryLimit,
-        Cycling
+        Cycling,
+        SolutionLimit
     };
 
     template<class T>
@@ -124,6 +125,8 @@ namespace idol {
                 return t_os << "MemoryLimit";
             case Cycling:
                 return t_os << "Cycling";
+            case SolutionLimit:
+                return t_os << "SolutionLimit";
             default:;
         }
 
