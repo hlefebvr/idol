@@ -149,8 +149,7 @@ jobs:
             # Install JuMP
             julia -e 'using Pkg; Pkg.add("JuMP")'
             julia -e 'using Pkg; Pkg.add("HiGHS")'
-            julia -e 'using Pkg; Pkg.add("Coluna")'
-            echo "WARNING: Coluna is installed by default!"
+            julia -e 'include("lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/main.jl"); using HiGHS; create_model(HiGHS.Optimizer)'
           
             export JULIA_HOME="$(julia -e 'print(Sys.BINDIR)')/../"
           
