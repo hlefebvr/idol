@@ -149,7 +149,6 @@ jobs:
             # Install JuMP
             julia -e 'using Pkg; Pkg.add("JuMP")'
             julia -e 'using Pkg; Pkg.add("HiGHS")'
-            julia -e 'include("lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/main.jl"); using HiGHS; using .CppJuMP; create_model(HiGHS.Optimizer)'
           
             export JULIA_HOME="$(julia -e 'print(Sys.BINDIR)')/../"
           
@@ -180,11 +179,6 @@ jobs:
             WORKSPACE=${{github.workspace}}/build/tests/bilevel/wrappers
           else
             WORKSPACE=${{github.workspace}}/build/tests/mixed-integer/wrappers
-          fi
-          
-          # if jump
-          if [ "${{ matrix.test }}" == "JuMP" ]; then
-            julia -e 'include("lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/main.jl"); using HiGHS; using .CppJuMP; create_model(HiGHS.Optimizer)'
           fi
           
           (cd $WORKSPACE && (./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml ) )
