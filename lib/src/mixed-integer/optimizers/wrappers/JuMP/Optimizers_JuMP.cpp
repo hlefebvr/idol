@@ -446,28 +446,11 @@ void idol::Optimizers::JuMP::JuliaSessionManager::throw_if_julia_error() {
 
         // Get the error message
         jl_function_t* showerror = jl_get_function(jl_base_module, "showerror");
-        jl_function_t* sprint = jl_get_function(jl_base_module, "sprint");
-        jl_value_t* args[] = { (jl_value_t*)showerror, exception };
-        jl_value_t* msg = jl_call(sprint, args, 2);
-
-        const char* msg_str = jl_string_ptr(msg);
-        std::cerr << msg_str << "\n";
-        std::cerr.flush();  // Flush to ensure output is shown immediately
-
-        // Get the stacktrace
-        jl_function_t* stacktrace = jl_get_function(jl_base_module, "stacktrace");
-        jl_value_t* bt = jl_call0(stacktrace);
-        jl_function_t* sprint_bt = jl_get_function(jl_base_module, "sprint");
-        jl_value_t* bt_str = jl_call1(sprint_bt, bt);
-
-        const char* bt_cstr = jl_string_ptr(bt_str);
-
-        std::cerr << "Stack:\n" << bt_cstr << "\n";
-        std::cerr.flush();
+        jl_call1(showerror, exception);
 
         jl_exception_clear();
 
-        throw std::runtime_error(std::string("A julia error occurred: ") + msg_str);
+        throw std::runtime_error("A julia error occurred.");
     }
 
 }
