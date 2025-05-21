@@ -35,6 +35,7 @@ void idol::Optimizers::JuMP::JuliaSessionManager::load_idol_jump_module() {
         throw Exception("idol's julia module could not be found.");
     }
 
+    std::cout << "Loading idol's julia module from: " << julia_module_path << std::endl;
     jl_eval_string(("include(\"" + julia_module_path + "\")").c_str());
     throw_if_julia_error();
 
