@@ -430,13 +430,14 @@ idol::Optimizers::JuMP::~JuMP() {
         return;
     }
 
-    jl_function_t* delete_model = jl_get_function(jl_main_module, "print_model");
-    impl::JuliaSessionManager::throw_if_julia_error();
+    jl_function_t* delete_model = jl_get_function(jl_main_module, "delete_model");
+    if (!delete_model) { return; }
 
     jl_call1(delete_model, jl_box_uint64(*m_model_id));
     impl::JuliaSessionManager::throw_if_julia_error();
 
 }
+
 void idol::impl::JuliaSessionManager::throw_if_julia_error() {
 
     if (jl_exception_occurred()) {
