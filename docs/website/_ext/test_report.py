@@ -50,6 +50,7 @@ def parse_report(xml_path):
         "test_wrapper_OsiSymphony": "Interfacing with coin-or/Osi (Symphony)",
         "test_wrapper_OsiVol": "Interfacing with coin-or/Osi (Vol)",
         "test_wrapper_MibS": "Interfacing with MibS",
+        "test_wrapper_JuMP": "Interfacing with julia JuMP",
     }
 
     pretty_tag_names = {
