@@ -5,7 +5,6 @@
 #ifndef IDOL_JULIA_MODULE_H
 #define IDOL_JULIA_MODULE_H
 
-#define IDOL_JULIA_BUILD_MODULE_PATH "@IDOL_JULIA_BUILD_MODULE_PATH@/idol/mixed-integer/optimizers/wrappers/JuMP/module/main.jl"
-#define IDOL_JULIA_INSTALL_MODULE_PATH "@IDOL_JULIA_INSTALL_MODULE_PATH@/idol/mixed-integer/optimizers/wrappers/JuMP/module/main.jl"
+#define IDOL_JULIA_MODULE_BASE64 "@IDOL_JULIA_MODULE_BASE64@"
 
 #endif //IDOL_JULIA_MODULE_H

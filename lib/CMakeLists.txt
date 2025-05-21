@@ -502,8 +502,12 @@ if (${WITH_PROFILING})
     set(CMAKE_CPP_COMPILER g++)
 endif()
 
-set(IDOL_JULIA_BUILD_MODULE_PATH "${idol_SOURCE_DIR}/lib/include")
-set(IDOL_JULIA_INSTALL_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/include")
+execute_process(
+        COMMAND base64 "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/main.jl"
+        OUTPUT_VARIABLE IDOL_JULIA_MODULE_BASE64
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+string(REPLACE "\n" "\\\n" IDOL_JULIA_MODULE_BASE64 "${IDOL_JULIA_MODULE_BASE64}")
 configure_file(include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h.in ${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h @ONLY)
 
 target_include_directories(
