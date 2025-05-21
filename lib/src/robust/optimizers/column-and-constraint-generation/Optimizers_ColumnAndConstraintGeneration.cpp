@@ -283,6 +283,10 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
 }
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_criteria() {
+    
+    if (is_terminated()) {
+        return;
+    }
 
     if (get_best_bound() > get_best_obj() + 1e-3) {
         set_status(Fail);
@@ -551,7 +555,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
         if (!is_last_optimizer) { // If we can, skip this optimizer
             ++m_index_feasibility_separation;
         } else { // otherwise, it's a failure
-            std::cerr << "Last optimizer is nor optimal nor feasible. " << high_point_relaxation.get_reason() << std::endl;
+            std::cerr << "Last optimizer is nor optimal nor feasible. " << high_point_relaxation.get_reason() << "." << std::endl;
             set_status(Fail);
             set_reason(high_point_relaxation.get_reason());
             terminate();
@@ -560,7 +564,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
     }
 
     if (is_last_optimizer && status != Optimal) { // if the last optimizer is not reporting optimal, it's a fail
-        std::cerr << "Last optimizer is not optimal. " << high_point_relaxation.get_reason() << std::endl;
+        std::cerr << "Last optimizer is not optimal. " << high_point_relaxation.get_reason() << "." << std::endl;
         set_status(Fail);
         set_reason(high_point_relaxation.get_reason());
         terminate();
