@@ -371,6 +371,9 @@ void idol::Optimizers::JuMP::check_for_errors() const {
         jl_value_t* args[] = { (jl_value_t*)showerror, exception };
         jl_value_t* msg = jl_call(sprint, args, 2);
 
+        const char* msg_str = jl_string_ptr(msg);
+        std::cerr << "Julia Error: " << msg_str << "\n";
+
         // Get the stacktrace
         jl_function_t* stacktrace = jl_get_function(jl_base_module, "stacktrace");
         jl_value_t* bt = jl_call0(stacktrace);
@@ -378,10 +381,8 @@ void idol::Optimizers::JuMP::check_for_errors() const {
         jl_value_t* bt_str = jl_call1(sprint_bt, bt);
 
         // Print them (make sure result is a string)
-        const char* msg_str = jl_string_ptr(msg);
         const char* bt_cstr = jl_string_ptr(bt_str);
 
-        std::cerr << "Julia Error: " << msg_str << "\n";
         std::cerr << "Stacktrace: " << bt_cstr << "\n";
 
         jl_exception_clear();
