@@ -95,7 +95,7 @@ jobs:
           elif [ "${{ matrix.test }}" == "HiGHS" ]; then
           
             # Install HiGHS
-            git clone --depth 1 --branch v1.10.0 https://github.com/ERGO-Code/HiGHS.git
+            git clone --depth 1 --branch v1.9.0 https://github.com/ERGO-Code/HiGHS.git
             (mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install)
           
             # Configure CMake
@@ -142,12 +142,13 @@ jobs:
           
           elif [ "${{ matrix.test }}" == "JuMP" ]; then
           
-            # Install HiGHS
-            git clone --depth 1 --branch v1.10.0 https://github.com/ERGO-Code/HiGHS.git
-            (mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install)
-          
+            # Install Julia
             curl -fsSL https://install.julialang.org | sh
             export JULIA_HOME=$HOME/$(ls julia-*)
+          
+            # Install JuMP
+            julia -e 'using Pkg; Pkg.add("JuMP")'
+            julia -e 'using Pkg; Pkg.add("HiGHS")'
           
             # Configure CMake
             cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_HIGHS=YES -DUSE_JULIA
