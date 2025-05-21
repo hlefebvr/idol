@@ -35,7 +35,7 @@ void idol::Optimizers::JuMP::JuliaSessionManager::load_idol_jump_module() {
         throw Exception("idol's julia module could not be found.");
     }
 
-    jl_eval_string("include(\"/home/henri/Research/idol/cmake-build-debug/lib/julia/main.jl\")");
+    jl_eval_string(("include(\"" + julia_module_path + "\")").c_str());
     throw_if_julia_error();
 
     load_module(".CppJuMP");
