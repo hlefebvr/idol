@@ -76,7 +76,6 @@ void idol::Optimizers::JuMP::JuliaSessionManager::load_idol_jump_module() {
 
     std::cout << IDOL_JULIA_MODULE_BASE64 << std::endl;
     std::cout << base64_decode(IDOL_JULIA_MODULE_BASE64) << std::endl;
-    throw Exception(IDOL_JULIA_MODULE_BASE64);
 
     jl_eval_string(base64_decode(IDOL_JULIA_MODULE_BASE64).c_str());
     throw_if_julia_error();
@@ -445,8 +444,6 @@ idol::Optimizers::JuMP::~JuMP() {
 }
 void idol::Optimizers::JuMP::JuliaSessionManager::throw_if_julia_error() {
 
-    return;
-
     if (jl_exception_occurred()) {
         jl_value_t* exception = jl_exception_occurred();
 
@@ -458,6 +455,7 @@ void idol::Optimizers::JuMP::JuliaSessionManager::throw_if_julia_error() {
 
         const char* msg_str = jl_string_ptr(msg);
         std::cerr << msg_str << "\n";
+        std::cerr.flush();  // Flush to ensure output is shown immediately
 
         // Get the stacktrace
         jl_function_t* stacktrace = jl_get_function(jl_base_module, "stacktrace");
@@ -465,14 +463,14 @@ void idol::Optimizers::JuMP::JuliaSessionManager::throw_if_julia_error() {
         jl_function_t* sprint_bt = jl_get_function(jl_base_module, "sprint");
         jl_value_t* bt_str = jl_call1(sprint_bt, bt);
 
-        // Print them (make sure result is a string)
         const char* bt_cstr = jl_string_ptr(bt_str);
 
         std::cerr << "Stack:\n" << bt_cstr << "\n";
+        std::cerr.flush();
 
         jl_exception_clear();
 
-        throw std::runtime_error("A julia error occurred: " + std::string(msg_str));
+        throw std::runtime_error(std::string("A julia error occurred: ") + msg_str);
     }
 
 }
