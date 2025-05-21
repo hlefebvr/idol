@@ -403,7 +403,10 @@ void idol::Optimizers::JuMP::debug_print() const {
 uint64_t idol::Optimizers::JuMP::hook_create_julia_model(jl_value_t* t_optimizer) {
 
     jl_function_t* create_model = jl_get_function(jl_main_module, "create_model");
+    check_for_errors();
+
     jl_value_t* id = jl_call1(create_model, t_optimizer);
+    check_for_errors();
 
     return jl_unbox_uint64(id);
 }
