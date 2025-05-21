@@ -25,6 +25,11 @@ module CppJuMP
         return id
     end
 
+    function delete_model(t_id::UInt64)
+        obj = registry[t_id]
+        delete!(registry, t_id)
+    end
+
     function create_variable(t_id::UInt64,
                              t_lb::Float64,
                              t_ub::Float64,

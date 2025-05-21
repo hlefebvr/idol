@@ -19,7 +19,7 @@ uint64_t idol::Optimizers::Coluna::hook_create_julia_model(jl_value_t* t_optimiz
 
     jl_function_t* create_block_model = jl_get_function(jl_main_module, "create_block_model");
     jl_value_t* id = jl_call1(create_block_model, t_optimizer);
-    check_for_errors();
+    JuliaSessionManager::throw_if_julia_error();
 
     return jl_unbox_uint64(id);
 }
@@ -54,7 +54,7 @@ void idol::Optimizers::Coluna::hook_optimize() {
     }
 
     jl_function_t* optimize = jl_get_function(jl_main_module, "optimize_dantzig_wolfe");
-    check_for_errors();
+    JuliaSessionManager::throw_if_julia_error();
 
     jl_value_t** args = new jl_value_t*[4];
     args[0] = jl_box_uint64(m_model_id); // model id
@@ -63,7 +63,7 @@ void idol::Optimizers::Coluna::hook_optimize() {
     args[3] = jl_box_uint64(MasterId); // MasterId
 
     jl_call(optimize, args, 4);
-    check_for_errors();
+    JuliaSessionManager::throw_if_julia_error();
     delete[] args;
 
 }
