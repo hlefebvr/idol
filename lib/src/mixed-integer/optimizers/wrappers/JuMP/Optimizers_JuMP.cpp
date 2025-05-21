@@ -86,7 +86,7 @@ std::string idol::Optimizers::JuMP::name() const {
 idol::SolutionStatus idol::Optimizers::JuMP::get_status() const {
 
     jl_function_t *get_status = jl_get_function(jl_main_module, "get_status");
-    jl_value_t *result = jl_call1(get_status, jl_box_uint64(m_model_id));
+    jl_value_t *result = jl_call1(get_status, jl_box_uint64(*m_model_id));
     JuliaSessionManager::throw_if_julia_error();
 
     const auto status = jl_unbox_uint16(result);
@@ -102,7 +102,7 @@ idol::SolutionStatus idol::Optimizers::JuMP::get_status() const {
 idol::SolutionReason idol::Optimizers::JuMP::get_reason() const {
 
     jl_function_t *get_status = jl_get_function(jl_main_module, "get_reason");
-    jl_value_t *result = jl_call1(get_status, jl_box_uint64(m_model_id));
+    jl_value_t *result = jl_call1(get_status, jl_box_uint64(*m_model_id));
     JuliaSessionManager::throw_if_julia_error();
 
     const auto reason = jl_unbox_uint16(result);
@@ -129,7 +129,7 @@ double idol::Optimizers::JuMP::get_best_obj() const {
     }
 
     jl_function_t *get_best_obj = jl_get_function(jl_main_module, "get_best_obj");
-    jl_value_t *result = jl_call1(get_best_obj, jl_box_uint64(m_model_id));
+    jl_value_t *result = jl_call1(get_best_obj, jl_box_uint64(*m_model_id));
     JuliaSessionManager::throw_if_julia_error();
 
     return jl_unbox_float64(result);
@@ -149,7 +149,7 @@ double idol::Optimizers::JuMP::get_best_bound() const {
     }
 
     jl_function_t *get_best_bound = jl_get_function(jl_main_module, "get_best_bound");
-    jl_value_t *result = jl_call1(get_best_bound, jl_box_uint64(m_model_id));
+    jl_value_t *result = jl_call1(get_best_bound, jl_box_uint64(*m_model_id));
     JuliaSessionManager::throw_if_julia_error();
 
     return jl_unbox_float64(result);
@@ -160,7 +160,7 @@ double idol::Optimizers::JuMP::get_var_primal(const idol::Var &t_var) const {
     const auto& model = parent();
 
     jl_function_t *get_var_primal = jl_get_function(jl_main_module, "get_var_primal");
-    jl_value_t *result = jl_call2(get_var_primal, jl_box_uint64(m_model_id), jl_box_uint64(model.get_var_index(t_var)));
+    jl_value_t *result = jl_call2(get_var_primal, jl_box_uint64(*m_model_id), jl_box_uint64(model.get_var_index(t_var)));
     JuliaSessionManager::throw_if_julia_error();
 
     return jl_unbox_float64(result);
@@ -205,7 +205,7 @@ void idol::Optimizers::JuMP::hook_optimize() {
     jl_function_t* optimize = jl_get_function(jl_main_module, "optimize");
     JuliaSessionManager::throw_if_julia_error();
 
-    jl_call1(optimize, jl_box_int64(m_model_id));
+    jl_call1(optimize, jl_box_int64(*m_model_id));
     JuliaSessionManager::throw_if_julia_error();
 
 }
@@ -259,7 +259,7 @@ bool idol::Optimizers::JuMP::hook_add(const idol::Var &t_var, bool t_add_column)
     JuliaSessionManager::throw_if_julia_error();
 
     jl_value_t** args = new jl_value_t*[6];
-    args[0] = jl_box_uint64(m_model_id); // model id
+    args[0] = jl_box_uint64(*m_model_id); // model id
     args[1] = jl_box_float64(lb); // lower bound
     args[2] = jl_box_float64(ub); // upper bound
     args[3] = jl_box_float64(obj); // objective coefficient
@@ -295,7 +295,7 @@ bool idol::Optimizers::JuMP::hook_add(const idol::Ctr &t_ctr) {
     JuliaSessionManager::throw_if_julia_error();
 
     jl_value_t** args = new jl_value_t*[6];
-    args[0] = jl_box_uint64(m_model_id); // model id
+    args[0] = jl_box_uint64(*m_model_id); // model id
     args[1] = make_julia_vector(indices);
     args[2] = make_julia_vector(coefficients);
     args[3] = jl_box_float64(rhs); // right-hand side
@@ -322,7 +322,7 @@ void idol::Optimizers::JuMP::hook_update_objective_sense() {
     const auto sense = parent().get_obj_sense();
 
     jl_function_t* update_objective_sense = jl_get_function(jl_main_module, "update_objective_sense");
-    jl_call2(update_objective_sense, jl_box_uint64(m_model_id), jl_box_uint16((uint16_t)sense));
+    jl_call2(update_objective_sense, jl_box_uint64(*m_model_id), jl_box_uint16((uint16_t)sense));
     JuliaSessionManager::throw_if_julia_error();
 
 }
@@ -372,7 +372,7 @@ void idol::Optimizers::JuMP::debug_print() const {
     jl_function_t* print_model = jl_get_function(jl_main_module, "print_model");
     JuliaSessionManager::throw_if_julia_error();
 
-    jl_call1(print_model, jl_box_int64(m_model_id));
+    jl_call1(print_model, jl_box_int64(*m_model_id));
     JuliaSessionManager::throw_if_julia_error();
 }
 
@@ -388,9 +388,17 @@ uint64_t idol::Optimizers::JuMP::hook_create_julia_model(jl_value_t* t_optimizer
 }
 
 idol::Optimizers::JuMP::~JuMP() {
+
+    if (!m_model_id) {
+        return;
+    }
+
     jl_function_t* delete_model = jl_get_function(jl_main_module, "delete_model");
-    jl_call1(delete_model, jl_box_uint64(m_model_id));
     JuliaSessionManager::throw_if_julia_error();
+
+    jl_call1(delete_model, jl_box_uint64(*m_model_id));
+    JuliaSessionManager::throw_if_julia_error();
+
 }
 void idol::Optimizers::JuMP::JuliaSessionManager::throw_if_julia_error() {
 

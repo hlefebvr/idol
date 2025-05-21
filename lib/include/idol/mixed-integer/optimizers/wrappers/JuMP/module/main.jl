@@ -26,8 +26,10 @@ module CppJuMP
     end
 
     function delete_model(t_id::UInt64)
-        obj = registry[t_id]
-        delete!(registry, t_id)
+        print("Prepare to delete model ", t_id)
+        if haskey(registry, t_id)
+            delete!(registry, t_id)
+        end
     end
 
     function create_variable(t_id::UInt64,
@@ -175,6 +177,7 @@ module CppJuMP
     end
 
     export create_model
+    export delete_model
     export create_variable
     export create_constraint
     export print_model

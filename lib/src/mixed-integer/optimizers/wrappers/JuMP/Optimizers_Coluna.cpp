@@ -57,7 +57,7 @@ void idol::Optimizers::Coluna::hook_optimize() {
     JuliaSessionManager::throw_if_julia_error();
 
     jl_value_t** args = new jl_value_t*[4];
-    args[0] = jl_box_uint64(m_model_id); // model id
+    args[0] = jl_box_uint64(*m_model_id); // model id
     args[1] = make_julia_vector(ctr_annotation); // ctr_annotation
     args[2] = make_julia_vector(var_annotation); // ctr_annotation
     args[3] = jl_box_uint64(MasterId); // MasterId

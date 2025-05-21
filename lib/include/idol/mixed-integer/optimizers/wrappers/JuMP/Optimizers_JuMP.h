@@ -18,7 +18,7 @@ namespace idol::Optimizers {
 
 class idol::Optimizers::JuMP : public OptimizerWithLazyUpdates<bool, bool, bool, bool> {
 protected:
-    uint64_t m_model_id = 0;
+    std::optional<uint64_t> m_model_id = 0;
     const std::string m_module;
     const std::string m_optimizer;
     bool m_is_continuous_relaxation;
