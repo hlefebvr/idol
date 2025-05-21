@@ -49,6 +49,8 @@ void idol::Optimizers::JuMP::JuliaSessionManager::load_idol_coluna_module() {
 
     load_module(".CppColuna");
 
+    m_idol_coluna_is_loaded = true;
+
 }
 
 void idol::Optimizers::JuMP::JuliaSessionManager::load_module(const std::string &t_module) {
