@@ -508,6 +508,7 @@ execute_process(
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 string(REPLACE "\n" "\\\n" IDOL_JULIA_MODULE_BASE64 "${IDOL_JULIA_MODULE_BASE64}")
+message("Julia Module: ${IDOL_JULIA_MODULE_BASE64}")
 configure_file(include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h.in ${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h @ONLY)
 
 target_include_directories(
@@ -520,7 +521,7 @@ target_include_directories(
 install(DIRECTORY "${idol_SOURCE_DIR}/lib/include/"
         DESTINATION include/idol
         FILES_MATCHING
-        PATTERN "*.h *.jl"
+        PATTERN "*.h"
 )
 
 install(TARGETS idol
@@ -546,14 +547,11 @@ install(EXPORT idol_targets
 
 configure_file(idolConfig.cmake.in idolConfig.cmake @ONLY)
 
+file(GLOB FIND_MODULES "${idol_SOURCE_DIR}/cmake/**/Find*.cmake")
 install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/idolConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/idol_julia_path.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/idolConfigVersion.cmake"
         "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h"
-        "${idol_SOURCE_DIR}/cmake/FindGUROBI.cmake"
-        "${idol_SOURCE_DIR}/cmake/FindGLPK.cmake"
-        "${idol_SOURCE_DIR}/cmake/FindMOSEK.cmake"
-        "${idol_SOURCE_DIR}/cmake/FindEIGEN.cmake"
-        "${idol_SOURCE_DIR}/cmake/FindROBINHOOD.cmake"
+        "${FIND_MODULES}"
         DESTINATION lib/cmake/idol
         )
