@@ -113,7 +113,7 @@ module CppJuMP
             return 1
         elseif term_status == MOI.INFEASIBLE
             return 3
-        elseif term_status == MOI.UNBOUNDED
+        elseif term_status == MOI.DUAL_INFEASIBLE
             return 5
         elseif primal_status == MOI.FEASIBLE_POINT
             return 2
@@ -130,7 +130,7 @@ module CppJuMP
             return 1
         elseif term_status == MOI.INFEASIBLE
             return 1
-        elseif term_status == MOI.UNBOUNDED
+        elseif term_status == MOI.DUAL_INFEASIBLE
             return 1
         elseif term_status == MOI.TIME_LIMIT
             return 2

@@ -281,6 +281,12 @@ add_library(idol STATIC
         src/robust/optimizers/benders/Benders.cpp
         src/robust/optimizers/benders/Optimizers_Benders.cpp
         include/idol/robust/optimizers/column-and-constraint-generation/AdversarialProblemSolver.h
+        include/idol/mixed-integer/optimizers/wrappers/JuMP/JuMP.h
+        include/idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h
+        include/idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_Coluna.h
+        src/mixed-integer/optimizers/wrappers/JuMP/JuMP.cpp
+        src/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.cpp
+        src/mixed-integer/optimizers/wrappers/JuMP/Optimizers_Coluna.cpp
 )
 
 find_package(OpenMP REQUIRED)
@@ -476,6 +482,8 @@ if (${USE_JULIA})
 
     find_package(Julia REQUIRED)
     target_link_libraries(idol PUBLIC julia)
+    target_compile_definitions(idol PUBLIC IDOL_USE_JULIA)
+    list(APPEND AVAILABLE_MILP_SOLVERS "JuMP")
 
     add_custom_command(TARGET idol POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -493,6 +501,10 @@ if (${WITH_PROFILING})
     set(CMAKE_C_COMPILER gcc)
     set(CMAKE_CPP_COMPILER g++)
 endif()
+
+set(IDOL_JULIA_BUILD_MODULE_PATH "${idol_SOURCE_DIR}/lib/include")
+set(IDOL_JULIA_INSTALL_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/include")
+configure_file(include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h.in ${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h @ONLY)
 
 target_include_directories(
         idol
@@ -529,9 +541,11 @@ install(EXPORT idol_targets
         )
 
 configure_file(idolConfig.cmake.in idolConfig.cmake @ONLY)
+
 install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/idolConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/idolConfigVersion.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/idol_julia_path.h"
+        "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h"
         "${idol_SOURCE_DIR}/cmake/FindGUROBI.cmake"
         "${idol_SOURCE_DIR}/cmake/FindGLPK.cmake"
         "${idol_SOURCE_DIR}/cmake/FindMOSEK.cmake"

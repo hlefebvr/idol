@@ -9,6 +9,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
+#include "idol/mixed-integer/optimizers/wrappers/JuMP/JuMP.h"
 #include "idol/mixed-integer/optimizers/callbacks/cutting-planes/LazyCutCallback.h"
 
 using namespace Catch::literals;
@@ -23,6 +24,12 @@ namespace idol {
 #ifndef IDOL_USE_CPLEX
 namespace idol {
     class Cplex;
+}
+#endif
+
+#ifndef IDOL_USE_JUMP
+namespace idol {
+    class JuMP;
 }
 #endif
 

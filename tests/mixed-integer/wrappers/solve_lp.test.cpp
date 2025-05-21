@@ -9,6 +9,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
+#include "idol/mixed-integer/optimizers/wrappers/JuMP/JuMP.h"
 
 using namespace Catch::literals;
 using namespace idol;
