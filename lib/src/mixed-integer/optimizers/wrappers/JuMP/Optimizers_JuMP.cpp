@@ -445,6 +445,8 @@ idol::Optimizers::JuMP::~JuMP() {
 }
 void idol::Optimizers::JuMP::JuliaSessionManager::throw_if_julia_error() {
 
+    return;
+
     if (jl_exception_occurred()) {
         jl_value_t* exception = jl_exception_occurred();
 
