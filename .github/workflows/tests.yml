@@ -72,6 +72,7 @@ jobs:
           - "Mosek"
           - "Clp"
           #- "Symphony"
+          - "JuMP"
           - "MibS"
     steps:
       - uses: actions/checkout@v4
@@ -94,7 +95,7 @@ jobs:
           elif [ "${{ matrix.test }}" == "HiGHS" ]; then
           
             # Install HiGHS
-            git clone --depth 1 --branch v1.7.1 https://github.com/ERGO-Code/HiGHS.git
+            git clone --depth 1 --branch v1.10.0 https://github.com/ERGO-Code/HiGHS.git
             (mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install)
           
             # Configure CMake
@@ -138,6 +139,18 @@ jobs:
           
             # Configure CMake
             cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_MIBS=YES
+          
+          elif [ "${{ matrix.test }}" == "JuMP" ]; then
+          
+            # Install HiGHS
+            git clone --depth 1 --branch v1.10.0 https://github.com/ERGO-Code/HiGHS.git
+            (mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install)
+          
+            curl -fsSL https://install.julialang.org | sh
+            export JULIA_HOME=$HOME/$(ls julia-*)
+          
+            # Configure CMake
+            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_HIGHS=YES -DUSE_JULIA
           
           else
             exit 1

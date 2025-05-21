@@ -25,6 +25,11 @@ Here is the list of implemented features regarding mixed-integer optimization wi
 
 .. testreport:: _static/reports/test_wrapper_HiGHS.xml
 
+.. testreport:: _static/reports/test_wrapper_JuMP.xml
+
+.. note::
+    JuMP uses HiGHS as the default solver for the tests.
+
 .. testreport:: _static/reports/test_wrapper_Mosek.xml
 
 .. testreport:: _static/reports/test_wrapper_OsiClp.xml
