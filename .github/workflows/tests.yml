@@ -143,7 +143,7 @@ jobs:
           elif [ "${{ matrix.test }}" == "JuMP" ]; then
           
             # Install Julia
-            curl -fsSL https://install.julialang.org | sh
+            curl -fsSL https://install.julialang.org | sh -y
             export JULIA_HOME=$HOME/$(ls julia-*)
           
             # Install JuMP
