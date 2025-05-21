@@ -151,7 +151,7 @@ jobs:
             julia -e 'using Pkg; Pkg.add("HiGHS")'
           
             # Configure CMake
-            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_HIGHS=YES -DUSE_JULIA=YES
+            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_JULIA=YES
           
           else
             exit 1
