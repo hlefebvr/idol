@@ -65,7 +65,7 @@ idol::Optimizers::JuMP::JuliaSessionManager::JuliaSessionManager() {
 }
 
 idol::Optimizers::JuMP::JuliaSessionManager::~JuliaSessionManager() {
-    //jl_atexit_hook(0);
+    jl_atexit_hook(0);
 }
 
 void idol::Optimizers::JuMP::JuliaSessionManager::load_idol_jump_module() {
@@ -427,6 +427,8 @@ uint64_t idol::Optimizers::JuMP::hook_create_julia_model(jl_value_t* t_optimizer
 }
 
 idol::Optimizers::JuMP::~JuMP() {
+
+    return;
 
     if (!m_model_id) {
         return;
