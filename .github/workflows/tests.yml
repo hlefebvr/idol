@@ -80,6 +80,10 @@ jobs:
       - name: Install lcov
         run: sudo apt-get install lcov
 
+      - name: Set up Julia
+        if: matrix.test == 'JuMP'
+        uses: julia-actions/setup-julia@v2
+
       - name: "Build idol with ${{ matrix.test }}"
         env:
           MOSEK_LICENSE: ${{secrets.MOSEK_LICENSE}}
@@ -141,10 +145,6 @@ jobs:
             cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_MIBS=YES
           
           elif [ "${{ matrix.test }}" == "JuMP" ]; then
-          
-            # Install Julia
-            curl -fsSL https://install.julialang.org | sh -y
-            export JULIA_HOME=$HOME/$(ls julia-*)
           
             # Install JuMP
             julia -e 'using Pkg; Pkg.add("JuMP")'
