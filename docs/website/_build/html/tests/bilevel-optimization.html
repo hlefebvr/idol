@@ -218,11 +218,125 @@
   <section id="stable-features-in-bilevel-optimization">
 <h1>Stable Features in Bilevel Optimization<a class="headerlink" href="#stable-features-in-bilevel-optimization" title="Link to this heading">¶</a></h1>
 <p>Here is the list of implemented features regarding bilevel optimization with their corresponding test reports.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>There was an error while parsing the test report _static/reports/test_wrapper_MibS.xml.</p>
-<p>[Errno 2] No such file or directory: ‘_static/reports/test_wrapper_MibS.xml’</p>
-</div>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#test_wrapper_MibS" id="id1">Interfacing with MibS</a></p></li>
+</ul>
+</nav>
+<section id="test_wrapper_MibS">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Interfacing with MibS</a><a class="headerlink" href="#test_wrapper_MibS" title="Link to this heading">¶</a></h2>
+<section id="[solving-bilevel]">
+<h3>Solving bilevel problems<a class="headerlink" href="#[solving-bilevel]" title="Link to this heading">¶</a></h3>
+</section>
+<table class="test-report-table docutils align-default">
+<tbody>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="4"><p>Can solve a feasible bilevel problem</p></td>
+<td class="progress-0" colspan="1" rowspan="4"><p>0%</p></td>
+<td class="test-report-table-section"><p>Can solve a bilevel problem with continuous lower level</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can solve a bilevel problem with mixed-integer lower level</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can solve a bilevel problem with no lower level problem</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Throws an exception if some linking variables are continuous</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="24"><p>Can update a problem and re-optimize</p></td>
+<td class="progress-0" colspan="1" rowspan="24"><p>0%</p></td>
+<td class="test-report-table-section"><p>Can update the objective function of the upper level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can update the objective function of the lower level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can update the right-hand side of the upper level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can update the right-hand side of the lower level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can update the left-hand side of the upper level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can update the left-hand side of the lower level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can add a cut to the upper level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can add a cut to the lower level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can add a column to the upper level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can add a column to the lower level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can change the bounds of the upper level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can change the bounds of the lower level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can remove a constraint from the upper level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can remove a constraint from the lower level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can remove a variable from the upper level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can remove a variable from the lower level and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can add and remove the same variable and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can add and remove a different variable and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can add and remove the same constraint and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can add and remove a different constraint and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can add a constraint which depends on a variable that is then removed</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can add a variable which depends on a constraint that is then removed</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can change the objective function then remove a variable which appears in the objective function</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can update the objective function constant</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="1"><p>Can solve a bilevel problem with infeasible upper level</p></td>
+<td class="progress-0" colspan="1" rowspan="1"><p>0%</p></td>
+<td class="test-report-table-section"><p>Can retrieve the solution status</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="1"><p>Can solve a bilevel problem with infeasible lower level</p></td>
+<td class="progress-0" colspan="1" rowspan="1"><p>0%</p></td>
+<td class="test-report-table-section"><p>Can retrieve the solution status</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="1"><p>Can solve an infeasible bilevel problem with feasible upper level and lower level</p></td>
+<td class="progress-0" colspan="1" rowspan="1"><p>0%</p></td>
+<td class="test-report-table-section"><p>Can retrieve the solution status</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 
 

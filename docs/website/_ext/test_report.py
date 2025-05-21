@@ -104,7 +104,7 @@ class TestReportDirective(Directive):
 
         result = []
 
-        xml_path = self.arguments[0]
+        xml_path = "../docs/website/" + self.arguments[0]
         print("Generating test report from:", xml_path)
 
         try:
