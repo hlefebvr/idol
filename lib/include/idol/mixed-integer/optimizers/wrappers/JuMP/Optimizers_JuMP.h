@@ -56,6 +56,8 @@ public:
         void load_module(const std::string &t_module);
 
         ~JuliaSessionManager();
+
+        static void throw_if_julia_error();
     };
 
 protected:
@@ -79,7 +81,6 @@ protected:
     void hook_remove(const Ctr &t_ctr) override;
     void hook_remove(const QCtr &t_ctr) override;
     void hook_remove(const SOSCtr &t_ctr) override;
-    void check_for_errors() const;
 
     template<class T>
     jl_value_t* make_julia_vector(const std::vector<T>& t_vector) {
@@ -102,6 +103,38 @@ protected:
 protected:
     static JuliaSessionManager s_julia_session_manager;
 };
+
+void idol::Optimizers::JuMP::JuliaSessionManager::throw_if_julia_error() {
+
+    if (jl_exception_occurred()) {
+        jl_value_t* exception = jl_exception_occurred();
+
+        // Get the error message
+        jl_function_t* showerror = jl_get_function(jl_base_module, "showerror");
+        jl_function_t* sprint = jl_get_function(jl_base_module, "sprint");
+        jl_value_t* args[] = { (jl_value_t*)showerror, exception };
+        jl_value_t* msg = jl_call(sprint, args, 2);
+
+        const char* msg_str = jl_string_ptr(msg);
+        std::cerr << msg_str << "\n";
+
+        // Get the stacktrace
+        jl_function_t* stacktrace = jl_get_function(jl_base_module, "stacktrace");
+        jl_value_t* bt = jl_call0(stacktrace);
+        jl_function_t* sprint_bt = jl_get_function(jl_base_module, "sprint");
+        jl_value_t* bt_str = jl_call1(sprint_bt, bt);
+
+        // Print them (make sure result is a string)
+        const char* bt_cstr = jl_string_ptr(bt_str);
+
+        std::cerr << "Stack:\n" << bt_cstr << "\n";
+
+        jl_exception_clear();
+
+        throw std::runtime_error("A julia error occurred: " + std::string(msg_str));
+    }
+
+}
 
 #endif
 
