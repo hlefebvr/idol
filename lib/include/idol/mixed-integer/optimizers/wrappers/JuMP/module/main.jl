@@ -193,7 +193,7 @@ module CppJuMP
     export update_objective_sense
 
 end
-#=
+
 module CppColuna
 
     using ..CppJuMP
@@ -259,4 +259,3 @@ module CppColuna
     export optimize_dantzig_wolfe
     export create_block_model
 end
-=#
