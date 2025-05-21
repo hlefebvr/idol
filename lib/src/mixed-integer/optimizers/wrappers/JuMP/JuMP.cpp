@@ -17,7 +17,7 @@ idol::JuMP::JuMP(std::string t_module) : JuMP(std::move(t_module), false) {
 }
 
 idol::Optimizer *idol::JuMP::operator()(const idol::Model &t_model) const {
-
+#ifdef IDOL_USE_JULIA
     auto* result = new Optimizers::JuMP(t_model,
                                         m_module,
                                         m_optimizer_name.value_or(m_module + ".Optimizer"),
@@ -27,6 +27,9 @@ idol::Optimizer *idol::JuMP::operator()(const idol::Model &t_model) const {
     handle_default_parameters(result);
 
     return result;
+#else
+    throw Exception("idol was not linked with Julia.");
+#endif
 }
 
 idol::OptimizerFactory *idol::JuMP::clone() const {

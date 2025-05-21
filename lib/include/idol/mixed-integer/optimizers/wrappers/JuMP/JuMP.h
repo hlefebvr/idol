@@ -27,5 +27,4 @@ public:
     [[nodiscard]] OptimizerFactory *clone() const override;
 };
 
-
 #endif //IDOL_JUMP_H

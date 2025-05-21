@@ -45,13 +45,18 @@ public:
     void debug_print() const;
 
     class JuliaSessionManager {
-        bool m_module_is_loaded = false;
+        bool m_idol_jump_module_is_loaded = false;
+        bool m_idol_coluna_is_loaded = false;
+        Set<std::string> m_loaded_modules;
     public:
         JuliaSessionManager();
+
+        void load_idol_jump_module();
+        void load_idol_coluna_module();
+        void load_module(const std::string &t_module);
+
         ~JuliaSessionManager();
     };
-
-    void load_module(const std::string &t_module);
 
 protected:
     void hook_optimize() override;
@@ -94,9 +99,8 @@ protected:
         return (jl_value_t*) result;
     }
 
-private:
-    static JuliaSessionManager s_julia_terminator;
-    static Set<std::string> s_loaded_modules;
+protected:
+    static JuliaSessionManager s_julia_session_manager;
 };
 
 #endif

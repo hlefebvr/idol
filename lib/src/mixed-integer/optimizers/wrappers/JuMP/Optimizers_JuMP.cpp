@@ -18,8 +18,49 @@ idol::Optimizers::JuMP::JuliaSessionManager::~JuliaSessionManager() {
     jl_atexit_hook(0);
 }
 
-idol::Optimizers::JuMP::JuliaSessionManager idol::Optimizers::JuMP::s_julia_terminator;
-idol::Set<std::string> idol::Optimizers::JuMP::s_loaded_modules;
+void idol::Optimizers::JuMP::JuliaSessionManager::load_idol_jump_module() {
+
+    if (m_idol_jump_module_is_loaded) {
+        return;
+    }
+
+    if (std::filesystem::exists(IDOL_JULIA_BUILD_MODULE_PATH)) {
+        jl_eval_string("include(\"/home/henri/Research/idol/cmake-build-debug/lib/julia/main.jl\")");
+    } else if (std::filesystem::exists(IDOL_JULIA_INSTALL_MODULE_PATH)) {
+        jl_eval_string("include(\"/usr/local/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/main.jl\")");
+    } else {
+        std::cout << "Build path is: " << IDOL_JULIA_BUILD_MODULE_PATH << std::endl;
+        std::cout << "Install path is: " << IDOL_JULIA_INSTALL_MODULE_PATH << std::endl;
+        throw Exception("idol's julia module could not be found.");
+    }
+
+    load_module(".CppJuMP");
+
+    m_idol_jump_module_is_loaded = true;
+}
+
+void idol::Optimizers::JuMP::JuliaSessionManager::load_idol_coluna_module() {
+
+    if (m_idol_coluna_is_loaded) {
+        return;
+    }
+
+    assert(m_idol_jump_module_is_loaded);
+
+    load_module(".CppColuna");
+
+}
+
+void idol::Optimizers::JuMP::JuliaSessionManager::load_module(const std::string &t_module) {
+
+    if (!m_loaded_modules.contains(t_module)) {
+        jl_eval_string((std::string("using ") + t_module).c_str());
+        m_loaded_modules.emplace(t_module);
+    }
+
+}
+
+idol::Optimizers::JuMP::JuliaSessionManager idol::Optimizers::JuMP::s_julia_session_manager;
 
 idol::Optimizers::JuMP::JuMP(const idol::Model &t_parent,
                              std::string t_module,
@@ -168,18 +209,9 @@ void idol::Optimizers::JuMP::set_solution_index(unsigned int t_index) {
 
 void idol::Optimizers::JuMP::hook_build() {
 
-    if (std::filesystem::exists(IDOL_JULIA_BUILD_MODULE_PATH)) {
-        jl_eval_string("include(\"/home/henri/Research/idol/cmake-build-debug/lib/julia/main.jl\")");
-    } else if (std::filesystem::exists(IDOL_JULIA_INSTALL_MODULE_PATH)) {
-        jl_eval_string("include(\"/usr/local/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/main.jl\")");
-    } else {
-        std::cout << "Build path is: " << IDOL_JULIA_BUILD_MODULE_PATH << std::endl;
-        std::cout << "Install path is: " << IDOL_JULIA_INSTALL_MODULE_PATH << std::endl;
-        throw Exception("idol's julia module could not be found.");
-    }
+    s_julia_session_manager.load_idol_jump_module();
+    s_julia_session_manager.load_module(m_module);
 
-    load_module(".CppJuMP");
-    load_module(m_module);
     jl_value_t* optimizer_val = jl_eval_string(m_optimizer.c_str());
     check_for_errors();
 
@@ -374,13 +406,6 @@ uint64_t idol::Optimizers::JuMP::hook_create_julia_model(jl_value_t* t_optimizer
     jl_value_t* id = jl_call1(create_model, t_optimizer);
 
     return jl_unbox_uint64(id);
-}
-
-void idol::Optimizers::JuMP::load_module(const std::string &t_module) {
-    if (!s_loaded_modules.contains(t_module)) {
-        jl_eval_string((std::string("using ") + t_module).c_str());
-        s_loaded_modules.emplace(t_module);
-    }
 }
 
 #endif // IDOL_USE_JULIA

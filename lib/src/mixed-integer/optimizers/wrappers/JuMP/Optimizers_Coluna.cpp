@@ -15,7 +15,7 @@ idol::Optimizers::Coluna::Coluna(const idol::Model &t_parent, const idol::Annota
 
 uint64_t idol::Optimizers::Coluna::hook_create_julia_model(jl_value_t* t_optimizer) {
 
-    load_module(".CppColuna");
+    s_julia_session_manager.load_idol_coluna_module();
 
     jl_function_t* create_block_model = jl_get_function(jl_main_module, "create_block_model");
     jl_value_t* id = jl_call1(create_block_model, t_optimizer);
