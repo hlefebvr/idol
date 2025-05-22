@@ -21,7 +21,7 @@ int main(int t_argc, const char** t_argv) {
     Env env;
 
     // Read instance
-    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("facility.data.txt");
+    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("flp-bab.data.txt");
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
 

@@ -1,8 +1,6 @@
 \page installation Installation guidelines
 \brief Describes how to install and link idol to your project.
 
-## Overview
-
 Welcome to idol's installation guide! This document will help you set up idol on your system.
 
 There are mainly to options to use idol. 

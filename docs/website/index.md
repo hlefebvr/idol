@@ -2,20 +2,19 @@
 
 <div>
     <h1 style="font-size:2.5em;border:none;margin-top:5px;margin-bottom:20px;">A C++ Framework for Optimization</h1>
-
     <h2 style="font-size:1.5em;color:gray;line-height:1.5em;border:none;margin-bottom:20px;">
         Start solving optimization problems now.
     </h2>
-
     <span style="font-size:1.2em;">
-        <a href="tutorials.html" class="my-button" id="get-started" > Get started now </a>
-        &nbsp;
-        <a href="installation.html" class="my-button"> To installation guidelines </a>
+        <a href="examples.html" class="my-button" id="get-started" >Get started now</a>
+    </span>
+    &nbsp;
+    <span>
+        <a href="installation.html" class="my-button">To installation guidelines</a>
     </span>
 </div>
 
-What is idol?
--------------
+\section what_is_idol What is idol?
 
 idol is a C++ framework for **mathematical optimization** and complex decision-making problems.
 It is designed to help you build new algorithms for solving complex optimization problems.
@@ -72,8 +71,7 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
     </div>
 </div>
 
-Getting Started with idol
--------------------------
+\section getting_started_with_idol Getting Started with idol
 
 New to idol? Be sure to have a look at our [tutorials](/tutorials). If you want to get a fast hands-on
 start, have a look at our [local installation guideline](/installation). It is the easiest installation process
@@ -110,8 +108,7 @@ It's really a matter of seconds before you can start using idol.
 > std::cout << "Objective value: " << model.get_best_obj() << std::endl;
 > ```
 
-Is this a MIP Solver?
----------------------
+\section is_this_a_mip_solver Is this a MIP Solver?
 
 idol is not a MIP solver in itself. In fact, it typically needs to call external
 solvers as a subroutine of more complex algorithms like, e.g., branch-and-cut-and-price.
