@@ -216,7 +216,7 @@ class TestReportDirective(Directive):
                         # Third Column: Exception Name
                         entry3 = nodes.entry()
                         entry3 += nodes.paragraph(text=exception)
-                        entry3.attributes["classes"] += ["test-report-table-section"]
+                        entry3.attributes["classes"] += ["test-report-table-exception"]
                         row += entry3
 
                         # Fourth Column: Progress

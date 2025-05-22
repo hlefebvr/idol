@@ -283,8 +283,13 @@ h1, h2, h3, h4, h5, h6 {
         vertical-align: top;
     }
 
-    .test-report-table-section {
+    .test-report-table-section, .test-report-table-exception {
         width: 480px;
+    }
+
+    .test-report-table-exception {
+        background-color: #f8d7da;
+        color: #721c24;
     }
 
     /* Define background colors for each progress range */
