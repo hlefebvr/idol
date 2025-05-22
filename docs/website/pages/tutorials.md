@@ -1,3 +1,5 @@
-# Tutorials
+\page tutorials Tutorials
 
-This page is dedicated to tutorials about idol.
+Here is a link to some tutorials:
+
+\subpage test

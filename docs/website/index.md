@@ -1,5 +1,6 @@
-<div>
+\mainpage Home
 
+<div>
     <h1 style="font-size:2.5em;border:none;margin-top:5px;margin-bottom:20px;">A C++ Framework for Optimization</h1>
 
     <h2 style="font-size:1.5em;color:gray;line-height:1.5em;border:none;margin-bottom:20px;">
@@ -11,7 +12,6 @@
         &nbsp;
         <a href="installation/index.html" class="my-button"> To installation guidelines </a>
     </span>
-
 </div>
 
 What is idol?
@@ -135,3 +135,4 @@ The following MIP solvers are currently supported by idol:
 It also integrates with the following solvers for mixed-integer bilevel optimization:
 
 * [coin-or/MibS](https://github.com/coin-or/MibS) (the mixed-integer bilevel solver).
+
