@@ -455,7 +455,7 @@ void idol::impl::JuliaSessionManager::throw_if_julia_error() {
         auto *typ = (jl_datatype_t*)jl_typeof(exception);
         jl_exception_clear();
 
-        throw Exception("Julia exception occurred: " + std::string(jl_symbol_name(typ->name->name)));
+        throw Exception("[Julia Error] " + std::string(jl_symbol_name(typ->name->name)));
     }
 
 }
