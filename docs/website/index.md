@@ -8,9 +8,9 @@
     </h2>
 
     <span style="font-size:1.2em;">
-        <a href="tutorials/index.html" class="my-button" id="get-started" > Get started now </a>
+        <a href="tutorials.html" class="my-button" id="get-started" > Get started now </a>
         &nbsp;
-        <a href="installation/index.html" class="my-button"> To installation guidelines </a>
+        <a href="installation.html" class="my-button"> To installation guidelines </a>
     </span>
 </div>
 

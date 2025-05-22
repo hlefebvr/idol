@@ -1,4 +1,5 @@
 \page automatic-installation Automatic installation with CMake
+\brief Describes how to install idol automatically with CMake.
 
 Let's assume that you have a basic `CMake` project with a `CMakeLists.txt` that looks like this:
 

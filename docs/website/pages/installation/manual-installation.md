@@ -1,4 +1,5 @@
 \page manual-installation Installation from source
+\brief Describes how to install idol from source and link it to your project.
 
 This section describes how to install idol from source using CMake and Make.
 You may consider this as a more advanced option, but it is still very easy to do.

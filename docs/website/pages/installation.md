@@ -1,4 +1,5 @@
 \page installation Installation guidelines
+\brief Describes how to install and link idol to your project.
 
 ## Overview
 

@@ -1,4 +1,5 @@
 \page cmake-options CMake configuration options
+\brief Describes the CMake configuration options available for idol in order to customize the build process and enable or disable specific features or dependencies.
 
 [TOC]
 
