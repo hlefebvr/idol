@@ -242,7 +242,7 @@ void idol::Optimizers::JuMP::hook_optimize() {
     jl_function_t* optimize = jl_get_function(jl_main_module, "optimize");
     impl::JuliaSessionManager::throw_if_julia_error();
 
-    jl_call1(optimize, jl_box_int64(*m_model_id));
+    jl_call1(optimize, jl_box_uint64(*m_model_id));
     impl::JuliaSessionManager::throw_if_julia_error();
 
 }
@@ -295,7 +295,7 @@ bool idol::Optimizers::JuMP::hook_add(const idol::Var &t_var, bool t_add_column)
     jl_function_t* create_variable = jl_get_function(jl_main_module, "create_variable");
     impl::JuliaSessionManager::throw_if_julia_error();
 
-    jl_value_t** args = new jl_value_t*[6];
+    auto** args = new jl_value_t*[6];
     args[0] = jl_box_uint64(*m_model_id); // model id
     args[1] = jl_box_float64(lb); // lower bound
     args[2] = jl_box_float64(ub); // upper bound
@@ -331,7 +331,7 @@ bool idol::Optimizers::JuMP::hook_add(const idol::Ctr &t_ctr) {
     jl_function_t* create_constraint = jl_get_function(jl_main_module, "create_constraint");
     impl::JuliaSessionManager::throw_if_julia_error();
 
-    jl_value_t** args = new jl_value_t*[6];
+    auto** args = new jl_value_t*[6];
     args[0] = jl_box_uint64(*m_model_id); // model id
     args[1] = make_julia_vector(indices);
     args[2] = make_julia_vector(coefficients);
@@ -409,7 +409,7 @@ void idol::Optimizers::JuMP::debug_print() const {
     jl_function_t* print_model = jl_get_function(jl_main_module, "print_model");
     impl::JuliaSessionManager::throw_if_julia_error();
 
-    jl_call1(print_model, jl_box_int64(*m_model_id));
+    jl_call1(print_model, jl_box_uint64(*m_model_id));
     impl::JuliaSessionManager::throw_if_julia_error();
 }
 
