@@ -443,13 +443,60 @@ void idol::impl::JuliaSessionManager::throw_if_julia_error() {
     if (jl_exception_occurred()) {
         jl_value_t* exception = jl_exception_occurred();
 
-        // Get the error message
-        jl_function_t* showerror = jl_get_function(jl_base_module, "showerror");
-        jl_call1(showerror, exception);
+        fflush(stdout);
+
+        // Save original stdout file descriptor
+        int stdout_fd = dup(fileno(stdout));
+        if (stdout_fd == -1) {
+            throw std::runtime_error("Failed to duplicate stdout fd");
+        }
+
+        // Create temporary file for capturing output
+        FILE* temp_file = tmpfile();
+        if (!temp_file) {
+            close(stdout_fd);
+            throw std::runtime_error("Failed to create temporary file");
+        }
+
+        // Redirect stdout to the temporary file
+        if (dup2(fileno(temp_file), fileno(stdout)) == -1) {
+            fclose(temp_file);
+            close(stdout_fd);
+            throw std::runtime_error("Failed to redirect stdout");
+        }
+
+        try {
+
+            // Get the error message
+            jl_function_t *showerror = jl_get_function(jl_base_module, "showerror");
+            jl_call1(showerror, exception);
+
+        } catch (...) {}
+
+        fflush(stdout);
+
+        // Restore original stdout
+        if (dup2(stdout_fd, fileno(stdout)) == -1) {
+            fclose(temp_file);
+            close(stdout_fd);
+            throw std::runtime_error("Failed to restore stdout");
+        }
+        close(stdout_fd);
+
+        // Read output from the temporary file
+        fseek(temp_file, 0, SEEK_SET);
+
+        std::string output;
+        char buffer[1024];
+        while (fgets(buffer, sizeof(buffer), temp_file)) {
+            output += buffer;
+        }
+
+        fclose(temp_file);
 
         auto *typ = (jl_datatype_t*)jl_typeof(exception);
         jl_exception_clear();
-        throw Exception("Julia exception occurred: " + std::string(jl_symbol_name(typ->name->name)));
+        throw Exception("Julia exception occurred: " + std::string(jl_symbol_name(typ->name->name)) + "\n" + output);
     }
 
 }
