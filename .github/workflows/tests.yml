@@ -179,7 +179,7 @@ jobs:
             WORKSPACE=${{github.workspace}}/build/tests/mixed-integer/wrappers
           fi
           
-          (cd $WORKSPACE && (./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml ) )
+          cd $WORKSPACE && (./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml ) 
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info

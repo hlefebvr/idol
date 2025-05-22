@@ -508,7 +508,6 @@ execute_process(
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 string(REPLACE "\n" "\\\n" IDOL_JULIA_MODULE_BASE64 "${IDOL_JULIA_MODULE_BASE64}")
-message("Julia Module: ${IDOL_JULIA_MODULE_BASE64}")
 configure_file(include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h.in ${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h @ONLY)
 
 target_include_directories(
