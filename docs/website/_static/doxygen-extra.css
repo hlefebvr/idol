@@ -18,6 +18,8 @@
     appearance: none;
 
     transition: 0.2s ease-in-out;
+
+    cursor: pointer;
 }
 
 #cards .card .frame {
@@ -69,7 +71,6 @@ h1, h2, h3, h4, h5, h6, .title {
     padding: 0.3em 1em;
     margin: 5px;
     font-family: inherit;
-    font-size: inherit;
     font-weight: 500;
     line-height: 1.5;
     color: gray;
@@ -81,6 +82,7 @@ h1, h2, h3, h4, h5, h6, .title {
     border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
     appearance: none;
+    font-size: 1.2em;
 }
 
 .my-button:hover {

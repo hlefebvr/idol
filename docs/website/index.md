@@ -5,13 +5,8 @@
     <h2 style="font-size:1.5em;color:gray;line-height:1.5em;border:none;margin-bottom:20px;">
         Start solving optimization problems now.
     </h2>
-    <span style="font-size:1.2em;">
-        <a href="examples.html" class="my-button" id="get-started" >Get started now</a>
-    </span>
-    &nbsp;
-    <span>
-        <a href="installation.html" class="my-button">To installation guidelines</a>
-    </span>
+    <a href="examples.html" class="my-button" id="get-started" >Get started now</a>
+    <a href="installation.html" class="my-button">To installation guidelines</a>
 </div>
 
 \section what_is_idol What is idol?
@@ -31,17 +26,17 @@ model.optimize();
 idol offers a variety of tools to tackle many different kinds of optimization problems:
 
 <div id="cards">
-    <div class="card">
-        <a href="#">
-            Mixed-Integer Optimization
+    <div class="card" onclick="window.location = 'examples_mixed_integer.html';">
+        <a href="examples_mixed_integer.html">
+            Mixed-integer Optimization
         </a>
         <div class="frame">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/IP_polytope_with_LP_relaxation.svg">
         </div>
         Interface with solvers like Gurobi, Mosek, HiGHS and many others or implement your own branch-and-bound algorithm.
     </div>
-    <div class="card">
-        <a href="#">
+    <div class="card" onclick="window.location = 'examples_mixed_integer.html#examples_mixed_integer_branch_and_price';">
+        <a href="examples_mixed_integer.html#examples_mixed_integer_branch_and_price">
             Branch-and-Price
         </a>
         <div class="frame">
@@ -49,8 +44,8 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
         </div>
         Exploit your problem structure using branch-and-price and column generation. Solve large-scale problems with ease.
     </div>
-    <div class="card">
-        <a href="#">
+    <div class="card" onclick="window.location = 'examples_bilevel.html';">
+        <a href="examples_bilevel.html">
             Bilevel Optimization
         </a>
             <div class="frame">
@@ -59,8 +54,8 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
             Tackle optimistic and pessimistic bilevel problems through KKT or strong duality reformulations,
             or use the MibS solver.
     </div>
-    <div class="card">
-        <a href="#">
+    <div class="card" onclick="window.location = 'examples_robust.html';">
+        <a href="examples_robust.html">
             Robust Optimization
         </a>
         <div class="frame">

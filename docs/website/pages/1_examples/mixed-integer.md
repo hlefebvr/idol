@@ -1,7 +1,24 @@
 \page examples_mixed_integer Mixed-integer optimization
 \brief Describes a collection of examples related to mixed-integer optimization.
 
-| Example name                            | Description                               | 
-|-----------------------------------------|-------------------------------------------|
-| \subpage example_mixed_integer_kp_highs | \copybrief example_mixed_integer_kp_highs |
-| \subpage example_mixed_integer_flp_bab  | \copybrief example_mixed_integer_flp_bab  |
+[TOC]
+
+\subsection examples_mixed_integer_modeling Building and solving simple models 
+
+| Example name                               | Description                               | 
+|--------------------------------------------|-------------------------------------------|
+| \subpage example_mixed_integer_kp_highs    | \copybrief example_mixed_integer_kp_highs |
+
+\subsection examples_mixed_integer_mored_advanced_features More advanced features
+
+\subsection examples_mixed_integer_branch_and_bound Branch-and-bound algorithm
+
+| Example name                               | Description                               |
+|--------------------------------------------|-------------------------------------------|
+| \subpage example_mixed_integer_flp_bab     | \copybrief example_mixed_integer_flp_bab  |
+
+\subsection examples_mixed_integer_branch_and_price Branch-and-price algorithm
+
+| Example name                               | Description                               |
+|--------------------------------------------|-------------------------------------------|
+| \subpage example_mixed_integer_gap_bap     | \copybrief example_mixed_integer_gap_bap  |

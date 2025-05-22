@@ -22,7 +22,7 @@ using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
-    const auto instance = Problems::GAP::read_instance("assignment-bap.data.txt");
+    const auto instance = Problems::GAP::read_instance("gap-bap.data.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
