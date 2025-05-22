@@ -6,12 +6,14 @@
     <includes refid="Point_8h" local="yes">idol/general/utils/Point.h</includes>
     <includedby refid="Optimizers__BranchAndCut_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.h</includedby>
     <includedby refid="Optimizers__KKT_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h</includedby>
+    <includedby refid="Optimizers__MinMax__Dualize_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.h</includedby>
     <includedby refid="Optimizers__PessimisticAsOptimistic_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/PessimisticAsOptimistic/Optimizers_PessimisticAsOptimistic.h</includedby>
     <includedby refid="Optimizers__StrongDuality_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/StrongDuality/Optimizers_StrongDuality.h</includedby>
     <includedby refid="Optimizers__BranchAndBound_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/Optimizers_BranchAndBound.h</includedby>
     <includedby refid="Optimizers__DantzigWolfeDecomposition_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h</includedby>
     <includedby refid="Optimizers__PADM_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h</includedby>
     <includedby refid="Optimizers__AffineDecisionRule_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.h</includedby>
+    <includedby refid="Optimizers__Benders_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/benders/Optimizers_Benders.h</includedby>
     <includedby refid="Optimizers__ColumnAndConstraintGeneration_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h</includedby>
     <includedby refid="Optimizers__Deterministic_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h</includedby>
     <includedby refid="Optimizers__ScenarioBasedKAdaptabilityProblemSolver_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h</includedby>
@@ -244,53 +246,53 @@
       </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="8">
+      <node id="9">
         <label>/home/henri/Research/idol/lib/include/idol/solvers.h</label>
         <link refid="solvers_8h_source"/>
       </node>
-      <node id="15">
+      <node id="16">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h</label>
         <link refid="Optimizers__DantzigWolfeDecomposition_8h_source"/>
-        <childnode refid="12" relation="include">
+        <childnode refid="13" relation="include">
         </childnode>
-        <childnode refid="16" relation="include">
+        <childnode refid="17" relation="include">
         </childnode>
       </node>
-      <node id="19">
+      <node id="20">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/PenaltyMethod.h</label>
         <link refid="PenaltyMethod_8h_source"/>
       </node>
-      <node id="12">
+      <node id="13">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h</label>
         <link refid="IntegerMaster_8h_source"/>
       </node>
-      <node id="21">
+      <node id="23">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h</label>
         <link refid="Optimizers__ColumnAndConstraintGeneration_8h_source"/>
       </node>
-      <node id="14">
+      <node id="15">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/watchers/ExportBranchAndBoundTreeToCSV.h</label>
         <link refid="ExportBranchAndBoundTreeToCSV_8h_source"/>
       </node>
-      <node id="20">
+      <node id="21">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.h</label>
         <link refid="Optimizers__AffineDecisionRule_8h_source"/>
       </node>
-      <node id="17">
+      <node id="18">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h</label>
         <link refid="ArtificialCosts_8h_source"/>
       </node>
-      <node id="7">
+      <node id="8">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h</label>
         <link refid="BranchAndBound_8h_source"/>
-        <childnode refid="8" relation="include">
+        <childnode refid="9" relation="include">
         </childnode>
       </node>
       <node id="3">
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h</label>
         <link refid="Optimizers__KKT_8h_source"/>
       </node>
-      <node id="5">
+      <node id="6">
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/StrongDuality/Optimizers_StrongDuality.h</label>
         <link refid="Optimizers__StrongDuality_8h_source"/>
       </node>
@@ -298,16 +300,14 @@
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.h</label>
         <link refid="Optimizers__BranchAndCut_8h_source"/>
       </node>
-      <node id="4">
+      <node id="5">
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/PessimisticAsOptimistic/Optimizers_PessimisticAsOptimistic.h</label>
         <link refid="Optimizers__PessimisticAsOptimistic_8h_source"/>
       </node>
-      <node id="9">
+      <node id="10">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h</label>
         <link refid="BranchAndBoundCallback_8h_source"/>
-        <childnode refid="7" relation="include">
-        </childnode>
-        <childnode refid="10" relation="include">
+        <childnode refid="8" relation="include">
         </childnode>
         <childnode refid="11" relation="include">
         </childnode>
@@ -317,16 +317,22 @@
         </childnode>
         <childnode refid="14" relation="include">
         </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
       </node>
-      <node id="6">
+      <node id="7">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/Optimizers_BranchAndBound.h</label>
         <link refid="Optimizers__BranchAndBound_8h_source"/>
-        <childnode refid="7" relation="include">
+        <childnode refid="8" relation="include">
         </childnode>
-        <childnode refid="9" relation="include">
+        <childnode refid="10" relation="include">
         </childnode>
       </node>
-      <node id="13">
+      <node id="22">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/benders/Optimizers_Benders.h</label>
+        <link refid="Optimizers__Benders_8h_source"/>
+      </node>
+      <node id="14">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h</label>
         <link refid="ReducedCostFixing_8h_source"/>
       </node>
@@ -343,11 +349,11 @@
         </childnode>
         <childnode refid="6" relation="include">
         </childnode>
-        <childnode refid="15" relation="include">
+        <childnode refid="7" relation="include">
         </childnode>
-        <childnode refid="18" relation="include">
+        <childnode refid="16" relation="include">
         </childnode>
-        <childnode refid="20" relation="include">
+        <childnode refid="19" relation="include">
         </childnode>
         <childnode refid="21" relation="include">
         </childnode>
@@ -355,37 +361,45 @@
         </childnode>
         <childnode refid="23" relation="include">
         </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
       </node>
-      <node id="11">
+      <node id="12">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h</label>
         <link refid="KnapsackCover_8h_source"/>
       </node>
-      <node id="22">
+      <node id="24">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h</label>
         <link refid="Optimizers__Deterministic_8h_source"/>
       </node>
-      <node id="10">
+      <node id="11">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h</label>
         <link refid="CallbackAsBranchAndBoundCallback_8h_source"/>
-        <childnode refid="7" relation="include">
+        <childnode refid="8" relation="include">
         </childnode>
-        <childnode refid="9" relation="include">
+        <childnode refid="10" relation="include">
         </childnode>
       </node>
-      <node id="23">
+      <node id="25">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h</label>
         <link refid="Optimizers__ScenarioBasedKAdaptabilityProblemSolver_8h_source"/>
       </node>
-      <node id="18">
+      <node id="19">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h</label>
         <link refid="Optimizers__PADM_8h_source"/>
-        <childnode refid="19" relation="include">
+        <childnode refid="20" relation="include">
         </childnode>
       </node>
-      <node id="16">
+      <node id="4">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.h</label>
+        <link refid="Optimizers__MinMax__Dualize_8h_source"/>
+      </node>
+      <node id="17">
         <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.h</label>
         <link refid="ColumnGeneration_8h_source"/>
-        <childnode refid="17" relation="include">
+        <childnode refid="18" relation="include">
         </childnode>
       </node>
     </invincdepgraph>

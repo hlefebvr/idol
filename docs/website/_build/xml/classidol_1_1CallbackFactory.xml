@@ -6,6 +6,7 @@
     <derivedcompoundref refid="classidol_1_1Heuristics_1_1RENS" prot="public" virt="non-virtual">idol::Heuristics::RENS</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1Heuristics_1_1SimpleRounding" prot="public" virt="non-virtual">idol::Heuristics::SimpleRounding</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1LazyCutCallback" prot="public" virt="non-virtual">idol::LazyCutCallback</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1_1BendersCallback" prot="public" virt="non-virtual">idol::Optimizers::Robust::Benders::BendersCallback</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1Plots_1_1OptimalityGap" prot="public" virt="non-virtual">idol::Plots::OptimalityGap</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1UserCutCallback" prot="public" virt="non-virtual">idol::UserCutCallback</derivedcompoundref>
       <sectiondef kind="public-func">
@@ -33,6 +34,7 @@
         <reimplementedby refid="classidol_1_1Heuristics_1_1RENS_1ad822fcbedf83579e9f18b21c9cb21ffc">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Heuristics_1_1SimpleRounding_1a48e4a473ff5320a91cab1bfcfcb4745b">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Plots_1_1OptimalityGap_1a9e3486a38bb188be49f223ac3cd79cac">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1_1BendersCallback_1a50b2ea77f74079104fffb6fdcdb871cf">operator()</reimplementedby>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -52,6 +54,7 @@
         <reimplementedby refid="classidol_1_1Heuristics_1_1RENS_1a00b8e4ab137ef90cb31572124ad2b729">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Heuristics_1_1SimpleRounding_1a6e8d18c65b9ee325c1d1d8caa64b2714">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Plots_1_1OptimalityGap_1ab32adfb1104ebdaa67548bd9fb130125">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1_1BendersCallback_1a4228e114ae3ee9a43856853e07cfc0c2">clone</reimplementedby>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -78,7 +81,7 @@
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="6">
+      <node id="7">
         <label>idol::Plots::OptimalityGap</label>
         <link refid="classidol_1_1Plots_1_1OptimalityGap"/>
         <childnode refid="1" relation="public-inheritance">
@@ -87,6 +90,12 @@
       <node id="1">
         <label>idol::CallbackFactory</label>
         <link refid="classidol_1_1CallbackFactory"/>
+      </node>
+      <node id="6">
+        <label>idol::Optimizers::Robust::Benders::BendersCallback</label>
+        <link refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1_1BendersCallback"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
       </node>
       <node id="3">
         <label>idol::Heuristics::RENS</label>
@@ -100,7 +109,7 @@
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="7">
+      <node id="8">
         <label>idol::UserCutCallback</label>
         <link refid="classidol_1_1UserCutCallback"/>
         <childnode refid="1" relation="public-inheritance">

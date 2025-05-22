@@ -3,6 +3,7 @@
   <compounddef id="Set_8h" kind="file" language="C++">
     <compoundname>Set.h</compoundname>
     <includes local="no">unordered_set</includes>
+    <includedby refid="Optimizers__JuMP_8h" local="yes">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h</includedby>
     <incdepgraph>
       <node id="2">
         <label>unordered_set</label>
@@ -14,6 +15,24 @@
         </childnode>
       </node>
     </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_Coluna.h</label>
+        <link refid="Optimizers__Coluna_8h_source"/>
+      </node>
+      <node id="1">
+        <label>/home/henri/Research/idol/lib/include/idol/general/utils/Set.h</label>
+        <link refid="Set_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h</label>
+        <link refid="Optimizers__JuMP_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
     <innernamespace refid="namespaceidol">idol</innernamespace>
     <briefdescription>
     </briefdescription>

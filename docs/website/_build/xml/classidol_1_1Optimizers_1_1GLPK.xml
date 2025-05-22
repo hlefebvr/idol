@@ -2,7 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
   <compounddef id="classidol_1_1Optimizers_1_1GLPK" kind="class" language="C++" prot="public">
     <compoundname>idol::Optimizers::GLPK</compoundname>
-    <basecompoundref refid="classidol_1_1OptimizerWithLazyUpdates" prot="public" virt="non-virtual">idol::OptimizerWithLazyUpdates&lt; int, int, int &gt;</basecompoundref>
+    <basecompoundref refid="classidol_1_1OptimizerWithLazyUpdates" prot="public" virt="non-virtual">idol::OptimizerWithLazyUpdates&lt; int, int, int, int &gt;</basecompoundref>
       <sectiondef kind="private-attrib">
       <memberdef kind="variable" id="classidol_1_1Optimizers_1_1GLPK_1aca21e65a62837e19739be2734c7ca4aa" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -22,6 +22,7 @@
         <definition>glp_prob* idol::Optimizers::GLPK::m_model</definition>
         <argsstring></argsstring>
         <name>m_model</name>
+        <initializer>= nullptr</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -171,7 +172,7 @@
         <definition>void idol::Optimizers::GLPK::hook_build</definition>
         <argsstring>() override</argsstring>
         <name>hook_build</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a40b9647adcbc37aa89e3fc6cd9854db5">hook_build</reimplements>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1ad220e172ed738a3fdbae864b4b7aebfb">hook_build</reimplements>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -199,7 +200,7 @@
         <definition>void idol::Optimizers::GLPK::hook_write</definition>
         <argsstring>(const std::string &amp;t_name) override</argsstring>
         <name>hook_write</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1ab8123dad08942d7d95feca7ac2302287">hook_write</reimplements>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a0ed5ef0c109cb918f720d89b48c63b1c">hook_write</reimplements>
         <param>
           <type>const std::string &amp;</type>
           <declname>t_name</declname>
@@ -217,7 +218,7 @@
         <definition>int idol::Optimizers::GLPK::hook_add</definition>
         <argsstring>(const Var &amp;t_var, bool t_add_column) override</argsstring>
         <name>hook_add</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a10edbb4a7e700c6fe0d6fd791b2071b4">hook_add</reimplements>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a98820f611fabb1cade45dfb26a164f3c">hook_add</reimplements>
         <param>
           <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
           <declname>t_var</declname>
@@ -239,7 +240,7 @@
         <definition>int idol::Optimizers::GLPK::hook_add</definition>
         <argsstring>(const Ctr &amp;t_ctr) override</argsstring>
         <name>hook_add</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a5a47e058e2c5dd5165f538eccf2034f4">hook_add</reimplements>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a94048c212f094e69f2fb4218d106f719">hook_add</reimplements>
         <param>
           <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
           <declname>t_ctr</declname>
@@ -257,7 +258,7 @@
         <definition>int idol::Optimizers::GLPK::hook_add</definition>
         <argsstring>(const QCtr &amp;t_ctr) override</argsstring>
         <name>hook_add</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a98ab1a9f02d27dafadf2bac8111aec1d">hook_add</reimplements>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1aefb67b89108f757dc774c93bd7f9e82c">hook_add</reimplements>
         <param>
           <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
           <declname>t_ctr</declname>
@@ -270,26 +271,44 @@
         </inbodydescription>
         <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="47" column="9"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a234a2bc04cc682b9025ddef23f49a0c1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
-        <type>void</type>
-        <definition>void idol::Optimizers::GLPK::hook_update_objective_sense</definition>
-        <argsstring>() override</argsstring>
-        <name>hook_update_objective_sense</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a8b6d15ef45557f777aa58a912ba64192">hook_update_objective_sense</reimplements>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a08275b258488b0e93d35497d58b1faa9" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int idol::Optimizers::GLPK::hook_add</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr) override</argsstring>
+        <name>hook_add</name>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a1d80bcb3a2cddca9b6a20337f7c8e818">hook_add</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="49" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="49" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a234a2bc04cc682b9025ddef23f49a0c1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::GLPK::hook_update_objective_sense</definition>
+        <argsstring>() override</argsstring>
+        <name>hook_update_objective_sense</name>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1af9eba15b8b1cd3429b9edc0034fcfeed">hook_update_objective_sense</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="51" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a8094d944273e17ac9d92f92789b49470" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
         <definition>void idol::Optimizers::GLPK::hook_update_matrix</definition>
         <argsstring>(const Ctr &amp;t_ctr, const Var &amp;t_var, double t_constant) override</argsstring>
         <name>hook_update_matrix</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a9503367e669f6a17fe421965ecd81e23">hook_update_matrix</reimplements>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a4c1dd91ff344e343f7ec685717e75643">hook_update_matrix</reimplements>
         <param>
           <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
           <declname>t_ctr</declname>
@@ -308,32 +327,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="51" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="53" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a5545818b6149b11b4c03e32547350ec6" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
         <definition>void idol::Optimizers::GLPK::hook_update</definition>
         <argsstring>() override</argsstring>
         <name>hook_update</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1aec4be0622ff1fb52b1c3118aabed23a7">hook_update</reimplements>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="53" column="10"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a52a013b5eaff8d0550113247b8bb0ec7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
-        <type>void</type>
-        <definition>void idol::Optimizers::GLPK::hook_update</definition>
-        <argsstring>(const Var &amp;t_var) override</argsstring>
-        <name>hook_update</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1adcc8a03ea17752d297717d6725458e93">hook_update</reimplements>
-        <param>
-          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
-          <declname>t_var</declname>
-        </param>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1aaf92407cd44453f6bf48e91654792653">hook_update</reimplements>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -342,15 +343,15 @@
         </inbodydescription>
         <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="55" column="10"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a7ede4e7195acea6c465afe4f7d3972d3" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a52a013b5eaff8d0550113247b8bb0ec7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
         <definition>void idol::Optimizers::GLPK::hook_update</definition>
-        <argsstring>(const Ctr &amp;t_ctr) override</argsstring>
+        <argsstring>(const Var &amp;t_var) override</argsstring>
         <name>hook_update</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a469a2d9ad5dbc7ebfa4d800e53e6e0b3">hook_update</reimplements>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1ad775a4b3cd429c16a4fe03872e4bab2e">hook_update</reimplements>
         <param>
-          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
-          <declname>t_ctr</declname>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
         </param>
         <briefdescription>
         </briefdescription>
@@ -360,58 +361,12 @@
         </inbodydescription>
         <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="57" column="10"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1ae7a9751168e004b653a0891a31f4be16" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a7ede4e7195acea6c465afe4f7d3972d3" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void idol::Optimizers::GLPK::hook_update_objective</definition>
-        <argsstring>() override</argsstring>
-        <name>hook_update_objective</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1af979ef76f7d71931d71c5652a7361b01">hook_update_objective</reimplements>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="59" column="10"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a3de68b9952212175d451c4d38a002bfa" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
-        <type>void</type>
-        <definition>void idol::Optimizers::GLPK::hook_update_rhs</definition>
-        <argsstring>() override</argsstring>
-        <name>hook_update_rhs</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a15f76bf6affd6e5771c515fd77c920a2">hook_update_rhs</reimplements>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="61" column="10"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1aee8daced67727c2eb764b2c7e7303711" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
-        <type>void</type>
-        <definition>void idol::Optimizers::GLPK::hook_remove</definition>
-        <argsstring>(const Var &amp;t_var) override</argsstring>
-        <name>hook_remove</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1ae6623f7aa702ec644df2edeb6889e3ce">hook_remove</reimplements>
-        <param>
-          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
-          <declname>t_var</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="63" column="10"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a34a0e35392164d40172876d1ee4cc905" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
-        <type>void</type>
-        <definition>void idol::Optimizers::GLPK::hook_remove</definition>
+        <definition>void idol::Optimizers::GLPK::hook_update</definition>
         <argsstring>(const Ctr &amp;t_ctr) override</argsstring>
-        <name>hook_remove</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1ad8713994e3d0891e64ee9a18fb578713">hook_remove</reimplements>
+        <name>hook_update</name>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1aeb836b3d2be7ee5d6e840b00b52e45a3">hook_update</reimplements>
         <param>
           <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
           <declname>t_ctr</declname>
@@ -422,14 +377,78 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="59" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1ae7a9751168e004b653a0891a31f4be16" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::GLPK::hook_update_objective</definition>
+        <argsstring>() override</argsstring>
+        <name>hook_update_objective</name>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1ac7bd33e431907e6007aaf6fc16c8dfc3">hook_update_objective</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="61" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a3de68b9952212175d451c4d38a002bfa" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::GLPK::hook_update_rhs</definition>
+        <argsstring>() override</argsstring>
+        <name>hook_update_rhs</name>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1ae7e7e8e29ad638646b6285d11a834f04">hook_update_rhs</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="63" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1aee8daced67727c2eb764b2c7e7303711" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::GLPK::hook_remove</definition>
+        <argsstring>(const Var &amp;t_var) override</argsstring>
+        <name>hook_remove</name>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a2a43c210dd3f36cf159390ee0c411b7b">hook_remove</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &amp;</type>
+          <declname>t_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
         <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="65" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a34a0e35392164d40172876d1ee4cc905" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::GLPK::hook_remove</definition>
+        <argsstring>(const Ctr &amp;t_ctr) override</argsstring>
+        <name>hook_remove</name>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a4d2ca455a16cc39e49854a83c68ac893">hook_remove</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="67" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1aa109e1c6250d5dd12c6fded8faf07f32" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
         <definition>void idol::Optimizers::GLPK::hook_remove</definition>
         <argsstring>(const QCtr &amp;t_ctr) override</argsstring>
         <name>hook_remove</name>
-        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a1749dec29dfb9c213681e0d3c31400d4">hook_remove</reimplements>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1a6d0f1541cddb1827e6b1b7eca6623e8a">hook_remove</reimplements>
         <param>
           <type>const <ref refid="classidol_1_1QCtr" kindref="compound">QCtr</ref> &amp;</type>
           <declname>t_ctr</declname>
@@ -440,7 +459,25 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="67" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="69" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1ac14f92a005307dd902ae3a1121652237" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void idol::Optimizers::GLPK::hook_remove</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr) override</argsstring>
+        <name>hook_remove</name>
+        <reimplements refid="classidol_1_1OptimizerWithLazyUpdates_1aa761182c2300d53d5b365a88146a1e76">hook_remove</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="71" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a87c2c8ed191d5765febfb057fdffc1a1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -473,7 +510,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="69" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="73" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a424a2cfb46e5436c624154b8a3cb42c3" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -498,7 +535,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="71" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="75" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1aa436a5d51dceaf22d7cb479a9d29b42d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -511,7 +548,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="73" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="77" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1aa119a166c91f024abd58735efe9d9830" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -524,7 +561,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="74" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="78" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1af51ed55124a0178e59aa3f1b598624ff" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -537,7 +574,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="75" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="79" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1af3bd30d8414a7140736b7914eecee9fb" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -550,7 +587,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="76" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="80" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1aeaade1737d050ec049ce4ef9757475f7" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>SolutionStatus</type>
@@ -564,7 +601,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="78" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="82" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1ab537c2436e707a076017e228a541be6d" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>SolutionReason</type>
@@ -578,7 +615,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="79" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="83" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1af4a9c9d694ea8dc3207a5a62fd7220e2" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -592,7 +629,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="80" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="84" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a0f52311a3e35d6f790b84ac5a91c68f1" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -606,7 +643,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="81" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="85" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a903ae8eab93a3107554417ea2ddeb1d9" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -624,7 +661,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="82" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="86" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a18d4476d07a78d82315f60eec49e7cd6" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -642,7 +679,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="83" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="87" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a33828ee342e273526c8b99fc7d641505" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -660,7 +697,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="84" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="88" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a72ab9fa0e6f4a481bda466b68a8b4feb" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -678,7 +715,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="85" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="89" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a48987d4edf871767d810fc3c6bfda8e8" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -696,7 +733,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="86" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="90" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a076055a4571b43b007ffadd98f763340" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -710,7 +747,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="87" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="91" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a148a2c7ea03bf2e3353c72f95a918cb8" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -724,7 +761,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="88" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="92" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a407b4e8684bfc81bc0b3186dc8dbc225" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>unsigned int</type>
@@ -738,7 +775,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="89" column="19"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="93" column="19"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a660e19b0aaa5b7efd7319fc14386d87a" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>unsigned int</type>
@@ -752,7 +789,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="90" column="19"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="94" column="19"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1ae8ad6a3d9b98b623473acd8137e03e4a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -770,11 +807,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="91" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="95" column="10"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a630789e6aa5c4360b9d90f09365f446b" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ac6d2ca51fccd54725b953b00648cd0cc" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::build</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::build</definition>
         <argsstring>() final</argsstring>
         <name>build</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1a8b1cfad93e3eb77c214aa2ff343fcb64">build</reimplements>
@@ -784,11 +821,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="80" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="238" bodyend="261"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="84" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="254" bodyend="282"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1afe001d934289f73d5027667a2ad724d3" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a6e7e481c584e219797f6f192513aba5a" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::write</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::write</definition>
         <argsstring>(const std::string &amp;t_name) final</argsstring>
         <name>write</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1a799b0b5d874b3558c48e4d1cef6013a8">write</reimplements>
@@ -802,11 +839,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="83" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="264" bodyend="267"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="87" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="285" bodyend="288"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ae68fe72079e1eba2ec7d464a1f7148bb" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a6b04405ac487c1efa2c6a3591381c1cc" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::add</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::add</definition>
         <argsstring>(const Var &amp;t_var) final</argsstring>
         <name>add</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1ac5e35eec35d2dea0b90fcabd30485179">add</reimplements>
@@ -820,11 +857,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="86" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="413" bodyend="422"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="90" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="469" bodyend="478"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a39c8f0f97dd71dbb94bd2c98f3bf0de5" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ad6e123a70389780dae4c6537aa62d06c" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::add</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::add</definition>
         <argsstring>(const Ctr &amp;t_ctr) final</argsstring>
         <name>add</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1ae1266859ae2679d14d22bb7449dbbe8b">add</reimplements>
@@ -838,11 +875,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="89" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="388" bodyend="397"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="93" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="431" bodyend="440"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a007f09ad057ab0298292a2c39b97e505" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1aabf41c65984959c6993488354a1732e7" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::add</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::add</definition>
         <argsstring>(const QCtr &amp;t_ctr) final</argsstring>
         <name>add</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1afa9e27c1db69ebe4688fd4ba37ba3121">add</reimplements>
@@ -856,11 +893,29 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="92" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="400" bodyend="410"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="96" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="443" bodyend="453"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a036d978c29e99ab33b64f6dcbdd23969" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a486aca612e6750e004ac078a9dea0d43" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::update</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::add</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr) final</argsstring>
+        <name>add</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a86735e064591fb4f00c3499a4b51de87">add</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="99" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="456" bodyend="466"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ad47d7ea59893bd1180d9355920489458" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+        <type>void</type>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::update</definition>
         <argsstring>() final</argsstring>
         <name>update</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1a96d15823685c0e6d2966ef35b26a9503">update</reimplements>
@@ -870,11 +925,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="98" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="270" bodyend="291"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="105" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="291" bodyend="314"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a1a7cb07f04700f1201e8e5582c77896c" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a2a2f242f99524cbe48ad5fcfac27d450" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::remove</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::remove</definition>
         <argsstring>(const Var &amp;t_var) final</argsstring>
         <name>remove</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1a922c443d01523ee75f16f8cba99ee159">remove</reimplements>
@@ -888,11 +943,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="107" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="425" bodyend="437"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="114" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="481" bodyend="493"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a722b4d13c44fc48634e5455f6b5e8334" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a27e412484d11fcfd55f02dce3edff22b" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::remove</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::remove</definition>
         <argsstring>(const Ctr &amp;t_ctr) final</argsstring>
         <name>remove</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1a5c021fd9b686acbb6d3b8ee38c7eff9c">remove</reimplements>
@@ -906,11 +961,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="110" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="440" bodyend="452"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="117" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="496" bodyend="508"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a85690c369dd198e9aa2ba265a980c18a" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a5ed4534df7f62284ead3aeedf54140ba" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::remove</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::remove</definition>
         <argsstring>(const QCtr &amp;t_ctr) final</argsstring>
         <name>remove</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1a8f30740f64bd1bac13b7de206e781c7b">remove</reimplements>
@@ -924,11 +979,29 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="113" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="455" bodyend="467"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="120" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="511" bodyend="523"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a65635482c5ff4e2fc8f99082241ec0a0" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a0552e16fd81c78e261f7031cfeb20d92" prot="protected" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+        <type>void</type>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::remove</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr) final</argsstring>
+        <name>remove</name>
+        <reimplements refid="classidol_1_1impl_1_1Optimizer_1a29b91a6040358d614f50b592917baf39">remove</reimplements>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="123" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="526" bodyend="538"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ab4e10ddc08c02ed073b31a99205b4e71" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
-        <definition>bool idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::has_lazy</definition>
+        <definition>bool idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::has_lazy</definition>
         <argsstring>(const Var &amp;t_var) const</argsstring>
         <name>has_lazy</name>
         <param>
@@ -941,11 +1014,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="116" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="116" bodyend="119"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="126" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="126" bodyend="129"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a7f2b5aad53e2210b47c353aded11c79f" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ab12c285979af07cae6b14953a91f6cd8" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
-        <definition>bool idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::has_lazy</definition>
+        <definition>bool idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::has_lazy</definition>
         <argsstring>(const Ctr &amp;t_ctr) const</argsstring>
         <name>has_lazy</name>
         <param>
@@ -958,11 +1031,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="121" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="121" bodyend="124"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="131" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="131" bodyend="134"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a7d5b40d340a6fce3ba3e1b73a5a08714" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1aebe51241ed97ed09004f4bb12eeed0e6" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
-        <definition>bool idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::has_lazy</definition>
+        <definition>bool idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::has_lazy</definition>
         <argsstring>(const QCtr &amp;t_qctr) const</argsstring>
         <name>has_lazy</name>
         <param>
@@ -975,11 +1048,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="126" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="126" bodyend="129"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="136" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="136" bodyend="139"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a6c1afcf23f38a2737fdf11061389f67c" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1aeb0e3d76d429aec0bf004d859973c9bc" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>auto &amp;</type>
-        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::lazy</definition>
+        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy</definition>
         <argsstring>(const Var &amp;t_var)</argsstring>
         <name>lazy</name>
         <param>
@@ -992,11 +1065,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="131" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="131" bodyend="131"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="141" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="141" bodyend="141"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1af58b3e24778f08afcc38333c5f8b65ec" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ade5b6d1eaad61574e229d23d8173cbd0" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const auto &amp;</type>
-        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::lazy</definition>
+        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy</definition>
         <argsstring>(const Var &amp;t_var) const</argsstring>
         <name>lazy</name>
         <param>
@@ -1009,11 +1082,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="132" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="132" bodyend="132"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="142" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="142" bodyend="142"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a309d86fe0936e5568fbaab2935df2c34" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a797cc628c79ce7ad7a67f60f4797c693" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>auto &amp;</type>
-        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::lazy</definition>
+        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy</definition>
         <argsstring>(const Ctr &amp;t_ctr)</argsstring>
         <name>lazy</name>
         <param>
@@ -1026,11 +1099,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="134" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="134" bodyend="134"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="144" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="144" bodyend="144"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1af642c3171a81d4c882f3faae64436845" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ad1e64e27c7f957cf3bbdf099f9709c2e" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const auto &amp;</type>
-        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::lazy</definition>
+        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy</definition>
         <argsstring>(const Ctr &amp;t_ctr) const</argsstring>
         <name>lazy</name>
         <param>
@@ -1043,11 +1116,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="135" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="135" bodyend="135"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="145" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="145" bodyend="145"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a0cae683a08a13fa7011ef18d0adfc941" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a052bf480aa3bcc8fd289f266c40a1cd8" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>auto &amp;</type>
-        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::lazy</definition>
+        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy</definition>
         <argsstring>(const QCtr &amp;t_ctr)</argsstring>
         <name>lazy</name>
         <param>
@@ -1060,11 +1133,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="137" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="137" bodyend="137"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="147" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="147" bodyend="147"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ace3668185e49027f7947da1f54e5c810" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a278d66a2ab58636ad41d8c84e73a6276" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const auto &amp;</type>
-        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::lazy</definition>
+        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy</definition>
         <argsstring>(const QCtr &amp;t_ctr) const</argsstring>
         <name>lazy</name>
         <param>
@@ -1077,130 +1150,47 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="138" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="138" bodyend="138"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="148" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="148" bodyend="148"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1aef94789320776a4f70825168435a012f" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a3ae053f87d41f156148fe5111f07ead7" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>auto &amp;</type>
-        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::lazy_vars</definition>
+        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr)</argsstring>
+        <name>lazy</name>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="150" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="150" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1afca8eb67a4a0eab655460bb121808883" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr) const</argsstring>
+        <name>lazy</name>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="151" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="151" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a2ada47a5777892c3f3eaf44ad3c2ed69" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto &amp;</type>
+        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy_vars</definition>
         <argsstring>()</argsstring>
         <name>lazy_vars</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="140" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="140" bodyend="140"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1afc506aff3d625dcdd97c938e81110f18" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
-        <type>const auto &amp;</type>
-        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::lazy_vars</definition>
-        <argsstring>() const</argsstring>
-        <name>lazy_vars</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="141" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="141" bodyend="141"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a6bf8afd70409d3200aa082570eaf4bbe" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type>auto &amp;</type>
-        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::lazy_ctrs</definition>
-        <argsstring>()</argsstring>
-        <name>lazy_ctrs</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="143" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="143" bodyend="143"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a006b54d15a15e1e63fe0c8f8d31f53ac" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
-        <type>const auto &amp;</type>
-        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::lazy_ctrs</definition>
-        <argsstring>() const</argsstring>
-        <name>lazy_ctrs</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="144" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="144" bodyend="144"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a6677b0b0edce78a13a445b4f6c18b730" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type>auto &amp;</type>
-        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::lazy_qctrs</definition>
-        <argsstring>()</argsstring>
-        <name>lazy_qctrs</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="146" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="146" bodyend="146"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ae52fea4d7bf677519cea43e60817201b" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
-        <type>const auto &amp;</type>
-        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::lazy_qctrs</definition>
-        <argsstring>() const</argsstring>
-        <name>lazy_qctrs</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="147" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="147" bodyend="147"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a327b4587f09989707669fbdd9cb6c3a4" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::set_objective_to_be_updated</definition>
-        <argsstring>()</argsstring>
-        <name>set_objective_to_be_updated</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="149" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="149" bodyend="149"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a8b1dc43b7891e877e7a6e7dd34929ce4" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
-        <type>bool</type>
-        <definition>bool idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::is_objective_to_be_updated</definition>
-        <argsstring>() const</argsstring>
-        <name>is_objective_to_be_updated</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="150" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="150" bodyend="150"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a11ca673abf5ddf1144f1739f5bacee06" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::set_objective_as_updated</definition>
-        <argsstring>()</argsstring>
-        <name>set_objective_as_updated</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="151" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="151" bodyend="151"/>
-      </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a704351d769bd3464f55eecef9997b50c" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::set_rhs_to_be_updated</definition>
-        <argsstring>()</argsstring>
-        <name>set_rhs_to_be_updated</name>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -1209,9 +1199,152 @@
         </inbodydescription>
         <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="153" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="153" bodyend="153"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a9f69bb47e6dd5ac615a8a51fe4544b80" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a74c59ceac9228f11fcb343a813ace27e" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy_vars</definition>
+        <argsstring>() const</argsstring>
+        <name>lazy_vars</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="154" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="154" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a999a3ced9f58f993d6b7cd3e31460223" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto &amp;</type>
+        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy_ctrs</definition>
+        <argsstring>()</argsstring>
+        <name>lazy_ctrs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="156" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="156" bodyend="156"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a6eeaed40fdb8b6789efa47e915a23494" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy_ctrs</definition>
+        <argsstring>() const</argsstring>
+        <name>lazy_ctrs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="157" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="157" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a15ffd984d17711d5216b116187781b4a" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto &amp;</type>
+        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy_qctrs</definition>
+        <argsstring>()</argsstring>
+        <name>lazy_qctrs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="159" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="159" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a1b026978aa8c710af68afc6bccdaa1e1" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy_qctrs</definition>
+        <argsstring>() const</argsstring>
+        <name>lazy_qctrs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="160" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="160" bodyend="160"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1abcf83021a63f02773494fb286c0d1d05" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto &amp;</type>
+        <definition>auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy_sosctrs</definition>
+        <argsstring>()</argsstring>
+        <name>lazy_sosctrs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="162" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="162" bodyend="162"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ad9635c1c97ad864a7637250364c7a8c6" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const auto &amp;</type>
+        <definition>const auto&amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::lazy_sosctrs</definition>
+        <argsstring>() const</argsstring>
+        <name>lazy_sosctrs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="163" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="163" bodyend="163"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a32185d2aacf63a72c9efdc1e7471081f" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::set_objective_to_be_updated</definition>
+        <argsstring>()</argsstring>
+        <name>set_objective_to_be_updated</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="165" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="165" bodyend="165"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a5d97af670cd90cbf79bd54a0f2087232" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
-        <definition>bool idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::is_rhs_to_be_updated</definition>
+        <definition>bool idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::is_objective_to_be_updated</definition>
+        <argsstring>() const</argsstring>
+        <name>is_objective_to_be_updated</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="166" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="166" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a412037595f2455772188b4f53b3b599f" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::set_objective_as_updated</definition>
+        <argsstring>()</argsstring>
+        <name>set_objective_as_updated</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="167" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="167" bodyend="167"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1aec626141fa369dbe95840f168e1d2fca" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::set_rhs_to_be_updated</definition>
+        <argsstring>()</argsstring>
+        <name>set_rhs_to_be_updated</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="169" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="169" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ab1e00bef62bdeda91857f07ffb5c51a7" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::is_rhs_to_be_updated</definition>
         <argsstring>() const</argsstring>
         <name>is_rhs_to_be_updated</name>
         <briefdescription>
@@ -1220,11 +1353,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="154" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="154" bodyend="154"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="170" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="170" bodyend="170"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1acd9d0bbe49db1c4545a2d69d5b2b8109" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a78446a40d25acd488ade53a8090e868d" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::set_rhs_as_updated</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::set_rhs_as_updated</definition>
         <argsstring>()</argsstring>
         <name>set_rhs_as_updated</name>
         <briefdescription>
@@ -1233,11 +1366,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="155" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="155" bodyend="155"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="171" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="171" bodyend="171"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a6f9883562fa7ef834bcdfb661141f490" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a9a0b7ab294656fc1b5885c4cd0195ec4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::update_obj_sense</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::update_obj_sense</definition>
         <argsstring>() override</argsstring>
         <name>update_obj_sense</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1a25a53345053496a7fadd9648df49d254">update_obj_sense</reimplements>
@@ -1247,11 +1380,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="157" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="222" bodyend="224"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="173" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="238" bodyend="240"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1aecbceed05a1697acb2de727182e55656" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a379439d595fe61e4eafa50c04c6745a8" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::update_obj</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::update_obj</definition>
         <argsstring>() override</argsstring>
         <name>update_obj</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1ab0f43a11a4c92dbd420df4083f074fd5">update_obj</reimplements>
@@ -1261,11 +1394,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="158" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="217" bodyend="219"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="174" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="233" bodyend="235"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ac5083ad9bce94d8d0fc398e65e05ecb7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a9946479443d34b183d31c8a92de0e80a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::update_rhs</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::update_rhs</definition>
         <argsstring>() override</argsstring>
         <name>update_rhs</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1a1cbf5571c1dec27a41a6e9f0e19db124">update_rhs</reimplements>
@@ -1275,11 +1408,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="159" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="228" bodyend="230"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="175" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="244" bodyend="246"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ae4facf4fab6fdfa8f7723d0e4f0c4d76" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1aadada370164034f9cb7e303ae0bceec7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::update_obj_constant</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::update_obj_constant</definition>
         <argsstring>() override</argsstring>
         <name>update_obj_constant</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1a649970fd70f822ff3565118b23503a18">update_obj_constant</reimplements>
@@ -1289,11 +1422,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="160" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="212" bodyend="214"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="176" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="228" bodyend="230"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a9e779d8f2bd1c01ff5bbaa42a03c757f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ac784b860e68c0fdc00479fcc58e493ec" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::update_mat_coeff</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::update_mat_coeff</definition>
         <argsstring>(const Ctr &amp;t_ctr, const Var &amp;t_var) override</argsstring>
         <name>update_mat_coeff</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1abbbeaecd791d91037912dbea1cc3abe4">update_mat_coeff</reimplements>
@@ -1311,11 +1444,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="161" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="207" bodyend="209"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="177" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="223" bodyend="225"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1afb8ad7be7c76b615c208dd3350b64c99" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a04d104e84c5e3abd5f23334c146b8219" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::update_ctr_type</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::update_ctr_type</definition>
         <argsstring>(const Ctr &amp;t_ctr) override</argsstring>
         <name>update_ctr_type</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1a052484a0897b8994517805c284b12cb6">update_ctr_type</reimplements>
@@ -1329,11 +1462,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="162" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="202" bodyend="204"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="178" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="218" bodyend="220"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a8b1ec93b5e4882c819d46b41fd557b54" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1adf46c5ada88ac610b74c9b0c42475a6d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::update_ctr_rhs</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::update_ctr_rhs</definition>
         <argsstring>(const Ctr &amp;t_ctr) override</argsstring>
         <name>update_ctr_rhs</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1abbdd8996efcaf9e25066f38ceb6d1a94">update_ctr_rhs</reimplements>
@@ -1347,11 +1480,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="163" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="197" bodyend="199"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="179" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="213" bodyend="215"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1aee58ad2e9eb81b9bed6257316e1d133c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a577b41037b1b6a0e6d7388c8593af95d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::update_var_type</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::update_var_type</definition>
         <argsstring>(const Var &amp;t_var) override</argsstring>
         <name>update_var_type</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1a06c4c149d5a16be2a7bf436e3c94cdc2">update_var_type</reimplements>
@@ -1365,11 +1498,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="164" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="192" bodyend="194"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="180" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="208" bodyend="210"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1aaabad07bfd172794f320fc25340ca8dd" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a2a25e54be0be97c2de3072b7c89f1045" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::update_var_lb</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::update_var_lb</definition>
         <argsstring>(const Var &amp;t_var) override</argsstring>
         <name>update_var_lb</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1aef3dabf3018202b60d9ae6254c481700">update_var_lb</reimplements>
@@ -1383,11 +1516,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="165" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="187" bodyend="189"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="181" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="203" bodyend="205"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1ae8c96a36adda78e467de03f50017b1c3" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1af80a9f62a386edae5113ed565ef4507a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::update_var_ub</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::update_var_ub</definition>
         <argsstring>(const Var &amp;t_var) override</argsstring>
         <name>update_var_ub</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1aa6384ec94a6006df19907e140b8e3f67">update_var_ub</reimplements>
@@ -1401,11 +1534,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="166" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="177" bodyend="179"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="182" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="193" bodyend="195"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1aa2d573d4de095236ecf3bf23ad994386" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1aae63066627a541a213f78ec46e539a42" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::update_var_obj</definition>
+        <definition>void idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::update_var_obj</definition>
         <argsstring>(const Var &amp;t_var) override</argsstring>
         <name>update_var_obj</name>
         <reimplements refid="classidol_1_1impl_1_1Optimizer_1ae226b270b4aafede630156e30f41fea7">update_var_obj</reimplements>
@@ -1419,7 +1552,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="167" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="182" bodyend="184"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="183" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="198" bodyend="200"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a23401d6f4b9166f7d941a696d4cef2e9" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1432,7 +1565,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="66" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="72" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a59c7ad8b4b2f9700649bbf008a7876ed" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1442,6 +1575,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a6011ffe600f70985dbb808dda523ac73">hook_before_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a4956a2c6102aebf3a9484d0ff7f96e46">hook_before_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a4a855c27efcffefc8f78fd16dc9fe7ad">hook_before_optimize</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1af06758e58c0c572bfa327c62b18913ab">hook_before_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a4850843cd6b61588860a559650aac54d">hook_before_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1aab8be367942c63dc38b8d9b1a8d62fac">hook_before_optimize</reimplementedby>
         <briefdescription>
@@ -1450,7 +1584,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="68" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="68" bodyend="68"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="74" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="74" bodyend="74"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1aef37b30f99f5a244584039750d0ba140" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1465,7 +1599,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="72" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="72" bodyend="72"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="78" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="78" bodyend="78"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="protected-static-func">
@@ -1488,7 +1622,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="93" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="97" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1ad96fadf3d1638642705c70681454ba72" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref></type>
@@ -1509,7 +1643,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="94" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="98" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1aadbda1977ea2ca5d5aff00e923b43e31" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Model" kindref="compound">Model</ref></type>
@@ -1530,7 +1664,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="95" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="99" column="18"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -1553,7 +1687,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="97" column="14"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="101" column="14"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1afae0cbe96d1e7b74c39e4900cc07ef0b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>std::string</type>
@@ -1567,7 +1701,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="99" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" bodystart="99" bodyend="99"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="103" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" bodystart="103" bodyend="103"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a264054fd0e97f9c83eef48e430cdc8b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1585,7 +1719,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="101" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="105" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1ad3e1a184a67679e3dd031661b693f2b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1603,7 +1737,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="103" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="107" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a8e12c71d452ae482bfafb4e5939b5d0f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1621,7 +1755,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="105" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="109" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1a68257d803dcde8606946909894eab118" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1639,7 +1773,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="107" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="111" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1GLPK_1af2ba152cf0597c5a727fd8679ede40c5" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1657,11 +1791,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="109" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="113" column="10"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a4834d37d53abf84d3d9fc5e82021fc17" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a47127b18cabcb123dace383f82c8f1bd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>int &amp;</type>
-        <definition>int &amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::operator[]</definition>
+        <definition>int &amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::operator[]</definition>
         <argsstring>(const Var &amp;t_var)</argsstring>
         <name>operator[]</name>
         <param>
@@ -1674,11 +1808,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="169" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="169" bodyend="169"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="185" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="185" bodyend="185"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a5c42f414626cecc01a239cd33e821c67" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a70560c744e8d937d4a39a1e994335a17" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const int &amp;</type>
-        <definition>const int &amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::operator[]</definition>
+        <definition>const int &amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::operator[]</definition>
         <argsstring>(const Var &amp;t_var) const</argsstring>
         <name>operator[]</name>
         <param>
@@ -1691,11 +1825,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="170" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="170" bodyend="170"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="186" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="186" bodyend="186"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a5ae6a5791fa6aedef8387dc3cf50ee65" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a8a25b8db3bbbed680bb980ed27289a52" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>int &amp;</type>
-        <definition>int &amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::operator[]</definition>
+        <definition>int &amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::operator[]</definition>
         <argsstring>(const Ctr &amp;t_ctr)</argsstring>
         <name>operator[]</name>
         <param>
@@ -1708,11 +1842,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="172" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="172" bodyend="172"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="188" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="188" bodyend="188"/>
       </memberdef>
-      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1adddb50b20a799ab42a66b5aa033fd731" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1OptimizerWithLazyUpdates_1a3952313864fe61735838745145e3030e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const int &amp;</type>
-        <definition>const int &amp; idol::OptimizerWithLazyUpdates&lt; int , int , int  &gt;::operator[]</definition>
+        <definition>const int &amp; idol::OptimizerWithLazyUpdates&lt; int , int , int , int  &gt;::operator[]</definition>
         <argsstring>(const Ctr &amp;t_ctr) const</argsstring>
         <name>operator[]</name>
         <param>
@@ -1725,7 +1859,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="173" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="173" bodyend="173"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" line="189" column="20" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/OptimizerWithLazyUpdates.h" bodystart="189" bodyend="189"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a6e2887215b92e97a30a74f4aa53dd2f0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>const ::<ref refid="classidol_1_1Model" kindref="compound">idol::Model</ref> &amp;</type>
@@ -1738,7 +1872,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="104" column="34" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="104" bodyend="104"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="110" column="34" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="110" bodyend="110"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1acc87454b609268dc1ecf65a1ced765d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -1751,7 +1885,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="132" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="132" bodyend="132"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="138" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="138" bodyend="138"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a20be2e664e6a84bf404b39d768ff03e7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -1764,7 +1898,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="136" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="136" bodyend="136"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="142" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="142" bodyend="142"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a97f61564e390973a18874b8de4bd7cb5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>unsigned int</type>
@@ -1777,7 +1911,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="140" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="140" bodyend="140"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="146" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="146" bodyend="146"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1acfa8aa084e883e7a191e3da770d5daa4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1795,7 +1929,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="142" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="142" bodyend="142"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="148" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="148" bodyend="148"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a513ef279419e11630421378aa83ca8a3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -1808,7 +1942,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="144" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="150" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1af2cec35235bbf3a746d604fd998ad636" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -1821,7 +1955,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="148" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="154" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab246bb155504651d93c91b2dc08da414" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -1834,7 +1968,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="152" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="152" bodyend="152"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="158" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="158" bodyend="158"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a566eb822d1a0707d50359b3e50fccbdf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1852,7 +1986,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="154" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="154" bodyend="154"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="160" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="160" bodyend="160"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a79a3832a54c597121788782f1d49ba8c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -1865,7 +1999,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="156" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="156" bodyend="156"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="162" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="162" bodyend="162"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1af67921d0ce90e1d5412dff5e068bbc71" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1883,7 +2017,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="158" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="158" bodyend="158"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="164" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="164" bodyend="164"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a5b48ff7b9c91cdfedfaa9e18afb3bde5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -1896,7 +2030,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="160" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="160" bodyend="160"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="166" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="166" bodyend="166"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ad25478639b1ed1a258a7418da7ff6964" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1914,7 +2048,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="162" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="162" bodyend="162"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="168" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="168" bodyend="168"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a502d527b86eaa0a721e5b5bcc7dd482c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -1927,7 +2061,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="164" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="164" bodyend="164"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="170" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="170" bodyend="170"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ababdcbe906c67c4cae465962608ca93a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1945,7 +2079,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="166" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="166" bodyend="166"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="172" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="172" bodyend="172"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a317360331767cc9d4edc94cce889e5f1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -1958,7 +2092,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="168" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="168" bodyend="168"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="174" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="174" bodyend="174"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab91250466dd2bed6c8982a0d37189da8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1976,7 +2110,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="170" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="170" bodyend="170"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="176" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="176" bodyend="176"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ade78f725110a641cd46ac675769f3765" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>unsigned int</type>
@@ -1989,7 +2123,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="172" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="172" bodyend="172"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="178" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="178" bodyend="178"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a58af4d0f6c4fabd5f571b64138610779" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -2006,7 +2140,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="174" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="174" bodyend="174"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="180" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="180" bodyend="180"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ae453b0716b3c142104692873a0c1fe89" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -2019,7 +2153,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="176" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="176" bodyend="176"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="182" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="182" bodyend="182"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a28959c3d0a53207028a4b6238604eb56" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -2032,7 +2166,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="180" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="180" bodyend="180"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="186" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="186" bodyend="186"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a8e0f2f3d560b3a54a9b06645b6668215" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -2050,7 +2184,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="182" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="182" bodyend="182"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="188" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="188" bodyend="188"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a0cafae2af239bb5b7701dc8f2bc72acd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const <ref refid="classidol_1_1Timer" kindref="compound">Timer</ref> &amp;</type>
@@ -2063,7 +2197,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="184" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="184" bodyend="184"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="190" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="190" bodyend="190"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a1b6a136e9db30ed85a55f32c58663ed4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -2076,7 +2210,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="186" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="192" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a237aecc646c59f56fe7e0d406912f81a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -2089,7 +2223,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="188" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="188" bodyend="188"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="194" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="194" bodyend="194"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a475c1533824aef4fb8f427bc6a45546b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -2103,7 +2237,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="190" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="196" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ad91c5c2c1bdac21e7d1db49afc37107c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -2121,7 +2255,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="192" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="192" bodyend="198"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="198" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="198" bodyend="204"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a9aa8fef64de4f65b5462442e506594d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -2139,7 +2273,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="200" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="200" bodyend="206"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="206" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="206" bodyend="212"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a0455b8664cabb2579d93607446004afe" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -2157,7 +2291,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="208" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="208" bodyend="210"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="214" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="214" bodyend="216"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-static-func">
@@ -2180,7 +2314,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="111" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="115" column="18"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -2192,19 +2326,13 @@
         <label>idol::impl::Optimizer</label>
         <link refid="classidol_1_1impl_1_1Optimizer"/>
       </node>
-      <node id="5">
-        <label>idol::OptimizerWithLazyUpdates&lt; VarImplT, CtrImplT, QCtrImplT &gt;</label>
-        <link refid="classidol_1_1OptimizerWithLazyUpdates"/>
-        <childnode refid="3" relation="public-inheritance">
-        </childnode>
-      </node>
       <node id="2">
-        <label>idol::OptimizerWithLazyUpdates&lt; int, int, int &gt;</label>
+        <label>idol::OptimizerWithLazyUpdates&lt; int, int, int, int &gt;</label>
         <link refid="classidol_1_1OptimizerWithLazyUpdates"/>
         <childnode refid="3" relation="public-inheritance">
         </childnode>
         <childnode refid="5" relation="template-instance">
-          <edgelabel>&lt; int, int, int &gt;</edgelabel>
+          <edgelabel>&lt; int, int, int, int &gt;</edgelabel>
         </childnode>
       </node>
       <node id="1">
@@ -2217,6 +2345,12 @@
         <label>idol::Optimizer</label>
         <link refid="classidol_1_1Optimizer"/>
         <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>idol::OptimizerWithLazyUpdates&lt; VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT &gt;</label>
+        <link refid="classidol_1_1OptimizerWithLazyUpdates"/>
+        <childnode refid="3" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
@@ -2225,19 +2359,13 @@
         <label>idol::impl::Optimizer</label>
         <link refid="classidol_1_1impl_1_1Optimizer"/>
       </node>
-      <node id="5">
-        <label>idol::OptimizerWithLazyUpdates&lt; VarImplT, CtrImplT, QCtrImplT &gt;</label>
-        <link refid="classidol_1_1OptimizerWithLazyUpdates"/>
-        <childnode refid="3" relation="public-inheritance">
-        </childnode>
-      </node>
       <node id="2">
-        <label>idol::OptimizerWithLazyUpdates&lt; int, int, int &gt;</label>
+        <label>idol::OptimizerWithLazyUpdates&lt; int, int, int, int &gt;</label>
         <link refid="classidol_1_1OptimizerWithLazyUpdates"/>
         <childnode refid="3" relation="public-inheritance">
         </childnode>
         <childnode refid="5" relation="template-instance">
-          <edgelabel>&lt; int, int, int &gt;</edgelabel>
+          <edgelabel>&lt; int, int, int, int &gt;</edgelabel>
         </childnode>
       </node>
       <node id="1">
@@ -2252,15 +2380,22 @@
         <childnode refid="4" relation="public-inheritance">
         </childnode>
       </node>
+      <node id="5">
+        <label>idol::OptimizerWithLazyUpdates&lt; VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT &gt;</label>
+        <link refid="classidol_1_1OptimizerWithLazyUpdates"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
     </collaborationgraph>
-    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="19" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" bodystart="19" bodyend="112"/>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" line="19" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h" bodystart="19" bodyend="116"/>
     <listofallmembers>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ae68fe72079e1eba2ec7d464a1f7148bb" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>add</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a39c8f0f97dd71dbb94bd2c98f3bf0de5" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>add</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a007f09ad057ab0298292a2c39b97e505" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>add</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a6b04405ac487c1efa2c6a3591381c1cc" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>add</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ad6e123a70389780dae4c6537aa62d06c" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>add</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1aabf41c65984959c6993488354a1732e7" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>add</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a486aca612e6750e004ac078a9dea0d43" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>add</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1ad91c5c2c1bdac21e7d1db49afc37107c" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>as</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a9aa8fef64de4f65b5462442e506594d2" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>as</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a630789e6aa5c4360b9d90f09365f446b" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>build</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ac6d2ca51fccd54725b953b00648cd0cc" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>build</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1aa119a166c91f024abd58735efe9d9830" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>compute_farkas_certificate</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1af51ed55124a0178e59aa3f1b598624ff" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>compute_unbounded_ray</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a148a2c7ea03bf2e3353c72f95a918cb8" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>get_absolute_gap</name></member>
@@ -2291,12 +2426,13 @@
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a33828ee342e273526c8b99fc7d641505" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>get_var_ray</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a18d4476d07a78d82315f60eec49e7cd6" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>get_var_reduced_cost</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1ae8aec84a1ecabcaa650f2e6948408de5" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>GLPK</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a65635482c5ff4e2fc8f99082241ec0a0" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>has_lazy</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a7f2b5aad53e2210b47c353aded11c79f" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>has_lazy</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a7d5b40d340a6fce3ba3e1b73a5a08714" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>has_lazy</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ab4e10ddc08c02ed073b31a99205b4e71" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>has_lazy</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ab12c285979af07cae6b14953a91f6cd8" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>has_lazy</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1aebe51241ed97ed09004f4bb12eeed0e6" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>has_lazy</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1af0edd4d24f67ca1a6472b92847357e7c" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_add</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1aed5e2909e5c91f5494e9be7120a5cda6" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_add</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1afbc5854b26fcc7359b087bf47fe0c7e6" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_add</name></member>
+      <member refid="classidol_1_1Optimizers_1_1GLPK_1a08275b258488b0e93d35497d58b1faa9" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_add</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1aef37b30f99f5a244584039750d0ba140" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_after_optimize</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a59c7ad8b4b2f9700649bbf008a7876ed" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_before_optimize</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a0984882a35f2e94c46187a8ec86f4f23" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_build</name></member>
@@ -2304,6 +2440,7 @@
       <member refid="classidol_1_1Optimizers_1_1GLPK_1aee8daced67727c2eb764b2c7e7303711" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_remove</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a34a0e35392164d40172876d1ee4cc905" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_remove</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1aa109e1c6250d5dd12c6fded8faf07f32" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_remove</name></member>
+      <member refid="classidol_1_1Optimizers_1_1GLPK_1ac14f92a005307dd902ae3a1121652237" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_remove</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a5545818b6149b11b4c03e32547350ec6" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_update</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a52a013b5eaff8d0550113247b8bb0ec7" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_update</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a7ede4e7195acea6c465afe4f7d3972d3" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_update</name></member>
@@ -2313,21 +2450,25 @@
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a3de68b9952212175d451c4d38a002bfa" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_update_rhs</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a471d623050020b088eeee69455910968" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>hook_write</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a0455b8664cabb2579d93607446004afe" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>is</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a8b1dc43b7891e877e7a6e7dd34929ce4" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>is_objective_to_be_updated</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a9f69bb47e6dd5ac615a8a51fe4544b80" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>is_rhs_to_be_updated</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a5d97af670cd90cbf79bd54a0f2087232" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>is_objective_to_be_updated</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ab1e00bef62bdeda91857f07ffb5c51a7" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>is_rhs_to_be_updated</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a237aecc646c59f56fe7e0d406912f81a" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>is_terminated</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a6c1afcf23f38a2737fdf11061389f67c" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1af58b3e24778f08afcc38333c5f8b65ec" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a309d86fe0936e5568fbaab2935df2c34" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1af642c3171a81d4c882f3faae64436845" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a0cae683a08a13fa7011ef18d0adfc941" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ace3668185e49027f7947da1f54e5c810" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a6bf8afd70409d3200aa082570eaf4bbe" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_ctrs</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a006b54d15a15e1e63fe0c8f8d31f53ac" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_ctrs</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a6677b0b0edce78a13a445b4f6c18b730" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_qctrs</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ae52fea4d7bf677519cea43e60817201b" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_qctrs</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1aef94789320776a4f70825168435a012f" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_vars</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1afc506aff3d625dcdd97c938e81110f18" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_vars</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1aeb0e3d76d429aec0bf004d859973c9bc" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ade5b6d1eaad61574e229d23d8173cbd0" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a797cc628c79ce7ad7a67f60f4797c693" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ad1e64e27c7f957cf3bbdf099f9709c2e" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a052bf480aa3bcc8fd289f266c40a1cd8" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a278d66a2ab58636ad41d8c84e73a6276" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a3ae053f87d41f156148fe5111f07ead7" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1afca8eb67a4a0eab655460bb121808883" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a999a3ced9f58f993d6b7cd3e31460223" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_ctrs</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a6eeaed40fdb8b6789efa47e915a23494" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_ctrs</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a15ffd984d17711d5216b116187781b4a" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_qctrs</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a1b026978aa8c710af68afc6bccdaa1e1" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_qctrs</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1abcf83021a63f02773494fb286c0d1d05" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_sosctrs</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ad9635c1c97ad864a7637250364c7a8c6" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_sosctrs</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a2ada47a5777892c3f3eaf44ad3c2ed69" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_vars</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a74c59ceac9228f11fcb343a813ace27e" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>lazy_vars</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1aca21e65a62837e19739be2734c7ca4aa" prot="private" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>m_continuous_relaxation</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a36713daa09c8a0ec880528c279046074" prot="private" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>m_deleted_constraints</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a34a4f9cc0e55f92b6b1db08198e73cf3" prot="private" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>m_deleted_variables</name></member>
@@ -2341,26 +2482,27 @@
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a87ef2c7bf40028333a651bbc9b2d4246" prot="private" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>m_solved_as_mip</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a7473aca265cd63ee1952440183104135" prot="private" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>m_unbounded_ray</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1afae0cbe96d1e7b74c39e4900cc07ef0b" prot="public" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>name</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a4834d37d53abf84d3d9fc5e82021fc17" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>operator[]</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a5c42f414626cecc01a239cd33e821c67" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>operator[]</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a5ae6a5791fa6aedef8387dc3cf50ee65" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>operator[]</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1adddb50b20a799ab42a66b5aa033fd731" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>operator[]</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a47127b18cabcb123dace383f82c8f1bd" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>operator[]</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a70560c744e8d937d4a39a1e994335a17" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>operator[]</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a8a25b8db3bbbed680bb980ed27289a52" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>operator[]</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a3952313864fe61735838745145e3030e" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>operator[]</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a23401d6f4b9166f7d941a696d4cef2e9" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>optimize</name></member>
       <member refid="classidol_1_1Optimizer_1a8793c25aaba434c6b7e9a85bcca48e16" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>Optimizer</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a7bf7b4a5701c3ecb8dd24900b83511fc" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>OptimizerWithLazyUpdates</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a43239c0704275f50477c454a1902c549" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>OptimizerWithLazyUpdates</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a6e2887215b92e97a30a74f4aa53dd2f0" prot="public" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>parent</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a0489655131206755aa3a31455ee4aba6" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>read_from_file</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a9586f94c16ffe3b53e4e481abb9e9443" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>read_from_glpk</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1ad96fadf3d1638642705c70681454ba72" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>read_from_lp_file</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1aadbda1977ea2ca5d5aff00e923b43e31" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>read_from_mps_file</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a1a7cb07f04700f1201e8e5582c77896c" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>remove</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a722b4d13c44fc48634e5455f6b5e8334" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>remove</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a85690c369dd198e9aa2ba265a980c18a" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>remove</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a2a2f242f99524cbe48ad5fcfac27d450" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>remove</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a27e412484d11fcfd55f02dce3edff22b" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>remove</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a5ed4534df7f62284ead3aeedf54140ba" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>remove</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a0552e16fd81c78e261f7031cfeb20d92" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>remove</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1af3bd30d8414a7140736b7914eecee9fb" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>save_milp_solution_status</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1aa436a5d51dceaf22d7cb479a9d29b42d" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>save_simplex_solution_status</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a424a2cfb46e5436c624154b8a3cb42c3" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>set_ctr_attr</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a11ca673abf5ddf1144f1739f5bacee06" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>set_objective_as_updated</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a327b4587f09989707669fbdd9cb6c3a4" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>set_objective_to_be_updated</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a412037595f2455772188b4f53b3b599f" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>set_objective_as_updated</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a32185d2aacf63a72c9efdc1e7471081f" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>set_objective_to_be_updated</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a8e12c71d452ae482bfafb4e5939b5d0f" prot="public" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>set_param_best_bound_stop</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1ad3e1a184a67679e3dd031661b693f2b0" prot="public" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>set_param_best_obj_stop</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a8e0f2f3d560b3a54a9b06645b6668215" prot="public" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>set_param_infeasible_or_unbounded_info</name></member>
@@ -2369,8 +2511,8 @@
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a68257d803dcde8606946909894eab118" prot="public" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>set_param_presolve</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1acfa8aa084e883e7a191e3da770d5daa4" prot="public" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>set_param_threads</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a264054fd0e97f9c83eef48e430cdc8b3" prot="public" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>set_param_time_limit</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1acd9d0bbe49db1c4545a2d69d5b2b8109" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>set_rhs_as_updated</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a704351d769bd3464f55eecef9997b50c" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>set_rhs_to_be_updated</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a78446a40d25acd488ade53a8090e868d" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>set_rhs_as_updated</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1aec626141fa369dbe95840f168e1d2fca" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>set_rhs_to_be_updated</name></member>
       <member refid="classidol_1_1Optimizers_1_1GLPK_1ae8ad6a3d9b98b623473acd8137e03e4a" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>set_solution_index</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1ad25478639b1ed1a258a7418da7ff6964" prot="public" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>set_tol_feasibility</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1ab91250466dd2bed6c8982a0d37189da8" prot="public" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>set_tol_integer</name></member>
@@ -2380,19 +2522,19 @@
       <member refid="classidol_1_1Optimizers_1_1GLPK_1a87c2c8ed191d5765febfb057fdffc1a1" prot="protected" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>set_var_attr</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a475c1533824aef4fb8f427bc6a45546b" prot="public" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>terminate</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a0cafae2af239bb5b7701dc8f2bc72acd" prot="public" virt="non-virtual"><scope>idol::Optimizers::GLPK</scope><name>time</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a036d978c29e99ab33b64f6dcbdd23969" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a8b1ec93b5e4882c819d46b41fd557b54" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_ctr_rhs</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1afb8ad7be7c76b615c208dd3350b64c99" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_ctr_type</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a9e779d8f2bd1c01ff5bbaa42a03c757f" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_mat_coeff</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1aecbceed05a1697acb2de727182e55656" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_obj</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ae4facf4fab6fdfa8f7723d0e4f0c4d76" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_obj_constant</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a6f9883562fa7ef834bcdfb661141f490" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_obj_sense</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ac5083ad9bce94d8d0fc398e65e05ecb7" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_rhs</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1aaabad07bfd172794f320fc25340ca8dd" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_var_lb</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1aa2d573d4de095236ecf3bf23ad994386" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_var_obj</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1aee58ad2e9eb81b9bed6257316e1d133c" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_var_type</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ae8c96a36adda78e467de03f50017b1c3" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_var_ub</name></member>
-      <member refid="classidol_1_1OptimizerWithLazyUpdates_1afe001d934289f73d5027667a2ad724d3" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>write</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ad47d7ea59893bd1180d9355920489458" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1adf46c5ada88ac610b74c9b0c42475a6d" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_ctr_rhs</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a04d104e84c5e3abd5f23334c146b8219" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_ctr_type</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1ac784b860e68c0fdc00479fcc58e493ec" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_mat_coeff</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a379439d595fe61e4eafa50c04c6745a8" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_obj</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1aadada370164034f9cb7e303ae0bceec7" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_obj_constant</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a9a0b7ab294656fc1b5885c4cd0195ec4" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_obj_sense</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a9946479443d34b183d31c8a92de0e80a" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_rhs</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a2a25e54be0be97c2de3072b7c89f1045" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_var_lb</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1aae63066627a541a213f78ec46e539a42" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_var_obj</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a577b41037b1b6a0e6d7388c8593af95d" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_var_type</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1af80a9f62a386edae5113ed565ef4507a" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>update_var_ub</name></member>
+      <member refid="classidol_1_1OptimizerWithLazyUpdates_1a6e7e481c584e219797f6f192513aba5a" prot="protected" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>write</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a87f1a4dcd75963657f0577387bfa3dea" prot="public" virt="virtual"><scope>idol::Optimizers::GLPK</scope><name>~Optimizer</name></member>
     </listofallmembers>
   </compounddef>

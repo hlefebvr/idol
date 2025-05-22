@@ -15,7 +15,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="18" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="18" bodyend="-1"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="19" column="27" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="19" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classidol_1_1Robust_1_1Description_1af4104453f9de8b6f8bc9fdbb3fa3a909" prot="private" static="no" mutable="no">
         <type>Map&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>, <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref>, <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &gt; &gt;</type>
@@ -28,7 +28,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="19" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="19" bodyend="-1"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="20" column="9" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="20" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classidol_1_1Robust_1_1Description_1ab4e7d865e231fb381b6a2e1b2d8f02cc" prot="private" static="no" mutable="no">
         <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>, <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &gt;</type>
@@ -41,7 +41,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="20" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="20" bodyend="-1"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="21" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="21" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classidol_1_1Robust_1_1Description_1af9d299d53e1e9ca591d9de2d1c624e8a" prot="private" static="no" mutable="no">
         <type><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref>, <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &gt;</type>
@@ -54,11 +54,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="21" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="21" bodyend="-1"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="22" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="22" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="classidol_1_1Robust_1_1Description_1a75aaaf91a154205b1930253b4ada5c7c" prot="private" static="no" mutable="no">
-        <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
-        <definition>const Model&amp; idol::Robust::Description::m_uncertainty_set</definition>
+      <memberdef kind="variable" id="classidol_1_1Robust_1_1Description_1ac0aa14b6e81f3d5da31a591d617cc04e" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Model&gt; idol::Robust::Description::m_uncertainty_set</definition>
         <argsstring></argsstring>
         <name>m_uncertainty_set</name>
         <briefdescription>
@@ -67,7 +67,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="22" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="22" bodyend="-1"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="23" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="23" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -86,7 +86,23 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="24" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="24" bodyend="24"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="25" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="25" bodyend="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1a579bc4d580fac99c786255c87434f194" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>idol::Robust::Description::Description</definition>
+        <argsstring>(Description &amp;&amp;)=default</argsstring>
+        <name>Description</name>
+        <param>
+          <type><ref refid="classidol_1_1Robust_1_1Description" kindref="compound">Description</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="27" column="5"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1a35d652000fe2f6e707fdb519ccc6e2b1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>const <ref refid="classidol_1_1Annotation" kindref="compound">Annotation</ref>&lt; unsigned int &gt; &amp;</type>
@@ -99,7 +115,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="26" column="23"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="29" column="23"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1a0982ec69a0fc96e163065e36d19531dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -120,7 +136,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="28" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="31" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1a1a672d666838ccc40dc5b4f514019532" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>unsigned int</type>
@@ -137,7 +153,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="30" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="33" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1af6d753653e14f553170cd8972eb61259" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>unsigned int</type>
@@ -154,7 +170,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="32" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="35" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1ab35e6a1068ef9145337ea569cd038965" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
@@ -167,7 +183,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="34" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="34" bodyend="34"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="37" column="17" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="37" bodyend="37"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1a633d9310c68766796899bf64fbd11715" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>auto</type>
@@ -180,7 +196,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="36" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="36" bodyend="36"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="39" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="39" bodyend="39"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1aac75017fd672e98ea8c632d970192b8d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>auto</type>
@@ -193,7 +209,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="38" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="38" bodyend="38"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="41" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="41" bodyend="41"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1ad3aea476759f0e1fe9ac5bd87be52916" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>auto</type>
@@ -206,7 +222,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="40" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="40" bodyend="40"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="43" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="43" bodyend="43"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1a50fdb1d6deeec357997a65fe9da8f155" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
@@ -227,7 +243,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="42" column="19"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="45" column="19"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1a815d221cd8650b41959f982e1e08cfe6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref>, <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &gt; &amp;</type>
@@ -244,7 +260,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="44" column="19"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="47" column="19"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1a5d2aafbeef90595ece1d2cf51e3df683" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
@@ -261,7 +277,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="46" column="19"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="49" column="19"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1ac43982feefc57c2274cde2d398558907" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>const <ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt; <ref refid="classidol_1_1Var" kindref="compound">Var</ref> &gt; &amp;</type>
@@ -278,7 +294,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="48" column="19"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="51" column="19"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1a66eea16d69f5e2176db92ba7658eb444" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -303,7 +319,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="50" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="50" bodyend="52"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="53" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="53" bodyend="55"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1a43e9c46ec0d2db49d0020c1a3225264b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -324,7 +340,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="54" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="54" bodyend="56"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="57" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="57" bodyend="59"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1ab075a1ad2bf82c1b7e38b550e8de849f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -345,7 +361,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="58" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="58" bodyend="60"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="61" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="61" bodyend="63"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1af256e56d60bf1d3d25505cbbf1eafc64" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -362,7 +378,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="62" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="62" bodyend="64"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="65" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="65" bodyend="67"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1Description_1ace4c9217573cc3831d57b37effecd5d6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -379,7 +395,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="66" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="66" bodyend="68"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="69" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="69" bodyend="71"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -392,14 +408,15 @@
         <link refid="classidol_1_1Robust_1_1Description"/>
       </node>
     </collaborationgraph>
-    <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="17" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="17" bodyend="80"/>
+    <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="18" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" bodystart="18" bodyend="83"/>
     <listofallmembers>
       <member refid="classidol_1_1Robust_1_1Description_1afec8318d4f85fd6604553833b7602570" prot="public" virt="non-virtual"><scope>idol::Robust::Description</scope><name>Description</name></member>
+      <member refid="classidol_1_1Robust_1_1Description_1a579bc4d580fac99c786255c87434f194" prot="public" virt="non-virtual"><scope>idol::Robust::Description</scope><name>Description</name></member>
       <member refid="classidol_1_1Robust_1_1Description_1a42ad682951fe895c903effa196ca99a2" prot="private" virt="non-virtual"><scope>idol::Robust::Description</scope><name>m_stages</name></member>
       <member refid="classidol_1_1Robust_1_1Description_1af4104453f9de8b6f8bc9fdbb3fa3a909" prot="private" virt="non-virtual"><scope>idol::Robust::Description</scope><name>m_uncertain_mat_coeff</name></member>
       <member refid="classidol_1_1Robust_1_1Description_1af9d299d53e1e9ca591d9de2d1c624e8a" prot="private" virt="non-virtual"><scope>idol::Robust::Description</scope><name>m_uncertain_obj</name></member>
       <member refid="classidol_1_1Robust_1_1Description_1ab4e7d865e231fb381b6a2e1b2d8f02cc" prot="private" virt="non-virtual"><scope>idol::Robust::Description</scope><name>m_uncertain_rhs</name></member>
-      <member refid="classidol_1_1Robust_1_1Description_1a75aaaf91a154205b1930253b4ada5c7c" prot="private" virt="non-virtual"><scope>idol::Robust::Description</scope><name>m_uncertainty_set</name></member>
+      <member refid="classidol_1_1Robust_1_1Description_1ac0aa14b6e81f3d5da31a591d617cc04e" prot="private" virt="non-virtual"><scope>idol::Robust::Description</scope><name>m_uncertainty_set</name></member>
       <member refid="classidol_1_1Robust_1_1Description_1a0982ec69a0fc96e163065e36d19531dd" prot="public" virt="non-virtual"><scope>idol::Robust::Description</scope><name>set_stage</name></member>
       <member refid="classidol_1_1Robust_1_1Description_1a66eea16d69f5e2176db92ba7658eb444" prot="public" virt="non-virtual"><scope>idol::Robust::Description</scope><name>set_uncertain_mat_coeff</name></member>
       <member refid="classidol_1_1Robust_1_1Description_1ab075a1ad2bf82c1b7e38b550e8de849f" prot="public" virt="non-virtual"><scope>idol::Robust::Description</scope><name>set_uncertain_obj</name></member>

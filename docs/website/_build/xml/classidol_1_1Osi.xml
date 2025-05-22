@@ -3,7 +3,7 @@
   <compounddef id="classidol_1_1Osi" kind="class" language="C++" prot="public">
     <compoundname>idol::Osi</compoundname>
     <basecompoundref refid="classidol_1_1OptimizerFactoryWithDefaultParameters" prot="public" virt="non-virtual">idol::OptimizerFactoryWithDefaultParameters&lt; Osi &gt;</basecompoundref>
-    <derivedcompoundref refid="classidol_1_1OsiCbc" prot="public" virt="non-virtual">idol::OsiCbc</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1OsiClp" prot="public" virt="non-virtual">idol::OsiClp</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1OsiCplex" prot="public" virt="non-virtual">idol::OsiCplex</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1OsiSymphony" prot="public" virt="non-virtual">idol::OsiSymphony</derivedcompoundref>
       <sectiondef kind="private-attrib">
@@ -782,12 +782,6 @@
     <detaileddescription>
     </detaileddescription>
     <inheritancegraph>
-      <node id="5">
-        <label>idol::OsiCbc</label>
-        <link refid="classidol_1_1OsiCbc"/>
-        <childnode refid="1" relation="public-inheritance">
-        </childnode>
-      </node>
       <node id="4">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; CRTP &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
@@ -809,6 +803,12 @@
       <node id="7">
         <label>idol::OsiSymphony</label>
         <link refid="classidol_1_1OsiSymphony"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>idol::OsiClp</label>
+        <link refid="classidol_1_1OsiClp"/>
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>

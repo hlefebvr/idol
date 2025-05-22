@@ -4,6 +4,7 @@
     <compoundname>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers</compoundname>
     <innerdir refid="dir_ac9ce430a683b7ddc7efe538f6b94d5e">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/BranchAndCut</innerdir>
     <innerdir refid="dir_e16d5f4aff1aefb132bcce11f58fc87b">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT</innerdir>
+    <innerdir refid="dir_eec7a85668d30820eb36d11987a6fe23">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/MinMaxDualize</innerdir>
     <innerdir refid="dir_84121fed028d75f1d9a9f4b419f07efc">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/PessimisticAsOptimistic</innerdir>
     <innerdir refid="dir_11b0fd42c8bb8a1b7ed6226db0ac30fe">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/StrongDuality</innerdir>
     <innerdir refid="dir_c06a1a1783d5ed063b9897dcfe5fdbae">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers</innerdir>

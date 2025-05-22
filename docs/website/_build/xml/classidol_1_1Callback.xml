@@ -5,6 +5,7 @@
     <derivedcompoundref refid="classidol_1_1Heuristics_1_1LocalBranching_1_1Strategy" prot="public" virt="non-virtual">idol::Heuristics::LocalBranching::Strategy</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1Heuristics_1_1RENS_1_1Strategy" prot="public" virt="non-virtual">idol::Heuristics::RENS::Strategy</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1Heuristics_1_1SimpleRounding_1_1Strategy" prot="public" virt="non-virtual">idol::Heuristics::SimpleRounding::Strategy</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1_1BendersCallback_1_1Strategy" prot="public" virt="non-virtual">idol::Optimizers::Robust::Benders::BendersCallback::Strategy</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1Plots_1_1OptimalityGap_1_1Strategy" prot="public" virt="non-virtual">idol::Plots::OptimalityGap::Strategy</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1impl_1_1CutSeparation" prot="public" virt="non-virtual">idol::impl::CutSeparation</derivedcompoundref>
       <sectiondef kind="friend">
@@ -231,6 +232,7 @@
         <reimplementedby refid="classidol_1_1Heuristics_1_1RENS_1_1Strategy_1a2d3ea485dff71db98d20cc0f62c2095c">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Heuristics_1_1SimpleRounding_1_1Strategy_1a0cb878c9a9784dca3bcd8d98cfaa5100">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Plots_1_1OptimalityGap_1_1Strategy_1a925a61da6b5b0063e6bc8e341cf201c0">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1_1BendersCallback_1_1Strategy_1a0be9a037de5a17ae15189b74378fc0af">operator()</reimplementedby>
         <param>
           <type>CallbackEvent</type>
           <declname>t_event</declname>
@@ -287,21 +289,27 @@
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="7">
+      <node id="8">
         <label>idol::LazyCutCallback::Strategy</label>
         <link refid="classidol_1_1LazyCutCallback_1_1Strategy"/>
-        <childnode refid="6" relation="public-inheritance">
+        <childnode refid="7" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="5">
+      <node id="6">
         <label>idol::Plots::OptimalityGap::Strategy</label>
         <link refid="classidol_1_1Plots_1_1OptimalityGap_1_1Strategy"/>
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="6">
+      <node id="7">
         <label>idol::impl::CutSeparation</label>
         <link refid="classidol_1_1impl_1_1CutSeparation"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>idol::Optimizers::Robust::Benders::BendersCallback::Strategy</label>
+        <link refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1_1BendersCallback_1_1Strategy"/>
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
@@ -311,10 +319,10 @@
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="8">
+      <node id="9">
         <label>idol::UserCutCallback::Strategy</label>
         <link refid="classidol_1_1UserCutCallback_1_1Strategy"/>
-        <childnode refid="6" relation="public-inheritance">
+        <childnode refid="7" relation="public-inheritance">
         </childnode>
       </node>
       <node id="1">

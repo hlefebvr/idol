@@ -6,8 +6,11 @@
     <includes refid="Annotation_8h" local="yes">idol/mixed-integer/modeling/annotations/Annotation.h</includes>
     <includes refid="Ctr_8h" local="yes">idol/mixed-integer/modeling/constraints/Ctr.h</includes>
     <includes refid="AffExpr_8h" local="yes">idol/mixed-integer/modeling/expressions/AffExpr.h</includes>
+    <includes refid="Model_8h" local="yes">idol/mixed-integer/modeling/models/Model.h</includes>
     <includedby refid="AffineDecisionRule_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/affine-decision-rule/AffineDecisionRule.h</includedby>
     <includedby refid="Optimizers__AffineDecisionRule_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.h</includedby>
+    <includedby refid="Benders_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/benders/Benders.h</includedby>
+    <includedby refid="Optimizers__Benders_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/benders/Optimizers_Benders.h</includedby>
     <includedby refid="ColumnAndConstraintGeneration_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h</includedby>
     <includedby refid="robust_2optimizers_2column-and-constraint-generation_2Formulation_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h</includedby>
     <includedby refid="Optimizers__ColumnAndConstraintGeneration_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h</includedby>
@@ -18,6 +21,56 @@
     <incdepgraph>
       <node id="11">
         <label>list</label>
+      </node>
+      <node id="44">
+        <label>idol/general/optimizers/Optimizer.h</label>
+        <link refid="Optimizer_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>idol/mixed-integer/modeling/models/Model.h</label>
+        <link refid="Model_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
       </node>
       <node id="27">
         <label>iomanip</label>
@@ -48,6 +101,20 @@
         <childnode refid="11" relation="include">
         </childnode>
       </node>
+      <node id="41">
+        <label>idol/general/utils/Point.h</label>
+        <link refid="Point_8h_source"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
       <node id="16">
         <label>idol/general/utils/Pair.h</label>
         <link refid="Pair_8h_source"/>
@@ -56,6 +123,19 @@
       </node>
       <node id="26">
         <label>cmath</label>
+      </node>
+      <node id="47">
+        <label>idol/general/optimizers/OptimizerFactory.h</label>
+        <link refid="OptimizerFactory_8h_source"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>stdexcept</label>
       </node>
       <node id="28">
         <label>numeric</label>
@@ -114,6 +194,24 @@
         </childnode>
         <childnode refid="35" relation="include">
         </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>idol/mixed-integer/modeling/expressions/QuadExpr.h</label>
+        <link refid="QuadExpr_8h_source"/>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>idol/mixed-integer/modeling/variables/VarVersion.h</label>
+        <link refid="VarVersion_8h_source"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
       </node>
       <node id="7">
         <label>any</label>
@@ -139,6 +237,9 @@
       </node>
       <node id="14">
         <label>vector</label>
+      </node>
+      <node id="50">
+        <label>streambuf</label>
       </node>
       <node id="20">
         <label>idol/mixed-integer/modeling/constraints/TempCtr.h</label>
@@ -174,6 +275,9 @@
         <childnode refid="32" relation="include">
         </childnode>
       </node>
+      <node id="49">
+        <label>sstream</label>
+      </node>
       <node id="33">
         <label>idol/general/utils/IteratorForward.h</label>
         <link refid="IteratorForward_8h_source"/>
@@ -205,8 +309,31 @@
         <childnode refid="20" relation="include">
         </childnode>
       </node>
+      <node id="38">
+        <label>idol/mixed-integer/modeling/objects/Version.h</label>
+        <link refid="Version_8h_source"/>
+      </node>
       <node id="31">
         <label>unordered_map</label>
+      </node>
+      <node id="46">
+        <label>chrono</label>
+      </node>
+      <node id="45">
+        <label>Timer.h</label>
+        <link refid="Timer_8h_source"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>idol/mixed-integer/modeling/constraints/CtrVersion.h</label>
+        <link refid="CtrVersion_8h_source"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
       </node>
       <node id="18">
         <label>idol/general/utils/exceptions/Exception.h</label>
@@ -224,12 +351,30 @@
         <childnode refid="15" relation="include">
         </childnode>
       </node>
+      <node id="52">
+        <label>idol/mixed-integer/modeling/constraints/SOSCtr.h</label>
+        <link refid="SOSCtr_8h_source"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
       <node id="10">
         <label>ObjectId.h</label>
         <link refid="ObjectId_8h_source"/>
         <childnode refid="11" relation="include">
         </childnode>
         <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>idol/mixed-integer/modeling/constraints/QCtr.h</label>
+        <link refid="QCtr_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
         </childnode>
       </node>
       <node id="29">
@@ -243,6 +388,32 @@
       <node id="6">
         <label>memory</label>
       </node>
+      <node id="48">
+        <label>idol/general/utils/LimitedWidthStream.h</label>
+        <link refid="LimitedWidthStream_8h_source"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>types.h</label>
+        <link refid="types_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
       <node id="30">
         <label>idol/general/utils/Map.h</label>
         <link refid="Map_8h_source"/>
@@ -253,13 +424,21 @@
       </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="6">
+      <node id="9">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h</label>
         <link refid="Optimizers__ColumnAndConstraintGeneration_8h_source"/>
       </node>
       <node id="3">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.h</label>
         <link refid="Optimizers__AffineDecisionRule_8h_source"/>
+      </node>
+      <node id="4">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/benders/Benders.h</label>
+        <link refid="Benders_8h_source"/>
+      </node>
+      <node id="8">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/AdversarialProblemSolver.h</label>
+        <link refid="AdversarialProblemSolver_8h_source"/>
       </node>
       <node id="1">
         <label>/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h</label>
@@ -276,11 +455,15 @@
         </childnode>
         <childnode refid="7" relation="include">
         </childnode>
-        <childnode refid="8" relation="include">
-        </childnode>
         <childnode refid="9" relation="include">
         </childnode>
         <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
         </childnode>
       </node>
       <node id="2">
@@ -289,29 +472,37 @@
         <childnode refid="3" relation="include">
         </childnode>
       </node>
-      <node id="7">
+      <node id="10">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Deterministic.h</label>
         <link refid="Deterministic_8h_source"/>
       </node>
-      <node id="5">
+      <node id="7">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h</label>
         <link refid="robust_2optimizers_2column-and-constraint-generation_2Formulation_8h_source"/>
-        <childnode refid="6" relation="include">
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
         </childnode>
       </node>
-      <node id="10">
+      <node id="13">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.h</label>
         <link refid="ScenarioBasedKAdaptabilityProblemSolver_8h_source"/>
       </node>
-      <node id="4">
+      <node id="5">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/benders/Optimizers_Benders.h</label>
+        <link refid="Optimizers__Benders_8h_source"/>
+      </node>
+      <node id="6">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h</label>
         <link refid="ColumnAndConstraintGeneration_8h_source"/>
       </node>
-      <node id="8">
+      <node id="11">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h</label>
         <link refid="Optimizers__Deterministic_8h_source"/>
       </node>
-      <node id="9">
+      <node id="12">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h</label>
         <link refid="Optimizers__ScenarioBasedKAdaptabilityProblemSolver_8h_source"/>
       </node>
@@ -336,83 +527,86 @@
 <codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/modeling/annotations/Annotation.h&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/modeling/constraints/Ctr.h&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/modeling/expressions/AffExpr.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="12"><highlight class="normal"></highlight></codeline>
-<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">idol::Robust<sp/>{</highlight></codeline>
-<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Description;</highlight></codeline>
-<codeline lineno="15"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="16"><highlight class="normal"></highlight></codeline>
-<codeline lineno="17" refid="classidol_1_1Robust_1_1Description" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classidol_1_1Robust_1_1Description" kindref="compound">idol::Robust::Description</ref><sp/>{</highlight></codeline>
-<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">mutable</highlight><highlight class="normal"><sp/>std::optional&lt;Annotation&lt;unsigned<sp/>int&gt;&gt;<sp/>m_stages;</highlight></codeline>
-<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>Map&lt;Ctr,<sp/>LinExpr&lt;Var,<sp/>LinExpr&lt;Var&gt;&gt;&gt;<sp/>m_uncertain_mat_coeff;</highlight></codeline>
-<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Ctr, LinExpr&lt;Var&gt;</ref>&gt;<sp/>m_uncertain_rhs;</highlight></codeline>
-<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var, LinExpr&lt;Var&gt;</ref>&gt;<sp/>m_uncertain_obj;</highlight></codeline>
-<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>m_uncertainty_set;</highlight></codeline>
-<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Robust_1_1Description" kindref="compound">Description</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>t_uncertainty_set)<sp/>:<sp/>m_uncertainty_set(t_uncertainty_set)<sp/>{}</highlight></codeline>
-<codeline lineno="25"><highlight class="normal"></highlight></codeline>
-<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Annotation" kindref="compound">Annotation&lt;unsigned int&gt;</ref>&amp;<sp/>stage_annotation()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="27"><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_stage(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Var" kindref="compound">Var</ref>&amp;<sp/>t_var,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t_stage);</highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>stage(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Var" kindref="compound">Var</ref>&amp;<sp/>t_var)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight></codeline>
-<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>stage(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>&amp;<sp/>t_var)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>uncertainty_set()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_uncertainty_set;<sp/>}</highlight></codeline>
-<codeline lineno="35"><highlight class="normal"></highlight></codeline>
-<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>uncertain_mat_coeffs()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1ConstIteratorForward" kindref="compound">ConstIteratorForward</ref>(m_uncertain_mat_coeff);<sp/>}</highlight></codeline>
-<codeline lineno="37"><highlight class="normal"></highlight></codeline>
-<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>uncertain_rhs()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_uncertain_rhs;<sp/>}</highlight></codeline>
-<codeline lineno="39"><highlight class="normal"></highlight></codeline>
-<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>uncertain_obj()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_uncertain_obj;<sp/>}</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"></highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&amp;<sp/>uncertain_mat_coeff(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>&amp;<sp/>t_ctr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Var" kindref="compound">Var</ref>&amp;<sp/>t_var)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="43"><highlight class="normal"></highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var, LinExpr&lt;Var&gt;</ref>&gt;&amp;<sp/>uncertain_mat_coeffs(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>&amp;<sp/>t_ctr)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"></highlight></codeline>
-<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&amp;<sp/>uncertain_rhs(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>&amp;<sp/>t_ctr)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="47"><highlight class="normal"></highlight></codeline>
-<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&amp;<sp/>uncertain_obj(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Var" kindref="compound">Var</ref>&amp;<sp/>t_var)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="49"><highlight class="normal"></highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_uncertain_mat_coeff(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>&amp;<sp/>t_ctr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Var" kindref="compound">Var</ref>&amp;<sp/>t_var,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&amp;<sp/>t_coeff)<sp/>{</highlight></codeline>
-<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_uncertain_mat_coeff[t_ctr].set(t_var,<sp/>t_coeff);</highlight></codeline>
-<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="53"><highlight class="normal"></highlight></codeline>
-<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_uncertain_rhs(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>&amp;<sp/>t_ctr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&amp;<sp/>t_rhs)<sp/>{</highlight></codeline>
-<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_uncertain_rhs.set(t_ctr,<sp/>t_rhs);</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="57"><highlight class="normal"></highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_uncertain_obj(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Var" kindref="compound">Var</ref>&amp;<sp/>t_var,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&amp;<sp/>t_obj)<sp/>{</highlight></codeline>
-<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_uncertain_obj.set(t_var,<sp/>t_obj);</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="61"><highlight class="normal"></highlight></codeline>
-<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_uncertain_obj(<ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt;<ref refid="classidol_1_1Var" kindref="compound">Var</ref>,<sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&gt;<sp/>t_obj)<sp/>{</highlight></codeline>
-<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_uncertain_obj<sp/>=<sp/>std::move(t_obj);</highlight></codeline>
-<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="65"><highlight class="normal"></highlight></codeline>
-<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_uncertain_rhs(<ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt;<ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>,<sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&gt;<sp/>t_rhs)<sp/>{</highlight></codeline>
-<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_uncertain_rhs<sp/>=<sp/>std::move(t_rhs);</highlight></codeline>
-<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="69"><highlight class="normal"></highlight></codeline>
-<codeline lineno="70" refid="classidol_1_1Robust_1_1Description_1_1View" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classidol_1_1Robust_1_1Description_1_1View" kindref="compound">View</ref><sp/>{</highlight></codeline>
-<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Robust_1_1Description" kindref="compound">Description</ref>&amp;<sp/>m_description;</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>m_deterministic_model;</highlight></codeline>
-<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Robust_1_1Description_1_1View" kindref="compound">View</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>t_deterministic_model,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Robust_1_1Description" kindref="compound">Description</ref>&amp;<sp/>t_description);</highlight></codeline>
-<codeline lineno="75"><highlight class="normal"></highlight></codeline>
-<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Robust_1_1Description" kindref="compound">Description</ref>&amp;<sp/>description()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_description;<sp/>}</highlight></codeline>
-<codeline lineno="77"><highlight class="normal"></highlight></codeline>
-<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>deterministic_model()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_deterministic_model;<sp/>}</highlight></codeline>
-<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
-<codeline lineno="80"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="81"><highlight class="normal"></highlight></codeline>
-<codeline lineno="82"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">idol<sp/>{</highlight></codeline>
-<codeline lineno="83"><highlight class="normal"></highlight></codeline>
-<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>std::ostream<sp/>&amp;operator&lt;&lt;(std::ostream<sp/>&amp;t_os,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Robust_1_1Description_1_1View" kindref="compound">idol::Robust::Description::View</ref><sp/>&amp;t_view);</highlight></codeline>
-<codeline lineno="85"><highlight class="normal"></highlight></codeline>
-<codeline lineno="86"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="87"><highlight class="normal"></highlight></codeline>
-<codeline lineno="88"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//IDOL_DESCRIPTION_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;idol/mixed-integer/modeling/models/Model.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">idol::Robust<sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Description;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="classidol_1_1Robust_1_1Description" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classidol_1_1Robust_1_1Description" kindref="compound">idol::Robust::Description</ref><sp/>{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">mutable</highlight><highlight class="normal"><sp/>std::optional&lt;Annotation&lt;unsigned<sp/>int&gt;&gt;<sp/>m_stages;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>Map&lt;Ctr,<sp/>LinExpr&lt;Var,<sp/>LinExpr&lt;Var&gt;&gt;&gt;<sp/>m_uncertain_mat_coeff;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Ctr, LinExpr&lt;Var&gt;</ref>&gt;<sp/>m_uncertain_rhs;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var, LinExpr&lt;Var&gt;</ref>&gt;<sp/>m_uncertain_obj;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;Model&gt;<sp/>m_uncertainty_set;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Robust_1_1Description" kindref="compound">Description</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>t_uncertainty_set)<sp/>:<sp/>m_uncertainty_set(t_uncertainty_set.clone())<sp/>{}</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Robust_1_1Description" kindref="compound">Description</ref>(<ref refid="classidol_1_1Robust_1_1Description" kindref="compound">Description</ref>&amp;&amp;)<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Annotation" kindref="compound">Annotation&lt;unsigned int&gt;</ref>&amp;<sp/>stage_annotation()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_stage(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Var" kindref="compound">Var</ref>&amp;<sp/>t_var,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t_stage);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>stage(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Var" kindref="compound">Var</ref>&amp;<sp/>t_var)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>stage(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>&amp;<sp/>t_var)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>uncertainty_set()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*m_uncertainty_set;<sp/>}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>uncertain_mat_coeffs()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1ConstIteratorForward" kindref="compound">ConstIteratorForward</ref>(m_uncertain_mat_coeff);<sp/>}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>uncertain_rhs()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_uncertain_rhs;<sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>uncertain_obj()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_uncertain_obj;<sp/>}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&amp;<sp/>uncertain_mat_coeff(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>&amp;<sp/>t_ctr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Var" kindref="compound">Var</ref>&amp;<sp/>t_var)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var, LinExpr&lt;Var&gt;</ref>&gt;&amp;<sp/>uncertain_mat_coeffs(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>&amp;<sp/>t_ctr)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&amp;<sp/>uncertain_rhs(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>&amp;<sp/>t_ctr)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&amp;<sp/>uncertain_obj(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Var" kindref="compound">Var</ref>&amp;<sp/>t_var)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_uncertain_mat_coeff(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>&amp;<sp/>t_ctr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Var" kindref="compound">Var</ref>&amp;<sp/>t_var,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&amp;<sp/>t_coeff)<sp/>{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_uncertain_mat_coeff[t_ctr].set(t_var,<sp/>t_coeff);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_uncertain_rhs(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>&amp;<sp/>t_ctr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&amp;<sp/>t_rhs)<sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_uncertain_rhs.set(t_ctr,<sp/>t_rhs);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_uncertain_obj(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Var" kindref="compound">Var</ref>&amp;<sp/>t_var,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&amp;<sp/>t_obj)<sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_uncertain_obj.set(t_var,<sp/>t_obj);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_uncertain_obj(<ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt;<ref refid="classidol_1_1Var" kindref="compound">Var</ref>,<sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&gt;<sp/>t_obj)<sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_uncertain_obj<sp/>=<sp/>std::move(t_obj);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_uncertain_rhs(<ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr</ref>&lt;<ref refid="classidol_1_1Ctr" kindref="compound">Ctr</ref>,<sp/><ref refid="classidol_1_1LinExpr" kindref="compound">LinExpr&lt;Var&gt;</ref>&gt;<sp/>t_rhs)<sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_uncertain_rhs<sp/>=<sp/>std::move(t_rhs);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="classidol_1_1Robust_1_1Description_1_1View" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classidol_1_1Robust_1_1Description_1_1View" kindref="compound">View</ref><sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Robust_1_1Description" kindref="compound">Description</ref>&amp;<sp/>m_description;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>m_deterministic_model;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classidol_1_1Robust_1_1Description_1_1View" kindref="compound">View</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>t_deterministic_model,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Robust_1_1Description" kindref="compound">Description</ref>&amp;<sp/>t_description);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Robust_1_1Description" kindref="compound">Description</ref>&amp;<sp/>description()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_description;<sp/>}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Model" kindref="compound">Model</ref>&amp;<sp/>deterministic_model()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>m_deterministic_model;<sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="83"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">idol<sp/>{</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>std::ostream<sp/>&amp;operator&lt;&lt;(std::ostream<sp/>&amp;t_os,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classidol_1_1Robust_1_1Description_1_1View" kindref="compound">idol::Robust::Description::View</ref><sp/>&amp;t_view);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//IDOL_DESCRIPTION_H</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h"/>
   </compounddef>

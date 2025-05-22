@@ -5,6 +5,7 @@
     <derivedcompoundref refid="classidol_1_1Bilevel_1_1BranchAndCut" prot="public" virt="non-virtual">idol::Bilevel::BranchAndCut</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1Bilevel_1_1KKT" prot="public" virt="non-virtual">idol::Bilevel::KKT</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1Bilevel_1_1MibS" prot="public" virt="non-virtual">idol::Bilevel::MibS</derivedcompoundref>
+    <derivedcompoundref refid="classidol_1_1Bilevel_1_1MinMax_1_1Dualize" prot="public" virt="non-virtual">idol::Bilevel::MinMax::Dualize</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic" prot="public" virt="non-virtual">idol::Bilevel::PessimisticAsOptimistic</derivedcompoundref>
     <derivedcompoundref refid="classidol_1_1Bilevel_1_1StrongDuality" prot="public" virt="non-virtual">idol::Bilevel::StrongDuality</derivedcompoundref>
       <sectiondef kind="public-func">
@@ -28,6 +29,7 @@
         <name>set_bilevel_description</name>
         <reimplementedby refid="classidol_1_1Bilevel_1_1BranchAndCut_1a60e4d4a12316be0dc85d88a4e99ae7a9">set_bilevel_description</reimplementedby>
         <reimplementedby refid="classidol_1_1Bilevel_1_1KKT_1ad3c7c52a769b2a19365db177c3a7eead">set_bilevel_description</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1MinMax_1_1Dualize_1a2c31f1e0253efe1059028efe269a8f34">set_bilevel_description</reimplementedby>
         <reimplementedby refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic_1a5b4b31bf57f35ebd8c9ce5b74b32ab8e">set_bilevel_description</reimplementedby>
         <reimplementedby refid="classidol_1_1Bilevel_1_1StrongDuality_1a7c6ccf3be7ff052e10ca62032f26e7df">set_bilevel_description</reimplementedby>
         <reimplementedby refid="classidol_1_1Bilevel_1_1MibS_1a1d32b62bd6c7d74669aa47fcec044611">set_bilevel_description</reimplementedby>
@@ -60,12 +62,18 @@
         <link refid="classidol_1_1Bilevel_1_1OptimizerInterface"/>
       </node>
       <node id="5">
+        <label>idol::Bilevel::MinMax::Dualize</label>
+        <link refid="classidol_1_1Bilevel_1_1MinMax_1_1Dualize"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
         <label>idol::Bilevel::PessimisticAsOptimistic</label>
         <link refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic"/>
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="6">
+      <node id="7">
         <label>idol::Bilevel::StrongDuality</label>
         <link refid="classidol_1_1Bilevel_1_1StrongDuality"/>
         <childnode refid="1" relation="public-inheritance">

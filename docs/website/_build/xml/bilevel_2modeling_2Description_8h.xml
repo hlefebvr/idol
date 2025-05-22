@@ -12,11 +12,15 @@
     <includedby refid="Optimizers__BranchAndCut_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.h</includedby>
     <includedby refid="bilevel_2optimizers_2KKT_2KKT_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/KKT.h</includedby>
     <includedby refid="Optimizers__KKT_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h</includedby>
+    <includedby refid="MinMax__Dualize_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/MinMaxDualize/MinMax_Dualize.h</includedby>
+    <includedby refid="Optimizers__MinMax__Dualize_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.h</includedby>
     <includedby refid="Optimizers__PessimisticAsOptimistic_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/PessimisticAsOptimistic/Optimizers_PessimisticAsOptimistic.h</includedby>
     <includedby refid="PessimisticAsOptimistic_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h</includedby>
     <includedby refid="Optimizers__StrongDuality_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/StrongDuality/Optimizers_StrongDuality.h</includedby>
     <includedby refid="StrongDuality_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/StrongDuality/StrongDuality.h</includedby>
     <includedby refid="MibS_8h" local="yes">/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibS.h</includedby>
+    <includedby refid="Benders_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/benders/Benders.h</includedby>
+    <includedby refid="Optimizers__Benders_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/benders/Optimizers_Benders.h</includedby>
     <includedby refid="ColumnAndConstraintGeneration_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h</includedby>
     <includedby refid="robust_2optimizers_2column-and-constraint-generation_2Formulation_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h</includedby>
     <includedby refid="Optimizers__ColumnAndConstraintGeneration_8h" local="yes">/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h</includedby>
@@ -483,24 +487,44 @@
         </childnode>
         <childnode refid="16" relation="include">
         </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
       </node>
       <node id="5">
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/KKT.h</label>
         <link refid="bilevel_2optimizers_2KKT_2KKT_8h_source"/>
       </node>
-      <node id="10">
+      <node id="12">
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/StrongDuality/StrongDuality.h</label>
         <link refid="StrongDuality_8h_source"/>
       </node>
-      <node id="14">
+      <node id="19">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h</label>
         <link refid="Optimizers__ColumnAndConstraintGeneration_8h_source"/>
       </node>
-      <node id="8">
+      <node id="10">
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h</label>
         <link refid="PessimisticAsOptimistic_8h_source"/>
       </node>
-      <node id="11">
+      <node id="7">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/MinMaxDualize/MinMax_Dualize.h</label>
+        <link refid="MinMax__Dualize_8h_source"/>
+      </node>
+      <node id="14">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/benders/Benders.h</label>
+        <link refid="Benders_8h_source"/>
+      </node>
+      <node id="18">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/AdversarialProblemSolver.h</label>
+        <link refid="AdversarialProblemSolver_8h_source"/>
+      </node>
+      <node id="13">
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS/MibS.h</label>
         <link refid="MibS_8h_source"/>
       </node>
@@ -508,7 +532,7 @@
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h</label>
         <link refid="Optimizers__KKT_8h_source"/>
       </node>
-      <node id="9">
+      <node id="11">
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/StrongDuality/Optimizers_StrongDuality.h</label>
         <link refid="Optimizers__StrongDuality_8h_source"/>
       </node>
@@ -516,17 +540,21 @@
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.h</label>
         <link refid="Optimizers__BranchAndCut_8h_source"/>
       </node>
-      <node id="7">
+      <node id="9">
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/PessimisticAsOptimistic/Optimizers_PessimisticAsOptimistic.h</label>
         <link refid="Optimizers__PessimisticAsOptimistic_8h_source"/>
       </node>
-      <node id="13">
+      <node id="17">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h</label>
         <link refid="robust_2optimizers_2column-and-constraint-generation_2Formulation_8h_source"/>
-        <childnode refid="14" relation="include">
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
         </childnode>
       </node>
-      <node id="16">
+      <node id="21">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.h</label>
         <link refid="ScenarioBasedKAdaptabilityProblemSolver_8h_source"/>
       </node>
@@ -534,17 +562,25 @@
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/modeling/read_from_file.h</label>
         <link refid="read__from__file_8h_source"/>
       </node>
-      <node id="12">
+      <node id="15">
+        <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/benders/Optimizers_Benders.h</label>
+        <link refid="Optimizers__Benders_8h_source"/>
+      </node>
+      <node id="16">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h</label>
         <link refid="ColumnAndConstraintGeneration_8h_source"/>
       </node>
-      <node id="15">
+      <node id="20">
         <label>/home/henri/Research/idol/lib/include/idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h</label>
         <link refid="Optimizers__ScenarioBasedKAdaptabilityProblemSolver_8h_source"/>
       </node>
       <node id="3">
         <label>/home/henri/Research/idol/lib/include/idol/bilevel/modeling/write_to_file.h</label>
         <link refid="write__to__file_8h_source"/>
+      </node>
+      <node id="8">
+        <label>/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.h</label>
+        <link refid="Optimizers__MinMax__Dualize_8h_source"/>
       </node>
     </invincdepgraph>
     <innerclass refid="classidol_1_1Bilevel_1_1Description" prot="public">idol::Bilevel::Description</innerclass>

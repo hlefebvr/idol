@@ -6,6 +6,7 @@
     <innerdir refid="dir_df35de603d10837398f43beb02deb50b">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/GLPK</innerdir>
     <innerdir refid="dir_3772ebbc62274b8844288efb91449a35">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi</innerdir>
     <innerdir refid="dir_b408667eaad9673d950b13427fd7ae1a">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/HiGHS</innerdir>
+    <innerdir refid="dir_5f637ff04f2784b2872b41dd6d13ce2f">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP</innerdir>
     <innerdir refid="dir_e841dae1b194a8c864fba48809b95374">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Mosek</innerdir>
     <innerdir refid="dir_34e1852222ecad674f64ccfc98d435d9">/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi</innerdir>
     <briefdescription>

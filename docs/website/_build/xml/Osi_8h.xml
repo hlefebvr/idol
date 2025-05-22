@@ -126,7 +126,7 @@
     <innerclass refid="classidol_1_1Osi" prot="public">idol::Osi</innerclass>
     <innerclass refid="classidol_1_1OsiCplex" prot="public">idol::OsiCplex</innerclass>
     <innerclass refid="classidol_1_1OsiSymphony" prot="public">idol::OsiSymphony</innerclass>
-    <innerclass refid="classidol_1_1OsiCbc" prot="public">idol::OsiCbc</innerclass>
+    <innerclass refid="classidol_1_1OsiClp" prot="public">idol::OsiClp</innerclass>
     <innernamespace refid="namespaceidol">idol</innernamespace>
       <sectiondef kind="define">
       <memberdef kind="define" id="Osi_8h_1a63411e1b56c1f3899f9a1a8fada3958d" prot="public" static="no">
@@ -182,7 +182,7 @@ class idol::name : public <ref refid="classidol_1_1Osi" kindref="compound">idol:
 <codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_OSI</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;OsiSolverInterface.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="12"><highlight class="normal"></highlight></codeline>
-<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>IDOL_USE_CPLEX</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>IDOL_USE_OSI_CPLEX</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;OsiCpxSolverInterface.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="16"><highlight class="normal"></highlight></codeline>
@@ -190,11 +190,11 @@ class idol::name : public <ref refid="classidol_1_1Osi" kindref="compound">idol:
 <codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//#include<sp/>&lt;OsiGrbSolverInterface.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="20"><highlight class="normal"></highlight></codeline>
-<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_SYMPHONY</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_OSI_SYMPHONY</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;OsiSymSolverInterface.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="24"><highlight class="normal"></highlight></codeline>
-<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_CLP</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_OSI_CLP</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;OsiClpSolverInterface.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="28"><highlight class="normal"></highlight></codeline>
@@ -253,22 +253,22 @@ class idol::name : public <ref refid="classidol_1_1Osi" kindref="compound">idol:
 <codeline lineno="81"><highlight class="normal"></highlight></codeline>
 <codeline lineno="82"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="83"><highlight class="normal"></highlight></codeline>
-<codeline lineno="84"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_CPLEX</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_OSI_CPLEX</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="85"><highlight class="normal">ADD_SHORTCUT(<ref refid="classidol_1_1OsiCplex" kindref="compound">OsiCplex</ref>,<sp/>OsiCpxSolverInterface)</highlight></codeline>
 <codeline lineno="86"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="87" refid="classidol_1_1OsiCplex" refkind="compound"><highlight class="normal">ADD_FAKE_SHORTCUT(<ref refid="classidol_1_1OsiCplex" kindref="compound">OsiCplex</ref>)</highlight></codeline>
 <codeline lineno="88"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="89"><highlight class="normal"></highlight></codeline>
-<codeline lineno="90"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_SYMPHONY</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_OSI_SYMPHONY</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="91"><highlight class="normal">ADD_SHORTCUT(<ref refid="classidol_1_1OsiSymphony" kindref="compound">OsiSymphony</ref>,<sp/>OsiSymSolverInterface)</highlight></codeline>
 <codeline lineno="92"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="93" refid="classidol_1_1OsiSymphony" refkind="compound"><highlight class="normal">ADD_FAKE_SHORTCUT(<ref refid="classidol_1_1OsiSymphony" kindref="compound">OsiSymphony</ref>)</highlight></codeline>
 <codeline lineno="94"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="95"><highlight class="normal"></highlight></codeline>
-<codeline lineno="96"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_CLP</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="97"><highlight class="normal">ADD_SHORTCUT(OsiClp,<sp/>OsiClpSolverInterface)</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>IDOL_USE_OSI_CLP</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal">ADD_SHORTCUT(<ref refid="classidol_1_1OsiClp" kindref="compound">OsiClp</ref>,<sp/>OsiClpSolverInterface)</highlight></codeline>
 <codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="99" refid="classidol_1_1OsiCbc" refkind="compound"><highlight class="normal">ADD_FAKE_SHORTCUT(<ref refid="classidol_1_1OsiCbc" kindref="compound">OsiCbc</ref>)</highlight></codeline>
+<codeline lineno="99" refid="classidol_1_1OsiClp" refkind="compound"><highlight class="normal">ADD_FAKE_SHORTCUT(<ref refid="classidol_1_1OsiClp" kindref="compound">OsiClp</ref>)</highlight></codeline>
 <codeline lineno="100"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="101"><highlight class="normal"></highlight></codeline>
 <codeline lineno="102"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//IDOL_OSI_H</highlight><highlight class="normal"></highlight></codeline>

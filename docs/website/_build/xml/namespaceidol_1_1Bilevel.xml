@@ -10,6 +10,7 @@
     <innerclass refid="classidol_1_1Bilevel_1_1StrongDuality" prot="public">idol::Bilevel::StrongDuality</innerclass>
     <innerclass refid="classidol_1_1Bilevel_1_1MibS" prot="public">idol::Bilevel::MibS</innerclass>
     <innernamespace refid="namespaceidol_1_1Bilevel_1_1impl">idol::Bilevel::impl</innernamespace>
+    <innernamespace refid="namespaceidol_1_1Bilevel_1_1MinMax">idol::Bilevel::MinMax</innernamespace>
       <sectiondef kind="func">
       <memberdef kind="function" id="bilevel_2modeling_2Description_8h_1a9ce023a3fe3e986246c4d10e310cabf0" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>

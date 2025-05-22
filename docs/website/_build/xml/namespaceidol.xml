@@ -104,11 +104,12 @@
     <innerclass refid="classidol_1_1Gurobi" prot="public">idol::Gurobi</innerclass>
     <innerclass refid="classidol_1_1GurobiCallbackI" prot="public">idol::GurobiCallbackI</innerclass>
     <innerclass refid="classidol_1_1HiGHS" prot="public">idol::HiGHS</innerclass>
+    <innerclass refid="classidol_1_1JuMP" prot="public">idol::JuMP</innerclass>
     <innerclass refid="classidol_1_1Mosek" prot="public">idol::Mosek</innerclass>
     <innerclass refid="classidol_1_1Osi" prot="public">idol::Osi</innerclass>
     <innerclass refid="classidol_1_1OsiCplex" prot="public">idol::OsiCplex</innerclass>
     <innerclass refid="classidol_1_1OsiSymphony" prot="public">idol::OsiSymphony</innerclass>
-    <innerclass refid="classidol_1_1OsiCbc" prot="public">idol::OsiCbc</innerclass>
+    <innerclass refid="classidol_1_1OsiClp" prot="public">idol::OsiClp</innerclass>
     <innernamespace refid="namespaceidol_1_1ADM">idol::ADM</innernamespace>
     <innernamespace refid="namespaceidol_1_1Bilevel">idol::Bilevel</innernamespace>
     <innernamespace refid="namespaceidol_1_1BranchingRules">idol::BranchingRules</innernamespace>
@@ -135,6 +136,7 @@
         <name>SolutionStatus</name>
         <enumvalue id="types_8h_1aed6f72cffd69b0185a06a0484a83eabfa90079e2931d11432a966cacf9a107e29" prot="public">
           <name>Loaded</name>
+          <initializer>= 0</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -142,6 +144,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aed6f72cffd69b0185a06a0484a83eabfa15474b6da144604dbd19b29b7b8416f3" prot="public">
           <name>Optimal</name>
+          <initializer>= 1</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -149,6 +152,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aed6f72cffd69b0185a06a0484a83eabfa4fd4eaac5243e25c0167e2eb44a40375" prot="public">
           <name>Feasible</name>
+          <initializer>= 2</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -156,6 +160,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aed6f72cffd69b0185a06a0484a83eabfa6d7a54c994a618f880ef823d283fe9a0" prot="public">
           <name>Infeasible</name>
+          <initializer>= 3</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -163,6 +168,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aed6f72cffd69b0185a06a0484a83eabfaead8bb73eb3f5b0d1ca28d24e3400062" prot="public">
           <name>InfOrUnbnd</name>
+          <initializer>= 4</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -170,6 +176,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aed6f72cffd69b0185a06a0484a83eabfa2dd03ddd8d67574eec63ce9869f74cd1" prot="public">
           <name>Unbounded</name>
+          <initializer>= 5</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -177,6 +184,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aed6f72cffd69b0185a06a0484a83eabfadfd63b4f5b2cf5b130ae5f1ec0b2f153" prot="public">
           <name>Fail</name>
+          <initializer>= 6</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -184,6 +192,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aed6f72cffd69b0185a06a0484a83eabfaa1046a2eb09f9d38e890737071ff13fc" prot="public">
           <name>SubOptimal</name>
+          <initializer>= 7</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -202,6 +211,7 @@
         <name>SolutionReason</name>
         <enumvalue id="types_8h_1aec531acf59cf25660d56c2204bc1362da2706060a6526c1076dda4b905dab8f94" prot="public">
           <name>NotSpecified</name>
+          <initializer>= 0</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -209,6 +219,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aec531acf59cf25660d56c2204bc1362da91d5f2bc40a2668a125567055986e53a" prot="public">
           <name>Proved</name>
+          <initializer>= 1</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -216,6 +227,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aec531acf59cf25660d56c2204bc1362dae8f8f321a00f617b1382045f9bbd9e25" prot="public">
           <name>TimeLimit</name>
+          <initializer>= 2</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -223,6 +235,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aec531acf59cf25660d56c2204bc1362dab552ddad81e71e8b7ebe60361d3d1cd8" prot="public">
           <name>IterLimit</name>
+          <initializer>= 3</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -230,6 +243,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aec531acf59cf25660d56c2204bc1362da136616b2a7157d3d2d58bf5f8c2aaea9" prot="public">
           <name>ObjLimit</name>
+          <initializer>= 4</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -237,6 +251,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aec531acf59cf25660d56c2204bc1362da7bf32f0ca2e9aac285308c1c02a76888" prot="public">
           <name>Numerical</name>
+          <initializer>= 5</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -244,6 +259,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aec531acf59cf25660d56c2204bc1362dab2df32c779d82edbf1f970dd9c904e6d" prot="public">
           <name>MemoryLimit</name>
+          <initializer>= 6</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -251,6 +267,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aec531acf59cf25660d56c2204bc1362da36e9589925e108bf8e3d1264db16b6a1" prot="public">
           <name>Cycling</name>
+          <initializer>= 7</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -258,6 +275,7 @@
         </enumvalue>
         <enumvalue id="types_8h_1aec531acf59cf25660d56c2204bc1362da3f38395f41a5f2c5c1d2090ec64ff802" prot="public">
           <name>SolutionLimit</name>
+          <initializer>= 8</initializer>
           <briefdescription>
           </briefdescription>
           <detaileddescription>
@@ -570,7 +588,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/KKT.h" line="48" column="25" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/KKT.h" bodystart="48" bodyend="52"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/KKT.h" line="51" column="25" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/KKT.h" bodystart="51" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="MinMax__Dualize_8h_1a03b06364ec22dff7c364cdba6f89e238" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Bilevel_1_1MinMax_1_1Dualize" kindref="compound">Bilevel::MinMax::Dualize</ref></type>
+        <definition>static Bilevel::MinMax::Dualize idol::operator+</definition>
+        <argsstring>(const Bilevel::MinMax::Dualize &amp;t_MINMAX_DUALIZE, const OptimizerFactory &amp;t_optimizer)</argsstring>
+        <name>operator+</name>
+        <param>
+          <type>const <ref refid="classidol_1_1Bilevel_1_1MinMax_1_1Dualize" kindref="compound">Bilevel::MinMax::Dualize</ref> &amp;</type>
+          <declname>t_MINMAX_DUALIZE</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &amp;</type>
+          <declname>t_optimizer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/MinMaxDualize/MinMax_Dualize.h" line="46" column="37" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/MinMaxDualize/MinMax_Dualize.h" bodystart="46" bodyend="50"/>
       </memberdef>
       <memberdef kind="function" id="PessimisticAsOptimistic_8h_1aa2e41a0d087f7daad297e18c01684425" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic" kindref="compound">Bilevel::PessimisticAsOptimistic</ref></type>
@@ -5988,7 +6027,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="84" column="5" declfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" declline="84" declcolumn="5"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" line="87" column="5" declfile="/home/henri/Research/idol/lib/include/idol/robust/modeling/Description.h" declline="87" declcolumn="5"/>
       </memberdef>
       </sectiondef>
     <briefdescription>

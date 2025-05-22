@@ -15,7 +15,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="92" column="52" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" bodystart="92" bodyend="92"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="99" column="52" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" bodystart="99" bodyend="99"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-static-func">
@@ -30,7 +30,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="92" column="74" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" bodystart="92" bodyend="92"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="99" column="74" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" bodystart="99" bodyend="99"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -62,7 +62,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="61" column="15"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="74" column="15"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Osi_1a8444a88e64b8ecfdbe883466be420113" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="structOsiSolverInterface" kindref="compound">OsiSolverInterface</ref> *</type>
@@ -75,7 +75,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="63" column="24"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="76" column="24"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Osi_1a3595578d4bacf9c9c1e2376f50dc29dc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref> *</type>
@@ -92,7 +92,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="67" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="80" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a495f616340209e28fde87270f69ce28f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Osi" kindref="compound">Osi</ref> &amp;</type>
@@ -605,7 +605,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="65" column="16"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="78" column="16"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="protected-func">
@@ -723,7 +723,7 @@
         <link refid="classidol_1_1OptimizerFactory"/>
       </node>
     </collaborationgraph>
-    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="92" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" bodystart="92" bodyend="92"/>
+    <location file="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" line="99" column="14" bodyfile="/home/henri/Research/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h" bodystart="99" bodyend="99"/>
     <listofallmembers>
       <member refid="classidol_1_1OptimizerFactory_1a997906f3b7db473a7368c48c4be595ac" prot="public" virt="non-virtual"><scope>idol::OsiClp</scope><name>as</name></member>
       <member refid="classidol_1_1OptimizerFactory_1a804f8415a57f2a2ae5c197139de2d236" prot="public" virt="non-virtual"><scope>idol::OsiClp</scope><name>as</name></member>

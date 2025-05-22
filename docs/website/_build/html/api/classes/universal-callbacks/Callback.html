@@ -273,10 +273,126 @@ a child (or little child) of the <code class="docutils literal notranslate"><spa
 <p>Note that there also exists more advanced callbacks which are specific to idol’s branch-and-bound implementation.
 For these advanced feature, see <a class="reference internal" href="../../mixed-integer/branch-and-bound/BranchAndBoundCallback.html#api-branchandboundcallback"><span class="std std-ref">BranchAndBoundCallback</span></a>.</p>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenclass: Cannot find class “idol::Callback” in doxygen xml output for project “idol” from directory: _build/xml/</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8CallbackE">
+<span id="_CPPv3N4idol8CallbackE"></span><span id="_CPPv2N4idol8CallbackE"></span><span id="idol::Callback"></span><span class="target" id="classidol_1_1Callback"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../../mixed-integer/misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">Callback</span></span></span><a class="headerlink" href="#_CPPv4N4idol8CallbackE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Subclassed by <a class="reference internal" href="../../mixed-integer/branch-and-bound/heuristics/LocalBranching.html#classidol_1_1Heuristics_1_1LocalBranching_1_1Strategy"><span class="std std-ref">idol::Heuristics::LocalBranching::Strategy</span></a>, <a class="reference internal" href="../../mixed-integer/branch-and-bound/heuristics/RENS.html#classidol_1_1Heuristics_1_1RENS_1_1Strategy"><span class="std std-ref">idol::Heuristics::RENS::Strategy</span></a>, <a class="reference internal" href="../../mixed-integer/branch-and-bound/heuristics/SimpleRounding.html#classidol_1_1Heuristics_1_1SimpleRounding_1_1Strategy"><span class="std std-ref">idol::Heuristics::SimpleRounding::Strategy</span></a>, idol::Optimizers::Robust::Benders::BendersCallback::Strategy, idol::Plots::OptimalityGap::Strategy, idol::impl::CutSeparation</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8CallbackD0Ev">
+<span id="_CPPv3N4idol8CallbackD0Ev"></span><span id="_CPPv2N4idol8CallbackD0Ev"></span><span id="idol::Callback::~Callback"></span><span class="target" id="classidol_1_1Callback_1a930a6ad9d6049b1eab88e78dfdd88cdc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~Callback</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol8CallbackD0Ev" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
 </div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Callback14original_modelEv">
+<span id="_CPPv3NK4idol8Callback14original_modelEv"></span><span id="_CPPv2NK4idol8Callback14original_modelEv"></span><span id="idol::Callback::original_modelC"></span><span class="target" id="classidol_1_1Callback_1af0714777151e092685aa600690c5d139"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/Model.html#_CPPv4N4idol5ModelE" title="idol::Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">original_model</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Callback14original_modelEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Accesses the original model given to the solver </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Callback25submit_heuristic_solutionERK11PrimalPoint">
+<span id="_CPPv3N4idol8Callback25submit_heuristic_solutionERK11PrimalPoint"></span><span id="_CPPv2N4idol8Callback25submit_heuristic_solutionERK11PrimalPoint"></span><span id="idol::Callback::submit_heuristic_solution__PrimalPointCR"></span><span class="target" id="classidol_1_1Callback_1aba8b5815a8701fadc611bea822bca68b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">submit_heuristic_solution</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">PrimalPoint</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_solution</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Callback25submit_heuristic_solutionERK11PrimalPoint" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Submits a new heuristic solution </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Callback12add_user_cutERK7TempCtr">
+<span id="_CPPv3N4idol8Callback12add_user_cutERK7TempCtr"></span><span id="_CPPv2N4idol8Callback12add_user_cutERK7TempCtr"></span><span id="idol::Callback::add_user_cut__TempCtrCR"></span><span class="target" id="classidol_1_1Callback_1acb1781b217b4d14b307ff8b74a535bdf"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_user_cut</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/TempCtr.html#_CPPv4N4idol7TempCtrE" title="idol::TempCtr"><span class="n"><span class="pre">TempCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_cut</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Callback12add_user_cutERK7TempCtr" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Adds a user cut to the relaxation </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_cut</strong> – the cut to be added </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Callback12add_lazy_cutERK7TempCtr">
+<span id="_CPPv3N4idol8Callback12add_lazy_cutERK7TempCtr"></span><span id="_CPPv2N4idol8Callback12add_lazy_cutERK7TempCtr"></span><span id="idol::Callback::add_lazy_cut__TempCtrCR"></span><span class="target" id="classidol_1_1Callback_1a551ffb69f6115fad4f91974e2da45ed4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_lazy_cut</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../mixed-integer/modeling/TempCtr.html#_CPPv4N4idol7TempCtrE" title="idol::TempCtr"><span class="n"><span class="pre">TempCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_cut</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Callback12add_lazy_cutERK7TempCtr" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Adds a lazy cut to the relaxation </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_cut</strong> – the cut to be added </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Callback15primal_solutionEv">
+<span id="_CPPv3NK4idol8Callback15primal_solutionEv"></span><span id="_CPPv2NK4idol8Callback15primal_solutionEv"></span><span id="idol::Callback::primal_solutionC"></span><span class="target" id="classidol_1_1Callback_1ac1a19a08051cc57531e9c14422a026c0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">PrimalPoint</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">primal_solution</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Callback15primal_solutionEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Returns the solution of the node which is currently being explored (when available) </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the solution of the current node </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Callback4timeEv">
+<span id="_CPPv3NK4idol8Callback4timeEv"></span><span id="_CPPv2NK4idol8Callback4timeEv"></span><span id="idol::Callback::timeC"></span><span class="target" id="classidol_1_1Callback_1a0c868172f324fcd7838bd8027ed983c7"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Timer</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">time</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Callback4timeEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Returns the current time </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the optimizer’s time </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Callback8best_objEv">
+<span id="_CPPv3NK4idol8Callback8best_objEv"></span><span id="_CPPv2NK4idol8Callback8best_objEv"></span><span id="idol::Callback::best_objC"></span><span class="target" id="classidol_1_1Callback_1ab45dfb3e9f7155de67fceb474a0dd827"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">best_obj</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Callback8best_objEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Returns the best objective value found so far </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the best objective value </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Callback10best_boundEv">
+<span id="_CPPv3NK4idol8Callback10best_boundEv"></span><span id="_CPPv2NK4idol8Callback10best_boundEv"></span><span id="idol::Callback::best_boundC"></span><span class="target" id="classidol_1_1Callback_1aec34a610d1edb398e806774b2ead856e"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">best_bound</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Callback10best_boundEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Returns the best bound found so far </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the best bound </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Callback9terminateEv">
+<span id="_CPPv3N4idol8Callback9terminateEv"></span><span id="_CPPv2N4idol8Callback9terminateEv"></span><span id="idol::Callback::terminate"></span><span class="target" id="classidol_1_1Callback_1a7677b6fbabe697ffb24f43e68d23cadb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">terminate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Callback9terminateEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Asks the optimizer to terminate the optimization process as soon as possible </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8CallbackclE13CallbackEvent">
+<span id="_CPPv3N4idol8CallbackclE13CallbackEvent"></span><span id="_CPPv2N4idol8CallbackclE13CallbackEvent"></span><span id="idol::Callback::call-operator__CallbackEvent"></span><span class="target" id="classidol_1_1Callback_1a99638ea9268591c53e844518e68f35e5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../types/universal-callbacks/CallbackEvent.html#_CPPv4N4idol13CallbackEventE" title="idol::CallbackEvent"><span class="n"><span class="pre">CallbackEvent</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_event</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N4idol8CallbackclE13CallbackEvent" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This method is left for the user to write and consists in the main execution block of the callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_event</strong> – the event which triggered the call </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl>
+<dt class="sig sig-object cpp">
+<em class="property"><span class="pre">friend</span> <span class="pre">class</span></em> <span class="pre">::idol::CallbackI</span></dt>
+</dl>
+
+</div>
+</dd></dl>
+
 </section>
 </section>
 

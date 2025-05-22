@@ -633,6 +633,7 @@
         <name>operator()</name>
         <reimplementedby refid="classidol_1_1Bilevel_1_1BranchAndCut_1a040e394c1771737949fa3660fe764c05">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Bilevel_1_1KKT_1ac99523cef508bf19fa4e1e7489030551">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1MinMax_1_1Dualize_1ac733d33fe7eb77c85543fe491015c170">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic_1ac3833a3f85113998810c41600a67e6cd">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Bilevel_1_1StrongDuality_1a5c290149e6710aed0d9c62e733ce0383">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Bilevel_1_1MibS_1a759f9b3a6f6c9e971079d1f1c60434d2">operator()</reimplementedby>
@@ -644,9 +645,11 @@
         <reimplementedby refid="classidol_1_1GLPK_1a6b1158963e494d9a69d9c0d7422ee61d">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Gurobi_1af4e1888d7b0df311a74a7bd07146383b">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1HiGHS_1aa7bef94dfa6d31e04a8f23edc41655c7">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1JuMP_1aeff948b47faded04c33da351ad2a50dd">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Mosek_1ac6fdcf5f31dbcacd00d295dcffc14cfe">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Osi_1a22e7895a9df6a80cb9e35bd162eb4893">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Robust_1_1AffineDecisionRule_1a006a9f44f0e437c3ff128ef09c35c25e">operator()</reimplementedby>
+        <reimplementedby refid="classidol_1_1Robust_1_1Benders_1af042fa67854f27c372f96d91619fbd17">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a10cc684387e2c359ab2d1ac6ed1f0e5f">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Robust_1_1Deterministic_1a5ef7f4ccf27de3145f57f956d480a87c">operator()</reimplementedby>
         <reimplementedby refid="classidol_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a8541145070a97efab4ffbbd69edbd931">operator()</reimplementedby>
@@ -681,6 +684,7 @@
         <name>clone</name>
         <reimplementedby refid="classidol_1_1Bilevel_1_1BranchAndCut_1adc1a19d5b0396af1ea60cac82b8b8016">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Bilevel_1_1KKT_1a0a533ca659f0966b219b4477acefb866">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Bilevel_1_1MinMax_1_1Dualize_1a59285bbc53e45c596e6f1e37ebd95019">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic_1ae981926705e5940d80930c5eec5780c0">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Bilevel_1_1StrongDuality_1a2342647b8a07923fefba9c535bff7a36">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Bilevel_1_1MibS_1ac946ea69a4f3c45af62de29bac2f2b39">clone</reimplementedby>
@@ -692,9 +696,11 @@
         <reimplementedby refid="classidol_1_1GLPK_1a809d9ca31e9528bb44e74c0cf6b31de3">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Gurobi_1a59b695542c520ae3e659bd754d1aaaff">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1HiGHS_1a98335cd2bd680f89358bed27a0cac805">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1JuMP_1adb4813248aa61d2af8cb0bfe052e8ecc">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Mosek_1a6c9d22f331d48cc46c6016d8980d9a5a">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Osi_1a3595578d4bacf9c9c1e2376f50dc29dc">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Robust_1_1AffineDecisionRule_1a7f6130f11ed9acc79cd3f7510565d965">clone</reimplementedby>
+        <reimplementedby refid="classidol_1_1Robust_1_1Benders_1ab7090a2daeaf6eeb9cde558aa4a042f4">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a7e412a8c938b525e790c5159eb7a82f5">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Robust_1_1Deterministic_1a6ecd5d8ce60aeb8aa9cf24c8761353f2">clone</reimplementedby>
         <reimplementedby refid="classidol_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1ac287cbd81adbfe953b27638fc72f2e14">clone</reimplementedby>
@@ -769,22 +775,22 @@
     <detaileddescription>
     </detaileddescription>
     <inheritancegraph>
-      <node id="37">
+      <node id="43">
         <label>idol::DantzigWolfeDecomposition</label>
         <link refid="classidol_1_1DantzigWolfeDecomposition"/>
-        <childnode refid="36" relation="public-inheritance">
+        <childnode refid="42" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="16">
+      <node id="18">
         <label>idol::Robust::AffineDecisionRule</label>
         <link refid="classidol_1_1Robust_1_1AffineDecisionRule"/>
-        <childnode refid="15" relation="public-inheritance">
+        <childnode refid="17" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="43">
+      <node id="49">
         <label>idol::HiGHS</label>
         <link refid="classidol_1_1HiGHS"/>
-        <childnode refid="42" relation="public-inheritance">
+        <childnode refid="48" relation="public-inheritance">
         </childnode>
       </node>
       <node id="3">
@@ -794,20 +800,14 @@
           <edgelabel>&lt; Deterministic &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="33">
-        <label>idol::OsiCbc</label>
-        <link refid="classidol_1_1OsiCbc"/>
-        <childnode refid="32" relation="public-inheritance">
-        </childnode>
-      </node>
-      <node id="36">
+      <node id="42">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; DantzigWolfeDecomposition &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
           <edgelabel>&lt; DantzigWolfeDecomposition &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="25">
+      <node id="27">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; PADM &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
@@ -820,57 +820,57 @@
         <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="42">
+      <node id="48">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; HiGHS &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
           <edgelabel>&lt; HiGHS &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="41">
+      <node id="47">
         <label>idol::PenaltyMethod</label>
         <link refid="classidol_1_1PenaltyMethod"/>
-        <childnode refid="40" relation="public-inheritance">
+        <childnode refid="46" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="40">
+      <node id="46">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; PenaltyMethod &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
           <edgelabel>&lt; PenaltyMethod &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="17">
+      <node id="19">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; GLPK &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
           <edgelabel>&lt; GLPK &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="34">
+      <node id="38">
         <label>idol::OsiCplex</label>
         <link refid="classidol_1_1OsiCplex"/>
-        <childnode refid="32" relation="public-inheritance">
+        <childnode refid="36" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="15">
+      <node id="17">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; AffineDecisionRule &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
           <edgelabel>&lt; AffineDecisionRule &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="11">
+      <node id="13">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; Gurobi &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
           <edgelabel>&lt; Gurobi &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="26">
+      <node id="28">
         <label>idol::PADM</label>
         <link refid="classidol_1_1PADM"/>
-        <childnode refid="25" relation="public-inheritance">
+        <childnode refid="27" relation="public-inheritance">
         </childnode>
       </node>
       <node id="4">
@@ -879,10 +879,10 @@
         <childnode refid="3" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="32">
+      <node id="36">
         <label>idol::Osi</label>
         <link refid="classidol_1_1Osi"/>
-        <childnode refid="31" relation="public-inheritance">
+        <childnode refid="35" relation="public-inheritance">
         </childnode>
       </node>
       <node id="6">
@@ -891,19 +891,31 @@
         <childnode refid="5" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="35">
+      <node id="39">
         <label>idol::OsiSymphony</label>
         <link refid="classidol_1_1OsiSymphony"/>
-        <childnode refid="32" relation="public-inheritance">
+        <childnode refid="36" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="22">
+      <node id="24">
         <label>idol::BranchAndBound&lt; NodeT &gt;</label>
         <link refid="classidol_1_1BranchAndBound"/>
-        <childnode refid="21" relation="public-inheritance">
+        <childnode refid="23" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="38">
+      <node id="37">
+        <label>idol::OsiClp</label>
+        <link refid="classidol_1_1OsiClp"/>
+        <childnode refid="36" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>idol::Bilevel::MinMax::Dualize</label>
+        <link refid="classidol_1_1Bilevel_1_1MinMax_1_1Dualize"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="44">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; ColumnAndConstraintGeneration &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
@@ -917,7 +929,7 @@
           <edgelabel>&lt; MibS &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="13">
+      <node id="15">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; PessimisticAsOptimistic &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
@@ -930,10 +942,10 @@
         <childnode refid="7" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="14">
+      <node id="16">
         <label>idol::Bilevel::PessimisticAsOptimistic</label>
         <link refid="classidol_1_1Bilevel_1_1PessimisticAsOptimistic"/>
-        <childnode refid="13" relation="public-inheritance">
+        <childnode refid="15" relation="public-inheritance">
         </childnode>
       </node>
       <node id="7">
@@ -943,29 +955,49 @@
           <edgelabel>&lt; Cplex &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="24">
+      <node id="31">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; Benders &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; Benders &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; Dualize &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; Dualize &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="26">
         <label>idol::Mosek</label>
         <link refid="classidol_1_1Mosek"/>
-        <childnode refid="23" relation="public-inheritance">
+        <childnode refid="25" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="39">
+      <node id="45">
         <label>idol::Robust::ColumnAndConstraintGeneration</label>
         <link refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration"/>
-        <childnode refid="38" relation="public-inheritance">
+        <childnode refid="44" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="29">
+      <node id="33">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndCut &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
           <edgelabel>&lt; BranchAndCut &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="20">
+      <node id="41">
+        <label>idol::JuMP</label>
+        <link refid="classidol_1_1JuMP"/>
+        <childnode refid="40" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22">
         <label>idol::Robust::ScenarioBasedKAdaptabilityProblemSolver</label>
         <link refid="classidol_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver"/>
-        <childnode refid="19" relation="public-inheritance">
+        <childnode refid="21" relation="public-inheritance">
         </childnode>
       </node>
       <node id="10">
@@ -974,53 +1006,66 @@
         <childnode refid="9" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="23">
+      <node id="25">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; Mosek &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
           <edgelabel>&lt; Mosek &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="30">
-        <label>idol::Bilevel::BranchAndCut</label>
-        <link refid="classidol_1_1Bilevel_1_1BranchAndCut"/>
-        <childnode refid="29" relation="public-inheritance">
+      <node id="32">
+        <label>idol::Robust::Benders</label>
+        <link refid="classidol_1_1Robust_1_1Benders"/>
+        <childnode refid="31" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="21">
+      <node id="34">
+        <label>idol::Bilevel::BranchAndCut</label>
+        <link refid="classidol_1_1Bilevel_1_1BranchAndCut"/>
+        <childnode refid="33" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>idol::OptimizerFactoryWithDefaultParameters&lt; JuMP &gt;</label>
+        <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
+        <childnode refid="1" relation="template-instance">
+          <edgelabel>&lt; JuMP &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="23">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt; &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
           <edgelabel>&lt; BranchAndBound&lt; idol::DefaultNodeInfo &gt; &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="12">
+      <node id="14">
         <label>idol::Gurobi</label>
         <link refid="classidol_1_1Gurobi"/>
-        <childnode refid="11" relation="public-inheritance">
+        <childnode refid="13" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="18">
+      <node id="20">
         <label>idol::GLPK</label>
         <link refid="classidol_1_1GLPK"/>
-        <childnode refid="17" relation="public-inheritance">
+        <childnode refid="19" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="31">
+      <node id="35">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; Osi &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
           <edgelabel>&lt; Osi &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="27">
+      <node id="29">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; KKT &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
           <edgelabel>&lt; KKT &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="19">
+      <node id="21">
         <label>idol::OptimizerFactoryWithDefaultParameters&lt; ScenarioBasedKAdaptabilityProblemSolver &gt;</label>
         <link refid="classidol_1_1OptimizerFactoryWithDefaultParameters"/>
         <childnode refid="1" relation="template-instance">
@@ -1031,10 +1076,10 @@
         <label>idol::OptimizerFactory</label>
         <link refid="classidol_1_1OptimizerFactory"/>
       </node>
-      <node id="28">
+      <node id="30">
         <label>idol::Bilevel::KKT</label>
         <link refid="classidol_1_1Bilevel_1_1KKT"/>
-        <childnode refid="27" relation="public-inheritance">
+        <childnode refid="29" relation="public-inheritance">
         </childnode>
       </node>
       <node id="9">

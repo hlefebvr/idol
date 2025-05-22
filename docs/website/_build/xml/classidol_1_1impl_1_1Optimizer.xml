@@ -231,9 +231,9 @@
         <definition>virtual void idol::impl::Optimizer::build</definition>
         <argsstring>()=0</argsstring>
         <name>build</name>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a630789e6aa5c4360b9d90f09365f446b">build</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a630789e6aa5c4360b9d90f09365f446b">build</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a630789e6aa5c4360b9d90f09365f446b">build</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ac6d2ca51fccd54725b953b00648cd0cc">build</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ac6d2ca51fccd54725b953b00648cd0cc">build</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ac6d2ca51fccd54725b953b00648cd0cc">build</reimplementedby>
         <reimplementedby refid="classidol_1_1Algorithm_1a7827fa271c95cd5bfd474af2a702c094">build</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a6db70f15ec2cb0c8c984c06439277119">build</reimplementedby>
         <briefdescription>
@@ -249,17 +249,19 @@
         <definition>virtual void idol::impl::Optimizer::add</definition>
         <argsstring>(const Var &amp;t_var)=0</argsstring>
         <name>add</name>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ae68fe72079e1eba2ec7d464a1f7148bb">add</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ae68fe72079e1eba2ec7d464a1f7148bb">add</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ae68fe72079e1eba2ec7d464a1f7148bb">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a6b04405ac487c1efa2c6a3591381c1cc">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a6b04405ac487c1efa2c6a3591381c1cc">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a6b04405ac487c1efa2c6a3591381c1cc">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1acdbf359299a7b41bfe225ae1626ef8c9">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1afa000f2321fc9e130f40bff6b0b3879c">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1aef025c5a0d1c591ab904d0aa8734dc35">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a4315942f19816c7009158afc8ac0c39f">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1af2a744ec9d5e3e6e4c42784c8bc62c76">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a1fd3cc4e69e87ee91b1cc60be6e6ea0e">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a7011cde4fb7d187f239edbc1eeaa5a67">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a55b901918462462bbf4591367cc89467">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1af5a16f3ec8e5ff0bce98ebd04b9b517e">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a2fc32d9c3c1ef4509321b51ba0fd385a">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1afbb662599c3e45d0f2beb7957b1df5fe">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a06c61425968f683e3290fc7d86e79715">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1aeccf2a5b80726147f538cd2a982f5d62">add</reimplementedby>
@@ -280,17 +282,19 @@
         <definition>virtual void idol::impl::Optimizer::add</definition>
         <argsstring>(const Ctr &amp;t_ctr)=0</argsstring>
         <name>add</name>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a39c8f0f97dd71dbb94bd2c98f3bf0de5">add</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a39c8f0f97dd71dbb94bd2c98f3bf0de5">add</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a39c8f0f97dd71dbb94bd2c98f3bf0de5">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ad6e123a70389780dae4c6537aa62d06c">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ad6e123a70389780dae4c6537aa62d06c">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ad6e123a70389780dae4c6537aa62d06c">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1adf827f2b34b3af075cc5b43064fb6784">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1add97150ac6a3d8b967741d13cd399d7e">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1af9b50758af181114cac42bfef994660d">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a62edf89f2b835168165da1e03ba92184">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1ad2e31c02f795f2030ad398f6ffd89be0">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a80b374ce80cb85435cdac56833ae5e26">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1ae78d4653f157404fe3600008a535158c">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1af2da0e910ec03da70335c14454dd2fec">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a1a1ac0b006eeeb1da0e89f34ca7a0663">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a2aef0d09d05b4bd2dadd3c00c46cd3de">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a34ebe4addcdbfb90255575ec7cb0e167">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a15585b3efc7409a049d6475b2011db0f">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1aea5e70632ef5d4c3f1897ac39765fd24">add</reimplementedby>
@@ -311,17 +315,19 @@
         <definition>virtual void idol::impl::Optimizer::add</definition>
         <argsstring>(const QCtr &amp;t_ctr)=0</argsstring>
         <name>add</name>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a007f09ad057ab0298292a2c39b97e505">add</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a007f09ad057ab0298292a2c39b97e505">add</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a007f09ad057ab0298292a2c39b97e505">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aabf41c65984959c6993488354a1732e7">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aabf41c65984959c6993488354a1732e7">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aabf41c65984959c6993488354a1732e7">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a57a45e051de6bda14c2814cb7cacbea6">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a2d8f2eed3e8413ec636b6149da7e7933">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1afffd122366e399bdc5d69d4be2e198b9">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a334b6e8a5c9006f52433939755002cf4">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a58a65daeef1a487afa5ca739e63ac570">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a873e0f526c708b2cc8168dd32ebacc14">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a9d555d92a937712fb12bac28d68e0e0d">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a7335ec8ebd774e58118042f98da2ed04">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1acce9211b1c50c1d2935663194cf344c1">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a4db964321ae72ba53e4f8799c8a24ff7">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a4e440694e157d545730ab9aadda9a29b">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a1e208acec08706fa90202b5bbb64a6f8">add</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a8a3ed4264a9ef4218a9975a8c1bbc229">add</reimplementedby>
@@ -337,22 +343,44 @@
         </inbodydescription>
         <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="56" column="18"/>
       </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a86735e064591fb4f00c3499a4b51de87" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::add</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr)</argsstring>
+        <name>add</name>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a486aca612e6750e004ac078a9dea0d43">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a486aca612e6750e004ac078a9dea0d43">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a486aca612e6750e004ac078a9dea0d43">add</reimplementedby>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="57" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="57" bodyend="59"/>
+      </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a922c443d01523ee75f16f8cba99ee159" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
         <definition>virtual void idol::impl::Optimizer::remove</definition>
         <argsstring>(const Var &amp;t_var)=0</argsstring>
         <name>remove</name>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a1a7cb07f04700f1201e8e5582c77896c">remove</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a1a7cb07f04700f1201e8e5582c77896c">remove</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a1a7cb07f04700f1201e8e5582c77896c">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a2a2f242f99524cbe48ad5fcfac27d450">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a2a2f242f99524cbe48ad5fcfac27d450">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a2a2f242f99524cbe48ad5fcfac27d450">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a0ac58ea2342bb5b556d5f473bef58403">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1afe9d6238e5f39bd33db384e3018883b7">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a2c8f060eaa736ad8b25658b81ed00e26">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a496aabba31ccff5f4253f594c54e315c">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a17acb25284ef04dfa933996a1e1bbae2">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1ac8ff89b9c65167786d2e5aeec5d2fe52">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a79343ac662c41bc4eadcbb5fb280f62a">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a5f8357b0938008da4dc22dd671654a6c">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a5a03e9539131c626e8a7fbb61a6b1a33">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a40fc3d5306b8a357821671198afdacdf">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1aa8ccdb224e38688ed7847521b2780285">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aee10d6f19d5ac6309c1adcb4742cc113">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a0f2e6a63f99ae34172e5a0dc0253f333">remove</reimplementedby>
@@ -366,24 +394,26 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="58" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="61" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a5c021fd9b686acbb6d3b8ee38c7eff9c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
         <definition>virtual void idol::impl::Optimizer::remove</definition>
         <argsstring>(const Ctr &amp;t_ctr)=0</argsstring>
         <name>remove</name>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a722b4d13c44fc48634e5455f6b5e8334">remove</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a722b4d13c44fc48634e5455f6b5e8334">remove</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a722b4d13c44fc48634e5455f6b5e8334">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a27e412484d11fcfd55f02dce3edff22b">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a27e412484d11fcfd55f02dce3edff22b">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a27e412484d11fcfd55f02dce3edff22b">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a85fbb34adf6e7870ec37811343cc767c">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aafbdc9cdb343ba850b335d5cf58413c5">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a917404f0057d9a433882c12ad80123d3">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a920571977fc24f58159925aa40654060">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a77d2c96142a4952644b3779a3e9cf17d">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a103298527511b23f601d9b3d3e011794">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a3f9ebb72a763d99a2043b09e91c35011">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1ae429ba4dd0cf5fb890e1e27a242c4809">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a7c9b0f1156ad6fb42e37148cbed07534">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1afd8936ddc5f020bbe03b2962ac1d74e2">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a838e5b1d474529dc648c817b54d5696c">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a23fd13992807566b41a50c661dc23903">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1aa98987f6724d3074ab273773ca256c07">remove</reimplementedby>
@@ -397,24 +427,26 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="59" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="62" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a8f30740f64bd1bac13b7de206e781c7b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
         <definition>virtual void idol::impl::Optimizer::remove</definition>
         <argsstring>(const QCtr &amp;t_ctr)=0</argsstring>
         <name>remove</name>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a85690c369dd198e9aa2ba265a980c18a">remove</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a85690c369dd198e9aa2ba265a980c18a">remove</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a85690c369dd198e9aa2ba265a980c18a">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a5ed4534df7f62284ead3aeedf54140ba">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a5ed4534df7f62284ead3aeedf54140ba">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a5ed4534df7f62284ead3aeedf54140ba">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1af538ce058576f37573cccff977368e14">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aaf08c1b57a473a4165db7c69f5b0f8a0">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a8a503d34819f6ec9d8541ae356e45ca6">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a6866f3cf07ff5ef791978b24d291ed57">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a74cbc75299b912b7012976db69ca8545">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1afd79a4ae68ed85ae558b7bf3706d08dd">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1ace08ec3a0bb0489125484d5f4511c668">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1ad63b95d4f486e4fdaa976944c8da22e9">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1aff1aed061c0b17a3bcd5b2ee9efc976f">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a5f2b7aec2583d12ce15d610f00ea5c98">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a11a6363e658616d5c56e226c89ac39c3">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aed025fe51062db871112ac45f2367cc2">remove</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1adea757e758693d7ea132f9b4bb172e59">remove</reimplementedby>
@@ -428,24 +460,46 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="60" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="63" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a29b91a6040358d614f50b592917baf39" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::remove</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr)</argsstring>
+        <name>remove</name>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a0552e16fd81c78e261f7031cfeb20d92">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a0552e16fd81c78e261f7031cfeb20d92">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a0552e16fd81c78e261f7031cfeb20d92">remove</reimplementedby>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="64" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="64" bodyend="66"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a96d15823685c0e6d2966ef35b26a9503" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
         <definition>virtual void idol::impl::Optimizer::update</definition>
         <argsstring>()=0</argsstring>
         <name>update</name>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a036d978c29e99ab33b64f6dcbdd23969">update</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a036d978c29e99ab33b64f6dcbdd23969">update</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a036d978c29e99ab33b64f6dcbdd23969">update</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ad47d7ea59893bd1180d9355920489458">update</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ad47d7ea59893bd1180d9355920489458">update</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ad47d7ea59893bd1180d9355920489458">update</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a9973381b51311328526e2762834dd6f3">update</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1acaed0603bec3264cc95c44dd4a11b941">update</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1ae4abb300b812e3e2e4f0874b900991a9">update</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a32b37bae54fe1519372d9c985f610e2e">update</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a2eca29c8370d81c7cf6bd1ec9a12cc15">update</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1af9fee47df71cb4269f75256290d24a36">update</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1af77a3b0ef7a7d2169c74cfc0f86a5676">update</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a6056f02d3eb2e49d9a52b2626a7da0af">update</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a7677a49a566f602ce49d7981912ddb6d">update</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1adb732ebfdc4d578d5960c1695c011935">update</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a4939993aa1f473ff676284808175d4b5">update</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a7a7777da12ba8fded91c28742001eb35">update</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a385b1f56b173a5d66aabeff54ec51913">update</reimplementedby>
@@ -455,24 +509,26 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="62" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="68" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a799b0b5d874b3558c48e4d1cef6013a8" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
         <definition>virtual void idol::impl::Optimizer::write</definition>
         <argsstring>(const std::string &amp;t_name)=0</argsstring>
         <name>write</name>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1afe001d934289f73d5027667a2ad724d3">write</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1afe001d934289f73d5027667a2ad724d3">write</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1afe001d934289f73d5027667a2ad724d3">write</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a6e7e481c584e219797f6f192513aba5a">write</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a6e7e481c584e219797f6f192513aba5a">write</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a6e7e481c584e219797f6f192513aba5a">write</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1aad4dda0bc32b96c114918205fd5ea7c5">write</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aa24611e3b988630bba53007c34361e7f">write</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1afd49bac34eadf6d7a75228609f484416">write</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1aaf041eaf691ec74b75288cc6a942ff2a">write</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a9391caaf86ca4c0b12ffb518a61f1265">write</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1aa0f036cd4df87874a9856448b5f72b7c">write</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1ac7afea9979ae7dff688017b9d130291c">write</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a88bcc22fac21f2c60c6c8c96692d961a">write</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a046ef64bbaa4e7f7792e2efa57adf681">write</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1aec985f3784df3a332d48efd390213f5b">write</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1af6e5f09e29477e7885261f0f5350e6ca">write</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1abf1685f850844c7d21c944c84d4c8db8">write</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1ab0e78d96713b9b3d7369a890fccf912f">write</reimplementedby>
@@ -486,7 +542,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="64" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="70" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a23401d6f4b9166f7d941a696d4cef2e9" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -499,7 +555,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="66" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="72" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a59c7ad8b4b2f9700649bbf008a7876ed" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -509,6 +565,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a6011ffe600f70985dbb808dda523ac73">hook_before_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a4956a2c6102aebf3a9484d0ff7f96e46">hook_before_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a4a855c27efcffefc8f78fd16dc9fe7ad">hook_before_optimize</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1af06758e58c0c572bfa327c62b18913ab">hook_before_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a4850843cd6b61588860a559650aac54d">hook_before_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1aab8be367942c63dc38b8d9b1a8d62fac">hook_before_optimize</reimplementedby>
         <briefdescription>
@@ -517,7 +574,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="68" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="68" bodyend="68"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="74" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="74" bodyend="74"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1aac4fef8007f641e8226be51f92075fde" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -526,6 +583,7 @@
         <name>hook_optimize</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a940dce952c6cd8607929a43c3b7d6f98">hook_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aeffd2f5c048f82de0e104dae6dc0369d">hook_optimize</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a1713ee6b27be8055680bdd721611f0bd">hook_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a3b3685c88aeda36eb917ed702b8be10c">hook_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1aa02b2244d1f78ee9fb8460ab272899ae">hook_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1ae9dbab65f83174e747d5589fcb7e896f">hook_optimize</reimplementedby>
@@ -534,6 +592,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1a14d425fc69a704408076b51891823280">hook_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1a0b709dbfe03390262f6901724de757f5">hook_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a07585dbc92012254389a3ea6a80a338d">hook_optimize</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1ae85cf48fb21dc99812e6e41aa348767a">hook_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a5819ca11be47b5925cb01babce8c3e6b">hook_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a4ff797fd3379f5ec71d5344c5589855c">hook_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a58da088099c6d2b6f1872d9e4efbac80">hook_optimize</reimplementedby>
@@ -543,7 +602,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="70" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="76" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1aef37b30f99f5a244584039750d0ba140" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -558,7 +617,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="72" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="72" bodyend="72"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="78" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="78" bodyend="78"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a9ad3e14177821752eb86c58195f1df46" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -567,6 +626,7 @@
         <name>set_solution_index</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a51936f18e61f6dedb355e78ef2801ad8">set_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a4695667bc7ab2f0716d1fee3aa6ad026">set_solution_index</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1aad4cd450b506b18f61158bb2a6bddb2a">set_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a40e77ca7f816b9a5736b6108f2a5b9f6">set_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1ae02bba8adee893f9c8aee033c631ba42">set_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a5bd6ade2b68ec8768bae2eefdccbb3eb">set_solution_index</reimplementedby>
@@ -575,6 +635,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1ae8ad6a3d9b98b623473acd8137e03e4a">set_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1a1afb4f54cf2507f8c2024e28141a2e7b">set_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1aeea41865934b423478cb5f67def930c6">set_solution_index</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a920c8040f8e0bd01c2ef389fbc128094">set_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a134ea219a1257738e5adff2c241f8213">set_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aa59d1abfeea220eb6bc60a90c4c34d18">set_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a5a00ae7d056c9c3c3d6aeffa80d51c95">set_solution_index</reimplementedby>
@@ -588,7 +649,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="74" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="80" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a25a53345053496a7fadd9648df49d254" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -597,15 +658,17 @@
         <name>update_obj_sense</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a2207fcee68b096d6408d37a9b345c1d4">update_obj_sense</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1ad32b3c1e82f1608597a43bd03da46956">update_obj_sense</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a7fc99a2c4658fe78f134e79d3385070f">update_obj_sense</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1af8293b9083abbe7142d90cea45b8c43c">update_obj_sense</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a00f5e03e5f5540c2dd591d88bb157b77">update_obj_sense</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a6f9883562fa7ef834bcdfb661141f490">update_obj_sense</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a6f9883562fa7ef834bcdfb661141f490">update_obj_sense</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a6f9883562fa7ef834bcdfb661141f490">update_obj_sense</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a9a0b7ab294656fc1b5885c4cd0195ec4">update_obj_sense</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a9a0b7ab294656fc1b5885c4cd0195ec4">update_obj_sense</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a9a0b7ab294656fc1b5885c4cd0195ec4">update_obj_sense</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a9289ef61be6aadb88a821c2747fa87ee">update_obj_sense</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a9a4cd3cd2cae3b8bea1099059e2fb805">update_obj_sense</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a3a4098c09bdb52c3eac705613bc4b802">update_obj_sense</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a57502fab15f14cfb97a6d42b0d34b89e">update_obj_sense</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a86cf80cea52ad12888ab42877e939c26">update_obj_sense</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a50776a11eec4f5044ca8c7b01204af7f">update_obj_sense</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a214feae53d8ac6c359158ca9a76fc347">update_obj_sense</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a761ea82f8c980297c0eb91a69b366af5">update_obj_sense</reimplementedby>
@@ -615,7 +678,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="76" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="82" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab0f43a11a4c92dbd420df4083f074fd5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -624,15 +687,17 @@
         <name>update_obj</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a5a7b5bc196222c825225a145fb0f2e06">update_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a812a9697e28ec294c89b577598edcde8">update_obj</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1ab3595cd4fd8119154ea0bda3f7af3fd1">update_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a6b1342e2ccfe3929e15048087f38220d">update_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1ae88307ead150892f3d8c868cafd68fe8">update_obj</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aecbceed05a1697acb2de727182e55656">update_obj</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aecbceed05a1697acb2de727182e55656">update_obj</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aecbceed05a1697acb2de727182e55656">update_obj</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a379439d595fe61e4eafa50c04c6745a8">update_obj</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a379439d595fe61e4eafa50c04c6745a8">update_obj</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a379439d595fe61e4eafa50c04c6745a8">update_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a8a5fed86e0a7297642704a7e399a8526">update_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1ad4089f56afc1ed9619fbb719d6bcd322">update_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a7d0b0dffc6c0faa7af8f5e2279c0255e">update_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a42400ded78a7ac5be5689b62ac6a9b10">update_obj</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a104205c16717e4e9ae2231d19bafe5c0">update_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1af46278cc6563cbeb784a18b137b288c5">update_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a0f76751c05dc77f3ae5f3526393d65db">update_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1ab64c2aea04bc4cad00e3537682e6adcb">update_obj</reimplementedby>
@@ -642,7 +707,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="78" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="84" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a1cbf5571c1dec27a41a6e9f0e19db124" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -651,15 +716,17 @@
         <name>update_rhs</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a7fb9d515f920391cef2485b67a20a811">update_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1ad523fa3c1c497252d14866d39a559edc">update_rhs</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a8a0f0937e3157f33205e1e5802571fab">update_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a75b77ed0377ef9bb0700d0a0133ec91e">update_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a9f50bd9a3939154a9ac5b43ce9274daf">update_rhs</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ac5083ad9bce94d8d0fc398e65e05ecb7">update_rhs</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ac5083ad9bce94d8d0fc398e65e05ecb7">update_rhs</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ac5083ad9bce94d8d0fc398e65e05ecb7">update_rhs</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a9946479443d34b183d31c8a92de0e80a">update_rhs</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a9946479443d34b183d31c8a92de0e80a">update_rhs</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a9946479443d34b183d31c8a92de0e80a">update_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1ae296c17ab6b0f177142ce71957fe9ae1">update_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a3045431a4829919d93d8bc305266ac29">update_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a720ed03090321337938c332912008823">update_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a58e7fa50c7b4ee889ab55ddcb6d3d553">update_rhs</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a924abd3092d06229198555d1adaa442d">update_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a174eadfac52c6fe0c2ace5a2c75d376c">update_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aa6c654216fa018e73f14c2b1852cb9a9">update_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a0ab870ef3add9aefbb4b6e3bedc893a8">update_rhs</reimplementedby>
@@ -669,7 +736,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="80" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="86" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a649970fd70f822ff3565118b23503a18" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -678,15 +745,17 @@
         <name>update_obj_constant</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a967e3ff95e1a845e6f81f60e354bda4a">update_obj_constant</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a7065fb541464491e8aae9a2d473a2d22">update_obj_constant</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a6ca05ed4f59f7f41cfb9cd9b9cb8adfa">update_obj_constant</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1aa6c94051342a91b7f945ec8dafad15c9">update_obj_constant</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a2bff6a97c1b376dd770ab43a95f5b370">update_obj_constant</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ae4facf4fab6fdfa8f7723d0e4f0c4d76">update_obj_constant</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ae4facf4fab6fdfa8f7723d0e4f0c4d76">update_obj_constant</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ae4facf4fab6fdfa8f7723d0e4f0c4d76">update_obj_constant</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aadada370164034f9cb7e303ae0bceec7">update_obj_constant</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aadada370164034f9cb7e303ae0bceec7">update_obj_constant</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aadada370164034f9cb7e303ae0bceec7">update_obj_constant</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a5299afcf4f801f2773c54915caada951">update_obj_constant</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a4f4043db356e9f6ff1ff0adf2a009226">update_obj_constant</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a56d938fa93ecc9ad058ad70f6add6c14">update_obj_constant</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a32ae76c1ab1f24540cbffdbfe957763f">update_obj_constant</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1ac1919dd10428021f4b66b04a24d84ae2">update_obj_constant</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a0ef2915cebdc07058b448cefbb9cba2a">update_obj_constant</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a9b620f0614016b5edd8539b8db7ea872">update_obj_constant</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1aa510ee02f59658ae6a3bd634442f5c35">update_obj_constant</reimplementedby>
@@ -696,7 +765,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="82" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="88" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1abbbeaecd791d91037912dbea1cc3abe4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -705,15 +774,17 @@
         <name>update_mat_coeff</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a5424fe1dac1c428aab66ecd4689af479">update_mat_coeff</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a4e7d9e9bfad1e4fe044692cfb31b13cd">update_mat_coeff</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a5e0b167d6f47ee9f910544b0785a4a1a">update_mat_coeff</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a7f43e1beee76194f7dd1be52e234f8f8">update_mat_coeff</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1ac18de1f69c3a757c752013198d0e3d3f">update_mat_coeff</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a9e779d8f2bd1c01ff5bbaa42a03c757f">update_mat_coeff</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a9e779d8f2bd1c01ff5bbaa42a03c757f">update_mat_coeff</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a9e779d8f2bd1c01ff5bbaa42a03c757f">update_mat_coeff</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ac784b860e68c0fdc00479fcc58e493ec">update_mat_coeff</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ac784b860e68c0fdc00479fcc58e493ec">update_mat_coeff</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ac784b860e68c0fdc00479fcc58e493ec">update_mat_coeff</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a19aebade58013182ee08135a59243b28">update_mat_coeff</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a618612f9a41caa008c74e6c6fcce2223">update_mat_coeff</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a2f5dc0adf661d9a04e875ac436a1692a">update_mat_coeff</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1aa01bc478c3d47d40d97496fab6fbe75a">update_mat_coeff</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a7bc5bbd0d2e37818fc06c90b78fc4180">update_mat_coeff</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1af9dcf537af57044356143f077d1b20d8">update_mat_coeff</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a1227a5010ee65718253610b35d5e5e4f">update_mat_coeff</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a707c3076969febce45899e157250a710">update_mat_coeff</reimplementedby>
@@ -731,7 +802,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="84" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="90" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a052484a0897b8994517805c284b12cb6" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -740,15 +811,17 @@
         <name>update_ctr_type</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1ae2514181a4b0cb79592b4183a1b68ceb">update_ctr_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a389f0dcc00e678e7ac12f6dce013aac7">update_ctr_type</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a75dd4e97a981d9b4289cc6a5c22dbfaa">update_ctr_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1af5d1b5e1055006728f9596ed60e35d21">update_ctr_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1afe0a0f801c94fd5c9a60310b84f1d5bf">update_ctr_type</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1afb8ad7be7c76b615c208dd3350b64c99">update_ctr_type</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1afb8ad7be7c76b615c208dd3350b64c99">update_ctr_type</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1afb8ad7be7c76b615c208dd3350b64c99">update_ctr_type</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a04d104e84c5e3abd5f23334c146b8219">update_ctr_type</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a04d104e84c5e3abd5f23334c146b8219">update_ctr_type</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a04d104e84c5e3abd5f23334c146b8219">update_ctr_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1aee9f0ad78d68e9f4d17f79941a6a2150">update_ctr_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a7b88fae218deeab2d2685760748bc0e2">update_ctr_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1ad6d0572c08696021dd1b41ea35cdc2a3">update_ctr_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1ab9e9dd7196c79bc0fe01ba4555448c6e">update_ctr_type</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a65dab77a51706d954860542185953d4d">update_ctr_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1ad3ffdf066871289767234d6bdcba269c">update_ctr_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a1c2ab3f67487bb9eb1f219bbee0ad3e2">update_ctr_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a7d28506bf4fada8037469dd488b345bc">update_ctr_type</reimplementedby>
@@ -762,7 +835,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="86" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="92" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1abbdd8996efcaf9e25066f38ceb6d1a94" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -771,15 +844,17 @@
         <name>update_ctr_rhs</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a34efda3b8cb1b113fd10a36961a41501">update_ctr_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a39930cc0519084bbe3b8bd6fc630f818">update_ctr_rhs</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a643c850798fa80e7355d6677d5b1e1b4">update_ctr_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1ae95ba805fa4e10b59cc4cda5f46b89de">update_ctr_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1aa23aeb0c8a70c1536dd9cb1c94576a87">update_ctr_rhs</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a8b1ec93b5e4882c819d46b41fd557b54">update_ctr_rhs</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a8b1ec93b5e4882c819d46b41fd557b54">update_ctr_rhs</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a8b1ec93b5e4882c819d46b41fd557b54">update_ctr_rhs</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1adf46c5ada88ac610b74c9b0c42475a6d">update_ctr_rhs</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1adf46c5ada88ac610b74c9b0c42475a6d">update_ctr_rhs</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1adf46c5ada88ac610b74c9b0c42475a6d">update_ctr_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a251ce2dccb97b40598b263388f6697e5">update_ctr_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a89a6604805caab04b2f54f7c45209eb0">update_ctr_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a2de2ccb92da1184c30d628b98e1692cc">update_ctr_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1afc9986c3f5e92f35fa703c15889ce37a">update_ctr_rhs</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1aab76c832e7ff70041cf4bb40a4909e76">update_ctr_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a84ae03b9eae4999f807b2b34f93c5cab">update_ctr_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a253f6380274b4ecad9ed3e0947d09272">update_ctr_rhs</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a4060bcc2ec6b7d888f7055a7b943fc5c">update_ctr_rhs</reimplementedby>
@@ -793,7 +868,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="88" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="94" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a06c4c149d5a16be2a7bf436e3c94cdc2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -802,15 +877,17 @@
         <name>update_var_type</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a3feb68c9328439369a134ee3d09d2a94">update_var_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aff1ae85ac443601d379bb29d97605b12">update_var_type</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1af644ccbf419b51a1fc7148cd47e40a4f">update_var_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a5a78b4eda06abd3c37fcc56ec8d69c3e">update_var_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1aeb04574580f9faccfb8a352f6c0c7bec">update_var_type</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aee58ad2e9eb81b9bed6257316e1d133c">update_var_type</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aee58ad2e9eb81b9bed6257316e1d133c">update_var_type</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aee58ad2e9eb81b9bed6257316e1d133c">update_var_type</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a577b41037b1b6a0e6d7388c8593af95d">update_var_type</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a577b41037b1b6a0e6d7388c8593af95d">update_var_type</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a577b41037b1b6a0e6d7388c8593af95d">update_var_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1ae2d64176d0ee067f9bca4120093279e4">update_var_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1aee51b152ef6a4d07ed2c5a25d7eaee3f">update_var_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1ae0238dfcc6771a7fa9d686eb10e5c224">update_var_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1aca6f8f78f10c19d239a790f610856509">update_var_type</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1ab0e03fdc1b689d32171a27b62082b1f3">update_var_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a40c9b18213140a43108af45a144e56a6">update_var_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a4880a12706b14ceb2a51f2422a939cb8">update_var_type</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a29231910f85acd18db78697f120bf5f1">update_var_type</reimplementedby>
@@ -824,7 +901,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="90" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="96" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1aef3dabf3018202b60d9ae6254c481700" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -833,15 +910,17 @@
         <name>update_var_lb</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1aa520b53a0dcd69d833baffbb39c3af72">update_var_lb</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1ae018d3206c6926bbb3a0c69e6c9cd926">update_var_lb</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a7bf41e7b6fbfcfd6ad719cbf9c6aca83">update_var_lb</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1ae7b80faf1b672d8ca691e8203c3808f2">update_var_lb</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a15a1cacd9be0384805445aa7351556b3">update_var_lb</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aaabad07bfd172794f320fc25340ca8dd">update_var_lb</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aaabad07bfd172794f320fc25340ca8dd">update_var_lb</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aaabad07bfd172794f320fc25340ca8dd">update_var_lb</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a2a25e54be0be97c2de3072b7c89f1045">update_var_lb</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a2a25e54be0be97c2de3072b7c89f1045">update_var_lb</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a2a25e54be0be97c2de3072b7c89f1045">update_var_lb</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a7b120e8fcdc53bc85daf31f4fe13f343">update_var_lb</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a2a8f100edcc4562c1969947ea10d1328">update_var_lb</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1ae98ce04a409b4e74b947e75a4a39a351">update_var_lb</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a350a9922ac865cd92b627dec11cbe510">update_var_lb</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1ac1ea3cd5c5c23aaa006233295e45c46e">update_var_lb</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a5504b033def85a50577a05b7a456e02f">update_var_lb</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a27403e7e683a8ce470f9a48c3d52ba44">update_var_lb</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1ac8442b2da0d04838de653cc45406dcd1">update_var_lb</reimplementedby>
@@ -855,7 +934,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="92" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="98" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1aa6384ec94a6006df19907e140b8e3f67" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -864,15 +943,17 @@
         <name>update_var_ub</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1abed4b53493bbe6e25882f5d0d033ff4f">update_var_ub</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1addaee59c0a70be4b888bc6ce16cde38c">update_var_ub</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a6264592d3fa68e50cd2d6aaee67b17dd">update_var_ub</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1ad9303a9849c0f30f1f7748852cf71013">update_var_ub</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1abe952934a12ce4af5828624b17b02203">update_var_ub</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ae8c96a36adda78e467de03f50017b1c3">update_var_ub</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ae8c96a36adda78e467de03f50017b1c3">update_var_ub</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1ae8c96a36adda78e467de03f50017b1c3">update_var_ub</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1af80a9f62a386edae5113ed565ef4507a">update_var_ub</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1af80a9f62a386edae5113ed565ef4507a">update_var_ub</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1af80a9f62a386edae5113ed565ef4507a">update_var_ub</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a504c169b5b218a2931944a2e7cdebfe9">update_var_ub</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a28d4d2d6efb3579245cdfc33b7c4c6b0">update_var_ub</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a6fb4a0961609b4f0b75f1a619c30fdaa">update_var_ub</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a6aff5666143368c5e016bab6c200b0d0">update_var_ub</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a1c61c6902f44e82ac36327ed1f494551">update_var_ub</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a2c966d276ad359bc9f33cfca1d77fd40">update_var_ub</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aa11b4ddad9f8816c380ba8f041548737">update_var_ub</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a2539748e986fa3cdd539b094e4aea854">update_var_ub</reimplementedby>
@@ -886,7 +967,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="94" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="100" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ae226b270b4aafede630156e30f41fea7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -895,15 +976,17 @@
         <name>update_var_obj</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a7298d7e39393a4c308c8388d645e02ca">update_var_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a93f3fac1da5bcec19a2d9b7c57c6fd55">update_var_obj</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1af52ec1e185ac7b0ba2f8908d8d624437">update_var_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a209b4dcae2a9565dcd873bbe403a54cc">update_var_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1ae894908c3526b4c5aedd2698959aafbe">update_var_obj</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aa2d573d4de095236ecf3bf23ad994386">update_var_obj</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aa2d573d4de095236ecf3bf23ad994386">update_var_obj</reimplementedby>
-        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aa2d573d4de095236ecf3bf23ad994386">update_var_obj</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aae63066627a541a213f78ec46e539a42">update_var_obj</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aae63066627a541a213f78ec46e539a42">update_var_obj</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1aae63066627a541a213f78ec46e539a42">update_var_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1afe460d5f77132e31d38dae319d545b24">update_var_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a5d765c4745559a01430f0ad04a25cbdb">update_var_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1ae982c2c74bd98bafe1bfbdf67be53c3b">update_var_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1ad34b75a8d7b6342c5877c7e957585195">update_var_obj</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a58dcf6dfad4e4a3ad329fcdfa4a70ee9">update_var_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1ae24219cc97c098ef9c416b1cee2548c3">update_var_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1aec4c8ef8e4bd8ebb193abba47901c434">update_var_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a733cf49ade27ce3acefb5ceb6e725ad4">update_var_obj</reimplementedby>
@@ -917,7 +1000,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="96" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="102" column="18"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -936,7 +1019,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="98" column="14"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="104" column="14"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a87f1a4dcd75963657f0577387bfa3dea" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type></type>
@@ -949,7 +1032,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="100" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="106" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a1f208d4de2375b957812c36009a9a900" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>std::string</type>
@@ -958,6 +1041,7 @@
         <name>name</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1ab4574c2498943eede93aacb63eb551cd">name</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a9d499ac404e8a58be8103cbe7459c1fb">name</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a1387fd933ed2d1934b10ec1b0186bdf0">name</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1aa5a3fa269d32621f633cba20777da233">name</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a686f4b87a904fc43ced52e763e045efb">name</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a8748ceb07cfbfb02085b70e32b86d3c5">name</reimplementedby>
@@ -966,6 +1050,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1afae0cbe96d1e7b74c39e4900cc07ef0b">name</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1adf06668fcc3794891267a55e6496f67b">name</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a0277c5e56fce9e8e4c00e3275bc5eb31">name</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a2ccf75ac771cc1b7596483c180c47a6d">name</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1ab9915cdc917507b234639e201e4a08e8">name</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1ad2d1a0e3bcd2db5deb83eb3b388da522">name</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a13093ef6b327f508700899afcfad8209">name</reimplementedby>
@@ -975,7 +1060,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="102" column="26"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="108" column="26"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a6e2887215b92e97a30a74f4aa53dd2f0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>const ::<ref refid="classidol_1_1Model" kindref="compound">idol::Model</ref> &amp;</type>
@@ -988,7 +1073,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="104" column="34" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="104" bodyend="104"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="110" column="34" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="110" bodyend="110"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1aba3f84c3dcd1f69e91c85606ef893b16" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>SolutionStatus</type>
@@ -996,6 +1081,7 @@
         <argsstring>() const =0</argsstring>
         <name>get_status</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1ae682ec26fce8eb4bde30dc8fb1a4fa55">get_status</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1af2c841e8f0357088dd94c0f2ac8d6630">get_status</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a73c4d08f1df908e0f6012f5b0b1942a7">get_status</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a39101da27e7e2a85d5e7d21aeba1ddfd">get_status</reimplementedby>
         <reimplementedby refid="classidol_1_1Algorithm_1aca1da2a76fe7439c2e5d990860ef4e0d">get_status</reimplementedby>
@@ -1009,7 +1095,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="106" column="29"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="112" column="29"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1afceabfe55118b54e898d766914186e77" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>SolutionReason</type>
@@ -1017,6 +1103,7 @@
         <argsstring>() const =0</argsstring>
         <name>get_reason</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a32c47d66ef609ad0f8c58b3f8fd61340">get_reason</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a1746742f3598cfc2d46b815954f946c5">get_reason</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1af3c22e4537249bc7fad67bcc4ce1cf0d">get_reason</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1aa0ffd7cc94b414731d248db975bba7d3">get_reason</reimplementedby>
         <reimplementedby refid="classidol_1_1Algorithm_1ae7e31752554b7d0ec5f77aed4e0bc46c">get_reason</reimplementedby>
@@ -1030,7 +1117,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="108" column="29"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="114" column="29"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a3ddcd68d96101c4df494693cf883337c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -1038,6 +1125,7 @@
         <argsstring>() const =0</argsstring>
         <name>get_best_obj</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a96698f55e79e70e2d551b2c05a5a6dce">get_best_obj</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1af935b03a90f2bf62fcfb42ff7403faff">get_best_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a004e89c69a9b13df091e129b106e29a3">get_best_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1aba3eb3609096b8d4c362aa4556fa42a3">get_best_obj</reimplementedby>
         <reimplementedby refid="classidol_1_1Algorithm_1a0f622ce8c74e2207050de31504c34ada">get_best_obj</reimplementedby>
@@ -1051,7 +1139,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="110" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="116" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a5eec9cc5da973fc5db74b4b6fb5ecd61" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -1059,6 +1147,7 @@
         <argsstring>() const =0</argsstring>
         <name>get_best_bound</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aa1bcfc88251f882062498191e04cab3e">get_best_bound</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a84de6a54fb3b7ef760e9a2c339a2e0e8">get_best_bound</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a1f067c92311f083942d54b79bb0188f9">get_best_bound</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a5c0dea85bfb4744c7bef3c10db27e197">get_best_bound</reimplementedby>
         <reimplementedby refid="classidol_1_1Algorithm_1a4e6c0365b139516387e991f8e798e65e">get_best_bound</reimplementedby>
@@ -1072,7 +1161,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="112" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="118" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a4067491b572c01dbd56944809c2ee26f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -1081,6 +1170,7 @@
         <name>get_var_primal</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1ad2ec2a4b74c0ef6dd1439e268b986f7a">get_var_primal</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a4e9c5d9452875a44f22155ca3595aec7">get_var_primal</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a01f07f011ff1a35bd3883384ad149856">get_var_primal</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1aed579e54f2dfcaf598a62ac35a740f52">get_var_primal</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1ad7188b37a6783f9467d5871825625ce4">get_var_primal</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a20053f799baabfa99c162dab24198108">get_var_primal</reimplementedby>
@@ -1089,6 +1179,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1a903ae8eab93a3107554417ea2ddeb1d9">get_var_primal</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1adda90015392c068ae871e0bc65e0bfd9">get_var_primal</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a906be451977e0eed71609c5f4fdc79df">get_var_primal</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a6714d10f5188b7056935d47763844ef9">get_var_primal</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a6fa35346fada420bcd8ab614699a0d6a">get_var_primal</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a2c31ed1c67ee99ce9e214b9a54c1eef3">get_var_primal</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a7302175c638e0a3dd6c6bc948bd497c5">get_var_primal</reimplementedby>
@@ -1102,7 +1193,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="114" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="120" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a251f4d7d32c83135d3997d72d1ed719c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -1111,6 +1202,7 @@
         <name>get_var_reduced_cost</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a7bdd659258201f91071024802c16e934">get_var_reduced_cost</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1abd7971f3737a591eb263980e4376e69e">get_var_reduced_cost</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1ac4ac0608ef6baface56e354ab3bea653">get_var_reduced_cost</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a05be81913dbc244d75bedb2c4fc25b57">get_var_reduced_cost</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1a70b8cb4a5c68b79d1e5e1043e74ed33d">get_var_reduced_cost</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1aea3edaeb10dec423f7e2f55c6ba6097d">get_var_reduced_cost</reimplementedby>
@@ -1119,6 +1211,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1a18d4476d07a78d82315f60eec49e7cd6">get_var_reduced_cost</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1abb34f8c8e89718d4034d07f5ff75c906">get_var_reduced_cost</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a010fc6dfd9916f91f5b9990a0651d905">get_var_reduced_cost</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a68f8a99dc7bc40727272c51cd90dd31f">get_var_reduced_cost</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a7ca9d55e1768efbca42c7029440a0b8c">get_var_reduced_cost</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a1fe8eda3de94f0a508432686aa2356db">get_var_reduced_cost</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a9d193acc738edb65b88dc505d943b8bb">get_var_reduced_cost</reimplementedby>
@@ -1132,7 +1225,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="116" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="122" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ad21a943630920c4e618b7f7450d2668b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -1141,6 +1234,7 @@
         <name>get_var_ray</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1ad499ebece37668988519f08c09ecf63c">get_var_ray</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a773a8a310880be23e713089bd1eeb553">get_var_ray</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a65fd8a5981d44582b4a33ef7dd19b390">get_var_ray</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1aee9fd356fae21cda7a516df2baa182b7">get_var_ray</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1aad62f34f3dd4dfd869a878f174eefb56">get_var_ray</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a292bd3bfa4745858f9b7f2b92cbebd6c">get_var_ray</reimplementedby>
@@ -1149,6 +1243,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1a33828ee342e273526c8b99fc7d641505">get_var_ray</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1a146fb31702dbad4b090f8dbbe603ab0f">get_var_ray</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a998b649079986fdca4f25f1a26366891">get_var_ray</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1abb79c17ff5a4f394967c45daee67e7c4">get_var_ray</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a3ef5861d607c5855fd64c3167e6f870f">get_var_ray</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1abac60449e9ad5b695d9846a937004261">get_var_ray</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1ab7e6da0e8a101b98e1d0eb836dd14cd2">get_var_ray</reimplementedby>
@@ -1162,7 +1257,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="118" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="124" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a146aa552ab6c5442d7ca49d29d806427" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -1171,6 +1266,7 @@
         <name>get_ctr_dual</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a66e165a36e292e1f5692b0a659945243">get_ctr_dual</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1af5de9f0ed7d885348dd4181d097cea74">get_ctr_dual</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a49b7ead92233641de168fa3a5d918bde">get_ctr_dual</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1af25352d3a2c717ecb5bbbf4d9c1d955f">get_ctr_dual</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1abf5534c935671c3a2ffb582241845b4b">get_ctr_dual</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1abeca80a9af8be162eb87afb627b6b666">get_ctr_dual</reimplementedby>
@@ -1179,6 +1275,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1a72ab9fa0e6f4a481bda466b68a8b4feb">get_ctr_dual</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1a77c718102a84a3c1131bb5c63eec285e">get_ctr_dual</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a8a73b6ac2c74aef8f41da37a429d900e">get_ctr_dual</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a5a22110b86a35af6ec37db3b93d4244d">get_ctr_dual</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1ac96c4d8098ddfc99365b82d5c244824c">get_ctr_dual</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a8e1d343848eb3cd32d9bc15840a0e894">get_ctr_dual</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1adb74e0d7ff5477eec334f9612fb798d9">get_ctr_dual</reimplementedby>
@@ -1192,7 +1289,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="120" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="126" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ae0cf7244a71914ddbb08ba8e0baba9ca" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -1201,6 +1298,7 @@
         <name>get_ctr_farkas</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a6597dd773b2b80c820d83a5c7c05d912">get_ctr_farkas</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a77f908213159a279bb3b701fc2c51a9f">get_ctr_farkas</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a82eeb226e1ac4487bafc5c856c22ca0c">get_ctr_farkas</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a35558df112af1acc2c3bee72ceb0cd87">get_ctr_farkas</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1ade4ee4c073330016e9fa9670ea95589b">get_ctr_farkas</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1afb8a0013775c0dbc5179f7df11c228e0">get_ctr_farkas</reimplementedby>
@@ -1209,6 +1307,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1a48987d4edf871767d810fc3c6bfda8e8">get_ctr_farkas</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1a6e3ade84ebaee5d56bc6072170fdf91b">get_ctr_farkas</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1a9ac6e5389e9d87584af9deeb31308f6e">get_ctr_farkas</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a26c1ba538ea452fe01780d80ebb99c54">get_ctr_farkas</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1abfdbd8bcd4c978dbb19ff88157296af1">get_ctr_farkas</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a969c7edc0fe5f65d32be8c10cffbf9ed">get_ctr_farkas</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1af4af8d0a94641e8562b05c3540f8a029">get_ctr_farkas</reimplementedby>
@@ -1222,7 +1321,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="122" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="128" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a17d096d345b47194e85cc210351f45d5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -1239,7 +1338,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="124" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="130" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a266eddfc1b3aa4ee9a9231ecdf568337" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -1256,7 +1355,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="126" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="132" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a0e98fd1255617e98e988ee41ca896e71" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>unsigned int</type>
@@ -1265,6 +1364,7 @@
         <name>get_n_solutions</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1ac263a7107f75c682fcc50c14656b69cf">get_n_solutions</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a762affbcfe467b5c77f469f95cb6707a">get_n_solutions</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a26a71dee185c903bd74aab754ca766c3">get_n_solutions</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1ae066077ab68b37ee0e77647e60660a66">get_n_solutions</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1ab1c2a2b2207c8926f37c5cb22c76e598">get_n_solutions</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a252d0043f3260f5e1fa6e3e1c7e47082">get_n_solutions</reimplementedby>
@@ -1273,6 +1373,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1a407b4e8684bfc81bc0b3186dc8dbc225">get_n_solutions</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1acdde6954305c2b37c9df7806bdc461cd">get_n_solutions</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1afadc2c1d69e82e82c66e68d58abf75d0">get_n_solutions</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a7fb8378b707c8464389a0151c1da6fb7">get_n_solutions</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1abec9f10fa89152ffb64fb89619fa665d">get_n_solutions</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1afb3487ce4f74cd6e4be38c562c068290">get_n_solutions</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1a7c9f96bb6acdf9156a24419f759d2390">get_n_solutions</reimplementedby>
@@ -1282,7 +1383,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="128" column="27"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="134" column="27"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a4d4eb6b7c7885ecdfbae4c87da8d0661" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>unsigned int</type>
@@ -1291,6 +1392,7 @@
         <name>get_solution_index</name>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut_1a9d43646d9ea70ca068eae26104e69ce5">get_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a02b0288fcb5fdd10a42a946d78b17931">get_solution_index</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize_1a219e204b860a5ba435659cecdded3f19">get_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic_1a0b5480c528a5e3d004db2d30e847d168">get_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality_1ac0b0fbc67a6767f2a4ff5e05074ac684">get_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1ac10fe7297bb4a07e5235619feb88d520">get_solution_index</reimplementedby>
@@ -1299,6 +1401,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1GLPK_1a660e19b0aaa5b7efd7319fc14386d87a">get_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Gurobi_1aabd8912b14f52d53825041178e63bfd8">get_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule_1aa2916ae2fdaf7c3afbef101f8c421cc5">get_solution_index</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1a09d45dca980c3d67ea8f5ad6b4f4dd45">get_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a5b728b1c1996444e9299c5797fa4d0f7">get_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic_1a5da5c1ddab355ea9b8015bce4cbc0c23">get_solution_index</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1abe692f13875a2780c55fe9a3ddbcb2a9">get_solution_index</reimplementedby>
@@ -1308,7 +1411,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="130" column="27"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="136" column="27"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1acc87454b609268dc1ecf65a1ced765d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -1321,7 +1424,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="132" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="132" bodyend="132"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="138" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="138" bodyend="138"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a990981b38cd7f9338ab12ab383061861" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1340,7 +1443,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="134" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="134" bodyend="134"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="140" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="140" bodyend="140"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a20be2e664e6a84bf404b39d768ff03e7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -1353,7 +1456,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="136" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="136" bodyend="136"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="142" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="142" bodyend="142"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab21a570955c865a255914bb1627053bb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1372,7 +1475,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="138" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="138" bodyend="138"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="144" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="144" bodyend="144"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a97f61564e390973a18874b8de4bd7cb5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>unsigned int</type>
@@ -1385,7 +1488,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="140" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="140" bodyend="140"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="146" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="146" bodyend="146"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1acfa8aa084e883e7a191e3da770d5daa4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1403,7 +1506,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="142" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="142" bodyend="142"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="148" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="148" bodyend="148"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a513ef279419e11630421378aa83ca8a3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -1416,7 +1519,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="144" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="150" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a5babaec019d640cd7828b5ef213ec335" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1435,7 +1538,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="146" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="146" bodyend="146"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="152" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="152" bodyend="152"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1af2cec35235bbf3a746d604fd998ad636" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -1448,7 +1551,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="148" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="154" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab60bc3d2dd159d5f061b997771c91887" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1467,7 +1570,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="150" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="150" bodyend="150"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="156" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="156" bodyend="156"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab246bb155504651d93c91b2dc08da414" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -1480,7 +1583,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="152" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="152" bodyend="152"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="158" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="158" bodyend="158"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a566eb822d1a0707d50359b3e50fccbdf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1498,7 +1601,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="154" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="154" bodyend="154"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="160" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="160" bodyend="160"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a79a3832a54c597121788782f1d49ba8c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -1511,7 +1614,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="156" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="156" bodyend="156"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="162" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="162" bodyend="162"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1af67921d0ce90e1d5412dff5e068bbc71" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1529,7 +1632,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="158" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="158" bodyend="158"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="164" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="164" bodyend="164"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a5b48ff7b9c91cdfedfaa9e18afb3bde5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -1542,7 +1645,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="160" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="160" bodyend="160"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="166" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="166" bodyend="166"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ad25478639b1ed1a258a7418da7ff6964" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1560,7 +1663,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="162" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="162" bodyend="162"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="168" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="168" bodyend="168"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a502d527b86eaa0a721e5b5bcc7dd482c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -1573,7 +1676,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="164" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="164" bodyend="164"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="170" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="170" bodyend="170"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ababdcbe906c67c4cae465962608ca93a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1591,7 +1694,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="166" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="166" bodyend="166"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="172" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="172" bodyend="172"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a317360331767cc9d4edc94cce889e5f1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -1604,7 +1707,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="168" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="168" bodyend="168"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="174" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="174" bodyend="174"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab91250466dd2bed6c8982a0d37189da8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1622,7 +1725,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="170" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="170" bodyend="170"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="176" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="176" bodyend="176"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ade78f725110a641cd46ac675769f3765" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>unsigned int</type>
@@ -1635,7 +1738,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="172" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="172" bodyend="172"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="178" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="178" bodyend="178"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a58af4d0f6c4fabd5f571b64138610779" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -1652,7 +1755,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="174" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="174" bodyend="174"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="180" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="180" bodyend="180"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ae453b0716b3c142104692873a0c1fe89" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -1665,7 +1768,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="176" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="176" bodyend="176"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="182" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="182" bodyend="182"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ac673045c5d062878f2b75f3b09711f00" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1684,7 +1787,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="178" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="178" bodyend="178"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="184" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="184" bodyend="184"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a28959c3d0a53207028a4b6238604eb56" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -1697,7 +1800,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="180" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="180" bodyend="180"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="186" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="186" bodyend="186"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a8e0f2f3d560b3a54a9b06645b6668215" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1715,7 +1818,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="182" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="182" bodyend="182"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="188" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="188" bodyend="188"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a0cafae2af239bb5b7701dc8f2bc72acd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const <ref refid="classidol_1_1Timer" kindref="compound">Timer</ref> &amp;</type>
@@ -1728,7 +1831,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="184" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="184" bodyend="184"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="190" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="190" bodyend="190"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a1b6a136e9db30ed85a55f32c58663ed4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -1741,7 +1844,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="186" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="192" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a237aecc646c59f56fe7e0d406912f81a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -1754,7 +1857,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="188" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="188" bodyend="188"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="194" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="194" bodyend="194"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a475c1533824aef4fb8f427bc6a45546b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1768,7 +1871,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="190" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="196" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ad91c5c2c1bdac21e7d1db49afc37107c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -1786,7 +1889,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="192" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="192" bodyend="198"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="198" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="198" bodyend="204"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a9aa8fef64de4f65b5462442e506594d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -1804,7 +1907,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="200" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="200" bodyend="206"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="206" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="206" bodyend="212"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a0455b8664cabb2579d93607446004afe" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -1822,7 +1925,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="208" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="208" bodyend="210"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="214" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="214" bodyend="216"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -1834,55 +1937,40 @@
         <label>idol::impl::Optimizer</label>
         <link refid="classidol_1_1impl_1_1Optimizer"/>
       </node>
-      <node id="3">
-        <label>idol::OptimizerWithLazyUpdates&lt; GRBVar, GRBConstr, GRBQConstr &gt;</label>
-        <link refid="classidol_1_1OptimizerWithLazyUpdates"/>
-        <childnode refid="2" relation="public-inheritance">
-        </childnode>
-        <childnode refid="19" relation="template-instance">
-          <edgelabel>&lt; GRBVar, GRBConstr, GRBQConstr &gt;</edgelabel>
-        </childnode>
-      </node>
-      <node id="19">
-        <label>idol::OptimizerWithLazyUpdates&lt; VarImplT, CtrImplT, QCtrImplT &gt;</label>
-        <link refid="classidol_1_1OptimizerWithLazyUpdates"/>
-        <childnode refid="2" relation="public-inheritance">
-        </childnode>
-      </node>
       <node id="7">
         <label>idol::Algorithm</label>
         <link refid="classidol_1_1Algorithm"/>
         <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="16">
+      <node id="18">
         <label>idol::Optimizers::Robust::ColumnAndConstraintGeneration</label>
         <link refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration"/>
         <childnode refid="7" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="11">
+      <node id="12">
         <label>idol::Optimizers::Bilevel::StrongDuality</label>
         <link refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality"/>
         <childnode refid="7" relation="public-inheritance">
         </childnode>
       </node>
       <node id="5">
-        <label>idol::OptimizerWithLazyUpdates&lt; int, int, int &gt;</label>
+        <label>idol::OptimizerWithLazyUpdates&lt; int, int, int, int &gt;</label>
         <link refid="classidol_1_1OptimizerWithLazyUpdates"/>
         <childnode refid="2" relation="public-inheritance">
         </childnode>
-        <childnode refid="19" relation="template-instance">
-          <edgelabel>&lt; int, int, int &gt;</edgelabel>
+        <childnode refid="21" relation="template-instance">
+          <edgelabel>&lt; int, int, int, int &gt;</edgelabel>
         </childnode>
       </node>
-      <node id="14">
+      <node id="15">
         <label>idol::Optimizers::PADM</label>
         <link refid="classidol_1_1Optimizers_1_1PADM"/>
         <childnode refid="7" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="18">
+      <node id="20">
         <label>idol::Optimizers::Robust::ScenarioBasedKAdaptabilityProblemSolver</label>
         <link refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver"/>
         <childnode refid="7" relation="public-inheritance">
@@ -1894,13 +1982,22 @@
         <childnode refid="7" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="13">
+      <node id="3">
+        <label>idol::OptimizerWithLazyUpdates&lt; GRBVar, GRBConstr, GRBQConstr, GRBSOS &gt;</label>
+        <link refid="classidol_1_1OptimizerWithLazyUpdates"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="21" relation="template-instance">
+          <edgelabel>&lt; GRBVar, GRBConstr, GRBQConstr, GRBSOS &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
         <label>idol::Optimizers::DantzigWolfeDecomposition</label>
         <link refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition"/>
         <childnode refid="7" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="12">
+      <node id="13">
         <label>idol::Optimizers::BranchAndBound&lt; NodeInfoT &gt;</label>
         <link refid="classidol_1_1Optimizers_1_1BranchAndBound"/>
         <childnode refid="7" relation="public-inheritance">
@@ -1910,6 +2007,12 @@
         <label>idol::Optimizers::GLPK</label>
         <link refid="classidol_1_1Optimizers_1_1GLPK"/>
         <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>idol::Optimizers::Bilevel::MinMax::Dualize</label>
+        <link refid="classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize"/>
+        <childnode refid="7" relation="public-inheritance">
         </childnode>
       </node>
       <node id="4">
@@ -1924,28 +2027,40 @@
         <childnode refid="7" relation="public-inheritance">
         </childnode>
       </node>
+      <node id="17">
+        <label>idol::Optimizers::Robust::Benders</label>
+        <link refid="classidol_1_1Optimizers_1_1Robust_1_1Benders"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
       <node id="2">
         <label>idol::Optimizer</label>
         <link refid="classidol_1_1Optimizer"/>
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="17">
+      <node id="19">
         <label>idol::Optimizers::Robust::Deterministic</label>
         <link refid="classidol_1_1Optimizers_1_1Robust_1_1Deterministic"/>
         <childnode refid="7" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="10">
+      <node id="11">
         <label>idol::Optimizers::Bilevel::PessimisticAsOptimistic</label>
         <link refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic"/>
         <childnode refid="7" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="15">
+      <node id="16">
         <label>idol::Optimizers::Robust::AffineDecisionRule</label>
         <link refid="classidol_1_1Optimizers_1_1Robust_1_1AffineDecisionRule"/>
         <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>idol::OptimizerWithLazyUpdates&lt; VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT &gt;</label>
+        <link refid="classidol_1_1OptimizerWithLazyUpdates"/>
+        <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
@@ -1955,11 +2070,12 @@
         <link refid="classidol_1_1impl_1_1Optimizer"/>
       </node>
     </collaborationgraph>
-    <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="29" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="29" bodyend="211"/>
+    <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="29" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="29" bodyend="217"/>
     <listofallmembers>
       <member refid="classidol_1_1impl_1_1Optimizer_1ac5e35eec35d2dea0b90fcabd30485179" prot="protected" virt="pure-virtual"><scope>idol::impl::Optimizer</scope><name>add</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1ae1266859ae2679d14d22bb7449dbbe8b" prot="protected" virt="pure-virtual"><scope>idol::impl::Optimizer</scope><name>add</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1afa9e27c1db69ebe4688fd4ba37ba3121" prot="protected" virt="pure-virtual"><scope>idol::impl::Optimizer</scope><name>add</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a86735e064591fb4f00c3499a4b51de87" prot="protected" virt="virtual"><scope>idol::impl::Optimizer</scope><name>add</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1ad91c5c2c1bdac21e7d1db49afc37107c" prot="public" virt="non-virtual"><scope>idol::impl::Optimizer</scope><name>as</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a9aa8fef64de4f65b5462442e506594d2" prot="public" virt="non-virtual"><scope>idol::impl::Optimizer</scope><name>as</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a8b1cfad93e3eb77c214aa2ff343fcb64" prot="protected" virt="pure-virtual"><scope>idol::impl::Optimizer</scope><name>build</name></member>
@@ -2018,6 +2134,7 @@
       <member refid="classidol_1_1impl_1_1Optimizer_1a922c443d01523ee75f16f8cba99ee159" prot="protected" virt="pure-virtual"><scope>idol::impl::Optimizer</scope><name>remove</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a5c021fd9b686acbb6d3b8ee38c7eff9c" prot="protected" virt="pure-virtual"><scope>idol::impl::Optimizer</scope><name>remove</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a8f30740f64bd1bac13b7de206e781c7b" prot="protected" virt="pure-virtual"><scope>idol::impl::Optimizer</scope><name>remove</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a29b91a6040358d614f50b592917baf39" prot="protected" virt="virtual"><scope>idol::impl::Optimizer</scope><name>remove</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1ab60bc3d2dd159d5f061b997771c91887" prot="public" virt="virtual"><scope>idol::impl::Optimizer</scope><name>set_param_best_bound_stop</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a5babaec019d640cd7828b5ef213ec335" prot="public" virt="virtual"><scope>idol::impl::Optimizer</scope><name>set_param_best_obj_stop</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a8e0f2f3d560b3a54a9b06645b6668215" prot="public" virt="virtual"><scope>idol::impl::Optimizer</scope><name>set_param_infeasible_or_unbounded_info</name></member>

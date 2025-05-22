@@ -6,6 +6,7 @@
     <innerclass refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT" prot="public">idol::Optimizers::Bilevel::KKT</innerclass>
     <innerclass refid="classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic" prot="public">idol::Optimizers::Bilevel::PessimisticAsOptimistic</innerclass>
     <innerclass refid="classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality" prot="public">idol::Optimizers::Bilevel::StrongDuality</innerclass>
+    <innernamespace refid="namespaceidol_1_1Optimizers_1_1Bilevel_1_1MinMax">idol::Optimizers::Bilevel::MinMax</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>

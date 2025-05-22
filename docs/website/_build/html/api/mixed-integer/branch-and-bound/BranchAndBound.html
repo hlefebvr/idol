@@ -243,10 +243,545 @@ rule while variables are selected according to the “most-infeasible” branchi
 </div>
 <section id="doxygen">
 <h2>Doxygen<a class="headerlink" href="#doxygen" title="Link to this heading">¶</a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenclass: Cannot find class “idol::BranchAndBound” in doxygen xml output for project “idol” from directory: _build/xml/</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4idol14BranchAndBoundE">
+<span id="_CPPv3I0EN4idol14BranchAndBoundE"></span><span id="_CPPv2I0EN4idol14BranchAndBoundE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NodeT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1BranchAndBound"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">BranchAndBound</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">OptimizerFactoryWithDefaultParameters</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="Link to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>NodeT</strong> – the class used to store nodes information. It is strongly advised to inherit from NodeVarInfo in order to create your own node type. </p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4idol14BranchAndBound20only_if_has_StrategyE">
+<span id="_CPPv3I00EN4idol14BranchAndBound20only_if_has_StrategyE"></span><span id="_CPPv2I00EN4idol14BranchAndBound20only_if_has_StrategyE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReturnT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1BranchAndBound_1aa42256409107a9c2909a0a85b3862a08"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">only_if_has_Strategy</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4idol14BranchAndBound20only_if_has_StrategyE" title="idol::BranchAndBound::only_if_has_Strategy::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">::</span></span><span class="k"><span class="pre">template</span></span><span class="w"> </span><span class="n"><span class="pre">Strategy</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4idol14BranchAndBound20only_if_has_StrategyE" title="idol::BranchAndBound::only_if_has_Strategy::ReturnT"><span class="n"><span class="pre">ReturnT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">second_type</span></span><a class="headerlink" href="#_CPPv4I00EN4idol14BranchAndBound20only_if_has_StrategyE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This type is used to exploit <a class="reference external" href="https://en.wikipedia.org/wiki/Substitution_failure_is_not_an_error">SFINAE</a> in order to identify classes having a sub-class named <code class="docutils literal notranslate"><span class="pre">Strategy&lt;NodeInfoT&gt;</span></code>. This is used to make calls like <code class="docutils literal notranslate"><span class="pre">.with_node_selection_rule(DepthFirst());</span></code> which will actually call <code class="docutils literal notranslate"><span class="pre">.with_node_selection_rule(</span><a class="reference internal" href="node-selection/DepthFirst.html#classidol_1_1DepthFirst_1_1Strategy"><span class="std std-ref"><span class="pre">DepthFirst::Strategy</span></span></a><span class="pre">&lt;NodeInfoT&gt;())</span></code>. </p>
+</dd></dl>
+
 </div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound14BranchAndBoundEv">
+<span id="_CPPv3N4idol14BranchAndBound14BranchAndBoundEv"></span><span id="_CPPv2N4idol14BranchAndBound14BranchAndBoundEv"></span><span id="idol::BranchAndBound::BranchAndBound"></span><span class="target" id="classidol_1_1BranchAndBound_1a96fec5e9e6f278c51ec788b317321616"></span><span class="sig-name descname"><span class="n"><span class="pre">BranchAndBound</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound14BranchAndBoundEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Creates a new branch-and-bound algorithm.</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="w"> </span><span class="n">BranchAndBound</span><span class="p">()</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound14BranchAndBoundERK14BranchAndBound">
+<span id="_CPPv3N4idol14BranchAndBound14BranchAndBoundERK14BranchAndBound"></span><span id="_CPPv2N4idol14BranchAndBound14BranchAndBoundERK14BranchAndBound"></span><span id="idol::BranchAndBound::BranchAndBound__BranchAndBoundCR"></span><span class="target" id="classidol_1_1BranchAndBound_1a15e010f0ecbb6ddde4ec3fee723564f0"></span><span class="sig-name descname"><span class="n"><span class="pre">BranchAndBound</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol14BranchAndBound14BranchAndBoundERK14BranchAndBound" title="idol::BranchAndBound::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound14BranchAndBoundERK14BranchAndBound" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Copy constructor </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_rhs</strong> – the object to copy </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound19with_node_optimizerERK16OptimizerFactory">
+<span id="_CPPv3N4idol14BranchAndBound19with_node_optimizerERK16OptimizerFactory"></span><span id="_CPPv2N4idol14BranchAndBound19with_node_optimizerERK16OptimizerFactory"></span><span id="idol::BranchAndBound::with_node_optimizer__OptimizerFactoryCR"></span><span class="target" id="classidol_1_1BranchAndBound_1a8ece634603121d7f538e0a5a5e47312b"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_node_optimizer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">OptimizerFactory</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_node_optimizer</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound19with_node_optimizerERK16OptimizerFactory" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the optimizer for solving each of the branch-and-bound tree nodes</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BranchAndBound</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_node_optimizer</span><span class="p">(</span><span class="n">GLPK</span><span class="o">::</span><span class="n">ContinuousRelaxation</span><span class="p">());</span>
+</pre></div>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_node_optimizer</strong> – the optimizer factory the node problems </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound18set_node_optimizerERK16OptimizerFactory">
+<span id="_CPPv3N4idol14BranchAndBound18set_node_optimizerERK16OptimizerFactory"></span><span id="_CPPv2N4idol14BranchAndBound18set_node_optimizerERK16OptimizerFactory"></span><span id="idol::BranchAndBound::set_node_optimizer__OptimizerFactoryCR"></span><span class="target" id="classidol_1_1BranchAndBound_1a7afa51162050c25b2a6c47a96cc6d0a8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_node_optimizer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">OptimizerFactory</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_node_optimizer</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound18set_node_optimizerERK16OptimizerFactory" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBoundpLERK16OptimizerFactory">
+<span id="_CPPv3N4idol14BranchAndBoundpLERK16OptimizerFactory"></span><span id="_CPPv2N4idol14BranchAndBoundpLERK16OptimizerFactory"></span><span id="idol::BranchAndBound::add-assign-operator__OptimizerFactoryCR"></span><span class="target" id="classidol_1_1BranchAndBound_1aa22f3b652c188cc7f7005ea753f73cd5"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">OptimizerFactory</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_node_optimizer</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBoundpLERK16OptimizerFactory" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound19with_branching_ruleERK20BranchingRuleFactoryI5NodeTE">
+<span id="_CPPv3N4idol14BranchAndBound19with_branching_ruleERK20BranchingRuleFactoryI5NodeTE"></span><span id="_CPPv2N4idol14BranchAndBound19with_branching_ruleERK20BranchingRuleFactoryI5NodeTE"></span><span id="idol::BranchAndBound::with_branching_rule__BranchingRuleFactory:NodeT:CR"></span><span class="target" id="classidol_1_1BranchAndBound_1a4da44c69626f3a6e6273b29af12d62dd"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_branching_rule</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">BranchingRuleFactory</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_branching_rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound19with_branching_ruleERK20BranchingRuleFactoryI5NodeTE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the branching rule used to create child nodes</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BranchAndBound</span><span class="o">&lt;</span><span class="n">NodeVarInfo</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_branching_rule</span><span class="p">(</span><span class="n">MostInfeasible</span><span class="o">::</span><span class="n">Strategy</span><span class="o">&lt;</span><span class="n">NodeVarInfo</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_branching_rule</strong> – the branching rule </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4idol14BranchAndBound19with_branching_ruleE20only_if_has_StrategyIR14BranchAndBoundI5NodeTE21BranchingRuleFactoryTERK21BranchingRuleFactoryT">
+<span id="_CPPv3I0EN4idol14BranchAndBound19with_branching_ruleERK21BranchingRuleFactoryT"></span><span id="_CPPv2I0EN4idol14BranchAndBound19with_branching_ruleERK21BranchingRuleFactoryT"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BranchingRuleFactoryT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1BranchAndBound_1a6f26fc42ea22b19b0995416db72e45bf"></span><a class="reference internal" href="#_CPPv4I00EN4idol14BranchAndBound20only_if_has_StrategyE" title="idol::BranchAndBound::only_if_has_Strategy"><span class="n"><span class="pre">only_if_has_Strategy</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBound19with_branching_ruleE20only_if_has_StrategyIR14BranchAndBoundI5NodeTE21BranchingRuleFactoryTERK21BranchingRuleFactoryT" title="idol::BranchAndBound::with_branching_rule::BranchingRuleFactoryT"><span class="n"><span class="pre">BranchingRuleFactoryT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">with_branching_rule</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBound19with_branching_ruleE20only_if_has_StrategyIR14BranchAndBoundI5NodeTE21BranchingRuleFactoryTERK21BranchingRuleFactoryT" title="idol::BranchAndBound::with_branching_rule::BranchingRuleFactoryT"><span class="n"><span class="pre">BranchingRuleFactoryT</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_branching_rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4idol14BranchAndBound19with_branching_ruleE20only_if_has_StrategyIR14BranchAndBoundI5NodeTE21BranchingRuleFactoryTERK21BranchingRuleFactoryT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the branching rule used to create child nodes.</p>
+<p>Here, the function is called only when <code class="docutils literal notranslate"><span class="pre">BranchingRuleFactoryT</span></code> has a nested template class named <code class="docutils literal notranslate"><span class="pre">Strategy&lt;NodeInfoT&gt;</span></code>. In such a case, the branching rule is created by calling <code class="docutils literal notranslate"><span class="pre">BranchingRuleFactoryT::Strategy&lt;NodeInfoT&gt;(t_branching_rule)</span></code>. This is used to avoid the user repeating the node type <code class="docutils literal notranslate"><span class="pre">NodeInfoT</span></code> being used.</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BranchAndBound</span><span class="o">&lt;</span><span class="n">NodeVarInfo</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_branching_rule</span><span class="p">(</span><span class="n">MostInfeasible</span><span class="p">());</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>BranchingRuleFactoryT</strong> – the class containing a nested template class named Strategy </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>t_branching_rule</strong> – the branching rule </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound24with_node_selection_ruleERK24NodeSelectionRuleFactoryI5NodeTE">
+<span id="_CPPv3N4idol14BranchAndBound24with_node_selection_ruleERK24NodeSelectionRuleFactoryI5NodeTE"></span><span id="_CPPv2N4idol14BranchAndBound24with_node_selection_ruleERK24NodeSelectionRuleFactoryI5NodeTE"></span><span id="idol::BranchAndBound::with_node_selection_rule__NodeSelectionRuleFactory:NodeT:CR"></span><span class="target" id="classidol_1_1BranchAndBound_1a899d89528f5a06aa1fdc245d78b991dd"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_node_selection_rule</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">NodeSelectionRuleFactory</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_node_selection</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound24with_node_selection_ruleERK24NodeSelectionRuleFactoryI5NodeTE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the node selection rule to explore the branch and bound tree.</p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BranchAndBound</span><span class="o">&lt;</span><span class="n">NodeVarInfo</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_node_selection</span><span class="p">(</span><span class="n">BestBound</span><span class="o">::</span><span class="n">Strategy</span><span class="o">&lt;</span><span class="n">NodeVarInfo</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_node_selection</strong> – the node selection rule </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4idol14BranchAndBound24with_node_selection_ruleE20only_if_has_StrategyIR14BranchAndBoundI5NodeTE25NodeSelectionRuleFactoryTERK25NodeSelectionRuleFactoryT">
+<span id="_CPPv3I0EN4idol14BranchAndBound24with_node_selection_ruleERK25NodeSelectionRuleFactoryT"></span><span id="_CPPv2I0EN4idol14BranchAndBound24with_node_selection_ruleERK25NodeSelectionRuleFactoryT"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NodeSelectionRuleFactoryT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1BranchAndBound_1a3b795634a2b9739b7fd1a19918c2004f"></span><a class="reference internal" href="#_CPPv4I00EN4idol14BranchAndBound20only_if_has_StrategyE" title="idol::BranchAndBound::only_if_has_Strategy"><span class="n"><span class="pre">only_if_has_Strategy</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBound24with_node_selection_ruleE20only_if_has_StrategyIR14BranchAndBoundI5NodeTE25NodeSelectionRuleFactoryTERK25NodeSelectionRuleFactoryT" title="idol::BranchAndBound::with_node_selection_rule::NodeSelectionRuleFactoryT"><span class="n"><span class="pre">NodeSelectionRuleFactoryT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">with_node_selection_rule</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBound24with_node_selection_ruleE20only_if_has_StrategyIR14BranchAndBoundI5NodeTE25NodeSelectionRuleFactoryTERK25NodeSelectionRuleFactoryT" title="idol::BranchAndBound::with_node_selection_rule::NodeSelectionRuleFactoryT"><span class="n"><span class="pre">NodeSelectionRuleFactoryT</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_node_selection_rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4idol14BranchAndBound24with_node_selection_ruleE20only_if_has_StrategyIR14BranchAndBoundI5NodeTE25NodeSelectionRuleFactoryTERK25NodeSelectionRuleFactoryT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the node selection rule to explore the branch and bound tree.</p>
+<p>Here, the function is called only when <code class="docutils literal notranslate"><span class="pre">NodeSelectionRuleFactoryT</span></code> has a nested template class named <code class="docutils literal notranslate"><span class="pre">Strategy&lt;NodeInfoT&gt;</span></code>. In such a case, the node selection rule is created by calling <code class="docutils literal notranslate"><span class="pre">NodeSelectionRuleFactoryT::Strategy&lt;NodeInfoT&gt;(t_node_selection_rule)</span></code>. This is used to avoid the user repeating the node type <code class="docutils literal notranslate"><span class="pre">NodeInfoT</span></code> being used.</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BranchAndBound</span><span class="o">&lt;</span><span class="n">NodeVarInfo</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_node_selection_rule</span><span class="p">(</span><span class="n">BestBound</span><span class="p">());</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>NodeSelectionRuleFactoryT</strong> – the class containing a nested template class named Strategy </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>t_node_selection_rule</strong> – the node selection rule </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound14BranchAndBoundERR14BranchAndBound">
+<span id="_CPPv3N4idol14BranchAndBound14BranchAndBoundERR14BranchAndBound"></span><span id="_CPPv2N4idol14BranchAndBound14BranchAndBoundERR14BranchAndBound"></span><span id="idol::BranchAndBound::BranchAndBound__BranchAndBoundRR"></span><span class="target" id="classidol_1_1BranchAndBound_1a0ad2d9a03ac409cbe14c79b47b485268"></span><span class="sig-name descname"><span class="n"><span class="pre">BranchAndBound</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol14BranchAndBound14BranchAndBoundERR14BranchAndBound" title="idol::BranchAndBound::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound14BranchAndBoundERR14BranchAndBound" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBoundaSERK14BranchAndBound">
+<span id="_CPPv3N4idol14BranchAndBoundaSERK14BranchAndBound"></span><span id="_CPPv2N4idol14BranchAndBoundaSERK14BranchAndBound"></span><span id="idol::BranchAndBound::assign-operator__BranchAndBoundCR"></span><span class="target" id="classidol_1_1BranchAndBound_1a8e719ec11c533c01d445315fc21deda5"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBoundaSERK14BranchAndBound" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBoundaSERR14BranchAndBound">
+<span id="_CPPv3N4idol14BranchAndBoundaSERR14BranchAndBound"></span><span id="_CPPv2N4idol14BranchAndBoundaSERR14BranchAndBound"></span><span id="idol::BranchAndBound::assign-operator__BranchAndBoundRR"></span><span class="target" id="classidol_1_1BranchAndBound_1ab4b7ae48c3eb484145a71d77ce0b8ce4"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBoundaSERR14BranchAndBound" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol14BranchAndBoundclERK5Model">
+<span id="_CPPv3NK4idol14BranchAndBoundclERK5Model"></span><span id="_CPPv2NK4idol14BranchAndBoundclERK5Model"></span><span id="idol::BranchAndBound::call-operator__ModelCRC"></span><span class="target" id="classidol_1_1BranchAndBound_1af4f3c1a3e69cd034a733f9c544a0728b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">Optimizer</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../modeling/Model.html#_CPPv4N4idol5ModelE" title="idol::Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_model</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK4idol14BranchAndBoundclERK5Model" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Creates and returns a new optimizer to solve the model given as parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_model</strong> – The model which the optimizer will solve </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new optimizer for the model </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol14BranchAndBound5cloneEv">
+<span id="_CPPv3NK4idol14BranchAndBound5cloneEv"></span><span id="_CPPv2NK4idol14BranchAndBound5cloneEv"></span><span id="idol::BranchAndBound::cloneC"></span><span class="target" id="classidol_1_1BranchAndBound_1a9aea0205e36cc09c10fe280c265d1215"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">OptimizerFactory</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK4idol14BranchAndBound5cloneEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Creates and return a copy of the optimizer factory. This is used for polymorphism. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A copied object of the current object (i.e., *this) </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound18with_subtree_depthEj">
+<span id="_CPPv3N4idol14BranchAndBound18with_subtree_depthEj"></span><span id="_CPPv2N4idol14BranchAndBound18with_subtree_depthEj"></span><span id="idol::BranchAndBound::with_subtree_depth__unsigned-i"></span><span class="target" id="classidol_1_1BranchAndBound_1aaa45a4815818ee36fa0838223a09c1b6"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_subtree_depth</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_depth</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound18with_subtree_depthEj" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the depth for sub-tree exploration.</p>
+<p>When a node is selected for branching, each of its children is explored. This exploration takes the form of a sub-tree exploration. When this parameter is set to 0, only the root node of this sub-tree is solved. Thus every child node are solved and the branch-and-bound algorithm is continued.</p>
+<p>For strictly greater values of this parameter, the sub-tree is explored with a maximum depth equal to the value of this parameter.</p>
+<p>For example, with a value of 1, each child node is solved along with its child nodes.</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BranchAndBound</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_subtree_depth</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_depth</strong> – the maximum sub-tree exploration depth </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound11with_loggerERKN4Logs14BranchAndBound7FactoryI5NodeTEE">
+<span id="_CPPv3N4idol14BranchAndBound11with_loggerERKN4Logs14BranchAndBound7FactoryI5NodeTEE"></span><span id="_CPPv2N4idol14BranchAndBound11with_loggerERKN4Logs14BranchAndBound7FactoryI5NodeTEE"></span><span id="idol::BranchAndBound::with_logger__Logs::BranchAndBound::Factory:NodeT:CR"></span><span class="target" id="classidol_1_1BranchAndBound_1a2edf65be4254ff2a85e447ae97661505"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_logger</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Logs</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">BranchAndBound</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Factory</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_log_factory</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound11with_loggerERKN4Logs14BranchAndBound7FactoryI5NodeTEE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound12add_callbackERK29BranchAndBoundCallbackFactoryI5NodeTE">
+<span id="_CPPv3N4idol14BranchAndBound12add_callbackERK29BranchAndBoundCallbackFactoryI5NodeTE"></span><span id="_CPPv2N4idol14BranchAndBound12add_callbackERK29BranchAndBoundCallbackFactoryI5NodeTE"></span><span id="idol::BranchAndBound::add_callback__BranchAndBoundCallbackFactory:NodeT:CR"></span><span class="target" id="classidol_1_1BranchAndBound_1a946aaee3c50f86c76c45e245dcf77148"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">add_callback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BranchAndBoundCallbackFactory.html#_CPPv4I0EN4idol29BranchAndBoundCallbackFactoryE" title="idol::BranchAndBoundCallbackFactory"><span class="n"><span class="pre">BranchAndBoundCallbackFactory</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound12add_callbackERK29BranchAndBoundCallbackFactoryI5NodeTE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Adds a callback which will be called by the optimizer.</p>
+<p>Note that this method can be called multiple times so that multiple callbacks can be added.</p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BranchAndBound</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_callback</span><span class="p">(</span><span class="n">IntegerMaster</span><span class="p">.</span><span class="n">rst</span><span class="p">());</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_callback</strong> – the callback factory </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound12add_callbackERK15CallbackFactory">
+<span id="_CPPv3N4idol14BranchAndBound12add_callbackERK15CallbackFactory"></span><span id="_CPPv2N4idol14BranchAndBound12add_callbackERK15CallbackFactory"></span><span id="idol::BranchAndBound::add_callback__CallbackFactoryCR"></span><span class="target" id="classidol_1_1BranchAndBound_1aa02f32f7120d917e8b843d0b280fcd2a"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">add_callback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../classes/universal-callbacks/CallbackFactory.html#_CPPv4N4idol15CallbackFactoryE" title="idol::CallbackFactory"><span class="n"><span class="pre">CallbackFactory</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound12add_callbackERK15CallbackFactory" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Adds a (solver independent) callback which will be called by the optimizer.</p>
+<p>Note that this method can be called multiple times so that multiple callbacks can be added.</p>
+<p>Here, the <code class="docutils literal notranslate"><a class="reference internal" href="../../classes/universal-callbacks/Callback.html#classidol_1_1Callback"><span class="std std-ref"><span class="pre">Callback</span></span></a></code> is automatically converted into a <code class="docutils literal notranslate"><a class="reference internal" href="BranchAndBoundCallback.html#classidol_1_1BranchAndBoundCallback"><span class="std std-ref"><span class="pre">BranchAndBoundCallback</span></span></a><span class="pre">&lt;NodeInfoT&gt;</span></code>.</p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BranchAndBound</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_callback</span><span class="p">(</span><span class="n">UserCutCallback</span><span class="p">(</span><span class="n">separation_model</span><span class="p">,</span><span class="w"> </span><span class="n">my_cut</span><span class="p">));</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_callback</strong> – the callback factory </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4idol14BranchAndBound24with_node_selection_ruleEN4idol14BranchAndBoundI5NodeTE20only_if_has_StrategyIRN4idol14BranchAndBoundI5NodeTEE25NodeSelectionRuleFactoryTEERK25NodeSelectionRuleFactoryT">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NodeSelectionRuleFactoryT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1BranchAndBound_1af28b70d5dcb43121e91d6215cd75d283"></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="k"><span class="pre">template</span></span><span class="w"> </span><span class="n"><span class="pre">only_if_has_Strategy</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBound24with_node_selection_ruleEN4idol14BranchAndBoundI5NodeTE20only_if_has_StrategyIRN4idol14BranchAndBoundI5NodeTEE25NodeSelectionRuleFactoryTEERK25NodeSelectionRuleFactoryT" title="idol::BranchAndBound::with_node_selection_rule::NodeSelectionRuleFactoryT"><span class="n"><span class="pre">NodeSelectionRuleFactoryT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">with_node_selection_rule</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBound24with_node_selection_ruleEN4idol14BranchAndBoundI5NodeTE20only_if_has_StrategyIRN4idol14BranchAndBoundI5NodeTEE25NodeSelectionRuleFactoryTEERK25NodeSelectionRuleFactoryT" title="idol::BranchAndBound::with_node_selection_rule::NodeSelectionRuleFactoryT"><span class="n"><span class="pre">NodeSelectionRuleFactoryT</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_node_selection_rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4idol14BranchAndBound24with_node_selection_ruleEN4idol14BranchAndBoundI5NodeTE20only_if_has_StrategyIRN4idol14BranchAndBoundI5NodeTEE25NodeSelectionRuleFactoryTEERK25NodeSelectionRuleFactoryT" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4idol14BranchAndBound19with_branching_ruleEN4idol14BranchAndBoundI5NodeTE20only_if_has_StrategyIRN4idol14BranchAndBoundI5NodeTEE21BranchingRuleFactoryTEERK21BranchingRuleFactoryT">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BranchingRuleFactoryT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1BranchAndBound_1a312bfa60303e904b4807d7a59aa947ba"></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="k"><span class="pre">template</span></span><span class="w"> </span><span class="n"><span class="pre">only_if_has_Strategy</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound::NodeT"><span class="n"><span class="pre">NodeT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBound19with_branching_ruleEN4idol14BranchAndBoundI5NodeTE20only_if_has_StrategyIRN4idol14BranchAndBoundI5NodeTEE21BranchingRuleFactoryTEERK21BranchingRuleFactoryT" title="idol::BranchAndBound::with_branching_rule::BranchingRuleFactoryT"><span class="n"><span class="pre">BranchingRuleFactoryT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">with_branching_rule</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBound19with_branching_ruleEN4idol14BranchAndBoundI5NodeTE20only_if_has_StrategyIRN4idol14BranchAndBoundI5NodeTEE21BranchingRuleFactoryTEERK21BranchingRuleFactoryT" title="idol::BranchAndBound::with_branching_rule::BranchingRuleFactoryT"><span class="n"><span class="pre">BranchingRuleFactoryT</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_branching_rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4idol14BranchAndBound19with_branching_ruleEN4idol14BranchAndBoundI5NodeTE20only_if_has_StrategyIRN4idol14BranchAndBoundI5NodeTEE21BranchingRuleFactoryTEERK21BranchingRuleFactoryT" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound9with_logsEb">
+<span id="_CPPv3N4idol14BranchAndBound9with_logsEb"></span><span id="_CPPv2N4idol14BranchAndBound9with_logsEb"></span><span id="idol::BranchAndBound::with_logs__b"></span><span class="target" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a495f616340209e28fde87270f69ce28f"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_logs</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound9with_logsEb" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the log_master level and color for the optimizer</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPK</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_logs</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_log_level</strong> – the log_master level </p></li>
+<li><p><strong>t_log_color</strong> – the output color </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound15with_time_limitEd">
+<span id="_CPPv3N4idol14BranchAndBound15with_time_limitEd"></span><span id="_CPPv2N4idol14BranchAndBound15with_time_limitEd"></span><span id="idol::BranchAndBound::with_time_limit__double"></span><span class="target" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a192ee8cb58e8e1b2d33b0d58df3b0123"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_time_limit</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_time_limit</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound15with_time_limitEd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the time limit for the optimizer</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPK</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_time_limit</span><span class="p">(</span><span class="mi">3600</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_time_limit</strong> – the time limit (in seconds) </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound17with_thread_limitEj">
+<span id="_CPPv3N4idol14BranchAndBound17with_thread_limitEj"></span><span id="_CPPv2N4idol14BranchAndBound17with_thread_limitEj"></span><span id="idol::BranchAndBound::with_thread_limit__unsigned-i"></span><span class="target" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a62819967487a06cacad8ca03d0891090"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_thread_limit</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_max_n_threads</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound17with_thread_limitEj" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the maximum number of threads which the optimizer can use</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPK</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_thread_limit</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_max_n_threads</strong> – the number of threads which can be used </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound20with_iteration_limitEj">
+<span id="_CPPv3N4idol14BranchAndBound20with_iteration_limitEj"></span><span id="_CPPv2N4idol14BranchAndBound20with_iteration_limitEj"></span><span id="idol::BranchAndBound::with_iteration_limit__unsigned-i"></span><span class="target" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ac342238df14873996a25d1182b5a2a7d"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_iteration_limit</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_iteration_count_limit</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound20with_iteration_limitEj" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the maximum number of iterations which the optimizer go through</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPK</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_iteration_limit</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_iteration_count_limit</strong> – the maximum number of iterations </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound20with_best_bound_stopEd">
+<span id="_CPPv3N4idol14BranchAndBound20with_best_bound_stopEd"></span><span id="_CPPv2N4idol14BranchAndBound20with_best_bound_stopEd"></span><span id="idol::BranchAndBound::with_best_bound_stop__double"></span><span class="target" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a10a7490342b8cb9a0719f150ad70513d"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_best_bound_stop</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_best_bound_stop</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound20with_best_bound_stopEd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets a threshold on the best bound for stopping the optimizer. When the optimizer have found a best bound which is greater than this threshold, the optimizer stops.</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">my_known_best_obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPK</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_best_bound_stop</span><span class="p">(</span><span class="n">my_known_best_obj</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_best_bound_stop</strong> – the threshold </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound18with_best_obj_stopEd">
+<span id="_CPPv3N4idol14BranchAndBound18with_best_obj_stopEd"></span><span id="_CPPv2N4idol14BranchAndBound18with_best_obj_stopEd"></span><span id="idol::BranchAndBound::with_best_obj_stop__double"></span><span class="target" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad3e0bc7a6d07853f2f54b4b47aec52ce"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_best_obj_stop</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_user_best_obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound18with_best_obj_stopEd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets a threshold on the best objective value for stopping the optimizer. When the optimizer have found a best objective value which is less than this threshold, the optimizer stops.</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">my_known_best_bound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPK</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_best_obj_stop</span><span class="p">(</span><span class="n">my_known_best_bound</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_user_best_obj</strong> – the threshold </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound27with_relative_gap_toleranceEd">
+<span id="_CPPv3N4idol14BranchAndBound27with_relative_gap_toleranceEd"></span><span id="_CPPv2N4idol14BranchAndBound27with_relative_gap_toleranceEd"></span><span id="idol::BranchAndBound::with_relative_gap_tolerance__double"></span><span class="target" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ad18892029116d8e33e6731f0041be83d"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_relative_gap_tolerance</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_relative_gap_tolerance</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound27with_relative_gap_toleranceEd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the relative gap tolerance for the optimizer. When the optimizer proves that the relative optimality gap is less than this threshold, the optimizer stops.</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPK</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_relative_gap_tolerance</span><span class="p">(</span><span class="mf">.05</span><span class="p">);</span><span class="w"> </span><span class="c1">// sets a gap tolerance of 5%</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_relative_gap_tolerance</strong> – the relative gap tolerance </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound27with_absolute_gap_toleranceEd">
+<span id="_CPPv3N4idol14BranchAndBound27with_absolute_gap_toleranceEd"></span><span id="_CPPv2N4idol14BranchAndBound27with_absolute_gap_toleranceEd"></span><span id="idol::BranchAndBound::with_absolute_gap_tolerance__double"></span><span class="target" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a799ede043bde76795f7f4fd9fac0880c"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_absolute_gap_tolerance</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_absolute_gap_tolerance</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound27with_absolute_gap_toleranceEd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the absolute gap tolerance for the optimizer. When the optimizer proves that the absolute optimality gap is less than this threshold, the optimizer stops.</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPK</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_absolute_gap_tolerance</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_absolute_gap_tolerance</strong> – the absolute gap tolerance </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound13with_presolveEb">
+<span id="_CPPv3N4idol14BranchAndBound13with_presolveEb"></span><span id="_CPPv2N4idol14BranchAndBound13with_presolveEb"></span><span id="idol::BranchAndBound::with_presolve__b"></span><span class="target" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a31b5bc10c1e96a84b4617b35bf137ea2"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_presolve</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound13with_presolveEb" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the get_param_presolve activation for the optimizer.</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPK</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_presolve</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w"> </span><span class="c1">// turns off get_param_presolve phase</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_value</strong> – the activation level for the optimizer’s get_param_presolve (0 for disabling, 1 for enabling) </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound33with_infeasible_or_unbounded_infoEb">
+<span id="_CPPv3N4idol14BranchAndBound33with_infeasible_or_unbounded_infoEb"></span><span id="_CPPv2N4idol14BranchAndBound33with_infeasible_or_unbounded_infoEb"></span><span id="idol::BranchAndBound::with_infeasible_or_unbounded_info__b"></span><span class="target" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae015603918a608ffe8ef04e6145e40e0"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_infeasible_or_unbounded_info</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound33with_infeasible_or_unbounded_infoEb" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sets the behaviour of the optimizer when a model is shown to be infeasible or unbounded. When set to true, the optimizer is forced to prove feasibility or unboundedness by providing a certificate.</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPK</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">with_infeasible_or_unbounded_info</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_value</strong> – the activation level </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound11conditionalEbRKNSt8functionIFvR14BranchAndBoundIN4idol15DefaultNodeInfoEEEEE">
+<span id="_CPPv3N4idol14BranchAndBound11conditionalEbRKNSt8functionIFvR14BranchAndBoundIN4idol15DefaultNodeInfoEEEEE"></span><span id="_CPPv2N4idol14BranchAndBound11conditionalEbRKNSt8functionIFvR14BranchAndBoundIN4idol15DefaultNodeInfoEEEEE"></span><span class="target" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a3197aa27445d62fd0491104238275c97"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">conditional</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_conditional_value</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_if</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound11conditionalEbRKNSt8functionIFvR14BranchAndBoundIN4idol15DefaultNodeInfoEEEEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Executes the lambda function given as second parameter if and only if its first argument is true. This function can be used to build different optimizer factories depending on some external variable.</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">use_presolve</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPK</span><span class="p">()</span>
+<span class="w">                         </span><span class="p">.</span><span class="n">conditional</span><span class="p">(</span><span class="n">use_presolve</span><span class="p">,</span><span class="w"> </span><span class="p">[](</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">){</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">with_presolve</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w"> </span><span class="p">})</span>
+<span class="w">      </span><span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">algorithm</span><span class="p">);</span>
+<span class="w">      </span><span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_conditional_value</strong> – if true, the t_if lambda function is executed, if false, nothing happens. </p></li>
+<li><p><strong>t_if</strong> – lambda function to execute in case t_conditional_value is true </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol14BranchAndBound11conditionalEbRKNSt8functionIFvR14BranchAndBoundIN4idol15DefaultNodeInfoEEEEERKNSt8functionIFvR14BranchAndBoundIN4idol15DefaultNodeInfoEEEEE">
+<span id="_CPPv3N4idol14BranchAndBound11conditionalEbRKNSt8functionIFvR14BranchAndBoundIN4idol15DefaultNodeInfoEEEEERKNSt8functionIFvR14BranchAndBoundIN4idol15DefaultNodeInfoEEEEE"></span><span id="_CPPv2N4idol14BranchAndBound11conditionalEbRKNSt8functionIFvR14BranchAndBoundIN4idol15DefaultNodeInfoEEEEERKNSt8functionIFvR14BranchAndBoundIN4idol15DefaultNodeInfoEEEEE"></span><span class="target" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1ae8fb4db490981b38547b5b6b86b3d6f3"></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">conditional</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_conditional_value</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_if</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBoundE" title="idol::BranchAndBound"><span class="n"><span class="pre">BranchAndBound</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../misc/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultNodeInfo</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_else</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol14BranchAndBound11conditionalEbRKNSt8functionIFvR14BranchAndBoundIN4idol15DefaultNodeInfoEEEEERKNSt8functionIFvR14BranchAndBoundIN4idol15DefaultNodeInfoEEEEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Executes the lambda function given as second parameter if and only if its first argument is true. This function can be used to build different optimizer factories depending on some external variable.</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">use_presolve</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPK</span><span class="p">()</span>
+<span class="w">                         </span><span class="p">.</span><span class="n">conditional</span><span class="p">(</span><span class="n">use_presolve</span><span class="p">,</span>
+<span class="w">                                         </span><span class="p">[](</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">){</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">with_presolve</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w"> </span><span class="p">},</span>
+<span class="w">                                         </span><span class="p">[](</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">){</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">with_presolve</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w"> </span><span class="p">})</span>
+<span class="w">      </span><span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">algorithm</span><span class="p">);</span>
+<span class="w">      </span><span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_conditional_value</strong> – if true, the t_if lambda function is executed, if false, the t_else lambda function is. </p></li>
+<li><p><strong>t_if</strong> – lambda function to execute in case t_conditional_value is true </p></li>
+<li><p><strong>t_else</strong> – lambda function to execute in case t_conditional_value is false </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the optimizer factory itself </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4idol14BranchAndBound2asER1Tv">
+<span id="_CPPv3I0EN4idol14BranchAndBound2asEv"></span><span id="_CPPv2I0EN4idol14BranchAndBound2asEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1OptimizerFactory_1a997906f3b7db473a7368c48c4be595ac"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4idol14BranchAndBound2asER1Tv" title="idol::BranchAndBound::as::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">as</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4idol14BranchAndBound2asER1Tv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK4idol14BranchAndBound2asERK1Tv">
+<span id="_CPPv3I0ENK4idol14BranchAndBound2asEv"></span><span id="_CPPv2I0ENK4idol14BranchAndBound2asEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1OptimizerFactory_1a804f8415a57f2a2ae5c197139de2d236"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0ENK4idol14BranchAndBound2asERK1Tv" title="idol::BranchAndBound::as::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">as</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK4idol14BranchAndBound2asERK1Tv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK4idol14BranchAndBound2isEbv">
+<span id="_CPPv3I0ENK4idol14BranchAndBound2isEv"></span><span id="_CPPv2I0ENK4idol14BranchAndBound2isEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1OptimizerFactory_1a8282a87bf2a07d6bf4d5f391632dc423"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK4idol14BranchAndBound2isEbv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
 </section>
 </section>
 

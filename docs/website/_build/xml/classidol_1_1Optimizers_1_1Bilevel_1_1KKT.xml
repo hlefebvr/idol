@@ -56,6 +56,19 @@
         </inbodydescription>
         <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="20" column="21" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" bodystart="20" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a64fcd0d6798bc46af179129bf4006a64" prot="private" static="no" mutable="no">
+        <type>const bool</type>
+        <definition>const bool idol::Optimizers::Bilevel::KKT::m_use_sos1</definition>
+        <argsstring></argsstring>
+        <name>m_use_sos1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="21" column="16" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
       </sectiondef>
       <sectiondef kind="private-func">
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aba8f72361c3ab5bdd9fb48c445a15328" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
@@ -69,14 +82,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="22" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="23" column="10"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
-      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a1953ec5b8fa3becb3e271ee0d5baf604" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a61799727f9af1211e6579795788950b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
         <definition>idol::Optimizers::Bilevel::KKT::KKT</definition>
-        <argsstring>(const Model &amp;t_parent, const idol::Bilevel::Description &amp;t_description, const OptimizerFactory &amp;t_deterministic_optimizer, const std::unique_ptr&lt; Reformulators::KKT::BoundProvider &gt; &amp;t_bound_provider)</argsstring>
+        <argsstring>(const Model &amp;t_parent, const idol::Bilevel::Description &amp;t_description, const OptimizerFactory &amp;t_deterministic_optimizer, const std::unique_ptr&lt; Reformulators::KKT::BoundProvider &gt; &amp;t_bound_provider, bool t_use_sos1)</argsstring>
         <name>KKT</name>
         <param>
           <type>const <ref refid="classidol_1_1Model" kindref="compound">Model</ref> &amp;</type>
@@ -94,13 +107,17 @@
           <type>const std::unique_ptr&lt; <ref refid="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider" kindref="compound">Reformulators::KKT::BoundProvider</ref> &gt; &amp;</type>
           <declname>t_bound_provider</declname>
         </param>
+        <param>
+          <type>bool</type>
+          <declname>t_use_sos1</declname>
+        </param>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="24" column="5"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="25" column="5"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a9d499ac404e8a58be8103cbe7459c1fb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>std::string</type>
@@ -114,7 +131,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="29" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="31" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1ae682ec26fce8eb4bde30dc8fb1a4fa55" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>SolutionStatus</type>
@@ -128,7 +145,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="31" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="33" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a32c47d66ef609ad0f8c58b3f8fd61340" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>SolutionReason</type>
@@ -142,7 +159,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="33" column="21"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="35" column="21"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a96698f55e79e70e2d551b2c05a5a6dce" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -156,7 +173,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="35" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="37" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aa1bcfc88251f882062498191e04cab3e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -170,7 +187,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="37" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="39" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a4e9c5d9452875a44f22155ca3595aec7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -188,7 +205,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="39" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="41" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1abd7971f3737a591eb263980e4376e69e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -206,7 +223,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="41" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="43" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a773a8a310880be23e713089bd1eeb553" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -224,7 +241,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="43" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="45" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1af5de9f0ed7d885348dd4181d097cea74" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -242,7 +259,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="45" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="47" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a77f908213159a279bb3b701fc2c51a9f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -260,7 +277,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="47" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="49" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a762affbcfe467b5c77f469f95cb6707a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>unsigned int</type>
@@ -274,7 +291,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="49" column="19"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="51" column="19"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a02b0288fcb5fdd10a42a946d78b17931" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>unsigned int</type>
@@ -288,7 +305,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="51" column="19"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="53" column="19"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Algorithm_1a424a643bf34fdc305e5e14c32c60ebde" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -329,7 +346,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="104" column="34" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="104" bodyend="104"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="110" column="34" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="110" bodyend="110"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1acc87454b609268dc1ecf65a1ced765d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -342,7 +359,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="132" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="132" bodyend="132"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="138" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="138" bodyend="138"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a990981b38cd7f9338ab12ab383061861" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -361,7 +378,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="134" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="134" bodyend="134"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="140" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="140" bodyend="140"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a20be2e664e6a84bf404b39d768ff03e7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -374,7 +391,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="136" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="136" bodyend="136"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="142" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="142" bodyend="142"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab21a570955c865a255914bb1627053bb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -393,7 +410,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="138" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="138" bodyend="138"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="144" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="144" bodyend="144"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a97f61564e390973a18874b8de4bd7cb5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>unsigned int</type>
@@ -406,7 +423,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="140" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="140" bodyend="140"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="146" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="146" bodyend="146"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1acfa8aa084e883e7a191e3da770d5daa4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -424,7 +441,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="142" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="142" bodyend="142"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="148" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="148" bodyend="148"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a513ef279419e11630421378aa83ca8a3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -437,7 +454,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="144" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="150" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a5babaec019d640cd7828b5ef213ec335" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -456,7 +473,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="146" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="146" bodyend="146"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="152" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="152" bodyend="152"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1af2cec35235bbf3a746d604fd998ad636" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -469,7 +486,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="148" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="154" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab60bc3d2dd159d5f061b997771c91887" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -488,7 +505,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="150" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="150" bodyend="150"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="156" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="156" bodyend="156"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab246bb155504651d93c91b2dc08da414" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -501,7 +518,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="152" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="152" bodyend="152"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="158" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="158" bodyend="158"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a566eb822d1a0707d50359b3e50fccbdf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -519,7 +536,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="154" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="154" bodyend="154"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="160" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="160" bodyend="160"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a79a3832a54c597121788782f1d49ba8c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -532,7 +549,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="156" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="156" bodyend="156"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="162" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="162" bodyend="162"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1af67921d0ce90e1d5412dff5e068bbc71" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -550,7 +567,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="158" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="158" bodyend="158"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="164" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="164" bodyend="164"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a5b48ff7b9c91cdfedfaa9e18afb3bde5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -563,7 +580,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="160" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="160" bodyend="160"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="166" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="166" bodyend="166"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ad25478639b1ed1a258a7418da7ff6964" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -581,7 +598,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="162" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="162" bodyend="162"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="168" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="168" bodyend="168"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a502d527b86eaa0a721e5b5bcc7dd482c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -594,7 +611,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="164" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="164" bodyend="164"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="170" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="170" bodyend="170"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ababdcbe906c67c4cae465962608ca93a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -612,7 +629,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="166" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="166" bodyend="166"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="172" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="172" bodyend="172"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a317360331767cc9d4edc94cce889e5f1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -625,7 +642,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="168" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="168" bodyend="168"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="174" column="13" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="174" bodyend="174"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ab91250466dd2bed6c8982a0d37189da8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -643,7 +660,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="170" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="170" bodyend="170"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="176" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="176" bodyend="176"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ade78f725110a641cd46ac675769f3765" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>unsigned int</type>
@@ -656,7 +673,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="172" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="172" bodyend="172"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="178" column="19" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="178" bodyend="178"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a58af4d0f6c4fabd5f571b64138610779" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -673,7 +690,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="174" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="174" bodyend="174"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="180" column="10" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="180" bodyend="180"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ae453b0716b3c142104692873a0c1fe89" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -686,7 +703,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="176" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="176" bodyend="176"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="182" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="182" bodyend="182"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ac673045c5d062878f2b75f3b09711f00" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -705,7 +722,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="178" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="178" bodyend="178"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="184" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="184" bodyend="184"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a28959c3d0a53207028a4b6238604eb56" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -718,7 +735,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="180" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="180" bodyend="180"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="186" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="186" bodyend="186"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a8e0f2f3d560b3a54a9b06645b6668215" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -736,7 +753,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="182" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="182" bodyend="182"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="188" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="188" bodyend="188"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a0cafae2af239bb5b7701dc8f2bc72acd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const <ref refid="classidol_1_1Timer" kindref="compound">Timer</ref> &amp;</type>
@@ -749,7 +766,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="184" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="184" bodyend="184"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="190" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="190" bodyend="190"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a1b6a136e9db30ed85a55f32c58663ed4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -762,7 +779,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="186" column="13"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="192" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a237aecc646c59f56fe7e0d406912f81a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -775,7 +792,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="188" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="188" bodyend="188"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="194" column="11" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="194" bodyend="194"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a475c1533824aef4fb8f427bc6a45546b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -789,7 +806,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="190" column="18"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="196" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1ad91c5c2c1bdac21e7d1db49afc37107c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -807,7 +824,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="192" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="192" bodyend="198"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="198" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="198" bodyend="204"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a9aa8fef64de4f65b5462442e506594d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -825,7 +842,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="200" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="200" bodyend="206"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="206" column="24" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="206" bodyend="212"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a0455b8664cabb2579d93607446004afe" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -843,7 +860,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="208" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="208" bodyend="210"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="214" column="22" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="214" bodyend="216"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="protected-func">
@@ -863,7 +880,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="54" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="56" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1add97150ac6a3d8b967741d13cd399d7e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -881,7 +898,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="56" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="58" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a2d8f2eed3e8413ec636b6149da7e7933" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -899,7 +916,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="58" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="60" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1afe9d6238e5f39bd33db384e3018883b7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -917,7 +934,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="60" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="62" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aafbdc9cdb343ba850b335d5cf58413c5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -935,7 +952,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="62" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="64" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aaf08c1b57a473a4165db7c69f5b0f8a0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -953,7 +970,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="64" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="66" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1acaed0603bec3264cc95c44dd4a11b941" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -967,7 +984,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="66" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="68" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aa24611e3b988630bba53007c34361e7f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -985,7 +1002,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="68" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="70" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aeffd2f5c048f82de0e104dae6dc0369d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -999,7 +1016,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="70" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="72" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a4695667bc7ab2f0716d1fee3aa6ad026" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1017,7 +1034,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="72" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="74" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1ad32b3c1e82f1608597a43bd03da46956" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1031,7 +1048,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="74" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="76" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a812a9697e28ec294c89b577598edcde8" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1045,7 +1062,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="76" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="78" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1ad523fa3c1c497252d14866d39a559edc" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1059,7 +1076,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="78" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="80" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a7065fb541464491e8aae9a2d473a2d22" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1073,7 +1090,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="80" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="82" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a4e7d9e9bfad1e4fe044692cfb31b13cd" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1095,7 +1112,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="82" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="84" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a389f0dcc00e678e7ac12f6dce013aac7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1113,7 +1130,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="84" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="86" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a39930cc0519084bbe3b8bd6fc630f818" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1131,7 +1148,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="86" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="88" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aff1ae85ac443601d379bb29d97605b12" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1149,7 +1166,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="88" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="90" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1ae018d3206c6926bbb3a0c69e6c9cd926" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1167,7 +1184,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="90" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="92" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1addaee59c0a70be4b888bc6ce16cde38c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1185,7 +1202,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="92" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="94" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a93f3fac1da5bcec19a2d9b7c57c6fd55" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1203,7 +1220,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="94" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="96" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Algorithm_1a7827fa271c95cd5bfd474af2a702c094" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1292,6 +1309,46 @@
         </inbodydescription>
         <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" line="26" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Algorithm.h" bodystart="26" bodyend="26"/>
       </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a86735e064591fb4f00c3499a4b51de87" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::add</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr)</argsstring>
+        <name>add</name>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a486aca612e6750e004ac078a9dea0d43">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a486aca612e6750e004ac078a9dea0d43">add</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a486aca612e6750e004ac078a9dea0d43">add</reimplementedby>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="57" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="57" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a29b91a6040358d614f50b592917baf39" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void idol::impl::Optimizer::remove</definition>
+        <argsstring>(const SOSCtr &amp;t_ctr)</argsstring>
+        <name>remove</name>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a0552e16fd81c78e261f7031cfeb20d92">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a0552e16fd81c78e261f7031cfeb20d92">remove</reimplementedby>
+        <reimplementedby refid="classidol_1_1OptimizerWithLazyUpdates_1a0552e16fd81c78e261f7031cfeb20d92">remove</reimplementedby>
+        <param>
+          <type>const <ref refid="classidol_1_1SOSCtr" kindref="compound">SOSCtr</ref> &amp;</type>
+          <declname>t_ctr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="64" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="64" bodyend="66"/>
+      </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a23401d6f4b9166f7d941a696d4cef2e9" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void idol::impl::Optimizer::optimize</definition>
@@ -1303,7 +1360,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="66" column="10"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="72" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1a59c7ad8b4b2f9700649bbf008a7876ed" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1313,6 +1370,7 @@
         <reimplementedby refid="classidol_1_1Optimizers_1_1BranchAndBound_1a6011ffe600f70985dbb808dda523ac73">hook_before_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1DantzigWolfeDecomposition_1a4956a2c6102aebf3a9484d0ff7f96e46">hook_before_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1PADM_1a4a855c27efcffefc8f78fd16dc9fe7ad">hook_before_optimize</reimplementedby>
+        <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1Benders_1af06758e58c0c572bfa327c62b18913ab">hook_before_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration_1a4850843cd6b61588860a559650aac54d">hook_before_optimize</reimplementedby>
         <reimplementedby refid="classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver_1aab8be367942c63dc38b8d9b1a8d62fac">hook_before_optimize</reimplementedby>
         <briefdescription>
@@ -1321,7 +1379,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="68" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="68" bodyend="68"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="74" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="74" bodyend="74"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1impl_1_1Optimizer_1aef37b30f99f5a244584039750d0ba140" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1336,7 +1394,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="72" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="72" bodyend="72"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" line="78" column="18" bodyfile="/home/henri/Research/idol/lib/include/idol/general/optimizers/Optimizer.h" bodystart="78" bodyend="78"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -1391,11 +1449,12 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="16" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" bodystart="16" bodyend="95"/>
+    <location file="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" line="16" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h" bodystart="16" bodyend="97"/>
     <listofallmembers>
       <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1afa000f2321fc9e130f40bff6b0b3879c" prot="protected" virt="virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>add</name></member>
       <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1add97150ac6a3d8b967741d13cd399d7e" prot="protected" virt="virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>add</name></member>
       <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a2d8f2eed3e8413ec636b6149da7e7933" prot="protected" virt="virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>add</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a86735e064591fb4f00c3499a4b51de87" prot="protected" virt="virtual" ambiguityscope="idol::Algorithm::"><scope>idol::Optimizers::Bilevel::KKT</scope><name>add</name></member>
       <member refid="classidol_1_1Algorithm_1a3238d95678aae714ebc20e4df3a7c023" prot="public" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>Algorithm</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1ad91c5c2c1bdac21e7d1db49afc37107c" prot="public" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>as</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a9aa8fef64de4f65b5462442e506594d2" prot="public" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>as</name></member>
@@ -1432,11 +1491,12 @@
       <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aeffd2f5c048f82de0e104dae6dc0369d" prot="protected" virt="virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>hook_optimize</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a0455b8664cabb2579d93607446004afe" prot="public" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>is</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a237aecc646c59f56fe7e0d406912f81a" prot="public" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>is_terminated</name></member>
-      <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a1953ec5b8fa3becb3e271ee0d5baf604" prot="public" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>KKT</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a61799727f9af1211e6579795788950b7" prot="public" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>KKT</name></member>
       <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a9427a32a99ce8173532fb99a4424b282" prot="private" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>m_bound_provider</name></member>
       <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aea48d16f17110a444c9c3d249baa9881" prot="private" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>m_description</name></member>
       <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a3c5c402ee141f9c657fcdb76844f497b" prot="private" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>m_deterministic_model</name></member>
       <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a998fabd31cf99c9970eb74d2bdee627e" prot="private" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>m_deterministic_optimizer</name></member>
+      <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a64fcd0d6798bc46af179129bf4006a64" prot="private" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>m_use_sos1</name></member>
       <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1a9d499ac404e8a58be8103cbe7459c1fb" prot="public" virt="virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>name</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1a23401d6f4b9166f7d941a696d4cef2e9" prot="protected" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>optimize</name></member>
       <member refid="classidol_1_1Optimizer_1a8793c25aaba434c6b7e9a85bcca48e16" prot="public" virt="non-virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>Optimizer</name></member>
@@ -1444,6 +1504,7 @@
       <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1afe9d6238e5f39bd33db384e3018883b7" prot="protected" virt="virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>remove</name></member>
       <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aafbdc9cdb343ba850b335d5cf58413c5" prot="protected" virt="virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>remove</name></member>
       <member refid="classidol_1_1Optimizers_1_1Bilevel_1_1KKT_1aaf08c1b57a473a4165db7c69f5b0f8a0" prot="protected" virt="virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>remove</name></member>
+      <member refid="classidol_1_1impl_1_1Optimizer_1a29b91a6040358d614f50b592917baf39" prot="protected" virt="virtual" ambiguityscope="idol::Algorithm::"><scope>idol::Optimizers::Bilevel::KKT</scope><name>remove</name></member>
       <member refid="classidol_1_1Algorithm_1a1a093633b2534aaea279a13506e15b94" prot="protected" virt="virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>set_best_bound</name></member>
       <member refid="classidol_1_1Algorithm_1a42b635afff87af2e867b53c66bf5bfc5" prot="protected" virt="virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>set_best_obj</name></member>
       <member refid="classidol_1_1impl_1_1Optimizer_1ab60bc3d2dd159d5f061b997771c91887" prot="public" virt="virtual"><scope>idol::Optimizers::Bilevel::KKT</scope><name>set_param_best_bound_stop</name></member>

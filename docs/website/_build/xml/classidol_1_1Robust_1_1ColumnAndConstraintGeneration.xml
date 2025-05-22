@@ -108,6 +108,19 @@
         </inbodydescription>
         <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="28" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" bodystart="28" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a3a7ff9a3720d0410538122fd1daf0ea7" prot="private" static="no" mutable="no">
+        <type>std::list&lt; std::unique_ptr&lt; <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &gt; &gt;</type>
+        <definition>std::list&lt;std::unique_ptr&lt;OptimizerFactory&gt; &gt; idol::Robust::ColumnAndConstraintGeneration::m_optimizer_joint_separation</definition>
+        <argsstring></argsstring>
+        <name>m_optimizer_joint_separation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="29" column="15" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
       <memberdef kind="function" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a0b2cd284f6d37cfad629522a2ee4be86" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
@@ -129,7 +142,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="30" column="5"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="31" column="5"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a1c302993bb7bc78ea16546cdc988d792" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
@@ -146,7 +159,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="33" column="5"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="34" column="5"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a10cc684387e2c359ab2d1ac6ed1f0e5f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type><ref refid="classidol_1_1Optimizer" kindref="compound">Optimizer</ref> *</type>
@@ -176,7 +189,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="35" column="15"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="36" column="15"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a7e412a8c938b525e790c5159eb7a82f5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type><ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> *</type>
@@ -193,7 +206,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="37" column="23"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="38" column="23"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1aa0b357e0b9d23a8798bb25de5965cf54" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration" kindref="compound">ColumnAndConstraintGeneration</ref> &amp;</type>
@@ -210,7 +223,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="39" column="35"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="40" column="35"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1afced582421c1d93571030bec8c32bf54" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration" kindref="compound">ColumnAndConstraintGeneration</ref> &amp;</type>
@@ -227,7 +240,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="41" column="35"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="42" column="35"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1af2c941c47b24b5e446c91e2f0019086e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration" kindref="compound">ColumnAndConstraintGeneration</ref> &amp;</type>
@@ -244,7 +257,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="43" column="35"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="44" column="35"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1ade2399432d7397cd4c1d4f807590bb49" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration" kindref="compound">ColumnAndConstraintGeneration</ref> &amp;</type>
@@ -261,7 +274,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="45" column="35"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="46" column="35"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a70649ea94e37d7e89d43a0049fb8a6bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration" kindref="compound">ColumnAndConstraintGeneration</ref> &amp;</type>
@@ -278,7 +291,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="47" column="35"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="48" column="35"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a6bcad9f397e25aeb2edbfce195e42882" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration" kindref="compound">ColumnAndConstraintGeneration</ref> &amp;</type>
@@ -295,7 +308,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="49" column="35"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="50" column="35"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a2587e7bce75148e284096bad4c166a15" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration" kindref="compound">ColumnAndConstraintGeneration</ref> &amp;</type>
@@ -312,7 +325,24 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="51" column="35"/>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="52" column="35"/>
+      </memberdef>
+      <memberdef kind="function" id="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1ab25bf4b0c8d135b7ef4cd8de05f1e6b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration" kindref="compound">ColumnAndConstraintGeneration</ref> &amp;</type>
+        <definition>ColumnAndConstraintGeneration&amp; idol::Robust::ColumnAndConstraintGeneration::add_joint_separation_optimizer</definition>
+        <argsstring>(const OptimizerFactory &amp;t_optimizer)</argsstring>
+        <name>add_joint_separation_optimizer</name>
+        <param>
+          <type>const <ref refid="classidol_1_1OptimizerFactory" kindref="compound">OptimizerFactory</ref> &amp;</type>
+          <declname>t_optimizer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="54" column="35"/>
       </memberdef>
       <memberdef kind="function" id="classidol_1_1OptimizerFactoryWithDefaultParameters_1a495f616340209e28fde87270f69ce28f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration" kindref="compound">ColumnAndConstraintGeneration</ref> &amp;</type>
@@ -912,10 +942,11 @@
         <link refid="classidol_1_1OptimizerFactory"/>
       </node>
     </collaborationgraph>
-    <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="16" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" bodystart="16" bodyend="52"/>
+    <location file="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" line="16" column="1" bodyfile="/home/henri/Research/idol/lib/include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h" bodystart="16" bodyend="55"/>
     <listofallmembers>
       <member refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a6bcad9f397e25aeb2edbfce195e42882" prot="public" virt="non-virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>add_feasibility_separation_optimizer</name></member>
       <member refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1af2c941c47b24b5e446c91e2f0019086e" prot="public" virt="non-virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>add_initial_scenario</name></member>
+      <member refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1ab25bf4b0c8d135b7ef4cd8de05f1e6b7" prot="public" virt="non-virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>add_joint_separation_optimizer</name></member>
       <member refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a2587e7bce75148e284096bad4c166a15" prot="public" virt="non-virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>add_optimality_separation_optimizer</name></member>
       <member refid="classidol_1_1OptimizerFactory_1a997906f3b7db473a7368c48c4be595ac" prot="public" virt="non-virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>as</name></member>
       <member refid="classidol_1_1OptimizerFactory_1a804f8415a57f2a2ae5c197139de2d236" prot="public" virt="non-virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>as</name></member>
@@ -934,6 +965,7 @@
       <member refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1acd265304ee8663d6cc700086e4add2e0" prot="private" virt="non-virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>m_initial_scenarios</name></member>
       <member refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1ac613ba0770ac00682a52a844b8d3bf9c" prot="private" virt="non-virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>m_master_optimizer</name></member>
       <member refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a71744183392e351924bc9d84b646fd51" prot="private" virt="non-virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>m_optimizer_feasibility_separation</name></member>
+      <member refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a3a7ff9a3720d0410538122fd1daf0ea7" prot="private" virt="non-virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>m_optimizer_joint_separation</name></member>
       <member refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1ac89df6743b468e0a97e656897ba421cb" prot="private" virt="non-virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>m_optimizer_optimality_separation</name></member>
       <member refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a6b6765e2db796094d631ab8f51fd7a50" prot="private" virt="non-virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>m_robust_description</name></member>
       <member refid="classidol_1_1Robust_1_1ColumnAndConstraintGeneration_1a10cc684387e2c359ab2d1ac6ed1f0e5f" prot="public" virt="virtual"><scope>idol::Robust::ColumnAndConstraintGeneration</scope><name>operator()</name></member>
