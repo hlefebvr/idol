@@ -37,6 +37,7 @@
 #include "idol/bilevel/modeling/read_from_file.h"
 #include "idol/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.h"
 #include "idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h"
+#include "idol/mixed-integer/optimizers/wrappers/JuMP/JuMP.h"
 
 using namespace idol;
 
@@ -147,6 +148,8 @@ int main(int t_argc, const char** t_argv) {
     auto& impl = model.optimizer().as<Optimizers::Robust::ScenarioBasedKAdaptabilityProblemSolver>();
     impl.set_uncertainty_disjunction(disjunction);
     ////// END TEST DISJUNCTION //////
+
+    model.use(JuMP());
 
     model.optimize();
 

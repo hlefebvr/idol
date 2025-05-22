@@ -9,7 +9,7 @@ module CppJuMP
     end
 
     const registry = Dict{UInt64, Objects}()
-    const id_counter::UInt64 = Ref(0)
+    const id_counter = Ref(UInt64(0))
 
     function get_next_id()
         current_id = id_counter[]
@@ -193,6 +193,7 @@ module CppJuMP
 
 end
 
+#=
 module CppColuna
 
     using ..CppJuMP
@@ -258,3 +259,4 @@ module CppColuna
     export optimize_dantzig_wolfe
     export create_block_model
 end
+=#

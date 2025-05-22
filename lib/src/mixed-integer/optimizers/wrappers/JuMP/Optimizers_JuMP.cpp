@@ -445,14 +445,22 @@ void idol::impl::JuliaSessionManager::throw_if_julia_error() {
         jl_value_t* exception = jl_exception_occurred();
 
         try {
-
-            // Get the error message
+            // Print the exception message
             jl_function_t *showerror = jl_get_function(jl_base_module, "showerror");
             jl_call1(showerror, exception);
 
-        } catch (...) {}
+            // Print the stack trace (from Base.show_backtrace)
+            jl_function_t *showbt = jl_get_function(jl_base_module, "show_backtrace");
+            if (showbt != nullptr) {
+                jl_call0(showbt);
+            }
+        } catch (...) {
+            // ignore any C++ exceptions from Julia API calls
+        }
 
+        // Get exception type name
         auto *typ = (jl_datatype_t*)jl_typeof(exception);
+
         jl_exception_clear();
 
         throw Exception("[Julia Error] " + std::string(jl_symbol_name(typ->name->name)));

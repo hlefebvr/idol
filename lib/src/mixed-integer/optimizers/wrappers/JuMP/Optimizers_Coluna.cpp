@@ -56,7 +56,7 @@ void idol::Optimizers::Coluna::hook_optimize() {
     jl_function_t* optimize = jl_get_function(jl_main_module, "optimize_dantzig_wolfe");
     impl::JuliaSessionManager::throw_if_julia_error();
 
-    jl_value_t** args = new jl_value_t*[4];
+    auto** args = new jl_value_t*[4];
     args[0] = jl_box_uint64(*m_model_id); // model id
     args[1] = make_julia_vector(ctr_annotation); // ctr_annotation
     args[2] = make_julia_vector(var_annotation); // ctr_annotation
