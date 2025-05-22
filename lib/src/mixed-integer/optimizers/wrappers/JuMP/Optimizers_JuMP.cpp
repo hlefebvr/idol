@@ -441,15 +441,25 @@ idol::Optimizers::JuMP::~JuMP() {
 void idol::impl::JuliaSessionManager::throw_if_julia_error() {
 
     if (jl_exception_occurred()) {
-        jl_value_t* exception = jl_exception_occurred();
+        jl_value_t *exception = jl_exception_occurred();
 
-        // Get the error message
-        jl_function_t* showerror = jl_get_function(jl_base_module, "showerror");
-        jl_call1(showerror, exception);
+        assert(exception);
 
-        jl_exception_clear();
+        // Create IOBuffer
+        jl_function_t *io_buffer_func = jl_get_function(jl_base_module, "IOBuffer");
+        jl_value_t *io_buffer = jl_call0(io_buffer_func);
 
-        throw std::runtime_error("A julia error occurred.");
+        // Call showerror(io, exception)
+        jl_function_t *showerror_func = jl_get_function(jl_base_module, "showerror");
+        jl_call2(showerror_func, io_buffer, exception);
+
+        // Convert IOBuffer to String
+        jl_function_t *string_func = jl_get_function(jl_base_module, "String");
+        jl_value_t *err_str = jl_call1(string_func, io_buffer);
+
+        // Get C string
+        const char *c_str = jl_string_ptr(err_str);
+        printf("Julia error: %s\n", c_str);
     }
 
 }
