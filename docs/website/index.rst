@@ -97,8 +97,8 @@ It's really a mater of seconds before you can start using idol.
 
 .. admonition:: Example
 
-    Idol has a user-friendly interface which should look natural to people working in optimization. For instance,
-    here is how one solves a Knapsack Problem using the `Gurobi <https://www.gurobi.com/>`_ solver.
+    Idol has a user-friendly interface which looks natural to people working in optimization. For instance,
+    here is how you solve a knapsack problem instance with `Gurobi <https://www.gurobi.com/>`_.
 
     .. code:: cpp
 
@@ -123,6 +123,8 @@ It's really a mater of seconds before you can start using idol.
 
         model.optimize();
 
+        std::cout << "Objective value: " << model.get_best_obj() << std::endl;
+
 Is this a MIP Solver?
 ---------------------
 
@@ -132,17 +134,21 @@ solvers as a sub-routine of more complex algorithms like, e.g., branch-and-cut-a
 The idea is to work hand in hand with existing well-engineered optimization
 software to enhance their possibilities. Not to replace them!
 
-Nevertheless, you can use idol to solve your favourite optimization problem (MILP, MIQP, or MIQCQP) through the
-many external solvers it interfaces with.
-That way, you only need to write your model once, and you can test it with different solvers.
+Another advantage of using idol is that you can easily switch between different solvers.
+Write your model once, and try different solvers.
 
-The following solvers are currently supported by idol:
+The following MIP solvers are currently supported by idol:
 
-* `Gurobi <https://www.gurobi.com/>`_,
-* `Mosek <https://www.mosek.com/>`_,
+* `Cplex <https://www.ibm.com/products/ilog-cplex-optimization-studio>`_,
 * `GLPK <https://www.gnu.org/software/glpk/>`_,
+* `Gurobi <https://www.gurobi.com/>`_,
 * `HiGHS <https://highs.dev/>`_,
-* `coin-or/Osi <https://github.com/coin-or/Osi>`_ (which gives access to Cplex, Symphony, or any Osi compatible solver),
+* `JuMP <https://jump.dev/>`_ (julia framework),
+* `Mosek <https://www.mosek.com/>`_,
+* `coin-or/Osi <https://github.com/coin-or/Osi>`_ (gives you acccess to any Osi-compatible solver)
+
+It also integrates with the following solvers for mixed-integer bilevel optimization:
+
 * `coin-or/MibS <https://github.com/coin-or/MibS>`_ (the mixed-integer bilevel solver).
 
 Table of Contents

@@ -1,7 +1,8 @@
 cmake-build-*
 .idea
 coverage
-docs/_build
+docs/website/_build
+docs/website/doxygen
 coverage/_build
 venv
 install
