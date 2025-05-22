@@ -1526,118 +1526,33 @@ The reason is that the Gurobi license is not available on GitHub Actions.</p>
 </section>
 <table class="test-report-table docutils align-default">
 <tbody>
-<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="7"><p>Can solve a feasible LP</p></td>
-<td class="progress-50" colspan="1" rowspan="7"><p>53%</p></td>
-<td class="test-report-table-section"><p>Can retrieve primal solution</p></td>
-<td class="progress-100"><p>100%</p></td>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="1"><p>Can solve a feasible LP</p></td>
+<td class="progress-NA" colspan="1" rowspan="1"><p>-</p></td>
+<td class="test-report-table-section"><p>Exception thrown: 
+      A julia error occurred.
+    </p></td>
+<td class="progress-0"><p>-</p></td>
 </tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can retrieve dual solution</p></td>
-<td class="progress-25"><p>30%</p></td>
+<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="1"><p>Can update and re-optimize a feasible LP</p></td>
+<td class="progress-NA" colspan="1" rowspan="1"><p>-</p></td>
+<td class="test-report-table-section"><p>Exception thrown: 
+      A julia error occurred.
+    </p></td>
+<td class="progress-0"><p>-</p></td>
 </tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can retrieve reduced costs</p></td>
-<td class="progress-25"><p>40%</p></td>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="1"><p>Can solve an infeasible LP</p></td>
+<td class="progress-NA" colspan="1" rowspan="1"><p>-</p></td>
+<td class="test-report-table-section"><p>Exception thrown: 
+      A julia error occurred.
+    </p></td>
+<td class="progress-0"><p>-</p></td>
 </tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can retrieve basis</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Throws an exception if primal ray is asked</p></td>
-<td class="progress-100"><p>100%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Throws an exception if farkas certificate is asked</p></td>
-<td class="progress-100"><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can write a model to a file and read it back</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="18"><p>Can update and re-optimize a feasible LP</p></td>
-<td class="progress-0" colspan="1" rowspan="18"><p>6%</p></td>
-<td class="test-report-table-section"><p>Can add cut and re-optimize</p></td>
-<td class="progress-100"><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can add column and re-optimize</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can change bounds and re-optimize</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can add cut and column and re-optimize</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can change objective function and re-optimize</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can change right-hand side and re-optimize</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can change left-hand side and re-optimize</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can remove a constraint and re-optimize</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can remove a variable and re-optimize</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can add and remove the same variable and re-optimize</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can add and remove a different variable and re-optimize</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can add and remove the same constraint</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can add and remove a different constraint</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can add a constraint which depends on a variable that is then removed</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can add a variable which depends on a constraint that is then removed</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can update a variable’s bound then remove it</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can change the objective function then remove a variable which appears in the objective function</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can update the objective function constant</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="5"><p>Can solve an infeasible LP</p></td>
-<td class="progress-75" colspan="1" rowspan="5"><p>84%</p></td>
-<td class="test-report-table-section"><p>Can retrieve a Farkas certificate</p></td>
-<td class="progress-50"><p>71%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Throws an exception if primal values are asked</p></td>
-<td class="progress-25"><p>50%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Throws an exception if dual values are asked</p></td>
-<td class="progress-100"><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Throws an exception if (primal) ray is asked</p></td>
-<td class="progress-100"><p>100%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Throws an exception if reduced costs are asked</p></td>
-<td class="progress-100"><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="5"><p>Can solve an unbounded LP</p></td>
-<td class="progress-75" colspan="1" rowspan="5"><p>84%</p></td>
-<td class="test-report-table-section"><p>Can retrieve a dual ray</p></td>
-<td class="progress-50"><p>71%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Throws an exception if primal values are asked</p></td>
-<td class="progress-25"><p>50%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Throws an exception if dual values are asked</p></td>
-<td class="progress-100"><p>100%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Throws an exception if farkas certificate is asked</p></td>
-<td class="progress-100"><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Throws an exception if reduced costs are asked</p></td>
-<td class="progress-100"><p>100%</p></td>
+<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="1"><p>Can solve an unbounded LP</p></td>
+<td class="progress-NA" colspan="1" rowspan="1"><p>-</p></td>
+<td class="test-report-table-section"><p>Exception thrown: 
+      A julia error occurred.
+    </p></td>
+<td class="progress-0"><p>-</p></td>
 </tr>
 </tbody>
 </table>
@@ -1646,94 +1561,77 @@ The reason is that the Gurobi license is not available on GitHub Actions.</p>
 </section>
 <table class="test-report-table docutils align-default">
 <tbody>
-<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="3"><p>Can solve a feasible MIP which is integer at the root node</p></td>
-<td class="progress-25" colspan="1" rowspan="3"><p>33%</p></td>
-<td class="test-report-table-section"><p>Can retrieve primal solution</p></td>
-<td class="progress-100"><p>100%</p></td>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="1"><p>Can solve a feasible MIP which is integer at the root node</p></td>
+<td class="progress-NA" colspan="1" rowspan="1"><p>-</p></td>
+<td class="test-report-table-section"><p>Exception thrown: 
+      A julia error occurred.
+    </p></td>
+<td class="progress-0"><p>-</p></td>
 </tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can retrieve the number of solutions</p></td>
-<td class="progress-0"><p>0%</p></td>
+<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="1"><p>Can solve a feasible MIP which is not integer at the root node</p></td>
+<td class="progress-NA" colspan="1" rowspan="1"><p>-</p></td>
+<td class="test-report-table-section"><p>Exception thrown: 
+      A julia error occurred.
+    </p></td>
+<td class="progress-0"><p>-</p></td>
 </tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can iterate over solutions</p></td>
-<td class="progress-0"><p>0%</p></td>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="1"><p>Can solve an infeasible MIP which is infeasible at root node</p></td>
+<td class="progress-NA" colspan="1" rowspan="1"><p>-</p></td>
+<td class="test-report-table-section"><p>Exception thrown: 
+      A julia error occurred.
+    </p></td>
+<td class="progress-0"><p>-</p></td>
 </tr>
-<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="3"><p>Can solve a feasible MIP which is not integer at the root node</p></td>
-<td class="progress-25" colspan="1" rowspan="3"><p>33%</p></td>
-<td class="test-report-table-section"><p>Can retrieve the primal solution</p></td>
-<td class="progress-100"><p>100%</p></td>
+<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="1"><p>Can solve an infeasible MIP which is feasible at the root node</p></td>
+<td class="progress-NA" colspan="1" rowspan="1"><p>-</p></td>
+<td class="test-report-table-section"><p>Exception thrown: 
+      A julia error occurred.
+    </p></td>
+<td class="progress-0"><p>-</p></td>
 </tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can retrieve the number of solutions</p></td>
-<td class="progress-0"><p>0%</p></td>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="1"><p>Can solve an unbounded MIP</p></td>
+<td class="progress-NA" colspan="1" rowspan="1"><p>-</p></td>
+<td class="test-report-table-section"><p>Exception thrown: 
+      A julia error occurred.
+    </p></td>
+<td class="progress-0"><p>-</p></td>
 </tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can iterate over solutions</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="3"><p>Can solve an infeasible MIP which is infeasible at root node</p></td>
-<td class="progress-25" colspan="1" rowspan="3"><p>50%</p></td>
-<td class="test-report-table-section"><p>Can retrieve the solution status</p></td>
-<td class="progress-100"><p>100%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can retrieve the number of solutions</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can compute an irreducible infeasible sub-system</p></td>
-<td class="progress-NA"><p>-</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="3"><p>Can solve an infeasible MIP which is feasible at the root node</p></td>
-<td class="progress-25" colspan="1" rowspan="3"><p>50%</p></td>
-<td class="test-report-table-section"><p>Can retrieve the solution status</p></td>
-<td class="progress-100"><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can retrieve the number of solutions</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can compute an irreducible infeasible sub-system</p></td>
-<td class="progress-NA"><p>-</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="2"><p>Can solve an unbounded MIP</p></td>
-<td class="progress-25" colspan="1" rowspan="2"><p>33%</p></td>
-<td class="test-report-table-section"><p>Can retrieve the solution status</p></td>
-<td class="progress-50"><p>67%</p></td>
-</tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can retrieve the number of solutions</p></td>
-<td class="progress-0"><p>0%</p></td>
-</tr>
-<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="12"><p>Can set parameters of the underlying solver</p></td>
+<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="12"><p>Can set parameters of the underlying solver</p></td>
 <td class="progress-0" colspan="1" rowspan="12"><p>0%</p></td>
 <td class="test-report-table-section"><p>Can set a time limit</p></td>
 <td class="progress-0"><p>0%</p></td>
 </tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can turn off presolve</p></td>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can turn off presolve</p></td>
 <td class="progress-0"><p>0%</p></td>
 </tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can activate infeasible or unbounded info</p></td>
+<tr class="row-even"><td class="test-report-table-section"><p>Can activate infeasible or unbounded info</p></td>
 <td class="progress-0"><p>0%</p></td>
 </tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can set an external parameter</p></td>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can set an external parameter</p></td>
 <td class="progress-0"><p>0%</p></td>
 </tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can set a thread limit</p></td>
+<tr class="row-even"><td class="test-report-table-section"><p>Can set a thread limit</p></td>
 <td class="progress-0"><p>0%</p></td>
 </tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can set a relative MIP gap</p></td>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can set a relative MIP gap</p></td>
 <td class="progress-0"><p>0%</p></td>
 </tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can set an absolute MIP gap</p></td>
+<tr class="row-even"><td class="test-report-table-section"><p>Can set an absolute MIP gap</p></td>
 <td class="progress-0"><p>0%</p></td>
 </tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can set a best bound stop</p></td>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can set a best bound stop</p></td>
 <td class="progress-0"><p>0%</p></td>
 </tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can set a best obj stop</p></td>
+<tr class="row-even"><td class="test-report-table-section"><p>Can set a best obj stop</p></td>
 <td class="progress-0"><p>0%</p></td>
 </tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can set an iteration limit</p></td>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can set an iteration limit</p></td>
 <td class="progress-0"><p>0%</p></td>
 </tr>
-<tr class="row-odd"><td class="test-report-table-section"><p>Can turn on logs</p></td>
+<tr class="row-even"><td class="test-report-table-section"><p>Can turn on logs</p></td>
 <td class="progress-0"><p>0%</p></td>
 </tr>
-<tr class="row-even"><td class="test-report-table-section"><p>Can set the maximum number of solutions in the pool</p></td>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can set the maximum number of solutions in the pool</p></td>
 <td class="progress-0"><p>0%</p></td>
 </tr>
 </tbody>

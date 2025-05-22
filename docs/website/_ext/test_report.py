@@ -19,8 +19,11 @@ def parse_test_case(test_case):
     result["name"] = test_case.get("name")
     result["description"] = test_case.get("description")
     result["sections"] = []
+    result["exceptions"] = []
     for section in test_case.findall("Section"):
         result["sections"].append(parse_section(section))
+    for exception in test_case.findall("Exception"):
+        result["exceptions"].append("Exception thrown: " + exception.text)
     n = sum([not section["skipped"] for section in result["sections"]])
     if n == 0:
         result["progress"] = None
@@ -157,27 +160,31 @@ class TestReportDirective(Directive):
                     else:
                         test_case_progress = f"{test_case_progress:.0f}%"
                     sections = test_case["sections"]
+                    exceptions = test_case["exceptions"]
 
                     # Number of rows to span for the test case and progress
-                    rowspan = len(sections)
+                    rowspan = len(sections) + len(exceptions)
                     first_row = True  # To track if it's the first row of a test case
 
+                    def add_first_row_cols(row, test_case_name, test_case_progress, test_case_progress_class):
+                        # First Column: Test Case Name (rowspanned)
+                        entry1 = nodes.entry(morecols=0, morerows=rowspan - 1)
+                        entry1 += nodes.paragraph(text=test_case_name)
+                        entry1.attributes["classes"] += ["test-report-table-header"]
+                        row += entry1
+
+                        # Second Column: Test Case Progress (rowspanned)
+                        entry2 = nodes.entry(morecols=0, morerows=rowspan - 1)
+                        entry2 += nodes.paragraph(text=test_case_progress)
+                        entry2.attributes["classes"] += [test_case_progress_class]
+                        row += entry2
+
                     for section in sections:
+
                         row = nodes.row()
 
                         if first_row:
-                            # First Column: Test Case Name (rowspanned)
-                            entry1 = nodes.entry(morecols=0, morerows=rowspan - 1)
-                            entry1 += nodes.paragraph(text=test_case_name)
-                            entry1.attributes["classes"] += ["test-report-table-header"]
-                            row += entry1
-
-                            # Second Column: Test Case Progress (rowspanned)
-                            entry2 = nodes.entry(morecols=0, morerows=rowspan - 1)
-                            entry2 += nodes.paragraph(text=test_case_progress)
-                            entry2.attributes["classes"] += [test_case_progress_class]
-                            row += entry2
-
+                            add_first_row_cols(row, test_case_name, test_case_progress, test_case_progress_class)
                             first_row = False
 
                         # Third Column: Section Name
@@ -194,6 +201,28 @@ class TestReportDirective(Directive):
                         else:
                             entry4 += nodes.paragraph(text=f"{section_progress:.0f}%")
                         entry4.attributes["classes"] += [get_progress_color(section_progress)]
+                        row += entry4
+
+                        tbody += row
+
+                    for exception in exceptions:
+
+                        row = nodes.row()
+
+                        if first_row:
+                            add_first_row_cols(row, test_case_name, test_case_progress, test_case_progress_class)
+                            first_row = False
+
+                        # Third Column: Exception Name
+                        entry3 = nodes.entry()
+                        entry3 += nodes.paragraph(text=exception)
+                        entry3.attributes["classes"] += ["test-report-table-section"]
+                        row += entry3
+
+                        # Fourth Column: Progress
+                        entry4 = nodes.entry()
+                        entry4 += nodes.paragraph(text="-")
+                        entry4.attributes["classes"] += [get_progress_color(0)]
                         row += entry4
 
                         tbody += row

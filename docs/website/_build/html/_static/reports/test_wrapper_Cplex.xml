@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Catch2TestRun name="test_wrapper_Cplex" rng-seed="293444243" xml-format-version="3" catch2-version="3.3.2">
+<Catch2TestRun name="test_wrapper_Cplex" rng-seed="1658007178" xml-format-version="3" catch2-version="3.3.2">
   <TestCase name="Can solve a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="36">
     <Section name="Can retrieve primal solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="61">
       <OverallResults successes="8" failures="0" expectedFailures="0" skipped="false"/>
@@ -1369,20 +1369,20 @@ Root relaxation solution time = 0.00 sec. (0.00 ticks)
 *     0+    0                            6.0000        0.0000           100.00%
 Found incumbent of value 6.000000 after 0.00 sec. (0.00 ticks)
 *     0+    0                            5.5000        5.2857             3.90%
-Found incumbent of value 5.500000 after 0.01 sec. (0.01 ticks)
+Found incumbent of value 5.500000 after 0.00 sec. (0.01 ticks)
 *     0+    0                            5.4000        5.2857             2.12%
-Found incumbent of value 5.400000 after 0.01 sec. (0.02 ticks)
+Found incumbent of value 5.400000 after 0.00 sec. (0.02 ticks)
       0     0        5.2857     1        5.4000        5.4000        1    0.00%                        0             0
-Elapsed time = 0.01 sec. (0.03 ticks, tree = 0.01 MB, solutions = 3)
+Elapsed time = 0.00 sec. (0.03 ticks, tree = 0.01 MB, solutions = 3)
 
 User cuts applied:  2
 
 Root node processing (before b&amp;c):
-  Real time             =    0.01 sec. (0.03 ticks)
+  Real time             =    0.00 sec. (0.03 ticks)
 Sequential b&amp;c:
   Real time             =    0.00 sec. (0.00 ticks)
                           ------------
-Total (root+branch&amp;cut) =    0.01 sec. (0.03 ticks)
+Total (root+branch&amp;cut) =    0.00 sec. (0.03 ticks)
       </StdOut>
       <StdErr>
 Warning: Control callbacks may disable some MIP features.
