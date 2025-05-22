@@ -49,7 +49,7 @@ int main(int t_argc, const char** t_argv) {
     /* Read Instance */
     /*****************/
 
-    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/Research/idol/examples/robust/ccg-discrete-uncertainty.data.txt");
+    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/Research/idol/examples/robust/flp-ccg.data.txt");
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
 

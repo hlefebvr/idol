@@ -4,3 +4,5 @@
 Examples are sorted by problem type. 
 
 - \subpage examples_mixed_integer
+- \subpage examples_bilevel
+- \subpage examples_robust
