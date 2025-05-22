@@ -224,7 +224,14 @@ double idol::Optimizers::JuMP::get_var_ray(const idol::Var &t_var) const {
 }
 
 double idol::Optimizers::JuMP::get_ctr_dual(const idol::Ctr &t_ctr) const {
-    throw Exception("Not implemented.");
+
+    const auto& model = parent();
+
+    jl_function_t *get_ctr_dual = jl_get_function(jl_main_module, "idol_get_ctr_dual");
+    jl_value_t *result = jl_call2(get_ctr_dual, jl_box_uint64(*m_model_id), jl_box_uint64(model.get_ctr_index(t_ctr)));
+    impl::JuliaSessionManager::throw_if_julia_error();
+
+    return jl_unbox_float64(result);
 }
 
 double idol::Optimizers::JuMP::get_ctr_farkas(const idol::Ctr &t_ctr) const {

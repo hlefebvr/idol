@@ -156,6 +156,13 @@ module IdolJuMP
         return value(var)
     end
 
+    function idol_get_ctr_dual(t_id::UInt64, t_ctr_index::UInt64)
+        obj = _registry[t_id]
+        model = obj.model
+        ctr = obj.constraints[t_ctr_index + 1]
+        return dual(ctr)
+    end
+
     function idol_get_best_obj(t_id::UInt64)::Float64
         obj = _registry[t_id]
         model = obj.model
@@ -184,6 +191,7 @@ module IdolJuMP
            idol_get_status,
            idol_get_reason,
            idol_get_var_primal,
+           idol_get_ctr_dual,
            idol_get_best_obj,
            idol_get_best_bound,
            idol_update_objective_sense
