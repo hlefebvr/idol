@@ -1,13 +1,13 @@
 find_path(
         TSL_SPARSE_MAP_INCLUDE_DIRS
         NAMES sparse_map.h
-        HINTS /usr/include /usr/include/robin_hood/ /usr/local/include/ /usr/local/include/tsl/ ${TSL_DIR} $ENV{TSL_HOME} ${TSL_SPARSE_MAP_DIR} $ENV{TSL_SPARSE_MAP_HOME}
+        HINTS /usr/include /usr/local/include/ /usr/local/include/tsl/ ${TSL_DIR} $ENV{TSL_HOME} ${TSL_SPARSE_MAP_DIR} $ENV{TSL_SPARSE_MAP_HOME}
 )
 
 find_path(
         TSL_ORDERED_MAP_INCLUDE_DIRS
         NAMES ordered_map.h
-        HINTS /usr/include /usr/include/robin_hood/ /usr/local/include/ /usr/local/include/tsl/ ${TSL_ORDERED_DIR} $ENV{TSL_ORDERED_HOME}
+        HINTS /usr/include /usr/local/include/ /usr/local/include/tsl/ ${TSL_ORDERED_DIR} $ENV{TSL_ORDERED_HOME}
 )
 
 include(FindPackageHandleStandardArgs)
