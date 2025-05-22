@@ -39,5 +39,5 @@ That is, we iteratively solve the master problem and the subproblems to generate
 Implementation with idol
 ------------------------
 
-.. literalinclude:: ../../examples/mixed-integer/assignment-penalty-bap.example.cpp
+.. literalinclude:: ../../../examples/mixed-integer/assignment-penalty-bap.example.cpp
     :language: cpp

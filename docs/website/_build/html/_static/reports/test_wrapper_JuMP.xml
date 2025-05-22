@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Catch2TestRun name="test_wrapper_JuMP" rng-seed="2737642451" xml-format-version="3" catch2-version="3.3.2">
+<Catch2TestRun name="test_wrapper_JuMP" rng-seed="1597007323" xml-format-version="3" catch2-version="3.3.2">
   <TestCase name="Can solve a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="36">
     <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="36">
-      [Julia Error] MethodError
+      [Julia Error] ArgumentError
     </Exception>
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="Can update and re-optimize a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="198">
     <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="198">
-      [Julia Error] MethodError
+      [Julia Error] ArgumentError
     </Exception>
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="Can solve an infeasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="363">
     <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="363">
-      [Julia Error] MethodError
+      [Julia Error] ArgumentError
     </Exception>
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="Can solve an unbounded LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="424">
     <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="424">
-      [Julia Error] MethodError
+      [Julia Error] ArgumentError
     </Exception>
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="Can solve a feasible MIP which is integer at the root node" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="21">
     <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="21">
-      [Julia Error] MethodError
+      [Julia Error] ArgumentError
     </Exception>
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="Can solve a feasible MIP which is not integer at the root node" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="71">
     <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="71">
-      [Julia Error] MethodError
+      [Julia Error] ArgumentError
     </Exception>
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="Can solve an infeasible MIP which is infeasible at root node" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="132">
     <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="132">
-      [Julia Error] MethodError
+      [Julia Error] ArgumentError
     </Exception>
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="Can solve an infeasible MIP which is feasible at the root node" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="180">
     <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="180">
-      [Julia Error] MethodError
+      [Julia Error] ArgumentError
     </Exception>
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="Can solve an unbounded MIP" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="223">
     <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="223">
-      [Julia Error] MethodError
+      [Julia Error] ArgumentError
     </Exception>
     <OverallResult success="false" skips="0"/>
   </TestCase>

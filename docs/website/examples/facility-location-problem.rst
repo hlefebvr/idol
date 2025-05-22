@@ -32,7 +32,7 @@ Instance
 
 We will use an instance stored in a file called `facility.data.txt`. This file reads
 
-.. literalinclude:: ../../examples/mixed-integer/facility.data.txt
+.. literalinclude:: ../../../examples/mixed-integer/facility.data.txt
 
 On the first line, the number of facilities and the numbers of customers are specified.
 Then, for each facility, the opening cost and the capacity are given.
@@ -43,5 +43,5 @@ Finally, the cost of serving each customer from each facility is given.
 Implementation
 --------------
 
-.. literalinclude:: ../../examples/mixed-integer/facility.example.cpp
+.. literalinclude:: ../../../examples/mixed-integer/facility.example.cpp
     :language: cpp

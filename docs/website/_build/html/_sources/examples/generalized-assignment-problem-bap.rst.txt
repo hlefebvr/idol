@@ -36,5 +36,5 @@ The master problem coordinates the assignment of jobs to agents, while the subpr
 Implementation
 --------------
 
-.. literalinclude:: ../../examples/mixed-integer/assignment-bap.example.cpp
+.. literalinclude:: ../../../examples/mixed-integer/assignment-bap.example.cpp
     :language: cpp

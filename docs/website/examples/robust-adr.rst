@@ -44,5 +44,5 @@ To this end, we will restrict the adjustable decisions to be affine functions of
 Implementation
 --------------
 
-.. literalinclude:: ../../examples/robust/adr-facility-location.example.cpp
+.. literalinclude:: ../../../examples/robust/adr-facility-location.example.cpp
     :language: cpp

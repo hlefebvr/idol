@@ -61,5 +61,5 @@ In this example, we will reformulate this robust facility location problem as a 
 Implementation
 --------------
 
-.. literalinclude:: ../../examples/robust/robust-facility-location.example.cpp
+.. literalinclude:: ../../../examples/robust/robust-facility-location.example.cpp
     :language: cpp

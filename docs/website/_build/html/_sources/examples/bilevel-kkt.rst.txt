@@ -33,5 +33,5 @@ reformulate this problem as an MILP. Check out our tutorials to learn more.
 Implementation
 --------------
 
-.. literalinclude:: ../../examples/bilevel/kkt.example.cpp
+.. literalinclude:: ../../../examples/bilevel/kkt.example.cpp
     :language: cpp

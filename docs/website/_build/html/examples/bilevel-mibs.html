@@ -240,6 +240,72 @@
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">//</span>
+<span class="c1">// Created by henri on 07.02.24.</span>
+<span class="c1">//</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/modeling.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/bilevel/optimizers/wrappers/MibS/MibS.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;idol/bilevel/modeling/Description.h&quot;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">idol</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">t_argc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">t_argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="cm">/*</span>
+<span class="cm">     This example is taken from &quot;The Mixed Integer Linear Bilevel Programming Problem&quot; (Moore and Bard, 1990).</span>
+
+<span class="cm">        min -1 x + -10 y</span>
+<span class="cm">        s.t.</span>
+
+<span class="cm">        y in argmin { y :</span>
+<span class="cm">            -25 x + 20 y &lt;= 30,</span>
+<span class="cm">            1 x + 2 y &lt;= 10,</span>
+<span class="cm">            2 x + -1 y &lt;= 15,</span>
+<span class="cm">            2 x + 10 y &gt;= 15,</span>
+<span class="cm">            y &gt;= 0 and integer.</span>
+<span class="cm">        }</span>
+<span class="cm">        x &gt;= 0 and integer.</span>
+
+<span class="cm">     */</span>
+
+<span class="w">    </span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Define High Point Relaxation</span>
+<span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_var</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_var</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="p">,</span><span class="w"> </span><span class="mi">-10</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">follower_c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="mi">-25</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">30</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">follower_c2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">follower_c3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">15</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">follower_c4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">15</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Prepare bilevel description</span>
+<span class="w">    </span><span class="n">Bilevel</span><span class="o">::</span><span class="n">Description</span><span class="w"> </span><span class="n">description</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+<span class="w">    </span><span class="n">description</span><span class="p">.</span><span class="n">set_lower_level_obj</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+<span class="w">    </span><span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+<span class="w">    </span><span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">follower_c1</span><span class="p">);</span>
+<span class="w">    </span><span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">follower_c2</span><span class="p">);</span>
+<span class="w">    </span><span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">follower_c3</span><span class="p">);</span>
+<span class="w">    </span><span class="n">description</span><span class="p">.</span><span class="n">make_lower_level</span><span class="p">(</span><span class="n">follower_c4</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Use coin-or/MibS as external solver</span>
+<span class="w">    </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">use</span><span class="p">(</span>
+<span class="w">                </span><span class="n">Bilevel</span><span class="o">::</span><span class="n">MibS</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">.</span><span class="n">with_logs</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Optimize and print solution</span>
+<span class="w">    </span><span class="n">high_point_relaxation</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">save_primal</span><span class="p">(</span><span class="n">high_point_relaxation</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </section>
 </section>
 

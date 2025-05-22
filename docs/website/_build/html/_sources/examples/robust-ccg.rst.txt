@@ -6,5 +6,5 @@ Using column-and-constraint generation to solve a two-stage facility location pr
 Implementation
 --------------
 
-.. literalinclude:: ../../examples/robust/ccg-discrete-uncertainty.example.cpp
+.. literalinclude:: ../../../examples/robust/ccg-discrete-uncertainty.example.cpp
     :language: cpp

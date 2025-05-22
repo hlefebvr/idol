@@ -63,5 +63,5 @@ using its KKT reformulation. The resulting problem will be solved by Gurobi as a
 Implementation
 --------------
 
-.. literalinclude:: ../../examples/bilevel/pessimistic.example.cpp
+.. literalinclude:: ../../../examples/bilevel/pessimistic.example.cpp
     :language: cpp

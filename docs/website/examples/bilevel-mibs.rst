@@ -30,5 +30,5 @@ The problem is formulated as follows:
 Implementation
 --------------
 
-.. literalinclude:: ../../examples/bilevel/mibs.example.cpp
+.. literalinclude:: ../../../examples/bilevel/mibs.example.cpp
     :language: cpp

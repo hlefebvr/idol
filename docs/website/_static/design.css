@@ -7,17 +7,14 @@ body {
     font-size: 18px;
 }
 
-#doxygen {
-
-    .k, .n, .kt {
-        margin-right: 10px;
-    }
-
-    .cpp > dd {
-        margin-bottom: 30px;
-    }
-
+#doxygen .k, #doxygen .n, #doxygen .kt {
+    margin-right: 10px;
 }
+
+#doxygen .cpp > dd {
+    margin-bottom: 30px;
+}
+
 
 .content:not(.custom) {
     max-width: 900px;
@@ -34,16 +31,12 @@ body {
     /* grid-template-columns: auto auto auto; */
 }
 
-.content .toctree-l1 {
+.content .toctree-l1 > ul {
+    margin-top: 20px;
+}
 
-    > ul {
-        margin-top: 20px;
-    }
-
-    ul {
-        margin-bottom: 20px;
-    }
-
+.content .toctree-l1 ul {
+    margin-bottom: 20px;
 }
 
 #cards > a {
@@ -59,29 +52,36 @@ body {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
     appearance: none;
 
-    span {
-        font-weight: 400;
-    }
+    transition: 0.2s ease-in-out;
+}
 
-    > div {
-        margin: 5px;
-        margin-top: 10px;
-        background: white;
-        text-align: center;
-        height: 160px;
-        padding: 20px;
-        border: 1px solid lightgray;
+#cards > a span {
+    font-weight: 400;
+}
 
-        img {
-            max-height: 160px;
-            max-width: 100%;
-        }
-    }
+#cards > a > div {
+    margin: 5px;
+    margin-top: 10px;
+    background: white;
+    text-align: center;
+    height: 160px;
+    padding: 20px;
+    border: 1px solid lightgray;
 
-    > p {
-        font-size : 16px ;
-        text-align: justify;
+    img {
+        max-height: 160px;
+        max-width: 100%;
     }
+}
+
+#cards > a > p {
+    font-size : 16px ;
+    text-align: justify;
+}
+
+#cards > a:hover {
+    transform: scale(1.025);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
 }
 
 .wy-nav-content {
@@ -105,7 +105,7 @@ h1, h2, h3, h4, h5, h6 {
     "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
-.my-button {
+.my-button, .search input[type="submit"] {
     display: inline-block;
     box-sizing: border-box;
     padding: 0.3em 1em;
@@ -166,28 +166,27 @@ h1, h2, h3, h4, h5, h6 {
 .wy-side-nav-search {
     background-color: initial;
     margin-bottom: 20px;
+}
 
-    #rtd-search-form {
-        border-top: 1px solid #e1e4e5;
-        margin-top: 10px;
-        padding-top: 20px;
-    }
+.wy-side-nav-search a {
+    color: #404040;
+    font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+    font-weight:300;
+    font-size :2.25em;
+    overflow-wrap: break-word;
+}
 
-    a {
-        color: #404040;
-        font-family: -apple-system, BlinkMacSystemFont,
-        "Segoe UI", "Roboto", "Oxygen",
-        "Ubuntu", "Cantarell", "Fira Sans",
-        "Droid Sans", "Helvetica Neue", sans-serif;
-        font-weight:300;
-        font-size :2.25em;
-        overflow-wrap: break-word;
-    }
+.wy-side-nav-search a:before {
+    content: "";
+}
 
-    a:before {
-        content: "";
-    }
-
+#rtd-search-form {
+    border-top: 1px solid #e1e4e5;
+    margin-top: 10px;
+    padding-top: 20px;
 }
 
 .wy-menu-vertical li.toctree-l1.current > a {
@@ -214,6 +213,37 @@ h1, h2, h3, h4, h5, h6 {
     border-left:4px solid #6ab0de;
     border-radius:4px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+    background-color: rgb(239, 239, 239) !important;
+}
+
+.caption .caption-text {
+    display: none;
+}
+
+.vp-sidebar .searchbox {
+    padding: .9rem 0 .9rem .75rem;
+}
+
+.search input[type="text"] {
+    max-width: 190px;
+    background-color: white;
+    color: #242424;
+    padding: .15rem .5rem;
+    min-height: 30px;
+    outline: none;
+    border: none;
+    line-height: 1.15;
+    box-shadow: 0px 5px 10px -10px;
+    border-bottom: 2px solid #1f883d;
+    border-radius: 4px 4px 2px 2px;
+}
+
+.search input[type="text"]:focus {
+    outline: 1px solid lightgrey;
+}
+
+.search input[type="text"]:hover {
+    outline: 1px solid lightgrey;
 }
 
 .rst-content .admonition-title, .wy-alert-title,

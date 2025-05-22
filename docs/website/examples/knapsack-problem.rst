@@ -26,7 +26,7 @@ Instance
 
 We will use an instance stored in a file called `knapsack.data.txt`. This file reads
 
-.. literalinclude:: ../../examples/mixed-integer/knapsack.data.txt
+.. literalinclude:: ../../../examples/mixed-integer/knapsack.data.txt
 
 The first line contains the number of items :math:`n`.
 Then, the following line contains the profits of each item, :math:`p_j`.
@@ -36,5 +36,5 @@ Finally, the last line contains the capacity of the knapsack, :math:`C`.
 Implementation
 --------------
 
-.. literalinclude:: ../../examples/mixed-integer/knapsack.example.cpp
+.. literalinclude:: ../../../examples/mixed-integer/knapsack.example.cpp
     :language: cpp
