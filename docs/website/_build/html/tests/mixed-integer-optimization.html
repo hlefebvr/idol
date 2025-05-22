@@ -226,9 +226,10 @@
 <li><p><a class="reference internal" href="#test_wrapper_GLPK" id="id3">Interfacing with GLPK</a></p></li>
 <li><p><a class="reference internal" href="#test_wrapper_Gurobi" id="id4">Interfacing with Gurobi</a></p></li>
 <li><p><a class="reference internal" href="#test_wrapper_HiGHS" id="id5">Interfacing with HiGHS</a></p></li>
-<li><p><a class="reference internal" href="#test_wrapper_Mosek" id="id6">Interfacing with Mosek</a></p></li>
-<li><p><a class="reference internal" href="#test_wrapper_OsiClp" id="id7">Interfacing with coin-or/Osi (Clp)</a></p></li>
-<li><p><a class="reference internal" href="#test_wrapper_OsiCplex" id="id8">Interfacing with coin-or/Osi (Cplex)</a></p></li>
+<li><p><a class="reference internal" href="#test_wrapper_JuMP" id="id6">Interfacing with julia JuMP</a></p></li>
+<li><p><a class="reference internal" href="#test_wrapper_Mosek" id="id7">Interfacing with Mosek</a></p></li>
+<li><p><a class="reference internal" href="#test_wrapper_OsiClp" id="id8">Interfacing with coin-or/Osi (Clp)</a></p></li>
+<li><p><a class="reference internal" href="#test_wrapper_OsiCplex" id="id9">Interfacing with coin-or/Osi (Cplex)</a></p></li>
 </ul>
 </nav>
 <section id="test_modeling_interface">
@@ -1518,17 +1519,264 @@ The reason is that the Gurobi license is not available on GitHub Actions.</p>
 </tbody>
 </table>
 </section>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>There was an error while parsing the test report ../docs/website/_static/reports/test_wrapper_JuMP.xml.</p>
-<p>[Errno 2] No such file or directory: ‘../docs/website/_static/reports/test_wrapper_JuMP.xml’</p>
-</div>
+<section id="test_wrapper_JuMP">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Interfacing with julia JuMP</a><a class="headerlink" href="#test_wrapper_JuMP" title="Link to this heading">¶</a></h2>
+<section id="[solving-lp]">
+<h3>Solving LPs<a class="headerlink" href="#[solving-lp]" title="Link to this heading">¶</a></h3>
+</section>
+<table class="test-report-table docutils align-default">
+<tbody>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="7"><p>Can solve a feasible LP</p></td>
+<td class="progress-50" colspan="1" rowspan="7"><p>53%</p></td>
+<td class="test-report-table-section"><p>Can retrieve primal solution</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can retrieve dual solution</p></td>
+<td class="progress-25"><p>30%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can retrieve reduced costs</p></td>
+<td class="progress-25"><p>40%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can retrieve basis</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Throws an exception if primal ray is asked</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Throws an exception if farkas certificate is asked</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can write a model to a file and read it back</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="18"><p>Can update and re-optimize a feasible LP</p></td>
+<td class="progress-0" colspan="1" rowspan="18"><p>6%</p></td>
+<td class="test-report-table-section"><p>Can add cut and re-optimize</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can add column and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can change bounds and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can add cut and column and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can change objective function and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can change right-hand side and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can change left-hand side and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can remove a constraint and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can remove a variable and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can add and remove the same variable and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can add and remove a different variable and re-optimize</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can add and remove the same constraint</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can add and remove a different constraint</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can add a constraint which depends on a variable that is then removed</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can add a variable which depends on a constraint that is then removed</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can update a variable’s bound then remove it</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can change the objective function then remove a variable which appears in the objective function</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can update the objective function constant</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="5"><p>Can solve an infeasible LP</p></td>
+<td class="progress-75" colspan="1" rowspan="5"><p>84%</p></td>
+<td class="test-report-table-section"><p>Can retrieve a Farkas certificate</p></td>
+<td class="progress-50"><p>71%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Throws an exception if primal values are asked</p></td>
+<td class="progress-25"><p>50%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Throws an exception if dual values are asked</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Throws an exception if (primal) ray is asked</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Throws an exception if reduced costs are asked</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="5"><p>Can solve an unbounded LP</p></td>
+<td class="progress-75" colspan="1" rowspan="5"><p>84%</p></td>
+<td class="test-report-table-section"><p>Can retrieve a dual ray</p></td>
+<td class="progress-50"><p>71%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Throws an exception if primal values are asked</p></td>
+<td class="progress-25"><p>50%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Throws an exception if dual values are asked</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Throws an exception if farkas certificate is asked</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Throws an exception if reduced costs are asked</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+</tbody>
+</table>
+<section id="[solving-milp]">
+<h3>Solving MILPs<a class="headerlink" href="#[solving-milp]" title="Link to this heading">¶</a></h3>
+</section>
+<table class="test-report-table docutils align-default">
+<tbody>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="3"><p>Can solve a feasible MIP which is integer at the root node</p></td>
+<td class="progress-25" colspan="1" rowspan="3"><p>33%</p></td>
+<td class="test-report-table-section"><p>Can retrieve primal solution</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can retrieve the number of solutions</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can iterate over solutions</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="3"><p>Can solve a feasible MIP which is not integer at the root node</p></td>
+<td class="progress-25" colspan="1" rowspan="3"><p>33%</p></td>
+<td class="test-report-table-section"><p>Can retrieve the primal solution</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can retrieve the number of solutions</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can iterate over solutions</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="3"><p>Can solve an infeasible MIP which is infeasible at root node</p></td>
+<td class="progress-25" colspan="1" rowspan="3"><p>50%</p></td>
+<td class="test-report-table-section"><p>Can retrieve the solution status</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can retrieve the number of solutions</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can compute an irreducible infeasible sub-system</p></td>
+<td class="progress-NA"><p>-</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-header" colspan="1" rowspan="3"><p>Can solve an infeasible MIP which is feasible at the root node</p></td>
+<td class="progress-25" colspan="1" rowspan="3"><p>50%</p></td>
+<td class="test-report-table-section"><p>Can retrieve the solution status</p></td>
+<td class="progress-100"><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can retrieve the number of solutions</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can compute an irreducible infeasible sub-system</p></td>
+<td class="progress-NA"><p>-</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="2"><p>Can solve an unbounded MIP</p></td>
+<td class="progress-25" colspan="1" rowspan="2"><p>33%</p></td>
+<td class="test-report-table-section"><p>Can retrieve the solution status</p></td>
+<td class="progress-50"><p>67%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can retrieve the number of solutions</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="12"><p>Can set parameters of the underlying solver</p></td>
+<td class="progress-0" colspan="1" rowspan="12"><p>0%</p></td>
+<td class="test-report-table-section"><p>Can set a time limit</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can turn off presolve</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can activate infeasible or unbounded info</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can set an external parameter</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can set a thread limit</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can set a relative MIP gap</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can set an absolute MIP gap</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can set a best bound stop</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can set a best obj stop</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can set an iteration limit</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can turn on logs</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can set the maximum number of solutions in the pool</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+</tbody>
+</table>
+<section id="[callbacks]">
+<h3>Callbacks<a class="headerlink" href="#[callbacks]" title="Link to this heading">¶</a></h3>
+</section>
+<table class="test-report-table docutils align-default">
+<tbody>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="4"><p>Can add universal callbacks to monitor the execution of the algorithm</p></td>
+<td class="progress-0" colspan="1" rowspan="4"><p>0%</p></td>
+<td class="test-report-table-section"><p>Can retrieve root node gap</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can retrieve root node solution</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can access nodes’ solutions</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can access integer solutions</p></td>
+<td class="progress-0"><p>0%</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="3"><p>Can add universal callbacks to influence the execution of the algorithm</p></td>
+<td class="progress-NA" colspan="1" rowspan="3"><p>-</p></td>
+<td class="test-report-table-section"><p>Can add user cut</p></td>
+<td class="progress-NA"><p>-</p></td>
+</tr>
+<tr class="row-even"><td class="test-report-table-section"><p>Can add lazy constraint</p></td>
+<td class="progress-NA"><p>-</p></td>
+</tr>
+<tr class="row-odd"><td class="test-report-table-section"><p>Can terminate the algorithm</p></td>
+<td class="progress-NA"><p>-</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>JuMP uses HiGHS as the default solver for the tests.</p>
 </div>
 <section id="test_wrapper_Mosek">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Interfacing with Mosek</a><a class="headerlink" href="#test_wrapper_Mosek" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Interfacing with Mosek</a><a class="headerlink" href="#test_wrapper_Mosek" title="Link to this heading">¶</a></h2>
 <section id="[solving-lp]">
 <h3>Solving LPs<a class="headerlink" href="#[solving-lp]" title="Link to this heading">¶</a></h3>
 </section>
@@ -1631,9 +1879,9 @@ The reason is that the Gurobi license is not available on GitHub Actions.</p>
 <td class="progress-100"><p>100%</p></td>
 </tr>
 <tr class="row-odd"><td class="test-report-table-header" colspan="1" rowspan="5"><p>Can solve an unbounded LP</p></td>
-<td class="progress-100" colspan="1" rowspan="5"><p>100%</p></td>
+<td class="progress-75" colspan="1" rowspan="5"><p>97%</p></td>
 <td class="test-report-table-section"><p>Can retrieve a dual ray</p></td>
-<td class="progress-100"><p>100%</p></td>
+<td class="progress-75"><p>86%</p></td>
 </tr>
 <tr class="row-even"><td class="test-report-table-section"><p>Throws an exception if primal values are asked</p></td>
 <td class="progress-100"><p>100%</p></td>
@@ -1780,7 +2028,7 @@ The reason is that the Gurobi license is not available on GitHub Actions.</p>
 </table>
 </section>
 <section id="test_wrapper_OsiClp">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Interfacing with coin-or/Osi (Clp)</a><a class="headerlink" href="#test_wrapper_OsiClp" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Interfacing with coin-or/Osi (Clp)</a><a class="headerlink" href="#test_wrapper_OsiClp" title="Link to this heading">¶</a></h2>
 <section id="[solving-lp]">
 <h3>Solving LPs<a class="headerlink" href="#[solving-lp]" title="Link to this heading">¶</a></h3>
 </section>
@@ -2032,7 +2280,7 @@ The reason is that the Gurobi license is not available on GitHub Actions.</p>
 </table>
 </section>
 <section id="test_wrapper_OsiCplex">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink">Interfacing with coin-or/Osi (Cplex)</a><a class="headerlink" href="#test_wrapper_OsiCplex" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Interfacing with coin-or/Osi (Cplex)</a><a class="headerlink" href="#test_wrapper_OsiCplex" title="Link to this heading">¶</a></h2>
 <section id="[solving-lp]">
 <h3>Solving LPs<a class="headerlink" href="#[solving-lp]" title="Link to this heading">¶</a></h3>
 </section>

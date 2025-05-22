@@ -9,5 +9,5 @@ do
   FILENAME=$(basename "$EXEC")
   REPORT_NAME="${FILENAME}.xml"
   echo "Running $FILENAME"
-  (cd $DIRECTORY && ./$FILENAME --reporter xml -o $CURRENT_DIR/../docs/_static/reports/$REPORT_NAME)
+  (cd $DIRECTORY && ./$FILENAME --reporter xml -o $CURRENT_DIR/../docs/website/_static/reports/$REPORT_NAME)
 done
