@@ -502,12 +502,19 @@ if (${WITH_PROFILING})
     set(CMAKE_CPP_COMPILER g++)
 endif()
 
+# "Compile" the Julia module code
 execute_process(
-        COMMAND base64 "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/main.jl"
-        OUTPUT_VARIABLE IDOL_JULIA_MODULE_BASE64
+        COMMAND base64 "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/JuMP.jl"
+        OUTPUT_VARIABLE IDOL_JUMP_MODULE_BASE64
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-string(REPLACE "\n" "\\\n" IDOL_JULIA_MODULE_BASE64 "${IDOL_JULIA_MODULE_BASE64}")
+string(REPLACE "\n" "\\\n" IDOL_JUMP_MODULE_BASE64 "${IDOL_JUMP_MODULE_BASE64}")
+execute_process(
+        COMMAND base64 "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/Coluna.jl"
+        OUTPUT_VARIABLE IDOL_COLUNA_MODULE_BASE64
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+string(REPLACE "\n" "\\\n" IDOL_COLUNA_MODULE_BASE64 "${IDOL_COLUNA_MODULE_BASE64}")
 configure_file(include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h.in ${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h @ONLY)
 
 target_include_directories(

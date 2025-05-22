@@ -70,38 +70,47 @@ idol::impl::JuliaSessionManager::~JuliaSessionManager() {
 
 void idol::impl::JuliaSessionManager::load_idol_jump_module() {
 
-    if (m_idol_jump_module_is_loaded) {
+    auto& julia_session_manager = get();
+
+    if (julia_session_manager.m_idol_jump_module_is_loaded) {
         return;
     }
 
-    jl_eval_string(base64_decode(IDOL_JULIA_MODULE_BASE64).c_str());
+    const auto module = base64_decode(IDOL_JUMP_MODULE_BASE64);
+    jl_eval_string(module.c_str());
     throw_if_julia_error();
 
-    load_module(".CppJuMP");
-    throw_if_julia_error();
-
-    m_idol_jump_module_is_loaded = true;
+    julia_session_manager.m_idol_jump_module_is_loaded = true;
+    std::cout << "Idol's julia interface to JuMP successfully loaded." << std::endl;
 }
 
 void idol::impl::JuliaSessionManager::load_idol_coluna_module() {
 
-    if (m_idol_coluna_is_loaded) {
+    auto& julia_session_manager = get();
+
+    if (julia_session_manager.m_idol_coluna_is_loaded) {
         return;
     }
 
-    assert(m_idol_jump_module_is_loaded);
+    assert(julia_session_manager.m_idol_jump_module_is_loaded);
 
-    load_module(".CppColuna");
+    const auto module = base64_decode(IDOL_COLUNA_MODULE_BASE64);
+    jl_eval_string(module.c_str());
+    throw_if_julia_error();
 
-    m_idol_coluna_is_loaded = true;
+    julia_session_manager.m_idol_coluna_is_loaded = true;
+    std::cout << "Idol's julia interface to Coluna.jl successfully loaded." << std::endl;
 
 }
 
 void idol::impl::JuliaSessionManager::load_module(const std::string &t_module) {
 
-    if (!m_loaded_modules.contains(t_module)) {
+    auto& julia_session_manager = get();
+
+    if (!julia_session_manager.m_loaded_modules.contains(t_module)) {
         jl_eval_string((std::string("using ") + t_module).c_str());
-        m_loaded_modules.emplace(t_module);
+        julia_session_manager.m_loaded_modules.emplace(t_module);
+        std::cout << "Julia package " + t_module + " successfully loaded." << std::endl;
     }
 
 }
@@ -114,6 +123,9 @@ idol::Optimizers::JuMP::JuMP(const idol::Model &t_parent,
                                                                 m_optimizer(std::move(t_optimizer)),
                                                                 m_is_continuous_relaxation(t_is_continuous_relaxation) {
 
+    impl::JuliaSessionManager::load_idol_jump_module();
+    impl::JuliaSessionManager::load_module(m_module);
+
 }
 
 std::string idol::Optimizers::JuMP::name() const {
@@ -122,7 +134,7 @@ std::string idol::Optimizers::JuMP::name() const {
 
 idol::SolutionStatus idol::Optimizers::JuMP::get_status() const {
 
-    jl_function_t *get_status = jl_get_function(jl_main_module, "get_status");
+    jl_function_t *get_status = jl_get_function(jl_main_module, "idol_get_status");
     jl_value_t *result = jl_call1(get_status, jl_box_uint64(*m_model_id));
     impl::JuliaSessionManager::throw_if_julia_error();
 
@@ -138,7 +150,7 @@ idol::SolutionStatus idol::Optimizers::JuMP::get_status() const {
 
 idol::SolutionReason idol::Optimizers::JuMP::get_reason() const {
 
-    jl_function_t *get_status = jl_get_function(jl_main_module, "get_reason");
+    jl_function_t *get_status = jl_get_function(jl_main_module, "idol_get_reason");
     jl_value_t *result = jl_call1(get_status, jl_box_uint64(*m_model_id));
     impl::JuliaSessionManager::throw_if_julia_error();
 
@@ -165,7 +177,7 @@ double idol::Optimizers::JuMP::get_best_obj() const {
         return is_minimization ? Inf : -Inf;
     }
 
-    jl_function_t *get_best_obj = jl_get_function(jl_main_module, "get_best_obj");
+    jl_function_t *get_best_obj = jl_get_function(jl_main_module, "idol_get_best_obj");
     jl_value_t *result = jl_call1(get_best_obj, jl_box_uint64(*m_model_id));
     impl::JuliaSessionManager::throw_if_julia_error();
 
@@ -185,7 +197,7 @@ double idol::Optimizers::JuMP::get_best_bound() const {
         return is_minimization ? -Inf : Inf;
     }
 
-    jl_function_t *get_best_bound = jl_get_function(jl_main_module, "get_best_bound");
+    jl_function_t *get_best_bound = jl_get_function(jl_main_module, "idol_get_best_bound");
     jl_value_t *result = jl_call1(get_best_bound, jl_box_uint64(*m_model_id));
     impl::JuliaSessionManager::throw_if_julia_error();
 
@@ -196,7 +208,7 @@ double idol::Optimizers::JuMP::get_var_primal(const idol::Var &t_var) const {
 
     const auto& model = parent();
 
-    jl_function_t *get_var_primal = jl_get_function(jl_main_module, "get_var_primal");
+    jl_function_t *get_var_primal = jl_get_function(jl_main_module, "idol_get_var_primal");
     jl_value_t *result = jl_call2(get_var_primal, jl_box_uint64(*m_model_id), jl_box_uint64(model.get_var_index(t_var)));
     impl::JuliaSessionManager::throw_if_julia_error();
 
@@ -239,7 +251,7 @@ void idol::Optimizers::JuMP::hook_optimize() {
 
     set_solution_index(0);
 
-    jl_function_t* optimize = jl_get_function(jl_main_module, "optimize");
+    jl_function_t* optimize = jl_get_function(jl_main_module, "idol_optimize");
     impl::JuliaSessionManager::throw_if_julia_error();
 
     jl_call1(optimize, jl_box_uint64(*m_model_id));
@@ -252,9 +264,6 @@ void idol::Optimizers::JuMP::set_solution_index(unsigned int t_index) {
 }
 
 void idol::Optimizers::JuMP::hook_build() {
-
-    impl::s_julia_session_manager.load_idol_jump_module();
-    impl::s_julia_session_manager.load_module(m_module);
 
     jl_value_t* optimizer_val = jl_eval_string(m_optimizer.c_str());
     impl::JuliaSessionManager::throw_if_julia_error();
@@ -292,7 +301,7 @@ bool idol::Optimizers::JuMP::hook_add(const idol::Var &t_var, bool t_add_column)
     const double obj = model.get_var_obj(t_var);
     const auto& name = t_var.name();
 
-    jl_function_t* create_variable = jl_get_function(jl_main_module, "create_variable");
+    jl_function_t* create_variable = jl_get_function(jl_main_module, "idol_create_variable");
     impl::JuliaSessionManager::throw_if_julia_error();
 
     auto** args = new jl_value_t*[6];
@@ -328,7 +337,7 @@ bool idol::Optimizers::JuMP::hook_add(const idol::Ctr &t_ctr) {
         coefficients.push_back(coefficient);
     }
 
-    jl_function_t* create_constraint = jl_get_function(jl_main_module, "create_constraint");
+    jl_function_t* create_constraint = jl_get_function(jl_main_module, "idol_create_constraint");
     impl::JuliaSessionManager::throw_if_julia_error();
 
     auto** args = new jl_value_t*[6];
@@ -358,7 +367,7 @@ void idol::Optimizers::JuMP::hook_update_objective_sense() {
 
     const auto sense = parent().get_obj_sense();
 
-    jl_function_t* update_objective_sense = jl_get_function(jl_main_module, "update_objective_sense");
+    jl_function_t* update_objective_sense = jl_get_function(jl_main_module, "idol_update_objective_sense");
     jl_call2(update_objective_sense, jl_box_uint64(*m_model_id), jl_box_uint16((uint16_t)sense));
     impl::JuliaSessionManager::throw_if_julia_error();
 
@@ -406,7 +415,7 @@ void idol::Optimizers::JuMP::hook_remove(const idol::SOSCtr &t_ctr) {
 
 void idol::Optimizers::JuMP::debug_print() const {
 
-    jl_function_t* print_model = jl_get_function(jl_main_module, "print_model");
+    jl_function_t* print_model = jl_get_function(jl_main_module, "idol_print_model");
     impl::JuliaSessionManager::throw_if_julia_error();
 
     jl_call1(print_model, jl_box_uint64(*m_model_id));
@@ -415,9 +424,7 @@ void idol::Optimizers::JuMP::debug_print() const {
 
 uint64_t idol::Optimizers::JuMP::hook_create_julia_model(jl_value_t* t_optimizer) {
 
-    jl_function_t* create_model = jl_get_function(jl_main_module, "create_model");
-    impl::JuliaSessionManager::throw_if_julia_error();
-
+    jl_function_t* create_model = jl_get_function(jl_main_module, "idol_create_model");
     jl_value_t* id = jl_call1(create_model, t_optimizer);
     impl::JuliaSessionManager::throw_if_julia_error();
 
@@ -430,13 +437,15 @@ idol::Optimizers::JuMP::~JuMP() {
         return;
     }
 
-    jl_function_t* delete_model = jl_get_function(jl_main_module, "delete_model");
+    jl_function_t* delete_model = jl_get_function(jl_main_module, "idol_delete_model");
     if (!delete_model) { return; }
 
     jl_call1(delete_model, jl_box_uint64(*m_model_id));
     impl::JuliaSessionManager::throw_if_julia_error();
 
 }
+
+idol::impl::JuliaSessionManager* idol::impl::JuliaSessionManager::s_julia_session_manager = nullptr;
 
 void idol::impl::JuliaSessionManager::throw_if_julia_error() {
 
@@ -466,6 +475,13 @@ void idol::impl::JuliaSessionManager::throw_if_julia_error() {
         throw Exception("[Julia Error] " + std::string(jl_symbol_name(typ->name->name)));
     }
 
+}
+
+idol::impl::JuliaSessionManager &idol::impl::JuliaSessionManager::get() {
+    if (!s_julia_session_manager) {
+        s_julia_session_manager = new JuliaSessionManager();
+    }
+    return *s_julia_session_manager;
 }
 
 #endif // IDOL_USE_JULIA

@@ -92,20 +92,25 @@ namespace idol::impl {
         bool m_idol_jump_module_is_loaded = false;
         bool m_idol_coluna_is_loaded = false;
         Set<std::string> m_loaded_modules;
+        static JuliaSessionManager* s_julia_session_manager;
+
+        static JuliaSessionManager& get();
     public:
         JuliaSessionManager();
+        JuliaSessionManager(const JuliaSessionManager&) = delete;
+        JuliaSessionManager(JuliaSessionManager&&) = delete;
+        JuliaSessionManager& operator=(const JuliaSessionManager&) = delete;
+        JuliaSessionManager& operator=(JuliaSessionManager&&) = delete;
 
-        void load_idol_jump_module();
-        void load_idol_coluna_module();
-        void load_module(const std::string &t_module);
+        static void load_idol_jump_module();
+        static void load_idol_coluna_module();
+        static void load_module(const std::string &t_module);
 
         ~JuliaSessionManager();
 
         static void throw_if_julia_error();
     };
 
-
-    static JuliaSessionManager s_julia_session_manager;
 }
 
 #endif

@@ -11,13 +11,13 @@ idol::Optimizers::Coluna::Coluna(const idol::Model &t_parent, const idol::Annota
     : Optimizers::JuMP(t_parent, "HiGHS", "HiGHS.Optimizer", false),
       m_annotation(t_annotation) {
 
+    impl::JuliaSessionManager::load_idol_coluna_module();
+
 }
 
 uint64_t idol::Optimizers::Coluna::hook_create_julia_model(jl_value_t* t_optimizer) {
 
-    impl::s_julia_session_manager.load_idol_coluna_module();
-
-    jl_function_t* create_block_model = jl_get_function(jl_main_module, "create_block_model");
+    jl_function_t* create_block_model = jl_get_function(jl_main_module, "idol_create_block_model");
     jl_value_t* id = jl_call1(create_block_model, t_optimizer);
     impl::JuliaSessionManager::throw_if_julia_error();
 
@@ -53,7 +53,7 @@ void idol::Optimizers::Coluna::hook_optimize() {
         }
     }
 
-    jl_function_t* optimize = jl_get_function(jl_main_module, "optimize_dantzig_wolfe");
+    jl_function_t* optimize = jl_get_function(jl_main_module, "idol_optimize_dantzig_wolfe");
     impl::JuliaSessionManager::throw_if_julia_error();
 
     auto** args = new jl_value_t*[4];
