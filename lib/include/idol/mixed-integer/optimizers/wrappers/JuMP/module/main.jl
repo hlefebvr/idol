@@ -9,7 +9,7 @@ module CppJuMP
     end
 
     const registry = Dict{UInt64, Objects}()
-    const id_counter = Ref(0)
+    const id_counter::UInt64 = Ref(0)
 
     function get_next_id()
         current_id = id_counter[]
@@ -26,7 +26,6 @@ module CppJuMP
     end
 
     function delete_model(t_id::UInt64)
-        print("Prepare to delete model ", t_id)
         if haskey(registry, t_id)
             delete!(registry, t_id)
         end
@@ -97,7 +96,7 @@ module CppJuMP
 
     end
 
-    function print_model(t_id::Int64)
+    function print_model(t_id::UInt64)
         obj = registry[t_id]
         println("Model ID:", t_id)
         println(obj.model)
@@ -105,7 +104,7 @@ module CppJuMP
         println("Constraints:", obj.constraints)
     end
 
-    function optimize(t_id::Int64)
+    function optimize(t_id::UInt64)
         obj = registry[t_id]
         optimize!(obj.model)
     end
