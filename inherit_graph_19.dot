@@ -1,0 +1,19 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node0 [id="Node000000",label="idol::BranchAndBoundCallback\lFactory\< NodeInfoT \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classidol_1_1BranchAndBoundCallbackFactory.html",tooltip=" "];
+  Node0 -> Node1 [id="edge10_Node000000_Node000001",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node1 [id="Node000001",label="idol::CallbackAsBranchAnd\lBoundCallback\< NodeInfoT \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classidol_1_1CallbackAsBranchAndBoundCallback.html",tooltip=" "];
+  Node0 -> Node2 [id="edge11_Node000000_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="idol::Cuts::KnapsackCover\l\< NodeInfoT \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classidol_1_1Cuts_1_1KnapsackCover.html",tooltip=" "];
+  Node0 -> Node3 [id="edge12_Node000000_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="idol::Heuristics::Integer\lMaster\< NodeInfoT \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classidol_1_1Heuristics_1_1IntegerMaster.html",tooltip=" "];
+  Node0 -> Node4 [id="edge13_Node000000_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="idol::ReducedCostFixing\l\< NodeInfoT \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classidol_1_1ReducedCostFixing.html",tooltip=" "];
+  Node0 -> Node5 [id="edge14_Node000000_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="idol::Utils::ExportBranch\lAndBoundTreeToCSV\< NodeInfoT \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classidol_1_1Utils_1_1ExportBranchAndBoundTreeToCSV.html",tooltip=" "];
+}
