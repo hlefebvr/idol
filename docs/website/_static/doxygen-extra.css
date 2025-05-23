@@ -131,71 +131,50 @@ h1, h2, h3, h4, h5, h6, .title {
     float:right;
 }
 
-.test-report-table {
-    font-size: 0.8em;
-    text-align: left;
-    width: 100%;
-    table-layout: fixed;
+.test-report-table-section, .test-report-table-exception {
+    width: 480px;
+}
 
-    td {
-        padding-top: 1px;
-        padding-bottom: 1px;
-        padding-left: 5px;
-        padding-right: 5px;
-    }
+.test-report-table-exception {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+/* Define background colors for each progress range */
+.progress-NA {
+    text-align: center;
+    width: 40px;
+}
 
-    .test-report-table-header {
-        background-color: white;
-        width: 300px;
-        vertical-align: top;
-    }
+.progress-0 {
+    background-color: rgb(255, 0, 0);  /* Red */
+    color: white;
+    text-align: center;
+    width: 40px;
+}
 
-    .test-report-table-section, .test-report-table-exception {
-        width: 480px;
-    }
+.progress-25 {
+    background-color: rgb(255, 165, 0);  /* Orange */
+    text-align: center;
+    width: 40px;
+}
 
-    .test-report-table-exception {
-        background-color: #f8d7da;
-        color: #721c24;
-    }
+.progress-50 {
+    background-color: rgb(255, 255, 0);  /* Yellow */
+    text-align: center;
+    width: 40px;
+}
 
-    /* Define background colors for each progress range */
-    .progress-NA {
-        text-align: center;
-        width: 40px;
-    }
+.progress-75 {
+    background-color: rgb(144, 238, 144);  /* Light Green */
+    text-align: center;
+    width: 40px;
+}
 
-    .progress-0 {
-        background-color: rgb(255, 0, 0);  /* Red */
-        color: white;
-        text-align: center;
-        width: 40px;
-    }
-
-    .progress-25 {
-        background-color: rgb(255, 165, 0);  /* Orange */
-        text-align: center;
-        width: 40px;
-    }
-
-    .progress-50 {
-        background-color: rgb(255, 255, 0);  /* Yellow */
-        text-align: center;
-        width: 40px;
-    }
-
-    .progress-75 {
-        background-color: rgb(144, 238, 144);  /* Light Green */
-        text-align: center;
-        width: 40px;
-    }
-
-    .progress-100 {
-        background-color: rgb(0, 128, 0);  /* Dark Green (for 100%) */
-        color: white;
-        text-align: center;
-        width: 40px;
-    }
+.progress-100 {
+    background-color: rgb(0, 128, 0);  /* Dark Green (for 100%) */
+    color: white;
+    text-align: center;
+    width: 40px;
 }
 
 @media (max-width: 767px) {
