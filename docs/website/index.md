@@ -7,7 +7,7 @@
     </h2>
     <p>
         <b><a href="examples.html" class="my-button" id="get-started" >Get started with examples</a></b>
-        <b></b><a href="installation.html" class="my-button">To installation guidelines</a></b>
+        <b><a href="installation.html" class="my-button">To installation guidelines</a></b>
     </p>
 </div>
 

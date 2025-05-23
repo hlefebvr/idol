@@ -39,45 +39,14 @@ def parse_report(xml_path):
     tree = ET.parse(xml_path)
     root = tree.getroot()
 
-    pretty_names = {
-        "test_modeling_interface": "Modeling a MIP",
-        "test_wrapper_GLPK": "Interfacing with GLPK",
-        "test_wrapper_HiGHS": "Interfacing with HiGHS",
-        "test_wrapper_Mosek": "Interfacing with Mosek",
-        "test_wrapper_Gurobi": "Interfacing with Gurobi",
-        "test_wrapper_OsiCbc": "Interfacing with coin-or/Osi (Cbc)",
-        "test_wrapper_OsiClp": "Interfacing with coin-or/Osi (Clp)",
-        "test_wrapper_Cplex": "Interfacing with Cplex",
-        "test_wrapper_OsiCplex": "Interfacing with coin-or/Osi (Cplex)",
-        "test_wrapper_OsiSymphony": "Interfacing with coin-or/Osi (Symphony)",
-        "test_wrapper_OsiVol": "Interfacing with coin-or/Osi (Vol)",
-        "test_wrapper_MibS": "Interfacing with MibS",
-        "test_wrapper_JuMP": "Interfacing with julia JuMP",
-    }
-
-    pretty_tag_names = {
-        "[modeling]": "Modeling",
-        "[variables]": "Variables",
-        "[linear-constraints]": "Linear Constraints",
-        "[quadratic-constraints]": "Quadratic Constraints",
-        "[expressions]": "Mathematical Expressions",
-        "[objective]": "Objective",
-        "[solving-lp]": "Solving LPs",
-        "[solving-milp]": "Solving MILPs",
-        "[solving-bilevel]": "Solving bilevel problems",
-        "[callbacks]": "Callbacks",
-    }
-
     executable = root.get("name")
     result["executable"] = executable
-    result["name"] = pretty_names[executable]
     result["tags"] = {}
 
     for test_case in root.findall(".//TestCase"):
         tag = test_case.get("tags")
         if tag not in result["tags"]:
             result["tags"][tag] = {
-                "name": pretty_tag_names[tag],
                 "test_cases": [],
             }
         result["tags"][tag]["test_cases"].append(parse_test_case(test_case))
@@ -112,6 +81,15 @@ def generate_md(xml_path, db):
         result += f"Error parsing report {xml_path}: {e}"
         return result
 
+    result += "<table>\n"
+    for tag_name, tag in report["tags"].items():
+        for test_case in tag["test_cases"]:
+            for section in test_case["sections"]:
+                section_name = section["name"]
+                section_progress = section["progress"]
+                result += "<tr><td>" + tag_name + "</td><td>" + section_name + "</td><td>" + section_progress + "</td></tr>"
+
+    result += "</table>\n"
     result += str(report)
 
     return result
