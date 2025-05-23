@@ -1,6 +1,5 @@
 import xml.etree.ElementTree as ET
-from docutils import nodes
-from docutils.parsers.rst import Directive
+import json
 
 def parse_section(section):
     result = {}
@@ -97,140 +96,38 @@ def get_progress_color(progress):
     if progress < 100: return "progress-75"
     return "progress-100"
 
-class TestReportDirective(Directive):
-    required_arguments = 1
+def generate_md(xml_path, db):
 
-    def run(self):
+    base_name = xml_path.split("/")[-1]
+    without_extension = base_name.split(".")[0]
+    name = db[without_extension]["name"] if without_extension in db else without_extension
+    brief = db[without_extension]["brief"] if without_extension in db else "..."
 
-        print("***********************")
-        print("Test Report Directive")
-        print("***********************")
+    result = "\\page " + without_extension + " " + name + "\n"
+    result += "\\brief " + brief + "\n\n"
 
-        result = []
-
-        xml_path = "../docs/website/" + self.arguments[0]
-        print("Generating test report from:", xml_path)
-
-        try:
-            report = parse_report(xml_path)
-        except Exception as e:
-            print("Error parsing report:", e)
-            result += [
-                nodes.warning(
-                    '',
-                    nodes.paragraph(text=f"There was an error while parsing the test report {xml_path}."),
-                    nodes.paragraph(text=str(e))
-                )
-            ]
-            return result
-
-        report_section = nodes.section(level=2)
-        report_section += nodes.title(text=report["name"])
-        report_section["ids"] = [report["executable"]]
-
-        result += [report_section]
-
-        for key in report["tags"]:
-            tag = report["tags"][key]
-            tag_name = tag["name"]
-
-            section = nodes.section(level=3)
-            section += nodes.title(text=tag_name)
-            section["ids"] = [key]
-            report_section += [section]
-
-            table = nodes.table(classes=["test-report-table"])
-            tgroup = nodes.tgroup(cols=4)
-            table += tgroup
-
-            tgroup += nodes.colspec(colwidth=20)
-            tgroup += nodes.colspec(colwidth=1)
-            tgroup += nodes.colspec(colwidth=10)
-            tgroup += nodes.colspec(colwidth=1)
-
-            tbody = nodes.tbody()
-            tgroup += tbody
-
-            for test_case in tag["test_cases"]:
-                    test_case_name = test_case["name"]
-                    test_case_progress = test_case["progress"]
-                    test_case_progress_class = get_progress_color(test_case_progress)
-                    if test_case_progress is None:
-                        test_case_progress = "-"
-                    else:
-                        test_case_progress = f"{test_case_progress:.0f}%"
-                    sections = test_case["sections"]
-                    exceptions = test_case["exceptions"]
-
-                    # Number of rows to span for the test case and progress
-                    rowspan = len(sections) + len(exceptions)
-                    first_row = True  # To track if it's the first row of a test case
-
-                    def add_first_row_cols(row, test_case_name, test_case_progress, test_case_progress_class):
-                        # First Column: Test Case Name (rowspanned)
-                        entry1 = nodes.entry(morecols=0, morerows=rowspan - 1)
-                        entry1 += nodes.paragraph(text=test_case_name)
-                        entry1.attributes["classes"] += ["test-report-table-header"]
-                        row += entry1
-
-                        # Second Column: Test Case Progress (rowspanned)
-                        entry2 = nodes.entry(morecols=0, morerows=rowspan - 1)
-                        entry2 += nodes.paragraph(text=test_case_progress)
-                        entry2.attributes["classes"] += [test_case_progress_class]
-                        row += entry2
-
-                    for section in sections:
-
-                        row = nodes.row()
-
-                        if first_row:
-                            add_first_row_cols(row, test_case_name, test_case_progress, test_case_progress_class)
-                            first_row = False
-
-                        # Third Column: Section Name
-                        entry3 = nodes.entry()
-                        entry3 += nodes.paragraph(text=section["name"])
-                        entry3.attributes["classes"] += ["test-report-table-section"]
-                        row += entry3
-
-                        # Fourth Column: Section Progress
-                        section_progress = section.get("progress", None)
-                        entry4 = nodes.entry()
-                        if section_progress is None:
-                            entry4 += nodes.paragraph(text="-")
-                        else:
-                            entry4 += nodes.paragraph(text=f"{section_progress:.0f}%")
-                        entry4.attributes["classes"] += [get_progress_color(section_progress)]
-                        row += entry4
-
-                        tbody += row
-
-                    for exception in exceptions:
-
-                        row = nodes.row()
-
-                        if first_row:
-                            add_first_row_cols(row, test_case_name, test_case_progress, test_case_progress_class)
-                            first_row = False
-
-                        # Third Column: Exception Name
-                        entry3 = nodes.entry()
-                        entry3 += nodes.paragraph(text=exception)
-                        entry3.attributes["classes"] += ["test-report-table-exception"]
-                        row += entry3
-
-                        # Fourth Column: Progress
-                        entry4 = nodes.entry()
-                        entry4 += nodes.paragraph(text="-")
-                        entry4.attributes["classes"] += [get_progress_color(0)]
-                        row += entry4
-
-                        tbody += row
-
-            report_section += table
-
+    try:
+        report = parse_report(xml_path)
+    except Exception as e:
+        result += f"Error parsing report {xml_path}: {e}"
         return result
 
+    result += str(report)
 
-def setup(app):
-    app.add_directive("testreport", TestReportDirective)
+    return result
+
+import sys
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python test_report.py <path_to_report>")
+        sys.exit(1)
+
+    # Load the database
+    with open("_ext/test_reports.json", "r") as f:
+        db = json.load(f)
+
+    # Path to the XML report file
+    xml_path = sys.argv[1]
+    md = generate_md(xml_path, db)
+    print(md)

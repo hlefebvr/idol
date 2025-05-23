@@ -1,0 +1,46 @@
+{
+  "test_modeling_interface": {
+    "name": "Modeling interface",
+    "brief": "Can model mixed-integer optimization problems."
+  },
+  "test_wrapper_Gurobi": {
+    "name": "Interfacing Gurobi",
+    "brief": "Can solve mixed-integer optimization problems using Gurobi."
+  },
+  "test_wrapper_Cplex": {
+    "name": "Interfacing Cplex",
+    "brief": "Can solve mixed-integer optimization problems using Cplex."
+  },
+  "test_wrapper_HiGHS": {
+    "name": "Interfacing HiGHS",
+    "brief": "Can solve mixed-integer optimization problems using HiGHS."
+  },
+  "test_wrapper_GLPK": {
+    "name": "Interfacing GLPK",
+    "brief": "Can solve mixed-integer optimization problems using GLPK."
+  },
+  "test_wrapper_Mosek": {
+    "name": "Interfacing Mosek",
+    "brief": "Can solve mixed-integer optimization problems using Mosek."
+  },
+  "test_wrapper_OsiCplex": {
+    "name": "Interfacing Cplex via Osi",
+    "brief": "Can solve mixed-integer optimization problems using Cplex via coin-or/Osi."
+  },
+  "test_wrapper_OsiSymphony": {
+    "name": "Interfacing Symphony via Osi",
+    "brief": "Can solve mixed-integer optimization problems using Symphony via coin-or/Osi."
+  },
+  "test_wrapper_OsiClp": {
+      "name": "Interfacing Clp via Osi",
+      "brief": "Can solve mixed-integer optimization problems using Clp via coin-or/Osi."
+  },
+  "test_wrapper_JuMP": {
+    "name": "Interfacing JuMP",
+    "brief": "Can solve mixed-integer optimization problems using the julia framework JuMP (tested with HiGHS as the underlying solver)."
+  },
+  "test_wrapper_MibS": {
+    "name": "Interfacing MibS",
+    "brief": "Can solve mixed-integer bilevel problems using the coin-or/MibS solver."
+  }
+}

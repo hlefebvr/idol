@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Catch2TestRun name="test_wrapper_Gurobi" rng-seed="1516817867" xml-format-version="3" catch2-version="3.3.2">
+  <TestCase name="Can solve a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="36">
+    <Section name="Can retrieve primal solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="61">
+      <OverallResults successes="8" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve dual solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="76">
+      <OverallResults successes="10" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve reduced costs" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="94">
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve basis" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="106">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="107">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if primal ray is asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="110">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if farkas certificate is asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="115">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can write a model to a file and read it back" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="120">
+      <OverallResults successes="21" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can update and re-optimize a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="198">
+    <Section name="Can add cut and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="211">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add column and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="219">
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change bounds and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="228">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add cut and column and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="236">
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change objective function and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="246">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change right-hand side and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="252">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change left-hand side and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="260">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can remove a constraint and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="269">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can remove a variable and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="276">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add and remove the same variable and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="283">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add and remove a different variable and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="291">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add and remove the same constraint" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="300">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add and remove a different constraint" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="309">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add a constraint which depends on a variable that is then removed" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="318">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add a variable which depends on a constraint that is then removed" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="326">
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update a variable's bound then remove it" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="337">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change the objective function then remove a variable which appears in the objective function" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="345">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the objective function constant" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="353">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can solve an infeasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="363">
+    <Section name="Can retrieve a Farkas certificate" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="386">
+      <OverallResults successes="7" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if primal values are asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="402">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if dual values are asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="407">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if (primal) ray is asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="412">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if reduced costs are asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="417">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can solve an unbounded LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="424">
+    <Section name="Can retrieve a dual ray" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="447">
+      <OverallResults successes="7" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if primal values are asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="465">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if dual values are asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="470">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if farkas certificate is asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="475">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if reduced costs are asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="480">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can solve a feasible MIP which is integer at the root node" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="21">
+    <Section name="Can retrieve primal solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="45">
+      <OverallResults successes="6" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve the number of solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="58">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can iterate over solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="62">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can solve a feasible MIP which is not integer at the root node" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="71">
+    <Section name="Can retrieve the primal solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="94">
+      <OverallResults successes="11" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve the number of solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="120">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can iterate over solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="124">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can solve an infeasible MIP which is infeasible at root node" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="132">
+    <Section name="Can retrieve the solution status" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="149">
+      <Section name="Can retrieve the solution status" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="154">
+        <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve the number of solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="166">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can compute an irreducible infeasible sub-system" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="170">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="172">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can solve an infeasible MIP which is feasible at the root node" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="180">
+    <Section name="Can retrieve the solution status" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="198">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve the number of solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="209">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can compute an irreducible infeasible sub-system" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="213">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="215">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can solve an unbounded MIP" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="223">
+    <Section name="Can retrieve the solution status" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="235">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve the number of solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="246">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Can set parameters of the underlying solver" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="252">
+    <Section name="Can set a time limit" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="254">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="255">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can turn off presolve" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="258">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="259">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can activate infeasible or unbounded info" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="262">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="263">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can set an external parameter" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="266">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="267">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can set a thread limit" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="270">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="271">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can set a relative MIP gap" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="274">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="275">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can set an absolute MIP gap" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="278">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="279">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can set a best bound stop" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="282">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="283">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can set a best obj stop" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="286">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="287">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can set an iteration limit" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="290">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="291">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can turn on logs" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="294">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="295">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can set the maximum number of solutions in the pool" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="298">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="299">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can add universal callbacks to monitor the execution of the algorithm" tags="[callbacks]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="36">
+    <Section name="Can retrieve root node gap" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="38">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="39">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve root node solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="42">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="43">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can access nodes' solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="46">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="47">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can access integer solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="50">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="51">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can add universal callbacks to influence the execution of the algorithm" tags="[callbacks]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="56">
+    <Section name="Can add user cut" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="61">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="64">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add lazy constraint" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="71">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can terminate the algorithm" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="108">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="112">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <OverallResults successes="202" failures="21" expectedFailures="0" skips="0"/>
+  <OverallResultsCases successes="6" failures="6" expectedFailures="0" skips="0"/>
+</Catch2TestRun>
