@@ -2,6 +2,7 @@
 add_example(lp-glpk)
 add_example(kp-highs)
 add_example(sos1-gurobi)
+add_example(sudoku-cplex)
 
 # More advanced features
 add_example(flp-bab)
