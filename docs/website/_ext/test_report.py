@@ -75,21 +75,30 @@ def generate_md(xml_path, db):
     result = "\\page " + without_extension + " " + name + "\n"
     result += "\\brief " + brief + "\n\n"
 
+    result += "[TOC]\n\n"
+
     try:
         report = parse_report(xml_path)
     except Exception as e:
         result += f"Error parsing report {xml_path}: {e}"
         return result
 
-    result += "<table>\n"
     for tag_name, tag in report["tags"].items():
+
+        tag_name = tag_name.replace("[", "").replace("]", "")
+
+        result += "\\subsection " + without_extension + "_" + tag_name + " " + tag_name + "\n"
+
+        result += "<table>\n"
+
         for test_case in tag["test_cases"]:
             for section in test_case["sections"]:
                 section_name = section["name"]
                 section_progress = section["progress"]
-                result += "<tr><td>" + tag_name + "</td><td>" + section_name + "</td><td>" + section_progress + "</td></tr>"
+                section_progress_str = str(section_progress) if section_progress is not None else "-"
+                result += "<tr><td>" + section_name + "</td><td>" + section_progress_str + "</td></tr>"
 
-    result += "</table>\n"
+        result += "</table>\n"
     result += str(report)
 
     return result
