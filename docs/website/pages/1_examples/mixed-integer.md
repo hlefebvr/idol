@@ -5,9 +5,10 @@
 
 \subsection examples_mixed_integer_modeling Building and solving simple models 
 
-| Example name                               | Description                               | 
-|--------------------------------------------|-------------------------------------------|
-| \subpage example_mixed_integer_kp_highs    | \copybrief example_mixed_integer_kp_highs |
+| Example name                            | Description                               | 
+|-----------------------------------------|-------------------------------------------|
+| \subpage example_mixed_integer_lp_glpk  | \copybrief example_mixed_integer_lp_glpk |
+| \subpage example_mixed_integer_kp_highs | \copybrief example_mixed_integer_kp_highs |
 
 \subsection examples_mixed_integer_mored_advanced_features More advanced features
 
