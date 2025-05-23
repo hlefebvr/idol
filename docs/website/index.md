@@ -12,7 +12,7 @@ idol is a C++ framework for **mathematical optimization** and complex decision-m
 It is designed to help you build new algorithms for solving complex optimization problems.
 The main philosophy behind idol is interoperability and ease of use.
 Hence, any algorithm can be seamlessly combined with any other algorithm to create a new one.
-For instance, you can combine a Branch-and-Bound algorithm with a Column Generation algorithm to create a Branch-and-Price algorithm.
+For instance, you can combine a branch-and-bound algorithm with a column generation algorithm to create a branch-and-price algorithm.
 
 ```cpp 
 const auto branch_and_price = branch_and_bound + column_generation;
