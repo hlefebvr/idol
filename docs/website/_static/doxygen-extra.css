@@ -103,7 +103,7 @@ h1, h2, h3, h4, h5, h6, .title {
     color: gray;
 }
 
-#get-started {
+.my-button[href="examples.html"] {
     background-color: #1f883d;
     color: white !important;
 }
