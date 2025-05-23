@@ -3,7 +3,7 @@
 <h1 style="font-size:2.5em;border:none;margin-top:5px;margin-bottom:20px;">A C++ Framework for Optimization</h1>
 <h2 style="font-size:1.5em;color:gray;line-height:1.5em;border:none;margin-bottom:20px;">Start solving optimization problems now.</h2>
 
-<a href="examples.html" class="my-button" id="get-started" >Get started with examples</a>
+<a href="examples.html" class="my-button">Get started with examples</a>
 <a href="installation.html" class="my-button">To installation guidelines</a>
 
 \section what_is_idol What is idol?
