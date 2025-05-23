@@ -1,7 +1,6 @@
 #include <iostream>
 #include "idol/modeling.h"
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
-#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 
 using namespace idol;
 
@@ -77,7 +76,7 @@ int main(int t_argc, const char** t_argv) {
     }
 
     // Use Gurobi and optimize
-    model.use(Gurobi());
+    model.use(Cplex().with_logs(false));
     model.optimize();
 
     std::cout << "Solution status is " << model.get_status() << std::endl;
