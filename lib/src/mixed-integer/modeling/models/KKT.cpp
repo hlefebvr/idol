@@ -731,3 +731,50 @@ void idol::Reformulators::KKT::add_bounds_on_dual_variables(idol::Model &t_desti
     }
 
 }
+
+const idol::Var &idol::Reformulators::KKT::get_dual_var(const idol::Ctr &t_ctr) const {
+
+    const auto index = m_primal.get_ctr_index(t_ctr);
+
+    if (!m_dual_variables_for_constraints[index]) {
+        throw Exception("The constraint is not part of the primal problem.");
+    }
+
+    return *m_dual_variables_for_constraints[index];
+}
+
+const idol::Var &idol::Reformulators::KKT::get_dual_var_lb(const idol::Var &t_var) const {
+
+    const auto index = m_primal.get_var_index(t_var);
+
+    if (!m_primal_variable_indicator(t_var)) {
+        throw Exception("The variable is not part of the primal problem.");
+    }
+
+    return *m_dual_variables_for_lower_bounds[index];
+
+}
+
+const idol::Var &idol::Reformulators::KKT::get_dual_var_ub(const idol::Var &t_var) const {
+
+    const auto index = m_primal.get_var_index(t_var);
+
+    if (!m_primal_variable_indicator(t_var)) {
+        throw Exception("The variable is not part of the primal problem.");
+    }
+
+    return *m_dual_variables_for_upper_bounds[index];
+
+}
+
+const std::variant<idol::Ctr, idol::QCtr> &idol::Reformulators::KKT::get_dual_ctr(const idol::Var &t_var) const {
+
+    const auto index = m_primal.get_var_index(t_var);
+
+    if (!m_dual_constraints[index]) {
+        throw Exception("The variable is not part of the primal problem.");
+    }
+
+    return *m_dual_constraints[index];
+
+}

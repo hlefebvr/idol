@@ -112,6 +112,11 @@ public:
     void add_kkt_reformulation(idol::Model &t_destination, BoundProvider& t_bound_provider);
 
     void add_bounds_on_dual_variables(idol::Model &t_destination, BoundProvider& t_bound_provider);
+
+    [[nodiscard]] const Var& get_dual_var(const Ctr& t_ctr) const;
+    [[nodiscard]] const Var& get_dual_var_lb(const Var& t_var) const;
+    [[nodiscard]] const Var& get_dual_var_ub(const Var& t_var) const;
+    const std::variant<Ctr, QCtr>& get_dual_ctr(const Var& t_var) const;
 };
 
 class idol::Reformulators::KKT::BoundProvider {

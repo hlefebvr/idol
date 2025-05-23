@@ -7,7 +7,7 @@
 
 idol::Optimizer *idol::HiGHS::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_HIGHS
-    auto* result = new Optimizers::HiGHS(t_model, m_continuous_relaxation.has_value() && m_continuous_relaxation.value());
+    auto* result = new Optimizers::HiGHS(t_model, m_continuous_relaxation.value_or(false));
 
     this->handle_default_parameters(result);
 

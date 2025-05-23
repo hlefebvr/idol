@@ -1,74 +1,105 @@
-//
-// Created by henri on 06/04/23.
-//
 #include <iostream>
 #include "idol/modeling.h"
-#include "idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
-#include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
-#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
-#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
-#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 
 using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
+    /*****************/
+    /* Instance data */
+    /*****************/
+
+    const Vector<double> fixed_costs { 109.6, 169.5, 24.8, 150.3, 140.7, 68.8, 5.4, 123.2, 118.5, 27.6, };
+    const Vector<double> capacities { 131.5, 103.5, 41.8, 156.5, 128.5, 66.1, 33.7, 114.0, 152.3, 125.6, };
+    const Vector<double> demands { 36.2, 5.6, 10.0, 20.2, 17.5, 35.8, 14.9, 2.8, 36.7, 2.8, 12.1, 16.3, 11.4, 9.0, 32.2, 13.8, 0.6, 26.9, 36.5, 10.0, };
+    const Vector<double, 2> transportation_costs {
+            {0.7, 0.4, 0.6, 0.7, 0.3, 0.6, 0.6, 0.6, 0.3, 0.3, 0.4, 0.6, 0.8, 0.6, 0.4, 0.2, 0.4, 0.3, 0.5, 0.4, },
+            {0.8, 0.1, 0.3, 0.8, 0.7, 0.5, 0.7, 0.8, 0.2, 0.5, 0.2, 0.8, 0.8, 0.5, 0.6, 0.2, 0.6, 0.1, 0.8, 0.7, },
+            {1.0, 0.5, 0.7, 1.0, 0.4, 0.9, 0.9, 0.9, 0.2, 0.6, 0.6, 0.9, 1.1, 0.9, 0.7, 0.3, 0.7, 0.4, 0.7, 0.5, },
+            {0.8, 0.9, 1.1, 1.0, 0.3, 1.1, 0.9, 0.6, 0.8, 0.5, 0.9, 0.7, 1.0, 1.1, 0.6, 0.7, 0.5, 0.8, 0.1, 0.2, },
+            {0.0, 0.7, 0.7, 0.2, 0.8, 0.6, 0.2, 0.2, 0.9, 0.4, 0.6, 0.1, 0.2, 0.5, 0.2, 0.7, 0.3, 0.7, 0.6, 0.8, },
+            {0.4, 0.4, 0.4, 0.3, 0.7, 0.3, 0.2, 0.5, 0.6, 0.3, 0.3, 0.4, 0.4, 0.3, 0.3, 0.4, 0.3, 0.3, 0.7, 0.7, },
+            {1.0, 0.6, 0.9, 1.1, 0.3, 1.0, 1.0, 0.9, 0.3, 0.6, 0.7, 1.0, 1.1, 1.0, 0.7, 0.4, 0.7, 0.5, 0.7, 0.4, },
+            {0.1, 0.6, 0.6, 0.2, 0.8, 0.5, 0.2, 0.3, 0.8, 0.3, 0.5, 0.1, 0.2, 0.4, 0.2, 0.6, 0.2, 0.6, 0.6, 0.8, },
+            {0.8, 0.6, 0.9, 0.9, 0.1, 0.9, 0.8, 0.7, 0.5, 0.4, 0.7, 0.8, 0.9, 0.9, 0.5, 0.4, 0.5, 0.5, 0.4, 0.2, },
+            {0.7, 0.3, 0.5, 0.7, 0.4, 0.6, 0.7, 0.7, 0.2, 0.4, 0.3, 0.7, 0.8, 0.6, 0.5, 0.0, 0.5, 0.2, 0.6, 0.5, },
+    };
+    const auto n_facilities = fixed_costs.size();
+    const auto n_customers = demands.size();
+
+    const bool use_reduced_cost_fixing = true; // Set to false to disable reduced cost fixing
+
+    /****************/
+    /* Create model */
+    /****************/
+
+    // Create optimization environment
     Env env;
 
-    // Read instance
-    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("flp-bab.data.txt");
-    const unsigned int n_customers = instance.n_customers();
-    const unsigned int n_facilities = instance.n_facilities();
-
-    // Make model
-
+    // Create model
     Model model(env);
 
+    // Add variables
     auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, 0., "x");
     auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, 0., "y");
 
+    // Add constraints
+
+    // Capacity constraints
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-        model.add_ctr(idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i));
+        model.add_ctr(idol_Sum(j, Range(n_customers), demands[j] * y[i][j]) <= capacities[i] * x[i]);
     }
 
+    // Demand constraints
     for (unsigned int j = 0 ; j < n_customers ; ++j) {
         model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) == 1);
     }
 
-    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-        for (unsigned int j = 0 ; j < n_customers ; ++j) {
-            model.add_ctr(y[i][j] <= x[i]);
-        }
-    }
-
+    // Set objective function
     model.set_obj_expr(idol_Sum(i, Range(n_facilities),
-                                instance.fixed_cost(i) * x[i]
+                                fixed_costs[i] * x[i]
                                 + idol_Sum(j, Range(n_customers),
-                                             instance.per_unit_transportation_cost(i, j) *
-                                             instance.demand(j) *
-                                             y[i][j]
+                                             transportation_costs[i][j] * demands[j] * y[i][j]
                                          )
                                  )
                          );
 
-    // Set backend options
-    model.use(
-            BranchAndBound()
-                    .with_node_optimizer(Gurobi::ContinuousRelaxation())
-                    .with_branching_rule(PseudoCost())
-                    .with_node_selection_rule(BestEstimate())
-                    .add_callback(ReducedCostFixing())
-                    .with_logs(true)
-    );
+    /*************************************/
+    /* Create branch-and-bound algorithm */
+    /*************************************/
 
+    // First, we create a virgin branch-and-bound algorithm
+    auto branch_and_bound = BranchAndBound();
+
+    // Configure how to solve the nodes' problems
+    branch_and_bound.with_node_optimizer(GLPK::ContinuousRelaxation());
+
+    // Configure node selection rule
+    branch_and_bound.with_node_selection_rule(BestBound());
+
+    // Configure branching rule
+    branch_and_bound.with_branching_rule(PseudoCost());
+
+    // If required, we add a reduced cost fixing callback
+    if (use_reduced_cost_fixing) {
+        branch_and_bound.add_callback(ReducedCostFixing());
+    }
+
+    /*******************/
+    /* Solve the model */
+    /*******************/
+
+    model.use(branch_and_bound);
     model.optimize();
 
-    std::cout << save_primal(model) << std::endl;
+    std::cout << "Status: " << model.get_status() << std::endl;
+    std::cout << "Objective value:\n" << model.get_best_obj() << std::endl;
 
     return 0;
 }
