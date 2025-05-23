@@ -1,3 +1,12 @@
+#top {
+    background-color: #1f5c88;
+    color: white !important;
+}
+
+#titlearea, #main-menu > li > a:first-child {
+    color: white !important;
+}
+
 #cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

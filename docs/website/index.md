@@ -6,8 +6,8 @@
         Start solving optimization problems now.
     </h2>
     <p>
-        <a href="examples.html" class="my-button" id="get-started" >Get started with examples</a>
-        <a href="installation.html" class="my-button">To installation guidelines</a>
+        <b><a href="examples.html" class="my-button" id="get-started" >Get started with examples</a></b>
+        <b></b><a href="installation.html" class="my-button">To installation guidelines</a></b>
     </p>
 </div>
 
