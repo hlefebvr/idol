@@ -428,11 +428,11 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_
         }
     }
 
-    if (n_optimality_separation_optimizers > 0) {
+    if (n_joint_separation_optimizers > 0) {
         for (;;) {
 
-            const bool is_last_optimizer = m_index_optimality_separation + 1 == n_optimality_separation_optimizers;
-            n_added_scenario = solve_optimality_adversarial_problem();
+            const bool is_last_optimizer = m_index_joint_separation + 1 == n_joint_separation_optimizers;
+            n_added_scenario = solve_joint_adversarial_problem();
 
             if (n_added_scenario > 0 || is_terminated()) {
                 return;
@@ -445,11 +445,11 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_
         }
     }
 
-    if (n_joint_separation_optimizers > 0) {
+    if (n_optimality_separation_optimizers > 0) {
         for (;;) {
 
-            const bool is_last_optimizer = m_index_joint_separation + 1 == n_joint_separation_optimizers;
-            n_added_scenario = solve_joint_adversarial_problem();
+            const bool is_last_optimizer = m_index_optimality_separation + 1 == n_optimality_separation_optimizers;
+            n_added_scenario = solve_optimality_adversarial_problem();
 
             if (n_added_scenario > 0 || is_terminated()) {
                 return;
@@ -645,7 +645,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_join
     }
 
     bool is_feasible = true;
-    for (unsigned int i = 0, n = std::max<unsigned int>(slack_variables.size(), 1) - 1 ; i < n ; ++i) {
+    for (unsigned int i = 0, n = std::max<unsigned int>(slack_variables.size(), 1) ; i < n ; ++i) {
         if (high_point_relaxation.get_var_primal(slack_variables[i]) > Tolerance::Feasibility) {
             is_feasible = false;
             break;

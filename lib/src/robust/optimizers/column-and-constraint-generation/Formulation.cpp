@@ -442,41 +442,45 @@ idol::CCG::Formulation::build_joint_separation_problem(const idol::Point<idol::V
         };
     }
 
-    const auto s = model.add_var(0, Inf, Continuous, -1, LinExpr<Ctr>(), "__slack_objective");
-    m_bilevel_description_separation.make_lower_level(s);
-    m_bilevel_description_separation.set_lower_level_obj(-1. * model.get_obj_expr());
+    if (m_has_second_stage_objective) {
 
-    auto objective = compute_second_stage_objective(t_first_stage_decision);
-    if (objective.has_quadratic()) {
-        throw Exception("Quadratic objectives in second stage are not yet implemented.");
-    }
+        const auto s = model.add_var(0, Inf, Continuous, -1, LinExpr<Ctr>(), "__slack_objective");
+        m_bilevel_description_separation.make_lower_level(s);
+        m_bilevel_description_separation.set_lower_level_obj(-1. * model.get_obj_expr());
 
-    // Try to bound s
-    double ub = objective.affine().constant();
-    for (const auto& [var, coeff] : objective.affine().linear()) {
-        if (coeff < 0) {
-            ub += coeff * model.get_var_ub(var);
-        } else {
-            ub += coeff * model.get_var_lb(var);
+        auto objective = compute_second_stage_objective(t_first_stage_decision);
+        if (objective.has_quadratic()) {
+            throw Exception("Quadratic objectives in second stage are not yet implemented.");
         }
+
+        // Try to bound s
+        double ub = objective.affine().constant();
+        for (const auto& [var, coeff] : objective.affine().linear()) {
+            if (coeff < 0) {
+                ub += coeff * model.get_var_ub(var);
+            } else {
+                ub += coeff * model.get_var_lb(var);
+            }
+        }
+        if (!is_pos_inf(ub)) {
+            model.set_var_ub(s, std::max(0., ub));
+        }
+
+        const auto c = model.add_ctr(
+                std::move(objective.affine().linear()) <= m_master.get_var_primal(*m_second_stage_epigraph) + s,
+                "__epigraph_constraint");
+        m_bilevel_description_separation.make_lower_level(c);
+
     }
-    if (!is_pos_inf(ub)) {
-        model.set_var_ub(s, std::max(0., ub));
+
+    if (is_wait_and_see_follower()) {
+        throw Exception("Joint separation for robust bilevel problems with wait-and-see follower is not available.");
     }
 
-    const auto c = model.add_ctr(std::move(objective.affine().linear()) <= m_master.get_var_primal(*m_second_stage_epigraph) + s, "__epigraph_constraint");
-    m_bilevel_description_separation.make_lower_level(c);
-
-    slack_variables.emplace_back(s);
-
-    if (!m_has_second_stage_objective || is_adjustable_robust_problem()) {
-        return {
-                std::move(model),
-                std::move(slack_variables)
-        };
-    }
-
-    throw Exception("Joint separation is not implemented for robust bilevel problems with wait-and-see follower.");
+    return {
+            std::move(model),
+            std::move(slack_variables)
+    };
 }
 
 idol::QuadExpr<idol::Var>
