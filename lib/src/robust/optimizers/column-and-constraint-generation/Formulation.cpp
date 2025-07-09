@@ -469,7 +469,7 @@ idol::CCG::Formulation::build_joint_separation_problem(const idol::Point<idol::V
 
     slack_variables.emplace_back(s);
 
-    if (is_adjustable_robust_problem()) {
+    if (!m_has_second_stage_objective || is_adjustable_robust_problem()) {
         return {
                 std::move(model),
                 std::move(slack_variables)
