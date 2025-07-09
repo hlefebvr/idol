@@ -555,7 +555,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
         if (!is_last_optimizer) { // If we can, skip this optimizer
             ++m_index_feasibility_separation;
         } else { // otherwise, it's a failure
-            std::cerr << "Last optimizer is nor optimal nor feasible. " << high_point_relaxation.get_reason() << "." << std::endl;
+            std::cerr << "Last optimizer is nor optimal nor feasible (status=" << high_point_relaxation.get_status() << ", reason=" << high_point_relaxation.get_reason() << ")." << std::endl;
             set_status(Fail);
             set_reason(high_point_relaxation.get_reason());
             terminate();

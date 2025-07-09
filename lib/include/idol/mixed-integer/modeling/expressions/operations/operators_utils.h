@@ -36,17 +36,21 @@ public:
 };
 
 #define idol_Sum(INDEX, ITERABLE, EXPR) \
-[&]() {                              \
+[&]() {                                 \
+    const auto do_for_loop = [&](auto& result, auto& __idol_it, const auto& __idol_end) {    \
+        for (++__idol_it ; __idol_it != __idol_end ; ++__idol_it) { \
+            auto INDEX = *__idol_it; \
+            result += EXPR; \
+        }                                        \
+    };  \
+    \
     const auto compute_sum = [&]() { \
         const auto& __idol_iterable = ITERABLE;                                 \
         auto __idol_it = __idol_iterable.begin();      \
         auto __idol_end = __idol_iterable.end(); \
         auto INDEX = *__idol_it; \
         decltype(EXPR + EXPR) result = EXPR;          \
-        for (++__idol_it ; __idol_it != __idol_end ; ++__idol_it) {                                     \
-            INDEX = *__idol_it; \
-            result += EXPR; \
-        }                             \
+        do_for_loop(result, __idol_it, __idol_end);   \
         return result; \
     };                                 \
                                      \
