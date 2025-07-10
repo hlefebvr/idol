@@ -6,7 +6,6 @@
 #include "idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h"
 #include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
 #include "idol/robust/modeling/Description.h"
-#include "idol/robust/optimizers/deterministic/Deterministic.h"
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
@@ -15,7 +14,6 @@
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/mixed-integer/optimizers/padm/PADM.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
-#include "idol/robust/optimizers/benders/Benders.h"
 
 using namespace idol;
 
@@ -153,13 +151,7 @@ int main(int t_argc, const char** t_argv) {
             .add_optimality_separation_optimizer(mibs)
             .with_logs(true);
 
-    auto benders = Robust::Benders(robust_description, bilevel_description)
-            .add_feasibility_separation_optimizer(mibs)
-            .add_optimality_separation_optimizer(mibs);
-
-    model.use(
-            benders
-    );
+    model.use(ccg);
 
     /***********/
     /* Solving */

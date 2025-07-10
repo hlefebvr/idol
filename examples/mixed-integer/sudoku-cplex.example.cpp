@@ -75,8 +75,8 @@ int main(int t_argc, const char** t_argv) {
         }
     }
 
-    // Use Gurobi and optimize
-    model.use(Cplex().with_logs(false));
+    // Use Cplex and optimize
+    model.use(Cplex());
     model.optimize();
 
     std::cout << "Solution status is " << model.get_status() << std::endl;

@@ -95,7 +95,7 @@ public:
 
     [[nodiscard]] std::string name() const override { return "Cplex"; }
 
-    bool lazy_cuts() const { return m_lazy_cut; }
+    [[nodiscard]] bool lazy_cuts() const { return m_lazy_cut; }
 
     void set_lazy_cuts(bool t_lazy_cut);
 
