@@ -1,0 +1,17 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node0 [id="Node000000",label="idol::Version",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classidol_1_1Version.html",tooltip=" "];
+  Node0 -> Node1 [id="edge189_Node000000_Node000001",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node1 [id="Node000001",label="idol::CtrVersion",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classidol_1_1CtrVersion.html",tooltip=" "];
+  Node0 -> Node2 [id="edge190_Node000000_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="idol::QCtrVersion",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classidol_1_1QCtrVersion.html",tooltip=" "];
+  Node0 -> Node3 [id="edge191_Node000000_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="idol::SOSCtrVersion",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classidol_1_1SOSCtrVersion.html",tooltip=" "];
+  Node0 -> Node4 [id="edge192_Node000000_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="idol::VarVersion",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classidol_1_1VarVersion.html",tooltip=" "];
+}

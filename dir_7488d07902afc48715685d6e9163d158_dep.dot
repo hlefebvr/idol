@@ -1,0 +1,20 @@
+digraph "/home/runner/work/idol/idol/lib/include/idol/mixed-integer/optimizers/branch-and-bound"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_527686a1d7c084cc400f3ed42c08b3ea {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", label="optimizers", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_527686a1d7c084cc400f3ed42c08b3ea.html",tooltip=""]
+  subgraph clusterdir_7488d07902afc48715685d6e9163d158 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", label="", fontname=Helvetica,fontsize=10 style="filled,bold", URL="dir_7488d07902afc48715685d6e9163d158.html",tooltip=""]
+    dir_7488d07902afc48715685d6e9163d158 [shape=plaintext, label="branch-and-bound"];
+  dir_ecc052d8a887a7360147be43766a35cd [label="branching-rules", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_ecc052d8a887a7360147be43766a35cd.html",tooltip=""];
+  dir_23e540c7372bac415c750a58ec202909 [label="callbacks", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_23e540c7372bac415c750a58ec202909.html",tooltip=""];
+  dir_109333e66b1bd1f5535b8d1041f4eefc [label="logs", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_109333e66b1bd1f5535b8d1041f4eefc.html",tooltip=""];
+  dir_7a41da09d9bd356e581497fc922db9b5 [label="node-selection-rules", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_7a41da09d9bd356e581497fc922db9b5.html",tooltip=""];
+  dir_bbdda13fb12bb9431a5d0d74a2040c51 [label="nodes", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_bbdda13fb12bb9431a5d0d74a2040c51.html",tooltip=""];
+  }
+  }
+}
