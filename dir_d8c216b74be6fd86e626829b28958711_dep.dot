@@ -1,0 +1,12 @@
+digraph "/home/runner/work/idol/idol/lib/include/idol/bilevel/optimizers/wrappers/MibS"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_c06a1a1783d5ed063b9897dcfe5fdbae {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", label="wrappers", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_c06a1a1783d5ed063b9897dcfe5fdbae.html",tooltip=""]
+  dir_d8c216b74be6fd86e626829b28958711 [label="MibS", fillcolor="#edf0f7", color="grey25", style="filled,bold", URL="dir_d8c216b74be6fd86e626829b28958711.html",tooltip=""];
+  }
+}
