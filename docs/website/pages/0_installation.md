@@ -3,7 +3,7 @@
 
 Welcome to idol's installation guide! This document will help you set up idol on your system.
 
-There are mainly to options to use idol. 
+There are mainly two options to use idol. 
 
 * The \subpage automatic-installation which lets CMake do the work for you and install idol automatically in your build directory.
 * The \subpage manual-installation which manually installs idol from source and links it to your project.
