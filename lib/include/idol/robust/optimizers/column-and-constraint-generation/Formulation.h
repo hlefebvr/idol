@@ -17,16 +17,17 @@ class idol::CCG::Formulation {
     const Model& m_parent;
     const ::idol::Robust::Description &m_robust_description;
     const ::idol::Bilevel::Description &m_bilevel_description;
-    ::idol::Bilevel::Description m_bilevel_description_separation;
 
+    ::idol::Bilevel::Description m_bilevel_description_separation;
     Model m_master;
     std::optional<::idol::Bilevel::Description> m_bilevel_description_master;
     std::vector<Var> m_second_stage_variables;
     std::vector<Ctr> m_second_stage_constraints;
     std::vector<Ctr> m_linking_constraints;
-    std::vector<Ctr> m_coupling_constraints;
 
+    std::vector<Ctr> m_coupling_constraints;
     unsigned int m_n_added_scenario = 0;
+    std::list<PrimalPoint> m_generated_scenarios;
     bool m_has_second_stage_objective = false;
     std::optional<Var> m_second_stage_epigraph;
 
@@ -44,7 +45,7 @@ public:
 
     Model& master() { return m_master; }
     const Model& master() const { return m_master; }
-    void add_scenario_to_master(const Point<Var>& t_scenario, bool t_add_annotation);
+    void add_scenario_to_master(const Point<Var>& t_scenario, bool t_add_annotation, bool t_check_for_repeated_scenarios);
     Model build_optimality_separation_problem(const idol::Point<idol::Var> &t_first_stage_decision);
     std::pair<Model, std::vector<Var>> build_feasibility_separation_problem(const Point<Var>& t_first_stage_decision);
     std::pair<Model, std::vector<Var>> build_joint_separation_problem(const Point<Var>& t_first_stage_decision);

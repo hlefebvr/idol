@@ -20,7 +20,8 @@ idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
           m_initial_scenarios(t_src.m_initial_scenarios),
           m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
           m_initial_scenario_by_minimization(t_src.m_initial_scenario_by_minimization ? t_src.m_initial_scenario_by_minimization->clone() : nullptr),
-          m_initial_scenario_by_maximization(t_src.m_initial_scenario_by_maximization ? t_src.m_initial_scenario_by_maximization->clone() : nullptr)
+          m_initial_scenario_by_maximization(t_src.m_initial_scenario_by_maximization ? t_src.m_initial_scenario_by_maximization->clone() : nullptr),
+          m_check_for_repeated_scenarios(t_src.m_check_for_repeated_scenarios)
           {
 
     for (const auto& optimizer : t_src.m_optimizer_feasibility_separation) {
@@ -72,7 +73,8 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
                                                                          m_initial_scenario_by_maximization ? m_initial_scenario_by_maximization->clone() : nullptr,
                                                                          m_optimizer_feasibility_separation,
                                                                          m_optimizer_optimality_separation,
-                                                                         m_optimizer_joint_separation
+                                                                         m_optimizer_joint_separation,
+                                                                         m_check_for_repeated_scenarios.value_or(false)
                                                                          );
 
     handle_default_parameters(result);
@@ -150,6 +152,18 @@ idol::Robust::ColumnAndConstraintGeneration::add_joint_separation_optimizer(cons
     }
 
     m_optimizer_joint_separation.emplace_back(t_optimizer.clone());
+
+    return *this;
+}
+
+idol::Robust::ColumnAndConstraintGeneration &
+idol::Robust::ColumnAndConstraintGeneration::with_check_for_repeated_scenarios(bool t_value) {
+
+    if (m_check_for_repeated_scenarios.has_value()) {
+        throw Exception("Checking for repeated scenarios has already been configured.");
+    }
+
+    m_check_for_repeated_scenarios = t_value;
 
     return *this;
 }

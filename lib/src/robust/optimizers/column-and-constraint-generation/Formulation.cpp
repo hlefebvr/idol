@@ -123,7 +123,7 @@ void idol::CCG::Formulation::parse_constraints() {
 
 }
 
-void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var> &t_scenario, bool t_add_annotation) {
+void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var> &t_scenario, bool t_add_annotation, bool t_check_for_repeated_scenarios) {
 
     const auto& lower_level_annotation = m_bilevel_description_master.has_value() ? m_bilevel_description_master->lower_level() : m_bilevel_description.lower_level();
 
@@ -216,6 +216,20 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
     }
 
     ++m_n_added_scenario;
+
+    if (t_check_for_repeated_scenarios) {
+
+        for (const auto& scenario : m_generated_scenarios) {
+            if ((scenario - t_scenario).is_zero(1e-3)) {
+                std::cerr << "Repeated scenario!" << std::endl;
+                std::cerr << "Already present:\n" << scenario << std::endl;
+                std::cerr << "Newly separated:\n" << t_scenario << std::endl;
+                throw Exception("Reapeated scenario!");
+            }
+        }
+
+        m_generated_scenarios.emplace_back(t_scenario);
+    }
 }
 
 void idol::CCG::Formulation::add_separation_problem_constraints(idol::Model &t_model,
