@@ -528,3 +528,20 @@ void idol::CCG::Formulation::add_epigraph_to_master() {
     m_second_stage_epigraph = m_master.add_var(-Inf, Inf, Continuous, 1, "second_stage_epigraph");
     //m_master.update();
 }
+
+void idol::CCG::Formulation::set_inexact_lower_bound_constraint(double t_value) {
+
+    if (!should_have_epigraph_and_epigraph_is_not_in_master()) {
+        return;
+    }
+
+    if (m_inexact_lower_bound_constraint.has_value()) {
+        m_master.set_ctr_rhs(*m_inexact_lower_bound_constraint, t_value);
+        return;
+    }
+
+    assert(!m_master.get_obj_expr().has_quadratic());
+
+    m_inexact_lower_bound_constraint = m_master.add_ctr(m_master.get_obj_expr().affine() >= t_value);
+
+}

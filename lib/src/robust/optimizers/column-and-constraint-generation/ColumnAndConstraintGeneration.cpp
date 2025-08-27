@@ -65,8 +65,8 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
         throw Exception("At least one of feasibility, optimality or joint separation optimizers must be set");
     }
 
-    double initial_master_tolerance = 0;
-    double update_factor = .5;
+    double initial_master_tolerance = .0;
+    double update_factor = .0;
     double inexact_rel_gap_ratio = .0;
     if (m_inexact_ccg_parameters.has_value()) {
         initial_master_tolerance = std::get<0>(*m_inexact_ccg_parameters);

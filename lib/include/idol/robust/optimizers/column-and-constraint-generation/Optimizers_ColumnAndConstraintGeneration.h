@@ -53,6 +53,7 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
     double m_inexact_lower_bound = -Inf; // \bar{L}
     double m_last_master_tol_lower_bound = -Inf;
     double m_last_master_tol_upper_bound = Inf;
+    PrimalPoint m_last_master_solution;
 
     // Timers
     Timer m_master_timer;
@@ -168,6 +169,7 @@ protected:
     unsigned int solve_joint_adversarial_problem();
 
     [[nodiscard]] bool should_do_exploitation() const;
+    void set_inexact_lower_bound(double t_value);
 
 };
 

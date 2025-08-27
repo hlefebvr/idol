@@ -30,6 +30,7 @@ class idol::CCG::Formulation {
     std::list<PrimalPoint> m_generated_scenarios;
     bool m_has_second_stage_objective = false;
     std::optional<Var> m_second_stage_epigraph;
+    std::optional<Ctr> m_inexact_lower_bound_constraint;
 
     void parse_variables();
     void parse_objective();
@@ -58,6 +59,7 @@ public:
     bool should_have_epigraph_and_epigraph_is_not_in_master() const;
     const Var& second_stage_epigraph() const { return *m_second_stage_epigraph; }
     void add_epigraph_to_master();
+    void set_inexact_lower_bound_constraint(double t_value);
 };
 
 #endif //IDOL_CCG_FORMULATION_H

@@ -143,6 +143,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimi
     m_inexact_lower_bound = -Inf;
     m_last_master_tol_lower_bound = -Inf;
     m_last_master_tol_upper_bound = Inf;
+    m_last_master_solution = PrimalPoint();
 
 }
 
@@ -272,8 +273,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
     if (should_do_exploitation()) {
         const double old_tolerance = m_current_master_tol;
         m_current_master_tol = std::max(m_master_tol_update_factor * m_current_master_tol, get_tol_mip_relative_gap());
-        m_inexact_lower_bound = get_best_bound();
-        // set_inexact_lower_bound(get_best_bound()); // reset real lower bound
+        set_inexact_lower_bound(get_best_bound()); // reset real lower bound
 
         if (get_param_logs()) {
 
@@ -305,6 +305,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
         return;
     }
 
+    m_last_master_solution = save_primal(master);
     if (m_formulation->should_have_epigraph_and_epigraph_is_not_in_master()) {
         return;
     }
@@ -315,8 +316,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
     if (m_last_master_tol_lower_bound >= m_inexact_lower_bound) {
         set_best_bound(m_last_master_tol_lower_bound);
     }
-    m_inexact_lower_bound = m_last_master_tol_upper_bound;
-    // set_inexact_lower_bound(m_last_master_tol_upper_bound) // try to use inexact lower bound
+    set_inexact_lower_bound(m_last_master_tol_upper_bound);
 
 }
 
@@ -510,9 +510,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feasibility_adversarial_problem() {
 
     const auto& master = m_formulation->master();
-    const auto upper_level_solution = save_primal(master);
 
-    auto [high_point_relaxation, slack_variables] = m_formulation->build_feasibility_separation_problem(upper_level_solution);
+    auto [high_point_relaxation, slack_variables] = m_formulation->build_feasibility_separation_problem(m_last_master_solution);
 
     // Set bilevel description
     const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
@@ -571,9 +570,8 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_adversarial_problem() {
 
     const auto& master = m_formulation->master();
-    const auto upper_level_solution = save_primal(master);
 
-    auto high_point_relaxation = m_formulation->build_optimality_separation_problem(upper_level_solution);
+    auto high_point_relaxation = m_formulation->build_optimality_separation_problem(m_last_master_solution);
 
     // Set bilevel description and optimizer
     const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
@@ -639,9 +637,8 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_joint_adversarial_problem() {
 
     const auto& master = m_formulation->master();
-    const auto upper_level_solution = save_primal(master);
 
-    auto [high_point_relaxation, slack_variables] = m_formulation->build_joint_separation_problem(upper_level_solution);
+    auto [high_point_relaxation, slack_variables] = m_formulation->build_joint_separation_problem(m_last_master_solution);
 
     // Set bilevel description
     const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
@@ -731,4 +728,12 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_iteration_sepa
 
     center(std::cout, "-", 182, '-') << std::endl;
 
+}
+
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::set_inexact_lower_bound(double t_value) {
+    m_inexact_lower_bound = t_value;
+    if (m_master_tol_update_factor < 1e-6) { // There is no exactness
+        return;
+    }
+    m_formulation->set_inexact_lower_bound_constraint(t_value);
 }
