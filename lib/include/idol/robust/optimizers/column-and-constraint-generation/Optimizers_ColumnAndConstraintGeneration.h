@@ -45,6 +45,15 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
     std::vector<std::unique_ptr<OptimizerFactory>> m_optimizer_joint_separation;
     unsigned int m_index_joint_separation = 0;
 
+    // Inexact CCG
+    const double m_initial_master_tol;
+    const double m_inexact_rel_gap_ratio;
+    double m_current_master_tol;
+    double m_master_tol_update_factor;
+    double m_inexact_lower_bound = -Inf; // \bar{L}
+    double m_last_master_tol_lower_bound = -Inf;
+    double m_last_master_tol_upper_bound = Inf;
+
     // Timers
     Timer m_master_timer;
     Timer m_separation_timer;
@@ -59,7 +68,10 @@ public:
                                   const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_feasibility_separation,
                                   const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_optimality_separation,
                                   const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_joint_separation,
-                                  bool t_check_for_repeated_scenarios);
+                                  bool t_check_for_repeated_scenarios,
+                                  double t_initial_master_tolerance,
+                                  double t_update_factor,
+                                  double t_inexact_rel_gap_ratio);
 
     [[nodiscard]] std::string name() const override;
 
@@ -86,6 +98,8 @@ public:
     [[nodiscard]] const Timer& get_separation_timer() const { return m_separation_timer; }
 
     [[nodiscard]] bool check_for_repeated_scenarios() const { return m_check_for_repeated_scenarios; }
+
+    [[nodiscard]] double get_tol_inexact_relative_gap() const { const double tol = get_tol_mip_relative_gap(); return m_inexact_rel_gap_ratio * tol / (1 + tol); }
 
 protected:
     void add(const Var &t_var) override;
@@ -152,6 +166,8 @@ protected:
     unsigned int solve_feasibility_adversarial_problem();
     unsigned int solve_optimality_adversarial_problem();
     unsigned int solve_joint_adversarial_problem();
+
+    [[nodiscard]] bool should_do_exploitation() const;
 
 };
 

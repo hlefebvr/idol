@@ -4,6 +4,7 @@
 #include "idol/bilevel/optimizers/KKT/KKT.h"
 #include "idol/bilevel/optimizers/KKT/Optimizers_KKT.h"
 #include "idol/mixed-integer/modeling/models/KKT.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
 idol::Bilevel::KKT::KKT(const Bilevel::Description &t_description) : m_description(&t_description) {
 
@@ -70,7 +71,8 @@ idol::Bilevel::KKT::KKT(const idol::Bilevel::KKT &t_src)
           m_description(t_src.m_description),
           m_single_level_optimizer(t_src.m_single_level_optimizer ? t_src.m_single_level_optimizer->clone() : nullptr),
           m_bound_provider(t_src.m_bound_provider ? t_src.m_bound_provider->clone() : nullptr),
-          m_use_sos1(t_src.m_use_sos1) {
+          m_use_sos1(t_src.m_use_sos1),
+          m_use_kleinart_cuts(t_src.m_use_kleinart_cuts) {
 
 }
 
@@ -112,6 +114,57 @@ idol::Model idol::Bilevel::KKT::make_model(const idol::Model &t_model,
     reformulator.add_coupling_constraints(result);
     result.set_obj_expr(t_model.get_obj_expr());
 
+    /*
+    std::cout << "Deriving Kleinart cuts..." << std::endl;
+
+    const auto& dual_obj = reformulator.get_dual_obj_expr();
+    auto dual_surrogate = dual_obj.affine();
+
+    for (const auto& [vars, coeff] : dual_obj) {
+
+        std::optional<Var> leader_var;
+        std::optional<Var> dual_var;
+
+        if (t_description.is_upper(vars.first)) {
+            leader_var = vars.first;
+            dual_var = vars.second;
+        } else {
+            leader_var = vars.second;
+            dual_var = vars.first;
+        }
+
+        const double dual_lb = result.get_var_lb(*dual_var);
+        const double dual_ub = result.get_var_ub(*dual_var);
+        const double leader_lb = result.get_var_lb(*leader_var);
+        const double leader_ub = result.get_var_ub(*leader_var);
+
+        if (dual_ub <= Tolerance::Sparsity) {
+            // Dual var ≤ 0
+            if (coeff >= 0) {
+                dual_surrogate += coeff * leader_lb * (*dual_var);
+            } else {
+                dual_surrogate += coeff * leader_ub * (*dual_var);
+            }
+        }
+        else if (dual_lb >= -Tolerance::Sparsity) {
+            // Dual var ≥ 0
+            if (coeff >= 0) {
+                dual_surrogate += coeff * leader_ub * (*dual_var);
+            } else {
+                dual_surrogate += coeff * leader_lb * (*dual_var);
+            }
+        }
+        else {
+            throw Exception("Could not handle this case: dual variable has both positive and negative bounds.");
+        }
+
+    }
+
+    result.add_ctr(t_description.lower_level_obj().affine() <= dual_surrogate);
+
+    std::cout << "Done." << std::endl;
+     */
+
     return result;
 }
 
@@ -126,6 +179,17 @@ idol::Bilevel::KKT &idol::Bilevel::KKT::with_sos1_constraints(bool t_value) {
     }
 
     m_use_sos1 = t_value;
+
+    return *this;
+}
+
+idol::Bilevel::KKT &idol::Bilevel::KKT::with_kleinart_cuts(bool t_value) {
+
+    if (m_use_kleinart_cuts) {
+        throw Exception("Kleinart cuts usage is already configured.");
+    }
+
+    m_use_kleinart_cuts = true;
 
     return *this;
 }

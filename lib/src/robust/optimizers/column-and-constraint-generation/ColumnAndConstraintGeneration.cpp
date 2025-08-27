@@ -21,7 +21,8 @@ idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
           m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
           m_initial_scenario_by_minimization(t_src.m_initial_scenario_by_minimization ? t_src.m_initial_scenario_by_minimization->clone() : nullptr),
           m_initial_scenario_by_maximization(t_src.m_initial_scenario_by_maximization ? t_src.m_initial_scenario_by_maximization->clone() : nullptr),
-          m_check_for_repeated_scenarios(t_src.m_check_for_repeated_scenarios)
+          m_check_for_repeated_scenarios(t_src.m_check_for_repeated_scenarios),
+          m_inexact_ccg_parameters(t_src.m_inexact_ccg_parameters)
           {
 
     for (const auto& optimizer : t_src.m_optimizer_feasibility_separation) {
@@ -64,6 +65,15 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
         throw Exception("At least one of feasibility, optimality or joint separation optimizers must be set");
     }
 
+    double initial_master_tolerance = 0;
+    double update_factor = .5;
+    double inexact_rel_gap_ratio = .0;
+    if (m_inexact_ccg_parameters.has_value()) {
+        initial_master_tolerance = std::get<0>(*m_inexact_ccg_parameters);
+        update_factor = std::get<1>(*m_inexact_ccg_parameters);
+        inexact_rel_gap_ratio = std::get<2>(*m_inexact_ccg_parameters);
+    }
+
     auto* result = new Optimizers::Robust::ColumnAndConstraintGeneration(t_model,
                                                                          m_robust_description,
                                                                          m_bilevel_description,
@@ -74,7 +84,10 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
                                                                          m_optimizer_feasibility_separation,
                                                                          m_optimizer_optimality_separation,
                                                                          m_optimizer_joint_separation,
-                                                                         m_check_for_repeated_scenarios.value_or(false)
+                                                                         m_check_for_repeated_scenarios.value_or(false),
+                                                                         initial_master_tolerance,
+                                                                         update_factor,
+                                                                         inexact_rel_gap_ratio
                                                                          );
 
     handle_default_parameters(result);
@@ -164,6 +177,24 @@ idol::Robust::ColumnAndConstraintGeneration::with_check_for_repeated_scenarios(b
     }
 
     m_check_for_repeated_scenarios = t_value;
+
+    return *this;
+}
+
+idol::Robust::ColumnAndConstraintGeneration &
+idol::Robust::ColumnAndConstraintGeneration::with_inexactness_scheme(double t_initial_master_tolerance,
+                                                                     double t_update_factor,
+                                                                     double t_inexact_rel_gap_ratio) {
+
+    if (m_inexact_ccg_parameters.has_value()) {
+        throw Exception("Inexact scheme parameters have already been configured.");
+    }
+
+    if (t_inexact_rel_gap_ratio < 0 || t_inexact_rel_gap_ratio > 1) {
+        throw Exception("Parameter \"inexact_rel_gap_ratio\" must be between 0 and 1.");
+    }
+
+    m_inexact_ccg_parameters = { t_initial_master_tolerance, t_update_factor, t_inexact_rel_gap_ratio };
 
     return *this;
 }

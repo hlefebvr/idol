@@ -19,7 +19,10 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
                                                                                        const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_feasibility_separation,
                                                                                        const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_optimality_separation,
                                                                                        const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_joint_separation,
-                                                                                       bool t_check_for_repeated_scenarios)
+                                                                                       bool t_check_for_repeated_scenarios,
+                                                                                       double t_initial_master_tolerance,
+                                                                                       double t_update_factor,
+                                                                                       double t_inexact_rel_gap_ratio)
                                                                                        : Algorithm(t_parent),
                                                                                          m_robust_description(t_robust_description),
                                                                                          m_bilevel_description(t_bilevel_description),
@@ -27,7 +30,10 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
                                                                                          m_initial_scenario_by_minimization(t_initial_scenario_by_minimization),
                                                                                          m_initial_scenario_by_maximization(t_initial_scenario_by_maximization),
                                                                                          m_initial_scenarios(std::move(t_initial_scenarios)),
-                                                                                         m_check_for_repeated_scenarios(t_check_for_repeated_scenarios) {
+                                                                                         m_check_for_repeated_scenarios(t_check_for_repeated_scenarios),
+                                                                                         m_initial_master_tol(t_initial_master_tolerance),
+                                                                                         m_master_tol_update_factor(t_update_factor),
+                                                                                         m_inexact_rel_gap_ratio(t_inexact_rel_gap_ratio) {
 
     m_optimizer_feasibility_separation.reserve(t_optimizer_feasibility_separation.size());
     for (const auto& optimizer : t_optimizer_feasibility_separation) {
@@ -133,6 +139,11 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimi
     m_index_optimality_separation = 0;
     m_index_joint_separation = 0;
 
+    m_current_master_tol = m_initial_master_tol;
+    m_inexact_lower_bound = -Inf;
+    m_last_master_tol_lower_bound = -Inf;
+    m_last_master_tol_upper_bound = Inf;
+
 }
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
@@ -153,7 +164,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
         solve_adversarial_problem();
 
-        log_iteration_separator();
+        //log_iteration_separator();
 
         check_termination_criteria();
 
@@ -258,8 +269,23 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_initial_scenar
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_problem() {
 
+    if (should_do_exploitation()) {
+        const double old_tolerance = m_current_master_tol;
+        m_current_master_tol = std::max(m_master_tol_update_factor * m_current_master_tol, get_tol_mip_relative_gap());
+        m_inexact_lower_bound = get_best_bound();
+        // set_inexact_lower_bound(get_best_bound()); // reset real lower bound
+
+        if (get_param_logs()) {
+
+            std::cout << "Inexact CCG: Updating tolerance... Current tolerance for master: " << old_tolerance << ", updated: " << m_current_master_tol << " (factor is " << m_master_tol_update_factor << ")." << std::endl;
+
+        }
+
+    }
+
     auto& master = m_formulation->master();
     master.optimizer().set_param_time_limit(get_remaining_time());
+    master.optimizer().set_tol_mip_relative_gap(m_current_master_tol);
 
     m_master_timer.start();
     master.optimize();
@@ -279,10 +305,24 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
         return;
     }
 
-    if (!m_formulation->should_have_epigraph_and_epigraph_is_not_in_master()) {
-        set_best_bound(master.get_best_bound());
+    if (m_formulation->should_have_epigraph_and_epigraph_is_not_in_master()) {
+        return;
     }
 
+    m_last_master_tol_lower_bound = master.get_best_bound();
+    m_last_master_tol_upper_bound = master.get_best_obj();
+
+    if (m_last_master_tol_lower_bound >= m_inexact_lower_bound) {
+        set_best_bound(m_last_master_tol_lower_bound);
+    }
+    m_inexact_lower_bound = m_last_master_tol_upper_bound;
+    // set_inexact_lower_bound(m_last_master_tol_upper_bound) // try to use inexact lower bound
+
+}
+
+bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::should_do_exploitation() const {
+    const double UB = get_best_obj();
+    return !is_pos_inf(UB) && !is_pos_inf(m_last_master_tol_upper_bound) && (UB - m_last_master_tol_upper_bound) / (1e-10 + UB) < get_tol_inexact_relative_gap();
 }
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_criteria() {
@@ -586,7 +626,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
 
     log_iteration(false, high_point_relaxation.optimizer().name(), status, high_point_relaxation.get_reason(), add_scenario);
 
-    if (add_scenario) {
+    if (add_scenario && !should_do_exploitation()) {
         const auto scenario = save_primal(m_robust_description.uncertainty_set(), high_point_relaxation);
         m_formulation->add_scenario_to_master(scenario, true, m_check_for_repeated_scenarios);
         return 1;
