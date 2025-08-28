@@ -309,7 +309,7 @@ bool idol::Optimizers::PADM::is_feasible() const {
 bool idol::Optimizers::PADM::is_feasible(unsigned int t_sub_problem_id) const {
 
     for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
-        if (m_last_solutions[t_sub_problem_id].get(var) > 1e-4) {
+        if (!m_last_solutions[t_sub_problem_id].has_objective_value() || m_last_solutions[t_sub_problem_id].get(var) > Tolerance::Feasibility) {
             return false;
         }
     }
@@ -632,6 +632,7 @@ void idol::Optimizers::PADM::restart() {
 
     for (unsigned int i = 0 ; i < m_formulation.n_sub_problems() ; ++i) {
         m_last_solutions[i] = m_sub_problem_specs[i].initial_point();
+        m_last_solutions[i].reset_objective_value();
     }
 
     m_formulation.initialize_penalty_parameters(m_current_initial_penalty_parameter);
