@@ -6,6 +6,7 @@
 
 #include <utility>
 #include <fstream>
+#include <cassert>
 
 idol::Optimizers::PADM::PADM(const Model& t_model,
                              ADM::Formulation t_formulation,
@@ -212,6 +213,7 @@ void idol::Optimizers::PADM::hook_before_optimize() {
         }
 
         m_last_solutions[i] = m_sub_problem_specs[i].initial_point();
+        m_last_solutions[i].reset_objective_value();
     }
 }
 
@@ -308,13 +310,13 @@ bool idol::Optimizers::PADM::is_feasible() const {
 
 bool idol::Optimizers::PADM::is_feasible(unsigned int t_sub_problem_id) const {
 
-    for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
-        if (!m_last_solutions[t_sub_problem_id].has_objective_value() || m_last_solutions[t_sub_problem_id].get(var) > Tolerance::Feasibility) {
-            return false;
-        }
+    if(!m_last_solutions[t_sub_problem_id].has_objective_value()) {
+        return false;
     }
 
-    return true;
+    const double result = infeasibility_l1(t_sub_problem_id, m_last_solutions[t_sub_problem_id]);
+    return result <= Tolerance::Feasibility;
+
 }
 
 void idol::Optimizers::PADM::run_inner_loop() {
@@ -386,6 +388,8 @@ idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
 
     auto& model = m_formulation.sub_problem(t_sub_problem_id);
 
+    //model.write("sub_problem_" + std::to_string(t_sub_problem_id) + "_iter_" + std::to_string(m_outer_loop_iteration) + "-" + std::to_string(m_inner_loop_iterations) + ".lp");
+
     model.optimizer().set_param_time_limit(get_remaining_time());
     model.optimize();
 
@@ -410,8 +414,8 @@ idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
 
     auto current_solution = save_primal(model);
     // bool obj_has_changed = m_inner_loop_iterations == 0 || (m_last_solutions[t_sub_problem_id] + -1. * current_solution).norm(2) > 1e-4;
-    const bool obj_has_changed = m_first_run || std::abs(m_last_solutions[t_sub_problem_id].objective_value() - current_solution.objective_value()) > 1e-4;
-    const bool feas_has_changed = m_first_run || std::abs(infeasibility_l1(t_sub_problem_id, m_last_solutions[t_sub_problem_id]) - infeasibility_l1(t_sub_problem_id, current_solution)) > 1e-5;
+    const bool obj_has_changed = m_first_run || std::abs(m_last_solutions[t_sub_problem_id].objective_value() - current_solution.objective_value()) > 1e-5;
+    const bool feas_has_changed = m_first_run || std::abs(infeasibility_l1(t_sub_problem_id, m_last_solutions[t_sub_problem_id]) - infeasibility_l1(t_sub_problem_id, current_solution)) > 1e-6;
     m_last_solutions[t_sub_problem_id] = std::move(current_solution);
 
     return { obj_has_changed, feas_has_changed };

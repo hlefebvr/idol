@@ -351,7 +351,7 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Pr
 
         }
 
-        if (argmax == -1 || max <= 1e-4) {
+        if (argmax == -1 || max <= Tolerance::Feasibility) {
             continue;
         }
 
@@ -401,6 +401,8 @@ void idol::ADM::Formulation::set_penalty_in_all_sub_problems(const Var &t_var, d
 }
 
 void idol::ADM::Formulation::initialize_penalty_parameters(double t_value) {
+
+    std::cout << "Initializing penalty parameters..." << std::endl;
 
     const unsigned int n_sub_problems = m_sub_problems.size();
 
