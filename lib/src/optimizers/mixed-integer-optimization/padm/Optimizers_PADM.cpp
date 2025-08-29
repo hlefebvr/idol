@@ -314,7 +314,7 @@ bool idol::Optimizers::PADM::is_feasible(unsigned int t_sub_problem_id) const {
         return false;
     }
 
-    const double result = infeasibility_l1(t_sub_problem_id, m_last_solutions[t_sub_problem_id]);
+    const double result = infeasibility_linf(t_sub_problem_id, m_last_solutions[t_sub_problem_id]);
     return result <= Tolerance::Feasibility;
 
 }
@@ -334,6 +334,7 @@ void idol::Optimizers::PADM::run_inner_loop() {
         bool objective_value_has_changed = false;
         bool feasibility_has_changed = false;
 
+#pragma omp parallel for reduction(||:objective_value_has_changed, feasibility_has_changed)
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
             const auto [obj, feas] = solve_sub_problem(i);
             objective_value_has_changed |= obj;
