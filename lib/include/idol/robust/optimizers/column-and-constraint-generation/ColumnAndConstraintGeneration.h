@@ -28,9 +28,6 @@ class idol::Robust::ColumnAndConstraintGeneration : public OptimizerFactoryWithD
     std::list<std::unique_ptr<OptimizerFactory>> m_optimizer_optimality_separation;
     std::list<std::unique_ptr<OptimizerFactory>> m_optimizer_joint_separation;
     std::optional<bool> m_check_for_repeated_scenarios;
-
-    // Inexact CCG
-    std::optional<std::tuple<double, double, double>> m_inexact_ccg_parameters; // Initial master tolerance, update factor, inexact relative gap percentage = 1
 public:
     ColumnAndConstraintGeneration(const Robust::Description& t_robust_description,
                                   const Bilevel::Description& t_bilevel_description);
@@ -58,8 +55,6 @@ public:
     ColumnAndConstraintGeneration& add_joint_separation_optimizer(const OptimizerFactory& t_optimizer);
 
     ColumnAndConstraintGeneration& with_check_for_repeated_scenarios(bool t_value);
-
-    ColumnAndConstraintGeneration& with_inexactness_scheme(double t_initial_master_tolerance, double t_update_factor, double t_inexact_rel_gap_ratio = 1.);
 };
 
 #endif //IDOL_COLUMNANDCONSTRAINTGENERATION_H
