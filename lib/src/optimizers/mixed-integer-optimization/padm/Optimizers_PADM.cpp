@@ -404,7 +404,6 @@ idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
         sub_problem_solution.set_status(status);
         sub_problem_solution.set_reason(reason);
         m_last_solutions[t_sub_problem_id] = std::move(sub_problem_solution);
-
         set_status(status);
         set_reason(reason);
 

@@ -198,6 +198,19 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
 
     Expr obj = m_description.follower_obj().linear().get(t_var);
 
+    for (const auto& [var1, var2, constant] : m_description.follower_obj().quadratic())
+    {
+        if (var1.name() == t_var.name())
+        {
+            obj += constant * var2;
+        }
+        if (var2.name() == t_var.name())
+        {
+            obj += constant * var1;
+        }
+
+    }
+
     m_dual_constraints[index] = Ctr(env, expr == obj, "dual_" + t_var.name());
 
 }
