@@ -230,7 +230,7 @@ jobs:
           flags: default
 
   Documentation:
-    name: "Generate documentation"
+    name: "Build documentation"
     runs-on: ubuntu-latest
     needs: [Modeling, Wrappers]
     steps:
