@@ -21,6 +21,7 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
     const ::idol::Bilevel::Description &m_bilevel_description;
     std::unique_ptr<OptimizerFactory> m_master_optimizer;
     std::unique_ptr<idol::CCG::Formulation> m_formulation;
+    bool m_check_for_repeated_scenarios;
     unsigned int m_n_iterations = 0;
 
     // Initial scenarios
@@ -44,6 +45,8 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
     std::vector<std::unique_ptr<OptimizerFactory>> m_optimizer_joint_separation;
     unsigned int m_index_joint_separation = 0;
 
+    std::optional<PrimalPoint> m_last_master_solution;
+
     // Timers
     Timer m_master_timer;
     Timer m_separation_timer;
@@ -57,7 +60,8 @@ public:
                                   OptimizerFactory* t_initial_scenario_by_maximization,
                                   const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_feasibility_separation,
                                   const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_optimality_separation,
-                                  const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_joint_separation);
+                                  const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_joint_separation,
+                                  bool t_check_for_repeated_scenarios);
 
     [[nodiscard]] std::string name() const override;
 
@@ -82,6 +86,8 @@ public:
     [[nodiscard]] const Timer& get_master_timer() const { return m_master_timer; }
 
     [[nodiscard]] const Timer& get_separation_timer() const { return m_separation_timer; }
+
+    [[nodiscard]] bool check_for_repeated_scenarios() const { return m_check_for_repeated_scenarios; }
 
 protected:
     void add(const Var &t_var) override;

@@ -6,6 +6,7 @@
 #include <idol/bilevel/optimizers/BilevelOptimizerInterface.h>
 #include <idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h>
 #include <idol/bilevel/modeling/write_to_file.h>
+#include <cassert>
 #include "idol/general/optimizers/logs.h"
 
 idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const idol::Model &t_parent,
@@ -17,14 +18,16 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
                                                                                        OptimizerFactory* t_initial_scenario_by_maximization,
                                                                                        const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_feasibility_separation,
                                                                                        const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_optimality_separation,
-                                                                                       const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_joint_separation)
+                                                                                       const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_joint_separation,
+                                                                                       bool t_check_for_repeated_scenarios)
                                                                                        : Algorithm(t_parent),
                                                                                          m_robust_description(t_robust_description),
                                                                                          m_bilevel_description(t_bilevel_description),
                                                                                          m_master_optimizer(t_master_optimizer.clone()),
                                                                                          m_initial_scenario_by_minimization(t_initial_scenario_by_minimization),
                                                                                          m_initial_scenario_by_maximization(t_initial_scenario_by_maximization),
-                                                                                         m_initial_scenarios(std::move(t_initial_scenarios)) {
+                                                                                         m_initial_scenarios(std::move(t_initial_scenarios)),
+                                                                                         m_check_for_repeated_scenarios(t_check_for_repeated_scenarios) {
 
     m_optimizer_feasibility_separation.reserve(t_optimizer_feasibility_separation.size());
     for (const auto& optimizer : t_optimizer_feasibility_separation) {
@@ -150,7 +153,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
         solve_adversarial_problem();
 
-        log_iteration_separator();
+        //log_iteration_separator();
 
         check_termination_criteria();
 
@@ -222,7 +225,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_var_obj(con
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_initial_scenarios() {
 
     for (const auto& scenario : m_initial_scenarios) {
-        m_formulation->add_scenario_to_master(scenario, true);
+        m_formulation->add_scenario_to_master(scenario, true, m_check_for_repeated_scenarios);
     }
 
     if (m_initial_scenario_by_minimization) {
@@ -249,7 +252,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_initial_scenar
         throw Exception("Initial scenario by minimization failed.");
     }
 
-    m_formulation->add_scenario_to_master(save_primal(model), true);
+    m_formulation->add_scenario_to_master(save_primal(model), true, m_check_for_repeated_scenarios);
 
 }
 
@@ -275,6 +278,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
         terminate();
         return;
     }
+
+    m_last_master_solution = save_primal(master);
 
     if (!m_formulation->should_have_epigraph_and_epigraph_is_not_in_master()) {
         set_best_bound(master.get_best_bound());
@@ -467,9 +472,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feasibility_adversarial_problem() {
 
     const auto& master = m_formulation->master();
-    const auto upper_level_solution = save_primal(master);
 
-    auto [high_point_relaxation, slack_variables] = m_formulation->build_feasibility_separation_problem(upper_level_solution);
+    auto [high_point_relaxation, slack_variables] = m_formulation->build_feasibility_separation_problem(*m_last_master_solution);
 
     // Set bilevel description
     const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
@@ -514,7 +518,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
 
     if (!is_feasible) {
         const auto scenario = save_primal(m_robust_description.uncertainty_set(), high_point_relaxation);
-        m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario);
+        m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario, m_check_for_repeated_scenarios);
         return 1;
     }
 
@@ -528,9 +532,8 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_adversarial_problem() {
 
     const auto& master = m_formulation->master();
-    const auto upper_level_solution = save_primal(master);
 
-    auto high_point_relaxation = m_formulation->build_optimality_separation_problem(upper_level_solution);
+    auto high_point_relaxation = m_formulation->build_optimality_separation_problem(*m_last_master_solution);
 
     // Set bilevel description and optimizer
     const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
@@ -585,7 +588,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
 
     if (add_scenario) {
         const auto scenario = save_primal(m_robust_description.uncertainty_set(), high_point_relaxation);
-        m_formulation->add_scenario_to_master(scenario, true);
+        m_formulation->add_scenario_to_master(scenario, true, m_check_for_repeated_scenarios);
         return 1;
     }
 
@@ -596,9 +599,8 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_joint_adversarial_problem() {
 
     const auto& master = m_formulation->master();
-    const auto upper_level_solution = save_primal(master);
 
-    auto [high_point_relaxation, slack_variables] = m_formulation->build_joint_separation_problem(upper_level_solution);
+    auto [high_point_relaxation, slack_variables] = m_formulation->build_joint_separation_problem(*m_last_master_solution);
 
     // Set bilevel description
     const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
@@ -640,7 +642,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_join
 
     if (m_formulation->should_have_epigraph_and_epigraph_is_not_in_master()) {
         log_iteration(true, high_point_relaxation.optimizer().name(), status, high_point_relaxation.get_reason(), false);
-        m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario);
+        m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario, m_check_for_repeated_scenarios);
         return 1;
     }
 
@@ -654,7 +656,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_join
 
     if (!is_feasible) {
         log_iteration(true, high_point_relaxation.optimizer().name(), status, high_point_relaxation.get_reason(), is_feasible);
-        m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario);
+        m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario, m_check_for_repeated_scenarios);
         return 1;
     }
 
@@ -669,7 +671,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_join
     }
 
     if (add_scenario) {
-        m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario);
+        m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario, m_check_for_repeated_scenarios);
         return 1;
     }
 

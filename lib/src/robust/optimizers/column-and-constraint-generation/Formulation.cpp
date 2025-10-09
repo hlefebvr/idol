@@ -123,7 +123,7 @@ void idol::CCG::Formulation::parse_constraints() {
 
 }
 
-void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var> &t_scenario, bool t_add_annotation) {
+void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var> &t_scenario, bool t_add_annotation, bool t_check_for_repeated_scenarios) {
 
     const auto& lower_level_annotation = m_bilevel_description_master.has_value() ? m_bilevel_description_master->lower_level() : m_bilevel_description.lower_level();
 
@@ -216,6 +216,20 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
     }
 
     ++m_n_added_scenario;
+
+    if (t_check_for_repeated_scenarios) {
+
+        for (const auto& scenario : m_generated_scenarios) {
+            if ((scenario - t_scenario).is_zero(1e-3)) {
+                std::cerr << "Repeated scenario!" << std::endl;
+                std::cerr << "Already present:\n" << scenario << std::endl;
+                std::cerr << "Newly separated:\n" << t_scenario << std::endl;
+                throw Exception("Reapeated scenario!");
+            }
+        }
+
+        m_generated_scenarios.emplace_back(t_scenario);
+    }
 }
 
 void idol::CCG::Formulation::add_separation_problem_constraints(idol::Model &t_model,
@@ -513,4 +527,21 @@ bool idol::CCG::Formulation::should_have_epigraph_and_epigraph_is_not_in_master(
 void idol::CCG::Formulation::add_epigraph_to_master() {
     m_second_stage_epigraph = m_master.add_var(-Inf, Inf, Continuous, 1, "second_stage_epigraph");
     //m_master.update();
+}
+
+void idol::CCG::Formulation::set_inexact_lower_bound_constraint(double t_value) {
+
+    if (!should_have_epigraph_and_epigraph_is_not_in_master()) {
+        return;
+    }
+
+    if (m_inexact_lower_bound_constraint.has_value()) {
+        m_master.set_ctr_rhs(*m_inexact_lower_bound_constraint, t_value);
+        return;
+    }
+
+    assert(!m_master.get_obj_expr().has_quadratic());
+
+    m_inexact_lower_bound_constraint = m_master.add_ctr(m_master.get_obj_expr().affine() >= t_value);
+
 }
