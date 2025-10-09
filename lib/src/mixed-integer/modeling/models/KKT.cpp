@@ -658,12 +658,12 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination,
 
         if (type == LessOrEqual) {
 
-            t_destination.add_ctr(dual_var >= t_bound_provider.get_ctr_dual_lb(ctr) * z);
-            t_destination.add_ctr(row - rhs >= t_bound_provider.get_ctr_slack_lb(ctr) * (1 - z));
+            t_destination.add_ctr(dual_var >= t_bound_provider.get_ctr_dual_lb(ctr) * z, "__complementarity_" + dual_var.name());
+            t_destination.add_ctr(row - rhs >= t_bound_provider.get_ctr_slack_lb(ctr) * (1 - z), "__complementarity_" + ctr.name());
         } else {
 
-            t_destination.add_ctr(dual_var <= t_bound_provider.get_ctr_dual_ub(ctr) * z);
-            t_destination.add_ctr(row - rhs <= t_bound_provider.get_ctr_slack_ub(ctr) * (1 - z));
+            t_destination.add_ctr(dual_var <= t_bound_provider.get_ctr_dual_ub(ctr) * z, "__complementarity_" + dual_var.name());
+            t_destination.add_ctr(row - rhs <= t_bound_provider.get_ctr_slack_ub(ctr) * (1 - z), "__complementarity_" + ctr.name());
         }
 
     }
