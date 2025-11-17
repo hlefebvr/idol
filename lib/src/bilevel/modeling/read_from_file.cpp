@@ -154,7 +154,7 @@ std::string AuxParser::read_path(std::ifstream &t_file, const std::string &t_pat
     if (path.is_relative()) {
         path = std::filesystem::path(t_path_to_aux).replace_filename(path.filename());
     }
-    return path;
+    return path.string();
 }
 
 void AuxParser::read_file(std::ifstream &t_file, const std::string &t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file) {
