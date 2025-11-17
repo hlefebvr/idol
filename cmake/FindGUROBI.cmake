@@ -11,21 +11,28 @@ find_library(
         PATH_SUFFIXES lib)
 
 if(MSVC)
-    # determine Visual Studio year
-    if(MSVC_TOOLSET_VERSION EQUAL 143)
-        set(MSVC_YEAR "2022")
-    elseif(MSVC_TOOLSET_VERSION EQUAL 142)
-        set(MSVC_YEAR "2019")
-    elseif(MSVC_TOOLSET_VERSION EQUAL 141)
-        set(MSVC_YEAR "2017")
-    elseif(MSVC_TOOLSET_VERSION EQUAL 140)
-        set(MSVC_YEAR "2015")
+
+    if(NOT DEFINED MSVC_YEAR)
+
+        # determine Visual Studio year
+        if(MSVC_TOOLSET_VERSION EQUAL 143)
+            set(MSVC_YEAR "2022")
+        elseif(MSVC_TOOLSET_VERSION EQUAL 142)
+            set(MSVC_YEAR "2019")
+        elseif(MSVC_TOOLSET_VERSION EQUAL 141)
+            set(MSVC_YEAR "2017")
+        elseif(MSVC_TOOLSET_VERSION EQUAL 140)
+            set(MSVC_YEAR "2015")
+        endif()
+
     endif()
 
-    if(MT)
-        set(M_FLAG "mt")
-    else()
-        set(M_FLAG "md")
+    if(NOT DEFINED MSVC_YEAR)
+        if(MT)
+            set(M_FLAG "mt")
+        else()
+            set(M_FLAG "md")
+        endif()
     endif()
 
     find_library(
