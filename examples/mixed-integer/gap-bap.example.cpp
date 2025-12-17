@@ -3,6 +3,7 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeWithCGInfo.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h"
@@ -106,7 +107,7 @@ int main(int t_argc, const char** t_argv) {
     /* Create the branch-and-bound algorithm */
     /*****************************************/
 
-    auto branch_and_bound = BranchAndBound();
+    auto branch_and_bound = BranchAndBound<NodeWithCGInfo>();
 
     // Use the most infeasible branching rule
     branch_and_bound.with_branching_rule(MostInfeasible());
@@ -115,7 +116,7 @@ int main(int t_argc, const char** t_argv) {
     branch_and_bound.with_node_selection_rule(BestBound());
 
     // Add a heuristic which solves the master problem with integrality constraints applied to the master's variables
-    branch_and_bound.add_callback(Heuristics::IntegerMaster().with_optimizer(Gurobi()));
+    branch_and_bound.add_callback(Heuristics::IntegerMaster<NodeWithCGInfo>().with_optimizer(Gurobi()));
 
     // Turn on logs
     branch_and_bound.with_logs(true);
@@ -135,6 +136,15 @@ int main(int t_argc, const char** t_argv) {
 
     // Print solution
     std::cout << save_primal(model) << std::endl;
+
+    const auto& active_columns = NodeWithCGInfo::get_active_columns(model);
+    const unsigned int n_sub_problems = active_columns.size();
+    for (unsigned int sub_problem_id = 0 ; sub_problem_id < n_sub_problems ; sub_problem_id++) {
+        std::cout << "Sub Problem " << sub_problem_id << ":" << std::endl;
+        for (const auto& [coefficient, column] : active_columns[sub_problem_id]) {
+            std::cout << coefficient << "\n" << column << std::endl;
+        }
+    }
 
     return 0;
 }

@@ -287,6 +287,8 @@ add_library(idol STATIC
         src/mixed-integer/optimizers/wrappers/JuMP/JuMP.cpp
         src/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.cpp
         src/mixed-integer/optimizers/wrappers/JuMP/Optimizers_Coluna.cpp
+        include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeWithCGInfo.h
+        src/mixed-integer/optimizers/branch-and-bound/nodes/NodeWithCGInfo.cpp
 )
 
 find_package(OpenMP REQUIRED)
