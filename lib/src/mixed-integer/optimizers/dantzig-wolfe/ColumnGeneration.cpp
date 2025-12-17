@@ -76,6 +76,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 
     master.optimize();
 
+    const bool save_dual_solution = m_iteration_count < parent().get_param_iteration_limit();
+
     const auto status = master.get_status();
 
     m_current_iteration_is_using_farkas = false;
@@ -88,7 +90,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 
         m_best_obj = std::min(m_best_obj, iter_upper_bound);
 
-        m_last_master_solution = save_dual(master);
+        if (save_dual_solution) {
+            m_last_master_solution = save_dual(master);
+        }
 
         return;
     }
@@ -100,7 +104,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 
         m_current_iteration_is_using_farkas = true;
 
-        m_last_master_solution = save_farkas(master);
+        if (save_dual_solution) {
+            m_last_master_solution = save_farkas(master);
+        }
 
         return;
     }

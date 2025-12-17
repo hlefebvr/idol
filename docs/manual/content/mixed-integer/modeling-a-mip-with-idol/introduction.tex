@@ -1,11 +1,5 @@
-In many decision-making applications---ranging from logistics and finance to
-energy systems and scheduling---problems can be naturally modeled as
-mixed-integer optimization problems (MIPs). These problems combine continuous
-and integer variables to represent decisions under various logical,
-structural, or operational constraints.
-
-In \textsf{idol}, we adopt a general and flexible framework for expressing
-such problems. A MIP is assumed to be of the following form:
+In \textsf{idol}, a mixed-integer optimization problem is specified in the
+general quadratic form
 \begin{subequations}
     \begin{align}
         \min_x \quad & c^\top x + x^\top D x + c_0 \\
@@ -15,24 +9,24 @@ such problems. A MIP is assumed to be of the following form:
         & x_j\in \mathbb{Z}, \quad \text{for all } j\in J \subseteq\{1,\dotsc,n\}. \label{eq:mip:integer-requirements}
     \end{align}
     \label{eq:mip}
-\end{subequations}
-Here, $x$ is the decision variable vector, and the input data are as follows:
-Vector $c \in \mathbb{Q}^n$, matrix $D\in\mathbb{Q}^{n\times n}$ and the
-constant $c_0 \in \mathbb{Q}$ define the linear, the quadratic and the
-constant parts of the objective function, respectively; For each constraint
-with index $i\in\{1,\dotsc,m\}$, vector $a_{i\cdot}$, matrix $Q^i \in
-\mathbb{Q}^{n \times n}$ and constant $b_i$ encode the linear part, the
-quadratic part, and the right-hand side of the constraint respectively;
-Vectors $\ell \in \mathbb{Q}^n \cup \{-\infty\}$ and $u \in \mathbb{Q}^n \cup
-\{\infty\}$ are used to define lower and upper bounds on each variables; Finally, the
-set $J \subseteq \{1, \dotsc, n\}$ specifies which variables are required to
-be integer.
+\end{subequations}%
+Here, $x \in \mathbb{R}^n$ denotes the decision vector. The objective
+comprises linear and quadratic components, defined by $c \in \mathbb{Q}^n$ and
+$D \in \mathbb{Q}^{n\times n}$, together with a constant term $c_0 \in
+\mathbb{Q}$. Each constraint $i$ consists of a linear part $a_{i\cdot} \in
+\mathbb{Q}^n$, a quadratic part $Q^i \in \mathbb{Q}^{n\times n}$, and a
+right-hand side $b_i \in \mathbb{Q}$. Variable bounds are given by $\ell_j,
+u_j \in \mathbb{Q} \cup \{-\infty, \infty\}$. The index set $J$ specifies the
+variables that are required to take integer values.
 
-As is customary, variables are classified depending on their type---which can
-be continuous, integer or binary---and bounds. This is presented in
-Table~\ref{tab:var-types}. As to constraints, they are said to be linear when
-$Q^i = 0$, and quadratic otherwise. Likewise, the objective function is
-quadratic when $D \ne 0$. 
+As is customary, variables are classified according to their type, i.e.,
+continuous, integer, or binary, and according to their bounds. The terminology
+used in \textsf{idol} is summarized in Table~\ref{tab:var-types}. A constraint
+is said to be {linear} when $Q^i = 0$, and {quadratic} otherwise. Likewise,
+the objective function is considered quadratic whenever $D \neq 0$. A
+particularly important subclass of MIPs arises when both the constraints and
+the objective are linear; that is, when $Q^i = 0$ for all $i$ and $D = 0$.
+Such problems are known as mixed-integer linear programs (MILPs).
 
 \begin{table}
     \caption{Terminology for variables in a MIP.}
@@ -51,39 +45,30 @@ quadratic when $D \ne 0$.
     \end{tabular}
 \end{table}
 
-A particularly important subclass of MIPs arises when both the constraints and
-the objective function are linear (i.e., $Q^i = 0$ for all $i$ and $D = 0$).
-In this case, the problem is known as a mixed-integer linear problem (MILP).
+\begin{remark}
+    You do not need to read every section in detail before formulating your
+    first model. Most users can begin with the example in
+    Section~\ref{sec:milp-example}, which demonstrates how to define a basic
+    MILP in \textsf{idol}. The subsequent sections develop the modeling
+    framework in greater depth, including the treatment of variables,
+    constraints, and the environment that manages them.
 
-For many practical purposes, it is helpful to consider the continuous
-relaxation of a MIP. This is obtained by removing the integrality
-constraints~\eqref{eq:mip:integer-requirements}, allowing all variables to
-take real values. This relaxation is easier to solve and often provides useful
-bounds or insights about the original problem.
+    Note that solving a model, i.e., computing an optimal solution, is not
+    covered in this chapter. This topic is addressed in the next chapter,
+    where we introduce the notions of an \textsf{Optimizer} and an
+    \textsf{OptimizerFactory}.
+\end{remark}
 
-\subsection*{Disclaimer}
-You do not need to read every section in detail before solving your first
-problem. Most users can start with the example in
-Section~\ref{sec:milp-example}, which demonstrates how to define a basic MILP
-using \textsf{idol}. Later sections dive deeper into the modeling framework,
-including variables, constraints, and the environment that manages them.
-%
-Note that solving a model (i.e., computing an optimal point) is not covered in
-this chapter. This is the focus of the next chapter, where you will learn
-about how to use an~\textsf{Optimizer} and an~\textsf{OptimizerFactory}.
-
-\exsection{ a toy mixed-integer linear problem}
+\exsection{A Toy Mixed-Integer Linear Problem}
 \label{sec:milp-example}
 
 To illustrate the modeling capabilities of \textsf{idol}, we begin with a
-small example which is a mixed-integer linear program (MILP). 
-%
-The mathematical model reads:
+small example given by the MILP
 \begin{subequations}
     \label{eq:milp-example}
     \begin{align}
         \min_x \quad & -x - 2y \\
-        \text{s.t.} & -x + y \le 1, \\
+        \text{s.t.} \quad & -x + y \le 1, \\
         & 2x + 3y \le 12, \\
         & 3x + 2y \le 12, \\
         & x,y\in\mathbb{Z}_{\ge 0}.
@@ -92,26 +77,22 @@ The mathematical model reads:
 This is a minimization problem which involves two integer variables, $x$ and
 $y$, both constrained to be non-negative. The feasible region is defined by
 three linear inequalities. Figure~\ref{fig:milp-example} shows this region
-(shaded in blue), the integer-feasible points, and the direction of the
-objective function (represented by the vector $-c$).
+(shaded in blue), the integer-feasible points (in orange), and the
+optimization direction (represented by the vector~$-c$). 
 %
-The continuous relaxation of this problem---where $x$ and $y$ are allowed to
-take real values---has a unique solution at $(x^*, y^*) = (2.4, 2.4)$, with an
-objective value of $-7.2$. The original integer-constrained problem also
-admits a unique solution at $(x^*, y^*) = (2, 2)$, with objective value $-5$.
+The continuous relaxation of this problem (where $x$ and $y$ are allowed to
+take real values) has a unique solution at $(x^*, y^*) = (2.4, 2.4)$, with
+objective value $-7.2$. The original integer-constrained problem also admits a
+unique solution, which is attained at $(x^*, y^*) = (2, 2)$, with objective
+value $-5$.
 
-\newcommand{\drawPoint}[2]{\filldraw[orange] (#1,#2) circle (1.5pt) node[anchor=north west] {};}
+\newcommand{\drawPoint}[2]{\filldraw[my-orange] (#1,#2) circle (1.5pt) node[anchor=north west] {};}
 
 \begin{figure}
     \begin{tikzpicture}
         \draw[<->] (0,3.5) |- (4.5,0);
 
-        \foreach \x in {0,...,4}
-            \draw[gray, dotted] (\x,0) -- (\x,3.5);
-        \foreach \y in {0,...,3}
-            \draw[gray, dotted] (0,\y) -- (4.5,\y);
-
-        \draw[fill=blue, ultra thick, fill opacity=.25] (0,0) -- (0,1) -- (1.8,2.8) -- (2.5,2.5) -- (4,0) -- cycle;
+        \draw[draw=my-blue, fill=my-blue, thick, fill opacity=.15] (0,0) -- (0,1) -- (1.8,2.8) -- (2.5,2.5) -- (4,0) -- cycle;
 
         % Draw ticks on x-axis
         \foreach \x in {1,2,3,4}
@@ -121,10 +102,11 @@ admits a unique solution at $(x^*, y^*) = (2, 2)$, with objective value $-5$.
         \foreach \y in {1,2,3}
             \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {$\y$};
 
-        \draw[->,ultra thick,black] (3.1,2.1) -- (3.6,3.1);
+        \draw[->,thick,black] (3.1,2.1) -- (3.6,3.1);
         \draw (4,3) node {$-c$};
         
-        \draw[ultra thick, orange, dashed] (0,0) -- (0,1) -- (1,2) -- (2,2) -- (4,0) -- cycle;
+        \draw[thick, my-orange, fill=my-orange, fill opacity=.3]
+        (0,0) -- (0,1) -- (1,2) -- (2,2) -- (4,0) -- cycle;
 
         \drawPoint{0}{0}
         \drawPoint{1}{0}
@@ -141,16 +123,18 @@ admits a unique solution at $(x^*, y^*) = (2, 2)$, with objective value $-5$.
         \drawPoint{2}{2}
 
     \end{tikzpicture}
-    \caption{Feasible region (shaded in blue) for
-    Problem~\eqref{eq:milp-example}, with integer-feasible points highlighted
-    and objective direction shown.}
+    \caption{The toy example of a MILP considered in
+    Section~\ref{sec:milp-example}. The shaded blue area is the feasible
+    region of the continuous relaxation. The dots in orange are the feasible
+    points in Problem~\eqref{eq:milp-example}, while the shaded orange area
+    denote the convex hull of these points.}
     \label{fig:milp-example}
 \end{figure}
 
-Modeling Problem~\eqref{eq:milp-example} in~\textsf{idol} is straightforward.
-In particular, if you are familiar with other optimization packages like
-\textsf{JuMP} in~\textsf{Julia} or the \textsf{Gurobi} \textsf{C++} API,
-the following code snippet should be easy to understand.
+Modeling Problem~\eqref{eq:milp-example} in \textsf{idol} is straightforward.
+If you are familiar with other optimization frameworks---such as \textsf{JuMP}
+in~\textsf{Julia} or the \textsf{Gurobi} \textsf{Python} or \textsf{C++}
+interface---the following code snippet should be largely self-explanatory.
 %
 \begin{lstlisting}
 #include <iostream>
@@ -191,43 +175,43 @@ constant $\textsf{idol::Inf}$. Both variables are defined as~\textsf{Integer}.
 Note that other types are possible, e.g., \textsf{Continuous} and
 \textsf{Binary}. The objective coefficients are also set in these lines by the
 fourth argument. The last argument corresponds to the internal name of that
-variable and is mainly useful for debugging. Finally,
+variable and is mainly used for debugging. Finally,
 Lines~\ref{code:create-constraint-c1}--\ref{code:create-constraint-c3} add
 constraints to the model to define the feasible region of the problem.
 
-Note that, as such, we are only modeling Problem~\eqref{eq:milp-example} here
-but we are not performing any optimization task so far. This is the subject of
-the next chapter. For the sake of completeness, however, here is how one uses
-the commercial solver~\textsf{Gurobi} to compute a solution
-of this problem.
+Note that at this stage we are only formulating
+Problem~\eqref{eq:milp-example}; no optimization is being performed yet.
+Solving the model is the focus of the next chapter. For completeness, however,
+the following example illustrates how the commercial solver \textsf{Gurobi}
+can be used to compute a solution to this problem.
 %
 \begin{lstlisting}
-    model.use(Gurobi());
-    model.optimize();
+model.use(Gurobi());
+model.optimize();
 
-    std::cout << "Status = " << model.get_status() << std::endl;
-    std::cout << "x = " << model.get_var_primal(x) << std::endl;
-    std::cout << "y = " << model.get_var_primal(y) << std::endl;
+std::cout << "Status = " << model.get_status() << std::endl;
+std::cout << "x = " << model.get_var_primal(x) << std::endl;
+std::cout << "y = " << model.get_var_primal(y) << std::endl;
 \end{lstlisting}
 
 This prints the solution status (here, \textsf{Optimal}) and the values of the
 decision variables in the solution (here, $(x^*,y^*) = (2,2)$). 
 
-\section{The environment}
+\section{The Environment}
 
-Any optimization object---such as variables, constraints and models---are
-managed through a central entity called an ``optimization environment''.
-This environment, represented by the \textsf{Env} class, acts as a container 
+Any optimization object, such as variables, constraints and models, are
+managed through a central entity called an ``optimization environment''. This
+environment is represented by the \textsf{Env} class. It acts as a container
 and controller for all optimization-related objects created within its scope.
 
 The environment has two key responsabilities:
 \begin{enumerate}
-    \item \textbf{Lifecycle management.} When an environment is destroyed, all
-    objects created within it are automatically deleted. This eliminates the
-    need for manual memory management. Also, once an object is no longer
-    referenced, it is safely cleaned up by the environment, i.e., you do not
-    need to manually delete objects.
-    \item \textbf{Version tracking.} During the execution of an optimization
+    \item \textbf{Lifecycle Management.} When an environment is destroyed, all
+    objects created by this environment are automatically deleted. This
+    eliminates the need for manual memory management. Also, once an object is
+    no longer referenced, it is safely cleaned up by the environment, i.e.,
+    you do not need to manually delete objects.
+    \item \textbf{Version Tracking.} During the execution of an optimization
     program, objects like variables and constraints may appear in different
     models with model-specific changes. These different versions of a single
     object are all stored and managed in the environment.  
@@ -236,62 +220,64 @@ The environment has two key responsabilities:
 Typically, a single environment should suffice for most applications. While
 \textsf{idol} technically allows the creation of multiple environments, this
 is strongly discouraged. Objects created in one environment must not be mixed
-with those from another. For example, attempting to add a variable from one
-environment to a model belonging to a different environment will lead to
-undefined behavior, often resulting in segmentation faults or program crashes.
+with those from another. For example, adding a variable from one environment
+to a model created by a different environment will lead to an undefined
+behavior, often resulting in a segmentation fault and a program crash.
 
-Creating an environment is straightforward:
+Creating an environment is straightforward.
 %
 \begin{lstlisting}
-    Env env; // Creates a new optimization environment.
-\end{lstlisting}
-
-Once initialized, you can begin creating models, variables, and constraints
-using this environment. All such objects will be associated with \textsf{env}
-and managed accordingly throughout their lifetime.
+Env env; // Creates a new optimization environment.
+\end{lstlisting}%
+%
+Once initialized, the environment can be used to create models, variables, and
+constraints. All such objects are associated with \textsf{env} and are managed
+by it throughout their lifetime.
 
 \section{Models}
 
 Mathematical optimization problems are modeled using the \textsf{Model} class.
-A model is a set of variables and constraints with an objective function. It
-can be created by calling the constructor of the \textsf{Model} class by
-passing an environment as the first argument.
-
+A model consists of a collection of variables and constraints together with an
+objective function. It is created by invoking the constructor of
+\textsf{Model} and passing an environment as its first argument.
+%
 \begin{lstlisting}
-    Env env;
-    Model model(env); // Creates an empty model.
+Env env;
+Model model(env); // Creates an empty model.
 \end{lstlisting}
 
 Here, we first create a new optimization environment, then create an
-optimization model. Note that the newly created model does not contain any
-variable nor constraints. By default, all models are for minimization
-problems. Unfortunately, idol offers limited support for maximization problem.
-However, it is well knwon that this is not a real restriction since $\max f(x)
-= - \min -f(x)$. 
+optimization model. Note that the newly created model does not yet contain any
+variables or constraints. By default, all models are treated as minimization
+problems. Currently, \textsf{idol} offers only limited support for
+maximization problems. This is not a real restriction, however, since
+$\max_{x\in X} f(x) = - \min_{x\in X} -f(x)$ holds for all function $f$ and
+all set $X$.
 
 Another way to create a model is by importing it from an \textsf{.mps} or
 an~\textsf{.lp} file. To do this, you will need to rely on an external solver.
 In what follows, we use~\textsf{GLPK}, which is an open-source solver which
 can be easily installed on your computer.
-
+%
 \begin{lstlisting}
-    Env env;
-    auto model = GLPK::read_from_file("/path/to/some/file.mps");
+Env env;
+auto model = GLPK::read_from_file("/path/to/some/file.mps");
 \end{lstlisting}
 
-The choice to rely on external solver is justified by the fact that, first of
-all, \textsf{idol} will most of the time be used in combination with such a
-solver to effectively solve optimization problems. Second, it is also safer to
-rely on existing codes with years of experience to import your model without
-mistake or ambiguity.
+The decision to rely on external solvers is justified by two main
+considerations. First, \textsf{idol} is typically used in combination with
+such solvers anyway to efficiently solve optimization problems. Second, it is
+generally safer to leverage well-established solver implementations, which
+have been extensively tested over many years, to read and solve models mistake
+or ambiguity.
 
 Now that we have a model imported, we can safely iterate over its variables
 and constraints. This can be done as follows. 
-
+%
 \begin{lstlisting}
-    for (const auto& var : model.vars()) {
-        std::cout << var.name() << std::endl;
-    }
+for (const auto& var : model.vars()) {
+    std::cout << var.name() << std::endl;
+}
 \end{lstlisting}
 Here, we use the \textsf{Model::vars()} method to get access to the variables
 of the model and write down their names. Note that you can also use the
@@ -299,63 +285,57 @@ of the model and write down their names. Note that you can also use the
 to the console. This can be useful for debugging. 
 
 Once we have iterated over the variables, we may want to iterate over
-constraints as well. To do so, we can use: the \textsf{Model::ctrs()} method
-for linear constraints,  the \textsf{Model::qctrs()} method for quadratic
-constraints and the \textsf{Model::sosctrs()} method for SOS-type constraints.
-The next code snippet shows how to get the number of variables and
-constraints.
-
+constraints as well. To do so, we can use the \textsf{Model::ctrs()} method
+for linear constraints, the \textsf{Model::qctrs()} method for quadratic
+constraints, and the \textsf{Model::sosctrs()} method for SOS-type
+constraints. The next code snippet shows how to get the number of variables
+and constraints.
+%
 \begin{lstlisting}
-    std::cout << "Number of variables: " 
-              << model.vars().size() << std::endl;
-
-    std::cout << "Number of linear constraints: "
-              << model.ctrs().size() << std::endl;
-
-    std::cout << "Number of quadratic constraints: "
-              << model.qctrs().size() << std::endl;
-
-    std::cout << "Number of sos-type constraints: "
-              << model.sosctrs().size() << std::endl;
+std::cout << "N. of vars: "        << model.vars().size()    << '\n';
+std::cout << "N. of linear ctrs: " << model.ctrs().size()    << '\n';
+std::cout << "N. of quad. ctrs: "  << model.qctrs().size()   << '\n';
+std::cout << "N. of SOS ctrs: "    << model.sosctrs().size() << '\n';
 \end{lstlisting}
 
-To get model-specific information about a variable, a constraint or the
-objective function, we can use methods like \textsf{Model::get\_X\_Y(const
-X\&)} where \textsf{X} is an object name---like \textsf{var}, \textsf{ctr},
-\textsf{qctr}, \textsf{sosctr} or \textsf{obj}---and \textsf{Y} is the data
-name you which to gain access---like \textsf{lb}, \textsf{type} or
-\textsf{column}. For instance, the following code counts the number of binary
-variables in the model.
-
+To obtain model-specific information about a variable, a constraint, or the
+objective function, \textsf{idol} provides methods of the form
+\textsf{Model::get\_X\_Y(const X\&)}, where \textsf{X} denotes the type of
+object—such as \textsf{var}, \textsf{ctr}, \textsf{qctr}, \textsf{sosctr}, or
+\textsf{obj}—and \textsf{Y} specifies the particular attribute to access, for
+example \textsf{lb}, \textsf{type}, or \textsf{column}. To give a specific
+example, the following code snippet counts the number of binary variables in
+the model.
+%
 \begin{lstlisting}
-    unsigned int n_binary_vars = 0;
+unsigned int n_binary_vars = 0;
 
-    // Iterate over all variables in the model.
-    for (const auto& var : model.vars()) {
+// Iterate over all variables in the model.
+for (const auto& var : model.vars()) {
 
-        // Get the variable type in this model.
-        const auto type = model.get_var_type(var);
+    // Get the variable type in this model.
+    const auto type = model.get_var_type(var);
 
-        // Check type is binary.
-        if (type == Binary) {
-            ++n_binary_vars;
-        }
-
+    // Check type is binary.
+    if (type == Binary) {
+        ++n_binary_vars;
     }
+
+}
 \end{lstlisting}
 
-Complete details on what information you can retrieve through a model will be
-detailed in the following sections. 
+The complete set of information that can be accessed through a model is
+described in detail in the following sections.
 
-In most practical cases, you will want to avoid copying a model but, rather,
-pass on a reference to some auxiliary function. For that reason, the copy
-constructor of the \textsf{Model} class is declared as \textsf{private}. If
-copying a model is really what you intend to do, you should use the
-\textsf{Model::copy()} method and the move constructor. Here is an example. 
-
+In most practical situations, it is preferable to avoid copying a model and
+instead pass a reference to it to auxiliary functions. For this reason, the
+copy constructor of the \textsf{Model} class is declared \textsf{private}. If
+copying a model is indeed required, the \textsf{Model::copy()} method and the
+move constructor should be used. The following example illustrates this usage. 
+%
 \begin{lstlisting}
-    const auto model = Gurobi::read_from_file("problem.lp");
-    auto model2 = model.copy();
+const auto model = Gurobi::read_from_file("problem.lp");
+auto model2 = model.copy();
 \end{lstlisting}
 Here, \textsf{model2} is now an independent copy of the original model and can
 be modified without altering its source model. Similarly, if you want to write
@@ -363,15 +343,15 @@ a function that returns a model, you will have to be explicit about it to
 avoid unncessary copies. See the following code.
 
 \begin{lstlisting}
-    Model read_model_from_file() {
-        
-        // Read the model from the file.
-        auto model = Gurobi::read_from_file("problem.lp");
+Model read_model_from_file() {
+    
+    // Read the model from the file.
+    auto model = Gurobi::read_from_file("problem.lp");
 
-        // Use std::move to avoid unnecessary copies.
-        // If a copy is intended, use Model::copy().
-        return std::move(model); 
-    }
+    // Use std::move to avoid unnecessary copies.
+    // If a copy is intended, use Model::copy().
+    return std::move(model); 
+}
 \end{lstlisting}
 
 Moving the model instead of copying it avoids the overhead of duplicating
@@ -379,153 +359,160 @@ large optimization problems.
 
 \section{Variables}
 
-Variables are the decision-making elements of an optimization problem. These
-are the quantities that we aim to determine in order to optimize an objective
-function, subject to a set of constraints. In \textsf{idol}, they are
-represented by the \textsf{Var} class. 
+Variables constitute the decision-making elements of an optimization problem.
+They represent the quantities to be determined in order to optimize an
+objective function, subject to a set of constraints. In \textsf{idol},
+variables are represented by the \textsf{Var} class.
 
-\subsection{Creating variables}
+\subsection{Creating Variables}
 
-Creating variables can be done in mainly two ways. The first one is through
-the \textsf{Var} constructor and the \textsf{Model::add()} method, while the
-second uses the \textsf{Model::add\_var(...)} methods. We start with the fist
-method which uses the \textsf{Var} constructor. This method is less direct,
-but more informative on how optimization objects are managed in~\textsf{idol}.
-We focus on the following constructor:
+Creating variables can mainly be done in two ways. The first approach uses the
+\textsf{Var} constructor in combination with the \textsf{Model::add()} method,
+while the second relies on the \textsf{Model::add\_var(...)} methods. We begin
+with the first approach, which employs the \textsf{Var} constructor. Although
+this method is somewhat less direct, it provides greater insight into how
+optimization objects are managed within \textsf{idol}.
+
+We focus on the constructor given by
 \begin{center}
     \textsf{Var(Env\&, double, double, VarType, double, std::string)}.
 \end{center}
-This constructor takes six arguments. The first is the optimization
-environment which will store the variable's versions. The two subsequent are
-the lower and upper bound---possibly infinite using \textsf{idol::Inf}.
-Then, the type of the variable is expected---such as
-\textsf{idol::Continuous}, \textsf{idol::Integer} or \textsf{idol::Binary}.
-The linear coefficient of the variable in the objective function is the fifth
-argument. Finally, the last argument is the given name of the variable. For
-instance, the following code creates a new variable in the environment.
+The constructor requires six arguments. The first specifies the optimization
+environment, which manages the variable's lifetime and versions. The next two
+arguments define the lower and upper bounds of the variable, which can be set
+to infinity using \textsf{idol::Inf}. The fourth argument indicates the type
+of the variable, for example \textsf{idol::Continuous}, \textsf{idol::Integer},
+or \textsf{idol::Binary}. The fifth argument provides the linear coefficient of
+the variable in the objective function, and the sixth argument assigns a name
+to the variable. 
 
+For example, the following code creates a new variable within the environment.
+%
 \begin{lstlisting}
-    Var x(env, 0, Inf, Continuous, 2, "x");
+Var x(env, 0, Inf, Continuous, 2, "x");
 \end{lstlisting}
-This variable is a continuous non-negative variable with an objective
-coefficient of 2. It is called ``\textsf{x}''. One important thing is that
-this variable does not belong to any model yet. Instead, what we have created
-is called the ``default version'' of the variable. This means that, by
-default, if this variable is added to a model, it will have the corresponding
-attributes in that model. For instance, here is a code that creates and add
-this variable to a model.
-
+This variable is continuous, non-negative, and has an objective coefficient of
+$2$. It is named ``\textsf{x}''. Importantly, at this stage the variable does
+not belong to any model. What has been created is referred to as the ``default
+version'' of the variable. By default, if this variable is later added to a
+model, it will retain these attributes within that model. For example, the
+following code demonstrates how to create the variable and add it to a model.
+%
 \begin{lstlisting}
-    // Create a variable in the environment.
-    Var x(env, 0, Inf, Continuous, 2, "x");
+// Create a variable in the environment.
+Var x(env, 0, Inf, Continuous, 2, "x");
 
-    // Add the variable to a model 
-    model.add(x);
+// Add the variable to a model 
+model.add(x);
 \end{lstlisting}
 
-By default, the variable ``\textsf{x}'' is added to the model as a continuous
-non-negative variable with an objective coefficient of 2. Note that other
-constructors are also available in the \textsf{Var} class. For instance, it is
-also possible to provide a column associated to the variable so that it is
-automatically added to the LP matrix. Columns are built using the
-\textsf{LinExpr<Ctr>} class and can be built in a very natural way. For more
-details, please refer to Section~\ref{sec:expressions} on expressions in
-\textsf{idol}. We simply give one example. 
-
+By default, the variable ``\textsf{x}'' is added to the model as a continuous,
+non-negative variable with an objective coefficient of $2$. Other constructors
+are also available in the \textsf{Var} class. For example, it is possible to
+provide a column associated with the variable so that it is automatically
+incorporated into the LP matrix. Columns can be constructed using the
+\textsf{LinExpr<Ctr>} class in a straightforward and intuitive manner. For
+more details, see Section~\ref{sec:expressions}, which covers expressions in
+\textsf{idol}. We provide one illustrative example here.
+%
 \begin{lstlisting}
-    // This function is assumed to return a vector of constraints.
-    const std::vector<Ctr> ctrs = get_vector_of_ctrs(); 
+// This function is assumed to return a vector of constraints.
+const std::vector<Ctr> ctrs = get_vector_of_ctrs(); 
 
-    // Create the column associated to x.
-    LinExpr<Ctr> column = -1 * c[0] + 2 * c[1] + 3 * c[2];
+// Create the column associated to x.
+LinExpr<Ctr> column = -1 * c[0] + 2 * c[1] + 3 * c[2];
 
-    // Create a variable in the environment.
-    Var x(env, 0, Inf, Integer, -1, std::move(column), "x");
+// Create a variable in the environment.
+Var x(env, 0, Inf, Integer, -1, std::move(column), "x");
 
-    // Add the variable to a model.
-    model.add(x);
+// Add the variable to a model.
+model.add(x);
 \end{lstlisting}
 
 Finally, note that it is possible to avoid adding the default version to a
 model by overriding it as follows. 
 
 \begin{lstlisting}
-    // Add the variable to a model, overriding the default version. 
-    model.add(x, TempVar(0, Inf, Continuous, 2, LinExpr<Var>()));
+// Add the variable to a model, overriding the default version. 
+model.add(x, TempVar(0, Inf, Continuous, 2, LinExpr<Var>()));
 \end{lstlisting}
 
-Here, we notice the use of the \textsf{TempVar} class. This class is a
-lightweight class used to represent a variable that has yet not been created
-inside an environment. As such, it contains all attributes of the variable to
-be created but it cannot be used other than for storing these attributes and
-create an actual variable.
+Here, we note the use of the \textsf{TempVar} class. This lightweight class is
+designed to represent a variable that has not yet been created within an
+environment. It stores all the attributes of the variable to be created, but
+cannot be used for any other purpose except for holding these attributes and
+instantiating an actual variable.
 
-The second approach for creating variables is more straightforward. However,
-it internally is exactly the same as what we have seen so far. This can be
-reached using the \textsf{Model::add\_var} methods from the \textsf{Model}
-class. The following code snippet should be easy to understand.
-
+The second approach for creating variables is more straightforward, although
+it is internally equivalent to the method described above. This approach uses
+the \textsf{Model::add\_var} methods of the \textsf{Model} class. The
+following code snippet illustrates this usage and should be easy to
+understand.
+%
 \begin{lstlisting}
-    const auto x = model.add_var(0, Inf, Continuous, 2, "x");
+const auto x = model.add_var(0, Inf, Continuous, 2, "x");
 \end{lstlisting}
-Note that we do not need to pass the environment since the environment of the
-model is automatically used. Also, two operations are performed in a single
-call here: first, a default version is created for the variable, then the
-variable is added to the model. Similarly, it is also possible to add a
-variable with a specific column in the LP matrix. 
+%
+Note that it is not necessary to pass the environment explicitly, as the
+environment associated with the model is used automatically. In this single
+call, two operations are performed: first, a default version of the variable
+is created, and second, the variable is added to the model. Similarly, it is
+also possible to add a variable together with a specific column in the LP
+matrix.
 
-Sometimes, you will find it more convenient to create several variables at
-once. This can be done by calling the \textsf{Var::make\_vector} function, or
-the \textsf{Model::add\_vars} method. These functions require one extra
-parameter specifying the dimension of the new variable. For instance, here is
-how to create a set of variables with a $2\times 3$ index.
-
+In some cases, it is more convenient to create multiple variables at once.
+This can be accomplished using the \textsf{Var::make\_vector} function or the
+\textsf{Model::add\_vars} method. Both functions require an additional
+parameter specifying the dimension of the variable set. For example, the
+following illustrates how to create a set of variables indexed by a $2\times
+3$ grid.
+%
 \begin{lstlisting}
-    // Create a 2x3 "vector" of variables.
-    const auto x = Var::make_vector(env, Dim<2>(2, 3), 0, Inf, Continuous, "x");
+// Create a (2,3) "vector" of variables.
+const auto x = Var::make_vector(env, Dim<2>(2, 3), 0, Inf, Continuous, "x");
 
-    // Add all variables
-    model.add_vector<Var, 2>(x);
+// Add all variables
+model.add_vector<Var, 2>(x);
 
-    // Print the first variable's name.
-    std::cout << "x_0_0 = " << x[0][0].name() << std::endl;
+// Print the first variable's name.
+std::cout << "x_0_0 = " << x[0][0].name() << std::endl;
 \end{lstlisting}
 
-Notice that we used the \textsf{Dim} class to specify the dimensions. The
-\textsf{Dim} class is a template class that takes an integer as parameter.
-This integer specifies the number of indices for the new variable. In this
-case, we use 2 to specify that we want to create a two-dimensional index.
-Then, we give the size of each dimension by passing the appropriate arguments
-to the constructor of the \textsf{Dim} class, i.e., 2 and 3. 
+Note that we use the \textsf{Dim} class to specify the dimensions of the
+variable set. The \textsf{Dim} class is a template that takes an integer
+parameter, which indicates the number of indices for the new variable. In this
+example, we pass $2$ to create a two-dimensional index. The size of each
+dimension is then specified by providing the appropriate arguments to the
+constructor of \textsf{Dim}, namely $2$ and $3$.
 
-Naturally, it is also possible to achieve this goal through methods of the
-\textsf{Model} class. The following snippet gives an example.
-
+Alternatively, the same result can be achieved using methods of the
+\textsf{Model} class. The following snippet illustrates this approach.
+%
 \begin{lstlisting}
-    const auto x = model.add_vars(Dim<2>(2,3), 0, Inf, Continuous, "x");
+const auto x = model.add_vars(Dim<2>(2,3), 0, Inf, Continuous, "x");
 \end{lstlisting}
 
-\subsection{Removing variables}
+\subsection{Removing Variables}
 
-Once a variable has been added to a model, it can also be removed from it. We
-use the \textsf{Model::remove(const Var\&)} method for this. Calling this
-method will remove the variable from the model and update all linear and
-quadratic constraints where this variable appeared. Trying to remove a
-variable which does not belong to a model will result in an exception being
-thrown. However, it is possible to check whether a model has a given variable
-using the \textsf{Model::has(conv Var\&)} method. This method returns true if
-and only if the variable is part of the model. Also, note that it is not
-possible to remove a variable which is involved in an SOS-type constraint.
-This is not limiting since SOS-type constraints can be removed and added
-again.
+Once a variable has been added to a model, it can also be removed using the
+\textsf{Model::remove(const Var\&)} method. This operation removes the
+variable from the model and updates all linear and quadratic constraints in
+which the variable appears. Attempting to remove a variable that does not
+belong to the model will result in an exception. To check whether a variable
+is part of a model, the \textsf{Model::has(const Var\&)} method can be used;
+it returns \textsf{true} if and only if the variable is included in the model.
 
-\subsection{Accessing variables}
+Note that variables involved in SOS-type constraints cannot be removed
+directly. This restriction is not limiting in practice, as SOS constraints
+themselves can be removed and added again if needed.
 
-Variables have two immutable attributes: a name, which is the given name at
-creation time of the variable and an id, which is unique in the environment.
-Other attributes are tied to a specific model and can be accessed through the
-model's methods \textsf{Model::get\_var\_Y} where \textsf{Y} is the name of
-that attribute. Next is list of methods which can be used to retrieve
+\subsection{Accessing Variables}
+
+Variables possess two immutable attributes: a \emph{name}, assigned at the
+time of creation, and a unique \emph{id} within the environment. Other
+attributes are model-specific and can be accessed through the model's methods
+\textsf{Model::get\_var\_Y}, where \textsf{Y} denotes the name of the
+attribute. The following list summarizes the methods available for retrieving
 information about variables in a model.
 %
 \begin{description}
@@ -548,44 +535,45 @@ information about variables in a model.
     Note that this index may change if variables are removed.
 \end{description}
 
-We now give an example which prints out all free variables. 
-
+The following example demonstrates how to print all free variables in a model.
+%
 \begin{lstlisting}
-    for (const auto& var : model.vars()) {
+for (const auto& var : model.vars()) {
 
-        const double lb = model.get_var_lb(var);
-        const double ub = model.get_var_ub(var);
+    const double lb = model.get_var_lb(var);
+    const double ub = model.get_var_ub(var);
 
-        if (is_neg_inf(lb) && is_pos_inf(ub)) {
-            std::cout << var.name() << " is free." << std::endl;
-        }
-
+    if (is_neg_inf(lb) && is_pos_inf(ub)) {
+        std::cout << var.name() << " is free." << std::endl;
     }
+
+}
 \end{lstlisting}
 
-One final note regarding indices. Though they may change over time, e.g., if
-variables are removed from a model, it can still be used to access variables
-by using the \textsf{Model::get\_var\_by\_index} method. The following code
-snippet shows an alternative way to iterate over variables in a model. 
-
+One final note regarding variable indices. Although indices may change over
+time, e.g., if variables are removed from a model, they can still be used to
+access variables via the \textsf{Model::get\_var\_by\_index} method. The
+following code snippet illustrates an alternative way to iterate over all
+variables in a model.
+%
 \begin{lstlisting}
-    for (unsigned int i = 0, n = model.vars().size(); i < n; ++i) {
-        
-        // Get the variable by index
-        const auto& var = model.get_var_by_index(i);
-        
-        // Print out its name
-        std::cout << var.name() << std::endl;
+for (unsigned int i = 0, n = model.vars().size(); i < n; ++i) {
+    
+    // Get the variable by index
+    const auto& var = model.get_var_by_index(i);
+    
+    // Print out its name
+    std::cout << var.name() << std::endl;
 
-    }
+}
 \end{lstlisting}
 
 \subsection{Modifying variables}
 
-Some of the attributes of a variable may be directly changed through the
-model's methods \textsf{Model::set\_var\_Y}. Here again, \textsf{Y} is the
-name of the attribute you wish to modify. Here is a list of methods to be used
-for modifying attributes of a variable in a model.
+Some attributes of a variable can be modified directly through the model's
+methods \textsf{Model::set\_var\_Y}, where \textsf{Y} denotes the attribute to
+be changed. The following list summarizes the available methods for modifying
+variable attributes in a model.
 %
 \begin{description}
     \item[\textsf{void Model::set\_var\_lb(const Var\&, double)}]\hphantom{.}\\ 
@@ -605,23 +593,23 @@ for modifying attributes of a variable in a model.
     Sets the column of a variable in the LP matrix. 
 \end{description}
 
-We end with an example which copies a model and creates its continuous
-relaxation.
-
+We conclude with an example demonstrating how to copy a model and create its
+continuous relaxation.
+%
 \begin{lstlisting}
-    // Copy the model.
-    auto continuous_relaxation = model.copy();
+// Copy the model.
+auto continuous_relaxation = model.copy();
 
-    // Build the continuous relaxation. 
-    for (const auto& var : model.vars()) {
-        continuous_relaxation.set_var_type(var, Continuous);
-    }
+// Build the continuous relaxation. 
+for (const auto& var : model.vars()) {
+    continuous_relaxation.set_var_type(var, Continuous);
+}
 \end{lstlisting}
 
-\section{Expressions}
+\section{Expressions \wip}
 \label{sec:expressions}
 
-\section{Constraints}
+\section{Constraints \wip}
 
 \subsection{Linear constraints}
 
@@ -629,4 +617,4 @@ relaxation.
 
 \subsection{SOS1 and SOS2 constraints}
 
-\section{The objective function}
+\section{The Objective Function \wip}

@@ -161,6 +161,10 @@ public:
     void set_solution_index(unsigned int t_index) override;
 
     void terminate() override;
+
+    void set_relaxation_optimizer_factory(const OptimizerFactory& t_factory);
+
+    const OptimizerFactory& get_relaxation_optimizer_factory() const;
 };
 
 template<class NodeInfoT>
@@ -189,6 +193,18 @@ template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::terminate() {
 #pragma omp critical
     Optimizer::terminate();
+}
+
+template <class NodeInfoT> void idol::Optimizers::BranchAndBound<NodeInfoT>::set_relaxation_optimizer_factory(
+    const OptimizerFactory& t_factory) {
+
+    m_relaxation_optimizer_factory.reset(t_factory.clone());
+
+}
+
+template <class NodeInfoT> const idol::OptimizerFactory& idol::Optimizers::BranchAndBound<NodeInfoT>::
+get_relaxation_optimizer_factory() const {
+    return *m_relaxation_optimizer_factory;
 }
 
 template<class NodeInfoT>

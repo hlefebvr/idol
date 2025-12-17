@@ -142,6 +142,14 @@ const idol::DantzigWolfe::SubProblem &idol::DantzigWolfeDecomposition::get_sub_p
 
 }
 
+idol::DantzigWolfeDecomposition& idol::DantzigWolfeDecomposition::set_master_optimizer(
+    const OptimizerFactory& t_optimizer_factory) {
+
+    m_master_optimizer_factory.reset(t_optimizer_factory.clone());
+
+    return *this;
+}
+
 idol::DantzigWolfeDecomposition &
 idol::DantzigWolfeDecomposition::with_master_optimizer(const idol::OptimizerFactory &t_optimizer_factory) {
 
@@ -149,7 +157,7 @@ idol::DantzigWolfeDecomposition::with_master_optimizer(const idol::OptimizerFact
         throw Exception("An optimizer factory has already been given.");
     }
 
-    m_master_optimizer_factory.reset(t_optimizer_factory.clone());
+    set_master_optimizer(t_optimizer_factory);
 
     return *this;
 }

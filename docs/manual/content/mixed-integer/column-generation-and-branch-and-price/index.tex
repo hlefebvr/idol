@@ -1,0 +1,90 @@
+\mychapter{Column Generation and Branch-and-Price \wip}
+
+Column generation and branch-and-price are advanced techniques for solving
+large-scale integer programming problems. This chapter introduces the
+fundamental concepts and demonstrates how to implement these techniques
+using~\textsf{idol}. For a detailed treatment of the theoretical foundations,
+we refer the reader to the books by~\textcite{desrosiers2024branch}
+and~\textcite{uchoa2024optimizing}.
+
+The chapter is organized as follows. In Section~\ref{sec:dantzig-wolfe}, we
+present the general theory of Dantzig-Wolfe decomposition for linear programs.
+Section~\ref{sec:branch-and-price} then describes how to solve integer
+programs by embedding the Dantzig-Wolfe decomposition within a
+branch-and-bound framework, thereby obtaining a branch-and-price algorithm.
+
+\section{The Dantzig-Wolfe Decomposition \wip}
+\label{sec:dantzig-wolfe}
+
+\subsection{Introduction}
+
+The Dantzig-Wolfe decomposition is a decomposition technique that exploits the
+block structure of large-scale linear programs. It was first introduced
+by~\textcite{Dantzig_1960}. Formally, we consider problems of the form
+\begin{subequations}
+    \label{eq:dw}
+    \begin{align}
+        \min_{x^1,\dotsc,x^K} \quad & \sum_{k=1}^K {c^k}^\top x^k \\
+        \text{s.t.} \quad & \sum_{k=1}^K A^k x^k \ge b, \label{eq:dw:coupling} \\
+        & B^kx^k \ge d^k, \quad \text{for all } k=\dotsc,K. \label{eq:dw:blocks}
+    \end{align}
+\end{subequations}
+Here, Constraints~\eqref{eq:dw:coupling} are considered to be complicating
+constraints in the sense that, without them, the problem decomposes into $K$
+independent subproblems of the form
+\begin{equation*}
+    \min_{x^k} \ \Defset{ {c^k}^\top x^k }{ B^kx^k \ge d^k }, 
+\end{equation*}
+for all $k=1,\dotsc,K$. For the sake of simplicity, we first assume that the
+polyhedron $P^k \define \{ x : B^kx \ge d^k \}$ is actually a polytope, i.e.,
+it is bounded. The goal of the Dantzig-Wolfe decomposition is to exploit this
+block structure to solve the original problem more efficiently.
+
+We start by reformulating Problem~\eqref{eq:dw}. In particular,
+Constraints~\eqref{eq:dw:blocks} are equivalently expressed by representing
+each $x^k$ as a convex combination of points~$\hat{x}^k$ satisfying $B^k
+\hat{x}^k \ge d^k$ for each $k=1,\dotsc,K$. That is, we can write
+\begin{equation*}
+    x^k = \sum_{r \in \mathcal{R}^k} \lambda^k_r \, \hat{x}^k_r,
+    \quad \sum_{r \in \mathcal{R}^k} \lambda^k_r = 1, \quad
+    \lambda^k_r \ge 0 \quad \forall r \in \mathcal{R}^k,
+\end{equation*}
+where $\mathcal{R}^k$ denotes the set of extreme points of the $k$-th polytope
+$P^k$, and $\lambda^k_r$ are the associated convex combination coefficients.
+
+Substituting this representation into the objective function and the
+complicating constraints~\eqref{eq:dw:coupling} yields the \emph{Dantzig-Wolfe
+reformulation}:
+\begin{subequations}
+    \begin{align}
+        \min_{\lambda} \quad & \sum_{k=1}^K \sum_{r \in \mathcal{R}^k} {c^k}^\top \hat{x}^k_r \, \lambda^k_r \\
+        \text{s.t.} \quad & \sum_{k=1}^K \sum_{r \in \mathcal{R}^k} A^k \hat{x}^k_r \, \lambda^k_r \ge b, \\
+        & \sum_{r \in \mathcal{R}^k} \lambda^k_r = 1, \quad \forall k=1,\dotsc,K, \\
+        & \lambda^k_r \ge 0, \quad \forall k=1,\dotsc,K, \ r \in \mathcal{R}^k.
+    \end{align}
+\end{subequations}
+
+In practice, the sets $\mathcal{R}^k$ are typically very large or even
+exponential in size. Column generation is therefore used to iteratively add
+only the columns (variables) corresponding to promising extreme points,
+allowing the master problem to remain tractable while still converging to the
+optimal solution of the original problem.
+
+\subsection{Column Generation}
+
+\subsection{Stabilization via Dual-Smoothing}
+
+\section{The Branch-and-Price Algorithm \wip}
+\label{sec:branch-and-price}
+
+\subsection{The Algorithm}
+
+\subsection{Hard vs.\ Soft Branching}
+
+\section{Implementation}
+
+\exsection{The Generalized Assignment Problem \wip}
+
+
+
+\section{Strong Branching \wip}

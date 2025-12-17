@@ -14,9 +14,11 @@ void idol::NodeWithCGInfo::save(const Model& t_original_formulation, const Model
     }
 
     if (!t_model.optimizer().is<Optimizers::DantzigWolfeDecomposition>()) {
+        std::cout << "Oups" << std::endl;
         std::cerr << "NodeWithCGInfo was not able to save active columns.\n"
                      "Reason: the optimizer could not be cast to Optimizers::DantzigWolfeDecomposition."
                   << std::endl;
+        throw Exception("STOP");
         return;
     }
 
@@ -43,6 +45,10 @@ void idol::NodeWithCGInfo::save(const Model& t_original_formulation, const Model
 
     }
 
+}
+
+idol::NodeWithCGInfo* idol::NodeWithCGInfo::clone() const {
+    return new NodeWithCGInfo(*this);
 }
 
 idol::NodeWithCGInfo* idol::NodeWithCGInfo::create_child() const {

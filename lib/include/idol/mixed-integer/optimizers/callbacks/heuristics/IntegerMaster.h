@@ -193,57 +193,49 @@ void idol::Heuristics::IntegerMaster<NodeInfoT>::Strategy::operator()(CallbackEv
     const auto& dantzig_wolfe_optimizer = relaxation.optimizer().template as<Optimizers::DantzigWolfeDecomposition>();
     const auto& original_model = this->original_model();
     const auto& formulation = dantzig_wolfe_optimizer.formulation();
-
     const unsigned int n_sub_problems = formulation.n_sub_problems();
 
-    std::unique_ptr<Model> integer_master(formulation.master().clone());
+    std::unique_ptr<Model> integer_master_new(relaxation.clone());
+    auto& dw = integer_master_new->optimizer().as<Optimizers::DantzigWolfeDecomposition>();
 
-    integer_master->unuse();
-
-    for (const auto& var : original_model.vars()) {
-        const VarType type = original_model.get_var_type(var);
-        if (integer_master->has(var)) {
-            integer_master->set_var_type(var, type);
+    // Here, we add all columns currently present in the relaxation
+    for (unsigned int k = 0 ; k < n_sub_problems ; ++k) {
+        for (const auto& [var, col] : formulation.present_generators(k)) {
+            dw.formulation().generate_column(k, col);
         }
     }
 
+    // Set integers
     if (m_integer_columns) {
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-            for (const auto &[alpha, generator]: formulation.present_generators(i)) {
-                integer_master->set_var_type(alpha, Binary);
+            for (const auto &[alpha, generator]: dw.formulation().present_generators(i)) {
+                dw.formulation().master().set_var_type(alpha, Binary);
             }
         }
     }
 
-    integer_master->use(*m_optimizer_factory);
+    // Use different master optimizer
+    dw.set_master_optimizer_factory(*m_optimizer_factory);
 
-    integer_master->optimizer().set_param_time_limit(std::min(m_time_limit, relaxation.optimizer().get_remaining_time()));
-    // TODO set bound stop
-    integer_master->optimizer().set_param_iteration_limit(m_iteration_limit);
+    // Set parameters
+    dw.set_param_logs(false);
+    dw.set_param_iteration_limit(0);
+    dw.set_param_time_limit(std::min(m_time_limit, relaxation.optimizer().get_remaining_time()));
 
-    integer_master->optimize();
+    // Set bound limit if there is a current incumbent
+    auto& branch_and_bound = this->original_model().optimizer().template as<Optimizers::BranchAndBound<NodeInfoT>>();;
+    dw.set_param_best_bound_stop(branch_and_bound.get_best_obj());
 
-    const int status = integer_master->get_status();
+    integer_master_new->optimize();
+
+    const int status = integer_master_new->get_status();
 
     if (status != Optimal && status != Feasible) {
         return;
     }
 
-    auto solution = save_primal(*integer_master);
-
-    // search for alpha = 1, add generator to solution
-    for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-        for (const auto &[alpha, generator]: formulation.present_generators(i)) {
-            if (solution.get(alpha) > .5) {
-                solution.merge_without_conflict(generator);
-                solution.set(alpha, 0.);
-            }
-        }
-    }
-
     auto* info = new NodeInfoT();
-    info->set_primal_solution(std::move(solution));
-
+    info->save(original_model, *integer_master_new);
     this->submit_heuristic_solution(info);
 
 }

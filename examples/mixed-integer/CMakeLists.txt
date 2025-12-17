@@ -12,6 +12,7 @@ add_example(flp-bab)
 
 # Branch-and-price algorithm
 add_example(gap-bap)
+add_example(bin-bap)
 
 # Legacy examples
 #add_example(knapsack-cover)

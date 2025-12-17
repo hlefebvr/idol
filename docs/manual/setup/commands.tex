@@ -44,52 +44,35 @@
 
 \newcommand{\HL}{\todo[author=HL, color=yellow!50, size=\small]}
 \newcommand{\HLil}{\todo[inline, author=HL, color=yellow!50, size=\small, caption={}]}
+\newcommand{\wip}{\emoji{construction}}
 
-\definecolor{listinggray}{gray}{0.7}
-\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
-\definecolor{Darkgreen}{rgb}{0,0.4,0}
+\definecolor{bgcolor}{RGB}{245,245,245}        % Light gray background
+\definecolor{keywordcolor}{RGB}{0,0,180}      % Blue keywords
+\definecolor{commentcolor}{RGB}{0,128,0}      % Dark green comments
+\definecolor{stringcolor}{RGB}{163,21,21}     % Dark red strings
+\definecolor{numbercolor}{RGB}{100,100,100}   % Gray line numbers
+
 \lstset{
-    backgroundcolor=\color{lbcolor},
-    tabsize=1,    
-%   rulecolor=,
-    language=[GNU]C++,
-        basicstyle=\footnotesize,
-        upquote=true,
-        aboveskip={.5\baselineskip},
-        columns=fixed,
-        showstringspaces=false,
-        extendedchars=false,
-        breaklines=true,
-        prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
-        frame=single,
-        numbers=left,
-        showtabs=false,
-        showspaces=false,
-        showstringspaces=false,
-        identifierstyle=\ttfamily,
-        keywordstyle=\color[rgb]{0,0,1},
-        commentstyle=\color[rgb]{0.026,0.112,0.095},
-        stringstyle=\color[rgb]{0.627,0.126,0.941},
-        numberstyle=\color[rgb]{0.205, 0.142, 0.73},
-        escapechar=@
-}
-\lstset{
-    backgroundcolor=\color{lbcolor},
-    tabsize=1,
-    language=C++,
-    captionpos=b,
-    frame=lines,
-    numbers=left,
-    numberstyle=\tiny,
-    numbersep=5pt,
-    breaklines=true,
+    language=C++,                      % Programming language
+    backgroundcolor=\color{bgcolor},   % Background color
+    basicstyle=\ttfamily\footnotesize, % Monospace font, smaller size
+    keywordstyle=\color{keywordcolor}\bfseries,
+    commentstyle=\color{commentcolor}\itshape,
+    stringstyle=\color{stringcolor},
+    identifierstyle=\ttfamily,
+    numbers=left,                      % Line numbers on the left
+    numberstyle=\tiny\color{numbercolor},
+    numbersep=6pt,                     % Space between numbers and code
+    tabsize=4,
+    breaklines=true,                   % Automatic line breaking
+    breakatwhitespace=true,
     showstringspaces=false,
-    basicstyle=\footnotesize,
-    %  identifierstyle=\color{magenta},
-    keywordstyle=\color[rgb]{0,0,1},
-    commentstyle=\color{Darkgreen},
-    stringstyle=\color{red},
-    escapechar=@
+    frame=single,                      % Frame around the code
+    rulecolor=\color{black!30},        % Frame color (subtle)
+    xleftmargin=5pt,                  % Left padding
+    framexleftmargin=10pt,             % Padding inside the frame
+    captionpos=b,                      % Caption at the bottom
+    escapechar=@                        % Enable inline LaTeX with @...@
 }
 
 \newcommand{\bulletparagraph}[1]{%
@@ -99,3 +82,8 @@
 \newcommand\exsection[1]{
     \section{{\color[rgb]{0.4,0,0}{Example: #1}}}
 }
+
+\definecolor{my-blue}{HTML}{006699}
+\definecolor{my-green}{HTML}{339966}
+\definecolor{my-red}{HTML}{CC3333}
+\definecolor{my-orange}{HTML}{FF9933}

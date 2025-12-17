@@ -47,6 +47,8 @@ public:
 
     DantzigWolfe::Formulation& formulation() { return m_formulation; }
 
+    void set_master_optimizer_factory(const OptimizerFactory& t_factory);
+
     class ColumnGeneration;
 protected:
     void hook_before_optimize() override;

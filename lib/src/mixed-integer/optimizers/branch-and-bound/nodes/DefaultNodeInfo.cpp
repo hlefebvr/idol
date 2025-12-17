@@ -10,6 +10,10 @@ idol::DefaultNodeInfo::create_updator(const Model& t_src_model, idol::Model &t_r
     return new DefaultNodeUpdator<DefaultNodeInfo>(t_src_model, t_relaxation);
 }
 
+idol::DefaultNodeInfo* idol::DefaultNodeInfo::clone() const {
+    return new DefaultNodeInfo(*this);
+}
+
 void idol::DefaultNodeInfo::add_branching_constraint(const Ctr &t_ctr, TempCtr t_temporary_constraint) {
     m_constraint_branching_decisions.emplace_back(t_ctr, std::move(t_temporary_constraint));
 }

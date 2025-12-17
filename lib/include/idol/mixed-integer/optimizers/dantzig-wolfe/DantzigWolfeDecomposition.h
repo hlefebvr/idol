@@ -43,6 +43,8 @@ public:
 
     [[nodiscard]] DantzigWolfeDecomposition *clone() const override;
 
+    DantzigWolfeDecomposition& set_master_optimizer(const OptimizerFactory& t_optimizer_factory);
+
     DantzigWolfeDecomposition& with_master_optimizer(const OptimizerFactory& t_optimizer_factory);
 
     DantzigWolfeDecomposition& with_default_sub_problem_spec(DantzigWolfe::SubProblem t_sub_problem);

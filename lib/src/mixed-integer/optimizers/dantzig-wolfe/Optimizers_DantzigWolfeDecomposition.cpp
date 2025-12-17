@@ -30,6 +30,10 @@ idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Mod
 
 }
 
+void idol::Optimizers::DantzigWolfeDecomposition::set_master_optimizer_factory(const OptimizerFactory& t_factory) {
+    m_master_optimizer_factory.reset(t_factory.clone());
+}
+
 void idol::Optimizers::DantzigWolfeDecomposition::hook_before_optimize() {
 
     Optimizer::hook_before_optimize();
