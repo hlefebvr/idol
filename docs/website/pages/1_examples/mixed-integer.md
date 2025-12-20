@@ -14,9 +14,10 @@
 
 \subsection examples_mixed_integer_mored_advanced_features More advanced features
 
-| Example name                            | Description                               |
-|-----------------------------------------|-------------------------------------------|
-| \subpage example_mixed_integer_lp_dual  | \copybrief example_mixed_integer_lp_dual  |
+| Example name                              | Description                                 |
+|-------------------------------------------|---------------------------------------------|
+| \subpage example_mixed_integer_lp_dual    | \copybrief example_mixed_integer_lp_dual    |
+| \subpage example_mixed_integer_tsp_gurobi | \copybrief example_mixed_integer_tsp_gurobi |
 
 \subsection examples_mixed_integer_branch_and_bound Branch-and-bound algorithm
 

@@ -6,6 +6,7 @@ add_example(sudoku-cplex)
 
 # More advanced features
 add_example(lp-dual)
+add_example(tsp-lazy)
 
 # Branch-and-bound algorithm
 add_example(flp-bab)
