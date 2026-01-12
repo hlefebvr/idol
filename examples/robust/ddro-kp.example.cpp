@@ -18,18 +18,19 @@ struct Instance {
     const unsigned int n_items = weights.size();
     const double knapsack_capacity = 50;
     const double defender_capacity = 2;
-    const double uncertainty_budget = 1; // std::round(std::sqrt(n_items));
+    const double uncertainty_budget = 2; // std::round(std::sqrt(n_items));
 };
 
 void solve_with_critical_value_ccg(Env& t_env, const Instance& t_instance);
-void solve_with_mibs(Env& env, const Instance& t_instance);
+void solve_as_bilevel(Env& env, const Instance& t_instance);
 
 int main(int t_argc, const char** t_argv) {
 
     Instance instance;
     Env env;
-    solve_with_mibs(env, instance);
+
     solve_with_critical_value_ccg(env, instance);
+    solve_as_bilevel(env, instance);
 
     return 0;
 }
@@ -80,13 +81,14 @@ void solve_with_critical_value_ccg(Env& t_env, const Instance& t_instance) {
 
     std::cout << "Status: " << model.get_status() << std::endl;
     std::cout << "Objective: " << model.get_best_obj() << std::endl;
+    std::cout << "Time: " << model.optimizer().time().count() << std::endl;
 
 }
 
-void solve_with_mibs(Env& t_env, const Instance& t_instance) {
+void solve_as_bilevel(Env& t_env, const Instance& t_instance) {
 
-    std::cout << "Bilevel with MibS" << std::endl;
-    std::cout << "-----------------" << std::endl;
+    std::cout << "Bilevel 1 with MibS" << std::endl;
+    std::cout << "-------------------" << std::endl;
 
     const unsigned int n_items = t_instance.n_items;
 
@@ -142,5 +144,6 @@ void solve_with_mibs(Env& t_env, const Instance& t_instance) {
 
     std::cout << "Status: " << model.get_status() << std::endl;
     std::cout << "Objective: " << model.get_best_obj() << std::endl;
+    std::cout << "Time: " << model.optimizer().time().count() << std::endl;
 
 }
