@@ -30,7 +30,7 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
         <div class="frame">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/IP_polytope_with_LP_relaxation.svg">
         </div>
-        Interface with solvers like Gurobi, Mosek, HiGHS and many others or implement your own branch-and-bound algorithm.
+        Interface with solvers like Gurobi, Mosek, HiGHS and many others or implement your own branch-and-bound algorithm. Code once, try multiple solvers.
     </div>
     <div class="card" onclick="window.location = 'examples_mixed_integer.html#examples_mixed_integer_branch_and_price';">
         <a href="examples_mixed_integer.html#examples_mixed_integer_branch_and_price">
@@ -48,8 +48,8 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
             <div class="frame">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Supply-demand-equilibrium.svg">
             </div>
-            Tackle optimistic and pessimistic bilevel problems through KKT or strong duality reformulations,
-            or use the MibS solver.
+            Tackle optimistic or pessimistic bilevel problems via KKT-based or strong duality reformulations,
+            or use the bilevel solver MibS.
     </div>
     <div class="card" onclick="window.location = 'examples_robust.html';">
         <a href="examples_robust.html">
@@ -58,8 +58,7 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
         <div class="frame">
             <img src="robust.png" />
         </div>
-        Easily solve robust and adjustable robust optimization problems with standard techniques like dualization or
-        with column-and-constraint generation.
+        Easily solve robust and two-stage robust optimization problems with techniques like dualization or column-and-constraint generation.
     </div>
 </div>
 
