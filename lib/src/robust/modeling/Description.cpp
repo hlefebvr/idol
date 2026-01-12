@@ -70,7 +70,7 @@ std::ostream &idol::operator<<(std::ostream &t_os, const idol::Robust::Descripti
 
     const auto& obj = model.get_obj_expr();
 
-    stream << "Minimize\n" << obj.affine().constant();
+    stream << "Minimize\n\t" << obj.affine().constant();
     for (const auto& [var, constant] : obj.affine().linear()) {
 
         stream << " + ";
