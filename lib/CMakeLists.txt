@@ -297,8 +297,8 @@ add_library(idol STATIC
         src/robust/optimizers/critical-value-column-and-constraint-generation/Formulation.cpp
 )
 
-find_package(OpenMP REQUIRED)
-target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)
+#find_package(OpenMP REQUIRED)
+#target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)
 
 function(set_DIR_variable PREFIX)
     string(TOUPPER "${PREFIX}" PREFIX_UPPER)
