@@ -18,6 +18,10 @@ namespace idol::Optimizers {
 
 class idol::Optimizers::GLPK  : public OptimizerWithLazyUpdates<int, int, int, int> {
 
+    class DynamicLib;
+
+    static std::unique_ptr<DynamicLib> m_dynamic_lib;
+
     bool m_continuous_relaxation;
 
     glp_prob* m_model = nullptr;
@@ -34,6 +38,8 @@ class idol::Optimizers::GLPK  : public OptimizerWithLazyUpdates<int, int, int, i
     std::stack<int> m_deleted_variables;
     std::stack<int> m_deleted_constraints;
 protected:
+    static DynamicLib& get_dynamic_lib();
+
     void hook_build() override;
 
     void hook_optimize() override;
@@ -113,6 +119,66 @@ public:
     void set_param_logs(bool t_value) override;
 
     static Model read_from_file(Env& t_env, const std::string& t_filename);
+};
+
+#define GLPK_SYM_PTR(name) \
+typedef decltype(name)* name##_t; \
+decltype(name)* name = nullptr
+
+class idol::Optimizers::GLPK::DynamicLib {
+    void* m_handle = nullptr;
+public:
+    GLPK_SYM_PTR(glp_init_smcp);
+    GLPK_SYM_PTR(glp_init_iocp);
+    GLPK_SYM_PTR(glp_create_prob);
+    GLPK_SYM_PTR(glp_delete_prob);
+    GLPK_SYM_PTR(glp_simplex);
+    GLPK_SYM_PTR(glp_intopt);
+    GLPK_SYM_PTR(glp_add_rows);
+    GLPK_SYM_PTR(glp_add_cols);
+    GLPK_SYM_PTR(glp_set_row_bnds);
+    GLPK_SYM_PTR(glp_set_col_bnds);
+    GLPK_SYM_PTR(glp_set_col_kind);
+    GLPK_SYM_PTR(glp_set_obj_coef);
+    GLPK_SYM_PTR(glp_get_num_rows);
+    GLPK_SYM_PTR(glp_get_num_cols);
+    GLPK_SYM_PTR(glp_get_col_prim);
+    GLPK_SYM_PTR(glp_get_col_dual);
+    GLPK_SYM_PTR(glp_get_row_dual);
+    GLPK_SYM_PTR(glp_write_lp);
+    GLPK_SYM_PTR(glp_set_col_name);
+    GLPK_SYM_PTR(glp_set_row_name);
+    GLPK_SYM_PTR(glp_set_mat_col);
+    GLPK_SYM_PTR(glp_set_mat_row);
+    GLPK_SYM_PTR(glp_set_obj_dir);
+    GLPK_SYM_PTR(glp_get_col_stat);
+    GLPK_SYM_PTR(glp_std_basis);
+    GLPK_SYM_PTR(glp_get_num_int);
+    GLPK_SYM_PTR(glp_get_status);
+    GLPK_SYM_PTR(glp_get_row_stat);
+    GLPK_SYM_PTR(glp_del_cols);
+    GLPK_SYM_PTR(glp_del_rows);
+    GLPK_SYM_PTR(glp_set_col_stat);
+    GLPK_SYM_PTR(glp_set_row_stat);
+    GLPK_SYM_PTR(glp_mip_col_val);
+    GLPK_SYM_PTR(glp_get_col_lb);
+    GLPK_SYM_PTR(glp_get_col_ub);
+    GLPK_SYM_PTR(glp_get_obj_coef);
+    GLPK_SYM_PTR(glp_get_col_kind);
+    GLPK_SYM_PTR(glp_get_col_name);
+    GLPK_SYM_PTR(glp_get_row_ub);
+    GLPK_SYM_PTR(glp_get_row_lb);
+    GLPK_SYM_PTR(glp_get_row_name);
+    GLPK_SYM_PTR(glp_get_mat_row);
+    GLPK_SYM_PTR(glp_read_lp);
+    GLPK_SYM_PTR(glp_read_mps);
+    GLPK_SYM_PTR(glp_get_obj_val);
+    GLPK_SYM_PTR(glp_mip_status);
+    GLPK_SYM_PTR(glp_mip_obj_val);
+    GLPK_SYM_PTR(glp_get_row_type);
+    GLPK_SYM_PTR(glp_get_obj_dir);
+
+    DynamicLib();
 };
 
 #endif
