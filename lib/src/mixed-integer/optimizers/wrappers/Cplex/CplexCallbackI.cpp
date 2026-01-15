@@ -169,7 +169,7 @@ void idol::Optimizers::impl::CplexLazyConstraintCallbackI::main() {
         m_callback->call(this, IncumbentSolution);
     } catch (const IloException& t_err) {
         std::cerr << "There was an error during callback, CPLEX reported " << t_err.getMessage() << std::endl;
-        __throw_exception_again;
+        throw;
     }
 
 }
@@ -180,7 +180,7 @@ void idol::Optimizers::impl::CplexUserCutCallbackI::main() {
         m_callback->call(this, InvalidSolution);
     } catch (const IloException& t_err) {
         std::cerr << "There was an error during callback, CPLEX reported " << t_err.getMessage() << std::endl;
-        __throw_exception_again;
+        throw;
     }
 
 }

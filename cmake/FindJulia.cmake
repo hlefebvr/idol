@@ -2,7 +2,7 @@
 find_path(Julia_INCLUDE_DIR
         NAMES julia.h
         PATHS "${JULIA_DIR}/include/julia"
-        NO_DEFAULT_PATH
+        NO_DEFAULT_PATHc
 )
 
 # Try to find the libjulia shared library

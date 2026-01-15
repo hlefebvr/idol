@@ -9,7 +9,9 @@ find_library(
         CPLEX_LIBRARY
         NAMES cplex
         HINTS ${CPLEX_DIR}/cplex
-        PATH_SUFFIXES /lib/x86-64_linux/static_pic/
+        PATH_SUFFIXES
+        /lib/x86-64_linux/static_pic/
+        /lib/arm64_osx/static_pic/
 )
 
 # concert
@@ -23,7 +25,9 @@ find_library(
         CPLEX_CONCERT_LIBRARY
         NAMES concert
         HINTS ${CPLEX_DIR}/concert
-        PATH_SUFFIXES /lib/x86-64_linux/static_pic
+        PATH_SUFFIXES
+        /lib/x86-64_linux/static_pic
+        /lib/arm64_osx/static_pic
 )
 
 # ilocplex
@@ -31,7 +35,9 @@ find_library(
         CPLEX_ILOCPLEX_LIBRARY
         NAMES ilocplex
         HINTS ${CPLEX_DIR}/cplex
-        PATH_SUFFIXES /lib/x86-64_linux/static_pic
+        PATH_SUFFIXES
+        /lib/x86-64_linux/static_pic
+        /lib/arm64_osx/static_pic
 )
 
 include(FindPackageHandleStandardArgs)

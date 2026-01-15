@@ -41,14 +41,12 @@ module IdolJuMP
         obj = _registry[t_id]
         model = obj.model
 
-        var_name = Symbol(t_name)
-
         if t_type == 0
-            @eval var = @variable($model, $(var_name))
+            var = @variable(model, base_name=t_name)
         elseif t_type == 1
-            @eval var = @variable($model, $(var_name), integer = true)
+            var = @variable(model, base_name=t_name, integer = true)
         elseif t_type == 2
-            @eval var = @variable($model, $(var_name), binary = true)
+            var = @variable(model, base_name=t_name, binary = true)
         else
             error("Invalid variable type")
         end
@@ -80,14 +78,12 @@ module IdolJuMP
 
         expr = sum(t_coeffs[i] * vars[t_var_indices[i]+1] for i in 1:length(t_var_indices))
 
-        ctr_name = Symbol(t_name)
-
         if t_type == 0
-            @eval con = @constraint($model, $(ctr_name), $expr <= $t_rhs)
+            con = @constraint(model, expr <= t_rhs, base_name=t_name)
         elseif t_type == 1
-            @eval con = @constraint($model, $(ctr_name), $expr >= $t_rhs)
+            con = @constraint(model, expr >= t_rhs, base_name=t_name)
         elseif t_type == 2
-            @eval con = @constraint($model, $(ctr_name), $expr == $t_rhs)
+            con = @constraint(model, expr == t_rhs, base_name=t_name)
         else
             error("Invalid constraint type")
         end

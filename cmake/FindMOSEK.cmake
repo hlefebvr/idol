@@ -3,19 +3,33 @@ find_path(
         NAMES fusion.h
         HINTS ${MOSEK_DIR}
         PATH_SUFFIXES h
+        tools/platform/win64x86/h
+        tools/platform/linux64x86/h
+        tools/platform/linuxaarch64/h
+        tools/platform/osxaarch64/h
 )
 
 find_library(
         MOSEK_LIBRARY
         NAMES mosek64 mosek
         HINTS ${MOSEK_DIR}
-        PATH_SUFFIXES bin)
+        PATH_SUFFIXES bin
+        tools/platform/win64x86/bin
+        tools/platform/linux64x86/bin
+        tools/platform/linuxaarch64/bin
+        tools/platform/osxaarch64/bin
+)
 
 find_library(
         FUSION_LIBRARY
         NAMES fusion64 fusion
         HINTS ${MOSEK_DIR}
-        PATH_SUFFIXES bin)
+        PATH_SUFFIXES bin
+        tools/platform/win64x86/bin
+        tools/platform/linux64x86/bin
+        tools/platform/linuxaarch64/bin
+        tools/platform/osxaarch64/bin
+)
 
 
 include(FindPackageHandleStandardArgs)

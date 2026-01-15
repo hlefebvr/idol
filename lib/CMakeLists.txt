@@ -512,13 +512,13 @@ endif()
 
 # "Compile" the Julia module code
 execute_process(
-        COMMAND base64 "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/JuMP.jl"
+        COMMAND base64 INPUT_FILE "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/JuMP.jl"
         OUTPUT_VARIABLE IDOL_JUMP_MODULE_BASE64
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 string(REPLACE "\n" "\\\n" IDOL_JUMP_MODULE_BASE64 "${IDOL_JUMP_MODULE_BASE64}")
 execute_process(
-        COMMAND base64 "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/Coluna.jl"
+        COMMAND base64 INPUT_FILE "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/Coluna.jl"
         OUTPUT_VARIABLE IDOL_COLUNA_MODULE_BASE64
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )

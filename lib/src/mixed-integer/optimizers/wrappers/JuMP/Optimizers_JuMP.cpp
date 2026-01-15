@@ -432,6 +432,8 @@ void idol::Optimizers::JuMP::debug_print() const {
 uint64_t idol::Optimizers::JuMP::hook_create_julia_model(jl_value_t* t_optimizer) {
 
     jl_function_t* create_model = jl_get_function(jl_main_module, "idol_create_model");
+    impl::JuliaSessionManager::throw_if_julia_error();
+
     jl_value_t* id = jl_call1(create_model, t_optimizer);
     impl::JuliaSessionManager::throw_if_julia_error();
 
