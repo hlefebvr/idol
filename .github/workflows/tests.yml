@@ -81,8 +81,8 @@ jobs:
 
       - name: Build idol
         run: |
-          # Configure CMake
           cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES
+          (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Install GLPK
         if: matrix.test == 'GLPK'
@@ -156,8 +156,7 @@ jobs:
           else
             exit 1
           fi
-          
-          (cd ${{github.workspace}}/build && make -j 6)
+
 
 
       - name: Run tests
