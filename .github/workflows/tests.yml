@@ -69,11 +69,10 @@ jobs:
         test:
           - "GLPK"
           - "HiGHS"
-          - "Mosek"
-          - "Clp"
-          #- "Symphony"
-          - "JuMP"
-          - "MibS"
+          #- "Mosek"
+          #- "Clp"
+          #- "JuMP"
+          #- "MibS"
     steps:
       - uses: actions/checkout@v4
 

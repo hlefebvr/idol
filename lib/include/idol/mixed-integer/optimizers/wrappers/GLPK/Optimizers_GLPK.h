@@ -8,7 +8,7 @@
 #include <stack>
 
 #include "idol/general/optimizers/OptimizerWithLazyUpdates.h"
-#include "idol/mixed-integer/optimizers/wrappers/GLPK/header_glpk.h"
+#include "headers/header_glpk.h"
 
 namespace idol::Optimizers {
     class GLPK;
@@ -17,7 +17,6 @@ namespace idol::Optimizers {
 class idol::Optimizers::GLPK  : public OptimizerWithLazyUpdates<int, int, int, int> {
 
     class DynamicLib;
-
     static std::unique_ptr<DynamicLib> m_dynamic_lib;
 
     bool m_continuous_relaxation;

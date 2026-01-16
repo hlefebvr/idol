@@ -295,7 +295,7 @@ add_library(idol STATIC
         src/robust/optimizers/critical-value-column-and-constraint-generation/CriticalValueColumnAndConstraintGeneration.cpp
         src/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.cpp
         src/robust/optimizers/critical-value-column-and-constraint-generation/Formulation.cpp
-        include/idol/mixed-integer/optimizers/wrappers/GLPK/header_glpk.h
+        include/idol/mixed-integer/optimizers/wrappers/GLPK/headers/header_glpk.h
         include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_c_api.h
         include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HighsCallbacktruct.h
         include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HighsInt.h
@@ -384,28 +384,6 @@ if (${USE_MOSEK})
     target_link_libraries(idol PUBLIC mosek)
     target_compile_definitions(idol PUBLIC IDOL_USE_MOSEK)
     list(APPEND AVAILABLE_MILP_SOLVERS "Mosek")
-
-endif()
-
-set(USE_GLPK OFF CACHE BOOL "Build idol with GLPK (https://www.gnu.org/software/glpk/)")
-set_DIR_variable(GLPK)
-if (${USE_GLPK})
-
-    find_package(GLPK REQUIRED)
-    target_link_libraries(idol PUBLIC glpk)
-    target_compile_definitions(idol PUBLIC IDOL_USE_GLPK)
-    list(APPEND AVAILABLE_MILP_SOLVERS "GLPK")
-
-endif()
-
-set(USE_HIGHS OFF CACHE BOOL "Build idol with HiGHS (https://highs.dev/)")
-if (${USE_HIGHS})
-
-    find_package(Threads REQUIRED)
-    find_package(HIGHS REQUIRED)
-    target_link_libraries(idol PUBLIC highs::highs)
-    target_compile_definitions(idol PUBLIC IDOL_USE_HIGHS)
-    list(APPEND AVAILABLE_MILP_SOLVERS "HiGHS")
 
 endif()
 

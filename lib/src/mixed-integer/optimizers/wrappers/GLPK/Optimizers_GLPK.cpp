@@ -87,8 +87,6 @@ idol::Optimizers::GLPK::DynamicLib::DynamicLib() {
     m_handle = dlopen(glpk_path.c_str(), RTLD_LAZY);
 
     if (!m_handle) {
-        std::cerr << "Error when loading GLPK library.\n"
-                     "GLPK_PATH=" << glpk_path << "." << std::endl;
         throw Exception("Could not load GLPK.");
     }
 

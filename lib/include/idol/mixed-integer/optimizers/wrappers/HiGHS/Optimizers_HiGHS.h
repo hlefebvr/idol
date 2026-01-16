@@ -17,6 +17,9 @@ namespace idol::Optimizers {
 
 class idol::Optimizers::HiGHS  : public OptimizerWithLazyUpdates<int, int, int, int> {
 
+    class DynamicLib;
+    static std::unique_ptr<DynamicLib> m_dynamic_lib;
+
     bool m_continuous_relaxation;
 
     void* m_model;
@@ -30,6 +33,8 @@ class idol::Optimizers::HiGHS  : public OptimizerWithLazyUpdates<int, int, int, 
     double* m_row_value = nullptr;
     double* m_row_dual = nullptr;
 protected:
+    static DynamicLib& get_dynamic_lib();
+
     void hook_build() override;
     void hook_optimize() override;
     void run_without_presolve();
@@ -82,5 +87,51 @@ public:
     void set_param_logs(bool t_value) override;
 
 };
+
+
+#define HIGHS_SYM_PTR(name) \
+typedef decltype(::name)* name##_t; \
+name##_t name = nullptr
+
+class idol::Optimizers::HiGHS::DynamicLib {
+    void* m_handle = nullptr;
+
+    static std::string find_library();
+public:
+    HIGHS_SYM_PTR(Highs_create);
+    HIGHS_SYM_PTR(Highs_clearSolver);
+    HIGHS_SYM_PTR(Highs_addCol);
+    HIGHS_SYM_PTR(Highs_addRow);
+    HIGHS_SYM_PTR(Highs_deleteColsByRange);
+    HIGHS_SYM_PTR(Highs_deleteRowsByRange);
+    HIGHS_SYM_PTR(Highs_changeColBounds);
+    HIGHS_SYM_PTR(Highs_changeColCost);
+    HIGHS_SYM_PTR(Highs_changeColIntegrality);
+    HIGHS_SYM_PTR(Highs_changeRowBounds);
+    HIGHS_SYM_PTR(Highs_changeCoeff);
+    HIGHS_SYM_PTR(Highs_changeObjectiveSense);
+    HIGHS_SYM_PTR(Highs_changeObjectiveOffset);
+    HIGHS_SYM_PTR(Highs_getObjectiveValue);
+    HIGHS_SYM_PTR(Highs_getNumCol);
+    HIGHS_SYM_PTR(Highs_getNumRow);
+    HIGHS_SYM_PTR(Highs_getNumRows);
+    HIGHS_SYM_PTR(Highs_getInfinity);
+    HIGHS_SYM_PTR(Highs_getRunTime);
+    HIGHS_SYM_PTR(Highs_getModelStatus);
+    HIGHS_SYM_PTR(Highs_run);
+    HIGHS_SYM_PTR(Highs_getSolution);
+    HIGHS_SYM_PTR(Highs_getPrimalRay);
+    HIGHS_SYM_PTR(Highs_getDualRay);
+    HIGHS_SYM_PTR(Highs_setBoolOptionValue);
+    HIGHS_SYM_PTR(Highs_setDoubleOptionValue);
+    HIGHS_SYM_PTR(Highs_setOptionValue);
+    HIGHS_SYM_PTR(Highs_getBoolOptionValue);
+    HIGHS_SYM_PTR(Highs_writeModel);
+
+    DynamicLib();
+
+    ~DynamicLib();
+};
+
 
 #endif //IDOL_OPTIMIZERS_HIGHS_H

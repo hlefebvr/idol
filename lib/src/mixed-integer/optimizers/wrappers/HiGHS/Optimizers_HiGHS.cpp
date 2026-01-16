@@ -5,41 +5,155 @@
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"
 #include "idol/general/optimizers/Algorithm.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HConst.h"
+#include <dlfcn.h>
+#include <filesystem>
+
+#define HIGHS_SYM_LOAD(name) {   \
+name = (name##_t) dlsym(m_handle, #name);          \
+const char* err = dlerror();                             \
+if (err)                                                 \
+throw std::runtime_error(std::string("Missing HiGHS symbol ") + #name + ": " + err); \
+}
+
+std::unique_ptr<idol::Optimizers::HiGHS::DynamicLib> idol::Optimizers::HiGHS::m_dynamic_lib;
 
 idol::Optimizers::HiGHS::HiGHS(const Model &t_model, bool t_continuous_relaxation)
     : OptimizerWithLazyUpdates(t_model),
       m_continuous_relaxation(t_continuous_relaxation) {
 
-    m_model = Highs_create();
-    Highs_setBoolOptionValue(m_model, "output_flag", get_param_logs());
+    auto& lib = get_dynamic_lib();
+    m_model = lib.Highs_create();
+    lib.Highs_setBoolOptionValue(m_model, "output_flag", get_param_logs());
 
+}
+
+std::string idol::Optimizers::HiGHS::DynamicLib::find_library() {
+
+    // 1. Environment variable override
+    if (const char* env = std::getenv("IDOL_HiGHS_PATH")) {
+        std::string path(env);
+        if (std::filesystem::exists(path)) {
+            return path;
+        }
+        std::cerr << "WARNING: IDOL_HiGHS_PATH is set, but the file does not exists: " << path << std::endl;
+    }
+
+    // 2. Standard locations (macOS + Linux)
+    const std::vector<std::string> candidates = {
+
+        // ---- macOS (Homebrew) ----
+        "/opt/homebrew/opt/highs/lib/libhighs.dylib",   // Apple Silicon
+        "/usr/local/opt/highs/lib/libhighs.dylib",     // Intel mac
+        "/opt/homebrew/lib/libhighs.dylib",
+        "/usr/local/lib/libhighs.dylib",
+
+        // ---- Linux ----
+        "/usr/lib/libhighs.so",
+        "/usr/lib64/libhighs.so",
+        "/usr/local/lib/libhighs.so",
+        "/usr/local/lib64/libhighs.so",
+        "/lib/x86_64-linux-gnu/libhighs.so",
+        "/usr/lib/x86_64-linux-gnu/libhighs.so",
+
+        // ---- Fallback (let loader resolve) ----
+        "libhighs.dylib",
+        "libhighs.so"
+    };
+
+    for (const auto& path : candidates) {
+        if (std::filesystem::exists(path)) {
+            return path;
+        }
+    }
+
+    throw std::runtime_error(
+        "HiGHS library not found. "
+        "Please, install HiGHS and set IDOL_HiGHS_PATH to its library file."
+    );
+}
+
+idol::Optimizers::HiGHS::DynamicLib::DynamicLib() {
+
+    const auto HiGHS_path = find_library();
+
+    m_handle = dlopen(HiGHS_path.c_str(), RTLD_LAZY);
+
+    if (!m_handle) {
+        throw Exception("Could not load HiGHS.");
+    }
+
+    HIGHS_SYM_LOAD(Highs_create);
+    HIGHS_SYM_LOAD(Highs_create);
+    HIGHS_SYM_LOAD(Highs_clearSolver);
+    HIGHS_SYM_LOAD(Highs_addCol);
+    HIGHS_SYM_LOAD(Highs_addRow);
+    HIGHS_SYM_LOAD(Highs_deleteColsByRange);
+    HIGHS_SYM_LOAD(Highs_deleteRowsByRange);
+    HIGHS_SYM_LOAD(Highs_changeColBounds);
+    HIGHS_SYM_LOAD(Highs_changeColCost);
+    HIGHS_SYM_LOAD(Highs_changeColIntegrality);
+    HIGHS_SYM_LOAD(Highs_changeRowBounds);
+    HIGHS_SYM_LOAD(Highs_changeCoeff);
+    HIGHS_SYM_LOAD(Highs_changeObjectiveSense);
+    HIGHS_SYM_LOAD(Highs_changeObjectiveOffset);
+    HIGHS_SYM_LOAD(Highs_getObjectiveValue);
+    HIGHS_SYM_LOAD(Highs_getNumCol);
+    HIGHS_SYM_LOAD(Highs_getNumRow);
+    HIGHS_SYM_LOAD(Highs_getNumRows);
+    HIGHS_SYM_LOAD(Highs_getInfinity);
+    HIGHS_SYM_LOAD(Highs_getRunTime);
+    HIGHS_SYM_LOAD(Highs_getModelStatus);
+    HIGHS_SYM_LOAD(Highs_run);
+    HIGHS_SYM_LOAD(Highs_getSolution);
+    HIGHS_SYM_LOAD(Highs_getPrimalRay);
+    HIGHS_SYM_LOAD(Highs_getDualRay);
+    HIGHS_SYM_LOAD(Highs_setBoolOptionValue);
+    HIGHS_SYM_LOAD(Highs_setDoubleOptionValue);
+    HIGHS_SYM_LOAD(Highs_setOptionValue);
+    HIGHS_SYM_LOAD(Highs_getBoolOptionValue);
+    HIGHS_SYM_LOAD(Highs_writeModel);
+}
+
+idol::Optimizers::HiGHS::DynamicLib::~DynamicLib() {
+    dlclose(m_handle);
+}
+
+idol::Optimizers::HiGHS::DynamicLib& idol::Optimizers::HiGHS::get_dynamic_lib() {
+    if (!m_dynamic_lib)
+    {
+        m_dynamic_lib = std::make_unique<DynamicLib>();
+    }
+    return *m_dynamic_lib;
 }
 
 void idol::Optimizers::HiGHS::hook_build() {
 
-    const auto& objective = parent().get_obj_expr();
+    auto& lib = get_dynamic_lib();
 
     hook_update_objective_sense();
     update_objective_constant();
     set_objective_as_updated();
     set_rhs_as_updated();
 
-    if (Highs_getNumCol(m_model) == 0) {
-        Highs_addCol(m_model, 0., 0., 0, 0, nullptr, nullptr);
+    if (lib.Highs_getNumCol(m_model) == 0) {
+        lib.Highs_addCol(m_model, 0., 0., 0, 0, nullptr, nullptr);
     }
 
 }
 
 void idol::Optimizers::HiGHS::hook_write(const std::string &t_name) {
-    Highs_writeModel(m_model, t_name.c_str());
+    auto& lib = get_dynamic_lib();
+    lib.Highs_writeModel(m_model, t_name.c_str());
 }
 
 void idol::Optimizers::HiGHS::set_var_type(int t_index, int t_type) {
 
+    auto& lib = get_dynamic_lib();
+
     if (m_continuous_relaxation || t_type == Continuous) {
-        Highs_changeColIntegrality(m_model, t_index, 0);
+        lib.Highs_changeColIntegrality(m_model, t_index, 0);
     } else if (t_type == Integer || t_type == Binary) {
-        Highs_changeColIntegrality(m_model, t_index, 1);
+        lib.Highs_changeColIntegrality(m_model, t_index, 1);
     } else {
         throw std::runtime_error("Unknown variable type.");
     }
@@ -48,30 +162,32 @@ void idol::Optimizers::HiGHS::set_var_type(int t_index, int t_type) {
 
 void idol::Optimizers::HiGHS::set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj) {
 
+    auto& lib = get_dynamic_lib();
     const bool has_lb = !is_neg_inf(t_lb);
     const bool has_ub = !is_pos_inf(t_ub);
 
     // Set obj
-    Highs_changeColCost(m_model, t_index, t_obj);
+    lib.Highs_changeColCost(m_model, t_index, t_obj);
 
     set_var_type(t_index, t_type);
 
     // Set bounds
     if (has_lb && has_ub) {
-        Highs_changeColBounds(m_model, t_index, t_lb, t_ub);
+        lib.Highs_changeColBounds(m_model, t_index, t_lb, t_ub);
     } else if (has_lb) {
-        Highs_changeColBounds(m_model, t_index, t_lb, Highs_getInfinity(m_model));
+        lib.Highs_changeColBounds(m_model, t_index, t_lb, lib.Highs_getInfinity(m_model));
     } else if (has_ub) {
-        Highs_changeColBounds(m_model, t_index,-Highs_getInfinity(m_model), t_ub);
+        lib.Highs_changeColBounds(m_model, t_index,-lib.Highs_getInfinity(m_model), t_ub);
     } else {
-        Highs_changeColBounds(m_model, t_index,-Highs_getInfinity(m_model), Highs_getInfinity(m_model));
+        lib.Highs_changeColBounds(m_model, t_index,-lib.Highs_getInfinity(m_model), lib.Highs_getInfinity(m_model));
     }
 
 }
 
 int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
 
-    const int index = (int) Highs_getNumCol(m_model);
+    auto& lib = get_dynamic_lib();
+    const int index = (int) lib.Highs_getNumCol(m_model);
 
     double lb = parent().get_var_lb(t_var);
     double ub = parent().get_var_ub(t_var);
@@ -79,7 +195,7 @@ int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
     const auto& column = parent().get_var_column(t_var);
     const auto type = parent().get_var_type(t_var);
 
-    const double infinity = Highs_getInfinity(m_model);
+    const double infinity = lib.Highs_getInfinity(m_model);
     lb = is_neg_inf(lb) ? -infinity : lb;
     ub = is_pos_inf(ub) ? infinity : ub;
 
@@ -99,7 +215,7 @@ int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
             ++i;
         }
 
-        Highs_addCol(m_model,
+        lib.Highs_addCol(m_model,
                         obj,
                        lb,
                        ub,
@@ -111,7 +227,7 @@ int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
         delete[] ctr_coefficients;
 
     } else {
-        Highs_addCol(m_model,
+        lib.Highs_addCol(m_model,
                         obj,
                        lb,
                        ub,
@@ -127,15 +243,17 @@ int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
 
 void idol::Optimizers::HiGHS::set_ctr_attr(int t_index, int t_type, double t_rhs) {
 
+    auto& lib = get_dynamic_lib();
+
     switch (t_type) {
         case LessOrEqual:
-            Highs_changeRowBounds(m_model, t_index, -Highs_getInfinity(m_model), t_rhs);
+            lib.Highs_changeRowBounds(m_model, t_index, -lib.Highs_getInfinity(m_model), t_rhs);
             break;
         case GreaterOrEqual:
-            Highs_changeRowBounds(m_model, t_index, t_rhs, Highs_getInfinity(m_model));
+            lib.Highs_changeRowBounds(m_model, t_index, t_rhs, lib.Highs_getInfinity(m_model));
             break;
         case Equal:
-        Highs_changeRowBounds(m_model, t_index, t_rhs, t_rhs);
+        lib.Highs_changeRowBounds(m_model, t_index, t_rhs, t_rhs);
             break;
         default:
             throw std::runtime_error("Unknown constraint type.");
@@ -145,7 +263,8 @@ void idol::Optimizers::HiGHS::set_ctr_attr(int t_index, int t_type, double t_rhs
 
 int idol::Optimizers::HiGHS::hook_add(const Ctr &t_ctr) {
 
-    const int index = (int) Highs_getNumRow(m_model);
+    auto& lib = get_dynamic_lib();
+    const int index = (int) lib.Highs_getNumRow(m_model);
 
     const auto& row = parent().get_ctr_row(t_ctr);
     const double rhs = parent().get_ctr_rhs(t_ctr);
@@ -165,23 +284,23 @@ int idol::Optimizers::HiGHS::hook_add(const Ctr &t_ctr) {
 
     switch (type) {
         case LessOrEqual:
-            Highs_addRow(m_model,
-                            -Highs_getInfinity(m_model),
+            lib.Highs_addRow(m_model,
+                            -lib.Highs_getInfinity(m_model),
                            rhs,
                            (int) n_coefficients,
                            var_indices,
                            var_coefficients);
             break;
         case GreaterOrEqual:
-            Highs_addRow(m_model,
+            lib.Highs_addRow(m_model,
                             rhs,
-                           Highs_getInfinity(m_model),
+                           lib.Highs_getInfinity(m_model),
                            (int) n_coefficients,
                            var_indices,
                            var_coefficients);
             break;
         case Equal:
-            Highs_addRow(m_model,
+            lib.Highs_addRow(m_model,
                             rhs,
                            rhs,
                            (int) n_coefficients,
@@ -199,12 +318,14 @@ int idol::Optimizers::HiGHS::hook_add(const Ctr &t_ctr) {
 }
 
 void idol::Optimizers::HiGHS::hook_update_objective_sense() {
-    Highs_changeObjectiveSense(m_model, parent().get_obj_sense() == Minimize ? 1 : -1 );
+    auto& lib = get_dynamic_lib();
+    lib.Highs_changeObjectiveSense(m_model, parent().get_obj_sense() == Minimize ? 1 : -1 );
 }
 
 void idol::Optimizers::HiGHS::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
+    auto& lib = get_dynamic_lib();
     const auto& coeff = parent().get_mat_coeff(t_ctr, t_var);
-    Highs_changeCoeff(m_model, lazy(t_ctr).impl(), lazy(t_var).impl(), coeff);
+    lib.Highs_changeCoeff(m_model, lazy(t_ctr).impl(), lazy(t_var).impl(), coeff);
 }
 
 void idol::Optimizers::HiGHS::hook_update() {
@@ -236,11 +357,12 @@ void idol::Optimizers::HiGHS::hook_update(const Ctr &t_ctr) {
 
 void idol::Optimizers::HiGHS::hook_update_objective() {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
 
     for (const auto& var : model.vars()) {
         const auto& obj = model.get_var_obj(var);
-        Highs_changeColCost(m_model, lazy(var).impl(), obj);
+        lib.Highs_changeColCost(m_model, lazy(var).impl(), obj);
     }
 
     update_objective_constant();
@@ -253,9 +375,10 @@ void idol::Optimizers::HiGHS::hook_update_rhs() {
 
 void idol::Optimizers::HiGHS::hook_remove(const Var &t_var) {
 
+    auto& lib = get_dynamic_lib();
     const int index = lazy(t_var).impl();
 
-    Highs_deleteColsByRange(m_model, index, index);
+    lib.Highs_deleteColsByRange(m_model, index, index);
 
     for (auto& lazy_var : lazy_vars()) {
         if (lazy_var.has_impl() && lazy_var.impl() > index) {
@@ -267,9 +390,10 @@ void idol::Optimizers::HiGHS::hook_remove(const Var &t_var) {
 
 void idol::Optimizers::HiGHS::hook_remove(const Ctr &t_ctr) {
 
+    auto& lib = get_dynamic_lib();
     const int index = lazy(t_ctr).impl();
 
-    Highs_deleteRowsByRange(m_model, index, index);
+    lib.Highs_deleteRowsByRange(m_model, index, index);
 
     for (auto& lazy_ctr : lazy_ctrs()) {
         if (lazy_ctr.has_impl() && lazy_ctr.impl() > index) {
@@ -281,31 +405,33 @@ void idol::Optimizers::HiGHS::hook_remove(const Ctr &t_ctr) {
 
 void idol::Optimizers::HiGHS::hook_optimize() {
 
+    auto& lib = get_dynamic_lib();
+
     delete[] m_extreme_ray;
     m_extreme_ray = nullptr;
 
     delete[] m_farkas_certificate;
     m_farkas_certificate = nullptr;
 
-    auto result = Highs_run(m_model);
+    auto result = lib.Highs_run(m_model);
 
     analyze_status(result);
 
     if (m_solution_status == Fail) {
-        Highs_clearSolver(m_model);
-        result = Highs_run(m_model);
+        lib.Highs_clearSolver(m_model);
+        result = lib.Highs_run(m_model);
         analyze_status(result);
     }
 
     if (get_param_infeasible_or_unbounded_info() && m_solution_status == Unbounded) {
 
         HighsInt has_primal_ray;
-        m_extreme_ray = new double[Highs_getNumCol(m_model)];
-        Highs_getPrimalRay(m_model, &has_primal_ray, m_extreme_ray);
+        m_extreme_ray = new double[lib.Highs_getNumCol(m_model)];
+        lib.Highs_getPrimalRay(m_model, &has_primal_ray, m_extreme_ray);
 
         if (!has_primal_ray) {
             run_without_presolve();
-            Highs_getPrimalRay(m_model, &has_primal_ray, m_extreme_ray);
+            lib.Highs_getPrimalRay(m_model, &has_primal_ray, m_extreme_ray);
             if (!has_primal_ray) {
                 throw Exception("Cannot save primal ray.");
             }
@@ -316,12 +442,12 @@ void idol::Optimizers::HiGHS::hook_optimize() {
     if (get_param_infeasible_or_unbounded_info() && m_solution_status == Infeasible && get_remaining_time() > 0) {
 
         HighsInt has_dual_ray;
-        m_farkas_certificate = new double[Highs_getNumRow(m_model)];
-        Highs_getDualRay(m_model, &has_dual_ray, m_farkas_certificate);
+        m_farkas_certificate = new double[lib.Highs_getNumRow(m_model)];
+        lib.Highs_getDualRay(m_model, &has_dual_ray, m_farkas_certificate);
 
         if (!has_dual_ray) {
             run_without_presolve();
-            Highs_getDualRay(m_model, &has_dual_ray, m_farkas_certificate);
+            lib.Highs_getDualRay(m_model, &has_dual_ray, m_farkas_certificate);
             if (!has_dual_ray) {
                 throw Exception("Cannot save Farkas certificate.");
             }
@@ -339,7 +465,8 @@ void idol::Optimizers::HiGHS::analyze_status(HighsInt t_status) {
         return;
     }
 
-    const auto status = (HighsModelStatus) Highs_getModelStatus(m_model);
+    auto& lib = get_dynamic_lib();
+    const auto status = (HighsModelStatus) lib.Highs_getModelStatus(m_model);
 
     switch (status) {
         case HighsModelStatus::kNotset:
@@ -374,8 +501,8 @@ void idol::Optimizers::HiGHS::analyze_status(HighsInt t_status) {
             break;
         case HighsModelStatus::kTimeLimit:
         {
-            const double obj = Highs_getObjectiveValue(m_model);
-            m_solution_status = obj < Highs_getInfinity(m_model) ? Feasible : Infeasible;
+            const double obj = lib.Highs_getObjectiveValue(m_model);
+            m_solution_status = obj < lib.Highs_getInfinity(m_model) ? Feasible : Infeasible;
             m_solution_reason = TimeLimit;
             break;
         }
@@ -388,26 +515,29 @@ void idol::Optimizers::HiGHS::analyze_status(HighsInt t_status) {
     }
 
     if (m_solution_status == Feasible || m_solution_status == Optimal) {
-        const unsigned int n_cols = Highs_getNumCol(m_model);
-        const unsigned int n_rows = Highs_getNumRows(m_model);
+        const unsigned int n_cols = lib.Highs_getNumCol(m_model);
+        const unsigned int n_rows = lib.Highs_getNumRows(m_model);
         delete[] m_col_dual; m_col_dual = new double[n_cols];
         delete[] m_col_value; m_col_value = new double[n_cols];
         delete[] m_row_value; m_row_value = new double[n_rows];
         delete[] m_row_dual; m_row_dual = new double[n_rows];
-        auto result = Highs_getSolution(m_model, m_col_value, m_col_dual, m_row_value, m_row_dual);
+        auto result = lib.Highs_getSolution(m_model, m_col_value, m_col_dual, m_row_value, m_row_dual);
     }
 
 }
 
 void idol::Optimizers::HiGHS::run_without_presolve() {
+
+    auto& lib = get_dynamic_lib();
+
     HighsInt old_presolve_setting;
-    Highs_getBoolOptionValue(m_model, "presolve", &old_presolve_setting);
+    lib.Highs_getBoolOptionValue(m_model, "presolve", &old_presolve_setting);
     if (old_presolve_setting == 0) {
         return;
     }
-    Highs_setBoolOptionValue(m_model, "presolve", 0);
-    auto result = Highs_run(m_model);
-    Highs_setBoolOptionValue(m_model, "presolve", old_presolve_setting);
+    lib.Highs_setBoolOptionValue(m_model, "presolve", 0);
+    auto result = lib.Highs_run(m_model);
+    lib.Highs_setBoolOptionValue(m_model, "presolve", old_presolve_setting);
 
     if (result != 0) {
         m_solution_status = Fail;
@@ -416,22 +546,26 @@ void idol::Optimizers::HiGHS::run_without_presolve() {
 }
 
 void idol::Optimizers::HiGHS::set_param_time_limit(double t_time_limit) {
-    Highs_setDoubleOptionValue(m_model, "time_limit", Highs_getRunTime(m_model) + t_time_limit);
+    auto& lib = get_dynamic_lib();
+    lib.Highs_setDoubleOptionValue(m_model, "time_limit", lib.Highs_getRunTime(m_model) + t_time_limit);
     Optimizer::set_param_time_limit(t_time_limit);
 }
 
 void idol::Optimizers::HiGHS::set_param_best_obj_stop(double t_best_obj_stop) {
-    Highs_setDoubleOptionValue(m_model, "objective_target", t_best_obj_stop);
+    auto& lib = get_dynamic_lib();
+    lib.Highs_setDoubleOptionValue(m_model, "objective_target", t_best_obj_stop);
     Optimizer::set_param_best_obj_stop(t_best_obj_stop);
 }
 
 void idol::Optimizers::HiGHS::set_param_best_bound_stop(double t_best_bound_stop) {
-    Highs_setDoubleOptionValue(m_model, "objective_bound", t_best_bound_stop);
+    auto& lib = get_dynamic_lib();
+    lib.Highs_setDoubleOptionValue(m_model, "objective_bound", t_best_bound_stop);
     Optimizer::set_param_best_bound_stop(t_best_bound_stop);
 }
 
 void idol::Optimizers::HiGHS::set_param_presolve(bool t_value) {
-    Highs_setOptionValue(m_model, "presolve", t_value ? "on" : "off");
+    auto& lib = get_dynamic_lib();
+    lib.Highs_setOptionValue(m_model, "presolve", t_value ? "on" : "off");
     Optimizer::set_param_presolve(t_value);
 }
 
@@ -453,7 +587,9 @@ double idol::Optimizers::HiGHS::get_best_obj() const {
         return +Inf;
     }
 
-    return Highs_getObjectiveValue(m_model);
+    auto& lib = get_dynamic_lib();
+
+    return lib.Highs_getObjectiveValue(m_model);
 }
 
 double idol::Optimizers::HiGHS::get_best_bound() const {
@@ -517,7 +653,8 @@ void idol::Optimizers::HiGHS::set_solution_index(unsigned int t_index) {
 }
 
 void idol::Optimizers::HiGHS::set_param_logs(bool t_value) {
-    Highs_setBoolOptionValue(m_model, "output_flag", t_value);
+    auto& lib = get_dynamic_lib();
+    lib.Highs_setBoolOptionValue(m_model, "output_flag", t_value);
     Optimizer::set_param_logs(t_value);
 }
 
@@ -527,15 +664,17 @@ idol::Optimizers::HiGHS::~HiGHS() {
 }
 
 void idol::Optimizers::HiGHS::update_objective_constant() {
+    auto& lib = get_dynamic_lib();
     const double constant = parent().get_obj_expr().affine().constant();
-    Highs_changeObjectiveOffset(m_model, constant);
+    lib.Highs_changeObjectiveOffset(m_model, constant);
 }
 
 double idol::Optimizers::HiGHS::get_var_reduced_cost(const idol::Var &t_var) const {
-    const unsigned int n_cols = Highs_getNumCol(m_model);
-    const unsigned int n_rows = Highs_getNumRows(m_model);
+    auto& lib = get_dynamic_lib();
+    const unsigned int n_cols = lib.Highs_getNumCol(m_model);
+    const unsigned int n_rows = lib.Highs_getNumRows(m_model);
     std::vector<double> col_value(n_cols), col_dual(n_cols), row_value(n_rows), row_dual(n_rows);
-    Highs_getSolution(m_model, col_value.data(), col_dual.data(), row_value.data(), row_dual.data());
+    lib.Highs_getSolution(m_model, col_value.data(), col_dual.data(), row_value.data(), row_dual.data());
     return col_dual[lazy(t_var).impl()];
 }
 
