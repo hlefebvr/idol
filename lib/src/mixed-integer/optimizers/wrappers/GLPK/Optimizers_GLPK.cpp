@@ -324,7 +324,11 @@ void idol::Optimizers::GLPK::hook_update_matrix(const Ctr &t_ctr, const Var &t_v
 
     std::vector<int> indices;
     std::vector<double> coefficients;
-    coefficients.reserve(row.size() + 1);
+    indices.reserve(row.size() + 2);
+    coefficients.reserve(row.size() + 2);
+
+    indices.push_back(0);
+    coefficients.push_back(0);
 
     if (row.empty()) {
         indices.push_back(lazy(t_var).impl());
@@ -332,18 +336,26 @@ void idol::Optimizers::GLPK::hook_update_matrix(const Ctr &t_ctr, const Var &t_v
     } else {
         bool inserted = false;
         for (const auto& [var, constant] : row) {
-            if (var.id() == t_var.id() || (lazy(var).impl() > lazy(t_var).impl() && !inserted)) {
+
+            if (var.id() == t_var.id()) {
                 indices.push_back(lazy(var).impl());
                 coefficients.push_back(constant);
                 inserted = true;
-            } else {
-                indices.push_back(lazy(var).impl());
-                coefficients.push_back(lazy(var).impl());
+                continue;
             }
+
+            if (!inserted && lazy(var).impl() > lazy(t_var).impl()) {
+                indices.push_back(lazy(var).impl());
+                coefficients.push_back(constant);
+                inserted = true;
+            }
+
+            indices.push_back(lazy(var).impl());
+            coefficients.push_back(constant);
         }
     }
 
-    lib.glp_set_mat_row(m_model, lazy(t_ctr).impl(), indices.size(), indices.data(), coefficients.data());
+    lib.glp_set_mat_row(m_model, lazy(t_ctr).impl(), indices.size() - 1, indices.data(), coefficients.data());
 
 }
 
