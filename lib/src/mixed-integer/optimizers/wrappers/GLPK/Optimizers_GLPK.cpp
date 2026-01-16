@@ -26,12 +26,9 @@ idol::Optimizers::GLPK::GLPK(const Model &t_model, bool t_continuous_relaxation)
     m_model = lib.glp_create_prob();
 
     lib.glp_init_smcp(&m_simplex_parameters);
-    m_simplex_parameters.msg_lev = GLP_MSG_OFF;
-    //m_simplex_parameters.presolve = GLP_ON;
+    m_simplex_parameters.presolve = GLP_OFF;
 
     lib.glp_init_iocp(&m_mip_parameters);
-    m_mip_parameters.msg_lev = GLP_MSG_OFF;
-    //m_mip_parameters.presolve = GLP_ON;
 
 }
 
@@ -757,7 +754,7 @@ void idol::Optimizers::GLPK::set_param_best_bound_stop(double t_best_bound_stop)
 }
 
 void idol::Optimizers::GLPK::set_param_presolve(bool t_value) {
-    m_simplex_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
+    // m_simplex_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
     m_mip_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
     Optimizer::set_param_presolve(t_value);
 }
