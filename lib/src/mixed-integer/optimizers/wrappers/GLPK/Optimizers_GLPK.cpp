@@ -318,7 +318,33 @@ void idol::Optimizers::GLPK::hook_update_objective_sense() {
 }
 
 void idol::Optimizers::GLPK::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
-    throw Exception("Not implemented.");
+
+    auto& lib = get_dynamic_lib();
+    const auto& row = parent().get_ctr_row(t_ctr);
+
+    std::vector<int> indices;
+    std::vector<double> coefficients;
+    coefficients.reserve(row.size() + 1);
+
+    if (row.empty()) {
+        indices.push_back(lazy(t_var).impl());
+        coefficients.push_back(t_constant);
+    } else {
+        bool inserted = false;
+        for (const auto& [var, constant] : row) {
+            if (var.id() == t_var.id() || (lazy(var).impl() > lazy(t_var).impl() && !inserted)) {
+                indices.push_back(lazy(var).impl());
+                coefficients.push_back(constant);
+                inserted = true;
+            } else {
+                indices.push_back(lazy(var).impl());
+                coefficients.push_back(lazy(var).impl());
+            }
+        }
+    }
+
+    lib.glp_set_mat_row(m_model, lazy(t_ctr).impl(), indices.size(), indices.data(), coefficients.data());
+
 }
 
 void idol::Optimizers::GLPK::hook_update() {
