@@ -6,6 +6,7 @@
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/general/utils/Finally.h"
 #include <dlfcn.h>
+#include <filesystem>
 
 #define GLPK_SYM_LOAD(name) {   \
 name = (decltype(name))dlsym(m_handle, #name);          \
@@ -34,14 +35,56 @@ idol::Optimizers::GLPK::GLPK(const Model &t_model, bool t_continuous_relaxation)
 
 }
 
-idol::Optimizers::GLPK::DynamicLib::DynamicLib() {
+std::string idol::Optimizers::GLPK::DynamicLib::find_library() {
 
-    const auto glpk_path = std::getenv("IDOL_GLPK_PATH");
-    if (!glpk_path) {
-        throw Exception("GLPK_LIB environment variable is not set");
+    // 1. Environment variable override
+    if (const char* env = std::getenv("IDOL_GLPK_PATH")) {
+        std::string path(env);
+        if (std::filesystem::exists(path)) {
+            return path;
+        }
+        std::cerr << "WARNING: IDOL_GLPK_PATH is set, but the file does not exists: " << path << std::endl;
     }
 
-    m_handle = dlopen(glpk_path, RTLD_LAZY);
+    // 2. Standard locations (macOS + Linux)
+    const std::vector<std::string> candidates = {
+
+        // ---- macOS (Homebrew) ----
+        "/opt/homebrew/opt/glpk/lib/libglpk.dylib",   // Apple Silicon
+        "/usr/local/opt/glpk/lib/libglpk.dylib",     // Intel mac
+        "/opt/homebrew/lib/libglpk.dylib",
+        "/usr/local/lib/libglpk.dylib",
+
+        // ---- Linux ----
+        "/usr/lib/libglpk.so",
+        "/usr/lib64/libglpk.so",
+        "/usr/local/lib/libglpk.so",
+        "/usr/local/lib64/libglpk.so",
+        "/lib/x86_64-linux-gnu/libglpk.so",
+        "/usr/lib/x86_64-linux-gnu/libglpk.so",
+
+        // ---- Fallback (let loader resolve) ----
+        "libglpk.dylib",
+        "libglpk.so"
+    };
+
+    for (const auto& path : candidates) {
+        if (std::filesystem::exists(path)) {
+            return path;
+        }
+    }
+
+    throw std::runtime_error(
+        "GLPK library not found. "
+        "Please, install GLPK and set IDOL_GLPK_PATH to its library file."
+    );
+}
+
+idol::Optimizers::GLPK::DynamicLib::DynamicLib() {
+
+    const auto glpk_path = find_library();
+
+    m_handle = dlopen(glpk_path.c_str(), RTLD_LAZY);
 
     if (!m_handle) {
         std::cerr << "Error when loading GLPK library.\n"

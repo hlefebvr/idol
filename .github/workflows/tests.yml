@@ -94,7 +94,7 @@ jobs:
             sudo apt-get install glpk-utils libglpk-dev
           
             # Configure CMake
-            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_GLPK=YES
+            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES
           
           elif [ "${{ matrix.test }}" == "HiGHS" ]; then
           
