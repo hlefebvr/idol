@@ -415,6 +415,7 @@ void idol::Optimizers::GLPK::hook_remove(const Var &t_var) {
     lib.glp_set_obj_coef(m_model, index, 0.);
     lib.glp_set_mat_col(m_model, index, 0, NULL, NULL);
     lib.glp_set_col_name(m_model, index, ("_removed_" + t_var.name()).c_str());
+    lib.glp_set_col_bnds(m_model, index, GLP_FX, 0., 0.);
     m_deleted_variables.push(index);
 
 }

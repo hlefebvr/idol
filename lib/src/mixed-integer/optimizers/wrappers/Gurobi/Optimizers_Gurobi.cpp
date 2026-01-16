@@ -384,17 +384,27 @@ void idol::Optimizers::Gurobi::hook_update_rhs() {
 
 void idol::Optimizers::Gurobi::hook_remove(const Var& t_var) {
 
-    const auto& impl = lazy(t_var).impl();
-    throw Exception("Not implemented."); // TODO
-    //m_model.remove(impl);
+    const auto index = lazy(t_var).impl();
+
+    GRBdelvars(m_model, 1, (int*) &index);
+    for (auto& lazy : lazy_vars()) {
+        if (!lazy.has_impl()) { continue; }
+        if (lazy.impl() < index) { continue; }
+        lazy.impl()--;
+    }
 
 }
 
 void idol::Optimizers::Gurobi::hook_remove(const Ctr& t_ctr) {
 
-    const auto& impl = lazy(t_ctr).impl();
-    throw Exception("Not implemented."); // TODO
-    //m_model.remove(impl);
+    const auto& index = lazy(t_ctr).impl();
+
+    GRBdelconstrs(m_model, 1, (int*) &index);
+    for (auto& lazy : lazy_ctrs()) {
+        if (!lazy.has_impl()) { continue; }
+        if (lazy.impl() < index) { continue; }
+        lazy.impl()--;
+    }
 
 }
 
@@ -970,8 +980,16 @@ double idol::Optimizers::Gurobi::get_var_reduced_cost(const idol::Var &t_var) co
 }
 
 void idol::Optimizers::Gurobi::hook_remove(const idol::QCtr &t_ctr) {
-    throw Exception("Not implemented."); // TODO
-    //m_model.remove(lazy(t_ctr).impl());
+
+    const auto index = lazy(t_ctr).impl();
+
+    GRBdelqconstrs(m_model, 1, (int*) &index);
+    for (auto& lazy : lazy_vars()) {
+        if (!lazy.has_impl()) { continue; }
+        if (lazy.impl() < index) { continue; }
+        lazy.impl()--;
+    }
+
 }
 
 int idol::Optimizers::Gurobi::hook_add(const idol::SOSCtr &t_ctr) {
@@ -1008,8 +1026,15 @@ int idol::Optimizers::Gurobi::hook_add(const idol::SOSCtr &t_ctr) {
 }
 
 void idol::Optimizers::Gurobi::hook_remove(const idol::SOSCtr &t_ctr) {
-    throw Exception("Not implemented."); // TODO
-    // m_model.remove(lazy(t_ctr).impl());
+
+    const auto index = lazy(t_ctr).impl();
+
+    GRBdelsos(m_model, 1, (int*) &index);
+    for (auto& lazy : lazy_vars()) {
+        if (!lazy.has_impl()) { continue; }
+        if (lazy.impl() < index) { continue; }
+        lazy.impl()--;
+    }
 }
 
 #endif

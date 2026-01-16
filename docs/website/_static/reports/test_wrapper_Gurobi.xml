@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Catch2TestRun name="test_wrapper_Gurobi" rng-seed="3571844285" xml-format-version="2" catch2-version="3.3.2">
+<Catch2TestRun name="test_wrapper_Gurobi" rng-seed="3524675744" xml-format-version="2" catch2-version="3.3.2">
   <TestCase name="Can solve a feasible LP" tags="[LP]" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="36">
     <Section name="Can retrieve primal solution" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="61">
       <OverallResults successes="8" failures="0" expectedFailures="0" skipped="false"/>
@@ -47,149 +47,39 @@
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can remove a constraint and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="265">
-      <Expression success="false" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="265">
-        <Original>
-          {Unknown expression after the reported line}
-        </Original>
-        <Expanded>
-          {Unknown expression after the reported line}
-        </Expanded>
-        <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="265">
-          Not implemented.
-        </Exception>
-      </Expression>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can remove a variable and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="272">
-      <Expression success="false" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="272">
-        <Original>
-          {Unknown expression after the reported line}
-        </Original>
-        <Expanded>
-          {Unknown expression after the reported line}
-        </Expanded>
-        <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="272">
-          Not implemented.
-        </Exception>
-      </Expression>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can add and remove the same variable and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="279">
-      <Expression success="false" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="279">
-        <Original>
-          {Unknown expression after the reported line}
-        </Original>
-        <Expanded>
-          {Unknown expression after the reported line}
-        </Expanded>
-        <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="279">
-          Not implemented.
-        </Exception>
-      </Expression>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can add and remove a different variable and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="287">
-      <Expression success="false" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="287">
-        <Original>
-          {Unknown expression after the reported line}
-        </Original>
-        <Expanded>
-          {Unknown expression after the reported line}
-        </Expanded>
-        <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="287">
-          Not implemented.
-        </Exception>
-      </Expression>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can add and remove the same constraint" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="296">
-      <Expression success="false" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="296">
-        <Original>
-          {Unknown expression after the reported line}
-        </Original>
-        <Expanded>
-          {Unknown expression after the reported line}
-        </Expanded>
-        <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="296">
-          Not implemented.
-        </Exception>
-      </Expression>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can add and remove a different constraint" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="305">
-      <Expression success="false" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="305">
-        <Original>
-          {Unknown expression after the reported line}
-        </Original>
-        <Expanded>
-          {Unknown expression after the reported line}
-        </Expanded>
-        <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="305">
-          Not implemented.
-        </Exception>
-      </Expression>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can add a constraint which depends on a variable that is then removed" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="314">
-      <Expression success="false" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="314">
-        <Original>
-          {Unknown expression after the reported line}
-        </Original>
-        <Expanded>
-          {Unknown expression after the reported line}
-        </Expanded>
-        <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="314">
-          Not implemented.
-        </Exception>
-      </Expression>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can add a variable which depends on a constraint that is then removed" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="322">
-      <Expression success="false" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="322">
-        <Original>
-          {Unknown expression after the reported line}
-        </Original>
-        <Expanded>
-          {Unknown expression after the reported line}
-        </Expanded>
-        <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="322">
-          Not implemented.
-        </Exception>
-      </Expression>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can update a variable's bound then remove it" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="333">
-      <Expression success="false" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="333">
-        <Original>
-          {Unknown expression after the reported line}
-        </Original>
-        <Expanded>
-          {Unknown expression after the reported line}
-        </Expanded>
-        <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="333">
-          Not implemented.
-        </Exception>
-      </Expression>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can change the objective function then remove a variable which appears in the objective function" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="341">
-      <Expression success="false" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="341">
-        <Original>
-          {Unknown expression after the reported line}
-        </Original>
-        <Expanded>
-          {Unknown expression after the reported line}
-        </Expanded>
-        <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="341">
-          Not implemented.
-        </Exception>
-      </Expression>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can update the objective function constant" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="349">
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <OverallResult success="false" skips="0"/>
+    <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="Can solve an infeasible LP" tags="[LP]" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="359">
     <Section name="Can retrieve a Farkas certificate" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="382">
@@ -425,6 +315,6 @@
     </Section>
     <OverallResult success="false" skips="0"/>
   </TestCase>
-  <OverallResults successes="176" failures="21" expectedFailures="0" skips="0"/>
-  <OverallResultsCases successes="5" failures="7" expectedFailures="0" skips="0"/>
+  <OverallResults successes="201" failures="11" expectedFailures="0" skips="0"/>
+  <OverallResultsCases successes="6" failures="6" expectedFailures="0" skips="0"/>
 </Catch2TestRun>
