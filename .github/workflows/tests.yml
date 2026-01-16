@@ -157,8 +157,6 @@ jobs:
             exit 1
           fi
 
-
-
       - name: Run tests
         continue-on-error: true
         env:
@@ -176,8 +174,6 @@ jobs:
           else
             WORKSPACE=${{github.workspace}}/build/tests/mixed-integer/wrappers
           fi
-          
-          cd $WORKSPACE && ./test_wrapper_${OPTIMIZER}
           
           (cd $WORKSPACE && (./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml) )
 

@@ -138,6 +138,7 @@ idol::Optimizers::GLPK::DynamicLib::DynamicLib() {
     GLPK_SYM_LOAD(glp_mip_obj_val);
     GLPK_SYM_LOAD(glp_get_row_type);
     GLPK_SYM_LOAD(glp_get_obj_dir);
+    GLPK_SYM_LOAD(glp_write_lp);
 
 }
 
