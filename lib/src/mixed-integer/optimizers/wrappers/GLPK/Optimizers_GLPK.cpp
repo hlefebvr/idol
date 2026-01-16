@@ -9,7 +9,7 @@
 #include <filesystem>
 
 #define GLPK_SYM_LOAD(name) {   \
-name = (decltype(name))dlsym(m_handle, #name);          \
+name = (name##_t) dlsym(m_handle, #name);          \
 const char* err = dlerror();                             \
 if (err)                                                 \
     throw std::runtime_error(std::string("Missing GLPK symbol ") + #name + ": " + err); \

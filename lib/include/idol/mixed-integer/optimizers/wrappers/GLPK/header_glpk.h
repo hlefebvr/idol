@@ -1,7 +1,3 @@
-//
-// Created by Henri on 16/01/2026.
-//
-
 #ifndef IDOL_HEADER_GLPK_H
 #define IDOL_HEADER_GLPK_H
 /* glpk.h */
@@ -25,8 +21,8 @@
 *  along with GLPK. If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************/
 
-#include <stdarg.h>
-#include <stddef.h>
+#include <cstdarg>
+#include <cstddef>
 
 #ifdef __cplusplus
 extern "C" {

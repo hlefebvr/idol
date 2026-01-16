@@ -97,8 +97,8 @@ public:
 };
 
 #define GLPK_SYM_PTR(name) \
-typedef decltype(name)* name##_t; \
-decltype(name)* name = nullptr
+typedef decltype(::name)* name##_t; \
+name##_t name = nullptr
 
 class idol::Optimizers::GLPK::DynamicLib {
     void* m_handle = nullptr;
