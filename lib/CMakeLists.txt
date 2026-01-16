@@ -296,6 +296,11 @@ add_library(idol STATIC
         src/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.cpp
         src/robust/optimizers/critical-value-column-and-constraint-generation/Formulation.cpp
         include/idol/mixed-integer/optimizers/wrappers/GLPK/header_glpk.h
+        include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_c_api.h
+        include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HighsCallbacktruct.h
+        include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HighsInt.h
+        include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HConfig.h
+        include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HConst.h
 )
 
 #find_package(OpenMP REQUIRED)

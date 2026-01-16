@@ -6,15 +6,11 @@
 #include "idol/general/utils/exceptions/Exception.h"
 
 idol::Optimizer *idol::HiGHS::operator()(const Model &t_model) const {
-#ifdef IDOL_USE_HIGHS
     auto* result = new Optimizers::HiGHS(t_model, m_continuous_relaxation.value_or(false));
 
     this->handle_default_parameters(result);
 
     return result;
-#else
-    throw Exception("idol was not linked with HiGHS.");
-#endif
 }
 
 idol::HiGHS idol::HiGHS::ContinuousRelaxation() {

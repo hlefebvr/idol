@@ -5,11 +5,11 @@
 #ifndef IDOL_OPTIMIZERS_HIGHS_H
 #define IDOL_OPTIMIZERS_HIGHS_H
 
-#ifdef IDOL_USE_HIGHS
-
 #include "idol/general/optimizers/OptimizerWithLazyUpdates.h"
-#include <Highs.h>
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_c_api.h"
 #include <stack>
+
+#include "headers/header_HighsInt.h"
 
 namespace idol::Optimizers {
     class HiGHS;
@@ -19,12 +19,16 @@ class idol::Optimizers::HiGHS  : public OptimizerWithLazyUpdates<int, int, int, 
 
     bool m_continuous_relaxation;
 
-    ::Highs m_model;
+    void* m_model;
 
     SolutionStatus m_solution_status = Loaded;
     SolutionReason m_solution_reason = NotSpecified;
     double* m_extreme_ray = nullptr;
     double* m_farkas_certificate = nullptr;
+    double* m_col_value = nullptr;
+    double* m_col_dual = nullptr;
+    double* m_row_value = nullptr;
+    double* m_row_dual = nullptr;
 protected:
     void hook_build() override;
     void hook_optimize() override;
@@ -65,26 +69,18 @@ protected:
     [[nodiscard]] unsigned int get_solution_index() const override;
     void set_solution_index(unsigned int t_index) override;
 
-    void analyze_status(HighsStatus t_status);
+    void analyze_status(HighsInt t_status);
 public:
     explicit HiGHS(const Model& t_model, bool t_continuous_relaxation);
-
-    ~HiGHS();
+    ~HiGHS() override;
 
     [[nodiscard]] std::string name() const override { return "HiGHS"; }
-
     void set_param_time_limit(double t_time_limit) override;
-
     void set_param_best_obj_stop(double t_best_obj_stop) override;
-
     void set_param_best_bound_stop(double t_best_bound_stop) override;
-
     void set_param_presolve(bool t_value) override;
-
     void set_param_logs(bool t_value) override;
 
 };
-
-#endif
 
 #endif //IDOL_OPTIMIZERS_HIGHS_H
