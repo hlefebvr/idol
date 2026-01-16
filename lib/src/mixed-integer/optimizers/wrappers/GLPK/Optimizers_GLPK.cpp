@@ -7,11 +7,12 @@
 #include "idol/general/utils/Finally.h"
 #include <dlfcn.h>
 
-#ifdef IDOL_USE_GLPK
-
-#define GLPK_SYM_LOAD(X) \
-X = (X##_t)dlsym(m_handle, #X); \
-if (!X) throw std::runtime_error("Missing GLPK symbol " #X)
+#define GLPK_SYM_LOAD(name) {   \
+name = (decltype(name))dlsym(m_handle, #name);          \
+const char* err = dlerror();                             \
+if (err)                                                 \
+    throw std::runtime_error(std::string("Missing GLPK symbol ") + #name + ": " + err); \
+}
 
 std::unique_ptr<idol::Optimizers::GLPK::DynamicLib> idol::Optimizers::GLPK::m_dynamic_lib;
 
@@ -33,9 +34,13 @@ idol::Optimizers::GLPK::GLPK(const Model &t_model, bool t_continuous_relaxation)
 
 }
 
-idol::Optimizers::GLPK::DynamicLib::DynamicLib()
-{
-    const auto glpk_path = std::getenv("GLPK_PATH");
+idol::Optimizers::GLPK::DynamicLib::DynamicLib() {
+
+    const auto glpk_path = std::getenv("IDOL_GLPK_PATH");
+    if (!glpk_path) {
+        throw Exception("GLPK_LIB environment variable is not set");
+    }
+
     m_handle = dlopen(glpk_path, RTLD_LAZY);
 
     if (!m_handle) {
@@ -93,6 +98,10 @@ idol::Optimizers::GLPK::DynamicLib::DynamicLib()
     GLPK_SYM_LOAD(glp_get_row_type);
     GLPK_SYM_LOAD(glp_get_obj_dir);
 
+}
+
+idol::Optimizers::GLPK::DynamicLib::~DynamicLib() {
+    dlclose(m_handle);
 }
 
 idol::Optimizers::GLPK::DynamicLib& idol::Optimizers::GLPK::get_dynamic_lib() {
@@ -939,5 +948,3 @@ int idol::Optimizers::GLPK::hook_add(const idol::SOSCtr &t_ctr) {
 void idol::Optimizers::GLPK::hook_remove(const idol::SOSCtr &t_ctr) {
     throw Exception("SOS constraints are not supported by GLPK.");
 }
-
-#endif

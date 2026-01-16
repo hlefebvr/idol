@@ -7,10 +7,8 @@
 
 #include <stack>
 
-#ifdef IDOL_USE_GLPK
-
 #include "idol/general/optimizers/OptimizerWithLazyUpdates.h"
-#include <glpk.h>
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/header_glpk.h"
 
 namespace idol::Optimizers {
     class GLPK;
@@ -41,43 +39,24 @@ protected:
     static DynamicLib& get_dynamic_lib();
 
     void hook_build() override;
-
     void hook_optimize() override;
-
     void hook_write(const std::string &t_name) override;
-
     int hook_add(const Var &t_var, bool t_add_column) override;
-
     int hook_add(const Ctr &t_ctr) override;
-
     int hook_add(const QCtr &t_ctr) override;
-
     int hook_add(const SOSCtr &t_ctr) override;
-
     void hook_update_objective_sense() override;
-
     void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) override;
-
     void hook_update() override;
-
     void hook_update(const Var &t_var) override;
-
     void hook_update(const Ctr &t_ctr) override;
-
     void hook_update_objective() override;
-
     void hook_update_rhs() override;
-
     void hook_remove(const Var &t_var) override;
-
     void hook_remove(const Ctr &t_ctr) override;
-
     void hook_remove(const QCtr &t_ctr) override;
-
     void hook_remove(const SOSCtr &t_ctr) override;
-
     void set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj);
-
     void set_ctr_attr(int t_index, int t_type, double t_rhs);
 
     void save_simplex_solution_status();
@@ -107,15 +86,10 @@ public:
     explicit GLPK(const Model& t_model, bool t_continuous_relaxation);
 
     [[nodiscard]] std::string name() const override { return "GLPK"; }
-
     void set_param_time_limit(double t_time_limit) override;
-
     void set_param_best_obj_stop(double t_best_obj_stop) override;
-
     void set_param_best_bound_stop(double t_best_bound_stop) override;
-
     void set_param_presolve(bool t_value) override;
-
     void set_param_logs(bool t_value) override;
 
     static Model read_from_file(Env& t_env, const std::string& t_filename);
@@ -179,8 +153,8 @@ public:
     GLPK_SYM_PTR(glp_get_obj_dir);
 
     DynamicLib();
-};
 
-#endif
+    ~DynamicLib();
+};
 
 #endif //IDOL_OPTIMIZERS_GLPK_H

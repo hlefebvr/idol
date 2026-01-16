@@ -295,6 +295,7 @@ add_library(idol STATIC
         src/robust/optimizers/critical-value-column-and-constraint-generation/CriticalValueColumnAndConstraintGeneration.cpp
         src/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.cpp
         src/robust/optimizers/critical-value-column-and-constraint-generation/Formulation.cpp
+        include/idol/mixed-integer/optimizers/wrappers/GLPK/header_glpk.h
 )
 
 #find_package(OpenMP REQUIRED)

@@ -6,13 +6,9 @@
 #include "idol/general/utils/exceptions/Exception.h"
 
 idol::Optimizer *idol::GLPK::operator()(const Model &t_model) const {
-#ifdef IDOL_USE_GLPK
     auto* result = new Optimizers::GLPK(t_model, m_continuous_relaxation);
     handle_default_parameters(result);
     return result;
-#else
-    throw Exception("idol was not linked with GLPK.");
-#endif
 }
 
 idol::GLPK idol::GLPK::ContinuousRelaxation() {
@@ -24,9 +20,5 @@ idol::GLPK *idol::GLPK::clone() const {
 }
 
 idol::Model idol::GLPK::read_from_file(idol::Env &t_env, const std::string &t_filename) {
-#ifdef IDOL_USE_GLPK
     return Optimizers::GLPK::read_from_file(t_env, t_filename);
-#else
-    throw Exception("idol was not linked with GLPK.");
-#endif
 }
