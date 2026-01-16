@@ -33,7 +33,7 @@ IMPLEMENT_CALL_READ_FROM_FILE(Gurobi)
 IMPLEMENT_CALL_READ_FROM_FILE(GLPK)
 IMPLEMENT_CALL_READ_FROM_FILE(Cplex)
 
-TEST_CASE("Can solve a feasible LP", "[solving-lp]") {
+TEST_CASE("Can solve a feasible LP", "[LP]") {
 
     // Example taken from http://lpsolve.sourceforge.net/5.5/formulate.htm#Construct%20the%20model%20from%20a%20Programming%20Language
 
@@ -195,7 +195,7 @@ TEST_CASE("Can solve a feasible LP", "[solving-lp]") {
 
 }
 
-TEST_CASE("Can update and re-optimize a feasible LP", "[solving-lp]") {
+TEST_CASE("Can update and re-optimize a feasible LP", "[LP]") {
 
     Env env;
     Model model(env);
@@ -360,7 +360,7 @@ TEST_CASE("Can update and re-optimize a feasible LP", "[solving-lp]") {
 
 }
 
-TEST_CASE("Can solve an infeasible LP", "[solving-lp]") {
+TEST_CASE("Can solve an infeasible LP", "[LP]") {
 
     Env env;
 
@@ -421,7 +421,7 @@ TEST_CASE("Can solve an infeasible LP", "[solving-lp]") {
 
 }
 
-TEST_CASE("Can solve an unbounded LP", "[solving-lp]") {
+TEST_CASE("Can solve an unbounded LP", "[LP]") {
 
     Env env;
 
