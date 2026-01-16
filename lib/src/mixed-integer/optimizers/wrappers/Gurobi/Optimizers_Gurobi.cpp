@@ -98,6 +98,13 @@ idol::Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxat
 
 }
 
+idol::Optimizers::Gurobi::~Gurobi() {
+    if (m_model) {
+        GRBfreemodel(m_model);
+        m_model = nullptr;
+    }
+}
+
 void idol::Optimizers::Gurobi::hook_build() {
 
     const auto& model = parent();

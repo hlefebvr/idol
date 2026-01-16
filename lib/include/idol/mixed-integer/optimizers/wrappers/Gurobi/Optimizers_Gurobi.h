@@ -78,7 +78,8 @@ protected:
 public:
     Gurobi(const Model& t_model, bool t_continuous_relaxation, GRBenv* t_env);
     explicit Gurobi(const Model& t_model, bool t_continuous_relaxation) : Gurobi(t_model, t_continuous_relaxation, Gurobi::get_global_env()) {}
-
+    ~Gurobi() override;
+    
     GRBenv* env() { return m_env; }
     [[nodiscard]] const GRBenv* env() const { return m_env; }
     GRBmodel* model() { return m_model; }
