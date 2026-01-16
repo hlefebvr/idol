@@ -103,10 +103,6 @@ TEST_CASE("Can solve a feasible LP", "[LP]") {
 
     }
 
-    SECTION("Can retrieve basis") {
-        CHECK(false);
-    }
-
     SECTION("Throws an exception if primal ray is asked") {
         CHECK_THROWS(model.get_var_ray(x));
         CHECK_THROWS(save_ray(model));

@@ -5,30 +5,30 @@
 #ifndef IDOL_OPTIMIZERS_GUROBI_H
 #define IDOL_OPTIMIZERS_GUROBI_H
 
-#ifdef IDOL_USE_GUROBI
-#include "gurobi_c++.h"
+#include "gurobi_c.h"
 #include <memory>
-#include <variant>
 
 #include "idol/general/optimizers/OptimizerWithLazyUpdates.h"
 #include "idol/mixed-integer/optimizers/callbacks/Callback.h"
-#include "GurobiCallbackI.h"
+//#include "GurobiCallbackI.h"
 
 namespace idol::Optimizers {
     class Gurobi;
 }
 
-class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, GRBConstr, GRBQConstr, GRBSOS> {
-    friend class ::idol::GurobiCallbackI;
-    static std::unique_ptr<GRBEnv> s_global_env;
+class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<int, int, int, int> {
+    //friend class ::idol::GurobiCallbackI;
+    static GRBenv* s_global_env;
 
-    static GRBEnv& get_global_env();
+    static GRBenv* get_global_env();
 
-    GRBEnv& m_env;
-    GRBModel m_model;
+    GRBenv* m_env = nullptr;
+    GRBmodel* m_model = nullptr;
     bool m_continuous_relaxation;
 
-    std::unique_ptr<GurobiCallbackI> m_gurobi_callback;
+    unsigned int iter = 0;
+
+    //std::unique_ptr<GurobiCallbackI> m_gurobi_callback;
 
     char gurobi_var_type(int t_type);
     static char gurobi_ctr_type(int t_type);
@@ -42,10 +42,10 @@ protected:
     void hook_build() override;
     void hook_optimize() override;
     void hook_write(const std::string &t_name) override;
-    GRBVar hook_add(const Var& t_var, bool t_add_column) override;
-    GRBConstr hook_add(const Ctr& t_ctr) override;
-    GRBQConstr hook_add(const QCtr& t_ctr) override;
-    GRBSOS hook_add(const SOSCtr& t_ctr) override;
+    int hook_add(const Var& t_var, bool t_add_column) override;
+    int hook_add(const Ctr& t_ctr) override;
+    int hook_add(const QCtr& t_ctr) override;
+    int hook_add(const SOSCtr& t_ctr) override;
     void hook_update(const Var& t_var) override;
     void hook_update(const Ctr& t_ctr) override;
     void hook_update_objective_sense() override;
@@ -76,56 +76,34 @@ protected:
     void set_solution_index(unsigned int t_index) override;
 
 public:
-    Gurobi(const Model& t_model, bool t_continuous_relaxation, GRBEnv& t_env);
+    Gurobi(const Model& t_model, bool t_continuous_relaxation, GRBenv* t_env);
     explicit Gurobi(const Model& t_model, bool t_continuous_relaxation) : Gurobi(t_model, t_continuous_relaxation, Gurobi::get_global_env()) {}
 
-    GRBEnv& env() { return m_env; }
-
-    [[nodiscard]] const GRBEnv& env() const { return m_env; }
-
-    GRBModel& model() { return m_model; }
-
-    [[nodiscard]] const GRBModel& model() const { return m_model; }
+    GRBenv* env() { return m_env; }
+    [[nodiscard]] const GRBenv* env() const { return m_env; }
+    GRBmodel* model() { return m_model; }
+    [[nodiscard]] const GRBmodel* model() const { return m_model; }
 
     [[nodiscard]] std::string name() const override { return "Gurobi"; }
-
     void set_param_time_limit(double t_time_limit) override;
-
     void set_param_threads(unsigned int t_thread_limit) override;
-
     void set_param_best_obj_stop(double t_best_obj_stop) override;
-
     void set_param_best_bound_stop(double t_best_bound_stop) override;
-
     void set_param_presolve(bool t_value) override;
-
     void set_param_infeasible_or_unbounded_info(bool t_value) override;
-
     void add_callback(Callback* t_ptr_to_callback);
-
     void set_lazy_cut(bool t_value);
-
     void set_max_n_solution_in_pool(unsigned int t_value);
-
     void set_param_logs(bool t_value) override;
-
-    void set_param(GRB_IntParam t_param, int t_value);
-
-    void set_param(GRB_DoubleParam t_param, double t_value);
-
+    void set_param(const std::string& t_param, int t_value);
+    void set_param(const std::string& t_param, double t_value);
     void set_tol_mip_relative_gap(double t_relative_gap_tolerance) override;
-
     void set_tol_mip_absolute_gap(double t_absolute_gap_tolerance) override;
-
     void set_tol_feasibility(double t_tol_feasibility) override;
-
     void set_tol_optimality(double t_tol_optimality) override;
-
     void set_tol_integer(double t_tol_integer) override;
 
-    static Model read_from_file(Env& t_env, const std::string& t_filename);
+    // static Model read_from_file(Env& t_env, const std::string& t_filename);
 };
-
-#endif
 
 #endif //IDOL_OPTIMIZERS_GUROBI_H

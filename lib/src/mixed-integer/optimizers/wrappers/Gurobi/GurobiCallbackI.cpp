@@ -7,6 +7,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/GurobiCallbackI.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 
+/*
 idol::GurobiCallbackI::GurobiCallbackI(Optimizers::Gurobi &t_parent) : m_parent(t_parent) {
 
 }
@@ -157,5 +158,5 @@ double idol::GurobiCallbackI::best_bound() const {
 void idol::GurobiCallbackI::terminate() {
     GRBCallback::abort();
 }
-
+*/
 #endif

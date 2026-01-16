@@ -97,7 +97,7 @@ def generate_md(xml_path, db):
         for test_case in tag["test_cases"]:
             result += "<h3>" + test_case["name"] + "</h3>\n"
             result += "<div class=\"full_width_table\">\n<table>\n"
-            result += "<tr><th class=\"test-report-table-section\">Test case</th><th>Progress</th></tr>\n"
+            result += "<tr><th class=\"test-report-table-section\">Tested Feature</th><th>Outcome</th></tr>\n"
 
             for section in test_case["sections"]:
                 section_name = section["name"]

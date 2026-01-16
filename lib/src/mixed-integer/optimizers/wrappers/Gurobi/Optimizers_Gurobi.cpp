@@ -6,20 +6,22 @@
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
-#define GUROBI_CATCH(cmd) \
-try { \
-    cmd \
-} catch (GRBException& error) { \
-throw Exception("Gurobi exception [" + std::to_string(error.getErrorCode()) + "] " + error.getMessage() ); \
+#define GUROBI_CATCH(model, cmd)                                \
+{                                                           \
+    int err = (cmd);                                          \
+    if (err) {                                                         \
+        throw Exception("Gurobi exception [" + std::to_string(err) +  \
+        "] " + GRBgeterrormsg(GRBgetenv(model)));                   \
+    }  \
 }
 
-std::unique_ptr<GRBEnv> idol::Optimizers::Gurobi::s_global_env;
+GRBenv* idol::Optimizers::Gurobi::s_global_env = nullptr;
 
-GRBEnv &idol::Optimizers::Gurobi::get_global_env() {
+GRBenv* idol::Optimizers::Gurobi::get_global_env() {
     if (!s_global_env) {
-        s_global_env = std::make_unique<GRBEnv>();
+        GRBloadenv(&s_global_env, nullptr);
     }
-    return *s_global_env;
+    return s_global_env;
 }
 
 char idol::Optimizers::Gurobi::gurobi_var_type(int t_type) {
@@ -65,7 +67,11 @@ std::pair<idol::SolutionStatus, idol::SolutionReason> idol::Optimizers::Gurobi::
         case GRB_UNBOUNDED: return { Unbounded, Proved };
         case GRB_CUTOFF: [[fallthrough]];
         case GRB_USER_OBJ_LIMIT: return {Feasible, ObjLimit };
-        case GRB_TIME_LIMIT: return { m_model.get(GRB_IntAttr_SolCount) > 0 ? Feasible : Infeasible, TimeLimit };
+        case GRB_TIME_LIMIT: {
+            int n_solutions;
+            GUROBI_CATCH(m_model, GRBgetintattr(m_model, "SolCount", &n_solutions));
+            return { n_solutions > 0 ? Feasible : Infeasible, TimeLimit };
+        }
         case GRB_NUMERIC: return {Fail, NotSpecified };
         case GRB_SOLUTION_LIMIT: return {Feasible, SolutionLimit };
         default:;
@@ -83,27 +89,13 @@ double idol::Optimizers::Gurobi::gurobi_numeric(double t_value) {
     return t_value;
 }
 
-idol::Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxation, GRBEnv &t_env)
+idol::Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxation, GRBenv *t_env)
     : OptimizerWithLazyUpdates(t_model),
       m_continuous_relaxation(t_continuous_relaxation),
-      m_env(t_env),
-      m_model(t_env) {
+      m_env(t_env) {
 
-    // Parameters
-    m_model.set(GRB_IntParam_OutputFlag, get_param_logs());
-    m_model.set(GRB_DoubleParam_BestBdStop, get_param_best_bound_stop());
-    m_model.set(GRB_DoubleParam_BestObjStop, get_param_best_obj_stop());
-    m_model.set(GRB_DoubleParam_TimeLimit, get_param_time_limit());
-    m_model.set(GRB_IntParam_Presolve, get_param_presolve());
-    m_model.set(GRB_IntParam_Threads, (int) get_param_thread_limit());
-    m_model.set(GRB_IntParam_InfUnbdInfo, get_param_infeasible_or_unbounded_info());
+    GRBnewmodel(t_env, &m_model, "idol-model", 0, nullptr, nullptr, nullptr, nullptr, nullptr);
 
-    // Tolerances
-    m_model.set(GRB_DoubleParam_MIPGap, get_tol_mip_relative_gap());
-    m_model.set(GRB_DoubleParam_MIPGapAbs, get_tol_mip_absolute_gap());
-    m_model.set(GRB_DoubleParam_IntFeasTol, get_tol_integer());
-    m_model.set(GRB_DoubleParam_FeasibilityTol, get_tol_feasibility());
-    m_model.set(GRB_DoubleParam_OptimalityTol, get_tol_optimality());
 }
 
 void idol::Optimizers::Gurobi::hook_build() {
@@ -121,7 +113,7 @@ void idol::Optimizers::Gurobi::hook_build() {
 
 }
 
-GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
+int idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
 
     const auto& model = parent();
     const auto& column = model.get_var_column(t_var);
@@ -131,8 +123,13 @@ GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
     const auto type = gurobi_var_type(model.get_var_type(t_var));
     const auto& name = t_var.name();
 
-    GRBColumn col;
+    std::vector<int> indices;
+    std::vector<double> values;
+
     if (t_add_column) {
+
+        indices.reserve(column.size());
+        values.reserve(column.size());
 
         for (const auto& [ctr, constant] : column) {
 
@@ -141,17 +138,33 @@ GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
             }
 
             auto& impl = lazy(ctr).impl();
-
-            col.addTerm( constant, impl);
+            indices.push_back(impl);
+            values.push_back(gurobi_numeric(constant));
 
         }
 
     }
 
-    GUROBI_CATCH(return m_model.addVar(lb, ub, objective, type, col, name);)
+    const unsigned int index = model.get_var_index(t_var);
+
+    GUROBI_CATCH(
+        m_model,
+        GRBaddvar(m_model,
+            (int) indices.size(),
+            indices.data(),
+            values.data(),
+            objective,
+            lb,
+            ub,
+            type,
+            name.c_str()
+            )
+    )
+
+    return index;
 }
 
-GRBConstr idol::Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
+int idol::Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
 
     const auto& model = parent();
     const auto& row = model.get_ctr_row(t_ctr);
@@ -159,78 +172,139 @@ GRBConstr idol::Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
     const auto rhs = model.get_ctr_rhs(t_ctr);
     const auto& name = t_ctr.name();
 
-    GRBLinExpr expr = 0.;
-    const unsigned int n = row.size();
-    auto* vars = new GRBVar[n];
-    auto* vals = new double[n];
-    unsigned int i = 0;
-    for (const auto &[var, constant]: row) {
-        vars[i] = lazy(var).impl();
-        vals[i] = gurobi_numeric(constant);
-        ++i;
-    }
-    expr.addTerms(vals, vars, (int) n);
-    delete[] vars;
-    delete[] vals;
+    std::vector<int> vars;
+    std::vector<double> vals;
+    vars.reserve(row.size());
+    vals.reserve(row.size());
 
-    GUROBI_CATCH(return m_model.addConstr(expr, type, rhs, name);)
+    for (const auto& [var, constant] : row) {
+        vars.push_back(lazy(var).impl());
+        vals.push_back(gurobi_numeric(constant));
+    }
+
+    const unsigned int index = model.get_ctr_index(t_ctr);
+
+    GUROBI_CATCH(
+        m_model,
+        GRBaddconstr(
+            m_model,
+            (int) vars.size(),
+            vars.data(),
+            vals.data(),
+            type,
+            rhs,
+            name.c_str()
+        )
+    )
+
+    return index;
 }
 
-GRBQConstr idol::Optimizers::Gurobi::hook_add(const idol::QCtr &t_ctr) {
+int idol::Optimizers::Gurobi::hook_add(const idol::QCtr &t_ctr) {
 
     const auto& model = parent();
     const auto& expr = model.get_qctr_expr(t_ctr);
     const auto type = gurobi_ctr_type(model.get_qctr_type(t_ctr));
     const auto& name = t_ctr.name();
 
-    GRBQuadExpr quad_expr = expr.affine().constant();
+    // Linear part
+    const auto& linear_terms = expr.affine().linear();
+    std::vector<int> linear_indices;
+    std::vector<double> linear_values;
+    linear_indices.reserve(linear_terms.size());
+    linear_values.reserve(linear_terms.size());
 
-    const unsigned int n = expr.affine().linear().size();
-    auto* vars = new GRBVar[n];
-    auto* vals = new double[n];
-    unsigned int i = 0;
-    for (const auto& [var, constant]: expr.affine().linear()) {
-        vars[i] = lazy(var).impl();
-        vals[i] = gurobi_numeric(constant);
-        ++i;
-    }
-    quad_expr.addTerms(vals, vars, (int) n);
-    delete[] vars;
-    delete[] vals;
-
-    for (const auto& [pair, constant]: expr) {
-        quad_expr += constant * lazy(pair.first).impl() * lazy(pair.second).impl();
+    for (const auto& [var, coeff] : linear_terms) {
+        linear_indices.push_back(lazy(var).impl());
+        linear_values.push_back(gurobi_numeric(coeff));
     }
 
-    GUROBI_CATCH(return m_model.addQConstr(quad_expr, type, 0., name);)
+    /// Constant
+    double linear_constant = gurobi_numeric(expr.affine().constant());
+
+    // Quadratic part
+    std::vector<int> quadratic_indices1, quadratic_indices2;
+    std::vector<double> quadratic_values;
+    quadratic_indices1.reserve(expr.size());
+    quadratic_indices2.reserve(expr.size());
+    quadratic_values.reserve(expr.size());
+
+    for (const auto& [pair, coeff] : expr) {
+        quadratic_indices1.push_back(lazy(pair.first).impl());
+        quadratic_indices2.push_back(lazy(pair.second).impl());
+        quadratic_values.push_back(gurobi_numeric(coeff));
+    }
+
+    const unsigned int index = model.get_qctr_index(t_ctr);
+
+    GUROBI_CATCH(
+        m_model,
+        GRBaddqconstr(
+            m_model,
+            (int) linear_indices.size(),
+            linear_indices.data(),
+            linear_values.data(),
+            (int) quadratic_indices1.size(),
+            quadratic_indices1.data(),
+            quadratic_indices2.data(),
+            quadratic_values.data(),
+            type,
+            linear_constant,
+            name.c_str()
+        )
+    )
+
+    return index;
 }
 
 void idol::Optimizers::Gurobi::hook_update(const Var& t_var) {
 
     const auto& model = parent();
-    auto& impl = lazy(t_var).impl();
+    int index = lazy(t_var).impl();
     const double lb = model.get_var_lb(t_var);
     const double ub = model.get_var_ub(t_var);
     const int type = model.get_var_type(t_var);
     const double obj = model.get_var_obj(t_var);
 
-    impl.set(GRB_DoubleAttr_LB, gurobi_numeric(lb));
-    impl.set(GRB_DoubleAttr_UB, gurobi_numeric(ub));
-    impl.set(GRB_CharAttr_VType, gurobi_var_type(type));
-    impl.set(GRB_DoubleAttr_Obj, gurobi_numeric(obj));
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblattrelement(m_model, GRB_DBL_ATTR_LB, index, gurobi_numeric(lb))
+    )
+
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblattrelement(m_model, GRB_DBL_ATTR_UB, index, gurobi_numeric(ub))
+    )
+
+    GUROBI_CATCH(
+        m_model,
+        GRBsetcharattrelement(m_model, GRB_CHAR_ATTR_VTYPE, index, gurobi_var_type(type))
+    )
+
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblattrelement(m_model, GRB_DBL_ATTR_OBJ, index, gurobi_numeric(obj))
+    )
 
 }
 
 void idol::Optimizers::Gurobi::hook_update(const Ctr& t_ctr) {
 
     const auto& model = parent();
-    auto& impl = lazy(t_ctr).impl();
+    auto index = lazy(t_ctr).impl();
 
     const auto& rhs = model.get_ctr_rhs(t_ctr);
     const auto type = model.get_ctr_type(t_ctr);
 
-    impl.set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs));
-    impl.set(GRB_CharAttr_Sense, gurobi_ctr_type(type));
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblattrelement(m_model, GRB_DBL_ATTR_RHS, index, gurobi_numeric(rhs))
+    )
+
+    GUROBI_CATCH(
+        m_model,
+        GRBsetcharattrelement(m_model, GRB_CHAR_ATTR_SENSE, index, gurobi_ctr_type(type))
+    )
 
 }
 
@@ -240,32 +314,48 @@ void idol::Optimizers::Gurobi::hook_update_objective() {
     const auto& objective = model.get_obj_expr();
     const auto sense = gurobi_obj_sense(model.get_obj_sense());
 
-    GRBLinExpr linear_expr = gurobi_numeric(objective.affine().constant());
+    // Linear part
+    const auto& linear_terms = objective.affine().linear();
+    std::vector<int> linear_indices;
+    std::vector<double> linear_values;
+    linear_indices.reserve(linear_terms.size());
+    linear_values.reserve(linear_terms.size());
 
-    const unsigned int n = objective.affine().linear().size();
-    auto* vars = new GRBVar[n];
-    auto* vals = new double[n];
-    unsigned int i = 0;
-    for (const auto& [var, constant] : objective.affine().linear()) {
-        vars[i] = lazy(var).impl();
-        vals[i] = gurobi_numeric(constant);
-        ++i;
-    }
-    linear_expr.addTerms(vals, vars, (int) n);
-    delete[] vars;
-    delete[] vals;
-
-    if (!objective.has_quadratic()) {
-        m_model.setObjective(linear_expr, sense);
-        return;
+    for (const auto& [var, coeff] : linear_terms) {
+        linear_indices.push_back(lazy(var).impl());
+        linear_values.push_back(gurobi_numeric(coeff));
     }
 
-    GRBQuadExpr quad_expr(linear_expr);
-    for (const auto& [pair, constant] : objective) {
-        quad_expr += gurobi_numeric(constant) * lazy(pair.first).impl() * lazy(pair.second).impl();
+    // Constant
+    double linear_constant = gurobi_numeric(objective.affine().constant());
+
+    // Quadratic part
+    std::vector<int> quadratic_indices1, quadratic_indices2;
+    std::vector<double> quadratic_values;
+    quadratic_indices1.reserve(objective.size());
+    quadratic_indices2.reserve(objective.size());
+    quadratic_values.reserve(objective.size());
+
+    for (const auto& [pair, coeff] : objective) {
+        quadratic_indices1.push_back(lazy(pair.first).impl());
+        quadratic_indices2.push_back(lazy(pair.second).impl());
+        quadratic_values.push_back(gurobi_numeric(coeff));
     }
 
-    m_model.setObjective(quad_expr, sense);
+    GUROBI_CATCH(
+                m_model,
+                GRBsetobjective(m_model,
+                              sense,
+                              linear_constant,
+                              (int) linear_indices.size(),
+                              linear_indices.data(),
+                              linear_values.data(),
+                              quadratic_indices1.size(),
+                              quadratic_indices1.data(),
+                              quadratic_indices2.data(),
+                              quadratic_values.data()
+                              )
+            )
 
 }
 
@@ -274,9 +364,13 @@ void idol::Optimizers::Gurobi::hook_update_rhs() {
     const auto& model = parent();
 
     for (const auto& ctr : model.ctrs()) {
-        auto& impl = lazy(ctr).impl();
-        const auto& rhs = model.get_ctr_rhs(ctr);
-        impl.set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs));
+        int constr_index = lazy(ctr).impl();
+        double rhs = gurobi_numeric(model.get_ctr_rhs(ctr));
+
+        GUROBI_CATCH(
+            m_model,
+            GRBsetdblattrelement(m_model, "RHS", constr_index, rhs)
+        )
     }
 
 }
@@ -284,14 +378,16 @@ void idol::Optimizers::Gurobi::hook_update_rhs() {
 void idol::Optimizers::Gurobi::hook_remove(const Var& t_var) {
 
     const auto& impl = lazy(t_var).impl();
-    m_model.remove(impl);
+    throw Exception("Not implemented."); // TODO
+    //m_model.remove(impl);
 
 }
 
 void idol::Optimizers::Gurobi::hook_remove(const Ctr& t_ctr) {
 
     const auto& impl = lazy(t_ctr).impl();
-    m_model.remove(impl);
+    throw Exception("Not implemented."); // TODO
+    //m_model.remove(impl);
 
 }
 
@@ -299,87 +395,147 @@ void idol::Optimizers::Gurobi::hook_optimize() {
     set_solution_index(0);
 
     GUROBI_CATCH(
-        m_model.optimize();
+        m_model,
+        GRBoptimize(m_model)
     )
 
 }
 
 void idol::Optimizers::Gurobi::hook_write(const std::string &t_name) {
-    GUROBI_CATCH(m_model.write(t_name);)
+    GUROBI_CATCH(
+        m_model,
+        GRBwrite(m_model, t_name.c_str())
+    )
 }
 
 void idol::Optimizers::Gurobi::hook_update_objective_sense() {
-    m_model.set(GRB_IntAttr_ModelSense, gurobi_obj_sense(parent().get_obj_sense()));
+    GUROBI_CATCH(
+        m_model,
+        GRBsetintattr(
+            m_model,
+            "ModelSense",
+            gurobi_obj_sense(parent().get_obj_sense())
+        )
+    )
 }
 
 void idol::Optimizers::Gurobi::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
 
-    const auto& var_impl = lazy(t_var).impl();
-    const auto& ctr_impl = lazy(t_ctr).impl();
+    const auto var_impl = lazy(t_var).impl();
+    const auto ctr_impl = lazy(t_ctr).impl();
 
-    m_model.chgCoeff(ctr_impl, var_impl, gurobi_numeric(t_constant));
+    GUROBI_CATCH(
+        m_model,
+        GRBchgcoeffs(
+            m_model,
+            1,
+            (int*) &ctr_impl,
+            (int*) &var_impl,
+            &t_constant
+        )
+    )
 
 }
 
 void idol::Optimizers::Gurobi::hook_update() {
-    m_model.update();
+    GUROBI_CATCH(
+        m_model,
+        GRBupdatemodel(m_model)
+    )
 }
 
 void idol::Optimizers::Gurobi::set_param_time_limit(double t_time_limit) {
-    m_model.set(GRB_DoubleParam_TimeLimit, t_time_limit);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblparam(GRBgetenv(m_model), "TimeLimit", t_time_limit)
+    )
     Optimizer::set_param_time_limit(t_time_limit);
 }
 
 void idol::Optimizers::Gurobi::set_param_threads(unsigned int t_thread_limit) {
-    m_model.set(GRB_IntParam_Threads, (int) t_thread_limit);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetintparam(GRBgetenv(m_model), "Threads", (int) t_thread_limit)
+    )
     Optimizer::set_param_threads(t_thread_limit);
 }
 
 void idol::Optimizers::Gurobi::set_param_best_obj_stop(double t_best_obj_stop) {
-    m_model.set(GRB_DoubleParam_BestObjStop, t_best_obj_stop);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblparam(GRBgetenv(m_model), "BestObjStop", t_best_obj_stop)
+    )
     Optimizer::set_param_best_obj_stop(t_best_obj_stop);
 }
 
 void idol::Optimizers::Gurobi::set_param_best_bound_stop(double t_best_bound_stop) {
-    m_model.set(GRB_DoubleParam_BestBdStop, t_best_bound_stop);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblparam(GRBgetenv(m_model), "BestBdStop", t_best_bound_stop)
+    )
     Optimizer::set_param_best_bound_stop(t_best_bound_stop);
 }
 
 void idol::Optimizers::Gurobi::set_param_presolve(bool t_value) {
-    m_model.set(GRB_IntParam_Presolve, t_value);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetintparam(GRBgetenv(m_model), "Presolve", t_value)
+    )
     Optimizer::set_param_presolve(t_value);
 }
 
 void idol::Optimizers::Gurobi::set_param_infeasible_or_unbounded_info(bool t_value) {
-    m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetintparam(GRBgetenv(m_model), "InfUnbdInfo", t_value)
+    )
     Optimizer::set_param_infeasible_or_unbounded_info(t_value);
 }
 
 void idol::Optimizers::Gurobi::add_callback(Callback *t_ptr_to_callback) {
 
+    throw Exception("Not implemented."); // TODO
+
+    /*
     if (!m_gurobi_callback) {
         m_gurobi_callback = std::make_unique<GurobiCallbackI>(*this);
         m_model.setCallback(m_gurobi_callback.get());
     }
 
     m_gurobi_callback->add_callback(t_ptr_to_callback);
+    */
 }
 
 void idol::Optimizers::Gurobi::set_lazy_cut(bool t_value) {
-    m_model.set(GRB_IntParam_LazyConstraints, t_value);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetintparam(GRBgetenv(m_model), GRB_INT_PAR_LAZYCONSTRAINTS, t_value)
+    )
 }
 
 idol::SolutionStatus idol::Optimizers::Gurobi::get_status() const {
-    return gurobi_status(m_model.get(GRB_IntAttr_Status)).first;
+    int status = 0;
+    GUROBI_CATCH(
+        m_model,
+        GRBgetintattr(m_model, "Status", &status)
+    )
+
+    return gurobi_status(status).first;
 }
 
 idol::SolutionReason idol::Optimizers::Gurobi::get_reason() const {
-    return gurobi_status(m_model.get(GRB_IntAttr_Status)).second;
+    int status = 0;
+    GUROBI_CATCH(
+        m_model,
+        GRBgetintattr(m_model, "Status", &status)
+    )
+
+    return gurobi_status(status).second;
 }
 
 double idol::Optimizers::Gurobi::get_best_obj() const {
 
-    const auto status = gurobi_status(m_model.get(GRB_IntAttr_Status)).first;
+    const auto status = get_status();
 
     if (status == Unbounded) {
         return -Inf;
@@ -389,17 +545,33 @@ double idol::Optimizers::Gurobi::get_best_obj() const {
         return +Inf;
     }
 
-    if (m_model.get(GRB_IntParam_SolutionNumber) == 0) {
-        GUROBI_CATCH(return m_model.get(GRB_DoubleAttr_ObjVal);)
+    int solution_index = 0;
+    GUROBI_CATCH(
+        m_model,
+        GRBgetintparam(GRBgetenv(m_model), "SolutionNumber", &solution_index)
+    )
+
+    if (solution_index == 0) {
+        double result = 0.0;
+        GUROBI_CATCH(
+            m_model,
+            GRBgetdblattr(m_model, "ObjVal", &result)
+        )
+        return result;
     }
 
-    GUROBI_CATCH(return m_model.get(GRB_DoubleAttr_PoolObjVal);)
+    double result = 0.0;
+    GUROBI_CATCH(
+        m_model,
+        GRBgetdblattr(m_model, "PoolObjVal", &result)
+    )
+    return result;
 
 }
 
 double idol::Optimizers::Gurobi::get_best_bound() const {
 
-    const auto status = gurobi_status(m_model.get(GRB_IntAttr_Status)).first;
+    const auto status = get_status();
 
     if (status == Unbounded) {
         return -Inf;
@@ -409,11 +581,27 @@ double idol::Optimizers::Gurobi::get_best_bound() const {
         return +Inf;
     }
 
-    if (m_model.get(GRB_IntParam_SolutionNumber) == 0) {
-        GUROBI_CATCH(return m_model.get(GRB_DoubleAttr_ObjBound);)
+    int solution_index = 0;
+    GUROBI_CATCH(
+        m_model,
+        GRBgetintparam(GRBgetenv(m_model), "SolutionNumber", &solution_index)
+    )
+
+    if (solution_index == 0) {
+        double result = 0.0;
+        GUROBI_CATCH(
+            m_model,
+            GRBgetdblattr(m_model, "ObjBound", &result)
+        )
+        return result;
     }
 
-    GUROBI_CATCH(return m_model.get(GRB_DoubleAttr_PoolObjBound);)
+    double result = 0.0;
+    GUROBI_CATCH(
+        m_model,
+        GRBgetdblattr(m_model, "PoolObjBound", &result)
+    )
+    return result;
 
 }
 
@@ -423,14 +611,26 @@ double idol::Optimizers::Gurobi::get_var_primal(const Var &t_var) const {
         throw Exception("Primal solution not available.");
     }
 
-    if (m_model.get(GRB_IntParam_SolutionNumber) == 0) {
+    auto index = lazy(t_var).impl();
+    double result = 0.0;
+
+    int solution_index = 0;
+    GUROBI_CATCH(
+        m_model,
+        GRBgetintparam(GRBgetenv(m_model), "SolutionNumber", &solution_index)
+    )
+
+    if (solution_index == 0) {
         GUROBI_CATCH(
-            return lazy(t_var).impl().get(GRB_DoubleAttr_X);
+            m_model,
+            GRBgetdblattrarray(m_model, "X", index, 1, &result)
         )
+        return result;
     }
 
     GUROBI_CATCH(
-        return lazy(t_var).impl().get(GRB_DoubleAttr_Xn);
+        m_model,
+        GRBgetdblattrarray(m_model, "Xn", index, 1, &result)
     )
 }
 
@@ -440,9 +640,15 @@ double idol::Optimizers::Gurobi::get_var_ray(const Var &t_var) const {
         throw Exception("Ray not available.");
     }
 
+    int index = lazy(t_var).impl();
+    double result = 0.0;
+
     GUROBI_CATCH(
-        return lazy(t_var).impl().get(GRB_DoubleAttr_UnbdRay);
+        m_model,
+        GRBgetdblattrelement(m_model, "UnbdRay", index, &result)
     )
+
+    return result;
 }
 
 double idol::Optimizers::Gurobi::get_ctr_dual(const Ctr &t_ctr) const {
@@ -451,9 +657,15 @@ double idol::Optimizers::Gurobi::get_ctr_dual(const Ctr &t_ctr) const {
         throw Exception("Dual solution not available.");
     }
 
+    int index = lazy(t_ctr).impl();
+    double result = 0.0;
+
     GUROBI_CATCH(
-        return lazy(t_ctr).impl().get(GRB_DoubleAttr_Pi);
+        m_model,
+        GRBgetdblattrelement(m_model, "Pi", index, &result)
     )
+
+    return result;
 }
 
 double idol::Optimizers::Gurobi::get_ctr_farkas(const Ctr &t_ctr) const {
@@ -462,9 +674,15 @@ double idol::Optimizers::Gurobi::get_ctr_farkas(const Ctr &t_ctr) const {
         throw Exception("Farkas solution not available.");
     }
 
+    int index = lazy(t_ctr).impl();
+    double result = 0.0;
+
     GUROBI_CATCH(
-        return -lazy(t_ctr).impl().get(GRB_DoubleAttr_FarkasDual);
+        m_model,
+        GRBgetdblattrelement(m_model, "FarkasDual", index, &result)
     )
+
+    return -result;
 }
 
 double idol::Optimizers::Gurobi::get_relative_gap() const {
@@ -481,60 +699,106 @@ unsigned int idol::Optimizers::Gurobi::get_n_solutions() const {
         return 0;
     }
 
-    return m_model.get(GRB_IntAttr_SolCount);
+    int solution_index = 0;
+
+    GUROBI_CATCH(
+        m_model,
+        GRBgetintattr(m_model, "SolCount", &solution_index)
+    )
+
+    return solution_index;
 }
 
 unsigned int idol::Optimizers::Gurobi::get_solution_index() const {
-    return m_model.get(GRB_IntParam_SolutionNumber);
+    int result = 0;
+
+    GUROBI_CATCH(
+        m_model,
+        GRBgetintparam(GRBgetenv(m_model), "SolutionNumber", &result)
+    )
+
+    return result;
 }
 
 void idol::Optimizers::Gurobi::set_solution_index(unsigned int t_index) {
-    m_model.set(GRB_IntParam_SolutionNumber, (int) t_index);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetintparam(GRBgetenv(m_model), "SolutionNumber", (int) t_index)
+    )
 }
 
 void idol::Optimizers::Gurobi::set_max_n_solution_in_pool(unsigned int t_value) {
-    m_model.set(GRB_IntParam_PoolSolutions, (int) std::min<unsigned int>(GRB_MAXINT, t_value));
+    int value = std::min<int>(2000000000, (int) t_value);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetintparam(GRBgetenv(m_model), GRB_INT_PAR_POOLSOLUTIONS, value)
+    )
 }
 
 void idol::Optimizers::Gurobi::set_param_logs(bool t_value) {
-    m_model.set(GRB_IntParam_OutputFlag, t_value);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetintparam(GRBgetenv(m_model), "OutputFlag", t_value ? 1 : 0)
+    )
     Optimizer::set_param_logs(t_value);
 }
 
-void idol::Optimizers::Gurobi::set_param(GRB_IntParam t_param, int t_value) {
-    m_model.set(t_param, t_value);
+void idol::Optimizers::Gurobi::set_param(const std::string& t_param, int t_value) {
+    GUROBI_CATCH(
+        m_model,
+        GRBsetintparam(GRBgetenv(m_model), t_param.c_str(), t_value)
+    )
 }
 
-void idol::Optimizers::Gurobi::set_param(GRB_DoubleParam t_param, double t_value) {
-    m_model.set(t_param, t_value);
+void idol::Optimizers::Gurobi::set_param(const std::string& t_param, double t_value) {
+    GUROBI_CATCH(
+        m_model,
+        GRBsetintparam(GRBgetenv(m_model), t_param.c_str(), t_value)
+    )
 }
 
 void idol::Optimizers::Gurobi::set_tol_mip_relative_gap(double t_relative_gap_tolerance) {
     Optimizer::set_tol_mip_relative_gap(t_relative_gap_tolerance);
-    m_model.set(GRB_DoubleParam_MIPGap, t_relative_gap_tolerance);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblparam(GRBgetenv(m_model), "MIPGap", t_relative_gap_tolerance)
+    )
 }
 
 void idol::Optimizers::Gurobi::set_tol_mip_absolute_gap(double t_absolute_gap_tolerance) {
     Optimizer::set_tol_mip_absolute_gap(t_absolute_gap_tolerance);
-    m_model.set(GRB_DoubleParam_MIPGapAbs, t_absolute_gap_tolerance);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblparam(GRBgetenv(m_model), "MIPGapAbs", t_absolute_gap_tolerance)
+    )
 }
 
 void idol::Optimizers::Gurobi::set_tol_feasibility(double t_tol_feasibility) {
     Optimizer::set_tol_feasibility(t_tol_feasibility);
-    m_model.set(GRB_DoubleParam_FeasibilityTol, t_tol_feasibility);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblparam(GRBgetenv(m_model), "FeasibilityTol", t_tol_feasibility)
+    )
 }
 
 void idol::Optimizers::Gurobi::set_tol_optimality(double t_tol_optimality) {
     Optimizer::set_tol_optimality(t_tol_optimality);
-    m_model.set(GRB_DoubleParam_OptimalityTol, t_tol_optimality);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblparam(GRBgetenv(m_model), "OptimalityTol", t_tol_optimality)
+    )
 }
 
 void idol::Optimizers::Gurobi::set_tol_integer(double t_tol_integer) {
     Optimizer::set_tol_integer(t_tol_integer);
-    m_model.set(GRB_DoubleParam_IntFeasTol, t_tol_integer);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblparam(GRBgetenv(m_model), "IntFeasTol", t_tol_integer)
+    )
 }
 
-idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std::string &t_filename) {
+/*
+idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env *t_env, const std::string &t_filename) {
 
     Model result(t_env);
 
@@ -573,7 +837,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
         return result_;
     };
 
-    /*
+    // This was commented out
     const auto parse_quadratic = [&](const GRBQuadExpr& t_quad_expr) {
         AffExpr result_ = parse_linear(t_quad_expr.getLinExpr());
 
@@ -585,7 +849,6 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
 
         return result_;
     };
-     */
 
     const auto add_ctr = [&](
             const auto& t_lhs,
@@ -615,7 +878,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
         add_ctr(lhs, rhs, type, name);
     }
 
-    /*
+    // This was commented out
     for (unsigned int i = 0 ; i < n_quad_ctrs ; ++i) {
 
         const auto& original_ctr = model->getQConstrs()[i];
@@ -628,7 +891,6 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
         add_ctr(row, rhs, type, name);
 
     }
-     */
 
     const auto sense = model->get(GRB_IntAttr_ModelSense);
     result.set_obj_sense(idol_obj_sense(sense));
@@ -638,6 +900,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
 
     return std::move(result);
 }
+*/
 
 idol::VarType idol::Optimizers::Gurobi::idol_var_type(char t_type) {
 
@@ -676,7 +939,10 @@ idol::ObjectiveSense idol::Optimizers::Gurobi::idol_obj_sense(int t_sense) {
 
 void idol::Optimizers::Gurobi::update_objective_constant() {
     const double constant = parent().get_obj_expr().affine().constant();
-    m_model.set(GRB_DoubleAttr_ObjCon, constant);
+    GUROBI_CATCH(
+        m_model,
+        GRBsetdblattr(m_model, "ObjCon", constant)
+    )
 }
 
 double idol::Optimizers::Gurobi::get_var_reduced_cost(const idol::Var &t_var) const {
@@ -685,34 +951,58 @@ double idol::Optimizers::Gurobi::get_var_reduced_cost(const idol::Var &t_var) co
         throw Exception("Reduced cost not available.");
     }
 
+    int index = lazy(t_var).impl(); // variable index in C API
+    double result = 0.0;
+
     GUROBI_CATCH(
-        return lazy(t_var).impl().get(GRB_DoubleAttr_RC);
+        m_model,
+        GRBgetdblattrelement(m_model, GRB_DBL_ATTR_RC, index, &result)
     )
+
+    return result;
 }
 
 void idol::Optimizers::Gurobi::hook_remove(const idol::QCtr &t_ctr) {
-    m_model.remove(lazy(t_ctr).impl());
+    throw Exception("Not implemented."); // TODO
+    //m_model.remove(lazy(t_ctr).impl());
 }
 
-GRBSOS idol::Optimizers::Gurobi::hook_add(const idol::SOSCtr &t_ctr) {
+int idol::Optimizers::Gurobi::hook_add(const idol::SOSCtr &t_ctr) {
 
     const auto& model = parent();
     const auto src_vars = model.get_sosctr_vars(t_ctr);
     const auto n = src_vars.size();
 
-    auto* vars = new GRBVar[n];
-    for (unsigned int i = 0 ; i < n ; ++i) {
-        vars[i] = lazy(src_vars[i]).impl();
+    std::vector<int> indices(n);
+    for (int i = 0; i < n; ++i) {
+        indices[i] = lazy(src_vars[i]).impl();
     }
 
     auto* weights = model.get_sosctr_weights(t_ctr).data();
-    const auto type = model.is_sos1(t_ctr) ? GRB_SOS_TYPE1 : GRB_SOS_TYPE2;
+    const auto type = model.is_sos1(t_ctr) ? 1 : 2;
+    int beginning_index = 0;
 
-    return m_model.addSOS(vars, weights, (int) n, type);
+    const unsigned int index = model.get_sosctr_index(t_ctr);
+
+    GUROBI_CATCH(
+        m_model,
+        GRBaddsos(
+            m_model,
+            1,
+            n,
+            (int*) &type,
+            &beginning_index,
+            indices.data(),
+            (double*) weights
+        )
+    )
+
+    return index;
 }
 
 void idol::Optimizers::Gurobi::hook_remove(const idol::SOSCtr &t_ctr) {
-    m_model.remove(lazy(t_ctr).impl());
+    throw Exception("Not implemented."); // TODO
+    // m_model.remove(lazy(t_ctr).impl());
 }
 
 #endif

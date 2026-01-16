@@ -65,7 +65,7 @@ TEST_CASE("Can add universal callbacks to monitor the execution of the algorithm
 
 }
 
-TEST_CASE("Can add universal callbacks to influence the execution of the algorithm", "[callbacks]") {
+TEST_CASE("Can add universal callbacks to influence the execution of the algorithm", "[Callbacks]") {
 
     Env env;
     Model model(env);
