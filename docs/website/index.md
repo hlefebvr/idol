@@ -90,7 +90,7 @@ It's really a matter of seconds before you can start using idol.
 >
 > model.add_ctr(idol_Sum(j, Range(n_items), weight[j] * x[j]) <= capacity);
 >
-> model.set_obj_expr(idol_Sum(j, Range(n_items), -profit[j] * x[j]);
+> model.set_obj_expr(idol_Sum(j, Range(n_items), -profit[j] * x[j]));
 >
 > model.use(Gurobi());
 >

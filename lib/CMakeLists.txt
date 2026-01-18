@@ -544,3 +544,5 @@ install(FILES
         "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h"
         DESTINATION lib/cmake/idol
         )
+
+file(WRITE "${CMAKE_BINARY_DIR}/IDOL_VERSION" "${PROJECT_VERSION}")
