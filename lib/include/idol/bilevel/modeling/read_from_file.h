@@ -8,6 +8,7 @@
 #include <string>
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "Description.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 
 namespace idol::Bilevel {
 
@@ -19,34 +20,9 @@ namespace idol::Bilevel {
                        const std::function<Model(Env &, const std::string &)> &t_mps_reader);
     }
 
-    template<class BackendT> Model read_from_file(Env& t_env, const std::string& t_path_to_aux, Bilevel::Description& t_lower_level_description);
+    Model read_from_file(Env& t_env, const std::string& t_path_to_aux, Bilevel::Description& t_lower_level_description);
+    std::pair<Model, Bilevel::Description> read_from_file(Env& t_env, const std::string& t_path_to_aux);
 
-    template<class BackendT> std::pair<Model, Bilevel::Description> read_from_file(Env& t_env, const std::string& t_path_to_aux);
-
-}
-
-template<class BackendT>
-idol::Model
-idol::Bilevel::read_from_file(idol::Env& t_env,
-                              const std::string& t_path_to_aux,
-                              idol::Bilevel::Description& t_lower_level_description) {
-
-    return idol::Bilevel::impl::read_from_file(t_env, t_path_to_aux, t_lower_level_description, [](Env& t_env, const std::string& t_file) { return BackendT::read_from_file(t_env, t_file); });
-}
-
-template<class BackendT>
-std::pair<idol::Model, idol::Bilevel::Description>
-idol::Bilevel::read_from_file(idol::Env& t_env,
-                              const std::string& t_path_to_aux) {
-
-    Bilevel::Description lower_level_description(t_env);
-
-    auto high_point_relaxation = Bilevel::impl::read_from_file(t_env, t_path_to_aux, lower_level_description,[](Env& t_env, const std::string& t_file) { return BackendT::read_from_file(t_env, t_file); });
-
-    return {
-        std::move(high_point_relaxation),
-        std::move(lower_level_description)
-    };
 }
 
 #endif //IDOL_READ_FROM_FILE_H

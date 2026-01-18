@@ -1,118 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Catch2TestRun name="test_wrapper_Gurobi" rng-seed="3524675744" xml-format-version="2" catch2-version="3.3.2">
-  <TestCase name="Can solve a feasible LP" tags="[LP]" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="36">
-    <Section name="Can retrieve primal solution" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="61">
+<Catch2TestRun name="test_wrapper_Gurobi" rng-seed="3596316723" xml-format-version="2" catch2-version="3.3.2">
+  <TestCase name="Can solve a feasible LP" tags="[LP]" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="24">
+    <Section name="Can retrieve primal solution" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="49">
       <OverallResults successes="8" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can retrieve dual solution" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="76">
+    <Section name="Can retrieve dual solution" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="64">
       <OverallResults successes="10" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can retrieve reduced costs" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="94">
+    <Section name="Can retrieve reduced costs" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="82">
       <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Throws an exception if primal ray is asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="106">
+    <Section name="Throws an exception if primal ray is asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="94">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Throws an exception if farkas certificate is asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="111">
+    <Section name="Throws an exception if farkas certificate is asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="99">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can write a model to a file and read it back" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="116">
-      <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="116">
-        Not implemented
+    <Section name="Can write a model to a file and read it back" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="104">
+      <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="104">
+        Cannot read from file using this solver
       </Exception>
       <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
     <OverallResult success="false" skips="0"/>
   </TestCase>
-  <TestCase name="Can update and re-optimize a feasible LP" tags="[LP]" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="194">
-    <Section name="Can add cut and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="207">
+  <TestCase name="Can update and re-optimize a feasible LP" tags="[LP]" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="182">
+    <Section name="Can add cut and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="195">
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can add column and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="215">
+    <Section name="Can add column and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="203">
       <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can change bounds and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="224">
+    <Section name="Can change bounds and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="212">
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can add cut and column and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="232">
+    <Section name="Can add cut and column and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="220">
       <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can change objective function and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="242">
+    <Section name="Can change objective function and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="230">
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can change right-hand side and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="248">
+    <Section name="Can change right-hand side and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="236">
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can change left-hand side and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="256">
+    <Section name="Can change left-hand side and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="244">
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can remove a constraint and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="265">
+    <Section name="Can remove a constraint and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="253">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can remove a variable and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="272">
+    <Section name="Can remove a variable and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="260">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can add and remove the same variable and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="279">
+    <Section name="Can add and remove the same variable and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="267">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can add and remove a different variable and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="287">
+    <Section name="Can add and remove a different variable and re-optimize" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="275">
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can add and remove the same constraint" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="296">
+    <Section name="Can add and remove the same constraint" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="284">
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can add and remove a different constraint" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="305">
+    <Section name="Can add and remove a different constraint" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="293">
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can add a constraint which depends on a variable that is then removed" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="314">
+    <Section name="Can add a constraint which depends on a variable that is then removed" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="302">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can add a variable which depends on a constraint that is then removed" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="322">
+    <Section name="Can add a variable which depends on a constraint that is then removed" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="310">
       <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can update a variable's bound then remove it" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="333">
+    <Section name="Can update a variable's bound then remove it" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="321">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can change the objective function then remove a variable which appears in the objective function" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="341">
+    <Section name="Can change the objective function then remove a variable which appears in the objective function" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="329">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can update the objective function constant" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="349">
+    <Section name="Can update the objective function constant" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="337">
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="Can solve an infeasible LP" tags="[LP]" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="359">
-    <Section name="Can retrieve a Farkas certificate" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="382">
+  <TestCase name="Can solve an infeasible LP" tags="[LP]" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="347">
+    <Section name="Can retrieve a Farkas certificate" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="370">
       <OverallResults successes="7" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Throws an exception if primal values are asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="398">
+    <Section name="Throws an exception if primal values are asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="386">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Throws an exception if dual values are asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="403">
+    <Section name="Throws an exception if dual values are asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="391">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Throws an exception if (primal) ray is asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="408">
+    <Section name="Throws an exception if (primal) ray is asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="396">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Throws an exception if reduced costs are asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="413">
+    <Section name="Throws an exception if reduced costs are asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="401">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="Can solve an unbounded LP" tags="[LP]" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="420">
-    <Section name="Can retrieve a dual ray" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="443">
+  <TestCase name="Can solve an unbounded LP" tags="[LP]" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="408">
+    <Section name="Can retrieve a dual ray" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="431">
       <OverallResults successes="7" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Throws an exception if primal values are asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="461">
+    <Section name="Throws an exception if primal values are asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="449">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Throws an exception if dual values are asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="466">
+    <Section name="Throws an exception if dual values are asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="454">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Throws an exception if farkas certificate is asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="471">
+    <Section name="Throws an exception if farkas certificate is asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="459">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Throws an exception if reduced costs are asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="476">
+    <Section name="Throws an exception if reduced costs are asked" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="464">
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <OverallResult success="true" skips="0"/>
@@ -224,18 +224,7 @@
     <Section name="Can turn on logs" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="304">
       <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can set the maximum number of solutions in the pool" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="311">
-      <Expression success="false" type="CHECK" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="312">
-        <Original>
-          false
-        </Original>
-        <Expanded>
-          false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
-    </Section>
-    <OverallResult success="false" skips="0"/>
+    <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="Can add universal callbacks to monitor the execution of the algorithm" tags="[Callbacks]" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="36">
     <Section name="Can retrieve root node gap" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="38">
@@ -297,10 +286,15 @@
       <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can add lazy constraint" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="83">
-      <Exception filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="83">
-        Not implemented.
-      </Exception>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+      <Expression success="false" type="CHECK" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="110">
+        <Original>
+          model.get_best_obj() == 5.4_a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 5.4 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can terminate the algorithm" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="118">
       <Expression success="false" type="CHECK" filename="/Users/henri/Research/solvers/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="121">
@@ -315,6 +309,6 @@
     </Section>
     <OverallResult success="false" skips="0"/>
   </TestCase>
-  <OverallResults successes="201" failures="11" expectedFailures="0" skips="0"/>
-  <OverallResultsCases successes="6" failures="6" expectedFailures="0" skips="0"/>
+  <OverallResults successes="202" failures="10" expectedFailures="0" skips="0"/>
+  <OverallResultsCases successes="7" failures="5" expectedFailures="0" skips="0"/>
 </Catch2TestRun>

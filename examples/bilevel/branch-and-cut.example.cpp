@@ -12,7 +12,7 @@ int main(int t_argc, const char** t_argv) {
 
     Env env;
 
-    auto [high_point_relaxation, description] = idol::Bilevel::read_from_file<Gurobi>(env, "branch-and-cut.data.aux");
+    auto [high_point_relaxation, description] = idol::Bilevel::read_from_file(env, "branch-and-cut.data.aux");
 
     high_point_relaxation.use(
             Bilevel::BranchAndCut(description)

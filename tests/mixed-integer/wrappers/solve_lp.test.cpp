@@ -21,18 +21,6 @@ struct CallReadFromFile {
     }
 };
 
-#define IMPLEMENT_CALL_READ_FROM_FILE(SolverT) \
-template<> \
-struct CallReadFromFile<SolverT> { \
-    static Model call(Env& t_env, const std::string& t_filename) { \
-        return SolverT::read_from_file(t_env, t_filename); \
-    } \
-};
-
-IMPLEMENT_CALL_READ_FROM_FILE(Gurobi)
-IMPLEMENT_CALL_READ_FROM_FILE(GLPK)
-IMPLEMENT_CALL_READ_FROM_FILE(Cplex)
-
 TEST_CASE("Can solve a feasible LP", "[LP]") {
 
     // Example taken from http://lpsolve.sourceforge.net/5.5/formulate.htm#Construct%20the%20model%20from%20a%20Programming%20Language
