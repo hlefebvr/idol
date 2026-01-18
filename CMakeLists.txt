@@ -6,6 +6,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${idol_SOURCE_DIR}/cmake")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${idol_SOURCE_DIR}/cmake/coin-or")
 
 add_subdirectory(lib)
+add_subdirectory(bin)
 
 set(BUILD_EXAMPLES OFF CACHE BOOL "Build the example targets")
 set(BUILD_TESTS OFF CACHE BOOL "Build the test targets")
