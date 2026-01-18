@@ -3,12 +3,10 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeWithCGInfo.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h"
 #include "idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h"
-#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 
 using namespace idol;

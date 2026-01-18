@@ -9,31 +9,6 @@ set(USE_EIGEN @USE_EIGEN@)
 
 find_dependency(OpenMP REQUIRED)
 
-if (@USE_GUROBI@)
-
-    set(GUROBI_DIR "@GUROBI_DIR@")
-    find_dependency(GUROBI REQUIRED)
-    add_compile_definitions(IDOL_USE_GUROBI)
-
-endif()
-
-if (@USE_GLPK@)
-
-    set(GLPK_DIR "@GLPK_DIR@")
-    find_dependency(GLPK REQUIRED)
-    add_compile_definitions(IDOL_USE_GLPK)
-
-endif()
-
-if (@USE_HIGHS@)
-
-    set(HIGHS_DIR "@HIGHS_DIR@")
-    find_dependency(Threads REQUIRED)
-    find_dependency(HIGHS REQUIRED)
-    add_compile_definitions(IDOL_USE_HIGHS)
-
-endif()
-
 if (@USE_MOSEK@)
 
     set(MOSEK_DIR "@MOSEK_DIR@")

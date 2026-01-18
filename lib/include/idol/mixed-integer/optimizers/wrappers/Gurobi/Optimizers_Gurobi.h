@@ -5,30 +5,31 @@
 #ifndef IDOL_OPTIMIZERS_GUROBI_H
 #define IDOL_OPTIMIZERS_GUROBI_H
 
-#include "gurobi_c.h"
 #include <memory>
 
 #include "idol/general/optimizers/OptimizerWithLazyUpdates.h"
 #include "idol/mixed-integer/optimizers/callbacks/Callback.h"
-//#include "GurobiCallbackI.h"
+#include "GurobiCallbackI.h"
 
 namespace idol::Optimizers {
     class Gurobi;
 }
 
-class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<int, int, int, int> {
-    //friend class ::idol::GurobiCallbackI;
-    static GRBenv* s_global_env;
+namespace idol::impl {
+    static int grb_callback(GRBmodel *t_model, void *t_cbdata, int t_where, void *t_usrdata);
+}
 
-    static GRBenv* get_global_env();
+class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<int, int, int, int> {
+    friend class ::idol::GurobiCallbackI;
+    
+    class DynamicLib;
+    static std::unique_ptr<DynamicLib> m_dynamic_lib;
 
     GRBenv* m_env = nullptr;
     GRBmodel* m_model = nullptr;
     bool m_continuous_relaxation;
 
-    unsigned int iter = 0;
-
-    //std::unique_ptr<GurobiCallbackI> m_gurobi_callback;
+    std::unique_ptr<GurobiCallbackI> m_gurobi_callback;
 
     char gurobi_var_type(int t_type);
     static char gurobi_ctr_type(int t_type);
@@ -39,6 +40,9 @@ class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<int, int, int, 
     static ObjectiveSense idol_obj_sense(int t_sense);
     [[nodiscard]] std::pair<SolutionStatus, SolutionReason> gurobi_status(int t_status) const;
 protected:
+    static DynamicLib& get_dynamic_lib();
+    static GRBenv* get_new_env();
+
     void hook_build() override;
     void hook_optimize() override;
     void hook_write(const std::string &t_name) override;
@@ -77,7 +81,7 @@ protected:
 
 public:
     Gurobi(const Model& t_model, bool t_continuous_relaxation, GRBenv* t_env);
-    explicit Gurobi(const Model& t_model, bool t_continuous_relaxation) : Gurobi(t_model, t_continuous_relaxation, Gurobi::get_global_env()) {}
+    Gurobi(const Model& t_model, bool t_continuous_relaxation);
     ~Gurobi() override;
     
     GRBenv* env() { return m_env; }
@@ -105,6 +109,61 @@ public:
     void set_tol_integer(double t_tol_integer) override;
 
     // static Model read_from_file(Env& t_env, const std::string& t_filename);
+};
+
+#define GUROBI_SYM_PTR(name) \
+typedef decltype(::name)* name##_t; \
+name##_t name = nullptr
+
+class idol::Optimizers::Gurobi::DynamicLib {
+    void* m_handle = nullptr;
+
+    static std::string find_library();
+public:
+    GUROBI_SYM_PTR(GRBversion);
+    GUROBI_SYM_PTR(GRBloadenvinternal);
+    GUROBI_SYM_PTR(GRBgetintattr);
+    GUROBI_SYM_PTR(GRBgeterrormsg);
+    GUROBI_SYM_PTR(GRBfreeenv);
+    GUROBI_SYM_PTR(GRBgetenv);
+    GUROBI_SYM_PTR(GRBnewmodel);
+    GUROBI_SYM_PTR(GRBfreemodel);
+    GUROBI_SYM_PTR(GRBaddvar);
+    GUROBI_SYM_PTR(GRBaddconstr);
+    GUROBI_SYM_PTR(GRBaddqconstr);
+    GUROBI_SYM_PTR(GRBsetdblattrelement);
+    GUROBI_SYM_PTR(GRBsetcharattrelement);
+    GUROBI_SYM_PTR(GRBsetobjective);
+    GUROBI_SYM_PTR(GRBdelvars);
+    GUROBI_SYM_PTR(GRBdelconstrs);
+    GUROBI_SYM_PTR(GRBdelsos);
+    GUROBI_SYM_PTR(GRBoptimize);
+    GUROBI_SYM_PTR(GRBwrite);
+    GUROBI_SYM_PTR(GRBsetintattr);
+    GUROBI_SYM_PTR(GRBchgcoeffs);
+    GUROBI_SYM_PTR(GRBupdatemodel);
+    GUROBI_SYM_PTR(GRBsetintparam);
+    GUROBI_SYM_PTR(GRBsetdblparam);
+    GUROBI_SYM_PTR(GRBsetstrparam);
+    GUROBI_SYM_PTR(GRBsetcallbackfunc);
+    GUROBI_SYM_PTR(GRBgetintparam);
+    GUROBI_SYM_PTR(GRBgetdblparam);
+    GUROBI_SYM_PTR(GRBgetstrparam);
+    GUROBI_SYM_PTR(GRBgetdblattr);
+    GUROBI_SYM_PTR(GRBgetdblattrarray);
+    GUROBI_SYM_PTR(GRBgetdblattrelement);
+    GUROBI_SYM_PTR(GRBsetdblattr);
+    GUROBI_SYM_PTR(GRBdelqconstrs);
+    GUROBI_SYM_PTR(GRBaddsos);
+    GUROBI_SYM_PTR(GRBcbget);
+    GUROBI_SYM_PTR(GRBcbsolution);
+    GUROBI_SYM_PTR(GRBcbcut);
+    GUROBI_SYM_PTR(GRBcblazy);
+    GUROBI_SYM_PTR(GRBterminate);
+
+    DynamicLib();
+
+    ~DynamicLib();
 };
 
 #endif //IDOL_OPTIMIZERS_GUROBI_H

@@ -15,7 +15,7 @@
 using namespace Catch::literals;
 using namespace idol;
 
-#ifndef IDOL_USE_GUROBI
+#ifndef ROBI
 namespace idol {
     class Gurobi;
 }

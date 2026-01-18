@@ -301,6 +301,7 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HighsInt.h
         include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HConfig.h
         include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HConst.h
+        include/idol/mixed-integer/optimizers/wrappers/Gurobi/headers/header_gurobi.h
 )
 
 #find_package(OpenMP REQUIRED)
@@ -362,17 +363,6 @@ if (${USE_EIGEN})
     find_package(EIGEN REQUIRED)
     target_link_libraries(idol PUBLIC eigen)
     target_compile_definitions(idol PUBLIC IDOL_USE_EIGEN)
-
-endif()
-
-set(USE_GUROBI OFF CACHE BOOL "Build idol with Gurobi (https://www.gurobi.com)")
-set_DIR_variable(Gurobi)
-if (${USE_GUROBI})
-
-    find_package(GUROBI REQUIRED)
-    target_link_libraries(idol PUBLIC gurobi)
-    target_compile_definitions(idol PUBLIC IDOL_USE_GUROBI)
-    list(APPEND AVAILABLE_MILP_SOLVERS "Gurobi")
 
 endif()
 

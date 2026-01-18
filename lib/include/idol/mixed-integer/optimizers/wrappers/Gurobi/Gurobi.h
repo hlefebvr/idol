@@ -39,18 +39,11 @@ public:
     static Gurobi ContinuousRelaxation();
 
     Gurobi& add_callback(const CallbackFactory& t_cb);
-
     Gurobi& with_lazy_cut(bool t_value);
-
     Gurobi& with_max_n_solution_in_pool(unsigned int t_value);
-
     Gurobi& with_continuous_relaxation_only(bool t_value);
-
     Gurobi& with_external_param(const std::string& t_param, int t_value);
-
     Gurobi& with_external_param(const std::string& t_param, double t_value);
-
-    static Model read_from_file(Env& t_env, const std::string& t_filename);
 
     [[nodiscard]] Gurobi *clone() const override;
 };

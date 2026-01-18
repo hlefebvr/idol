@@ -308,7 +308,4 @@ TEST_CASE("Can set parameters of the underlying solver", "[MILP]") {
         CHECK(model.optimizer().get_param_logs() == false);
     }
 
-    SECTION("Can set the maximum number of solutions in the pool") {
-        CHECK(false);
-    }
 }

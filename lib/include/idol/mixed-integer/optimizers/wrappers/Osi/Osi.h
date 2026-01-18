@@ -14,7 +14,7 @@
 #include <OsiCpxSolverInterface.hpp>
 #endif
 
-#if IDOL_USE_GUROBI
+#if ROBI
 //#include <OsiGrbSolverInterface.hpp>
 #endif
 

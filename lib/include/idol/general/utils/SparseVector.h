@@ -93,6 +93,8 @@ public:
     SparseVector(const SparseVector&) = default;
     SparseVector(SparseVector&&) = default;
 
+    virtual ~SparseVector() = default;
+
     SparseVector& operator=(const SparseVector&) = default;
     SparseVector& operator=(SparseVector&&) noexcept = default;
 

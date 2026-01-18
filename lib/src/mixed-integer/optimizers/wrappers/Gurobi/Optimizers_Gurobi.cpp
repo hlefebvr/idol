@@ -1,39 +1,184 @@
 //
 // Created by henri on 31/01/23.
 //
-#ifdef IDOL_USE_GUROBI
 
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
+#include <dlfcn.h>
+#include <filesystem>
+#include <regex>
+
+#include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
+
 #define GUROBI_CATCH(model, cmd)                                \
 {                                                           \
-    int err = (cmd);                                          \
+    int err = (lib.cmd);                                          \
     if (err) {                                                         \
         throw Exception("Gurobi exception [" + std::to_string(err) +  \
-        "] " + GRBgeterrormsg(GRBgetenv(model)));                   \
+        "] " + lib.GRBgeterrormsg(lib.GRBgetenv(model)));                   \
     }  \
 }
 
-GRBenv* idol::Optimizers::Gurobi::s_global_env = nullptr;
+#define GUROBI_SYM_LOAD(name) {   \
+name = (name##_t) dlsym(m_handle, #name);          \
+const char* err = dlerror();                             \
+if (err)                                                 \
+throw std::runtime_error(std::string("Missing Gurobi symbol ") + #name + ": " + err); \
+}
 
-GRBenv* idol::Optimizers::Gurobi::get_global_env() {
-    if (!s_global_env) {
-        GRBloadenv(&s_global_env, nullptr);
+std::unique_ptr<idol::Optimizers::Gurobi::DynamicLib> idol::Optimizers::Gurobi::m_dynamic_lib;
+
+std::string idol::Optimizers::Gurobi::DynamicLib::find_library() {
+
+    namespace fs = std::filesystem;
+
+    // 1. Environment variable override
+    if (const char* env = std::getenv("IDOL_GUROBI_PATH")) {
+        std::string path(env);
+        if (std::filesystem::exists(path)) {
+            return path;
+        }
+        std::cerr << "WARNING: IDOL_GUROBI_PATH is set, but the file does not exists: " << path << std::endl;
     }
-    return s_global_env;
+
+    // Use GUROBI_HOME
+    std::vector<fs::path> candidates;
+    if (const char* env = std::getenv("GUROBI_HOME")) {
+
+        const std::filesystem::path home(env);
+        std::vector<std::filesystem::path> subdirs = { home / "lib", home / "lib64",home };
+
+        for (const auto& lib_dir : subdirs) {
+            if (!fs::exists(lib_dir) || !fs::is_directory(lib_dir)) {
+                continue;
+            }
+
+#if defined(_WIN32)
+            std::regex pattern(R"(gurobi\d+\.(dll|lib))", std::regex::icase);
+#elif defined(__APPLE__)
+            std::regex pattern(R"(libgurobi\d+\.(dylib|a))", std::regex::icase);
+#else
+            std::regex pattern(R"(libgurobi\d+\.(so|a))", std::regex::icase);
+#endif
+
+            for (const auto& entry : fs::directory_iterator(lib_dir)) {
+                if (!entry.is_regular_file()) {
+                    continue;
+                }
+
+                const auto name = entry.path().filename().string();
+                if (std::regex_match(name, pattern)) {
+                    candidates.push_back(entry.path());
+                }
+            }
+
+        }
+    }
+
+    if (candidates.empty()) {
+        throw std::runtime_error(
+            "Gurobi library not found. "
+            "Please, install Gurobi and set GUROBI_HOME, otherwise set IDOL_GUROBI_PATH to its library file."
+        );
+    }
+
+    // Pick the highest version by parsing the number
+    const auto result = *std::max_element(candidates.begin(), candidates.end(),
+     [](const fs::path& a, const fs::path& b) {
+         std::regex re(R"(\d+)");
+         std::smatch ma, mb;
+
+         // Store filenames in local variables
+         std::string sa = a.filename().string();
+         std::string sb = b.filename().string();
+
+         std::regex_search(sa, ma, re);
+         std::regex_search(sb, mb, re);
+
+         int va = std::stoi(ma.str());
+         int vb = std::stoi(mb.str());
+         return va < vb;
+     });
+
+    return result;
+
+}
+
+idol::Optimizers::Gurobi::DynamicLib::DynamicLib() {
+
+    const auto gurobi_path = find_library();
+
+    m_handle = dlopen(gurobi_path.c_str(), RTLD_LAZY);
+
+    if (!m_handle) {
+        throw Exception("Could not load Gurobi.");
+    }
+
+    GUROBI_SYM_LOAD(GRBversion);
+    GUROBI_SYM_LOAD(GRBloadenvinternal);
+    GUROBI_SYM_LOAD(GRBgetintattr);
+    GUROBI_SYM_LOAD(GRBgeterrormsg);
+    GUROBI_SYM_LOAD(GRBfreeenv);
+    GUROBI_SYM_LOAD(GRBgetenv);
+    GUROBI_SYM_LOAD(GRBnewmodel);
+    GUROBI_SYM_LOAD(GRBfreemodel);
+    GUROBI_SYM_LOAD(GRBaddvar);
+    GUROBI_SYM_LOAD(GRBaddconstr);
+    GUROBI_SYM_LOAD(GRBaddqconstr);
+    GUROBI_SYM_LOAD(GRBsetdblattrelement);
+    GUROBI_SYM_LOAD(GRBsetcharattrelement);
+    GUROBI_SYM_LOAD(GRBsetobjective);
+    GUROBI_SYM_LOAD(GRBdelvars);
+    GUROBI_SYM_LOAD(GRBdelconstrs);
+    GUROBI_SYM_LOAD(GRBdelsos);
+    GUROBI_SYM_LOAD(GRBoptimize);
+    GUROBI_SYM_LOAD(GRBwrite);
+    GUROBI_SYM_LOAD(GRBsetintattr);
+    GUROBI_SYM_LOAD(GRBchgcoeffs);
+    GUROBI_SYM_LOAD(GRBupdatemodel);
+    GUROBI_SYM_LOAD(GRBsetintparam);
+    GUROBI_SYM_LOAD(GRBsetdblparam);
+    GUROBI_SYM_LOAD(GRBsetstrparam);
+    GUROBI_SYM_LOAD(GRBsetcallbackfunc);
+    GUROBI_SYM_LOAD(GRBgetintparam);
+    GUROBI_SYM_LOAD(GRBgetdblparam);
+    GUROBI_SYM_LOAD(GRBgetstrparam);
+    GUROBI_SYM_LOAD(GRBgetdblattr);
+    GUROBI_SYM_LOAD(GRBgetdblattrarray);
+    GUROBI_SYM_LOAD(GRBgetdblattrelement);
+    GUROBI_SYM_LOAD(GRBsetdblattr);
+    GUROBI_SYM_LOAD(GRBdelqconstrs);
+    GUROBI_SYM_LOAD(GRBaddsos);
+    GUROBI_SYM_LOAD(GRBcbget);
+    GUROBI_SYM_LOAD(GRBcbsolution);
+    GUROBI_SYM_LOAD(GRBcbcut);
+    GUROBI_SYM_LOAD(GRBcblazy);
+    GUROBI_SYM_LOAD(GRBterminate);
+
+}
+
+idol::Optimizers::Gurobi::DynamicLib::~DynamicLib() {
+    dlclose(m_handle);
+}
+
+idol::Optimizers::Gurobi::DynamicLib& idol::Optimizers::Gurobi::get_dynamic_lib() {
+    if (!m_dynamic_lib) {
+        m_dynamic_lib = std::make_unique<DynamicLib>();
+    }
+    return *m_dynamic_lib;
 }
 
 char idol::Optimizers::Gurobi::gurobi_var_type(int t_type) {
 
     if (m_continuous_relaxation) {
-        return GRB_CONTINUOUS;
+        return 'C';
     }
 
     switch (t_type) {
-        case Continuous: return GRB_CONTINUOUS;
-        case Integer: return GRB_INTEGER;
-        case Binary: return GRB_BINARY;
+        case Continuous: return 'C';
+        case Integer: return 'I';
+        case Binary: return 'B';
         default:;
     }
     throw Exception("Unsupported variable type: " + std::to_string(t_type));
@@ -41,9 +186,9 @@ char idol::Optimizers::Gurobi::gurobi_var_type(int t_type) {
 
 char idol::Optimizers::Gurobi::gurobi_ctr_type(int t_type) {
     switch (t_type) {
-        case Equal: return GRB_EQUAL;
-        case LessOrEqual: return GRB_LESS_EQUAL;
-        case GreaterOrEqual: return GRB_GREATER_EQUAL;
+        case Equal: return '=';
+        case LessOrEqual: return '<';
+        case GreaterOrEqual: return '>';
         default:;
     }
     throw Exception("Unsupported constraint type: " + std::to_string(t_type));
@@ -51,14 +196,15 @@ char idol::Optimizers::Gurobi::gurobi_ctr_type(int t_type) {
 
 char idol::Optimizers::Gurobi::gurobi_obj_sense(int t_sense) {
     switch (t_sense) {
-        case Minimize: return GRB_MINIMIZE;
-        case Maximize: return GRB_MAXIMIZE;
+        case Minimize: return 1;
+        case Maximize: return -1;
         default:;
     }
     throw Exception("Unsupported objective sense: " + std::to_string(t_sense));
 }
 
 std::pair<idol::SolutionStatus, idol::SolutionReason> idol::Optimizers::Gurobi::gurobi_status(int t_status) const {
+    auto& lib = get_dynamic_lib();
     switch (t_status) {
         case GRB_SUBOPTIMAL: return { SubOptimal, Proved };
         case GRB_OPTIMAL: return { Optimal, Proved };
@@ -89,18 +235,33 @@ double idol::Optimizers::Gurobi::gurobi_numeric(double t_value) {
     return t_value;
 }
 
+GRBenv* idol::Optimizers::Gurobi::get_new_env() {
+    GRBenv* result;
+    auto& lib = get_dynamic_lib();
+    int major, minor, tech;
+    lib.GRBversion(&major, &minor, &tech);
+    lib.GRBloadenvinternal(&result, nullptr, major, minor, tech);
+    return result;
+}
+
 idol::Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxation, GRBenv *t_env)
     : OptimizerWithLazyUpdates(t_model),
       m_continuous_relaxation(t_continuous_relaxation),
       m_env(t_env) {
 
-    GRBnewmodel(t_env, &m_model, "idol-model", 0, nullptr, nullptr, nullptr, nullptr, nullptr);
+    auto& lib = get_dynamic_lib();
+    lib.GRBnewmodel(t_env, &m_model, "idol-model", 0, nullptr, nullptr, nullptr, nullptr, nullptr);
+
+}
+
+idol::Optimizers::Gurobi::Gurobi(const Model& t_model, bool t_continuous_relaxation) : Gurobi(t_model, t_continuous_relaxation, get_new_env()) {
 
 }
 
 idol::Optimizers::Gurobi::~Gurobi() {
     if (m_model) {
-        GRBfreemodel(m_model);
+        auto& lib = get_dynamic_lib();
+        lib.GRBfreemodel(m_model);
         m_model = nullptr;
     }
 }
@@ -122,6 +283,7 @@ void idol::Optimizers::Gurobi::hook_build() {
 
 int idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
     const auto& column = model.get_var_column(t_var);
     const auto lb = model.get_var_lb(t_var);
@@ -173,6 +335,7 @@ int idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
 
 int idol::Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
     const auto& row = model.get_ctr_row(t_ctr);
     const auto type = gurobi_ctr_type(model.get_ctr_type(t_ctr));
@@ -209,6 +372,7 @@ int idol::Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
 
 int idol::Optimizers::Gurobi::hook_add(const idol::QCtr &t_ctr) {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
     const auto& expr = model.get_qctr_expr(t_ctr);
     const auto type = gurobi_ctr_type(model.get_qctr_type(t_ctr));
@@ -266,6 +430,7 @@ int idol::Optimizers::Gurobi::hook_add(const idol::QCtr &t_ctr) {
 
 void idol::Optimizers::Gurobi::hook_update(const Var& t_var) {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
     int index = lazy(t_var).impl();
     const double lb = model.get_var_lb(t_var);
@@ -275,28 +440,29 @@ void idol::Optimizers::Gurobi::hook_update(const Var& t_var) {
 
     GUROBI_CATCH(
         m_model,
-        GRBsetdblattrelement(m_model, GRB_DBL_ATTR_LB, index, gurobi_numeric(lb))
+        GRBsetdblattrelement(m_model, "LB", index, gurobi_numeric(lb))
     )
 
     GUROBI_CATCH(
         m_model,
-        GRBsetdblattrelement(m_model, GRB_DBL_ATTR_UB, index, gurobi_numeric(ub))
+        GRBsetdblattrelement(m_model, "UB", index, gurobi_numeric(ub))
     )
 
     GUROBI_CATCH(
         m_model,
-        GRBsetcharattrelement(m_model, GRB_CHAR_ATTR_VTYPE, index, gurobi_var_type(type))
+        GRBsetcharattrelement(m_model, "VType", index, gurobi_var_type(type))
     )
 
     GUROBI_CATCH(
         m_model,
-        GRBsetdblattrelement(m_model, GRB_DBL_ATTR_OBJ, index, gurobi_numeric(obj))
+        GRBsetdblattrelement(m_model, "Obj", index, gurobi_numeric(obj))
     )
 
 }
 
 void idol::Optimizers::Gurobi::hook_update(const Ctr& t_ctr) {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
     auto index = lazy(t_ctr).impl();
 
@@ -305,18 +471,19 @@ void idol::Optimizers::Gurobi::hook_update(const Ctr& t_ctr) {
 
     GUROBI_CATCH(
         m_model,
-        GRBsetdblattrelement(m_model, GRB_DBL_ATTR_RHS, index, gurobi_numeric(rhs))
+        GRBsetdblattrelement(m_model, "RHS", index, gurobi_numeric(rhs))
     )
 
     GUROBI_CATCH(
         m_model,
-        GRBsetcharattrelement(m_model, GRB_CHAR_ATTR_SENSE, index, gurobi_ctr_type(type))
+        GRBsetcharattrelement(m_model, "Sense", index, gurobi_ctr_type(type))
     )
 
 }
 
 void idol::Optimizers::Gurobi::hook_update_objective() {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
     const auto& objective = model.get_obj_expr();
     const auto sense = gurobi_obj_sense(model.get_obj_sense());
@@ -368,6 +535,7 @@ void idol::Optimizers::Gurobi::hook_update_objective() {
 
 void idol::Optimizers::Gurobi::hook_update_rhs() {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
 
     for (const auto& ctr : model.ctrs()) {
@@ -384,9 +552,10 @@ void idol::Optimizers::Gurobi::hook_update_rhs() {
 
 void idol::Optimizers::Gurobi::hook_remove(const Var& t_var) {
 
+    auto& lib = get_dynamic_lib();
     const auto index = lazy(t_var).impl();
 
-    GRBdelvars(m_model, 1, (int*) &index);
+    GUROBI_CATCH(m_model, GRBdelvars(m_model, 1, (int*) &index));
     for (auto& lazy : lazy_vars()) {
         if (!lazy.has_impl()) { continue; }
         if (lazy.impl() < index) { continue; }
@@ -397,9 +566,10 @@ void idol::Optimizers::Gurobi::hook_remove(const Var& t_var) {
 
 void idol::Optimizers::Gurobi::hook_remove(const Ctr& t_ctr) {
 
+    auto& lib = get_dynamic_lib();
     const auto& index = lazy(t_ctr).impl();
 
-    GRBdelconstrs(m_model, 1, (int*) &index);
+    GUROBI_CATCH(m_model, GRBdelconstrs(m_model, 1, (int*) &index));
     for (auto& lazy : lazy_ctrs()) {
         if (!lazy.has_impl()) { continue; }
         if (lazy.impl() < index) { continue; }
@@ -411,6 +581,7 @@ void idol::Optimizers::Gurobi::hook_remove(const Ctr& t_ctr) {
 void idol::Optimizers::Gurobi::hook_optimize() {
     set_solution_index(0);
 
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
         GRBoptimize(m_model)
@@ -419,6 +590,7 @@ void idol::Optimizers::Gurobi::hook_optimize() {
 }
 
 void idol::Optimizers::Gurobi::hook_write(const std::string &t_name) {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
         GRBwrite(m_model, t_name.c_str())
@@ -426,6 +598,7 @@ void idol::Optimizers::Gurobi::hook_write(const std::string &t_name) {
 }
 
 void idol::Optimizers::Gurobi::hook_update_objective_sense() {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
         GRBsetintattr(
@@ -438,6 +611,7 @@ void idol::Optimizers::Gurobi::hook_update_objective_sense() {
 
 void idol::Optimizers::Gurobi::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
 
+    auto& lib = get_dynamic_lib();
     const auto var_impl = lazy(t_var).impl();
     const auto ctr_impl = lazy(t_ctr).impl();
 
@@ -455,6 +629,7 @@ void idol::Optimizers::Gurobi::hook_update_matrix(const Ctr &t_ctr, const Var &t
 }
 
 void idol::Optimizers::Gurobi::hook_update() {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
         GRBupdatemodel(m_model)
@@ -462,75 +637,95 @@ void idol::Optimizers::Gurobi::hook_update() {
 }
 
 void idol::Optimizers::Gurobi::set_param_time_limit(double t_time_limit) {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetdblparam(GRBgetenv(m_model), "TimeLimit", t_time_limit)
+        GRBsetdblparam(lib.GRBgetenv(m_model), "TimeLimit", t_time_limit)
     )
     Optimizer::set_param_time_limit(t_time_limit);
 }
 
 void idol::Optimizers::Gurobi::set_param_threads(unsigned int t_thread_limit) {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetintparam(GRBgetenv(m_model), "Threads", (int) t_thread_limit)
+        GRBsetintparam(lib.GRBgetenv(m_model), "Threads", (int) t_thread_limit)
     )
     Optimizer::set_param_threads(t_thread_limit);
 }
 
 void idol::Optimizers::Gurobi::set_param_best_obj_stop(double t_best_obj_stop) {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetdblparam(GRBgetenv(m_model), "BestObjStop", t_best_obj_stop)
+        GRBsetdblparam(lib.GRBgetenv(m_model), "BestObjStop", t_best_obj_stop)
     )
     Optimizer::set_param_best_obj_stop(t_best_obj_stop);
 }
 
 void idol::Optimizers::Gurobi::set_param_best_bound_stop(double t_best_bound_stop) {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetdblparam(GRBgetenv(m_model), "BestBdStop", t_best_bound_stop)
+        GRBsetdblparam(lib.GRBgetenv(m_model), "BestBdStop", t_best_bound_stop)
     )
     Optimizer::set_param_best_bound_stop(t_best_bound_stop);
 }
 
 void idol::Optimizers::Gurobi::set_param_presolve(bool t_value) {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetintparam(GRBgetenv(m_model), "Presolve", t_value)
+        GRBsetintparam(lib.GRBgetenv(m_model), "Presolve", t_value)
     )
     Optimizer::set_param_presolve(t_value);
 }
 
 void idol::Optimizers::Gurobi::set_param_infeasible_or_unbounded_info(bool t_value) {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetintparam(GRBgetenv(m_model), "InfUnbdInfo", t_value)
+        GRBsetintparam(lib.GRBgetenv(m_model), "InfUnbdInfo", t_value)
     )
     Optimizer::set_param_infeasible_or_unbounded_info(t_value);
 }
 
+int idol::impl::grb_callback(GRBmodel *t_model, void *t_cbdata, int t_where, void *t_usrdata) {
+
+    auto* cb = static_cast<idol::GurobiCallbackI*>(t_usrdata);
+
+    cb->m_where = t_where;
+    cb->m_cbdata = t_cbdata;
+
+    cb->call();
+
+    cb->m_where = 0;
+    cb->m_cbdata = nullptr;
+
+    return 0;
+}
+
 void idol::Optimizers::Gurobi::add_callback(Callback *t_ptr_to_callback) {
 
-    throw Exception("Not implemented."); // TODO
-
-    /*
     if (!m_gurobi_callback) {
+        auto& lib = get_dynamic_lib();
         m_gurobi_callback = std::make_unique<GurobiCallbackI>(*this);
-        m_model.setCallback(m_gurobi_callback.get());
+        lib.GRBsetcallbackfunc(m_model, &idol::impl::grb_callback, m_gurobi_callback.get());
     }
 
     m_gurobi_callback->add_callback(t_ptr_to_callback);
-    */
 }
 
 void idol::Optimizers::Gurobi::set_lazy_cut(bool t_value) {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetintparam(GRBgetenv(m_model), GRB_INT_PAR_LAZYCONSTRAINTS, t_value)
+        GRBsetintparam(lib.GRBgetenv(m_model), "LazyConstraints", t_value)
     )
 }
 
 idol::SolutionStatus idol::Optimizers::Gurobi::get_status() const {
+    auto& lib = get_dynamic_lib();
     int status = 0;
     GUROBI_CATCH(
         m_model,
@@ -541,6 +736,7 @@ idol::SolutionStatus idol::Optimizers::Gurobi::get_status() const {
 }
 
 idol::SolutionReason idol::Optimizers::Gurobi::get_reason() const {
+    auto& lib = get_dynamic_lib();
     int status = 0;
     GUROBI_CATCH(
         m_model,
@@ -562,10 +758,12 @@ double idol::Optimizers::Gurobi::get_best_obj() const {
         return +Inf;
     }
 
+    auto& lib = get_dynamic_lib();
+
     int solution_index = 0;
     GUROBI_CATCH(
         m_model,
-        GRBgetintparam(GRBgetenv(m_model), "SolutionNumber", &solution_index)
+        GRBgetintparam(lib.GRBgetenv(m_model), "SolutionNumber", &solution_index)
     )
 
     if (solution_index == 0) {
@@ -598,10 +796,12 @@ double idol::Optimizers::Gurobi::get_best_bound() const {
         return +Inf;
     }
 
+    auto& lib = get_dynamic_lib();
+
     int solution_index = 0;
     GUROBI_CATCH(
         m_model,
-        GRBgetintparam(GRBgetenv(m_model), "SolutionNumber", &solution_index)
+        GRBgetintparam(lib.GRBgetenv(m_model), "SolutionNumber", &solution_index)
     )
 
     if (solution_index == 0) {
@@ -628,13 +828,14 @@ double idol::Optimizers::Gurobi::get_var_primal(const Var &t_var) const {
         throw Exception("Primal solution not available.");
     }
 
+    auto& lib = get_dynamic_lib();
     auto index = lazy(t_var).impl();
     double result = 0.0;
 
     int solution_index = 0;
     GUROBI_CATCH(
         m_model,
-        GRBgetintparam(GRBgetenv(m_model), "SolutionNumber", &solution_index)
+        GRBgetintparam(lib.GRBgetenv(m_model), "SolutionNumber", &solution_index)
     )
 
     if (solution_index == 0) {
@@ -657,6 +858,7 @@ double idol::Optimizers::Gurobi::get_var_ray(const Var &t_var) const {
         throw Exception("Ray not available.");
     }
 
+    auto& lib = get_dynamic_lib();
     int index = lazy(t_var).impl();
     double result = 0.0;
 
@@ -674,6 +876,7 @@ double idol::Optimizers::Gurobi::get_ctr_dual(const Ctr &t_ctr) const {
         throw Exception("Dual solution not available.");
     }
 
+    auto& lib = get_dynamic_lib();
     int index = lazy(t_ctr).impl();
     double result = 0.0;
 
@@ -691,6 +894,7 @@ double idol::Optimizers::Gurobi::get_ctr_farkas(const Ctr &t_ctr) const {
         throw Exception("Farkas solution not available.");
     }
 
+    auto& lib = get_dynamic_lib();
     int index = lazy(t_ctr).impl();
     double result = 0.0;
 
@@ -716,6 +920,7 @@ unsigned int idol::Optimizers::Gurobi::get_n_solutions() const {
         return 0;
     }
 
+    auto& lib = get_dynamic_lib();
     int solution_index = 0;
 
     GUROBI_CATCH(
@@ -728,89 +933,100 @@ unsigned int idol::Optimizers::Gurobi::get_n_solutions() const {
 
 unsigned int idol::Optimizers::Gurobi::get_solution_index() const {
     int result = 0;
+    auto& lib = get_dynamic_lib();
 
     GUROBI_CATCH(
         m_model,
-        GRBgetintparam(GRBgetenv(m_model), "SolutionNumber", &result)
+        GRBgetintparam(lib.GRBgetenv(m_model), "SolutionNumber", &result)
     )
 
     return result;
 }
 
 void idol::Optimizers::Gurobi::set_solution_index(unsigned int t_index) {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetintparam(GRBgetenv(m_model), "SolutionNumber", (int) t_index)
+        GRBsetintparam(lib.GRBgetenv(m_model), "SolutionNumber", (int) t_index)
     )
 }
 
 void idol::Optimizers::Gurobi::set_max_n_solution_in_pool(unsigned int t_value) {
+    auto& lib = get_dynamic_lib();
     int value = std::min<int>(2000000000, (int) t_value);
     GUROBI_CATCH(
         m_model,
-        GRBsetintparam(GRBgetenv(m_model), GRB_INT_PAR_POOLSOLUTIONS, value)
+        GRBsetintparam(lib.GRBgetenv(m_model), "PoolSolutions", value)
     )
 }
 
 void idol::Optimizers::Gurobi::set_param_logs(bool t_value) {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetintparam(GRBgetenv(m_model), "OutputFlag", t_value ? 1 : 0)
+        GRBsetintparam(lib.GRBgetenv(m_model), "OutputFlag", t_value ? 1 : 0)
     )
     Optimizer::set_param_logs(t_value);
 }
 
 void idol::Optimizers::Gurobi::set_param(const std::string& t_param, int t_value) {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetintparam(GRBgetenv(m_model), t_param.c_str(), t_value)
+        GRBsetintparam(lib.GRBgetenv(m_model), t_param.c_str(), t_value)
     )
 }
 
 void idol::Optimizers::Gurobi::set_param(const std::string& t_param, double t_value) {
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetintparam(GRBgetenv(m_model), t_param.c_str(), t_value)
+        GRBsetintparam(lib.GRBgetenv(m_model), t_param.c_str(), t_value)
     )
 }
 
 void idol::Optimizers::Gurobi::set_tol_mip_relative_gap(double t_relative_gap_tolerance) {
     Optimizer::set_tol_mip_relative_gap(t_relative_gap_tolerance);
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetdblparam(GRBgetenv(m_model), "MIPGap", t_relative_gap_tolerance)
+        GRBsetdblparam(lib.GRBgetenv(m_model), "MIPGap", t_relative_gap_tolerance)
     )
 }
 
 void idol::Optimizers::Gurobi::set_tol_mip_absolute_gap(double t_absolute_gap_tolerance) {
     Optimizer::set_tol_mip_absolute_gap(t_absolute_gap_tolerance);
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetdblparam(GRBgetenv(m_model), "MIPGapAbs", t_absolute_gap_tolerance)
+        GRBsetdblparam(lib.GRBgetenv(m_model), "MIPGapAbs", t_absolute_gap_tolerance)
     )
 }
 
 void idol::Optimizers::Gurobi::set_tol_feasibility(double t_tol_feasibility) {
     Optimizer::set_tol_feasibility(t_tol_feasibility);
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetdblparam(GRBgetenv(m_model), "FeasibilityTol", t_tol_feasibility)
+        GRBsetdblparam(lib.GRBgetenv(m_model), "FeasibilityTol", t_tol_feasibility)
     )
 }
 
 void idol::Optimizers::Gurobi::set_tol_optimality(double t_tol_optimality) {
     Optimizer::set_tol_optimality(t_tol_optimality);
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetdblparam(GRBgetenv(m_model), "OptimalityTol", t_tol_optimality)
+        GRBsetdblparam(lib.GRBgetenv(m_model), "OptimalityTol", t_tol_optimality)
     )
 }
 
 void idol::Optimizers::Gurobi::set_tol_integer(double t_tol_integer) {
     Optimizer::set_tol_integer(t_tol_integer);
+    auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetdblparam(GRBgetenv(m_model), "IntFeasTol", t_tol_integer)
+        GRBsetdblparam(lib.GRBgetenv(m_model), "IntFeasTol", t_tol_integer)
     )
 }
 
@@ -922,9 +1138,9 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env *t_env, const std
 idol::VarType idol::Optimizers::Gurobi::idol_var_type(char t_type) {
 
     switch (t_type) {
-        case GRB_INTEGER: return Integer;
-        case GRB_BINARY: return Binary;
-        case GRB_CONTINUOUS: return Continuous;
+        case 'I': return Integer;
+        case 'B': return Binary;
+        case 'C': return Continuous;
         default:;
     }
 
@@ -934,9 +1150,9 @@ idol::VarType idol::Optimizers::Gurobi::idol_var_type(char t_type) {
 idol::CtrType idol::Optimizers::Gurobi::idol_ctr_type(char t_type) {
 
     switch (t_type) {
-        case GRB_LESS_EQUAL: return LessOrEqual;
-        case GRB_GREATER_EQUAL: return GreaterOrEqual;
-        case GRB_EQUAL: return Equal;
+        case '<': return LessOrEqual;
+        case '>': return GreaterOrEqual;
+        case '=': return Equal;
         default:;
     }
 
@@ -946,8 +1162,8 @@ idol::CtrType idol::Optimizers::Gurobi::idol_ctr_type(char t_type) {
 idol::ObjectiveSense idol::Optimizers::Gurobi::idol_obj_sense(int t_sense) {
 
     switch (t_sense) {
-        case GRB_MINIMIZE: return Minimize;
-        case GRB_MAXIMIZE: return Maximize;
+        case 1: return Minimize;
+        case -1: return Maximize;
         default:;
     }
 
@@ -955,6 +1171,7 @@ idol::ObjectiveSense idol::Optimizers::Gurobi::idol_obj_sense(int t_sense) {
 }
 
 void idol::Optimizers::Gurobi::update_objective_constant() {
+    auto& lib = get_dynamic_lib();
     const double constant = parent().get_obj_expr().affine().constant();
     GUROBI_CATCH(
         m_model,
@@ -968,12 +1185,13 @@ double idol::Optimizers::Gurobi::get_var_reduced_cost(const idol::Var &t_var) co
         throw Exception("Reduced cost not available.");
     }
 
-    int index = lazy(t_var).impl(); // variable index in C API
+    auto& lib = get_dynamic_lib();
+    int index = lazy(t_var).impl();
     double result = 0.0;
 
     GUROBI_CATCH(
         m_model,
-        GRBgetdblattrelement(m_model, GRB_DBL_ATTR_RC, index, &result)
+        GRBgetdblattrelement(m_model, "RC", index, &result)
     )
 
     return result;
@@ -981,9 +1199,10 @@ double idol::Optimizers::Gurobi::get_var_reduced_cost(const idol::Var &t_var) co
 
 void idol::Optimizers::Gurobi::hook_remove(const idol::QCtr &t_ctr) {
 
+    auto& lib = get_dynamic_lib();
     const auto index = lazy(t_ctr).impl();
 
-    GRBdelqconstrs(m_model, 1, (int*) &index);
+    lib.GRBdelqconstrs(m_model, 1, (int*) &index);
     for (auto& lazy : lazy_vars()) {
         if (!lazy.has_impl()) { continue; }
         if (lazy.impl() < index) { continue; }
@@ -994,6 +1213,7 @@ void idol::Optimizers::Gurobi::hook_remove(const idol::QCtr &t_ctr) {
 
 int idol::Optimizers::Gurobi::hook_add(const idol::SOSCtr &t_ctr) {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
     const auto src_vars = model.get_sosctr_vars(t_ctr);
     const auto n = src_vars.size();
@@ -1027,14 +1247,13 @@ int idol::Optimizers::Gurobi::hook_add(const idol::SOSCtr &t_ctr) {
 
 void idol::Optimizers::Gurobi::hook_remove(const idol::SOSCtr &t_ctr) {
 
+    auto& lib = get_dynamic_lib();
     const auto index = lazy(t_ctr).impl();
 
-    GRBdelsos(m_model, 1, (int*) &index);
+    lib.GRBdelsos(m_model, 1, (int*) &index);
     for (auto& lazy : lazy_vars()) {
         if (!lazy.has_impl()) { continue; }
         if (lazy.impl() < index) { continue; }
         lazy.impl()--;
     }
 }
-
-#endif
