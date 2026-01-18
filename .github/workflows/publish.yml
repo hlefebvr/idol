@@ -35,7 +35,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: idol-${{ github.ref_name }}-macos.tar.gz
-          body: "Prebuilt idol ${{IDOL_VERSION}} for macOS"
+          body: Prebuilt idol ${IDOL_VERSION} for macOS
           files: idol-${{ github.ref_name }}-macos.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
