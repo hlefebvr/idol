@@ -1,0 +1,194 @@
+#top {
+    background-color: #1f5c88;
+    color: white !important;
+}
+
+#titlearea, #main-menu > li > a:first-child {
+    color: white !important;
+}
+
+#cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    /* grid-template-columns: auto auto auto; */
+}
+
+#cards .card {
+    display: block;
+    width: 230px;
+    padding:10px;
+    color: white !important;
+    margin-bottom: 10px;
+
+    background-color: #1f5c88;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+    appearance: none;
+
+    transition: 0.2s ease-in-out;
+
+    cursor: pointer;
+}
+
+#cards .card .frame {
+    margin: 5px;
+    margin-top: 10px;
+    background: white;
+    text-align: center;
+    height: 160px;
+    padding: 20px;
+    border: 1px solid lightgray;
+}
+
+#cards .card img {
+    max-height: 160px;
+    max-width: 100%;
+    display: block;
+    margin: auto;
+    background-color: white !important;
+}
+
+#cards a {
+    color: white !important;
+    font-size : 16px !important;
+    text-align: justify !important;
+}
+
+#cards a:hover {
+    text-decoration: none;
+}
+
+#cards .card:hover {
+    transform: scale(1.025);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6, .title {
+    font-weight:300;
+    text-align: left;
+    font-family:
+    "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif !important;
+}
+
+.my-button {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 0.3em 1em;
+    margin: 5px;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.5;
+    color: gray;
+    text-decoration: none;
+    vertical-align: baseline;
+    cursor: pointer;
+    background-color: #f7f7f7;
+    border-width: 0;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+    appearance: none;
+    font-size: 1.2em;
+}
+
+.my-button:hover {
+    background-color: #f5f5f5;
+    text-decoration: none;
+}
+
+.my-button:visited {
+    color: gray;
+}
+
+.my-button[href="examples.html"] {
+    background-color: #1f883d;
+    color: white !important;
+}
+
+#get-started:hover {
+    background-color: #1c8139;
+}
+
+.admonition {
+    border-left:4px solid #6ab0de;
+    border-radius:4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+    background-color: rgb(239, 239, 239) !important;
+}
+
+.caption .caption-text {
+    display: none;
+}
+
+.hint {
+    border-left:4px solid #1abc9c;
+}
+
+.eqno {
+    float:right;
+}
+
+.test-report-table-section, .test-report-table-exception {
+    width: 480px;
+}
+
+.test-report-table-exception {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+/* Define background colors for each progress range */
+.progress-NA {
+    text-align: center;
+    width: 40px;
+}
+
+.progress-0 {
+    background-color: rgb(255, 0, 0);  /* Red */
+    color: white;
+    text-align: center;
+    width: 40px;
+}
+
+.progress-25 {
+    background-color: rgb(255, 165, 0);  /* Orange */
+    text-align: center;
+    width: 40px;
+}
+
+.progress-50 {
+    background-color: rgb(255, 255, 0);  /* Yellow */
+    text-align: center;
+    width: 40px;
+}
+
+.progress-75 {
+    background-color: rgb(144, 238, 144);  /* Light Green */
+    text-align: center;
+    width: 40px;
+}
+
+.progress-100 {
+    background-color: rgb(0, 128, 0);  /* Dark Green (for 100%) */
+    color: white;
+    text-align: center;
+    width: 40px;
+}
+
+@media (max-width: 767px) {
+
+    body {
+        font-size: 16px;
+    }
+
+    #cards > a {
+        width: 95%;
+    }
+
+    .body-header {
+        display: none;
+    }
+
+}

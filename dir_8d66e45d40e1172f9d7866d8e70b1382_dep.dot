@@ -1,0 +1,18 @@
+digraph "/home/runner/work/idol/idol/lib/include/idol/mixed-integer/optimizers/dantzig-wolfe"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_527686a1d7c084cc400f3ed42c08b3ea {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", label="optimizers", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_527686a1d7c084cc400f3ed42c08b3ea.html",tooltip=""]
+  subgraph clusterdir_8d66e45d40e1172f9d7866d8e70b1382 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", label="", fontname=Helvetica,fontsize=10 style="filled,bold", URL="dir_8d66e45d40e1172f9d7866d8e70b1382.html",tooltip=""]
+    dir_8d66e45d40e1172f9d7866d8e70b1382 [shape=plaintext, label="dantzig-wolfe"];
+  dir_edb65619399f7285655f8e60d24c912f [label="infeasibility-strategies", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_edb65619399f7285655f8e60d24c912f.html",tooltip=""];
+  dir_76f6d11a12661c4e95c83d1f220cda96 [label="logs", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_76f6d11a12661c4e95c83d1f220cda96.html",tooltip=""];
+  dir_64bb53bb5f8ee5d6ab76f725651f3820 [label="stabilization", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_64bb53bb5f8ee5d6ab76f725651f3820.html",tooltip=""];
+  }
+  }
+}

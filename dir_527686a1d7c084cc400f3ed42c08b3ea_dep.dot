@@ -1,0 +1,20 @@
+digraph "/home/runner/work/idol/idol/lib/include/idol/mixed-integer/optimizers"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_4482282f8839bf6b35b22dc1c43d38a3 {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", label="mixed-integer", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_4482282f8839bf6b35b22dc1c43d38a3.html",tooltip=""]
+  subgraph clusterdir_527686a1d7c084cc400f3ed42c08b3ea {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", label="", fontname=Helvetica,fontsize=10 style="filled,bold", URL="dir_527686a1d7c084cc400f3ed42c08b3ea.html",tooltip=""]
+    dir_527686a1d7c084cc400f3ed42c08b3ea [shape=plaintext, label="optimizers"];
+  dir_7488d07902afc48715685d6e9163d158 [label="branch-and-bound", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_7488d07902afc48715685d6e9163d158.html",tooltip=""];
+  dir_d27c1128c7f06280af7a6673f05f7f23 [label="callbacks", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_d27c1128c7f06280af7a6673f05f7f23.html",tooltip=""];
+  dir_8d66e45d40e1172f9d7866d8e70b1382 [label="dantzig-wolfe", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_8d66e45d40e1172f9d7866d8e70b1382.html",tooltip=""];
+  dir_49506f371578f6088f4c79eabf540f03 [label="padm", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_49506f371578f6088f4c79eabf540f03.html",tooltip=""];
+  dir_864648c1b2bc9fd24dce6a72aa8aaa25 [label="wrappers", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_864648c1b2bc9fd24dce6a72aa8aaa25.html",tooltip=""];
+  }
+  }
+}

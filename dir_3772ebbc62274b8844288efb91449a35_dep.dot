@@ -1,0 +1,16 @@
+digraph "/home/runner/work/idol/idol/lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_864648c1b2bc9fd24dce6a72aa8aaa25 {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", label="wrappers", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_864648c1b2bc9fd24dce6a72aa8aaa25.html",tooltip=""]
+  subgraph clusterdir_3772ebbc62274b8844288efb91449a35 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", label="", fontname=Helvetica,fontsize=10 style="filled,bold", URL="dir_3772ebbc62274b8844288efb91449a35.html",tooltip=""]
+    dir_3772ebbc62274b8844288efb91449a35 [shape=plaintext, label="Gurobi"];
+  dir_0e662e6d024a9fe240a0dbbd4d28151a [label="headers", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_0e662e6d024a9fe240a0dbbd4d28151a.html",tooltip=""];
+  }
+  }
+}

@@ -1,0 +1,21 @@
+digraph "/home/runner/work/idol/idol/lib/include/idol/robust/optimizers"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_cd72bdc23c1e22881e96226b354bb7a8 {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", label="robust", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_cd72bdc23c1e22881e96226b354bb7a8.html",tooltip=""]
+  subgraph clusterdir_0e478c37bce02c229957c915596b2ec0 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", label="", fontname=Helvetica,fontsize=10 style="filled,bold", URL="dir_0e478c37bce02c229957c915596b2ec0.html",tooltip=""]
+    dir_0e478c37bce02c229957c915596b2ec0 [shape=plaintext, label="optimizers"];
+  dir_1f6a00be805cf28011a83dda57a0e2a2 [label="affine-decision-rule", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_1f6a00be805cf28011a83dda57a0e2a2.html",tooltip=""];
+  dir_646d710952debbf492ae78fc14116ff4 [label="benders", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_646d710952debbf492ae78fc14116ff4.html",tooltip=""];
+  dir_57aae8c9aac0e31abfd6a5b90ee29d1f [label="column-and-constraint\l-generation", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_57aae8c9aac0e31abfd6a5b90ee29d1f.html",tooltip=""];
+  dir_e14a2ee16a79c4e807d3d62ac831beb9 [label="critical-value-column\l-and-constraint-generation\l-algorithm", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_e14a2ee16a79c4e807d3d62ac831beb9.html",tooltip=""];
+  dir_3ae0ef1fbbd45f9389c4bf36058f2845 [label="deterministic", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_3ae0ef1fbbd45f9389c4bf36058f2845.html",tooltip=""];
+  dir_4d0bfb5247340c5584c97ac5d5cf5acf [label="KAdaptabilityBranchAndBound", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_4d0bfb5247340c5584c97ac5d5cf5acf.html",tooltip=""];
+  }
+  }
+}
