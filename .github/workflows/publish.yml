@@ -35,7 +35,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: idol-${{ github.ref_name }}-macos.tar.gz
-          body: Prebuilt idol ${IDOL_VERSION} for macOS
+          body: "Prebuilt idol ${env.IDOL_VERSION} for macOS"
           files: idol-${{ github.ref_name }}-macos.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,10 +44,9 @@ jobs:
         env:
           TAP_REPO: hlefebvr/homebrew-idol
           TAP_BRANCH: main
-          IDOL_VERSION: ${{ github.ref_name }}
         run: |
           # Clone tap repo
-          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${TAP_REPO}.git tap
+          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/hlefebvr/homebrew-idol.git tap
           cd tap
 
           # Compute SHA256 of the new tarball
