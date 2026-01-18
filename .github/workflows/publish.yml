@@ -35,7 +35,34 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: idol-${{ github.ref_name }}-macos.tar.gz
-          body: "Prebuilt idol ${IDOL_VERSION} for macOS"
+          body: "Prebuilt idol ${{IDOL_VERSION}} for macOS"
           files: idol-${{ github.ref_name }}-macos.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Homebrew Formula
+        env:
+          TAP_REPO: hlefebvr/homebrew-idol
+          TAP_BRANCH: main
+          IDOL_VERSION: ${{ github.ref_name }}
+        run: |
+          # Clone tap repo
+          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${TAP_REPO}.git tap
+          cd tap
+
+          # Compute SHA256 of the new tarball
+          curl -L -o idol-${IDOL_VERSION}-macos.tar.gz \
+               https://github.com/hlefebvr/idol/releases/download/${IDOL_VERSION}/idol-${IDOL_VERSION}-macos.tar.gz
+          sha=$(shasum -a 256 idol-${IDOL_VERSION}-macos.tar.gz | awk '{print $1}')
+
+          # Update idol.rb formula
+          formula="Formula/idol.rb"
+          sed -i '' -E "/on_macos do/,/end/ s|url \".*\"|url \"https://github.com/hlefebvr/idol/releases/download/${IDOL_VERSION}/${MACOS_TARBALL}\"|" $FORMULA
+          sed -i '' -E "/on_macos do/,/end/ s|sha256 \".*\"|sha256 \"${MACOS_SHA}\"|" $FORMULA
+
+          # Commit & push
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add $formula
+          git commit -m "Update formula for ${IDOL_VERSION}"
+          git push origin $TAP_BRANCH
