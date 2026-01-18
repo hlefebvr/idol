@@ -307,6 +307,8 @@ add_library(idol STATIC
 #find_package(OpenMP REQUIRED)
 #target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)
 
+target_compile_definitions(idol PUBLIC IDOL_VERSION="${PROJECT_VERSION}")
+
 function(set_DIR_variable PREFIX)
     string(TOUPPER "${PREFIX}" PREFIX_UPPER)
     set(VAR_NAME "${PREFIX_UPPER}_DIR")
