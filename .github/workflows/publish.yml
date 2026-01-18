@@ -44,20 +44,25 @@ jobs:
         env:
           TAP_REPO: hlefebvr/homebrew-idol
           TAP_BRANCH: main
+          IDOL_VERSION: ${{ github.ref_name }}
         run: |
           # Clone tap repo
-          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/hlefebvr/homebrew-idol.git tap
+          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/${TAP_REPO}.git tap
           cd tap
 
-          # Compute SHA256 of the new tarball
+          # Download tarball and compute SHA256
           curl -L -o idol-${IDOL_VERSION}-macos.tar.gz \
                https://github.com/hlefebvr/idol/releases/download/${IDOL_VERSION}/idol-${IDOL_VERSION}-macos.tar.gz
           sha=$(shasum -a 256 idol-${IDOL_VERSION}-macos.tar.gz | awk '{print $1}')
 
-          # Update idol.rb formula
+          # Assign variables for sed
+          MACOS_TARBALL="idol-${IDOL_VERSION}-macos.tar.gz"
+          MACOS_SHA="$sha"
           formula="Formula/idol.rb"
-          sed -i '' -E "/on_macos do/,/end/ s|url \".*\"|url \"https://github.com/hlefebvr/idol/releases/download/${IDOL_VERSION}/${MACOS_TARBALL}\"|" Formula/idol.rb
-          sed -i '' -E "/on_macos do/,/end/ s|sha256 \".*\"|sha256 \"${MACOS_SHA}\"|" Formula/idol.rb  
+
+          # Update idol.rb formula
+          sed -i '' -E "/on_macos do/,/end/ s|url \".*\"|url \"https://github.com/hlefebvr/idol/releases/download/${IDOL_VERSION}/${MACOS_TARBALL}\"|" $formula
+          sed -i '' -E "/on_macos do/,/end/ s|sha256 \".*\"|sha256 \"${MACOS_SHA}\"|" $formula
 
           # Commit & push
           git config user.name "github-actions[bot]"
