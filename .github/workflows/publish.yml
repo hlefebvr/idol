@@ -57,10 +57,10 @@ jobs:
 
           # Update idol.rb formula
           formula="Formula/idol.rb"
-          sed -i '' -E "/on_macos do/,/end/ s|url \".*\"|url \"https://github.com/hlefebvr/idol/releases/download/${IDOL_VERSION}/${MACOS_TARBALL}\"|" $FORMULA
-          sed -i '' -E "/on_macos do/,/end/ s|sha256 \".*\"|sha256 \"${MACOS_SHA}\"|" $FORMULA
+          sed -i '' -E "/on_macos do/,/end/ s|url \".*\"|url \"https://github.com/hlefebvr/idol/releases/download/${IDOL_VERSION}/${MACOS_TARBALL}\"|" Formula/idol.rb
+          sed -i '' -E "/on_macos do/,/end/ s|sha256 \".*\"|sha256 \"${MACOS_SHA}\"|" Formula/idol.rb  
 
-          # Commit & push
+  # Commit & push
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add $formula
