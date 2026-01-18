@@ -1,0 +1,41 @@
+name: Build prebuilt idol
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+    branches:
+      - main
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    env:
+      IDOL_VERSION: ${{ github.ref_name }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure & Build
+        run: |
+          mkdir -p build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/install
+          make -j$(sysctl -n hw.ncpu)
+          make install
+
+      - name: Package prebuilt tarball
+        run: |
+          cd build/install
+          tar czf ../../idol-${IDOL_VERSION}-macos.tar.gz bin lib include
+          cd ../..
+          ls -l idol-${IDOL_VERSION}-macos.tar.gz
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: idol-${{ github.ref_name }}-macos.tar.gz
+          body: "Prebuilt idol ${IDOL_VERSION} for macOS"
+          files: idol-${{ github.ref_name }}-macos.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
