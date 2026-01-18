@@ -59,12 +59,12 @@ jobs:
           MACOS_TARBALL="idol-${IDOL_VERSION}-macos.tar.gz"
           MACOS_SHA="$sha"
           formula="Formula/idol.rb"
-          IDOL_VERSION=$(cat ../build/IDOL_VERSION)
+          IDOL_PROJECT_VERSION=$(cat ../build/IDOL_VERSION)
 
           # Update idol.rb formula
           sed -i '' -E "/on_macos do/,/end/ s|url \".*\"|url \"https://github.com/hlefebvr/idol/releases/download/${IDOL_VERSION}/${MACOS_TARBALL}\"|" $formula
           sed -i '' -E "/on_macos do/,/end/ s|sha256 \".*\"|sha256 \"${MACOS_SHA}\"|" $formula
-          sed -i '' -E "/on_macos do/,/end/ s|version \".*\"|version \"${IDOL_VERSION}\"|" "$formula"
+          sed -i '' -E "/on_macos do/,/end/ s|version \".*\"|version \"${IDOL_PROJECT_VERSION}\"|" "$formula"
 
           # Commit & push
           git config user.name "github-actions[bot]"
