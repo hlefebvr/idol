@@ -535,11 +535,10 @@ install(EXPORT idol_targets
 
 configure_file(idolConfig.cmake.in idolConfig.cmake @ONLY)
 
-file(GLOB FIND_MODULES "${idol_SOURCE_DIR}/cmake/**/Find*.cmake")
+#file(GLOB FIND_MODULES "${idol_SOURCE_DIR}/cmake/**/Find*.cmake")
 install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/idolConfig.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/idolConfigVersion.cmake"
         "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h"
-        "${FIND_MODULES}"
         DESTINATION lib/cmake/idol
         )
