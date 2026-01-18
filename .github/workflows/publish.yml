@@ -18,10 +18,10 @@ jobs:
         run: |
           mkdir -p build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/install
-          make # -j$(sysctl -n hw.ncpu)
+          make -j$(sysctl -n hw.ncpu)
 
       - name: Install
-        run: make install
+        run: cd build && make install
 
       - name: Package prebuilt tarball
         run: |
