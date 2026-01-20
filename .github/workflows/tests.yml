@@ -244,8 +244,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install setuptools sphinx breathe sphinx-sitemap sphinx-press-theme sphinx-copybutton sphinx-mermaid sphinxcontrib-bibtex
-          sudo apt-get install doxygen
+          #pip install setuptools sphinx breathe sphinx-sitemap sphinx-press-theme sphinx-copybutton sphinx-mermaid sphinxcontrib-bibtex
+          sudo apt-get install doxygen graphviz
 
       - name: CMake
         run: |
