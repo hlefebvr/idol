@@ -8,6 +8,8 @@
 #include <dlfcn.h>
 #include <filesystem>
 
+#include "idol/general/utils/SilentMode.h"
+
 #define GLPK_SYM_LOAD(name) {   \
 name = (name##_t) dlsym(m_handle, #name);          \
 const char* err = dlerror();                             \
@@ -879,6 +881,7 @@ void idol::Optimizers::GLPK::set_solution_index(unsigned int t_index) {
 idol::Model idol::Optimizers::GLPK::read_from_file(idol::Env &t_env, const std::string &t_filename) {
 
     const unsigned int size = t_filename.size();
+    SilentMode silent_mode(true);
 
     if (size >= 3 && (t_filename.substr(size - 3) == ".lp") || t_filename.substr(size - 6) == ".lp.gz") {
         return read_from_lp_file(t_env, t_filename);
