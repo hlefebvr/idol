@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <fcntl.h>
 #include <csignal>
+#include <unistd.h>
 
 namespace idol {
     class SilentMode;

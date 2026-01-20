@@ -2,49 +2,75 @@
 // Created by Henri on 18/01/2026.
 //
 #include <iostream>
+#include "cxxopts.hpp"
 #include "idol/modeling.h"
+#include "idol/bilevel/modeling/read_from_file.h"
+#include "idol/bilevel/optimizers/KKT/KKT.h"
+#include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/robust/modeling/read_from_file.h"
+#include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 
 using namespace idol;
 
 int main(int t_argc, const char ** t_argv) {
 
-    if (t_argc != 2) {
-        throw Exception("Expected one argument.");
+    cxxopts::Options options("idol_cli", "idol command line interface");
+
+    options.add_options()
+        ("mps", "mps file", cxxopts::value<std::string>())
+        ("aux", "aux file", cxxopts::value<std::string>())
+        ("par", "uncertainty parameterization file", cxxopts::value<std::string>())
+        ("unc", "uncertainty file", cxxopts::value<std::string>())
+        ("method", "Method", cxxopts::value<std::string>()->default_value("ccg"))
+        ("h,help", "Print help")
+        ("v,verbose", "Verbose mode")
+        ("version", "Version");
+
+    const auto result = options.parse(t_argc, t_argv);
+
+    if (result.count("help")) {
+        std::cout << options.help() << "\n";
+        return 0;
     }
 
-    std::cout << "Welcome to idol version " << IDOL_VERSION << std::endl;
+    if (result.count("version")) {
+        std::cout << "idol " << IDOL_VERSION << "\n";
+        return 0;
+    }
 
-    const unsigned int n_items = 5;
-    const std::vector<double> profit { 40., 50., 100., 95., 30., };
-    const std::vector<double> weight { 2., 3.14, 1.98, 5., 3., };
-    const double capacity = 10.;
+    const auto mps = result["mps"].as<std::string>();
+    const auto aux = result["aux"].as<std::string>();
+    const auto unc_par = result["par"].as<std::string>();
+    const auto unc_mps = result["unc"].as<std::string>();
+    const auto method = result["method"].as<std::string>();
 
     Env env;
-    Model model(env);
+    auto [model, bilevel_description] = Bilevel::read_from_file(env, aux);
+    auto robust_description = Robust::read_from_file(model, unc_par, unc_mps);
 
-    const auto x = model.add_vars(Dim<1>(n_items), 0., 1., Binary, 0., "x");
-    model.add_ctr(idol_Sum(j, Range(n_items), weight[j] * x[j]) <= capacity);
-    model.set_obj_expr(idol_Sum(j, Range(n_items), -profit[j] * x[j]));
-
-    const std::string solver = t_argv[1];
-    if (solver == "--gurobi") {
-        model.use(Gurobi());
-    } else if (solver == "--glpk") {
-        model.use(GLPK());
-    } else if (solver == "--highs") {
-        model.use(HiGHS());
-    } else {
-        throw Exception("Unknown solver.");
+    if (method != "ccg") {
+        throw Exception("Unknown method: " + method);
     }
 
-    model.optimizer().set_param_logs(true);
+    auto kkt = Bilevel::StrongDuality();
+    kkt.with_single_level_optimizer(Gurobi());
+
+    auto ccg = Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
+    ccg.with_master_optimizer(Gurobi());
+    ccg.add_joint_separation_optimizer(kkt);
+    ccg.with_logs(result["verbose"].count() > 0);
+
+    model.use(ccg);
 
     model.optimize();
 
-    std::cout << "Objective value: " << model.get_best_obj() << std::endl;
+    std::cout << "Total time: " << model.optimizer().time().count() << std::endl;
+    std::cout << "Status: " << model.get_status() << std::endl;
+    std::cout << "Objective: " << model.get_best_obj() << std::endl;
+    std::cout << "Bound: " << model.get_best_bound() << std::endl;
 
     return 0;
 }

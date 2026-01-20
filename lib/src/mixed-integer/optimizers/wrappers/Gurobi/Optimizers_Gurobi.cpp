@@ -4,12 +4,11 @@
 
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/general/utils/SilentMode.h"
 
 #include <dlfcn.h>
 #include <filesystem>
 #include <regex>
-
-#include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 
 #define GUROBI_CATCH(model, cmd)                                \
 {                                                           \
@@ -236,6 +235,7 @@ double idol::Optimizers::Gurobi::gurobi_numeric(double t_value) {
 }
 
 GRBenv* idol::Optimizers::Gurobi::get_new_env() {
+    SilentMode silent_mode(true);
     GRBenv* result;
     auto& lib = get_dynamic_lib();
     int major, minor, tech;

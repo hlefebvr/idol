@@ -302,6 +302,8 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HConfig.h
         include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HConst.h
         include/idol/mixed-integer/optimizers/wrappers/Gurobi/headers/header_gurobi.h
+        include/idol/robust/modeling/read_from_file.h
+        src/robust/modeling/read_from_file.cpp
 )
 
 #find_package(OpenMP REQUIRED)
