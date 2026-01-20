@@ -911,7 +911,9 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                =
+EXCLUDE                = ../../lib/include/idol/mixed-integer/optimizers/wrappers/Gurobi/headers \
+                         ../../lib/include/idol/mixed-integer/optimizers/wrappers/GLPK/headers \
+                         ../../lib/include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
