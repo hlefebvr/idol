@@ -280,7 +280,6 @@ add_library(idol STATIC
         include/idol/robust/optimizers/benders/Optimizers_Benders.h
         src/robust/optimizers/benders/Benders.cpp
         src/robust/optimizers/benders/Optimizers_Benders.cpp
-        include/idol/robust/optimizers/column-and-constraint-generation/AdversarialProblemSolver.h
         include/idol/mixed-integer/optimizers/wrappers/JuMP/JuMP.h
         include/idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h
         include/idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_Coluna.h
@@ -304,6 +303,12 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/wrappers/Gurobi/headers/header_gurobi.h
         include/idol/robust/modeling/read_from_file.h
         src/robust/modeling/read_from_file.cpp
+        include/idol/robust/optimizers/column-and-constraint-generation/separation/Separation.h
+        include/idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h
+        src/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.cpp
+        src/robust/optimizers/column-and-constraint-generation/separation/Separation.cpp
+        include/idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h
+        src/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.cpp
 )
 
 #find_package(OpenMP REQUIRED)

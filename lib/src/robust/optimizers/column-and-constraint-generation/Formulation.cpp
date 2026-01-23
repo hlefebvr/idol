@@ -13,13 +13,11 @@ idol::CCG::Formulation::Formulation(const idol::Model &t_parent, const idol::Rob
         : m_parent(t_parent),
           m_robust_description(t_robust_description),
           m_bilevel_description(t_bilevel_description),
-          m_master(t_parent.env()),
-          m_bilevel_description_separation(t_parent.env()) {
+          m_master(t_parent.env()) {
 
     parse_variables();
     parse_objective();
     parse_constraints();
-    copy_bilevel_description(t_bilevel_description, m_bilevel_description_separation);
 
     if (!m_coupling_constraints.empty()) {
         throw Exception("Coupling constraints make no sense for two-stage robust problems and are not supported for robust bilevel problems.");
@@ -311,28 +309,6 @@ void idol::CCG::Formulation::add_separation_problem_constraints(idol::Model &t_m
 
 }
 
-idol::Model idol::CCG::Formulation::build_optimality_separation_problem(const idol::Point<idol::Var> &t_first_stage_decision) {
-
-    auto& env = m_master.env();
-    Model result(env);
-
-    add_separation_problem_constraints(result, t_first_stage_decision);
-
-    // Compute objective
-    auto objective = compute_second_stage_objective(t_first_stage_decision);
-    result.set_obj_expr(-objective);
-
-    if (is_adjustable_robust_problem()) {
-        m_bilevel_description_separation.set_lower_level_obj(std::move(objective.affine().linear()));
-        return result;
-    }
-
-    m_bilevel_description_separation.set_lower_level_obj(m_bilevel_description.lower_level_obj());
-
-    return result;
-
-}
-
 void idol::CCG::Formulation::copy_bilevel_description(const ::idol::Bilevel::Description& t_src, const ::idol::Bilevel::Description& t_dest) const {
 
     const auto& src_annotation = t_src.lower_level();
@@ -347,7 +323,7 @@ void idol::CCG::Formulation::copy_bilevel_description(const ::idol::Bilevel::Des
     }
 
 }
-
+/*
 std::pair<idol::Model, std::vector<idol::Var>>
 idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<idol::Var> &t_first_stage_decision) {
 
@@ -440,10 +416,6 @@ idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<i
     };
 }
 
-bool idol::CCG::Formulation::is_adjustable_robust_problem() const {
-    return m_bilevel_description.lower_level_obj().is_zero(Tolerance::Feasibility);
-}
-
 std::pair<idol::Model, std::vector<idol::Var>>
 idol::CCG::Formulation::build_joint_separation_problem(const idol::Point<idol::Var> &t_first_stage_decision) {
 
@@ -496,6 +468,11 @@ idol::CCG::Formulation::build_joint_separation_problem(const idol::Point<idol::V
             std::move(slack_variables)
     };
 }
+*/
+
+bool idol::CCG::Formulation::is_adjustable_robust_problem() const {
+    return m_bilevel_description.lower_level_obj().is_zero(Tolerance::Feasibility);
+}
 
 idol::QuadExpr<idol::Var>
 idol::CCG::Formulation::compute_second_stage_objective(const idol::Point<idol::Var> &t_first_stage_decision) const {
@@ -527,21 +504,4 @@ bool idol::CCG::Formulation::should_have_epigraph_and_epigraph_is_not_in_master(
 void idol::CCG::Formulation::add_epigraph_to_master() {
     m_second_stage_epigraph = m_master.add_var(-Inf, Inf, Continuous, 1, "second_stage_epigraph");
     //m_master.update();
-}
-
-void idol::CCG::Formulation::set_inexact_lower_bound_constraint(double t_value) {
-
-    if (!should_have_epigraph_and_epigraph_is_not_in_master()) {
-        return;
-    }
-
-    if (m_inexact_lower_bound_constraint.has_value()) {
-        m_master.set_ctr_rhs(*m_inexact_lower_bound_constraint, t_value);
-        return;
-    }
-
-    assert(!m_master.get_obj_expr().has_quadratic());
-
-    m_inexact_lower_bound_constraint = m_master.add_ctr(m_master.get_obj_expr().affine() >= t_value);
-
 }
