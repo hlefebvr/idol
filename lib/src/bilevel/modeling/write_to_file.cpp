@@ -206,5 +206,5 @@ void idol::Bilevel::write_to_file(const Model& t_model, const Bilevel::Descripti
 }
 
 void idol::write_to_file(const Model& t_model, const std::string& t_filename) {
-    MpsWriter(t_model, t_filename);
+    MpsWriter(t_model, t_filename).write();
 }
