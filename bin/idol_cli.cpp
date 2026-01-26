@@ -58,6 +58,8 @@ int main(int t_argc, const char ** t_argv) {
         throw Exception("Unknown method: " + method);
     }
 
+    std::cout << Robust::Description::View(model, robust_description) << std::endl;
+
     if (false) {
         std::cout << "WARNING: pre-solving equality constraints" << std::endl;
         for (const auto& ctr : model.ctrs()) {

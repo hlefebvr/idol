@@ -87,7 +87,11 @@ idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, c
         }
 
         if (section == RHS) {
-            throw Exception("Not implemented");
+            const auto ctr = constraints.at(cols[0]);
+            const auto unc_par = variables.at(cols[1]);
+            const auto val = std::stod(cols[2]);
+            auto current_expr = result.uncertain_rhs(ctr) + val * unc_par;
+            result.set_uncertain_rhs(ctr, current_expr);
         }
 
         if (section == OBJ) {
@@ -117,7 +121,7 @@ void idol::Robust::write_to_file(const Model& t_model, const Robust::Description
     Bilevel::write_to_file(t_model, t_bilevel_description, t_path_to_files);
 
     const auto& uncertainty_set = t_robust_description.uncertainty_set().copy();
-    idol::write_to_file(uncertainty_set, t_path_to_files + "-unc.mps");
+    idol::write_to_file(uncertainty_set, t_path_to_files + "-unc");
 
     std::ofstream out(t_path_to_files + ".par");
     out << "@RHS" << std::endl;
