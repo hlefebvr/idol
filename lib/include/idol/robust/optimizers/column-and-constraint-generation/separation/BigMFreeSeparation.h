@@ -23,7 +23,7 @@ namespace idol {
 
 class idol::Robust::CCG::BigMFreeSeparation : public idol::Robust::CCG::Separation {
     std::unique_ptr<OptimizerFactory> m_single_level_optimizer;
-    double m_M = 1e2;
+    double m_M = 1;
     double m_kappa = 0;
     std::vector<Var> m_slack_for_constraints;
     std::optional<Var> m_slack_for_objective;

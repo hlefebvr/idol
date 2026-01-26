@@ -7,6 +7,9 @@
 
 #include <fstream>
 
+#include "idol/bilevel/modeling/write_to_file.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
+
 enum ParFileSection { Unknown, RHS, OBJ, MAT };
 
 idol::Robust::Description
@@ -107,4 +110,36 @@ idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, c
     }
 
     return std::move(result);
+}
+
+void idol::Robust::write_to_file(const Model& t_model, const Robust::Description& t_robust_description, const Bilevel::Description& t_bilevel_description, const std::string& t_path_to_files) {
+
+    Bilevel::write_to_file(t_model, t_bilevel_description, t_path_to_files);
+
+    const auto& uncertainty_set = t_robust_description.uncertainty_set().copy();
+    idol::write_to_file(uncertainty_set, t_path_to_files + "-unc.mps");
+
+    std::ofstream out(t_path_to_files + ".par");
+    out << "@RHS" << std::endl;
+    for (const auto& [ctr, coeff] : t_robust_description.uncertain_rhs()) {
+        for (const auto& [var, val] : coeff) {
+            std::cout << ctr << '\t' << var << '\t' << val << std::endl;
+        }
+    }
+    out << "@OBJ" << std::endl;
+    for (const auto& [var1, coeff] : t_robust_description.uncertain_obj()) {
+        for (const auto& [var2, val] : coeff) {
+            std::cout << var1 << '\t' << var2 << '\t' << val << std::endl;
+        }
+    }
+    out << "@MAT" << std::endl;
+    for (const auto& [ctr, ctr_expr] : t_robust_description.uncertain_mat_coeffs()) {
+        for (const auto& [var1, expr] : ctr_expr) {
+            for (const auto& [var2, val] : expr) {
+                out << ctr << '\t' << var1 << '\t' << var2 << '\t' << val << std::endl;
+            }
+        }
+    }
+    out.close();
+
 }

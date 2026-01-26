@@ -114,57 +114,6 @@ idol::Model idol::Bilevel::KKT::make_model(const idol::Model &t_model,
     reformulator.add_coupling_constraints(result);
     result.set_obj_expr(t_model.get_obj_expr());
 
-    /*
-    std::cout << "Deriving Kleinart cuts..." << std::endl;
-
-    const auto& dual_obj = reformulator.get_dual_obj_expr();
-    auto dual_surrogate = dual_obj.affine();
-
-    for (const auto& [vars, coeff] : dual_obj) {
-
-        std::optional<Var> leader_var;
-        std::optional<Var> dual_var;
-
-        if (t_description.is_upper(vars.first)) {
-            leader_var = vars.first;
-            dual_var = vars.second;
-        } else {
-            leader_var = vars.second;
-            dual_var = vars.first;
-        }
-
-        const double dual_lb = result.get_var_lb(*dual_var);
-        const double dual_ub = result.get_var_ub(*dual_var);
-        const double leader_lb = result.get_var_lb(*leader_var);
-        const double leader_ub = result.get_var_ub(*leader_var);
-
-        if (dual_ub <= Tolerance::Sparsity) {
-            // Dual var ≤ 0
-            if (coeff >= 0) {
-                dual_surrogate += coeff * leader_lb * (*dual_var);
-            } else {
-                dual_surrogate += coeff * leader_ub * (*dual_var);
-            }
-        }
-        else if (dual_lb >= -Tolerance::Sparsity) {
-            // Dual var ≥ 0
-            if (coeff >= 0) {
-                dual_surrogate += coeff * leader_ub * (*dual_var);
-            } else {
-                dual_surrogate += coeff * leader_lb * (*dual_var);
-            }
-        }
-        else {
-            throw Exception("Could not handle this case: dual variable has both positive and negative bounds.");
-        }
-
-    }
-
-    result.add_ctr(t_description.lower_level_obj().affine() <= dual_surrogate);
-
-    std::cout << "Done." << std::endl;
-     */
-
     return result;
 }
 

@@ -82,13 +82,12 @@ std::list<Ctr> AuxWriter::make_lower_level_ctrs_list() {
 
 class MpsWriter {
     const Model &m_model;
-    const Bilevel::Description &m_description;
     const std::string &m_filename;
 protected:
     std::list<Var> make_vars_list(const std::function<bool(const Var&)>& t_filter);
 public:
-    MpsWriter(const Model &t_model, const Bilevel::Description &t_description, const std::string &t_filename)
-            : m_model(t_model), m_description(t_description), m_filename(t_filename) {}
+    MpsWriter(const Model &t_model, const std::string &t_filename)
+            : m_model(t_model), m_filename(t_filename) {}
     void write();
 };
 
@@ -199,9 +198,13 @@ std::list<Var> MpsWriter::make_vars_list(const std::function<bool(const Var &)> 
 
 void idol::Bilevel::write_to_file(const Model& t_model, const Bilevel::Description& t_description, const std::string& t_filename) {
 
-    // LP file
-    MpsWriter(t_model, t_description, t_filename).write();
+    // MPS file
+    MpsWriter(t_model, t_filename).write();
 
     // AUX file
     AuxWriter(t_model, t_description, t_filename).write();
+}
+
+void idol::write_to_file(const Model& t_model, const std::string& t_filename) {
+    MpsWriter(t_model, t_filename);
 }

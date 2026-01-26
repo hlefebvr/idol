@@ -66,13 +66,14 @@ void idol::Robust::CCG::BigMFreeSeparation::operator()() {
     auto kkt = idol::Bilevel::KKT(description);
     kkt.with_bound_provider(bound_provider);
     kkt.with_single_level_optimizer(*m_single_level_optimizer);
-    // kkt.with_kleinart_cuts(true);
+    //kkt.with_sos1_constraints(true);
+    //kkt.with_kleinart_cuts(true);
     kkt.with_time_limit(ccg.get_remaining_time());
 
     model.use(kkt);
 
     model.optimize();
-    //model.write("model.lp"); std::cout << "Writing to file ..." << std::endl;
+    model.write("model.lp"); std::cout << "Writing to file ..." << std::endl;
 
     const auto status = model.get_status();
     const auto reason = model.get_reason();
@@ -100,12 +101,20 @@ void idol::Robust::CCG::BigMFreeSeparation::operator()() {
         }
     }
 
+    std::cout << save_primal(model) << std::endl;
+
     if (formulation.should_have_epigraph_and_epigraph_is_not_in_master() || model.get_best_obj() < -Tolerance::MIPAbsoluteGap) {
 
         auto scenario = save_primal(get_robust_description().uncertainty_set(), model);
+
+        assert(scenario.size() <= 3); // todo; REMOVE THIS!!
+
         add_scenario(std::move(scenario));
 
+        return;
     }
+
+    std::cout << "WARNING: Separation did not produce any new scenario" << std::endl;
 
 }
 
@@ -139,27 +148,49 @@ idol::Robust::CCG::BigMFreeSeparation::build_separation_problem() {
     auto second_stage_objective = -model.get_obj_expr().affine();
     model.set_obj_expr(0);
 
-    const auto add_slack = [&](const Ctr& t_ctr, double t_sign, double t_obj, bool t_is_slack_for_objective = false) {
-        LinExpr<Ctr> column = t_sign * t_ctr;
-        const auto s = model.add_var(0., Inf, Continuous, t_obj, std::move(column), "__slack_" + t_ctr.name());
-        description.make_lower_level(s);
+
+    const auto add_slack = [&](const Ctr& t_ctr, double t_obj, bool t_is_slack_for_objective = false) {
+        std::optional<Var> s;
+        const auto type = model.get_ctr_type(t_ctr);
+
+        switch (type) {
+        case LessOrEqual:
+            s = model.add_var(0., Inf, Continuous, t_obj, -t_ctr, "__slack_" + t_ctr.name());
+            break;
+        case GreaterOrEqual:
+            s = model.add_var(0., Inf, Continuous, t_obj, t_ctr, "__slack_" + t_ctr.name());
+            break;
+        case Equal: {
+            s = model.add_var(0, Inf, Continuous, t_obj, t_ctr,"__slack_" + t_ctr.name() + "_l");
+            const auto s2 = model.add_var(0, Inf, Continuous, t_obj, -t_ctr,"__slack_" + t_ctr.name() + "_u");
+            description.make_lower_level(s2);
+            m_slack_for_constraints.emplace_back(s2);
+            break;
+        }
+        default: throw Exception("Unexpected constraint type.");
+        }
+
+        description.make_lower_level(*s);
         if (t_is_slack_for_objective) {
             assert(!m_slack_for_objective);
             m_slack_for_objective = s;
         } else {
-            m_slack_for_constraints.push_back(s);
+            m_slack_for_constraints.push_back(*s);
         }
     };
 
+    // Add slacks for objective constraint
+    if (formulation.has_second_stage_epigraph()) {
+        const auto x_0 = get_master_solution().get(formulation.second_stage_epigraph());
+        const auto c = model.add_ctr(second_stage_objective.linear() <= x_0, "__objective");
+        add_slack(c, -1, true);
+        description.make_lower_level(c);
+        m_M = std::max(1., std::abs(x_0)) + 1; // TODO
+    }
+
     // Add slacks for original constraints
     for (const auto& ctr : formulation.second_stage_constraints()) {
-        const auto type = original_model.get_ctr_type(ctr);
-        switch (type) {
-            case LessOrEqual: add_slack(ctr, -1, -m_M); break;
-            case GreaterOrEqual: add_slack(ctr, +1, -m_M); break;
-            case Equal: { add_slack(ctr, -1, -m_M); add_slack(ctr, +1, -m_M); } break;
-            default: throw Exception("Unknown constraint type.");
-        }
+        add_slack(ctr, -m_M);
     }
 
     // Add slacks for the variable bounds
@@ -169,23 +200,15 @@ idol::Robust::CCG::BigMFreeSeparation::build_separation_problem() {
         if (!is_neg_inf(lb)) {
             model.set_var_lb(var, -Inf);
             const auto c = model.add_ctr(var >= lb, "__var_lb_" + var.name());
-            add_slack(c, +1, -m_M);
+            add_slack(c, -m_M);
             description.make_lower_level(c);
         }
         if (!is_pos_inf(ub)) {
             model.set_var_ub(var, Inf);
             const auto c = model.add_ctr(var <= ub, "__var_ub_" + var.name());
-            add_slack(c, -1, -m_M);
+            add_slack(c, -m_M);
             description.make_lower_level(c);
         }
-    }
-
-    // Add slacks for objective constraint
-    if (formulation.has_second_stage_epigraph()) {
-        const auto x_0 = get_master_solution().get(formulation.second_stage_epigraph());
-        const auto c = model.add_ctr(second_stage_objective.linear() <= x_0, "__objective");
-        add_slack(c, -1, -1, true);
-        description.make_lower_level(c);
     }
 
     // Set lower level objective function
@@ -240,8 +263,10 @@ void idol::Robust::CCG::BigMFreeSeparation::compute_kappa(const Model& t_separat
             break;
         }
         case Equal: {
-            worst_case += std::max(0., -underestimate(ctr_expr_without_second_stage_variables, get_var_lb, get_var_ub));
-            worst_case += std::max(0., overestimate(ctr_expr_without_second_stage_variables, get_var_lb, get_var_ub));
+                worst_case += std::abs(std::max(
+                    underestimate(ctr_expr_without_second_stage_variables, get_var_lb, get_var_ub),
+                    overestimate(ctr_expr_without_second_stage_variables, get_var_lb, get_var_ub)
+                ));
             break;
         }
         default: throw Exception("Unknown constraint type.");
@@ -263,7 +288,7 @@ void idol::Robust::CCG::BigMFreeSeparation::compute_kappa(const Model& t_separat
         m_kappa += std::max(0., -master_solution.get(formulation.second_stage_epigraph()));
     }
 
-    // std::cout << "Kappa = " << m_kappa << std::endl;
+    std::cout << "Kappa = " << m_kappa << std::endl;
 
 }
 
@@ -304,6 +329,7 @@ double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_ctr_dual_ub(con
 double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_ctr_slack_lb(const Ctr& t_ctr) {
     const auto& model = this->model();
     const double rhs = model.get_ctr_rhs(t_ctr);
+    assert(model.get_ctr_type(t_ctr) == LessOrEqual);
     auto row = model.get_ctr_row(t_ctr);
     double result = overestimate(row - rhs,
         [this](const Var& t_x) { return get_var_lb(t_x); },
@@ -315,6 +341,7 @@ double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_ctr_slack_lb(co
 double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_ctr_slack_ub(const Ctr& t_ctr) {
     const auto& model = this->model();
     const double rhs = model.get_ctr_rhs(t_ctr);
+    assert(model.get_ctr_type(t_ctr) == GreaterOrEqual);
     auto row = model.get_ctr_row(t_ctr);
     double result = overestimate(row - rhs,
         [this](const Var& t_x) { return get_var_lb(t_x); },

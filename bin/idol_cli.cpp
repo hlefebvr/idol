@@ -58,7 +58,7 @@ int main(int t_argc, const char ** t_argv) {
         throw Exception("Unknown method: " + method);
     }
 
-    if (true) {
+    if (false) {
         std::cout << "WARNING: pre-solving equality constraints" << std::endl;
         for (const auto& ctr : model.ctrs()) {
             if (const auto type = model.get_ctr_type(ctr) ; type == Equal) {
@@ -81,7 +81,7 @@ int main(int t_argc, const char ** t_argv) {
                     .with_presolve(false)
             )
         );
-    ccg.with_check_for_repeated_scenarios(false);
+    ccg.with_check_for_repeated_scenarios(true);
     ccg.with_logs(result["verbose"].count() > 0);
 
     model.use(ccg);
