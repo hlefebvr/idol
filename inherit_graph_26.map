@@ -1,0 +1,17 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classidol_1_1CallbackFactory.html" title=" " alt="" coords="5,169,163,195"/>
+<area shape="rect" id="Node000001" href="$classidol_1_1Heuristics_1_1LocalBranching.html" title=" " alt="" coords="211,5,437,31"/>
+<area shape="poly" id="edge41_Node000000_Node000001" title=" " alt="" coords="98,156,142,97,174,66,209,40,235,28,237,33,212,44,177,70,146,101,102,159"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Heuristics_1_1RENS.html" title=" " alt="" coords="243,55,405,80"/>
+<area shape="poly" id="edge42_Node000000_Node000002" title=" " alt="" coords="108,158,153,123,210,90,246,78,248,83,212,95,156,127,111,162"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Heuristics_1_1SimpleRounding.html" title=" " alt="" coords="238,105,410,145"/>
+<area shape="poly" id="edge43_Node000000_Node000003" title=" " alt="" coords="150,164,239,142,240,147,152,169"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1LazyCutCallback.html" title=" " alt="" coords="243,169,405,195"/>
+<area shape="poly" id="edge44_Node000000_Node000004" title=" " alt="" coords="177,179,242,179,242,185,177,185"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1Optimizers_1_1Robust_1_1Benders_1_1BendersCallback.html" title=" " alt="" coords="224,219,424,259"/>
+<area shape="poly" id="edge45_Node000000_Node000005" title=" " alt="" coords="152,195,240,217,239,222,150,200"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1Plots_1_1OptimalityGap.html" title=" " alt="" coords="229,284,419,309"/>
+<area shape="poly" id="edge46_Node000000_Node000006" title=" " alt="" coords="111,202,156,237,212,269,248,281,246,286,210,274,153,241,108,206"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1UserCutCallback.html" title=" " alt="" coords="243,333,405,359"/>
+<area shape="poly" id="edge47_Node000000_Node000007" title=" " alt="" coords="102,205,147,263,177,293,212,318,244,332,242,337,209,323,174,297,143,266,98,208"/>
+</map>

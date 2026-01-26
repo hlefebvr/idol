@@ -1,0 +1,10 @@
+<map id="/home/runner/work/idol/idol/lib/include/idol/robust/optimizers" name="/home/runner/work/idol/idol/lib/include/idol/robust/optimizers">
+<area shape="rect" id="node2" href="dir_1f6a00be805cf28011a83dda57a0e2a2.html" title="affine&#45;decision&#45;rule" alt="" coords="929,77,1077,103"/>
+<area shape="rect" id="node3" href="dir_646d710952debbf492ae78fc14116ff4.html" title="benders" alt="" coords="829,77,904,103"/>
+<area shape="rect" id="node4" href="dir_57aae8c9aac0e31abfd6a5b90ee29d1f.html" title="column&#45;and&#45;constraint\l&#45;generation" alt="" coords="635,70,805,110"/>
+<area shape="rect" id="node5" href="dir_e14a2ee16a79c4e807d3d62ac831beb9.html" title="critical&#45;value&#45;column\l&#45;and&#45;constraint&#45;generation\l&#45;algorithm" alt="" coords="415,63,611,117"/>
+<area shape="rect" id="node6" href="dir_3ae0ef1fbbd45f9389c4bf36058f2845.html" title="deterministic" alt="" coords="283,77,391,103"/>
+<area shape="rect" id="node7" href="dir_4d0bfb5247340c5584c97ac5d5cf5acf.html" title="KAdaptabilityBranchAndBound" alt="" coords="37,77,259,103"/>
+<area shape="rect" id="clust2" href="dir_0e478c37bce02c229957c915596b2ec0.html" alt="" coords="27,52,1203,128"/>
+<area shape="rect" id="clust1" href="dir_cd72bdc23c1e22881e96226b354bb7a8.html" title="robust" alt="" coords="16,16,1213,139"/>
+</map>

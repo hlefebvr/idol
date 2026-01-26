@@ -1,0 +1,13 @@
+<map id="idol::QuadExpr&lt; KeyT, ValueT &gt;" name="idol::QuadExpr&lt; KeyT, ValueT &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="191,704,351,984"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1QuadExpr.html" title=" " alt="" coords="5,1061,153,1356"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="183,915,141,958,107,1009,89,1062,84,1060,102,1007,137,955,179,911"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1QuadExpr.html" title=" " alt="" coords="197,1069,345,1349"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="274,998,274,1068,269,1068,269,998"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1QuadExpr.html" title=" " alt="" coords="369,1069,517,1349"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="360,992,367,1007,394,1067,389,1070,362,1009,355,995"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1LinExpr.html" title=" " alt="" coords="199,335,344,655"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="274,669,274,704,269,704,269,669"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1SparseVector.html" title=" " alt="" coords="201,5,341,285"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="274,299,274,334,269,334,269,299"/>
+</map>

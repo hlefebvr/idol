@@ -1,0 +1,110 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classidol_1_1OptimizerFactory.html" title=" " alt="" coords="5,873,171,898"/>
+<area shape="rect" id="Node000001" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="236,213,503,253"/>
+<area shape="poly" id="edge108_Node000000_Node000001" title=" " alt="" coords="88,859,100,733,123,554,140,462,161,379,186,310,201,284,217,263,234,250,237,254,221,267,205,286,191,312,166,380,145,463,128,555,105,733,94,859"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="270,277,469,317"/>
+<area shape="poly" id="edge110_Node000000_Node000005" title=" " alt="" coords="89,859,102,744,127,585,144,503,165,429,189,369,202,345,217,327,241,310,269,300,271,305,244,315,220,331,207,348,194,371,170,431,150,505,132,586,107,745,94,859"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="266,341,473,381"/>
+<area shape="poly" id="edge112_Node000000_Node000007" title=" " alt="" coords="90,859,105,756,132,616,149,545,169,480,192,427,217,391,239,375,265,365,267,370,242,380,221,395,196,430,174,482,154,546,137,617,110,757,95,859"/>
+<area shape="rect" id="Node000009" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="258,469,481,509"/>
+<area shape="poly" id="edge114_Node000000_Node000009" title=" " alt="" coords="88,858,95,790,115,699,132,650,154,603,182,559,217,521,236,507,257,498,259,503,238,512,220,525,186,562,158,605,137,652,120,700,101,791,93,859"/>
+<area shape="rect" id="Node000011" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="253,534,486,589"/>
+<area shape="poly" id="edge116_Node000000_Node000011" title=" " alt="" coords="91,858,104,804,127,734,144,697,164,661,188,628,217,599,251,579,254,583,220,603,192,632,168,664,148,700,132,736,109,805,96,859"/>
+<area shape="rect" id="Node000013" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="238,613,501,653"/>
+<area shape="poly" id="edge118_Node000000_Node000013" title=" " alt="" coords="95,858,110,816,136,763,171,709,193,685,217,664,240,651,243,656,220,669,196,689,175,713,140,765,115,818,100,860"/>
+<area shape="rect" id="Node000014" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="234,678,505,733"/>
+<area shape="poly" id="edge120_Node000000_Node000014" title=" " alt="" coords="103,860,149,801,181,770,217,743,242,730,245,735,220,748,185,774,153,805,107,863"/>
+<area shape="rect" id="Node000015" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="264,757,475,797"/>
+<area shape="poly" id="edge121_Node000000_Node000015" title=" " alt="" coords="117,863,163,834,218,808,263,794,265,799,220,813,166,839,120,867"/>
+<area shape="rect" id="Node000017" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="246,822,493,877"/>
+<area shape="poly" id="edge123_Node000000_Node000017" title=" " alt="" coords="184,870,245,862,246,868,184,876"/>
+<area shape="rect" id="Node000019" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="265,901,473,941"/>
+<area shape="poly" id="edge125_Node000000_Node000019" title=" " alt="" coords="184,895,266,905,265,911,184,900"/>
+<area shape="rect" id="Node000021" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="261,965,478,1005"/>
+<area shape="poly" id="edge127_Node000000_Node000021" title=" " alt="" coords="122,903,168,928,220,951,261,963,260,969,218,956,165,933,120,908"/>
+<area shape="rect" id="Node000023" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="261,1029,477,1069"/>
+<area shape="poly" id="edge129_Node000000_Node000023" title=" " alt="" coords="108,908,154,963,185,991,220,1015,262,1032,260,1037,217,1020,182,996,150,966,104,911"/>
+<area shape="rect" id="Node000025" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="266,1093,473,1133"/>
+<area shape="poly" id="edge131_Node000000_Node000025" title=" " alt="" coords="101,910,118,948,144,995,178,1041,220,1079,242,1091,267,1100,265,1105,240,1096,217,1084,174,1044,139,998,113,951,96,912"/>
+<area shape="rect" id="Node000027" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="261,1157,478,1197"/>
+<area shape="poly" id="edge133_Node000000_Node000027" title=" " alt="" coords="97,911,110,961,134,1024,170,1089,193,1118,220,1143,240,1155,261,1164,259,1169,237,1160,217,1147,189,1122,166,1092,129,1027,105,963,92,912"/>
+<area shape="rect" id="Node000029" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="272,1221,467,1261"/>
+<area shape="poly" id="edge135_Node000000_Node000029" title=" " alt="" coords="94,911,104,973,125,1053,142,1096,163,1137,189,1175,220,1207,245,1223,273,1232,271,1238,242,1227,217,1211,185,1178,158,1140,137,1098,120,1055,99,974,89,912"/>
+<area shape="rect" id="Node000034" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="263,1285,475,1325"/>
+<area shape="poly" id="edge140_Node000000_Node000034" title=" " alt="" coords="92,911,98,983,117,1081,133,1133,155,1184,184,1231,220,1271,241,1285,264,1295,262,1300,238,1290,217,1275,180,1234,150,1186,128,1135,111,1083,93,984,87,912"/>
+<area shape="rect" id="Node000036" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="233,1349,505,1389"/>
+<area shape="poly" id="edge142_Node000000_Node000036" title=" " alt="" coords="91,911,93,994,98,1049,108,1109,124,1171,147,1231,179,1287,220,1335,236,1347,233,1351,217,1339,175,1290,143,1233,119,1172,103,1110,93,1050,88,994,86,912"/>
+<area shape="rect" id="Node000038" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="243,1414,496,1469"/>
+<area shape="poly" id="edge144_Node000000_Node000038" title=" " alt="" coords="95,912,110,1018,136,1165,153,1240,173,1307,196,1362,221,1399,244,1417,241,1421,217,1403,191,1365,168,1309,148,1241,131,1166,105,1019,90,912"/>
+<area shape="rect" id="Node000040" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="256,1493,483,1533"/>
+<area shape="poly" id="edge146_Node000000_Node000040" title=" " alt="" coords="94,912,106,1034,130,1205,147,1292,168,1372,192,1436,206,1461,221,1479,237,1493,257,1502,255,1507,235,1497,217,1483,202,1464,187,1439,163,1373,142,1293,125,1206,101,1034,89,912"/>
+<area shape="rect" id="Node000042" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="219,1558,520,1613"/>
+<area shape="poly" id="edge148_Node000000_Node000042" title=" " alt="" coords="94,912,104,1044,127,1235,144,1332,165,1421,191,1494,205,1522,221,1544,235,1556,231,1560,217,1547,200,1525,186,1497,160,1423,139,1333,122,1235,99,1045,88,912"/>
+<area shape="rect" id="Node000044" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="244,1637,495,1691"/>
+<area shape="poly" id="edge150_Node000000_Node000044" title=" " alt="" coords="93,912,101,1058,122,1273,138,1383,160,1485,187,1568,203,1600,221,1623,246,1643,242,1647,217,1627,199,1602,182,1570,155,1486,133,1384,116,1273,96,1059,88,912"/>
+<area shape="rect" id="Node000046" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="238,5,501,45"/>
+<area shape="poly" id="edge152_Node000000_Node000046" title=" " alt="" coords="87,859,92,697,99,581,110,455,126,330,148,215,178,120,196,83,217,55,236,40,239,44,221,59,201,86,183,122,154,216,131,331,115,456,104,581,97,697,92,859"/>
+<area shape="rect" id="Node000048" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="242,70,497,125"/>
+<area shape="poly" id="edge154_Node000000_Node000048" title=" " alt="" coords="88,858,96,710,116,493,133,381,155,278,182,194,199,161,217,135,240,117,243,121,221,139,203,163,187,196,160,280,138,382,121,494,101,711,93,859"/>
+<area shape="rect" id="Node000050" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="266,149,473,189"/>
+<area shape="poly" id="edge156_Node000000_Node000050" title=" " alt="" coords="88,858,97,721,119,523,136,421,157,328,184,251,200,222,217,199,239,183,265,172,267,177,242,187,221,203,204,225,189,254,162,329,141,422,124,524,102,721,93,859"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Bilevel_1_1BranchAndCut.html" title=" " alt="" coords="593,247,792,273"/>
+<area shape="poly" id="edge109_Node000001_Node000002" title=" " alt="" coords="517,243,593,249,593,254,516,248"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1Bilevel_1_1KKT.html" title=" " alt="" coords="627,323,759,349"/>
+<area shape="poly" id="edge111_Node000005_Node000004" title=" " alt="" coords="483,308,627,326,626,331,482,313"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1Bilevel_1_1MibS.html" title=" " alt="" coords="623,393,762,418"/>
+<area shape="poly" id="edge113_Node000007_Node000006" title=" " alt="" coords="487,375,624,393,623,399,486,380"/>
+<area shape="rect" id="Node000008" href="$classidol_1_1Bilevel_1_1MinMax_1_1Dualize.html" title=" " alt="" coords="613,456,772,496"/>
+<area shape="poly" id="edge115_Node000009_Node000008" title=" " alt="" coords="494,482,613,477,613,482,495,487"/>
+<area shape="rect" id="Node000010" href="$classidol_1_1Bilevel_1_1PessimisticAsOptimistic.html" title=" " alt="" coords="602,531,783,571"/>
+<area shape="poly" id="edge117_Node000011_Node000010" title=" " alt="" coords="500,554,602,551,602,556,500,560"/>
+<area shape="rect" id="Node000012" href="$classidol_1_1Bilevel_1_1StrongDuality.html" title=" " alt="" coords="595,609,791,634"/>
+<area shape="poly" id="edge119_Node000013_Node000012" title=" " alt="" coords="515,625,594,622,595,628,515,631"/>
+<area shape="rect" id="Node000016" href="$classidol_1_1Cplex.html" title=" " alt="" coords="647,765,738,790"/>
+<area shape="poly" id="edge122_Node000015_Node000016" title=" " alt="" coords="488,775,647,775,647,780,488,780"/>
+<area shape="rect" id="Node000018" href="$classidol_1_1DantzigWolfeDecomposition.html" title=" " alt="" coords="573,837,812,862"/>
+<area shape="poly" id="edge124_Node000017_Node000018" title=" " alt="" coords="507,847,573,847,573,852,507,852"/>
+<area shape="rect" id="Node000020" href="$classidol_1_1GLPK.html" title=" " alt="" coords="649,909,737,934"/>
+<area shape="poly" id="edge126_Node000019_Node000020" title=" " alt="" coords="487,919,648,919,648,924,487,924"/>
+<area shape="rect" id="Node000022" href="$classidol_1_1Gurobi.html" title=" " alt="" coords="644,973,741,998"/>
+<area shape="poly" id="edge128_Node000021_Node000022" title=" " alt="" coords="492,983,644,983,644,988,492,988"/>
+<area shape="rect" id="Node000024" href="$classidol_1_1HiGHS.html" title=" " alt="" coords="645,1037,741,1062"/>
+<area shape="poly" id="edge130_Node000023_Node000024" title=" " alt="" coords="491,1047,645,1047,645,1052,491,1052"/>
+<area shape="rect" id="Node000026" href="$classidol_1_1JuMP.html" title=" " alt="" coords="649,1101,736,1126"/>
+<area shape="poly" id="edge132_Node000025_Node000026" title=" " alt="" coords="486,1111,649,1111,649,1116,486,1116"/>
+<area shape="rect" id="Node000028" href="$classidol_1_1Mosek.html" title=" " alt="" coords="644,1165,741,1190"/>
+<area shape="poly" id="edge134_Node000027_Node000028" title=" " alt="" coords="492,1175,644,1175,644,1180,492,1180"/>
+<area shape="rect" id="Node000030" href="$classidol_1_1Osi.html" title=" " alt="" coords="655,1229,730,1254"/>
+<area shape="poly" id="edge136_Node000029_Node000030" title=" " alt="" coords="480,1239,655,1239,655,1244,480,1244"/>
+<area shape="rect" id="Node000031" href="$classidol_1_1OsiClp.html" title=" " alt="" coords="889,1179,985,1205"/>
+<area shape="poly" id="edge137_Node000030_Node000031" title=" " alt="" coords="743,1229,889,1199,890,1204,744,1234"/>
+<area shape="rect" id="Node000032" href="$classidol_1_1OsiCplex.html" title=" " alt="" coords="881,1229,993,1254"/>
+<area shape="poly" id="edge138_Node000030_Node000032" title=" " alt="" coords="744,1239,881,1239,881,1244,744,1244"/>
+<area shape="rect" id="Node000033" href="$classidol_1_1OsiSymphony.html" title=" " alt="" coords="865,1278,1009,1303"/>
+<area shape="poly" id="edge139_Node000030_Node000033" title=" " alt="" coords="744,1249,874,1275,873,1281,743,1254"/>
+<area shape="rect" id="Node000035" href="$classidol_1_1PADM.html" title=" " alt="" coords="647,1293,739,1318"/>
+<area shape="poly" id="edge141_Node000034_Node000035" title=" " alt="" coords="489,1303,647,1303,647,1308,489,1308"/>
+<area shape="rect" id="Node000037" href="$classidol_1_1PenaltyMethod.html" title=" " alt="" coords="617,1357,769,1382"/>
+<area shape="poly" id="edge143_Node000036_Node000037" title=" " alt="" coords="519,1367,616,1367,616,1372,519,1372"/>
+<area shape="rect" id="Node000039" href="$classidol_1_1Robust_1_1AffineDecisionRule.html" title=" " alt="" coords="577,1429,808,1454"/>
+<area shape="poly" id="edge145_Node000038_Node000039" title=" " alt="" coords="510,1439,577,1439,577,1444,510,1444"/>
+<area shape="rect" id="Node000041" href="$classidol_1_1Robust_1_1Benders.html" title=" " alt="" coords="613,1501,773,1526"/>
+<area shape="poly" id="edge147_Node000040_Node000041" title=" " alt="" coords="497,1511,613,1511,613,1516,497,1516"/>
+<area shape="rect" id="Node000043" href="$classidol_1_1Robust_1_1ColumnAndConstraintGeneration.html" title=" " alt="" coords="568,1565,817,1605"/>
+<area shape="poly" id="edge149_Node000042_Node000043" title=" " alt="" coords="534,1583,568,1583,568,1588,534,1588"/>
+<area shape="rect" id="Node000045" href="$classidol_1_1Robust_1_1CriticalValueColumnAndConstraintGeneration.html" title=" " alt="" coords="575,1644,811,1684"/>
+<area shape="poly" id="edge151_Node000044_Node000045" title=" " alt="" coords="509,1661,574,1661,574,1667,509,1667"/>
+<area shape="rect" id="Node000047" href="$classidol_1_1Robust_1_1Deterministic.html" title=" " alt="" coords="595,13,790,38"/>
+<area shape="poly" id="edge153_Node000046_Node000047" title=" " alt="" coords="515,23,595,23,595,28,515,28"/>
+<area shape="rect" id="Node000049" href="$classidol_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver.html" title=" " alt="" coords="590,77,795,117"/>
+<area shape="poly" id="edge155_Node000048_Node000049" title=" " alt="" coords="510,95,590,95,590,100,510,100"/>
+<area shape="rect" id="Node000051" href="$classidol_1_1BranchAndBound.html" title=" " alt="" coords="610,149,775,189"/>
+<area shape="poly" id="edge157_Node000050_Node000051" title=" " alt="" coords="487,167,610,167,610,172,487,172"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Bilevel_1_1OptimizerInterface.html" title=" " alt="" coords="284,405,455,445"/>
+<area shape="poly" id="edge158_Node000003_Node000002" title=" " alt="" coords="467,414,494,405,518,391,535,373,542,353,550,332,566,310,603,286,641,270,643,275,605,291,570,314,554,334,547,355,540,376,522,395,496,410,469,419"/>
+<area shape="poly" id="edge159_Node000003_Node000004" title=" " alt="" coords="467,404,519,391,656,346,658,351,521,396,469,409"/>
+<area shape="poly" id="edge160_Node000003_Node000006" title=" " alt="" coords="469,417,623,407,623,412,469,422"/>
+<area shape="poly" id="edge161_Node000003_Node000008" title=" " alt="" coords="469,438,614,461,613,466,468,443"/>
+<area shape="poly" id="edge162_Node000003_Node000010" title=" " alt="" coords="469,435,521,455,537,467,547,481,555,493,569,506,616,528,614,533,567,510,551,497,542,484,533,471,519,460,467,440"/>
+<area shape="poly" id="edge163_Node000003_Node000012" title=" " alt="" coords="469,429,497,439,522,455,536,471,543,487,547,519,551,551,558,566,570,581,591,596,615,606,613,611,588,600,566,585,553,569,546,552,542,520,538,488,531,474,518,459,494,444,467,434"/>
+</map>

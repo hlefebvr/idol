@@ -1,0 +1,21 @@
+<map id="idol::VariableBranching::Strategy&lt; NodeT &gt;" name="idol::VariableBranching::Strategy&lt; NodeT &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="600,175,829,335"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1VariableBranching_1_1Strategy.html" title=" " alt="" coords="600,397,829,557"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="717,348,717,397,712,397,712,348"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1BranchingRuleFactory.html" title=" " alt="" coords="619,5,810,125"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="717,139,717,175,712,175,712,139"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1Diver_1_1Strategy.html" title=" " alt="" coords="5,617,203,757"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="587,501,502,518,407,541,310,571,216,609,197,619,194,614,214,604,308,566,406,536,501,513,586,496"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1FirstInfeasibleFound_1_1Strategy.html" title=" " alt="" coords="227,617,405,757"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="588,527,503,564,417,609,402,619,399,614,415,604,500,559,586,522"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1LeastInfeasible_1_1Strategy.html" title=" " alt="" coords="429,617,603,757"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="632,569,584,618,580,614,628,565"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1MostInfeasible_1_1Strategy.html" title=" " alt="" coords="627,617,802,757"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="717,571,717,616,712,616,712,571"/>
+<area shape="rect" id="Node000008" href="$classidol_1_1PseudoCost_1_1Strategy.html" title=" " alt="" coords="826,617,1011,757"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="804,565,852,614,849,618,800,569"/>
+<area shape="rect" id="Node000009" href="$classidol_1_1StrongBranching_1_1Strategy.html" title=" " alt="" coords="1035,607,1210,767"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="843,520,934,558,1025,604,1036,611,1033,616,1023,609,932,563,841,525"/>
+<area shape="rect" id="Node000010" href="$classidol_1_1UniformlyRandom_1_1Strategy.html" title=" " alt="" coords="1234,617,1409,757"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="843,493,930,509,1028,532,1128,564,1224,604,1241,614,1239,619,1221,609,1126,569,1026,538,929,514,842,498"/>
+</map>

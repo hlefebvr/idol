@@ -1,0 +1,19 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classidol_1_1Callback.html" title=" " alt="" coords="5,177,116,202"/>
+<area shape="rect" id="Node000001" href="$classidol_1_1Heuristics_1_1LocalBranching_1_1Strategy.html" title=" " alt="" coords="164,5,391,45"/>
+<area shape="poly" id="edge33_Node000000_Node000001" title=" " alt="" coords="72,163,108,109,133,80,162,55,184,43,187,48,166,60,137,84,112,112,77,166"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Heuristics_1_1RENS_1_1Strategy.html" title=" " alt="" coords="196,69,359,109"/>
+<area shape="poly" id="edge34_Node000000_Node000002" title=" " alt="" coords="87,166,122,142,163,119,195,106,197,111,165,124,125,146,90,171"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Heuristics_1_1SimpleRounding_1_1Strategy.html" title=" " alt="" coords="191,133,363,173"/>
+<area shape="poly" id="edge35_Node000000_Node000003" title=" " alt="" coords="129,175,191,165,192,170,130,181"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1Optimizers_1_1Robust_1_1Benders_1_1BendersCallback_1_1Strategy.html" title=" " alt="" coords="177,198,377,253"/>
+<area shape="poly" id="edge36_Node000000_Node000004" title=" " alt="" coords="130,198,177,206,177,211,129,203"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1Plots_1_1OptimalityGap_1_1Strategy.html" title=" " alt="" coords="183,277,372,317"/>
+<area shape="poly" id="edge37_Node000000_Node000005" title=" " alt="" coords="88,209,124,236,165,262,197,275,195,280,163,266,120,241,85,213"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="186,342,369,367"/>
+<area shape="poly" id="edge38_Node000000_Node000006" title=" " alt="" coords="75,213,110,271,135,302,165,327,191,339,188,344,163,332,132,306,106,275,71,216"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1LazyCutCallback_1_1Strategy.html" title=" " alt="" coords="439,303,601,343"/>
+<area shape="poly" id="edge39_Node000006_Node000007" title=" " alt="" coords="382,338,438,331,439,336,383,343"/>
+<area shape="rect" id="Node000008" href="$classidol_1_1UserCutCallback_1_1Strategy.html" title=" " alt="" coords="439,367,601,407"/>
+<area shape="poly" id="edge40_Node000006_Node000008" title=" " alt="" coords="383,366,439,373,438,379,382,371"/>
+</map>

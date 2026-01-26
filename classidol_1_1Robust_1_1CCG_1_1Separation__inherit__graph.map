@@ -1,0 +1,7 @@
+<map id="idol::Robust::CCG::Separation" name="idol::Robust::CCG::Separation">
+<area shape="rect" id="Node000001" title=" " alt="" coords="125,5,333,385"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Robust_1_1CCG_1_1BigMFreeSeparation.html" title=" " alt="" coords="5,433,227,593"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,399,147,434,142,432,154,397"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Robust_1_1CCG_1_1OptimalitySeparation.html" title=" " alt="" coords="251,443,437,583"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="305,397,322,442,317,444,300,399"/>
+</map>

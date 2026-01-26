@@ -1,0 +1,17 @@
+<map id="idol::CallbackFactory" name="idol::CallbackFactory">
+<area shape="rect" id="Node000001" title=" " alt="" coords="645,5,798,111"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Heuristics_1_1LocalBranching.html" title=" " alt="" coords="5,159,224,284"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="631,73,447,105,341,130,237,161,225,166,223,161,235,156,339,125,446,100,630,68"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Heuristics_1_1RENS.html" title=" " alt="" coords="248,159,403,284"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="632,84,527,116,470,137,416,161,404,167,402,162,414,156,468,132,525,111,631,78"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1Heuristics_1_1SimpleRounding.html" title=" " alt="" coords="427,161,591,281"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="644,122,589,163,585,159,640,117"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1LazyCutCallback.html" title=" " alt="" coords="615,159,827,284"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="724,124,724,158,719,158,719,124"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1Optimizers_1_1Robust_1_1Benders_1_1BendersCallback.html" title=" " alt="" coords="852,161,1044,281"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="807,117,866,159,863,163,804,121"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1Plots_1_1OptimalityGap.html" title=" " alt="" coords="1068,169,1249,274"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="812,77,930,110,995,131,1057,156,1078,166,1076,171,1055,161,993,136,929,115,811,82"/>
+<area shape="rect" id="Node000008" href="$classidol_1_1UserCutCallback.html" title=" " alt="" coords="1274,159,1486,284"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="812,65,907,77,1021,95,1142,121,1262,156,1275,161,1273,166,1261,161,1141,127,1020,101,906,82,811,70"/>
+</map>

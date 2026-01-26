@@ -1,0 +1,10 @@
+<map id="idol::PenaltyMethod" name="idol::PenaltyMethod">
+<area shape="rect" id="Node000001" title=" " alt="" coords="37,1081,238,1381"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="5,657,269,1032"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,1046,140,1081,135,1081,135,1046"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1OptimizerFactory.html" title=" " alt="" coords="51,5,213,171"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="135,184,139,657,133,657,130,184"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="153,220,383,595"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="175,182,190,218,185,221,170,184"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="211,609,196,658,191,656,206,607"/>
+</map>

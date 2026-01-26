@@ -1,0 +1,9 @@
+<map id="idol::Optimizers::Bilevel::StrongDuality" name="idol::Optimizers::Bilevel::StrongDuality">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,565,187,1105"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Algorithm.html" title=" " alt="" coords="19,232,173,517"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,531,99,565,93,565,93,531"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Optimizer.html" title=" " alt="" coords="41,119,151,184"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="99,198,99,232,93,232,93,198"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="23,5,169,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="99,84,99,119,93,119,93,84"/>
+</map>

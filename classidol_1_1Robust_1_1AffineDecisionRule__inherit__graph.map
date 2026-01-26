@@ -1,0 +1,10 @@
+<map id="idol::Robust::AffineDecisionRule" name="idol::Robust::AffineDecisionRule">
+<area shape="rect" id="Node000001" title=" " alt="" coords="17,1096,239,1276"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="5,657,251,1047"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,1061,131,1096,125,1096,125,1061"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1OptimizerFactory.html" title=" " alt="" coords="42,5,203,171"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,184,129,657,124,657,121,184"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="144,220,373,595"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="165,182,181,218,176,221,161,184"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="202,609,188,658,183,657,197,607"/>
+</map>

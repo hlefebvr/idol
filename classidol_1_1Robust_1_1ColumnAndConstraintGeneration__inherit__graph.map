@@ -1,0 +1,10 @@
+<map id="idol::Robust::ColumnAndConstraintGeneration" name="idol::Robust::ColumnAndConstraintGeneration">
+<area shape="rect" id="Node000001" title=" " alt="" coords="25,1096,279,1420"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="5,657,299,1047"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,1060,155,1096,149,1096,149,1060"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1OptimizerFactory.html" title=" " alt="" coords="66,5,227,171"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="150,184,153,657,148,657,145,184"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="168,220,397,595"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="189,182,205,218,200,221,185,184"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="226,609,212,658,207,657,221,607"/>
+</map>

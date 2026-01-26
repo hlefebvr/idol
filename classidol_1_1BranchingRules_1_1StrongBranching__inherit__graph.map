@@ -1,0 +1,7 @@
+<map id="idol::BranchingRules::StrongBranching&lt; NodeInfoT &gt;" name="idol::BranchingRules::StrongBranching&lt; NodeInfoT &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,685,232,785"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1BranchingRules_1_1VariableBranching.html" title=" " alt="" coords="26,388,211,637"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,651,121,685,116,685,116,651"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1BranchingRule.html" title=" " alt="" coords="34,5,203,340"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="121,354,121,388,116,388,116,354"/>
+</map>

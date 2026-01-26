@@ -1,0 +1,19 @@
+<map id="idol::Object&lt; T, CRTP &gt;" name="idol::Object&lt; T, CRTP &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="307,5,473,331"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Object.html" title=" " alt="" coords="5,393,180,733"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="297,241,239,295,185,356,161,394,157,391,181,353,235,291,294,237"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1Object.html" title=" " alt="" coords="205,393,389,733"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="325,345,322,355,314,393,309,392,317,354,319,343"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1Object.html" title=" " alt="" coords="413,393,613,733"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="468,343,471,354,482,393,477,394,466,355,463,344"/>
+<area shape="rect" id="Node000008" href="$classidol_1_1Object.html" title=" " alt="" coords="637,393,813,733"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="487,212,532,239,579,271,623,310,661,353,685,392,680,395,657,356,619,313,576,276,529,243,484,217"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Ctr.html" title=" " alt="" coords="31,823,154,968"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="95,747,95,822,90,822,90,747"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1QCtr.html" title=" " alt="" coords="235,823,358,968"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="299,747,299,822,294,822,294,747"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1SOSCtr.html" title=" " alt="" coords="467,833,558,958"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="515,747,515,832,510,832,510,747"/>
+<area shape="rect" id="Node000009" href="$classidol_1_1Var.html" title=" " alt="" coords="663,783,786,1008"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="727,747,727,783,722,783,722,747"/>
+</map>

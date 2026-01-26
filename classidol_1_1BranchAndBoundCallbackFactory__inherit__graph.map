@@ -1,0 +1,15 @@
+<map id="idol::BranchAndBoundCallbackFactory&lt; NodeInfoT &gt;" name="idol::BranchAndBoundCallbackFactory&lt; NodeInfoT &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="509,5,773,125"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1CallbackAsBranchAndBoundCallback.html" title=" " alt="" coords="5,271,217,405"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="496,90,431,105,362,127,294,155,232,190,188,228,153,272,149,269,184,224,228,186,292,150,360,122,429,100,495,85"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Cuts_1_1KnapsackCover.html" title=" " alt="" coords="242,241,426,435"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="513,135,475,161,440,190,394,242,390,239,436,186,472,157,510,130"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1Heuristics_1_1IntegerMaster.html" title=" " alt="" coords="450,188,631,488"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="617,139,598,189,593,187,612,137"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1ReducedCostFixing.html" title=" " alt="" coords="655,288,826,388"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="670,138,725,287,720,289,665,139"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1Utils_1_1ExportBranchAndBoundTreeToCSV.html" title=" " alt="" coords="851,271,1095,405"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="762,130,840,186,883,226,922,269,918,272,879,230,836,190,759,135"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1BranchAndBoundCallbackFactory.html" title=" " alt="" coords="1119,278,1383,398"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="787,81,863,96,946,118,1029,147,1107,186,1136,205,1163,228,1209,276,1205,280,1160,232,1133,209,1105,190,1027,152,944,123,862,102,786,87"/>
+</map>
