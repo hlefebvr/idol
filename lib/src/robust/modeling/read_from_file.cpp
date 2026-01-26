@@ -123,13 +123,13 @@ void idol::Robust::write_to_file(const Model& t_model, const Robust::Description
     out << "@RHS" << std::endl;
     for (const auto& [ctr, coeff] : t_robust_description.uncertain_rhs()) {
         for (const auto& [var, val] : coeff) {
-            std::cout << ctr << '\t' << var << '\t' << val << std::endl;
+            out << ctr << '\t' << var << '\t' << val << std::endl;
         }
     }
     out << "@OBJ" << std::endl;
     for (const auto& [var1, coeff] : t_robust_description.uncertain_obj()) {
         for (const auto& [var2, val] : coeff) {
-            std::cout << var1 << '\t' << var2 << '\t' << val << std::endl;
+            out << var1 << '\t' << var2 << '\t' << val << std::endl;
         }
     }
     out << "@MAT" << std::endl;
