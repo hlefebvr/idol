@@ -262,8 +262,22 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
         return;
     }
 
-    m_last_master_solution = save_primal(master);
+    // Save master solution
+    m_last_master_solution = PrimalPoint();
+    m_last_master_solution->set_objective_value(master.get_best_obj());
+    m_last_master_solution->set_status(status);
+    m_last_master_solution->set_reason(reason);
+    for (const auto& var : parent().vars()) {
+        if (get_bilevel_description().is_upper(var)) {
+            m_last_master_solution->set(var, master.get_var_primal(var));
+        }
+    }
+    if (m_formulation->has_second_stage_epigraph()) {
+        const auto& epigraph = m_formulation->second_stage_epigraph();
+        m_last_master_solution->set(epigraph, master.get_var_primal(epigraph));
+    }
 
+    // Update lower bound
     if (!m_formulation->should_have_epigraph_and_epigraph_is_not_in_master()) {
         set_best_bound(master.get_best_bound());
     }
@@ -277,7 +291,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_
         return;
     }
 
-    if (get_best_bound() > get_best_obj() + 1e-3) {
+    if (get_best_bound() > get_best_obj() + get_tol_mip_absolute_gap()) {
+        std::cerr << "The current best obj. is larger than current best bound. This should should not happen. Terminating..." << std::endl;
         set_status(Fail);
         set_reason(Numerical);
         terminate();
@@ -287,18 +302,21 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_
     set_status(is_pos_inf(get_best_obj()) ? Infeasible : Feasible);
 
     if (get_remaining_time() == 0) {
+        std::cout << "The time limit has been reached. Terminating..." << std::endl;
         set_reason(TimeLimit);
         terminate();
         return;
     }
 
     if (m_n_iterations > get_param_iteration_limit()) {
+        std::cout << "The iteration limit has been reached. Terminating..." << std::endl;
         set_reason(IterLimit);
         terminate();
         return;
     }
 
     if (Algorithm::get_relative_gap() <= get_tol_mip_relative_gap() || Algorithm::get_absolute_gap() <= get_tol_mip_absolute_gap()) {
+        std::cout << "The optimality gap has been closed. Terminating..." << std::endl;
         set_status(Optimal);
         set_reason(Proved);
         terminate();
@@ -370,26 +388,26 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_
         separation();
         m_separation_timer.stop();
 
-        if (separation.m_status != Optimal && separation.m_status != Feasible) {
+        if (separation.m_submitted_upper_bound && *separation.m_submitted_upper_bound < get_best_obj()) {
+            set_best_obj(*separation.m_submitted_upper_bound);
+            set_status(Feasible);
+        }
+
+        const bool is_last_separation = i == n_separations - 1;
+        const auto& scenarios_to_add = separation.scenarios();
+
+        if (is_last_separation && separation.m_status != Optimal && scenarios_to_add.size() == 0) {
+            set_reason(separation.m_reason);
+            terminate();
+        } else if (separation.m_status != Feasible && separation.m_status != Optimal) {
             set_status(separation.m_status);
             set_reason(separation.m_reason);
             std::cerr << "Separation reported status " << separation.m_status << " (" << separation.m_reason << ")." << std::endl;
             terminate();
         }
 
-        if (separation.m_submitted_upper_bound && *separation.m_submitted_upper_bound < get_best_obj()) {
-            set_best_obj(*separation.m_submitted_upper_bound);
-            set_status(Feasible);
-        }
-
         if (check_termination_criteria() ; is_terminated()) {
             return;
-        }
-
-        const auto& scenarios_to_add = separation.scenarios();
-
-        if (scenarios_to_add.size() == 0) {
-            continue;
         }
 
         for (const auto& scenario : scenarios_to_add) {
@@ -398,7 +416,17 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_
 
         log_iteration();
 
-        return;
+        if (scenarios_to_add.size() > 0) {
+            return;
+        }
+
+        if (is_last_separation) {
+            set_best_obj(get_best_bound());
+            set_status(Optimal);
+            set_reason(Proved);
+            terminate();
+            return;
+        }
 
     }
 

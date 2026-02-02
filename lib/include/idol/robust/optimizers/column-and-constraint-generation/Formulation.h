@@ -34,7 +34,6 @@ class idol::CCG::Formulation {
     void parse_objective();
     void parse_constraints();
     void copy_bilevel_description(const ::idol::Bilevel::Description& t_src, const ::idol::Bilevel::Description& t_dest) const;
-    void add_separation_problem_constraints(idol::Model &t_model, const idol::Point<idol::Var> &t_first_stage_decision);
     QuadExpr<Var> compute_second_stage_objective(const Point<Var>& t_first_stage_decision) const;
 public:
     Formulation(const Model& t_parent,
@@ -45,9 +44,6 @@ public:
     Model& master() { return m_master; }
     const Model& master() const { return m_master; }
     void add_scenario_to_master(const Point<Var>& t_scenario, bool t_add_annotation, bool t_check_for_repeated_scenarios);
-    //Model build_optimality_separation_problem(const idol::Point<idol::Var> &t_first_stage_decision);
-    //std::pair<Model, std::vector<Var>> build_feasibility_separation_problem(const Point<Var>& t_first_stage_decision);
-    //std::pair<Model, std::vector<Var>> build_joint_separation_problem(const Point<Var>& t_first_stage_decision);
     unsigned int n_coupling_constraints() const { return m_coupling_constraints.size(); }
     unsigned int n_added_scenarios() const { return m_n_added_scenario; }
     const Bilevel::Description& bilevel_description_master() const { return *m_bilevel_description_master; }

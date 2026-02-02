@@ -23,11 +23,12 @@ int main(int t_argc, const char ** t_argv) {
     cxxopts::Options options("idol_cli", "idol command line interface");
 
     options.add_options()
-        ("mps", "mps file", cxxopts::value<std::string>())
-        ("aux", "aux file", cxxopts::value<std::string>())
-        ("par", "uncertainty parameterization file", cxxopts::value<std::string>())
-        ("unc", "uncertainty file", cxxopts::value<std::string>())
+        ("mps", ".mps file for the deterministic model", cxxopts::value<std::string>())
+        ("aux", ".aux file for the decision stages", cxxopts::value<std::string>())
+        ("par", ".par file for the uncertainty parametrization", cxxopts::value<std::string>())
+        ("unc", ".mps file for the uncertainty set", cxxopts::value<std::string>())
         ("method", "Method", cxxopts::value<std::string>()->default_value("ccg"))
+        ("view", "View")
         ("h,help", "Print help")
         ("v,verbose", "Verbose mode")
         ("version", "Version");
@@ -49,24 +50,21 @@ int main(int t_argc, const char ** t_argv) {
     const auto unc_par = result["par"].as<std::string>();
     const auto unc_mps = result["unc"].as<std::string>();
     const auto method = result["method"].as<std::string>();
+    const auto view = result["view"].count() > 0;
 
     Env env;
     auto [model, bilevel_description] = Bilevel::read_from_file(env, aux);
     auto robust_description = Robust::read_from_file(model, unc_par, unc_mps);
 
-    if (method != "ccg") {
-        throw Exception("Unknown method: " + method);
+    if (view) {
+        std::cout << "Parameterized Model:\n";
+        std::cout << Robust::Description::View(model, robust_description) << '\n';
+        std::cout << "Uncertainty Set:\n";
+        std::cout << robust_description.uncertainty_set() << std::endl;
     }
 
-    std::cout << Robust::Description::View(model, robust_description) << std::endl;
-
-    if (false) {
-        std::cout << "WARNING: pre-solving equality constraints" << std::endl;
-        for (const auto& ctr : model.ctrs()) {
-            if (const auto type = model.get_ctr_type(ctr) ; type == Equal) {
-                model.set_ctr_type(ctr, GreaterOrEqual);
-            }
-        }
+    if (method != "ccg") {
+        throw Exception("Unknown method: " + method);
     }
 
     auto kkt = Bilevel::StrongDuality();
@@ -74,14 +72,12 @@ int main(int t_argc, const char ** t_argv) {
 
     auto ccg = Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
     ccg.with_master_optimizer(Gurobi());
+    ccg.with_initial_scenario_by_maximization(Gurobi());
     //ccg.add_separation(Robust::CCG::OptimalitySeparation().with_bilevel_optimizer(kkt));
     ccg.add_separation(
         Robust::CCG::BigMFreeSeparation()
-            .with_single_level_optimizer(
-                Gurobi()
-                    .with_logs(false)
-                    .with_presolve(false)
-            )
+            .with_single_level_optimizer(Gurobi().with_logs(false))
+            .with_zero_one_uncertainty_set(true)
         );
     ccg.with_check_for_repeated_scenarios(true);
     ccg.with_logs(result["verbose"].count() > 0);

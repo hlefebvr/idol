@@ -77,6 +77,8 @@ int main(int t_argc, const char** t_argv) {
     // First, we create a virgin branch-and-bound algorithm
     auto branch_and_bound = BranchAndBound();
 
+    branch_and_bound.with_logs(true);
+
     // Configure how to solve the nodes' problems
     branch_and_bound.with_node_optimizer(GLPK::ContinuousRelaxation());
 
@@ -98,8 +100,32 @@ int main(int t_argc, const char** t_argv) {
     model.use(branch_and_bound);
     model.optimize();
 
-    std::cout << "Status: " << model.get_status() << std::endl;
-    std::cout << "Objective value:\n" << model.get_best_obj() << std::endl;
+    // General functions
+    const auto status = model.get_status();
+    const auto reason = model.get_reason();
+    const auto best_bound = model.get_best_bound();
+    const auto best_obj = model.get_best_obj();
+    const auto time = model.optimizer().time().count();
+
+    // Branch-and-bound specific
+    const auto& bb = model.optimizer().as<Optimizers::BranchAndBound<DefaultNodeInfo>>();
+    const auto root_node_best_bound = bb.root_node_best_bound();
+    const auto root_node_best_obj = bb.root_node_best_obj();
+    const auto n_solved_nodes = bb.n_solved_nodes();
+
+    std::cout << "Status: " << status << '\n';
+    std::cout << "Reason: " << reason << '\n';
+    std::cout << "Time: " << time << '\n';
+    std::cout << "Best Obj.: " << best_obj << '\n';
+    std::cout << "Best Bound: " << best_bound << '\n';
+    std::cout << "Absolute Gap: " << absolute_gap(best_bound, best_obj) << '\n';
+    std::cout << "Relative Gap: " << relative_gap(best_bound, best_obj) << '\n';
+    std::cout << "Root Node Best Obj.: " << root_node_best_obj << '\n';
+    std::cout << "Root Node Best Bound: " << root_node_best_bound << '\n';
+    std::cout << "Root Node Absolute Gap: " << absolute_gap(root_node_best_bound, root_node_best_obj) << '\n';
+    std::cout << "Root Node Relative Gap: " << relative_gap(root_node_best_bound, root_node_best_obj) << '\n';
+    std::cout << "N. of Nodes: " << n_solved_nodes << '\n';
+    std::cout << std::endl;
 
     return 0;
 }

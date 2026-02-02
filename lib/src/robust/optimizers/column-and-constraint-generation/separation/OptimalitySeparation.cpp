@@ -60,7 +60,7 @@ void idol::Robust::CCG::OptimalitySeparation::operator()() {
     }
 
     if (status == Optimal) {
-        //submit_upper_bound(-model.get_best_obj());
+        submit_upper_bound(-model.get_best_obj());
     }
 
     auto scenario = save_primal(get_robust_description().uncertainty_set(), model);

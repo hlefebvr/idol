@@ -23,6 +23,7 @@ namespace idol {
 
 class idol::Robust::CCG::BigMFreeSeparation : public idol::Robust::CCG::Separation {
     std::unique_ptr<OptimizerFactory> m_single_level_optimizer;
+    std::optional<bool> m_with_zero_one_uncertainty_set;
     double m_M = 1;
     double m_kappa = 0;
     std::vector<Var> m_slack_for_constraints;
@@ -37,6 +38,8 @@ public:
     [[nodiscard]] Separation* clone() const override { return new BigMFreeSeparation(*this); }
 
     BigMFreeSeparation& with_single_level_optimizer(const OptimizerFactory& t_optimizer);
+
+    BigMFreeSeparation& with_zero_one_uncertainty_set(bool t_value);
 
     std::pair<idol::Model, idol::Bilevel::Description> build_separation_problem() override;
 
