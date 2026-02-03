@@ -265,10 +265,10 @@ add_library(idol STATIC
         src/bilevel/optimizers/BranchAndCut/BranchAndCut.cpp
         src/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.cpp
         include/idol/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.h
-        src/optimizers/robust/KAdaptabilityBranchAndBound/KAdaptabilityBranchAndBound.cpp
+        src/robust/optimizers/KAdaptabilityBranchAndBound/KAdaptabilityBranchAndBound.cpp
         include/idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h
-        src/optimizers/robust/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.cpp
-        src/optimizers/robust/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.cpp
+        src/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.cpp
+        src/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.cpp
         include/idol/mixed-integer/modeling/constraints/SOSCtr.h
         include/idol/mixed-integer/modeling/constraints/SOSCtrVersion.h
         src/mixed-integer/modeling/constraints/SOSCtr.cpp
@@ -309,6 +309,10 @@ add_library(idol STATIC
         src/robust/optimizers/column-and-constraint-generation/separation/Separation.cpp
         include/idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h
         src/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.cpp
+        include/idol/robust/optimizers/nested-branch-and-cut/NestedBranchAndCut.h
+        src/robust/optimizers/nested-branch-and-cut/NestedBranchAndBound.cpp
+        include/idol/robust/optimizers/nested-branch-and-cut/Optimizers_NestedBranchAndCut.h
+        src/robust/optimizers/nested-branch-and-cut/Optimizers_NestedBranchAndCut.cpp
 )
 
 #find_package(OpenMP REQUIRED)

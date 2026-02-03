@@ -1,0 +1,8 @@
+//
+// Created by Henri on 03/02/2026.
+//
+
+#ifndef IDOL_NESTEDBRANCHANDCUT_H
+#define IDOL_NESTEDBRANCHANDCUT_H
+
+#endif //IDOL_NESTEDBRANCHANDCUT_H

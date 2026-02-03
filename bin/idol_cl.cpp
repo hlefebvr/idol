@@ -67,19 +67,16 @@ int main(int t_argc, const char ** t_argv) {
         throw Exception("Unknown method: " + method);
     }
 
-    auto kkt = Bilevel::StrongDuality();
-    kkt.with_single_level_optimizer(Gurobi());
-
     auto ccg = Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
     ccg.with_master_optimizer(Gurobi());
     ccg.with_initial_scenario_by_maximization(Gurobi());
     //ccg.add_separation(Robust::CCG::OptimalitySeparation().with_bilevel_optimizer(kkt));
     ccg.add_separation(
         Robust::CCG::BigMFreeSeparation()
-            .with_single_level_optimizer(Gurobi().with_logs(false))
-            .with_zero_one_uncertainty_set(true)
+            .with_single_level_optimizer(Gurobi())
+            .with_zero_one_uncertainty_set(false)
         );
-    ccg.with_check_for_repeated_scenarios(true);
+    ccg.with_check_for_repeated_scenarios(false);
     ccg.with_logs(result["verbose"].count() > 0);
 
     model.use(ccg);

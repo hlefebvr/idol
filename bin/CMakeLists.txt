@@ -1,9 +1,9 @@
-add_executable(idol_cli
-    idol_cli.cpp
+add_executable(idol_cl
+        idol_cl.cpp
 )
-target_link_libraries(idol_cli PRIVATE idol)
+target_link_libraries(idol_cl PRIVATE idol)
 
-install(TARGETS idol_cli
+install(TARGETS idol_cl
         RUNTIME DESTINATION bin
 )
 
@@ -17,4 +17,4 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(cxxopts)
 
-target_link_libraries(idol_cli PRIVATE cxxopts::cxxopts)
+target_link_libraries(idol_cl PRIVATE cxxopts::cxxopts)
