@@ -16,7 +16,6 @@ namespace idol::Robust {
 }
 
 class idol::Robust::Description {
-    mutable std::optional<Annotation<unsigned int>> m_stages;
     Map<Ctr, LinExpr<Var, LinExpr<Var>>> m_uncertain_mat_coeff;
     LinExpr<Ctr, LinExpr<Var>> m_uncertain_rhs;
     LinExpr<Var, LinExpr<Var>> m_uncertain_obj;
@@ -25,14 +24,6 @@ public:
     explicit Description(const Model& t_uncertainty_set) : m_uncertainty_set(t_uncertainty_set.clone()) {}
 
     Description(Description&&) = default;
-
-    [[nodiscard]] const Annotation<unsigned int>& stage_annotation() const;
-
-    void set_stage(const Var& t_var, unsigned int t_stage);
-
-    unsigned int stage(const Var& t_var) const;
-
-    unsigned int stage(const Ctr& t_var) const;
 
     const Model& uncertainty_set() const { return *m_uncertainty_set; }
 

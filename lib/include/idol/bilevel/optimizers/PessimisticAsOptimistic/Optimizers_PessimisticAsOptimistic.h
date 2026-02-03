@@ -19,6 +19,7 @@ class idol::Optimizers::Bilevel::PessimisticAsOptimistic : public Algorithm {
 
     std::optional<Model> m_optimistic_bilevel_model;
     std::optional<::idol::Bilevel::Description> m_optimistic_bilevel_annotation;
+    std::optional<PrimalPoint> m_follower_solution;
 public:
     PessimisticAsOptimistic(const Model& t_parent,
                             const ::idol::Bilevel::Description& t_description,

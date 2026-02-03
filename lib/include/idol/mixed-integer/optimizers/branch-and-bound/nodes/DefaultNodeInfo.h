@@ -35,6 +35,8 @@ public:
 
     [[nodiscard]] const auto& primal_solution() const { return m_primal_solution; }
 
+    auto& primal_solution() { return m_primal_solution; }
+
     void set_primal_solution(PrimalPoint t_primal_solution) { m_primal_solution = std::move(t_primal_solution); }
 
     virtual void save(const Model& t_original_formulation, const Model& t_model);

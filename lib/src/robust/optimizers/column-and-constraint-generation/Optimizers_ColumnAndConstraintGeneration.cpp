@@ -46,6 +46,9 @@ std::string idol::Optimizers::Robust::ColumnAndConstraintGeneration::name() cons
 }
 
 double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_primal(const idol::Var &t_var) const {
+    if (m_bilevel_description.is_lower(t_var)) {
+        return 0;
+    }
     return m_formulation->master().get_var_primal(t_var);
 }
 

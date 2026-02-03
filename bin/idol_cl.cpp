@@ -9,12 +9,14 @@
 #include "idol/bilevel/modeling/read_from_file.h"
 #include "idol/bilevel/optimizers/KKT/KKT.h"
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/robust/modeling/read_from_file.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
+#include "idol/robust/optimizers/nested-branch-and-cut/NestedBranchAndCut.h"
 
 using namespace idol;
 
@@ -27,7 +29,8 @@ int main(int t_argc, const char ** t_argv) {
         ("aux", ".aux file for the decision stages", cxxopts::value<std::string>())
         ("par", ".par file for the uncertainty parametrization", cxxopts::value<std::string>())
         ("unc", ".mps file for the uncertainty set", cxxopts::value<std::string>())
-        ("method", "Method", cxxopts::value<std::string>()->default_value("ccg"))
+        ("method", "Method", cxxopts::value<std::string>())
+        ("zero-one-uncertainty-set", "For robust problems, indicates if the uncertainty set has a 0-1 structure.")
         ("view", "View")
         ("h,help", "Print help")
         ("v,verbose", "Verbose mode")
@@ -51,6 +54,8 @@ int main(int t_argc, const char ** t_argv) {
     const auto unc_mps = result["unc"].as<std::string>();
     const auto method = result["method"].as<std::string>();
     const auto view = result["view"].count() > 0;
+    const auto verbose = result["verbose"].count() > 0;
+    const auto zero_one_uncertainty_set = result["zero-one-uncertainty-set"].count() > 0;
 
     Env env;
     auto [model, bilevel_description] = Bilevel::read_from_file(env, aux);
@@ -63,23 +68,31 @@ int main(int t_argc, const char ** t_argv) {
         std::cout << robust_description.uncertainty_set() << std::endl;
     }
 
-    if (method != "ccg") {
-        throw Exception("Unknown method: " + method);
+    if (method == "ccg") {
+
+        auto ccg = Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
+        ccg.with_master_optimizer(Gurobi());
+        ccg.with_initial_scenario_by_maximization(Gurobi());
+        //ccg.add_separation(Robust::CCG::OptimalitySeparation().with_bilevel_optimizer(kkt));
+        ccg.add_separation(
+            Robust::CCG::BigMFreeSeparation()
+                .with_single_level_optimizer(Gurobi())
+                .with_zero_one_uncertainty_set(zero_one_uncertainty_set)
+            );
+        ccg.with_logs(verbose);
+
+        model.use(ccg);
+
+    } else if (method == "nested-branch-and-cut") {
+
+        auto nested_branch_and_cut = Robust::NestedBranchAndCut(robust_description, bilevel_description);
+        nested_branch_and_cut.with_optimality_bilevel_optimizer(Bilevel::MibS());
+
+        model.use(nested_branch_and_cut);
+
+    } else {
+        throw Exception("Unknown method '" + method + "'.");
     }
-
-    auto ccg = Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
-    ccg.with_master_optimizer(Gurobi());
-    ccg.with_initial_scenario_by_maximization(Gurobi());
-    //ccg.add_separation(Robust::CCG::OptimalitySeparation().with_bilevel_optimizer(kkt));
-    ccg.add_separation(
-        Robust::CCG::BigMFreeSeparation()
-            .with_single_level_optimizer(Gurobi())
-            .with_zero_one_uncertainty_set(false)
-        );
-    ccg.with_check_for_repeated_scenarios(false);
-    ccg.with_logs(result["verbose"].count() > 0);
-
-    model.use(ccg);
 
     model.optimize();
 

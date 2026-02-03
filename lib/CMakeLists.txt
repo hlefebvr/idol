@@ -229,14 +229,6 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h
         include/idol/robust/modeling/Description.h
         src/robust/modeling/Description.cpp
-        include/idol/robust/optimizers/deterministic/Deterministic.h
-        src/robust/optimizers/deterministic/Deterministic.cpp
-        include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h
-        src/robust/optimizers/deterministic/Optimizers_Deterministic.cpp
-        include/idol/robust/optimizers/affine-decision-rule/AffineDecisionRule.h
-        include/idol/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.h
-        src/robust/optimizers/affine-decision-rule/AffineDecisionRule.cpp
-        src/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.cpp
         include/idol/bilevel/optimizers/KKT/KKT.h
         include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h
         src/bilevel/optimizers/KKT/KKT.cpp
@@ -276,10 +268,6 @@ add_library(idol STATIC
         include/idol/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.h
         src/bilevel/optimizers/MinMaxDualize/MinMax_Dualize.cpp
         src/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.cpp
-        include/idol/robust/optimizers/benders/Benders.h
-        include/idol/robust/optimizers/benders/Optimizers_Benders.h
-        src/robust/optimizers/benders/Benders.cpp
-        src/robust/optimizers/benders/Optimizers_Benders.cpp
         include/idol/mixed-integer/optimizers/wrappers/JuMP/JuMP.h
         include/idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h
         include/idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_Coluna.h
@@ -313,6 +301,8 @@ add_library(idol STATIC
         src/robust/optimizers/nested-branch-and-cut/NestedBranchAndBound.cpp
         include/idol/robust/optimizers/nested-branch-and-cut/Optimizers_NestedBranchAndCut.h
         src/robust/optimizers/nested-branch-and-cut/Optimizers_NestedBranchAndCut.cpp
+        include/idol/robust/optimizers/nested-branch-and-cut/Formulation.h
+        src/robust/optimizers/nested-branch-and-cut/Formulation.cpp
 )
 
 #find_package(OpenMP REQUIRED)
