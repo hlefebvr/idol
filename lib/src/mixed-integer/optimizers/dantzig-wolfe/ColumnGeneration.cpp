@@ -223,6 +223,10 @@ bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::check_stoppi
 }
 
 bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::gap_is_closed() const {
+    if (m_best_bound > m_best_obj + m_parent.get_tol_mip_absolute_gap()) {
+        //std::cout << "WARNING: best bound is larger than best obj, difference is " << absolute_gap(m_best_obj, m_best_bound) << std::endl;
+        return true;
+    }
     return relative_gap(m_best_bound, m_best_obj) < m_parent.get_tol_mip_relative_gap()
            || absolute_gap(m_best_bound, m_best_obj) < m_parent.get_tol_mip_absolute_gap();
 }
