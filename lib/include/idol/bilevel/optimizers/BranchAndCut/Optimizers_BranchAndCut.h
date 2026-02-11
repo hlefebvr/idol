@@ -20,7 +20,6 @@ class idol::Optimizers::Bilevel::BranchAndCut : public Algorithm {
     std::unique_ptr<Model> m_separation_problem;
     std::vector<Var> m_linking_upper_variables;
     std::optional<Var> m_pi;
-    std::optional<Var> m_counter;
     std::vector<Var> m_lambda;
 
     void check_value_function_is_well_posed();
@@ -36,14 +35,14 @@ public:
                  const ::idol::Bilevel::Description& t_description,
                  const OptimizerFactory& t_optimizer_for_sub_problems);
 
-    std::string name() const override;
-    double get_var_primal(const Var &t_var) const override;
-    double get_var_reduced_cost(const Var &t_var) const override;
-    double get_var_ray(const Var &t_var) const override;
-    double get_ctr_dual(const Ctr &t_ctr) const override;
-    double get_ctr_farkas(const Ctr &t_ctr) const override;
-    unsigned int get_n_solutions() const override;
-    unsigned int get_solution_index() const override;
+    [[nodiscard]] std::string name() const override;
+    [[nodiscard]] double get_var_primal(const Var &t_var) const override;
+    [[nodiscard]] double get_var_reduced_cost(const Var &t_var) const override;
+    [[nodiscard]] double get_var_ray(const Var &t_var) const override;
+    [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
+    [[nodiscard]] unsigned int get_n_solutions() const override;
+    [[nodiscard]] unsigned int get_solution_index() const override;
 
 protected:
     void add(const Var &t_var) override;
@@ -54,6 +53,7 @@ protected:
     void remove(const QCtr &t_ctr) override;
     void update() override;
     void write(const std::string &t_name) override;
+    void hook_before_optimize() override;
     void hook_optimize() override;
     void set_solution_index(unsigned int t_index) override;
     void update_obj_sense() override;

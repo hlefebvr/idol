@@ -2,9 +2,6 @@
 // Created by Henri on 03/02/2026.
 //
 #include "idol/robust/optimizers/nested-branch-and-cut/Formulation.h"
-
-#include <assert.h>
-
 #include "idol/robust/optimizers/nested-branch-and-cut/Optimizers_NestedBranchAndCut.h"
 #include "idol/mixed-integer/modeling/variables/TempVar.h"
 
@@ -62,7 +59,7 @@ void idol::Robust::NBC::Formulation::build_model() {
         throw Exception("Matrix uncertainty is not yet implemented.");
     }
 
-    if (robust_optimization.uncertain_obj().size() > 0) {
+    if (!robust_optimization.uncertain_obj().empty()) {
         throw Exception("Objective uncertainty is not yet implemented.");
     }
 

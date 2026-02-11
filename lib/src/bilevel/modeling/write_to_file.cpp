@@ -3,6 +3,8 @@
 //
 
 #include "idol/bilevel/modeling/write_to_file.h"
+
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 
 using namespace idol;
@@ -150,6 +152,8 @@ void MpsWriter::write() {
         }
     };
 
+    add_entry("__constant", "OBJ", 1);
+
     for (const auto& var : continuous_vars) {
         add_row_entries(var);
     }
@@ -169,6 +173,8 @@ void MpsWriter::write() {
     }
 
     file << "BOUNDS\n";
+
+    file << " FX" << " BND       " << std::setw(10) << "__constant" << ' ' << m_model.get_obj_expr().affine().constant() << '\n';
 
     for (const auto& var : m_model.vars()) {
         const auto lb = m_model.get_var_lb(var);

@@ -1,18 +1,20 @@
 //
 // Created by Henri on 21/01/2026.
 //
-#include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
+#include "idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h"
 #include "idol/bilevel/optimizers/BilevelOptimizerInterface.h"
 #include "idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
-idol::Robust::CCG::OptimalitySeparation::OptimalitySeparation(const OptimalitySeparation& t_src)
+idol::Robust::CCG::FeasibilitySeparation::FeasibilitySeparation(const FeasibilitySeparation& t_src)
     : Separation(t_src),
-      m_bilevel_optimizer(t_src.m_bilevel_optimizer ? t_src.m_bilevel_optimizer->clone() : nullptr) {
+      m_bilevel_optimizer(t_src.m_bilevel_optimizer ? t_src.m_bilevel_optimizer->clone() : nullptr),
+      m_with_integer_slack_variables(t_src.m_with_integer_slack_variables) {
 
 }
 
-idol::Robust::CCG::OptimalitySeparation& idol::Robust::CCG::OptimalitySeparation::with_bilevel_optimizer(const OptimizerFactory& t_optimizer) {
+idol::Robust::CCG::FeasibilitySeparation& idol::Robust::CCG::FeasibilitySeparation::with_bilevel_optimizer(const OptimizerFactory& t_optimizer) {
 
     if (m_bilevel_optimizer) {
         throw Exception("A bilevel optimizer has already been set.");
@@ -30,18 +32,24 @@ idol::Robust::CCG::OptimalitySeparation& idol::Robust::CCG::OptimalitySeparation
     return *this;
 }
 
-void idol::Robust::CCG::OptimalitySeparation::operator()() {
+idol::Robust::CCG::FeasibilitySeparation& idol::Robust::CCG::FeasibilitySeparation::with_integer_slack_variables(bool t_value) {
+
+    if (m_with_integer_slack_variables) {
+        throw Exception("Integer slack setting has already been configured.");
+    }
+
+    m_with_integer_slack_variables = t_value;
+
+    return *this;
+}
+
+void idol::Robust::CCG::FeasibilitySeparation::operator()() {
 
     auto [model, description] = build_separation_problem();
 
     // Set optimizer
-    const auto& formulation = get_formulation();
-    if (formulation.is_adjustable_robust_problem()) {
-        m_bilevel_optimizer->as<Bilevel::OptimizerInterface>().set_bilevel_description(description);
-        model.use(*m_bilevel_optimizer);
-    } else {
-        model.use(Bilevel::PessimisticAsOptimistic(description) + *m_bilevel_optimizer);
-    }
+    m_bilevel_optimizer->as<Bilevel::OptimizerInterface>().set_bilevel_description(description);
+    model.use(*m_bilevel_optimizer);
 
     // Set optimizer parameters
     const auto& parent = get_parent();
@@ -59,10 +67,50 @@ void idol::Robust::CCG::OptimalitySeparation::operator()() {
         return;
     }
 
-    if (status == Optimal) {
-        submit_upper_bound(-model.get_best_obj());
+    if (status != Optimal || model.get_best_obj() >= -parent.get_tol_feasibility()) {
+        return;
     }
 
     auto scenario = save_primal(get_robust_description().uncertainty_set(), model);
     add_scenario(std::move(scenario));
+}
+
+std::pair<idol::Model, idol::Bilevel::Description> idol::Robust::CCG::FeasibilitySeparation::build_separation_problem() {
+
+    std::cerr << "ERROR: Slack variables are artificially bounded in FeasibilitySeparation." << std::endl;
+
+    auto [result_model, result_description] = Separation::build_separation_problem();
+
+    result_model.set_obj_expr(0);
+
+    const auto add_slack = [&](const Ctr& t_ctr, double t_coeff) {
+        LinExpr<Ctr> column = t_coeff * t_ctr;
+        auto name = "__slack_" + t_ctr.name() + (t_coeff < 0 ? "_le" : "_ge");
+        const auto type = m_with_integer_slack_variables.value_or(false) ? Integer : Continuous;
+        const auto slack = result_model.add_var(0, 1e5, type, -1, std::move(column), std::move(name));
+        result_description.make_lower_level(slack);
+    };
+
+    for (const auto& ctr : result_model.ctrs()) {
+
+        if (result_description.is_upper(ctr)) {
+            continue;
+        }
+
+        const auto type = result_model.get_ctr_type(ctr);
+
+        switch (type) {
+        case GreaterOrEqual: add_slack(ctr, 1); break;
+        case LessOrEqual: add_slack(ctr, -1); break;
+        case Equal: { add_slack(ctr, 1); add_slack(ctr, -1); } break;
+        }
+
+    }
+
+    result_description.set_lower_level_obj(-result_model.get_obj_expr());
+
+    return {
+        std::move(result_model),
+        std::move(result_description)
+    };
 }

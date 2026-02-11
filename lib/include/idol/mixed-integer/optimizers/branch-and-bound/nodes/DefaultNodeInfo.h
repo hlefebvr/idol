@@ -53,7 +53,9 @@ public:
 
     static DefaultNodeUpdator<DefaultNodeInfo>* create_updator(const Model& t_src_model, Model& t_relaxation);
 
-    virtual DefaultNodeInfo* clone() const;
+    [[nodiscard]] virtual DefaultNodeInfo* clone() const;
+protected:
+    virtual void compute_sum_of_infeasibilities();
 private:
     PrimalPoint m_primal_solution;
     std::optional<double> m_sum_of_infeasibilities;

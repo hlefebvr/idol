@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include "idol/modeling.h"
+#include "idol/bilevel/optimizers/BranchAndCut/BranchAndCut.h"
 #include "idol/bilevel/optimizers/KKT/KKT.h"
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
@@ -13,6 +14,7 @@
 #include "idol/robust/modeling/Description.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h"
+#include "idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
 #include "idol/robust/optimizers/nested-branch-and-cut/NestedBranchAndCut.h"
 
@@ -24,7 +26,7 @@ int main(int t_argc, const char** t_argv) {
 
     // Read instance
     //const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("flp-nbc.data.txt");
-    const auto instance = Problems::FLP::generate_instance_1991_Cornuejols_et_al(6, 6, 2);
+    const auto instance = Problems::FLP::generate_instance_1991_Cornuejols_et_al(2, 1, 2);
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
 
@@ -45,14 +47,14 @@ int main(int t_argc, const char** t_argv) {
     Bilevel::Description bilevel_description(env);
 
     const auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, 0., "x");
-    const auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Continuous, 0., "y");
+    const auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, 0., "y");
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         model.add_ctr(idol_Sum(j, Range(n_customers), std::ceil(instance.demand(j)) * y[i][j]) <= std::ceil(instance.capacity(i)));
     }
 
     for (unsigned int j = 0 ; j < n_customers ; ++j) {
-        model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) >= 1);
+        model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) == 1);
     }
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
@@ -82,41 +84,44 @@ int main(int t_argc, const char** t_argv) {
         bilevel_description.make_lower_level(ctr);
     }
 
-    //auto feasibility_separation = Robust::CCG::FeasibilitySeparation();
-    //feasibility_separation.with_bilevel_optimizer(Bilevel::MibS());
-    //feasibility_separation.with_integer_slack_variables(true);
+    auto bilevel_bnc = Bilevel::BranchAndCut();
+    bilevel_bnc.with_sub_problem_optimizer(Gurobi());
+    bilevel_bnc.with_logs(true);
 
-    auto optimality_separation = Robust::CCG::OptimalitySeparation();
-    optimality_separation.with_bilevel_optimizer(Bilevel::MibS());
-
-    auto separation = Robust::CCG::BigMFreeSeparation();
-    separation.with_single_level_optimizer(Gurobi());
-    separation.with_zero_one_uncertainty_set(true);
-
-    auto ccg = Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
-    ccg.with_master_optimizer(Gurobi());
-    //ccg.add_separation(feasibility_separation);
-    //ccg.add_separation(optimality_separation);
-    ccg.add_separation(separation);
-    ccg.with_logs(true);
-
-    model.use(ccg);
-    //model.optimize();
-
-    //std::cout << save_primal(model) << std::endl;
-
-    std::cout << "----------------------------------" << std::endl;
+    auto mibs = Bilevel::MibS();
+    mibs.with_cplex_for_feasibility(true);
 
     auto nested_branch_and_cut = Robust::NestedBranchAndCut(robust_description, bilevel_description);
-    nested_branch_and_cut.with_optimality_bilevel_optimizer(Bilevel::MibS().with_cplex_for_feasibility(true));
+    nested_branch_and_cut.with_optimality_bilevel_optimizer(mibs);
     nested_branch_and_cut.with_logs(true);
 
     model.use(nested_branch_and_cut);
     model.optimize();
 
-    // x continuous does not work because of linearization of || x - \hat{x} ||_1
+    std::cout << "Status: " << model.get_status() << std::endl;
+    std::cout << "Objective: " << model.get_best_obj() << std::endl;
 
-    std::cout << save_primal(model) << std::endl;
+    std::cout << "----------------------------------" << std::endl;
+
+    auto feasibility_separation = Robust::CCG::FeasibilitySeparation();
+    feasibility_separation.with_bilevel_optimizer(mibs);
+    feasibility_separation.with_integer_slack_variables(true);
+
+    auto optimality_separation = Robust::CCG::OptimalitySeparation();
+    optimality_separation.with_bilevel_optimizer(mibs);
+
+    auto ccg = Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
+    ccg.with_master_optimizer(Gurobi());
+    ccg.add_separation(feasibility_separation);
+    ccg.add_separation(optimality_separation);
+    ccg.with_logs(true);
+
+    model.use(ccg);
+    model.optimize();
+
+    std::cout << "Status: " << model.get_status() << std::endl;
+    std::cout << "Objective: " << model.get_best_obj() << std::endl;
+
 
     return 0;
 }

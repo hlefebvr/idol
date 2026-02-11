@@ -679,6 +679,8 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
 
     node_updator.prepare(t_node);
 
+    // TODO call callback "before node"
+
     /*
     for (const auto& var : parent().vars()) {
         const double lb = relaxation.get_var_lb(var);
@@ -924,12 +926,14 @@ template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::set_best_obj(double t_value) {
 #pragma omp critical
     Algorithm::set_best_obj(t_value);
+    assert(get_best_bound() <= get_best_obj() + get_tol_mip_absolute_gap());
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::set_best_bound(double t_value) {
 #pragma omp critical
     Algorithm::set_best_bound(t_value);
+    assert(get_best_bound() <= get_best_obj() + get_tol_mip_absolute_gap());
 }
 
 template<class NodeInfoT>

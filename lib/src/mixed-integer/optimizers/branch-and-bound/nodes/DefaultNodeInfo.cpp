@@ -53,13 +53,19 @@ void idol::DefaultNodeInfo::save(const idol::Model &t_original_formulation,
 
     m_primal_solution = save_primal(t_original_formulation, t_model);
 
-    m_sum_of_infeasibilities = 0;
-    for (const auto& [var, value] : m_primal_solution) {
-        m_sum_of_infeasibilities.value() += std::abs(value - std::round(value));
-    }
+    compute_sum_of_infeasibilities();
 
 }
 
 idol::DefaultNodeInfo *idol::DefaultNodeInfo::create_child() const {
     return new DefaultNodeInfo();
+}
+
+void idol::DefaultNodeInfo::compute_sum_of_infeasibilities() {
+
+    m_sum_of_infeasibilities = 0;
+    for (const auto& [var, value] : m_primal_solution) {
+        m_sum_of_infeasibilities.value() += std::abs(value - std::round(value));
+    }
+
 }

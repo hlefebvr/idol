@@ -6,108 +6,8 @@
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 #include <cassert>
 
-#ifdef IDOL_USE_CPLEX
-class idol::Optimizers::Bilevel::BranchAndCut::BoundTighteningCallback : public idol::CallbackFactory {
-    BranchAndCut* m_parent;
-public:
-
-    class Strategy : public Callback {
-        BranchAndCut& m_parent;
-    public:
-        Strategy(BranchAndCut* t_parent) : m_parent(*t_parent) {
-
-        }
-    protected:
-        void operator()(idol::CallbackEvent t_event) override {
-
-            if (t_event != idol::InvalidSolution) {
-                return;
-            }
-
-            const auto& const_cplex = this->original_model().optimizer().as<Optimizers::Cplex>();
-            auto& cplex = const_cast<Optimizers::Cplex&>(const_cplex);
-
-            auto& interface = cplex.get_cplex_callback_interface();
-            const auto& separation_problem = *m_parent.m_separation_problem;
-
-            unsigned int n_fixed = 0;
-            unsigned int n_integer = 0;
-            for (const auto& var : separation_problem.vars()) {
-
-                if (const auto type = separation_problem.get_var_type(var) ; type == Continuous) {
-                    continue;
-                }
-
-                if (m_parent.m_description.is_lower(var)) {
-                    continue;
-                }
-
-                ++n_integer;
-
-                const double local_lb = interface.get_var_local_lb(var);
-                const double local_ub = interface.get_var_local_ub(var);
-
-                if (equals(local_lb, local_ub, Tolerance::Integer)) {
-                    ++n_fixed;
-                }
-
-            }
-
-            const double rate = n_fixed / (double) n_integer;
-
-            const std::vector<double> rates = { .25, .5, .75 };
-            const unsigned int current_counter = interface.get_var_primal(*m_parent.m_counter);
-
-            assert(current_counter <= rates.size());
-
-            if (current_counter == rates.size() || rate < rates[current_counter]) {
-                return;
-            }
-
-            auto copy = separation_problem.copy();
-            for (const auto& var : copy.vars()) {
-
-                if (const auto type = copy.get_var_type(var) ; type == Continuous) {
-                    continue;
-                }
-
-                if (m_parent.m_description.is_lower(var)) {
-                    continue;
-                }
-
-                copy.set_var_lb(var, interface.get_var_local_lb(var));
-                copy.set_var_ub(var, interface.get_var_local_ub(var));
-            }
-
-            const auto [lambda_lb, lambda_ub, pi_lb, pi_ub] = m_parent.compute_big_M(copy);
-            // std::cout << "Bounds for  " << rates[current_counter] << ": " << lambda_lb << ", " << lambda_ub << ", " << pi_lb << ", " << pi_ub << std::endl;
-            for (const auto& var : m_parent.m_lambda) {
-                interface.set_var_local_lb(var, lambda_lb);
-                interface.set_var_local_ub(var, lambda_ub);
-            }
-            interface.set_var_local_lb(*m_parent.m_pi, pi_lb);
-            interface.set_var_local_ub(*m_parent.m_pi, pi_ub);
-
-            interface.set_var_local_lb(*m_parent.m_counter, current_counter+1);
-
-        }
-
-    };
-
-    explicit BoundTighteningCallback(BranchAndCut* t_parent) : m_parent(t_parent) {
-
-    }
-
-    Callback *operator()() override {
-        return new Strategy(m_parent);
-    }
-
-    CallbackFactory *clone() const override {
-        return new BoundTighteningCallback(*this);
-    }
-
-};
-#endif
+#include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.h"
 
 idol::Optimizers::Bilevel::BranchAndCut::BranchAndCut(const idol::Model &t_parent,
                                                       const idol::Bilevel::Description &m_description,
@@ -415,7 +315,7 @@ void idol::Optimizers::Bilevel::BranchAndCut::build_hpr(double t_lambda_lb, doub
     const auto w = m_hpr->add_vars(Dim<1>(n), t_lambda_lb, t_lambda_ub, Continuous, 0, "w");
 
     const auto strong_duality = m_hpr->add_ctr(
-            m_description.lower_level_obj().affine() <= *m_pi + idol_Sum(i, Range(n), w[i])
+            m_description.lower_level_obj().affine().linear() <= *m_pi + idol_Sum(i, Range(n), w[i])
     );
 
     for (unsigned int i : Range(n)) {
@@ -425,12 +325,27 @@ void idol::Optimizers::Bilevel::BranchAndCut::build_hpr(double t_lambda_lb, doub
         m_hpr->add_ctr(w[i] >= m_lambda[i] + t_lambda_lb * (1 - m_linking_upper_variables[i]));
     }
 
-    m_counter = m_hpr->add_var(0, Inf, Integer, 0, "counter");
+}
+
+
+void idol::Optimizers::Bilevel::BranchAndCut::hook_before_optimize() {
+    Algorithm::hook_before_optimize();
+
+    m_hpr.reset();
+    m_separation_problem.reset();
+    m_linking_upper_variables.clear();
+    m_pi.reset();
+    m_lambda.clear();
+
+    set_status(Loaded);
+    set_reason(NotSpecified);
+    set_best_bound(-Inf);
+    set_best_obj(Inf);
 
 }
 
 void idol::Optimizers::Bilevel::BranchAndCut::hook_optimize() {
-#ifdef IDOL_USE_CPLEX
+
     check_assumptions();
 
     check_value_function_is_well_posed();
@@ -443,6 +358,7 @@ void idol::Optimizers::Bilevel::BranchAndCut::hook_optimize() {
     // Check bounds numerical stability
     for (auto bound : { lambda_lb, lambda_ub, pi_lb, pi_ub }) {
         if (bound > 1e10 || bound < -1e10) {
+            std::cout << "Bounds on the dual variables were too large." << std::endl;
             set_status(Fail);
             set_reason(Numerical);
             terminate();
@@ -456,29 +372,33 @@ void idol::Optimizers::Bilevel::BranchAndCut::hook_optimize() {
     LazyCutCallback cut_cb(*m_separation_problem, std::move(cut), LessOrEqual);
     cut_cb.with_separation_optimizer(*m_optimizer_for_sub_problems);
 
-    BoundTighteningCallback bound_cb(this);
-
-    ::idol::Cplex main_optimizer;
+    ::idol::Gurobi main_optimizer;
     main_optimizer.with_lazy_cut(true);
     main_optimizer.add_callback(cut_cb);
-    main_optimizer.add_callback(bound_cb);
-    main_optimizer.with_logs(true);
+    //main_optimizer.add_callback(bound_cb);
+    main_optimizer.with_logs(get_param_logs());
+
+    auto mibs_model = parent().copy();
+    mibs_model.use(::idol::Bilevel::MibS(m_description).with_cplex_for_feasibility(true));
+    mibs_model.optimize();
 
     m_hpr->use(main_optimizer);
     m_hpr->optimize();
+
+    std::cout << "MibS: " << mibs_model.get_best_obj() << std::endl;
+    std::cout << "HPR: " << m_hpr->get_best_obj() << std::endl;
+    //assert(is_zero(m_hpr->get_best_obj() - mibs_model.get_best_obj(), 1e-3));
 
     set_status(m_hpr->get_status());
     set_reason(m_hpr->get_reason());
     set_best_obj(m_hpr->get_best_obj());
     set_best_bound(m_hpr->get_best_bound());
-#else
-    throw Exception("CPLEX not available.");
-#endif
+
 }
 
 idol::GenerationPattern<idol::Ctr> idol::Optimizers::Bilevel::BranchAndCut::build_dantzig_wolfe_cut() {
 
     const auto n = m_linking_upper_variables.size();
 
-    return *m_pi + idol_Sum(i, Range(n), !m_linking_upper_variables[i] * m_lambda[i]) - m_description.lower_level_obj().affine();
+    return *m_pi + idol_Sum(i, Range(n), !m_linking_upper_variables[i] * m_lambda[i]) - m_description.lower_level_obj().affine().linear();
 }

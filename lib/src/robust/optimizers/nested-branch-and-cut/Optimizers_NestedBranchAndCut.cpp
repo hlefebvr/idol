@@ -70,6 +70,7 @@ void idol::Optimizers::Robust::NestedBranchAndCut::hook_optimize() {
     branch_and_bound.with_branching_rule(MostInfeasible(first_stage_decisions.begin(), first_stage_decisions.end()));
     branch_and_bound.with_node_selection_rule(BestBound());
     branch_and_bound.with_logs(get_param_logs());
+    branch_and_bound.with_time_limit(get_param_time_limit());
 
     model.use(branch_and_bound);
     model.optimize();
@@ -164,45 +165,53 @@ void idol::Optimizers::Robust::NestedBranchAndCut::Node::save(const Model& t_ori
     const auto& formulation = nested_branch_and_cut.get_formulation();
     const auto& feasibility_optimizer = nested_branch_and_cut.get_feasibility_bilevel_optimizer();
 
-    /*
-    bool is_feasible = true;
-    for (const auto& var : formulation.first_stage_decisions()) {
-        if (const double value = t_model.get_var_primal(var) ; !is_integer(value, m_parent->get_tol_integer())) {
-            is_feasible = false;
-        }
-    }
-
-    if (!is_feasible) {
-        return;
-    }
-    */
-
     AffExpr<Var> l1_norm;
     for (const auto& var : formulation.first_stage_decisions()) {
         const double value = t_model.get_var_primal(var);
         assert(is_integer(value, m_parent->get_tol_integer()));
+        assert(t_model.get_var_type(var) == Binary);
         if (value < .5) {
-            l1_norm -= var;
+            l1_norm += var;
         } else {
-            l1_norm += var - 1;
+            l1_norm += 1 - var;
         }
     }
 
     auto model = t_model.copy();
 
     model.unuse();
-    model.set_obj_expr(std::move(l1_norm));
-    
-    // model.use(Bilevel::PessimisticAsOptimistic(bilevel_description) + feasibility_optimizer);
-    model.use(feasibility_optimizer);
+    model.set_obj_expr((-l1_norm));
+
+    if (true) {
+        model.use(feasibility_optimizer);
+    } else {
+        model.use(Bilevel::PessimisticAsOptimistic(formulation.bilevel_description()) + feasibility_optimizer);
+    }
 
     model.optimize();
 
+    //std::cout << "Feasibility check obj. = " << model.get_best_obj() << std::endl;
+
+    if (model.get_best_obj() > -.5) {
+        std::cout << "SOLUTION FOUND !!" << std::endl;
+        return;
+    }
+
+    auto sol = save_primal(model);
+    //std::cout << "Computed L1-norm: " << evaluate(l1_norm, sol) << std::endl;
+
+    bool is_feasible = true;
     for (const auto& var : formulation.first_stage_decisions()) {
         const double new_val = model.get_var_primal(var);
         const double old_val = t_model.get_var_primal(var);
+        if (!is_zero(new_val - old_val, m_parent->get_tol_integer())) {
+            is_feasible = false;
+        }
         solution.set(var, (old_val + new_val) / 2.);
     }
+    assert(!is_feasible || model.get_best_obj() > -.5);
+
+    compute_sum_of_infeasibilities();
 
 }
 

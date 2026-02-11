@@ -43,11 +43,11 @@ public:
     [[nodiscard]] unsigned get_solution_index() const override;
 
     idol::Robust::NBC::Formulation& get_formulation();
-    const idol::Robust::NBC::Formulation& get_formulation() const;
-    const idol::Robust::Description& get_robust_description() const { return m_robust_description; }
-    const idol::Bilevel::Description& get_bilevel_description() const { return m_bilevel_description; }
-    const idol::OptimizerFactory& get_feasibility_bilevel_optimizer() const { return *m_feasibility_bilevel_optimizer; }
-    const idol::OptimizerFactory& get_optimality_bilevel_optimizer() const { return *m_optimality_bilevel_optimizer; }
+    [[nodiscard]] const idol::Robust::NBC::Formulation& get_formulation() const;
+    [[nodiscard]] const idol::Robust::Description& get_robust_description() const { return m_robust_description; }
+    [[nodiscard]] const idol::Bilevel::Description& get_bilevel_description() const { return m_bilevel_description; }
+    [[nodiscard]] const idol::OptimizerFactory& get_feasibility_bilevel_optimizer() const { return *m_feasibility_bilevel_optimizer; }
+    [[nodiscard]] const idol::OptimizerFactory& get_optimality_bilevel_optimizer() const { return *m_optimality_bilevel_optimizer; }
 
 protected:
     void add(const Var& t_var) override;
@@ -77,10 +77,11 @@ protected:
     class Node : public idol::DefaultNodeInfo {
         NestedBranchAndCut* m_parent;
     public:
+        Node() = delete;
         Node(NestedBranchAndCut* t_parent) : m_parent(t_parent) {}
         void save(const Model& t_original_formulation, const Model& t_model) override;
         [[nodiscard]] Node* create_child() const override;
-        Node* clone() const override;
+        [[nodiscard]] Node* clone() const override;
 
         static DefaultNodeUpdator<Node>* create_updator(const Model& t_src_model, Model& t_relaxation);
     };
