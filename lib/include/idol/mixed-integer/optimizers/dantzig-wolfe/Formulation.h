@@ -97,7 +97,7 @@ public:
 
     void add(const Var& t_var, double t_lb, double t_ub, VarType t_type, const LinExpr<Ctr>& t_column);
 
-    void add(const Ctr& t_ctr, CtrType t_type, const LinExpr<Var>& t_row);
+    void add(const Ctr& t_ctr, CtrType t_type, const LinExpr<Var>& t_row, double t_rhs);
 
     void remove(const Var& t_var);
 

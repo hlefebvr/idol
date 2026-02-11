@@ -736,6 +736,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
 
     if (t_node.level() == 0) {
         m_root_node_best_bound = t_node.info().objective_value();
+        set_best_bound(std::max(m_root_node_best_bound, get_best_bound()));
     }
 
     if (t_node.info().objective_value() < get_best_obj()) {
