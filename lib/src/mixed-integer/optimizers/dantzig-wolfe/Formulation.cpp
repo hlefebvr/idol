@@ -569,14 +569,16 @@ void idol::DantzigWolfe::Formulation::add(const idol::Var &t_var,
     */
 }
 
-void idol::DantzigWolfe::Formulation::add(const idol::Ctr &t_ctr, idol::CtrType t_type, const idol::LinExpr<Var> &t_row) {
+void idol::DantzigWolfe::Formulation::add(const idol::Ctr &t_ctr, idol::CtrType t_type, const idol::LinExpr<Var> &t_row, double t_rhs) {
 
-    throw Exception("TODO: Was using Constant in add(const Ctr& ...)");
-    /*
     const auto sub_problem_id = t_ctr.get(m_decomposition);
 
     if (sub_problem_id != MasterId) {
 
+        // This was using Row and Constant
+        throw Exception("Adding a constraint to the sub-problem is not implemented");
+
+        /*
         remove_column_if(sub_problem_id, [&](const Var& t_alpha, const PrimalPoint& t_generator) {
             return t_row.is_violated(t_generator, t_type);
         });
@@ -584,20 +586,21 @@ void idol::DantzigWolfe::Formulation::add(const idol::Ctr &t_ctr, idol::CtrType 
         m_sub_problems[sub_problem_id].add(t_ctr, TempCtr(Row(t_row), t_type));
 
         return;
+        */
     }
 
     const unsigned int n_sub_problems = m_sub_problems.size();
-    auto [master_part, sub_problem_parts] = decompose_expression(t_row.linear(), t_row.quadratic());
+    auto [master_part, sub_problem_parts] = decompose_expression(t_row);
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
         for (const auto& [var, generator] : m_present_generators[i]) {
-            master_part += sub_problem_parts[i].fix(generator) * var; // Adds exising generator to constraint
+            master_part += evaluate(sub_problem_parts[i], generator) * var; // Adds exising generator to constraint
         }
         m_generation_patterns[i].linear().set(t_ctr, std::move(sub_problem_parts[i]));
     }
 
-    m_master.add(t_ctr, TempCtr(Row(master_part, t_row.rhs()), t_type));
-    */
+    m_master.add(t_ctr, TempCtr(std::move(master_part), t_type, t_rhs));
+
 }
 
 void idol::DantzigWolfe::Formulation::remove(const idol::Var &t_var) {

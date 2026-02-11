@@ -93,13 +93,11 @@ void idol::Optimizers::DantzigWolfeDecomposition::add(const idol::Var &t_var) {
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::add(const idol::Ctr &t_ctr) {
-    throw Exception("Work in progress: was using Row");
-    /*
     const auto& parent = this->parent();
     const auto type = parent.get_ctr_type(t_ctr);
     const auto& row = parent.get_ctr_row(t_ctr);
-    m_formulation.add(t_ctr, type, row);
-     */
+    const double rhs = parent.get_ctr_rhs(t_ctr);
+    m_formulation.add(t_ctr, type, row, rhs);
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::remove(const idol::Var &t_var) {
