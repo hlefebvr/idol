@@ -307,6 +307,8 @@ add_library(idol STATIC
         src/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.cpp
 )
 
+target_link_libraries(idol PRIVATE dl)
+
 #find_package(OpenMP REQUIRED)
 #target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)
 
