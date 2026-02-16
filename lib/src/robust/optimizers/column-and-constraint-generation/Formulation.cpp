@@ -222,7 +222,7 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
                 std::cerr << "Repeated scenario!" << std::endl;
                 std::cerr << "Already present:\n" << scenario << std::endl;
                 std::cerr << "Newly separated:\n" << t_scenario << std::endl;
-                throw Exception("Reapeated scenario!");
+                throw Exception("Repeated scenario!");
             }
         }
 

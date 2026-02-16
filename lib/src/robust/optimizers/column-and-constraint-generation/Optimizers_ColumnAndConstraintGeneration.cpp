@@ -295,7 +295,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_
     }
 
     if (get_best_bound() > get_best_obj() + get_tol_mip_absolute_gap()) {
-        std::cerr << "The current best obj. is larger than current best bound. This should should not happen. Terminating..." << std::endl;
+        std::cerr << "The current best bound is larger than current best obj. This should should not happen. Terminating..." << std::endl;
         set_status(Fail);
         set_reason(Numerical);
         terminate();

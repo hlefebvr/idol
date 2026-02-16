@@ -40,6 +40,7 @@ void idol::Robust::CCG::OptimalitySeparation::operator()() {
         m_bilevel_optimizer->as<Bilevel::OptimizerInterface>().set_bilevel_description(description);
         model.use(*m_bilevel_optimizer);
     } else {
+        description.set_lower_level_obj(get_bilevel_description().lower_level_obj());
         model.use(Bilevel::PessimisticAsOptimistic(description) + *m_bilevel_optimizer);
     }
 
