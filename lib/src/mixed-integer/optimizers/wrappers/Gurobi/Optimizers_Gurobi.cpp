@@ -850,6 +850,8 @@ double idol::Optimizers::Gurobi::get_var_primal(const Var &t_var) const {
         m_model,
         GRBgetdblattrarray(m_model, "Xn", index, 1, &result)
     )
+
+    return result;
 }
 
 double idol::Optimizers::Gurobi::get_var_ray(const Var &t_var) const {
