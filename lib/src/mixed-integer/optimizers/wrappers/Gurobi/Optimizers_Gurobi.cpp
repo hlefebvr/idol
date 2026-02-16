@@ -259,11 +259,13 @@ idol::Optimizers::Gurobi::Gurobi(const Model& t_model, bool t_continuous_relaxat
 }
 
 idol::Optimizers::Gurobi::~Gurobi() {
+    auto& lib = get_dynamic_lib();
     if (m_model) {
-        auto& lib = get_dynamic_lib();
         lib.GRBfreemodel(m_model);
         m_model = nullptr;
     }
+    lib.GRBfreeenv(m_env);
+    m_env = nullptr;
 }
 
 void idol::Optimizers::Gurobi::hook_build() {
