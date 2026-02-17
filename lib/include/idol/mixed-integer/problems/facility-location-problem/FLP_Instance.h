@@ -23,8 +23,12 @@ namespace idol::Problems::FLP {
       ISSN 0305-0483,
       https://doi.org/10.1016/j.omega.2021.102429.
      * @param t_filename the filename
+     * @param t_d the value for d, i.e., the penalty is set to the d-th percentile of transportation costs
+     * @param t_use_haversine whether to use the haversine distance or the Euclidean distance to compute transportation costs
+     * @param t_is_symetric if true, will consider the first max(n_facilities, n_customers) points to create both facilities and customers, otherwise
+     * it will read the first n_facilities for the facilities and the next n_customers for the customers.
      */
-    Instance read_instance_2021_Cheng_et_al(const std::string& t_filename, double t_d, bool t_use_haversine = false);
+    Instance read_instance_2021_Cheng_et_al(const std::string& t_filename, double t_d, bool t_use_haversine = false, bool t_is_symetric = true);
 
     Instance read_instance_1991_Cornuejols_et_al(const std::string& t_filename);
 
