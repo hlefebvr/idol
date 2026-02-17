@@ -64,7 +64,7 @@ idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_2021_Cheng_et_a
                     std::floor(20 * haversine({lat_i, lon_i}, {lat_j, lon_j}))
                     :
                     std::floor(20 * euclidean({lat_i, lon_i}, {lat_j, lon_j}));
-            result.set_per_unit_transportation_cost(i, j, distance);
+            result.set_per_unit_transportation_cost(i - i_begin, j - j_begin, distance);
             costs.emplace_back(distance);
         }
     }
