@@ -1,0 +1,42 @@
+name: Tag
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  Tag:
+    name: "Publish tag"
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0  # Fetch all tags
+
+        - name: Extract CMake project version
+          id: get_version
+          run: |
+            PROJECT_VERSION=$(grep -Eo 'project\(idol VERSION [0-9]+\.[0-9]+\.[0-9]+' CMakeLists.txt | egrep -o "[0-9]+\.[0-9]+\.[0-9]+")
+            echo "Project version: $PROJECT_VERSION"
+            echo "PROJECT_VERSION=$PROJECT_VERSION" >> $GITHUB_ENV
+
+        - name: Get latest Git tag
+          id: latest_tag
+          run: |
+            # Get the latest tag reachable from HEAD
+            LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+            echo "Latest tag: $LATEST_TAG"
+            echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+
+        - name: Compare and create tag if needed
+          if: env.PROJECT_VERSION != env.LATEST_TAG
+          run: |
+            echo "Creating new tag v${PROJECT_VERSION}"
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git tag -a "v${PROJECT_VERSION}" -m "Release v${PROJECT_VERSION}"
+            git push origin "v${PROJECT_VERSION}"
