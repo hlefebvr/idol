@@ -61,7 +61,6 @@ jobs:
 
       - name: Switch to CommandLineTools
         run: |
-          xcode-select --install
           sudo xcode-select -s /Library/Developer/CommandLineTools
           cc --version
           c++ --version
