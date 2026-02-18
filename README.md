@@ -28,6 +28,26 @@ With idol, you can also interface with your favorite solver:
 
 Visit our [online documentation](https://hlefebvr.github.io/idol/).
 
+## Installation
+
+### Linux
+
+```shell
+echo "deb [trusted=yes] https://henrilefebvre.com/apt stable main" | sudo tee /etc/apt/sources.list.d/idol.list
+
+sudo apt update
+sudo apt install idol
+```
+
+### Mac
+
+```shell
+brew tap hlefebvr/idol 
+
+brew update
+brew install idol
+```
+
 ## Using idol for Research?
 
 If you're interested in idol or use it for research, don't hesitate to contact me at lefebvre@uni-trier.de.
