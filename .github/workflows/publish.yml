@@ -65,16 +65,16 @@ jobs:
       - name: Package prebuilt tarball
         run: |
           cd build/install
-          tar czf ../../idol-${IDOL_VERSION}-macos.tar.gz bin lib include
+          tar czf ../../idol-${IDOL_VERSION}-macos-arm64.tar.gz bin lib include
           cd ../..
-          ls -l idol-${IDOL_VERSION}-macos.tar.gz
+          ls -l idol-${IDOL_VERSION}-macos-arm64.tar.gz
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.push-tag.outputs.version }}
-          name: idol-${{ needs.push-tag.outputs.version }}-macos.tar.gz
-          files: idol-${{ needs.push-tag.outputs.version }}-macos.tar.gz
+          name: ${{ needs.push-tag.outputs.version }}
+          files: idol-${{ needs.push-tag.outputs.version }}-macos-arm64.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -150,7 +150,7 @@ jobs:
         run: |
           cd build
           DEB=$(ls *.deb | head -n1)
-          NEW_NAME="idol-${IDOL_VERSION}-linux.deb"
+          NEW_NAME="idol-${IDOL_VERSION}-linux-amd64.deb"
           mv "$DEB" "$NEW_NAME"
           echo "DEB_PACKAGE=$NEW_NAME" >> $GITHUB_ENV
 
@@ -158,8 +158,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.push-tag.outputs.version }}
-          name: idol-${{ needs.push-tag.outputs.version }}-linux.deb
-          files: build/${{ needs.push-tag.outputs.version }}
+          name: ${{ needs.push-tag.outputs.version }}
+          files: build/idol-${{ needs.push-tag.outputs.version }}-linux-amd64.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
