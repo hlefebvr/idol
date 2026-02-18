@@ -82,7 +82,6 @@ jobs:
         env:
           TAP_REPO: hlefebvr/homebrew-idol
           TAP_BRANCH: main
-          IDOL_VERSION: ${{ github.ref_name }}
         run: |
           # Clone tap repo
           git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/${TAP_REPO}.git tap
