@@ -3,7 +3,7 @@ name: Build prebuilt idol
 on:
   push:
     tags:
-      - '^[0-9]+\.[0-9]+\.[0-9]+'
+      - '*.*.*'
 
 env:
   BUILD_TYPE: Release
