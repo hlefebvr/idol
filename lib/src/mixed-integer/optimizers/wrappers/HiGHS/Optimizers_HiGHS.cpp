@@ -511,6 +511,7 @@ void idol::Optimizers::HiGHS::analyze_status(HighsInt t_status) {
         case HighsModelStatus::kIterationLimit:
         case HighsModelStatus::kSolutionLimit:
         case HighsModelStatus::kInterrupt:
+        default:
             throw Exception("Unhandled status: " + std::to_string((int) status));
     }
 

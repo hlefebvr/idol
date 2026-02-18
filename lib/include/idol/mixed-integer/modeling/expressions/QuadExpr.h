@@ -36,8 +36,8 @@ public:
 
     QuadExpr& operator+=(const QuadExpr& t_rhs);
     QuadExpr& operator-=(const QuadExpr& t_rhs);
-    QuadExpr& operator*=(double t_rhs);
-    QuadExpr& operator/=(double t_rhs);
+    QuadExpr& operator*=(double t_rhs) override;
+    QuadExpr& operator/=(double t_rhs) override;
     QuadExpr operator-() const;
 
     AffExpr<KeyT, ValueT>& affine() { return m_affine; }
