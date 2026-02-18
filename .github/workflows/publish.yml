@@ -68,6 +68,7 @@ jobs:
       - name: Install MibS
         run: |
           # Install MibS
+          mkdir coin-or && cd coin-or
           wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
           chmod +x coinbrew
           /opt/homebrew/bin/bash coinbrew build MibS@1.2 --no-prompt --disable-cplex-libcheck --tests=none
@@ -78,7 +79,7 @@ jobs:
           cmake .. \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_INSTALL_PREFIX=$PWD/install \
-            -DCOIN_OR_DIR=${{github.workspace}}/dist \
+            -DCOIN_OR_DIR=${{github.workspace}}/coin-or/dist \
             -DUSE_MIBS=YES \
             -DCMAKE_C_COMPILER=/Library/Developer/CommandLineTools/usr/bin/cc \
             -DCMAKE_CXX_COMPILER=/Library/Developer/CommandLineTools/usr/bin/c++
