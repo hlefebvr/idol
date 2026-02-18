@@ -53,10 +53,18 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install MibS
+        run: |
+          # Install MibS
+          wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
+          chmod +x coinbrew
+          ./coinbrew --no-prompt --tests=none build MibS
+
       - name: Configure & Build
         run: |
           mkdir -p build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/install
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/install \
+            -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_MIBS=YES
           make -j$(sysctl -n hw.ncpu)
 
       - name: Install

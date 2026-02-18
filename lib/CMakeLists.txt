@@ -309,8 +309,12 @@ add_library(idol STATIC
 
 target_link_libraries(idol PRIVATE dl)
 
-#find_package(OpenMP REQUIRED)
-#target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)
+if (APPLE)
+    message("Apple detected, OpenMP will not be used.")
+elseif (NOT APPLE)
+    find_package(OpenMP REQUIRED)
+    target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)
+endif ()
 
 target_compile_definitions(idol PUBLIC IDOL_VERSION="${PROJECT_VERSION}")
 
@@ -325,7 +329,6 @@ function(set_DIR_variable PREFIX)
         set(${VAR_NAME} "${${VAR_NAME}}" CACHE STRING "Path to ${PREFIX}")
     endif()
 endfunction()
-
 
 set(USE_ROOT OFF CACHE BOOL "Build idol with ROOT for plotting capabilities (https://root.cern/)")
 if (${USE_ROOT})
@@ -422,6 +425,8 @@ if (${USE_OSI_SYMPHONY})
     target_compile_definitions(idol PUBLIC IDOL_USE_OSI_SYMPHONY)
     list(APPEND AVAILABLE_MILP_SOLVERS "OsiSymphony")
 
+    list(APPEND SHIPPED_LIBRARIES ${OSI_SYM_LIBRARY})
+
 endif()
 
 set(USE_MIBS OFF CACHE BOOL "Build idol with MibS (https://github.com/coin-or/MibS)")
@@ -441,6 +446,12 @@ if (${USE_MIBS})
 
     list(APPEND AVAILABLE_BILEVEL_SOLVERS "MibS")
 
+    list(APPEND SHIPPED_LIBRARIES ${OSI_LIBRARY})
+    list(APPEND SHIPPED_LIBRARIES ${ALPS_LIBRARY})
+    list(APPEND SHIPPED_LIBRARIES ${CGL_LIBRARY})
+    list(APPEND SHIPPED_LIBRARIES ${BCPS_LIBRARY})
+    list(APPEND SHIPPED_LIBRARIES ${BLIS_LIBRARY})
+
 endif()
 
 set(USE_OSI_CLP OFF CACHE BOOL "Build idol with OsiClp (https://projects.coin-or.org/OsiClp)")
@@ -452,6 +463,8 @@ if (${USE_OSI_CLP})
     target_compile_definitions(idol PUBLIC IDOL_USE_OSI_CLP)
     list(APPEND AVAILABLE_MILP_SOLVERS "OsiClp")
 
+    list(APPEND SHIPPED_LIBRARIES ${OSI_CLP_LIBRARY})
+
 endif()
 
 set(USE_OSI OFF CACHE BOOL "Build idol with Osi (https://projects.coin-or.org/Osi)")
@@ -462,6 +475,8 @@ if (${USE_OSI})
 
     target_link_libraries(idol PUBLIC osi coinUtils)
     target_compile_definitions(idol PUBLIC IDOL_USE_OSI)
+
+    list(APPEND SHIPPED_LIBRARIES ${OSI_LIBRARY})
 
 endif()
 
@@ -526,6 +541,11 @@ install(TARGETS idol
         RUNTIME DESTINATION bin
         INCLUDES DESTINATION include/idol
         PUBLIC_HEADER DESTINATION include/idol
+)
+
+install(FILES
+        ${SHIPPED_LIBRARIES}
+        DESTINATION lib
 )
 
 include(CMakePackageConfigHelpers)
