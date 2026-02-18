@@ -551,3 +551,26 @@ install(FILES
         )
 
 file(WRITE "${CMAKE_BINARY_DIR}/IDOL_VERSION" "${PROJECT_VERSION}")
+
+
+############ DEB GENERATION ##################
+if(UNIX AND NOT APPLE)
+    include(InstallRequiredSystemLibraries)
+
+    set(CPACK_PACKAGE_NAME "idol")
+    set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "idol, a C++ framework for optimization")
+    set(CPACK_PACKAGE_VENDOR "Henri Lefebvre")
+
+    set(CPACK_PACKAGE_CONTACT "henri.lefebvre@cnrs.fr")
+
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Henri Lefebvre")
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.31), libstdc++6")
+
+    set(CPACK_DEBIAN_PACKAGE_SECTION "libs")
+    set(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
+
+    set(CPACK_GENERATOR "DEB")
+
+    include(CPack)
+endif ()

@@ -72,3 +72,54 @@ jobs:
           git add $formula
           git commit -m "Update formula for ${IDOL_VERSION}"
           git push origin $TAP_BRANCH
+
+  build-linux:
+    runs-on: ubuntu-latest
+    env:
+      IDOL_VERSION: ${{ github.ref_name }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            dpkg-dev
+
+      - name: Configure
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: |
+          cmake --build build -j$(nproc)
+
+      - name: Generate DEB package with CPack
+        run: |
+          cd build
+          cpack -G DEB
+          ls -l *.deb
+
+      - name: Rename package
+        run: |
+          cd build
+          DEB=$(ls *.deb | head -n1)
+          NEW_NAME="idol-${IDOL_VERSION}-linux.deb"
+          mv "$DEB" "$NEW_NAME"
+          echo "DEB_PACKAGE=$NEW_NAME" >> $GITHUB_ENV
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: idol-${{ github.ref_name }}-linux.deb
+          body: "Prebuilt idol ${{env.IDOL_VERSION}} for Linux"
+          files: build/${{ env.DEB_PACKAGE }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

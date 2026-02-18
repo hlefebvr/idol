@@ -199,13 +199,13 @@ protected:
      * Returns the side effect registry
      * @return the side effect registry
      */
-     const SideEffectRegistry& side_effect_registry() const;
+    [[nodiscard]] const SideEffectRegistry& side_effect_registry() const;
 
     [[nodiscard]] const Timer& time() const;
 
-    double best_bound() const;
+    [[nodiscard]] double best_bound() const;
 
-    double best_obj() const;
+    [[nodiscard]] double best_obj() const;
 
     void terminate();
 private:
