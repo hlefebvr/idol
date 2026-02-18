@@ -5,11 +5,11 @@
 #ifndef IDOL_OPTIMIZERS_HIGHS_H
 #define IDOL_OPTIMIZERS_HIGHS_H
 
-#ifdef IDOL_USE_HIGHS
-
 #include "idol/general/optimizers/OptimizerWithLazyUpdates.h"
-#include <Highs.h>
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_c_api.h"
 #include <stack>
+
+#include "headers/header_HighsInt.h"
 
 namespace idol::Optimizers {
     class HiGHS;
@@ -17,15 +17,24 @@ namespace idol::Optimizers {
 
 class idol::Optimizers::HiGHS  : public OptimizerWithLazyUpdates<int, int, int, int> {
 
+    class DynamicLib;
+    static std::unique_ptr<DynamicLib> m_dynamic_lib;
+
     bool m_continuous_relaxation;
 
-    ::Highs m_model;
+    void* m_model;
 
     SolutionStatus m_solution_status = Loaded;
     SolutionReason m_solution_reason = NotSpecified;
     double* m_extreme_ray = nullptr;
     double* m_farkas_certificate = nullptr;
+    double* m_col_value = nullptr;
+    double* m_col_dual = nullptr;
+    double* m_row_value = nullptr;
+    double* m_row_dual = nullptr;
 protected:
+    static DynamicLib& get_dynamic_lib();
+
     void hook_build() override;
     void hook_optimize() override;
     void run_without_presolve();
@@ -65,26 +74,64 @@ protected:
     [[nodiscard]] unsigned int get_solution_index() const override;
     void set_solution_index(unsigned int t_index) override;
 
-    void analyze_status(HighsStatus t_status);
+    void analyze_status(HighsInt t_status);
 public:
     explicit HiGHS(const Model& t_model, bool t_continuous_relaxation);
-
-    ~HiGHS();
+    ~HiGHS() override;
 
     [[nodiscard]] std::string name() const override { return "HiGHS"; }
-
     void set_param_time_limit(double t_time_limit) override;
-
     void set_param_best_obj_stop(double t_best_obj_stop) override;
-
     void set_param_best_bound_stop(double t_best_bound_stop) override;
-
     void set_param_presolve(bool t_value) override;
-
     void set_param_logs(bool t_value) override;
 
 };
 
-#endif
+
+#define HIGHS_SYM_PTR(name) \
+typedef decltype(::name)* name##_t; \
+name##_t name = nullptr
+
+class idol::Optimizers::HiGHS::DynamicLib {
+    void* m_handle = nullptr;
+
+    static std::string find_library();
+public:
+    HIGHS_SYM_PTR(Highs_create);
+    HIGHS_SYM_PTR(Highs_clearSolver);
+    HIGHS_SYM_PTR(Highs_addCol);
+    HIGHS_SYM_PTR(Highs_addRow);
+    HIGHS_SYM_PTR(Highs_deleteColsByRange);
+    HIGHS_SYM_PTR(Highs_deleteRowsByRange);
+    HIGHS_SYM_PTR(Highs_changeColBounds);
+    HIGHS_SYM_PTR(Highs_changeColCost);
+    HIGHS_SYM_PTR(Highs_changeColIntegrality);
+    HIGHS_SYM_PTR(Highs_changeRowBounds);
+    HIGHS_SYM_PTR(Highs_changeCoeff);
+    HIGHS_SYM_PTR(Highs_changeObjectiveSense);
+    HIGHS_SYM_PTR(Highs_changeObjectiveOffset);
+    HIGHS_SYM_PTR(Highs_getObjectiveValue);
+    HIGHS_SYM_PTR(Highs_getNumCol);
+    HIGHS_SYM_PTR(Highs_getNumRow);
+    HIGHS_SYM_PTR(Highs_getNumRows);
+    HIGHS_SYM_PTR(Highs_getInfinity);
+    HIGHS_SYM_PTR(Highs_getRunTime);
+    HIGHS_SYM_PTR(Highs_getModelStatus);
+    HIGHS_SYM_PTR(Highs_run);
+    HIGHS_SYM_PTR(Highs_getSolution);
+    HIGHS_SYM_PTR(Highs_getPrimalRay);
+    HIGHS_SYM_PTR(Highs_getDualRay);
+    HIGHS_SYM_PTR(Highs_setBoolOptionValue);
+    HIGHS_SYM_PTR(Highs_setDoubleOptionValue);
+    HIGHS_SYM_PTR(Highs_setOptionValue);
+    HIGHS_SYM_PTR(Highs_getBoolOptionValue);
+    HIGHS_SYM_PTR(Highs_writeModel);
+
+    DynamicLib();
+
+    ~DynamicLib();
+};
+
 
 #endif //IDOL_OPTIMIZERS_HIGHS_H

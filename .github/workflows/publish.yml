@@ -1,0 +1,154 @@
+name: Build prebuilt idol
+
+on:
+  push:
+    #tags: ['v*.*.*']
+    branches: [ "MacOSX", "!gh-pages" ]
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    env:
+      IDOL_VERSION: ${{ github.ref_name }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure & Build
+        run: |
+          mkdir -p build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/install
+          make -j$(sysctl -n hw.ncpu)
+
+      - name: Install
+        run: cd build && make install
+
+      - name: Package prebuilt tarball
+        run: |
+          cd build/install
+          tar czf ../../idol-${IDOL_VERSION}-macos.tar.gz bin lib include
+          cd ../..
+          ls -l idol-${IDOL_VERSION}-macos.tar.gz
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: idol-${{ github.ref_name }}-macos.tar.gz
+          files: idol-${{ github.ref_name }}-macos.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Homebrew Formula
+        env:
+          TAP_REPO: hlefebvr/homebrew-idol
+          TAP_BRANCH: main
+          IDOL_VERSION: ${{ github.ref_name }}
+        run: |
+          # Clone tap repo
+          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/${TAP_REPO}.git tap
+          cd tap
+
+          # Download tarball and compute SHA256
+          curl -L -o idol-${IDOL_VERSION}-macos.tar.gz \
+               https://github.com/hlefebvr/idol/releases/download/${IDOL_VERSION}/idol-${IDOL_VERSION}-macos.tar.gz
+          sha=$(shasum -a 256 idol-${IDOL_VERSION}-macos.tar.gz | awk '{print $1}')
+
+          # Assign variables for sed
+          MACOS_TARBALL="idol-${IDOL_VERSION}-macos.tar.gz"
+          MACOS_SHA="$sha"
+          formula="Formula/idol.rb"
+          IDOL_PROJECT_VERSION=$(cat ../build/IDOL_VERSION)
+
+          # Update idol.rb formula
+          sed -i '' -E "/on_macos do/,/end/ s|url \".*\"|url \"https://github.com/hlefebvr/idol/releases/download/${IDOL_VERSION}/${MACOS_TARBALL}\"|" $formula
+          sed -i '' -E "/on_macos do/,/end/ s|sha256 \".*\"|sha256 \"${MACOS_SHA}\"|" $formula
+          sed -i '' -E "/on_macos do/,/end/ s|version \".*\"|version \"${IDOL_PROJECT_VERSION}\"|" "$formula"
+
+          # Commit & push
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add $formula
+          git commit -m "Update formula for ${IDOL_VERSION}"
+          git push origin $TAP_BRANCH
+
+  build-linux:
+    runs-on: ubuntu-latest
+    env:
+      IDOL_VERSION: ${{ github.ref_name }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            dpkg-dev
+
+      - name: Configure
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: |
+          cmake --build build -j$(nproc)
+
+      - name: Generate DEB package with CPack
+        run: |
+          cd build
+          cpack -G DEB
+          ls -l *.deb
+
+      - name: Rename package
+        run: |
+          cd build
+          DEB=$(ls *.deb | head -n1)
+          NEW_NAME="idol-${IDOL_VERSION}-linux.deb"
+          mv "$DEB" "$NEW_NAME"
+          echo "DEB_PACKAGE=$NEW_NAME" >> $GITHUB_ENV
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: idol-${{ github.ref_name }}-linux.deb
+          files: build/${{ env.DEB_PACKAGE }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to APT repository
+        env:
+          APT_REPO: hlefebvr/apt
+          DEB_PACKAGE: ${{ env.DEB_PACKAGE }}
+        run: |
+          # Clone the APT repo
+          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/${APT_REPO}.git apt
+          cd apt
+          
+          # Detect architecture of .deb
+          ARCH=$(dpkg-deb -f ../build/${DEB_PACKAGE} Architecture)
+          echo "Detected architecture: $ARCH"
+          
+          # Make sure the directory exists
+          mkdir -p dists/stable/main/binary-${ARCH}
+          
+          # Rename .deb to standard Debian format
+          NEW_DEB="idol_${IDOL_VERSION}_${ARCH}.deb"
+          mv ../build/${DEB_PACKAGE} dists/stable/main/binary-${ARCH}/$NEW_DEB
+          
+          # Run dpkg-scanpackages from the root of the repo
+          dpkg-scanpackages dists/stable/main/binary-${ARCH} /dev/null > dists/stable/main/binary-${ARCH}/Packages
+          gzip -kf dists/stable/main/binary-${ARCH}/Packages
+          
+          # Commit and push changes
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Add idol ${IDOL_VERSION} ($ARCH)" || echo "No changes to commit"
+          git push origin main

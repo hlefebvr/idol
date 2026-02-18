@@ -8,6 +8,7 @@
 #include "idol/general/optimizers/OptimizerFactory.h"
 #include "idol/robust/modeling/Description.h"
 #include "idol/bilevel/modeling/Description.h"
+#include "separation/Separation.h"
 
 namespace idol::Robust {
     class ColumnAndConstraintGeneration;
@@ -24,9 +25,7 @@ class idol::Robust::ColumnAndConstraintGeneration : public OptimizerFactoryWithD
     std::vector<Point<Var>> m_initial_scenarios;
 
     // Separation
-    std::list<std::unique_ptr<OptimizerFactory>> m_optimizer_feasibility_separation;
-    std::list<std::unique_ptr<OptimizerFactory>> m_optimizer_optimality_separation;
-    std::list<std::unique_ptr<OptimizerFactory>> m_optimizer_joint_separation;
+    std::list<std::unique_ptr<CCG::Separation>> m_separations;
     std::optional<bool> m_check_for_repeated_scenarios;
 public:
     ColumnAndConstraintGeneration(const Robust::Description& t_robust_description,
@@ -48,13 +47,10 @@ public:
 
     ColumnAndConstraintGeneration& with_initial_scenario_by_maximization(const OptimizerFactory& t_optimizer);
 
-    ColumnAndConstraintGeneration& add_feasibility_separation_optimizer(const OptimizerFactory& t_optimizer);
-
-    ColumnAndConstraintGeneration& add_optimality_separation_optimizer(const OptimizerFactory& t_optimizer);
-
-    ColumnAndConstraintGeneration& add_joint_separation_optimizer(const OptimizerFactory& t_optimizer);
-
     ColumnAndConstraintGeneration& with_check_for_repeated_scenarios(bool t_value);
+
+    ColumnAndConstraintGeneration& add_separation(const Robust::CCG::Separation& t_separation);
+
 };
 
 #endif //IDOL_COLUMNANDCONSTRAINTGENERATION_H

@@ -16,9 +16,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
                                                                                        std::vector<Point<Var>> t_initial_scenarios,
                                                                                        OptimizerFactory* t_initial_scenario_by_minimization,
                                                                                        OptimizerFactory* t_initial_scenario_by_maximization,
-                                                                                       const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_feasibility_separation,
-                                                                                       const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_optimality_separation,
-                                                                                       const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_joint_separation,
+                                                                                       const std::list<std::unique_ptr<idol::Robust::CCG::Separation>>& t_separations,
                                                                                        bool t_check_for_repeated_scenarios)
                                                                                        : Algorithm(t_parent),
                                                                                          m_robust_description(t_robust_description),
@@ -29,21 +27,18 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
                                                                                          m_initial_scenarios(std::move(t_initial_scenarios)),
                                                                                          m_check_for_repeated_scenarios(t_check_for_repeated_scenarios) {
 
-    m_optimizer_feasibility_separation.reserve(t_optimizer_feasibility_separation.size());
-    for (const auto& optimizer : t_optimizer_feasibility_separation) {
-        m_optimizer_feasibility_separation.emplace_back(optimizer->clone());
+    m_separations.reserve(t_separations.size());
+    for (const auto& optimizer : t_separations) {
+        m_separations.emplace_back(optimizer->clone());
     }
 
-    m_optimizer_optimality_separation.reserve(t_optimizer_optimality_separation.size());
-    for (const auto& optimizer : t_optimizer_optimality_separation) {
-        m_optimizer_optimality_separation.emplace_back(optimizer->clone());
-    }
+}
 
-    m_optimizer_joint_separation.reserve(t_optimizer_joint_separation.size());
-    for (const auto& optimizer : t_optimizer_joint_separation) {
-        m_optimizer_joint_separation.emplace_back(optimizer->clone());
+const idol::PrimalPoint& idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_last_master_solution() const {
+    if (!m_last_master_solution) {
+        throw Exception("Last master solution is not available.");
     }
-
+    return *m_last_master_solution;
 }
 
 std::string idol::Optimizers::Robust::ColumnAndConstraintGeneration::name() const {
@@ -51,6 +46,9 @@ std::string idol::Optimizers::Robust::ColumnAndConstraintGeneration::name() cons
 }
 
 double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_primal(const idol::Var &t_var) const {
+    if (m_bilevel_description.is_lower(t_var)) {
+        return 0;
+    }
     return m_formulation->master().get_var_primal(t_var);
 }
 
@@ -129,9 +127,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimi
 
     m_formulation->master().use(*m_master_optimizer);
 
-    m_index_feasibility_separation = 0;
-    m_index_optimality_separation = 0;
-    m_index_joint_separation = 0;
+    m_separation_index = 0;
 
 }
 
@@ -145,21 +141,11 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
         solve_master_problem();
 
-        check_termination_criteria();
-
-        if (is_terminated()) {
-            break;
-        }
+        if (is_terminated()) { break; }
 
         solve_adversarial_problem();
 
-        //log_iteration_separator();
-
-        check_termination_criteria();
-
-        if (is_terminated()) {
-            break;
-        }
+        if (is_terminated()) { break; }
 
         ++m_n_iterations;
     }
@@ -279,12 +265,27 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
         return;
     }
 
-    m_last_master_solution = save_primal(master);
+    // Save master solution
+    m_last_master_solution = PrimalPoint();
+    m_last_master_solution->set_objective_value(master.get_best_obj());
+    m_last_master_solution->set_status(status);
+    m_last_master_solution->set_reason(reason);
+    for (const auto& var : parent().vars()) {
+        if (get_bilevel_description().is_upper(var)) {
+            m_last_master_solution->set(var, master.get_var_primal(var));
+        }
+    }
+    if (m_formulation->has_second_stage_epigraph()) {
+        const auto& epigraph = m_formulation->second_stage_epigraph();
+        m_last_master_solution->set(epigraph, master.get_var_primal(epigraph));
+    }
 
+    // Update lower bound
     if (!m_formulation->should_have_epigraph_and_epigraph_is_not_in_master()) {
         set_best_bound(master.get_best_bound());
     }
 
+    check_termination_criteria();
 }
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_criteria() {
@@ -293,7 +294,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_
         return;
     }
 
-    if (get_best_bound() > get_best_obj() + 1e-3) {
+    if (get_best_bound() > get_best_obj() + get_tol_mip_absolute_gap()) {
+        std::cerr << "The current best bound is larger than current best obj. This should should not happen. Terminating..." << std::endl;
         set_status(Fail);
         set_reason(Numerical);
         terminate();
@@ -303,18 +305,21 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_
     set_status(is_pos_inf(get_best_obj()) ? Infeasible : Feasible);
 
     if (get_remaining_time() == 0) {
+        std::cout << "The time limit has been reached. Terminating..." << std::endl;
         set_reason(TimeLimit);
         terminate();
         return;
     }
 
     if (m_n_iterations > get_param_iteration_limit()) {
+        std::cout << "The iteration limit has been reached. Terminating..." << std::endl;
         set_reason(IterLimit);
         terminate();
         return;
     }
 
     if (Algorithm::get_relative_gap() <= get_tol_mip_relative_gap() || Algorithm::get_absolute_gap() <= get_tol_mip_absolute_gap()) {
+        std::cout << "The optimality gap has been closed. Terminating..." << std::endl;
         set_status(Optimal);
         set_reason(Proved);
         terminate();
@@ -329,9 +334,9 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_banner() {
         return;
     }
 
-    center(std::cout, "", 182, '*') << std::endl;
-    center(std::cout, " Column-and-constraint Generation ", 182) << std::endl;
-    center(std::cout, "", 182, '*') << std::endl;
+    center(std::cout, "", 92, '*') << std::endl;
+    center(std::cout, " Column-and-constraint Generation ", 92) << std::endl;
+    center(std::cout, "", 92, '*') << std::endl;
 
     std::cout << std::setw(12) << "Time (s)" << "\t"
               << std::setw(5) << "# Iter." << "\t"
@@ -339,48 +344,15 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_banner() {
               << std::setw(12) << "LB" << "\t"
               << std::setw(12) << "UB" << "\t"
               << std::setw(12) << "Gap (%)" << "\t"
-              << std::setw(12) << "Abs. Gap" << "\t"
-              << std::setw(35) << "Master" << "\t"
-              << std::setw(35) << "Separation" << "\t"
-              << std::setw(8) << "Iter. status"
+              << std::setw(12) << "Abs. Gap"
               << std::endl;
     log_iteration_separator();
 }
 
-void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_iteration(
-            bool t_is_feasibility_separation,
-            const std::string& t_optimizer_name,
-            const SolutionStatus& t_status,
-            const SolutionReason& t_reason,
-            bool t_separation_outcome
-        ) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_iteration() {
 
     if (!get_param_logs()) {
         return;
-    }
-
-    const auto& master = m_formulation->master();
-    std::stringstream master_status;
-    master_status << "<" << master.optimizer().name() << "," << master.get_status() << "," << master.get_reason() << ">";
-
-    std::stringstream separation_status;
-    separation_status << "<" << t_optimizer_name << "," << t_status << "," << t_reason << ">";
-
-    std::stringstream separation_outcome;
-    if (t_is_feasibility_separation) {
-        separation_outcome << "feasibility=";
-        if (t_separation_outcome) {
-            separation_outcome << (t_status == Optimal ? "yes" : "?");
-        } else {
-            separation_outcome << "no";
-        }
-    } else {
-        separation_outcome << "optimality=";
-        if (t_separation_outcome) {
-            separation_outcome << "yes";
-        } else {
-            separation_outcome << (t_status == Optimal ? "no" : "?");
-        }
     }
 
     std::cout << std::setw(12) << pretty_double(time().count(), 5) << "s\t"
@@ -389,89 +361,86 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_iteration(
               << std::setw(12) << pretty_double(get_best_bound(), 5) << "\t"
               << std::setw(12) << pretty_double(get_best_obj(), 5) << "\t"
               << std::setw(12) << pretty_double(get_relative_gap() * 100, 5) << "\t"
-              << std::setw(12) << pretty_double(get_absolute_gap(), 5) << "\t"
-              << std::setw(35) << master_status.str() << "\t"
-              << std::setw(35) << separation_status.str() << "\t"
-              << std::setw(8) << separation_outcome.str()
+              << std::setw(12) << pretty_double(get_absolute_gap(), 5)
               << std::endl;
 
 }
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_problem() {
 
+    /*
+    TODO: should we do smth like this again ?
     if (m_with_feasibility_separation_loop_reset) {
         m_index_feasibility_separation = 0;
     }
+    */
 
-    if (m_with_optimality_separation_loop_reset) {
-        m_index_optimality_separation = 0;
-    }
+    const unsigned int n_separations = m_separations.size();
 
-    if (m_with_joint_separation_loop_reset) {
-        m_index_joint_separation = 0;
-    }
+    for (unsigned int i = 0 ; i < n_separations ; ++i) {
 
-    const unsigned int n_feasibility_separation_optimizers = m_optimizer_feasibility_separation.size();
-    const unsigned int n_optimality_separation_optimizers = m_optimizer_optimality_separation.size();
-    const unsigned int n_joint_separation_optimizers = m_optimizer_joint_separation.size();
+        auto& separation = *m_separations[i];
 
-    unsigned int n_added_scenario;
-    if (n_feasibility_separation_optimizers > 0) {
-        for (;;) {
+        separation.m_scenarios.clear();
+        separation.m_submitted_upper_bound.reset();
+        separation.m_parent = this;
+        separation.m_status = Loaded;
+        separation.m_reason = NotSpecified;
 
-            const bool is_last_optimizer = m_index_feasibility_separation + 1 == n_feasibility_separation_optimizers;
-            n_added_scenario = solve_feasibility_adversarial_problem();
+        m_separation_timer.start();
+        separation();
+        m_separation_timer.stop();
 
-            if (n_added_scenario > 0 || is_terminated()) {
-                return;
-            }
-
-            if (is_last_optimizer) {
-                break;
-            }
-
+        if (separation.m_submitted_upper_bound && *separation.m_submitted_upper_bound < get_best_obj()) {
+            set_best_obj(*separation.m_submitted_upper_bound);
+            set_status(Feasible);
         }
-    }
 
-    if (n_joint_separation_optimizers > 0) {
-        for (;;) {
+        const bool is_last_separation = i == n_separations - 1;
+        const auto& scenarios_to_add = separation.scenarios();
 
-            const bool is_last_optimizer = m_index_joint_separation + 1 == n_joint_separation_optimizers;
-            n_added_scenario = solve_joint_adversarial_problem();
-
-            if (n_added_scenario > 0 || is_terminated()) {
-                return;
-            }
-
-            if (is_last_optimizer) {
-                break;
-            }
-
+        if (is_last_separation && separation.m_status != Optimal && scenarios_to_add.size() == 0) {
+            set_reason(separation.m_reason);
+            terminate();
+        } else if (separation.m_status != Feasible && separation.m_status != Optimal) {
+            set_status(separation.m_status);
+            set_reason(separation.m_reason);
+            std::cerr << "Separation reported status " << separation.m_status << " (" << separation.m_reason << ")." << std::endl;
+            terminate();
         }
-    }
 
-    if (n_optimality_separation_optimizers > 0) {
-        for (;;) {
-
-            const bool is_last_optimizer = m_index_optimality_separation + 1 == n_optimality_separation_optimizers;
-            n_added_scenario = solve_optimality_adversarial_problem();
-
-            if (n_added_scenario > 0 || is_terminated()) {
-                return;
-            }
-
-            if (is_last_optimizer) {
-                break;
-            }
-
+        if (check_termination_criteria() ; is_terminated()) {
+            return;
         }
+
+        for (const auto& scenario : scenarios_to_add) {
+            m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario, m_check_for_repeated_scenarios);
+        }
+
+        log_iteration();
+
+        if (scenarios_to_add.size() > 0) {
+            return;
+        }
+
+        if (is_last_separation) {
+            set_best_obj(get_best_bound());
+            set_status(Optimal);
+            set_reason(Proved);
+            terminate();
+            return;
+        }
+
     }
+
+    set_status(Fail);
+    set_reason(NotSpecified);
+    terminate();
 
 }
 
+/*
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feasibility_adversarial_problem() {
-
-    const auto& master = m_formulation->master();
 
     auto [high_point_relaxation, slack_variables] = m_formulation->build_feasibility_separation_problem(*m_last_master_solution);
 
@@ -681,6 +650,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_join
 
     return 0;
 }
+*/
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_iteration_separator() {
 
@@ -688,6 +658,6 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_iteration_sepa
         return;
     }
 
-    center(std::cout, "-", 182, '-') << std::endl;
+    center(std::cout, "-", 92, '-') << std::endl;
 
 }

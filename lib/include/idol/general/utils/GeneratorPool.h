@@ -17,7 +17,7 @@ class idol::GeneratorPool {
     std::list<std::pair<KeyT, ValueT>> m_values;
 public:
     void add(KeyT t_key, ValueT t_value) {
-        m_values.template emplace_back(std::move(t_key), std::move(t_value));
+        m_values.emplace_back(std::move(t_key), std::move(t_value));
     }
 
     typename std::list<std::pair<KeyT, ValueT>>::iterator erase(const typename std::list<std::pair<KeyT, ValueT>>::iterator & t_it) {

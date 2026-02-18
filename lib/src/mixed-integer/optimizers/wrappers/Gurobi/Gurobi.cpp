@@ -6,7 +6,6 @@
 #include "idol/general/utils/exceptions/Exception.h"
 
 idol::Optimizer *idol::Gurobi::operator()(const Model &t_model) const {
-#ifdef IDOL_USE_GUROBI
 
     auto* result = new Optimizers::Gurobi(t_model, m_continuous_relaxation.has_value() && m_continuous_relaxation.value());
 
@@ -33,9 +32,6 @@ idol::Optimizer *idol::Gurobi::operator()(const Model &t_model) const {
     }
 
     return result;
-#else
-    throw Exception("idol was not linked with Gurobi.");
-#endif
 }
 
 idol::Gurobi idol::Gurobi::ContinuousRelaxation() {
@@ -92,36 +88,24 @@ idol::Gurobi &idol::Gurobi::with_continuous_relaxation_only(bool t_value) {
     return *this;
 }
 
-idol::Gurobi &idol::Gurobi::with_external_param(GRB_IntParam t_param, int t_value) {
+idol::Gurobi &idol::Gurobi::with_external_param(const std::string& t_param, int t_value) {
 
-#ifdef IDOL_USE_GUROBI
     auto [it, success] = m_int_params.emplace(t_param, t_value);
 
     if (!success) {
-        throw Exception("Gurobi parameter " + std::to_string(t_param) + " has already been configured.");
+        throw Exception("Gurobi parameter " + t_param + " has already been configured.");
     }
-#endif
 
     return *this;
 }
 
-idol::Gurobi &idol::Gurobi::with_external_param(GRB_DoubleParam t_param, double t_value) {
+idol::Gurobi &idol::Gurobi::with_external_param(const std::string& t_param, double t_value) {
 
-#ifdef IDOL_USE_GUROBI
     auto [it, success] = m_double_params.emplace(t_param, t_value);
 
     if (!success) {
-        throw Exception("Gurobi parameter " + std::to_string(t_param) + " has already been configured.");
+        throw Exception("Gurobi parameter " + t_param + " has already been configured.");
     }
-#endif
 
     return *this;
-}
-
-idol::Model idol::Gurobi::read_from_file(idol::Env &t_env, const std::string &t_filename) {
-#if IDOL_USE_GUROBI
-    return Optimizers::Gurobi::read_from_file(t_env, t_filename);
-#else
-    throw Exception("idol was not linked with Gurobi.");
-#endif
 }

@@ -258,3 +258,20 @@ idol::Bilevel::impl::read_from_file(Env& t_env,
     return parser.model();
 
 }
+
+Model
+idol::Bilevel::read_from_file(Env& t_env, const std::string& t_path_to_aux, Bilevel::Description& t_lower_level_description) {
+    return idol::Bilevel::impl::read_from_file(t_env, t_path_to_aux, t_lower_level_description, [](Env& t_env, const std::string& t_file) { return GLPK::read_from_file(t_env, t_file); });
+}
+
+std::pair<Model, Bilevel::Description> Bilevel::read_from_file(Env& t_env, const std::string& t_path_to_aux)  {
+
+    Bilevel::Description lower_level_description(t_env);
+
+    auto high_point_relaxation = Bilevel::impl::read_from_file(t_env, t_path_to_aux, lower_level_description,[](Env& t_env, const std::string& t_file) { return GLPK::read_from_file(t_env, t_file); });
+
+    return {
+        std::move(high_point_relaxation),
+        std::move(lower_level_description)
+    };
+}

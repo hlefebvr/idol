@@ -229,14 +229,6 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h
         include/idol/robust/modeling/Description.h
         src/robust/modeling/Description.cpp
-        include/idol/robust/optimizers/deterministic/Deterministic.h
-        src/robust/optimizers/deterministic/Deterministic.cpp
-        include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h
-        src/robust/optimizers/deterministic/Optimizers_Deterministic.cpp
-        include/idol/robust/optimizers/affine-decision-rule/AffineDecisionRule.h
-        include/idol/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.h
-        src/robust/optimizers/affine-decision-rule/AffineDecisionRule.cpp
-        src/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.cpp
         include/idol/bilevel/optimizers/KKT/KKT.h
         include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h
         src/bilevel/optimizers/KKT/KKT.cpp
@@ -265,10 +257,10 @@ add_library(idol STATIC
         src/bilevel/optimizers/BranchAndCut/BranchAndCut.cpp
         src/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.cpp
         include/idol/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.h
-        src/optimizers/robust/KAdaptabilityBranchAndBound/KAdaptabilityBranchAndBound.cpp
+        src/robust/optimizers/KAdaptabilityBranchAndBound/KAdaptabilityBranchAndBound.cpp
         include/idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h
-        src/optimizers/robust/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.cpp
-        src/optimizers/robust/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.cpp
+        src/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.cpp
+        src/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.cpp
         include/idol/mixed-integer/modeling/constraints/SOSCtr.h
         include/idol/mixed-integer/modeling/constraints/SOSCtrVersion.h
         src/mixed-integer/modeling/constraints/SOSCtr.cpp
@@ -276,11 +268,6 @@ add_library(idol STATIC
         include/idol/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.h
         src/bilevel/optimizers/MinMaxDualize/MinMax_Dualize.cpp
         src/bilevel/optimizers/MinMaxDualize/Optimizers_MinMax_Dualize.cpp
-        include/idol/robust/optimizers/benders/Benders.h
-        include/idol/robust/optimizers/benders/Optimizers_Benders.h
-        src/robust/optimizers/benders/Benders.cpp
-        src/robust/optimizers/benders/Optimizers_Benders.cpp
-        include/idol/robust/optimizers/column-and-constraint-generation/AdversarialProblemSolver.h
         include/idol/mixed-integer/optimizers/wrappers/JuMP/JuMP.h
         include/idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h
         include/idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_Coluna.h
@@ -295,10 +282,37 @@ add_library(idol STATIC
         src/robust/optimizers/critical-value-column-and-constraint-generation/CriticalValueColumnAndConstraintGeneration.cpp
         src/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.cpp
         src/robust/optimizers/critical-value-column-and-constraint-generation/Formulation.cpp
+        include/idol/mixed-integer/optimizers/wrappers/GLPK/headers/header_glpk.h
+        include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_c_api.h
+        include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HighsCallbacktruct.h
+        include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HighsInt.h
+        include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HConfig.h
+        include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HConst.h
+        include/idol/mixed-integer/optimizers/wrappers/Gurobi/headers/header_gurobi.h
+        include/idol/robust/modeling/read_from_file.h
+        src/robust/modeling/read_from_file.cpp
+        include/idol/robust/optimizers/column-and-constraint-generation/separation/Separation.h
+        include/idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h
+        src/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.cpp
+        src/robust/optimizers/column-and-constraint-generation/separation/Separation.cpp
+        include/idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h
+        src/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.cpp
+        include/idol/robust/optimizers/nested-branch-and-cut/NestedBranchAndCut.h
+        src/robust/optimizers/nested-branch-and-cut/NestedBranchAndBound.cpp
+        include/idol/robust/optimizers/nested-branch-and-cut/Optimizers_NestedBranchAndCut.h
+        src/robust/optimizers/nested-branch-and-cut/Optimizers_NestedBranchAndCut.cpp
+        include/idol/robust/optimizers/nested-branch-and-cut/Formulation.h
+        src/robust/optimizers/nested-branch-and-cut/Formulation.cpp
+        include/idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h
+        src/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.cpp
 )
 
-find_package(OpenMP REQUIRED)
-target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)
+target_link_libraries(idol PRIVATE dl)
+
+#find_package(OpenMP REQUIRED)
+#target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)
+
+target_compile_definitions(idol PUBLIC IDOL_VERSION="${PROJECT_VERSION}")
 
 function(set_DIR_variable PREFIX)
     string(TOUPPER "${PREFIX}" PREFIX_UPPER)
@@ -359,17 +373,6 @@ if (${USE_EIGEN})
 
 endif()
 
-set(USE_GUROBI OFF CACHE BOOL "Build idol with Gurobi (https://www.gurobi.com)")
-set_DIR_variable(Gurobi)
-if (${USE_GUROBI})
-
-    find_package(GUROBI REQUIRED)
-    target_link_libraries(idol PUBLIC gurobi)
-    target_compile_definitions(idol PUBLIC IDOL_USE_GUROBI)
-    list(APPEND AVAILABLE_MILP_SOLVERS "Gurobi")
-
-endif()
-
 set(USE_MOSEK OFF CACHE BOOL "Build idol with Mosek (https://www.mosek.com)")
 set_DIR_variable(Mosek)
 if (${USE_MOSEK})
@@ -378,28 +381,6 @@ if (${USE_MOSEK})
     target_link_libraries(idol PUBLIC mosek)
     target_compile_definitions(idol PUBLIC IDOL_USE_MOSEK)
     list(APPEND AVAILABLE_MILP_SOLVERS "Mosek")
-
-endif()
-
-set(USE_GLPK OFF CACHE BOOL "Build idol with GLPK (https://www.gnu.org/software/glpk/)")
-set_DIR_variable(GLPK)
-if (${USE_GLPK})
-
-    find_package(GLPK REQUIRED)
-    target_link_libraries(idol PUBLIC glpk)
-    target_compile_definitions(idol PUBLIC IDOL_USE_GLPK)
-    list(APPEND AVAILABLE_MILP_SOLVERS "GLPK")
-
-endif()
-
-set(USE_HIGHS OFF CACHE BOOL "Build idol with HiGHS (https://highs.dev/)")
-if (${USE_HIGHS})
-
-    find_package(Threads REQUIRED)
-    find_package(HIGHS REQUIRED)
-    target_link_libraries(idol PUBLIC highs::highs)
-    target_compile_definitions(idol PUBLIC IDOL_USE_HIGHS)
-    list(APPEND AVAILABLE_MILP_SOLVERS "HiGHS")
 
 endif()
 
@@ -512,13 +493,13 @@ endif()
 
 # "Compile" the Julia module code
 execute_process(
-        COMMAND base64 "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/JuMP.jl"
+        COMMAND base64 INPUT_FILE "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/JuMP.jl"
         OUTPUT_VARIABLE IDOL_JUMP_MODULE_BASE64
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 string(REPLACE "\n" "\\\n" IDOL_JUMP_MODULE_BASE64 "${IDOL_JUMP_MODULE_BASE64}")
 execute_process(
-        COMMAND base64 "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/Coluna.jl"
+        COMMAND base64 INPUT_FILE "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/Coluna.jl"
         OUTPUT_VARIABLE IDOL_COLUNA_MODULE_BASE64
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
@@ -561,11 +542,35 @@ install(EXPORT idol_targets
 
 configure_file(idolConfig.cmake.in idolConfig.cmake @ONLY)
 
-file(GLOB FIND_MODULES "${idol_SOURCE_DIR}/cmake/**/Find*.cmake")
+#file(GLOB FIND_MODULES "${idol_SOURCE_DIR}/cmake/**/Find*.cmake")
 install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/idolConfig.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/idolConfigVersion.cmake"
         "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h"
-        "${FIND_MODULES}"
         DESTINATION lib/cmake/idol
         )
+
+file(WRITE "${CMAKE_BINARY_DIR}/IDOL_VERSION" "${PROJECT_VERSION}")
+
+
+############ DEB GENERATION ##################
+if(UNIX AND NOT APPLE)
+    include(InstallRequiredSystemLibraries)
+
+    set(CPACK_PACKAGE_NAME "idol")
+    set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "idol, a C++ framework for optimization")
+    set(CPACK_PACKAGE_VENDOR "Henri Lefebvre")
+
+    set(CPACK_PACKAGE_CONTACT "henri.lefebvre@cnrs.fr")
+
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Henri Lefebvre")
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.31), libstdc++6")
+
+    set(CPACK_DEBIAN_PACKAGE_SECTION "libs")
+    set(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
+
+    set(CPACK_GENERATOR "DEB")
+
+    include(CPack)
+endif ()

@@ -5,32 +5,6 @@
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Versions.h"
 
-const idol::Annotation<unsigned int> &idol::Robust::Description::stage_annotation() const {
-    if (!m_stages) {
-        auto& env = m_uncertainty_set->env();
-        m_stages = Annotation<unsigned int>(env, "stage", 0);
-    }
-    return *m_stages;
-}
-
-void idol::Robust::Description::set_stage(const Var &t_var, unsigned int t_stage) {
-    t_var.set(stage_annotation(), t_stage);
-}
-
-unsigned int idol::Robust::Description::stage(const idol::Var &t_var) const {
-    if (!m_stages) {
-        return 0;
-    }
-    return t_var.get(*m_stages);
-}
-
-unsigned int idol::Robust::Description::stage(const idol::Ctr &t_var) const {
-    if (!m_stages) {
-        return 0;
-    }
-    return t_var.get(*m_stages);
-}
-
 const idol::LinExpr<idol::Var> &
 idol::Robust::Description::uncertain_mat_coeff(const Ctr &t_ctr, const Var &t_var) const {
     auto it_ctr = m_uncertain_mat_coeff.find(t_ctr);

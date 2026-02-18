@@ -35,6 +35,8 @@ public:
 
     [[nodiscard]] const auto& primal_solution() const { return m_primal_solution; }
 
+    auto& primal_solution() { return m_primal_solution; }
+
     void set_primal_solution(PrimalPoint t_primal_solution) { m_primal_solution = std::move(t_primal_solution); }
 
     virtual void save(const Model& t_original_formulation, const Model& t_model);
@@ -51,7 +53,9 @@ public:
 
     static DefaultNodeUpdator<DefaultNodeInfo>* create_updator(const Model& t_src_model, Model& t_relaxation);
 
-    virtual DefaultNodeInfo* clone() const;
+    [[nodiscard]] virtual DefaultNodeInfo* clone() const;
+protected:
+    virtual void compute_sum_of_infeasibilities();
 private:
     PrimalPoint m_primal_solution;
     std::optional<double> m_sum_of_infeasibilities;

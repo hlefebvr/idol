@@ -18,7 +18,7 @@ using namespace idol;
  * - Test parameters
  */
 
-TEST_CASE("Can solve a feasible MIP which is integer at the root node", "[solving-milp]") {
+TEST_CASE("Can solve a feasible MIP which is integer at the root node", "[MILP]") {
 
     // Taken from https://www.gurobi.com/documentation/9.5/examples/mip1_cpp_cpp.html#subsubsection:mip1_c++.cpp
     Env env;
@@ -68,7 +68,7 @@ TEST_CASE("Can solve a feasible MIP which is integer at the root node", "[solvin
 }
 
 
-TEST_CASE("Can solve a feasible MIP which is not integer at the root node", "[solving-milp]") {
+TEST_CASE("Can solve a feasible MIP which is not integer at the root node", "[MILP]") {
 
     Env env;
 
@@ -129,7 +129,7 @@ TEST_CASE("Can solve a feasible MIP which is not integer at the root node", "[so
 
 }
 
-TEST_CASE("Can solve an infeasible MIP which is infeasible at root node", "[solving-milp]") {
+TEST_CASE("Can solve an infeasible MIP which is infeasible at root node", "[MILP]") {
 
     Env env;
 
@@ -177,7 +177,7 @@ TEST_CASE("Can solve an infeasible MIP which is infeasible at root node", "[solv
 
 }
 
-TEST_CASE("Can solve an infeasible MIP which is feasible at the root node", "[solving-milp]") {
+TEST_CASE("Can solve an infeasible MIP which is feasible at the root node", "[MILP]") {
 
     Env env;
 
@@ -220,7 +220,7 @@ TEST_CASE("Can solve an infeasible MIP which is feasible at the root node", "[so
 
 }
 
-TEST_CASE("Can solve an unbounded MIP", "[solving-milp]") {
+TEST_CASE("Can solve an unbounded MIP", "[MILP]") {
 
     Env env;
     Var x(env, -Inf, Inf, Integer, 0., "x");
@@ -249,54 +249,63 @@ TEST_CASE("Can solve an unbounded MIP", "[solving-milp]") {
 
 }
 
-TEST_CASE("Can set parameters of the underlying solver", "[solving-milp]") {
+TEST_CASE("Can set parameters of the underlying solver", "[MILP]") {
+
+    Env env;
+    Model model(env);
+
+    model.use(OPTIMIZER());
 
     SECTION("Can set a time limit") {
-        CHECK(false);
+        CHECK_NOTHROW(model.optimizer().set_param_time_limit(3600));
+        CHECK(model.optimizer().get_param_time_limit() == 3600_a);
     }
 
     SECTION("Can turn off presolve") {
-        CHECK(false);
+        CHECK_NOTHROW(model.optimizer().set_param_presolve(false));
+        CHECK(model.optimizer().get_param_presolve() == false);
     }
 
     SECTION("Can activate infeasible or unbounded info") {
-        CHECK(false);
-    }
-
-    SECTION("Can set an external parameter") {
-        CHECK(false);
+        CHECK_NOTHROW(model.optimizer().set_param_infeasible_or_unbounded_info(true));
+        CHECK(model.optimizer().get_param_infeasible_or_unbounded_info() == true);
     }
 
     SECTION("Can set a thread limit") {
-        CHECK(false);
+        CHECK_NOTHROW(model.optimizer().set_param_threads(4));
+        CHECK(model.optimizer().get_param_thread_limit() == 4);
     }
 
     SECTION("Can set a relative MIP gap") {
-        CHECK(false);
+        CHECK_NOTHROW(model.optimizer().set_tol_mip_relative_gap(0.01));
+        CHECK(model.optimizer().get_tol_mip_relative_gap() == 0.01_a);
     }
 
     SECTION("Can set an absolute MIP gap") {
-        CHECK(false);
+        CHECK_NOTHROW(model.optimizer().set_tol_mip_absolute_gap(100.0));
+        CHECK(model.optimizer().get_tol_mip_absolute_gap() == 100.0_a);
     }
 
     SECTION("Can set a best bound stop") {
-        CHECK(false);
+        CHECK_NOTHROW(model.optimizer().set_param_best_bound_stop(5000));
+        CHECK(model.optimizer().get_param_best_bound_stop() == 5000_a);
     }
 
     SECTION("Can set a best obj stop") {
-        CHECK(false);
+        CHECK_NOTHROW(model.optimizer().set_param_best_obj_stop(10000));
+        CHECK(model.optimizer().get_param_best_obj_stop() == 10000_a);
     }
 
     SECTION("Can set an iteration limit") {
-        CHECK(false);
+        CHECK_NOTHROW(model.optimizer().set_param_iteration_limit(100000));
+        CHECK(model.optimizer().get_param_iteration_limit() == 100000_a);
     }
 
     SECTION("Can turn on logs") {
-        CHECK(false);
-    }
-
-    SECTION("Can set the maximum number of solutions in the pool") {
-        CHECK(false);
+        CHECK_NOTHROW(model.optimizer().set_param_logs(true));
+        CHECK(model.optimizer().get_param_logs() == true);
+        CHECK_NOTHROW(model.optimizer().set_param_logs(false));
+        CHECK(model.optimizer().get_param_logs() == false);
     }
 
 }

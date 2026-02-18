@@ -31,6 +31,7 @@ class idol::BranchAndBound : public OptimizerFactoryWithDefaultParameters<Branch
     std::unique_ptr<BranchingRuleFactory<NodeT>> m_branching_rule_factory;
     std::unique_ptr<NodeSelectionRuleFactory<NodeT>> m_node_selection_rule_factory;
     std::unique_ptr<Logs::BranchAndBound::Factory<NodeT>> m_logger_factory;
+    std::unique_ptr<NodeT> m_root_node_info;
 
     std::list<std::unique_ptr<BranchAndBoundCallbackFactory<NodeT>>> m_callbacks;
 
@@ -204,6 +205,7 @@ public:
      */
     BranchAndBound<NodeT>& add_callback(const CallbackFactory& t_callback);
 
+    BranchAndBound<NodeT>& with_root_node_info(const NodeT& t_root_node_info);
 };
 
 template<class NodeT>
@@ -233,6 +235,18 @@ template<class NodeT>
 idol::BranchAndBound<NodeT> &
 idol::BranchAndBound<NodeT>::add_callback(const CallbackFactory &t_callback) {
     return add_callback(CallbackAsBranchAndBoundCallback<NodeT>(t_callback));
+}
+
+template <class NodeT>
+idol::BranchAndBound<NodeT>& idol::BranchAndBound<NodeT>::with_root_node_info(const NodeT& t_root_node_info) {
+
+    if (m_root_node_info) {
+        throw Exception("A root node info has already been given");
+    }
+
+    m_root_node_info.reset(t_root_node_info.clone());
+
+    return *this;
 }
 
 template<class NodeT>
@@ -314,7 +328,8 @@ idol::BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
           m_branching_rule_factory(t_rhs.m_branching_rule_factory ? t_rhs.m_branching_rule_factory->clone() : nullptr),
           m_node_selection_rule_factory(t_rhs.m_node_selection_rule_factory ? t_rhs.m_node_selection_rule_factory->clone() : nullptr),
           m_subtree_depth(t_rhs.m_subtree_depth),
-          m_logger_factory(t_rhs.m_logger_factory ? t_rhs.m_logger_factory->clone() : nullptr) {
+          m_logger_factory(t_rhs.m_logger_factory ? t_rhs.m_logger_factory->clone() : nullptr),
+          m_root_node_info(t_rhs.m_root_node_info ? t_rhs.m_root_node_info->clone() : nullptr) {
 
     for (auto& cb : t_rhs.m_callbacks) {
         m_callbacks.emplace_back(cb->clone());
@@ -351,7 +366,11 @@ idol::Optimizer *idol::BranchAndBound<NodeT>::operator()(const Model &t_model) c
 
     this->handle_default_parameters(result);
 
-    if (m_subtree_depth.has_value()) {
+    if (m_root_node_info) {
+        result->set_root_node_info(*m_root_node_info);
+    }
+
+    if (m_subtree_depth) {
         result->set_subtree_depth(m_subtree_depth.value());
     }
 

@@ -24,7 +24,7 @@ void idol::Problems::FLP::Instance::set_per_unit_penalty(unsigned int t_j, doubl
     (*m_per_unit_penalties)[t_j] = t_value;
 }
 
-idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_2021_Cheng_et_al(const std::string &t_filename, double t_d, bool t_use_haversine) {
+idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_2021_Cheng_et_al(const std::string &t_filename, double t_d, bool t_use_haversine, bool t_is_symetric) {
 
     auto data = parse_delimited(t_filename, '\t');
 
@@ -46,10 +46,16 @@ idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_2021_Cheng_et_a
         result.set_capacity(i, std::stod(data[i+1][5]));
     }
 
+    unsigned int i_begin = 0, j_begin = 0, i_end = n_facilities, j_end = n_customers;
+    if (!t_is_symetric) {
+        j_begin = n_facilities;
+        j_end = n_facilities + n_customers;
+    }
+
     std::vector<double> costs;
     costs.reserve(n_facilities * n_customers);
-    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-        for (unsigned int j = 0 ; j < n_customers ; ++j) {
+    for (unsigned int i = i_begin ; i < i_end ; ++i) {
+        for (unsigned int j = j_begin ; j < j_end ; ++j) {
             const double lon_i = std::stod(data[i+1][1]);
             const double lat_i = std::stod(data[i+1][2]);
             const double lon_j = std::stod(data[j+1][1]);
@@ -58,7 +64,7 @@ idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_2021_Cheng_et_a
                     std::floor(20 * haversine({lat_i, lon_i}, {lat_j, lon_j}))
                     :
                     std::floor(20 * euclidean({lat_i, lon_i}, {lat_j, lon_j}));
-            result.set_per_unit_transportation_cost(i, j, distance);
+            result.set_per_unit_transportation_cost(i - i_begin, j - j_begin, distance);
             costs.emplace_back(distance);
         }
     }

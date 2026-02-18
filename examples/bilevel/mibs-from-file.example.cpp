@@ -14,7 +14,7 @@ int main(int t_argc, const char** t_argv) {
     const std::string aux_filename = "mibs-from-file.data.aux";
 
     Env env;
-    auto [model, description] = Bilevel::read_from_file<Gurobi>(env, aux_filename);
+    auto [model, description] = Bilevel::read_from_file(env, aux_filename);
 
     model.use(Bilevel::MibS(description).with_logs(true));
 

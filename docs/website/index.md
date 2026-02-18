@@ -64,8 +64,8 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
 
 \section getting_started_with_idol Getting Started with idol
 
-New to idol? Be sure to have a look at our [tutorials](/tutorials). If you want to get a fast hands-on
-start, have a look at our [local installation guideline](/installation). It is the easiest installation process
+New to idol? Be sure to have a look at our [examples](/examples.html). If you want to get a fast hands-on
+start, have a look at our [local installation guideline](/automatic-installation.htmt). It is the easiest installation process
 one could think of: it automatically downloads the latest version of idol, and installs it locally in a subfolder of your CMake project.
 It's really a matter of seconds before you can start using idol.
 
@@ -90,7 +90,7 @@ It's really a matter of seconds before you can start using idol.
 >
 > model.add_ctr(idol_Sum(j, Range(n_items), weight[j] * x[j]) <= capacity);
 >
-> model.set_obj_expr(idol_Sum(j, Range(n_items), -profit[j] * x[j]);
+> model.set_obj_expr(idol_Sum(j, Range(n_items), -profit[j] * x[j]));
 >
 > model.use(Gurobi());
 >

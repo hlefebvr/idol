@@ -40,6 +40,7 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
     std::unique_ptr<typename Logs::BranchAndBound::Factory<NodeInfoT>::Strategy> m_logger;
+    std::unique_ptr<NodeInfoT> m_root_node_info;
 
     std::unique_ptr<AbstractBranchAndBoundCallbackI<NodeInfoT>> m_callback;
 
@@ -164,6 +165,8 @@ public:
 
     void set_relaxation_optimizer_factory(const OptimizerFactory& t_factory);
 
+    void set_root_node_info(const NodeInfoT& t_node_info);
+
     const OptimizerFactory& get_relaxation_optimizer_factory() const;
 };
 
@@ -200,6 +203,11 @@ template <class NodeInfoT> void idol::Optimizers::BranchAndBound<NodeInfoT>::set
 
     m_relaxation_optimizer_factory.reset(t_factory.clone());
 
+}
+
+template <class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::set_root_node_info(const NodeInfoT& t_node_info) {
+    m_root_node_info.reset(t_node_info.clone());
 }
 
 template <class NodeInfoT> const idol::OptimizerFactory& idol::Optimizers::BranchAndBound<NodeInfoT>::
@@ -477,7 +485,15 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::create_relaxations() {
 template<class NodeInfoT>
 idol::Node<NodeInfoT> idol::Optimizers::BranchAndBound<NodeInfoT>::create_root_node() {
 
-    auto root_node = Node<NodeInfoT>::create_root_node();
+    NodeInfoT* node_info = nullptr;
+    if (m_root_node_info) {
+        node_info = m_root_node_info->clone();
+    } else if constexpr (std::is_default_constructible_v<NodeInfoT>) {
+        node_info = new NodeInfoT();
+    } else {
+        throw Exception("The given node info class has no default constructor and no root node info has been given.");
+    }
+    auto root_node = Node<NodeInfoT>::create_root_node(node_info);
     assert(root_node.id() == 0);
     ++m_n_created_nodes;
 
@@ -663,6 +679,8 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
 
     node_updator.prepare(t_node);
 
+    // TODO call callback "before node"
+
     /*
     for (const auto& var : parent().vars()) {
         const double lb = relaxation.get_var_lb(var);
@@ -671,7 +689,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
             std::cerr << "Inconsistent bounds for variable " << var << ": " << lb << " > " << ub << std::endl;
         }
     }
-     */
+    */
 
     relaxation.optimize();
 
@@ -908,12 +926,14 @@ template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::set_best_obj(double t_value) {
 #pragma omp critical
     Algorithm::set_best_obj(t_value);
+    assert(get_best_bound() <= get_best_obj() + get_tol_mip_absolute_gap());
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::set_best_bound(double t_value) {
 #pragma omp critical
     Algorithm::set_best_bound(t_value);
+    assert(get_best_bound() <= get_best_obj() + get_tol_mip_absolute_gap());
 }
 
 template<class NodeInfoT>

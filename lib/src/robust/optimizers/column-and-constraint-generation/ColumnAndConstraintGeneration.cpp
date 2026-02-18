@@ -24,6 +24,10 @@ idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
           m_check_for_repeated_scenarios(t_src.m_check_for_repeated_scenarios)
           {
 
+    for (const auto& optimizer : t_src.m_separations) {
+        m_separations.emplace_back(optimizer->clone());
+    }
+    /*
     for (const auto& optimizer : t_src.m_optimizer_feasibility_separation) {
         m_optimizer_feasibility_separation.emplace_back(optimizer->clone());
     }
@@ -35,7 +39,7 @@ idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
     for (const auto& optimizer : t_src.m_optimizer_joint_separation) {
         m_optimizer_joint_separation.emplace_back(optimizer->clone());
     }
-
+    */
 }
 
 idol::OptimizerFactory *idol::Robust::ColumnAndConstraintGeneration::clone() const {
@@ -60,8 +64,8 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
         throw Exception("Master optimizer not set");
     }
 
-    if (m_optimizer_feasibility_separation.empty() && m_optimizer_optimality_separation.empty() && m_optimizer_joint_separation.empty()) {
-        throw Exception("At least one of feasibility, optimality or joint separation optimizers must be set");
+    if (m_separations.empty()) {
+        throw Exception("At least separation callback must be set");
     }
 
     auto* result = new Optimizers::Robust::ColumnAndConstraintGeneration(t_model,
@@ -71,9 +75,7 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
                                                                          m_initial_scenarios,
                                                                          m_initial_scenario_by_minimization ? m_initial_scenario_by_minimization->clone() : nullptr,
                                                                          m_initial_scenario_by_maximization ? m_initial_scenario_by_maximization->clone() : nullptr,
-                                                                         m_optimizer_feasibility_separation,
-                                                                         m_optimizer_optimality_separation,
-                                                                         m_optimizer_joint_separation,
+                                                                         m_separations,
                                                                          m_check_for_repeated_scenarios.value_or(false)
                                                                          );
 
@@ -118,40 +120,9 @@ idol::Robust::ColumnAndConstraintGeneration::with_initial_scenario_by_maximizati
     return *this;
 }
 
-idol::Robust::ColumnAndConstraintGeneration &
-idol::Robust::ColumnAndConstraintGeneration::add_feasibility_separation_optimizer(
-        const OptimizerFactory &t_optimizer) {
+idol::Robust::ColumnAndConstraintGeneration& idol::Robust::ColumnAndConstraintGeneration::add_separation(const Robust::CCG::Separation& t_separation) {
 
-    if (!t_optimizer.is<Bilevel::OptimizerInterface>()) {
-        throw Exception("Feasibility separation optimizer must be a bilevel optimizer");
-    }
-
-    m_optimizer_feasibility_separation.emplace_back(t_optimizer.clone());
-
-    return *this;
-}
-
-idol::Robust::ColumnAndConstraintGeneration &
-idol::Robust::ColumnAndConstraintGeneration::add_optimality_separation_optimizer(
-        const OptimizerFactory &t_optimizer) {
-
-    if (!t_optimizer.is<Bilevel::OptimizerInterface>()) {
-        throw Exception("Optimality separation optimizer must be a bilevel optimizer");
-    }
-
-    m_optimizer_optimality_separation.emplace_back(t_optimizer.clone());
-
-    return *this;
-}
-
-idol::Robust::ColumnAndConstraintGeneration &
-idol::Robust::ColumnAndConstraintGeneration::add_joint_separation_optimizer(const idol::OptimizerFactory &t_optimizer) {
-
-    if (!t_optimizer.is<Bilevel::OptimizerInterface>()) {
-        throw Exception("Joint separation optimizer must be a bilevel optimizer");
-    }
-
-    m_optimizer_joint_separation.emplace_back(t_optimizer.clone());
+    m_separations.emplace_back(t_separation.clone());
 
     return *this;
 }

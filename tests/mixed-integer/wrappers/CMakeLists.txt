@@ -1,4 +1,4 @@
-foreach (OPTIMIZER ${AVAILABLE_MILP_SOLVERS})
+foreach (OPTIMIZER GLPK HiGHS Gurobi) #  Mosek Clp JuMP MibS
 
     set(target_name "test_wrapper_${OPTIMIZER}")
 

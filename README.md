@@ -4,7 +4,7 @@
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/release/hlefebvr/idol?color=blue)
 ![GitHub Workflow Status (branch)](https://github.com/hlefebvr/idol/actions/workflows/tests.yml/badge.svg)
 ![GitHub issues](https://img.shields.io/github/issues-raw/hlefebvr/idol)
-![Repo status](https://www.repostatus.org/badges/latest/wip.svg)
+![Repo status](https://www.repostatus.org/badges/latest/active.svg)
 [![codecov](https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)](https://app.codecov.io/gh/hlefebvr/idol)
 [![GitHub sponsors](https://img.shields.io/github/sponsors/hlefebvr)](https://github.com/sponsors/hlefebvr)
 
@@ -27,6 +27,37 @@ With idol, you can also interface with your favorite solver:
 ## Documentation
 
 Visit our [online documentation](https://hlefebvr.github.io/idol/).
+
+## Installation
+
+### On Linux (amd64)
+
+```shell
+echo "deb [arch=amd64 trusted=yes] https://henrilefebvre.com/apt stable main" \
+| sudo tee /etc/apt/sources.list.d/idol.list
+sudo apt update
+sudo apt install idol
+```
+
+### On Mac (arm64)
+
+```shell
+brew tap hlefebvr/idol 
+brew update
+brew install idol
+```
+
+### From Source (Expert Users)
+
+```
+git clone https://github.com/hlefebvr/idol.git
+cd idol
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+```
 
 ## Using idol for Research?
 

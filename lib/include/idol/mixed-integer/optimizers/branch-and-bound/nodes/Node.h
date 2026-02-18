@@ -15,14 +15,14 @@ namespace idol {
 template<class NodeInfoT>
 class idol::Node {
 
-    static_assert(std::is_default_constructible_v<NodeInfoT>);
+    //static_assert(std::is_default_constructible_v<NodeInfoT>);
 
     unsigned int m_id;
     unsigned int m_level;
     std::shared_ptr<NodeInfoT> m_info;
     std::shared_ptr<Node<NodeInfoT>> m_parent;
 
-    Node() : m_level(0), m_id(0), m_info(std::make_shared<NodeInfoT>()) {}
+    //Node() : m_level(0), m_id(0), m_info(std::make_shared<NodeInfoT>()) {}
     Node(NodeInfoT* t_ptr_to_info, unsigned int t_id) : m_id(t_id), m_level(0), m_info(t_ptr_to_info) {}
 public:
     Node(NodeInfoT* t_ptr_to_info, unsigned int t_id, const Node<NodeInfoT>& t_parent)
@@ -38,7 +38,7 @@ public:
     Node& operator=(const Node&) = default;
     Node& operator=(Node&&) noexcept = default;
 
-    static Node<NodeInfoT> create_root_node() { return Node<NodeInfoT>(); }
+    static Node<NodeInfoT> create_root_node(NodeInfoT* t_ptr_to_info) { return Node<NodeInfoT>(t_ptr_to_info, 0); }
 
     static Node<NodeInfoT> create_detached_node(NodeInfoT* t_ptr_to_info) { return Node<NodeInfoT>(t_ptr_to_info, -1); }
 

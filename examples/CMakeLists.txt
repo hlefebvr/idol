@@ -1,10 +1,10 @@
 function(ADD_EXAMPLE NAME)
-    add_executable(example_${NAME} ${NAME}.example.cpp)
-    target_link_libraries(example_${NAME} PRIVATE idol)
+    add_executable(example-${NAME} ${NAME}.example.cpp)
+    target_link_libraries(example-${NAME} PRIVATE idol)
     file(GLOB DATA_FILES "${CMAKE_CURRENT_SOURCE_DIR}/${NAME}.data.*")
     foreach(FILE ${DATA_FILES})
         message(STATUS "Copying ${FILE}")
-        add_custom_command(TARGET example_${NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${FILE} $<TARGET_FILE_DIR:example_${NAME}>)
+        add_custom_command(TARGET example-${NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${FILE} $<TARGET_FILE_DIR:example-${NAME}>)
     endforeach()
 endfunction()
 

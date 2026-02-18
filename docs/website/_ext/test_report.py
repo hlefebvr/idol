@@ -94,11 +94,11 @@ def generate_md(xml_path, db):
         #result += "\\subsection " + without_extension + "_" + tag_name + " " + tag_name + "\n"
         result += "<h2>" + tag_name + "</h2>\n"
 
-        result += "<div class=\"full_width_table\">\n<table>\n"
-
-        result += "<tr><th class=\"test-report-table-section\">Test case</th><th>Progress</th></tr>\n"
-
         for test_case in tag["test_cases"]:
+            result += "<h3>" + test_case["name"] + "</h3>\n"
+            result += "<div class=\"full_width_table\">\n<table>\n"
+            result += "<tr><th class=\"test-report-table-section\">Tested Feature</th><th>Outcome</th></tr>\n"
+
             for section in test_case["sections"]:
                 section_name = section["name"]
                 section_progress = section["progress"]
@@ -108,7 +108,7 @@ def generate_md(xml_path, db):
             for exception in test_case["exceptions"]:
                 result += "<tr><td colspan=\"2\" class=\"test-report-table-exception\">" + exception + "</td></tr>\n"
 
-        result += "</table>\n</div>\n"
+            result += "</table>\n</div>\n"
         result += "</li>"
 
     result += "<li><b class=\"tab-title\">Raw</b>\n"

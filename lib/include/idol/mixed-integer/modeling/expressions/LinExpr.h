@@ -39,7 +39,7 @@ public:
     LinExpr& operator=(const LinExpr<KeyT, ValueT>&) noexcept = default;
     LinExpr& operator=(LinExpr<KeyT, ValueT>&&) noexcept = default;
 
-    LinExpr& operator+=(const LinExpr<KeyT, ValueT>& t_rhs);
+    virtual LinExpr& operator+=(const LinExpr<KeyT, ValueT>& t_rhs);
     LinExpr& operator+=(const KeyT& t_rhs);
 
     LinExpr& operator-=(const LinExpr<KeyT, ValueT>& t_rhs);

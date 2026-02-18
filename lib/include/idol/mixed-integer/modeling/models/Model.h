@@ -498,7 +498,7 @@ namespace idol {
             stream << "Maximize";
         }
 
-        stream << std::endl << "\t" << t_model.get_obj_expr() << std::endl << "Subject To" << std::endl;
+        stream << std::endl << t_model.get_obj_expr() << std::endl << "Subject To" << std::endl;
 
         for (const auto &ctr: t_model.ctrs()) {
 
@@ -506,7 +506,7 @@ namespace idol {
             const double rhs = t_model.get_ctr_rhs(ctr);
             const auto type = t_model.get_ctr_type(ctr);
 
-            stream << '\t' << ctr << ": ";
+            stream << ctr << ": ";
 
             stream << linear;
 
@@ -531,7 +531,7 @@ namespace idol {
             const auto& expr = t_model.get_qctr_expr(qctr);
             const auto type = t_model.get_qctr_type(qctr);
 
-            stream << '\t' << qctr << ": ";
+            stream << qctr << ": ";
 
             stream << expr;
 
@@ -561,8 +561,6 @@ namespace idol {
             const double ub = t_model.get_var_ub(var);
             const int type = t_model.get_var_type(var);
 
-            stream << '\t';
-
             if (!is_neg_inf(lb) && !is_pos_inf(ub)) {
                 stream << lb << " <= " << var << " <= " << ub;
             } else if (!is_pos_inf(ub)) {
@@ -585,7 +583,7 @@ namespace idol {
         if (!generals.empty()) {
             stream << "Generals\n";
             for (const auto& var : generals) {
-                stream << '\t' << var.name() << std::endl;
+                stream << var.name() << std::endl;
             }
         }
 
@@ -599,7 +597,7 @@ namespace idol {
         if (t_model.sosctrs().size() > 0) {
             stream << "SOS\n";
             for (const auto& sos : t_model.sosctrs()) {
-                stream << '\t' << sos << ": ";
+                stream << sos << ": ";
                 const auto& vars = t_model.get_sosctr_vars(sos);
                 const auto& weights = t_model.get_sosctr_weights(sos);
                 for (unsigned int i = 0; i < vars.size(); ++i) {

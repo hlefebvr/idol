@@ -42,59 +42,6 @@ public:
 };
 
 template<class NodeT>
-void idol::NodeSet<NodeT>::merge(NodeSet<NodeT> &&t_node_set) {
-
-    for (auto pair : t_node_set.m_by_objective_value) {
-        m_by_objective_value.emplace(std::move(pair));
-    }
-
-    for (auto pair : t_node_set.m_by_level) {
-        m_by_level.emplace(std::move(pair));
-    }
-
-    t_node_set.clear();
-
-}
-
-template<class NodeT>
-typename idol::NodeSet<NodeT>::const_iterator idol::NodeSet<NodeT>::emplace(NodeT t_node) {
-    auto it = m_by_objective_value.template emplace(t_node.info().objective_value(), t_node);
-    m_by_level.template emplace(t_node.level(), t_node);
-    return const_iterator(std::move(it));
-}
-
-template<class NodeT>
-void idol::NodeSet<NodeT>::clear()  {
-    m_by_objective_value.clear();
-    m_by_level.clear();
-}
-
-template<class NodeT>
-bool idol::NodeSet<NodeT>::empty() const {
-    return m_by_objective_value.empty();
-}
-
-template<class NodeT>
-typename idol::NodeSet<NodeT>::const_iterator idol::NodeSet<NodeT>::erase(const NodeSet::const_iterator &t_it) {
-    const unsigned int id = t_it->id();
-
-    if (t_it.is_by_level()) {
-        const double objective_value = t_it->info().objective_value();
-        auto it = m_by_objective_value.lower_bound(objective_value);
-        for (; it->second.id() != id ; ++it);
-        m_by_objective_value.erase(it);
-        return const_iterator(m_by_level.erase(t_it.m_by_level_it));
-    }
-
-    const unsigned int level = t_it->level();
-    auto it = m_by_level.lower_bound(level);
-    for (; it->second.id() != id ; ++it);
-    m_by_level.erase(it);
-    return const_iterator(m_by_objective_value.erase(t_it.m_by_objective_value_it));
-}
-
-
-template<class NodeT>
 class idol::NodeSet<NodeT>::const_iterator {
     friend class NodeSet<NodeT>;
 
@@ -165,5 +112,58 @@ public:
     }
     */
 };
+
+template<class NodeT>
+void idol::NodeSet<NodeT>::merge(NodeSet<NodeT> &&t_node_set) {
+
+    for (auto pair : t_node_set.m_by_objective_value) {
+        m_by_objective_value.emplace(std::move(pair));
+    }
+
+    for (auto pair : t_node_set.m_by_level) {
+        m_by_level.emplace(std::move(pair));
+    }
+
+    t_node_set.clear();
+
+}
+
+template<class NodeT>
+typename idol::NodeSet<NodeT>::const_iterator idol::NodeSet<NodeT>::emplace(NodeT t_node) {
+    auto it = m_by_objective_value.emplace(t_node.info().objective_value(), t_node);
+    m_by_level.emplace(t_node.level(), t_node);
+    return const_iterator(std::move(it));
+}
+
+template<class NodeT>
+void idol::NodeSet<NodeT>::clear()  {
+    m_by_objective_value.clear();
+    m_by_level.clear();
+}
+
+template<class NodeT>
+bool idol::NodeSet<NodeT>::empty() const {
+    return m_by_objective_value.empty();
+}
+
+template<class NodeT>
+typename idol::NodeSet<NodeT>::const_iterator idol::NodeSet<NodeT>::erase(const NodeSet<NodeT>::const_iterator &t_it) {
+    const unsigned int id = t_it->id();
+
+    if (t_it.is_by_level()) {
+        const double objective_value = t_it->info().objective_value();
+        auto it = m_by_objective_value.lower_bound(objective_value);
+        for (; it->second.id() != id ; ++it);
+        m_by_objective_value.erase(it);
+        return const_iterator(m_by_level.erase(t_it.m_by_level_it));
+    }
+
+    const unsigned int level = t_it->level();
+    auto it = m_by_level.lower_bound(level);
+    for (; it->second.id() != id ; ++it);
+    m_by_level.erase(it);
+    return const_iterator(m_by_objective_value.erase(t_it.m_by_objective_value_it));
+}
+
 
 #endif //IDOL_NODESET_H

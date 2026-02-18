@@ -5,22 +5,152 @@
 #include "idol/general/optimizers/Algorithm.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/general/utils/Finally.h"
+#include <dlfcn.h>
+#include <filesystem>
 
-#ifdef IDOL_USE_GLPK
+#include "idol/general/utils/SilentMode.h"
+
+#define GLPK_SYM_LOAD(name) {   \
+name = (name##_t) dlsym(m_handle, #name);          \
+const char* err = dlerror();                             \
+if (err)                                                 \
+    throw std::runtime_error(std::string("Missing GLPK symbol ") + #name + ": " + err); \
+}
+
+std::unique_ptr<idol::Optimizers::GLPK::DynamicLib> idol::Optimizers::GLPK::m_dynamic_lib;
 
 idol::Optimizers::GLPK::GLPK(const Model &t_model, bool t_continuous_relaxation)
     : OptimizerWithLazyUpdates(t_model),
-      m_model(glp_create_prob()),
       m_continuous_relaxation(t_continuous_relaxation) {
 
-    glp_init_smcp(&m_simplex_parameters);
-    m_simplex_parameters.msg_lev = GLP_MSG_OFF;
-    //m_simplex_parameters.presolve = GLP_ON;
+    auto& lib = get_dynamic_lib();
 
-    glp_init_iocp(&m_mip_parameters);
-    m_mip_parameters.msg_lev = GLP_MSG_OFF;
-    //m_mip_parameters.presolve = GLP_ON;
+    m_model = lib.glp_create_prob();
 
+    lib.glp_init_smcp(&m_simplex_parameters);
+    m_simplex_parameters.presolve = GLP_OFF;
+
+    lib.glp_init_iocp(&m_mip_parameters);
+
+}
+
+std::string idol::Optimizers::GLPK::DynamicLib::find_library() {
+
+    // 1. Environment variable override
+    if (const char* env = std::getenv("IDOL_GLPK_PATH")) {
+        std::string path(env);
+        if (std::filesystem::exists(path)) {
+            return path;
+        }
+        std::cerr << "WARNING: IDOL_GLPK_PATH is set, but the file does not exists: " << path << std::endl;
+    }
+
+    // 2. Standard locations (macOS + Linux)
+    const std::vector<std::string> candidates = {
+
+        // ---- macOS (Homebrew) ----
+        "/opt/homebrew/opt/glpk/lib/libglpk.dylib",   // Apple Silicon
+        "/usr/local/opt/glpk/lib/libglpk.dylib",     // Intel mac
+        "/opt/homebrew/lib/libglpk.dylib",
+        "/usr/local/lib/libglpk.dylib",
+
+        // ---- Linux ----
+        "/usr/lib/libglpk.so",
+        "/usr/lib64/libglpk.so",
+        "/usr/local/lib/libglpk.so",
+        "/usr/local/lib64/libglpk.so",
+        "/lib/x86_64-linux-gnu/libglpk.so",
+        "/usr/lib/x86_64-linux-gnu/libglpk.so",
+
+        // ---- Fallback (let loader resolve) ----
+        "libglpk.dylib",
+        "libglpk.so"
+    };
+
+    for (const auto& path : candidates) {
+        if (std::filesystem::exists(path)) {
+            return path;
+        }
+    }
+
+    throw std::runtime_error(
+        "GLPK library not found. "
+        "Please, install GLPK and set IDOL_GLPK_PATH to its library file."
+    );
+}
+
+idol::Optimizers::GLPK::DynamicLib::DynamicLib() {
+
+    const auto glpk_path = find_library();
+
+    m_handle = dlopen(glpk_path.c_str(), RTLD_LAZY);
+
+    if (!m_handle) {
+        throw Exception("Could not load GLPK.");
+    }
+
+    GLPK_SYM_LOAD(glp_init_smcp);
+    GLPK_SYM_LOAD(glp_init_iocp);
+    GLPK_SYM_LOAD(glp_create_prob);
+    GLPK_SYM_LOAD(glp_delete_prob);
+    GLPK_SYM_LOAD(glp_simplex);
+    GLPK_SYM_LOAD(glp_intopt);
+    GLPK_SYM_LOAD(glp_add_rows);
+    GLPK_SYM_LOAD(glp_add_cols);
+    GLPK_SYM_LOAD(glp_set_row_bnds);
+    GLPK_SYM_LOAD(glp_set_col_bnds);
+    GLPK_SYM_LOAD(glp_set_col_kind);
+    GLPK_SYM_LOAD(glp_set_obj_coef);
+    GLPK_SYM_LOAD(glp_get_num_rows);
+    GLPK_SYM_LOAD(glp_get_num_cols);
+    GLPK_SYM_LOAD(glp_get_col_prim);
+    GLPK_SYM_LOAD(glp_get_col_dual);
+    GLPK_SYM_LOAD(glp_get_row_dual);
+    GLPK_SYM_LOAD(glp_set_col_name);
+    GLPK_SYM_LOAD(glp_set_row_name);
+    GLPK_SYM_LOAD(glp_set_mat_col);
+    GLPK_SYM_LOAD(glp_set_mat_row);
+    GLPK_SYM_LOAD(glp_set_obj_dir);
+    GLPK_SYM_LOAD(glp_get_col_stat);
+    GLPK_SYM_LOAD(glp_std_basis);
+    GLPK_SYM_LOAD(glp_get_num_int);
+    GLPK_SYM_LOAD(glp_get_status);
+    GLPK_SYM_LOAD(glp_get_row_stat);
+    GLPK_SYM_LOAD(glp_del_cols);
+    GLPK_SYM_LOAD(glp_del_rows);
+    GLPK_SYM_LOAD(glp_set_col_stat);
+    GLPK_SYM_LOAD(glp_set_row_stat);
+    GLPK_SYM_LOAD(glp_mip_col_val);
+    GLPK_SYM_LOAD(glp_get_col_lb);
+    GLPK_SYM_LOAD(glp_get_col_ub);
+    GLPK_SYM_LOAD(glp_get_obj_coef);
+    GLPK_SYM_LOAD(glp_get_col_kind);
+    GLPK_SYM_LOAD(glp_get_col_name);
+    GLPK_SYM_LOAD(glp_get_row_ub);
+    GLPK_SYM_LOAD(glp_get_row_lb);
+    GLPK_SYM_LOAD(glp_get_row_name);
+    GLPK_SYM_LOAD(glp_get_mat_row);
+    GLPK_SYM_LOAD(glp_read_lp);
+    GLPK_SYM_LOAD(glp_read_mps);
+    GLPK_SYM_LOAD(glp_get_obj_val);
+    GLPK_SYM_LOAD(glp_mip_status);
+    GLPK_SYM_LOAD(glp_mip_obj_val);
+    GLPK_SYM_LOAD(glp_get_row_type);
+    GLPK_SYM_LOAD(glp_get_obj_dir);
+    GLPK_SYM_LOAD(glp_write_lp);
+
+}
+
+idol::Optimizers::GLPK::DynamicLib::~DynamicLib() {
+    dlclose(m_handle);
+}
+
+idol::Optimizers::GLPK::DynamicLib& idol::Optimizers::GLPK::get_dynamic_lib() {
+    if (!m_dynamic_lib)
+    {
+        m_dynamic_lib = std::make_unique<DynamicLib>();
+    }
+    return *m_dynamic_lib;
 }
 
 void idol::Optimizers::GLPK::hook_build() {
@@ -34,24 +164,27 @@ void idol::Optimizers::GLPK::hook_build() {
 }
 
 void idol::Optimizers::GLPK::hook_write(const std::string &t_name) {
-    glp_write_lp(m_model, nullptr, t_name.c_str());
+    auto& lib = get_dynamic_lib();
+    lib.glp_write_lp(m_model, nullptr, t_name.c_str());
 }
 
 void idol::Optimizers::GLPK::set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj) {
+
+    auto& lib = get_dynamic_lib();
 
     const bool has_lb = !is_neg_inf(t_lb);
     const bool has_ub = !is_pos_inf(t_ub);
 
     // Set obj
-    glp_set_obj_coef(m_model, t_index, t_obj);
+    lib.glp_set_obj_coef(m_model, t_index, t_obj);
 
     // Set type
     if (m_continuous_relaxation || t_type == Continuous) {
-        glp_set_col_kind(m_model, t_index, GLP_CV);
+        lib.glp_set_col_kind(m_model, t_index, GLP_CV);
     } else if (t_type == Binary) {
-        glp_set_col_kind(m_model, t_index, GLP_BV);
+        lib.glp_set_col_kind(m_model, t_index, GLP_BV);
     } else if (t_type == Integer) {
-        glp_set_col_kind(m_model, t_index, GLP_IV);
+        lib.glp_set_col_kind(m_model, t_index, GLP_IV);
     } else {
         throw std::runtime_error("Unknown variable type.");
     }
@@ -59,26 +192,28 @@ void idol::Optimizers::GLPK::set_var_attr(int t_index, int t_type, double t_lb, 
     // Set bounds
     if (has_lb && has_ub) {
         if (equals(t_lb, t_ub, Tolerance::Integer)) {
-            glp_set_col_bnds(m_model, t_index, GLP_FX, t_lb, t_ub);
+            lib.glp_set_col_bnds(m_model, t_index, GLP_FX, t_lb, t_ub);
         } else {
-            glp_set_col_bnds(m_model, t_index, GLP_DB, t_lb, t_ub);
+            lib.glp_set_col_bnds(m_model, t_index, GLP_DB, t_lb, t_ub);
         }
     } else if (has_lb) {
-        glp_set_col_bnds(m_model, t_index, GLP_LO, t_lb, 0.);
+        lib.glp_set_col_bnds(m_model, t_index, GLP_LO, t_lb, 0.);
     } else if (has_ub) {
-        glp_set_col_bnds(m_model, t_index, GLP_UP, 0., t_ub);
+        lib.glp_set_col_bnds(m_model, t_index, GLP_UP, 0., t_ub);
     } else {
-        glp_set_col_bnds(m_model, t_index, GLP_FR, 0., 0.);
+        lib.glp_set_col_bnds(m_model, t_index, GLP_FR, 0., 0.);
     }
 
 }
 
 int idol::Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
 
+    auto& lib = get_dynamic_lib();
+
     int index;
     if (m_deleted_variables.empty()) {
-        index = (int) glp_get_num_cols(m_model) + 1;
-        glp_add_cols(m_model, 1);
+        index = (int) lib.glp_get_num_cols(m_model) + 1;
+        lib.glp_add_cols(m_model, 1);
     } else {
         index = m_deleted_variables.top();
         m_deleted_variables.pop();
@@ -92,7 +227,7 @@ int idol::Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
 
     set_var_attr(index, type, lb, ub, obj);
 
-    glp_set_col_name(m_model, index, t_var.name().c_str());
+    lib.glp_set_col_name(m_model, index, t_var.name().c_str());
 
     if (t_add_column) {
 
@@ -111,7 +246,7 @@ int idol::Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
             ++i;
         }
 
-        glp_set_mat_col(m_model, index, n, indices, coefficients);
+        lib.glp_set_mat_col(m_model, index, n, indices, coefficients);
 
         delete[] indices;
         delete[] coefficients;
@@ -123,10 +258,12 @@ int idol::Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
 
 void idol::Optimizers::GLPK::set_ctr_attr(int t_index, int t_type, double t_rhs) {
 
+    auto& lib = get_dynamic_lib();
+
     switch (t_type) {
-        case LessOrEqual: glp_set_row_bnds(m_model, t_index, GLP_UP, 0., t_rhs); break;
-        case GreaterOrEqual: glp_set_row_bnds(m_model, t_index, GLP_LO, t_rhs, 0.); break;
-        case Equal: glp_set_row_bnds(m_model, t_index, GLP_FX, t_rhs, 0.); break;
+        case LessOrEqual: lib.glp_set_row_bnds(m_model, t_index, GLP_UP, 0., t_rhs); break;
+        case GreaterOrEqual: lib.glp_set_row_bnds(m_model, t_index, GLP_LO, t_rhs, 0.); break;
+        case Equal: lib.glp_set_row_bnds(m_model, t_index, GLP_FX, t_rhs, 0.); break;
         default: throw std::runtime_error("Unknown constraint type.");
     }
 
@@ -134,12 +271,13 @@ void idol::Optimizers::GLPK::set_ctr_attr(int t_index, int t_type, double t_rhs)
 
 int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
 
     int index;
     if (m_deleted_constraints.empty()) {
-        index = (int) glp_get_num_rows(m_model) + 1;
-        glp_add_rows(m_model, 1);
+        index = (int) lib.glp_get_num_rows(m_model) + 1;
+        lib.glp_add_rows(m_model, 1);
     } else {
         index = m_deleted_constraints.top();
         m_deleted_constraints.pop();
@@ -151,7 +289,7 @@ int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
 
     set_ctr_attr(index, type, rhs);
 
-    glp_set_row_name(m_model, index, t_ctr.name().c_str());
+    lib.glp_set_row_name(m_model, index, t_ctr.name().c_str());
 
     auto n = (int) row.size();
     auto* coefficients = new double[n+1];
@@ -168,7 +306,7 @@ int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
         ++i;
     }
 
-    glp_set_mat_row(m_model, index, n, indices, coefficients);
+    lib.glp_set_mat_row(m_model, index, n, indices, coefficients);
 
     delete[] indices;
     delete[] coefficients;
@@ -177,11 +315,50 @@ int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
 }
 
 void idol::Optimizers::GLPK::hook_update_objective_sense() {
-    glp_set_obj_dir(m_model, parent().get_obj_sense() == Minimize ? GLP_MIN : GLP_MAX);
+    auto& lib = get_dynamic_lib();
+    lib.glp_set_obj_dir(m_model, parent().get_obj_sense() == Minimize ? GLP_MIN : GLP_MAX);
 }
 
 void idol::Optimizers::GLPK::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
-    throw Exception("Not implemented.");
+
+    auto& lib = get_dynamic_lib();
+    const auto& row = parent().get_ctr_row(t_ctr);
+
+    std::vector<int> indices;
+    std::vector<double> coefficients;
+    indices.reserve(row.size() + 2);
+    coefficients.reserve(row.size() + 2);
+
+    indices.push_back(0);
+    coefficients.push_back(0);
+
+    if (row.empty()) {
+        indices.push_back(lazy(t_var).impl());
+        coefficients.push_back(t_constant);
+    } else {
+        bool inserted = false;
+        for (const auto& [var, constant] : row) {
+
+            if (var.id() == t_var.id()) {
+                indices.push_back(lazy(var).impl());
+                coefficients.push_back(constant);
+                inserted = true;
+                continue;
+            }
+
+            if (!inserted && lazy(var).impl() > lazy(t_var).impl()) {
+                indices.push_back(lazy(var).impl());
+                coefficients.push_back(constant);
+                inserted = true;
+            }
+
+            indices.push_back(lazy(var).impl());
+            coefficients.push_back(constant);
+        }
+    }
+
+    lib.glp_set_mat_row(m_model, lazy(t_ctr).impl(), indices.size() - 1, indices.data(), coefficients.data());
+
 }
 
 void idol::Optimizers::GLPK::hook_update() {
@@ -214,11 +391,12 @@ void idol::Optimizers::GLPK::hook_update(const Ctr &t_ctr) {
 
 void idol::Optimizers::GLPK::hook_update_objective() {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
 
     for (const auto& var : model.vars()) {
         const double obj = model.get_var_obj(var);
-        glp_set_obj_coef(m_model, lazy(var).impl(), obj);
+        lib.glp_set_obj_coef(m_model, lazy(var).impl(), obj);
     }
 
 }
@@ -229,36 +407,40 @@ void idol::Optimizers::GLPK::hook_update_rhs() {
 
 void idol::Optimizers::GLPK::hook_remove(const Var &t_var) {
 
+    auto& lib = get_dynamic_lib();
     const int index = lazy(t_var).impl();
 
-    if (glp_get_col_stat(m_model, index) != GLP_NF) {
+    if (lib.glp_get_col_stat(m_model, index) != GLP_NF) {
         m_rebuild_basis = true;
     }
 
-    glp_set_obj_coef(m_model, index, 0.);
-    glp_set_mat_col(m_model, index, 0, NULL, NULL);
-    glp_set_col_name(m_model, index, ("_removed_" + t_var.name()).c_str());
+    lib.glp_set_obj_coef(m_model, index, 0.);
+    lib.glp_set_mat_col(m_model, index, 0, NULL, NULL);
+    lib.glp_set_col_name(m_model, index, ("_removed_" + t_var.name()).c_str());
+    lib.glp_set_col_bnds(m_model, index, GLP_FX, 0., 0.);
     m_deleted_variables.push(index);
 
 }
 
 void idol::Optimizers::GLPK::hook_remove(const Ctr &t_ctr) {
 
+    auto& lib = get_dynamic_lib();
     const int index = lazy(t_ctr).impl();
 
-    if (glp_get_row_stat(m_model, index) != GLP_NF) {
+    if (lib.glp_get_row_stat(m_model, index) != GLP_NF) {
         m_rebuild_basis = true;
     }
 
-    glp_set_row_bnds(m_model, index, GLP_FX, 0., 0.);
-    glp_set_mat_row(m_model, index, 0, NULL, NULL);
-    glp_set_row_name(m_model, index, ("_removed_" + t_ctr.name()).c_str());
+    lib.glp_set_row_bnds(m_model, index, GLP_FX, 0., 0.);
+    lib.glp_set_mat_row(m_model, index, 0, NULL, NULL);
+    lib.glp_set_row_name(m_model, index, ("_removed_" + t_ctr.name()).c_str());
     m_deleted_constraints.push(index);
 
 }
 
 void idol::Optimizers::GLPK::hook_optimize() {
 
+    auto& lib = get_dynamic_lib();
     m_solved_as_mip = false;
 
     if (m_solution_status == Unbounded) {
@@ -266,15 +448,15 @@ void idol::Optimizers::GLPK::hook_optimize() {
     }
 
     if (m_rebuild_basis) {
-        glp_std_basis(m_model);
+        lib.glp_std_basis(m_model);
         m_rebuild_basis = false;
     }
 
-    int result = glp_simplex(m_model, &m_simplex_parameters);
+    int result = lib.glp_simplex(m_model, &m_simplex_parameters);
 
     if (result == GLP_ESING) {
-        glp_std_basis(m_model);
-        glp_simplex(m_model, &m_simplex_parameters);
+        lib.glp_std_basis(m_model);
+        lib.glp_simplex(m_model, &m_simplex_parameters);
     }
 
     save_simplex_solution_status();
@@ -293,9 +475,9 @@ void idol::Optimizers::GLPK::hook_optimize() {
 
     }
 
-    if (glp_get_num_int(m_model) > 0 && m_solution_status == Optimal) {
+    if (lib.glp_get_num_int(m_model) > 0 && m_solution_status == Optimal) {
 
-        glp_intopt(m_model, &m_mip_parameters);
+        lib.glp_intopt(m_model, &m_mip_parameters);
         m_solved_as_mip = true;
 
         save_milp_solution_status();
@@ -306,7 +488,8 @@ void idol::Optimizers::GLPK::hook_optimize() {
 
 void idol::Optimizers::GLPK::save_simplex_solution_status() {
 
-    int status = glp_get_status(m_model);
+    auto& lib = get_dynamic_lib();
+    int status = lib.glp_get_status(m_model);
 
     if (status == GLP_UNDEF) {
         m_solution_status = Fail;
@@ -343,19 +526,20 @@ void idol::Optimizers::GLPK::save_simplex_solution_status() {
 }
 
 void idol::Optimizers::GLPK::compute_farkas_certificate() {
-    
+
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
 
     std::list<std::pair<int, int>> basis_rows;
     std::list<std::pair<int, int>> basis_cols;
     for (const auto& ctr : model.ctrs()) {
         int index = lazy(ctr).impl();
-        int status = glp_get_row_stat(m_model, index);
+        int status = lib.glp_get_row_stat(m_model, index);
         basis_rows.emplace_back(index, status);
     }
     for (const auto& var : model.vars()) {
         int index = lazy(var).impl();
-        int status = glp_get_col_stat(m_model, index);
+        int status = lib.glp_get_col_stat(m_model, index);
         basis_cols.emplace_back(index, status);
     }
 
@@ -374,25 +558,25 @@ void idol::Optimizers::GLPK::compute_farkas_certificate() {
         const auto type = model.get_ctr_type(ctr);
 
         if (type == LessOrEqual) {
-            int art_var_index = glp_add_cols(m_model, 1);
-            glp_set_mat_col(m_model, art_var_index, 1, index, minus_one);
-            glp_set_obj_coef(m_model, art_var_index, 1);
-            glp_set_col_bnds(m_model, art_var_index, GLP_LO, 0., 0.);
+            int art_var_index = lib.glp_add_cols(m_model, 1);
+            lib.glp_set_mat_col(m_model, art_var_index, 1, index, minus_one);
+            lib.glp_set_obj_coef(m_model, art_var_index, 1);
+            lib.glp_set_col_bnds(m_model, art_var_index, GLP_LO, 0., 0.);
             artificial_variables.emplace_back(art_var_index);
         } else if (type == GreaterOrEqual) {
-            int art_var_index = glp_add_cols(m_model, 1);
-            glp_set_mat_col(m_model, art_var_index, 1, index, plus_one);
-            glp_set_obj_coef(m_model, art_var_index, 1);
-            glp_set_col_bnds(m_model, art_var_index, GLP_LO, 0., 0.);
+            int art_var_index = lib.glp_add_cols(m_model, 1);
+            lib.glp_set_mat_col(m_model, art_var_index, 1, index, plus_one);
+            lib.glp_set_obj_coef(m_model, art_var_index, 1);
+            lib.glp_set_col_bnds(m_model, art_var_index, GLP_LO, 0., 0.);
             artificial_variables.emplace_back(art_var_index);
         } else {
-            int art_var_index = glp_add_cols(m_model, 2);
-            glp_set_mat_col(m_model, art_var_index, 1, index, minus_one);
-            glp_set_obj_coef(m_model, art_var_index, 1);
-            glp_set_col_bnds(m_model, art_var_index, GLP_LO, 0., 0.);
-            glp_set_mat_col(m_model, art_var_index + 1, 1, index, plus_one);
-            glp_set_obj_coef(m_model, art_var_index + 1, 1);
-            glp_set_col_bnds(m_model, art_var_index + 1, GLP_LO, 0., 0.);
+            int art_var_index = lib.glp_add_cols(m_model, 2);
+            lib.glp_set_mat_col(m_model, art_var_index, 1, index, minus_one);
+            lib.glp_set_obj_coef(m_model, art_var_index, 1);
+            lib.glp_set_col_bnds(m_model, art_var_index, GLP_LO, 0., 0.);
+            lib.glp_set_mat_col(m_model, art_var_index + 1, 1, index, plus_one);
+            lib.glp_set_obj_coef(m_model, art_var_index + 1, 1);
+            lib.glp_set_col_bnds(m_model, art_var_index + 1, GLP_LO, 0., 0.);
             artificial_variables.emplace_back(art_var_index);
             artificial_variables.emplace_back(art_var_index + 1);
         }
@@ -406,42 +590,43 @@ void idol::Optimizers::GLPK::compute_farkas_certificate() {
 
     // Set original variables' objective coefficient to zero
     for (const auto& var : model.vars()) {
-        glp_set_obj_coef(m_model, lazy(var).impl(), 0.);
+        lib.glp_set_obj_coef(m_model, lazy(var).impl(), 0.);
     }
 
     // Solve feasible model
-    glp_simplex(m_model, &m_simplex_parameters);
+    lib.glp_simplex(m_model, &m_simplex_parameters);
 
     // Save dual values as Farkas certificate
     m_farkas_certificate = DualPoint();
     double objective_value = model.get_obj_expr().affine().constant();
     for (const auto& ctr : model.ctrs()) {
-        const double dual = glp_get_row_dual(m_model, lazy(ctr).impl());
+        const double dual = lib.glp_get_row_dual(m_model, lazy(ctr).impl());
         m_farkas_certificate->set(ctr, dual);
         objective_value += dual * model.get_ctr_rhs(ctr);
     }
     m_farkas_certificate->set_objective_value(objective_value);
 
     // Remove added variables
-    glp_del_cols(m_model, (int) artificial_variables.size() - 1, artificial_variables.data());
+    lib.glp_del_cols(m_model, (int) artificial_variables.size() - 1, artificial_variables.data());
 
     // Restore objective function
     for (const auto& var : model.vars()) {
-        glp_set_obj_coef(m_model, lazy(var).impl(), model.get_var_obj(var));
+        lib.glp_set_obj_coef(m_model, lazy(var).impl(), model.get_var_obj(var));
     }
 
     // Restore basis
     for (const auto& [index, status] : basis_rows) {
-        glp_set_row_stat(m_model, index, status);
+        lib.glp_set_row_stat(m_model, index, status);
     }
     for (const auto& [index, status] : basis_cols) {
-        glp_set_col_stat(m_model, index, status);
+        lib.glp_set_col_stat(m_model, index, status);
     }
 
 }
 
 void idol::Optimizers::GLPK::compute_unbounded_ray() {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
 
     // Set model RHS to zero
@@ -454,13 +639,13 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
         const bool has_ub = !is_pos_inf(ub);
 
         if (has_lb && has_ub) {
-            glp_set_col_bnds(m_model, index, GLP_DB, lb, ub);
+            lib.glp_set_col_bnds(m_model, index, GLP_DB, lb, ub);
         } else if (has_lb) {
-            glp_set_col_bnds(m_model, index, GLP_LO, lb, 0.);
+            lib.glp_set_col_bnds(m_model, index, GLP_LO, lb, 0.);
         } else if (has_ub) {
-            glp_set_col_bnds(m_model, index, GLP_UP, 0., ub);
+            lib.glp_set_col_bnds(m_model, index, GLP_UP, 0., ub);
         } else {
-            glp_set_col_bnds(m_model, index, GLP_FR, 0., 0.);
+            lib.glp_set_col_bnds(m_model, index, GLP_FR, 0., 0.);
         }
 
     }
@@ -472,22 +657,22 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
     }
 
     // Create absolute value variables
-    const auto n_variables = glp_get_num_cols(m_model);
-    const auto n_constraints = glp_get_num_rows(m_model);
-    glp_add_cols(m_model, n_variables);
-    glp_add_rows(m_model, 2 * n_variables + 1);
+    const auto n_variables = lib.glp_get_num_cols(m_model);
+    const auto n_constraints = lib.glp_get_num_rows(m_model);
+    lib.glp_add_cols(m_model, n_variables);
+    lib.glp_add_rows(m_model, 2 * n_variables + 1);
 
     for (int j = 1 ; j <= n_variables ; ++j) {
 
         std::vector<int> indices { 0, j, n_variables + j };
 
         std::vector<double> coefficients { 0, 1, -1 };
-        glp_set_row_bnds(m_model, n_constraints + j, GLP_UP, 0., 0.);
-        glp_set_mat_row(m_model, n_constraints + j, 2, indices.data(), coefficients.data());
+        lib.glp_set_row_bnds(m_model, n_constraints + j, GLP_UP, 0., 0.);
+        lib.glp_set_mat_row(m_model, n_constraints + j, 2, indices.data(), coefficients.data());
 
         coefficients = { 0, -1, -1 };
-        glp_set_row_bnds(m_model, n_constraints + n_variables + j, GLP_UP, 0., 0.);
-        glp_set_mat_row(m_model, n_constraints + n_variables + j, 2, indices.data(), coefficients.data());
+        lib.glp_set_row_bnds(m_model, n_constraints + n_variables + j, GLP_UP, 0., 0.);
+        lib.glp_set_mat_row(m_model, n_constraints + n_variables + j, 2, indices.data(), coefficients.data());
 
         set_var_attr(n_variables + j, Continuous, 0., 1., 0.);
 
@@ -506,25 +691,25 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
         indices.emplace_back(n_variables + j);
         coefficients.emplace_back(1);
     }
-    glp_set_row_bnds(m_model, n_constraints + 2 * n_variables + 1, GLP_UP, 0., 1.);
-    glp_set_mat_row(m_model, n_constraints + 2 * n_variables + 1, n_variables, indices.data(), coefficients.data());
+    lib.glp_set_row_bnds(m_model, n_constraints + 2 * n_variables + 1, GLP_UP, 0., 1.);
+    lib.glp_set_mat_row(m_model, n_constraints + 2 * n_variables + 1, n_variables, indices.data(), coefficients.data());
 
-    glp_std_basis(m_model);
-    glp_simplex(m_model, &m_simplex_parameters);
+    lib.glp_std_basis(m_model);
+    lib.glp_simplex(m_model, &m_simplex_parameters);
 
     // Save ray
     m_unbounded_ray = PrimalPoint();
-    const double objective_value = model.get_obj_expr().affine().constant() + glp_get_obj_val(m_model);
+    const double objective_value = model.get_obj_expr().affine().constant() + lib.glp_get_obj_val(m_model);
     m_unbounded_ray->set_objective_value(objective_value);
     for (const auto& var : model.vars()) {
-        const double value = glp_get_col_prim(m_model, lazy(var).impl());
+        const double value = lib.glp_get_col_prim(m_model, lazy(var).impl());
         m_unbounded_ray->set(var, value);
     }
 
     // Restore model
 
     // Remove created variables
-    glp_del_cols(m_model, n_variables, indices.data());
+    lib.glp_del_cols(m_model, n_variables, indices.data());
 
     // Remove created rows
     std::vector<int> created_rows;
@@ -535,7 +720,7 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
         created_rows.emplace_back(n_constraints + n_variables + j);
     }
     created_rows.emplace_back(n_constraints + 2 * n_variables + 1);
-    glp_del_rows(m_model, (int) created_rows.size() - 1, created_rows.data());
+    lib.glp_del_rows(m_model, (int) created_rows.size() - 1, created_rows.data());
 
     // Restore variables bounds
     for (const auto& var : model.vars()) {
@@ -559,7 +744,8 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
 
 void idol::Optimizers::GLPK::save_milp_solution_status() {
 
-    int status = glp_mip_status(m_model);
+    auto& lib = get_dynamic_lib();
+    int status = lib.glp_mip_status(m_model);
 
     if (status == GLP_UNDEF) {
         m_solution_status = Fail;
@@ -609,7 +795,7 @@ void idol::Optimizers::GLPK::set_param_best_bound_stop(double t_best_bound_stop)
 }
 
 void idol::Optimizers::GLPK::set_param_presolve(bool t_value) {
-    m_simplex_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
+    // m_simplex_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
     m_mip_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
     Optimizer::set_param_presolve(t_value);
 }
@@ -626,7 +812,8 @@ double idol::Optimizers::GLPK::get_best_obj() const {
     if (m_solution_status == Unbounded) { return -Inf; }
     if (m_solution_status == Infeasible) { return +Inf; }
     const double constant_term = parent().get_obj_expr().affine().constant();
-    return constant_term + (m_solved_as_mip ? glp_mip_obj_val(m_model) : glp_get_obj_val(m_model));
+    auto& lib = get_dynamic_lib();
+    return constant_term + (m_solved_as_mip ? lib.glp_mip_obj_val(m_model) : lib.glp_get_obj_val(m_model));
 }
 
 double idol::Optimizers::GLPK::get_best_bound() const {
@@ -637,8 +824,9 @@ double idol::Optimizers::GLPK::get_var_primal(const Var &t_var) const {
     if (m_solution_status != Feasible && m_solution_status != Optimal) {
         throw Exception("Primal solution not available.");
     }
+    auto& lib = get_dynamic_lib();
     const int impl = lazy(t_var).impl();
-    return m_solved_as_mip ? glp_mip_col_val(m_model, impl) : glp_get_col_prim(m_model, impl);
+    return m_solved_as_mip ? lib.glp_mip_col_val(m_model, impl) : lib.glp_get_col_prim(m_model, impl);
 }
 
 double idol::Optimizers::GLPK::get_var_ray(const Var &t_var) const {
@@ -654,8 +842,9 @@ double idol::Optimizers::GLPK::get_ctr_dual(const Ctr &t_ctr) const {
     if (m_solution_status != Feasible && m_solution_status != Optimal) {
         throw Exception("Primal solution not available.");
     }
+    auto& lib = get_dynamic_lib();
     const auto &impl = lazy(t_ctr).impl();
-    return glp_get_row_dual(m_model, impl);
+    return lib.glp_get_row_dual(m_model, impl);
 }
 
 double idol::Optimizers::GLPK::get_ctr_farkas(const Ctr &t_ctr) const {
@@ -692,6 +881,7 @@ void idol::Optimizers::GLPK::set_solution_index(unsigned int t_index) {
 idol::Model idol::Optimizers::GLPK::read_from_file(idol::Env &t_env, const std::string &t_filename) {
 
     const unsigned int size = t_filename.size();
+    SilentMode silent_mode(true);
 
     if (size >= 3 && (t_filename.substr(size - 3) == ".lp") || t_filename.substr(size - 6) == ".lp.gz") {
         return read_from_lp_file(t_env, t_filename);
@@ -706,27 +896,28 @@ idol::Model idol::Optimizers::GLPK::read_from_file(idol::Env &t_env, const std::
 
 idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t_model) {
 
-    const int n_variables = glp_get_num_cols(t_model);
-    const int n_constraints = glp_get_num_rows(t_model);
+    auto &lib = get_dynamic_lib();
+    const int n_variables = lib.glp_get_num_cols(t_model);
+    const int n_constraints = lib.glp_get_num_rows(t_model);
 
     Model result(t_env);
 
-    Finally on_terminate([&]() { glp_delete_prob(t_model); });
+    Finally on_terminate([&]() { lib.glp_delete_prob(t_model); });
 
     for (int j = 1 ; j <= n_variables ; ++j) {
 
-        const double lb = glp_get_col_lb(t_model, j);
-        const double ub = glp_get_col_ub(t_model, j);
-        const double obj = glp_get_obj_coef(t_model, j);
+        const double lb = lib.glp_get_col_lb(t_model, j);
+        const double ub = lib.glp_get_col_ub(t_model, j);
+        const double obj = lib.glp_get_obj_coef(t_model, j);
         VarType type;
-        switch (glp_get_col_kind(t_model, j)) {
+        switch (lib.glp_get_col_kind(t_model, j)) {
             case GLP_CV: type = Continuous; break;
             case GLP_IV: type = Integer; break;
             case GLP_BV: type = Binary; break;
             default: throw Exception("Unexpected variable type while parsing.");
         }
 
-        const std::string name = glp_get_col_name(t_model, j);
+        const std::string name = lib.glp_get_col_name(t_model, j);
         result.add_var(lb, ub, type, obj, LinExpr<Ctr>(),name);
     }
 
@@ -734,28 +925,28 @@ idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t
 
         CtrType type;
         double rhs;
-        switch (glp_get_row_type(t_model, i)) {
+        switch (lib.glp_get_row_type(t_model, i)) {
             case GLP_UP:
                 type = LessOrEqual;
-                rhs = glp_get_row_ub(t_model, i);
+                rhs = lib.glp_get_row_ub(t_model, i);
                 break;
             case GLP_LO:
                 type = GreaterOrEqual;
-                rhs = glp_get_row_lb(t_model, i);
+                rhs = lib.glp_get_row_lb(t_model, i);
                 break;
             case GLP_FX:
                 type = Equal;
-                rhs = glp_get_row_ub(t_model, i);
+                rhs = lib.glp_get_row_ub(t_model, i);
                 break;
             default: throw Exception("Unexpected variable type while parsing.");
         }
 
-        const std::string name = glp_get_row_name(t_model, i);
-        const int nz = glp_get_mat_row(t_model, i, NULL, NULL);
+        const std::string name = lib.glp_get_row_name(t_model, i);
+        const int nz = lib.glp_get_mat_row(t_model, i, NULL, NULL);
 
         auto* indices = new int[nz+1];
         auto* coefficients = new double[nz+1];
-        glp_get_mat_row(t_model, i, indices, coefficients);
+        lib.glp_get_mat_row(t_model, i, indices, coefficients);
 
         LinExpr<Var> lhs;
         for (int k = 1 ; k <= nz ; ++k) {
@@ -770,7 +961,7 @@ idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t
         result.add_ctr(std::move(lhs), type, rhs, name);
     }
 
-    if (glp_get_obj_dir(t_model) == GLP_MAX) {
+    if (lib.glp_get_obj_dir(t_model) == GLP_MAX) {
         result.set_obj_sense(Maximize);
     }
 
@@ -779,8 +970,9 @@ idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t
 
 idol::Model idol::Optimizers::GLPK::read_from_lp_file(idol::Env &t_env, const std::string &t_filename) {
 
-    glp_prob* model = glp_create_prob();
-    auto result = glp_read_lp(model,  NULL, t_filename.c_str());
+    auto &lib = get_dynamic_lib();
+    glp_prob* model = lib.glp_create_prob();
+    auto result = lib.glp_read_lp(model,  NULL, t_filename.c_str());
     if (result != 0) {
         throw Exception("Could not parse_variables MPS file.");
     }
@@ -792,8 +984,9 @@ idol::Model idol::Optimizers::GLPK::read_from_mps_file(idol::Env &t_env, const s
 
     constexpr bool use_fixed_format = false;
 
-    glp_prob *model = glp_create_prob();
-    auto result = glp_read_mps(model, use_fixed_format ? GLP_MPS_DECK : GLP_MPS_FILE, NULL, t_filename.c_str());
+    auto& lib = get_dynamic_lib();
+    glp_prob *model = lib.glp_create_prob();
+    auto result = lib.glp_read_mps(model, use_fixed_format ? GLP_MPS_DECK : GLP_MPS_FILE, NULL, t_filename.c_str());
     if (result != 0) {
         throw Exception("Could not parse_variables MPS file.");
     }
@@ -804,7 +997,8 @@ double idol::Optimizers::GLPK::get_var_reduced_cost(const idol::Var &t_var) cons
     if (m_solution_status != Feasible && m_solution_status != Optimal) {
         throw Exception("Primal solution not available.");
     }
-    return glp_get_col_dual(m_model, lazy(t_var).impl());
+    auto& lib = get_dynamic_lib();
+    return lib.glp_get_col_dual(m_model, lazy(t_var).impl());
 }
 
 void idol::Optimizers::GLPK::set_param_logs(bool t_value) {
@@ -835,5 +1029,3 @@ int idol::Optimizers::GLPK::hook_add(const idol::SOSCtr &t_ctr) {
 void idol::Optimizers::GLPK::hook_remove(const idol::SOSCtr &t_ctr) {
     throw Exception("SOS constraints are not supported by GLPK.");
 }
-
-#endif

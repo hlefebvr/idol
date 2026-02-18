@@ -9,6 +9,7 @@
 
 #include "idol/mixed-integer/modeling/objects/Object.h"
 #include "idol/mixed-integer/modeling/Types.h"
+#include "idol/mixed-integer/modeling/variables/Var.h"
 
 namespace idol {
     class SOSCtrVersion;

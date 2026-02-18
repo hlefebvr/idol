@@ -69,42 +69,50 @@ jobs:
         test:
           - "GLPK"
           - "HiGHS"
-          - "Mosek"
-          - "Clp"
-          #- "Symphony"
-          - "JuMP"
-          - "MibS"
+          #- "Mosek"
+          #- "Clp"
+          #- "JuMP"
+          #- "MibS"
     steps:
       - uses: actions/checkout@v4
 
       - name: Install lcov
         run: sudo apt-get install lcov
 
+      - name: Build idol
+        run: |
+          cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES
+          (cd ${{github.workspace}}/build && make -j 6)
+
+      - name: Install GLPK
+        if: matrix.test == 'GLPK'
+        run: |
+          sudo apt-get install glpk-utils libglpk-dev
+
+      - name: Install HiGHS
+        if: matrix.test == 'HiGHS'
+        run: |
+          git clone --depth 1 --branch v1.9.0 https://github.com/ERGO-Code/HiGHS.git
+          (mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install)
+
       - name: Set up Julia
         if: matrix.test == 'JuMP'
         uses: julia-actions/setup-julia@v2
 
-      - name: "Build idol with ${{ matrix.test }}"
+      - name: Install JuMP with HiGHS
+        if: matrix.test == 'JuMP'
+        run: |
+          julia -e 'using Pkg; Pkg.add("JuMP")'
+          julia -e 'using Pkg; Pkg.add("HiGHS")'
+          export JULIA_HOME="$(julia -e 'print(Sys.BINDIR)')/../"
+
+      - name: "Install ${{ matrix.test }}"
         env:
           MOSEK_LICENSE: ${{secrets.MOSEK_LICENSE}}
+        if: false
         run: |
           if [ "${{ matrix.test }}" == "GLPK" ]; then
-          
-            # Install GLPK
-            sudo apt-get install glpk-utils libglpk-dev
-          
-            # Configure CMake
-            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_GLPK=YES
-          
           elif [ "${{ matrix.test }}" == "HiGHS" ]; then
-          
-            # Install HiGHS
-            git clone --depth 1 --branch v1.9.0 https://github.com/ERGO-Code/HiGHS.git
-            (mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install)
-          
-            # Configure CMake
-            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_HIGHS=YES
-          
           elif [ "${{ matrix.test }}" == "Mosek" ]; then
           
             # Install Eigen
@@ -145,21 +153,9 @@ jobs:
             cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_MIBS=YES
           
           elif [ "${{ matrix.test }}" == "JuMP" ]; then
-          
-            # Install JuMP
-            julia -e 'using Pkg; Pkg.add("JuMP")'
-            julia -e 'using Pkg; Pkg.add("HiGHS")'
-          
-            export JULIA_HOME="$(julia -e 'print(Sys.BINDIR)')/../"
-          
-            # Configure CMake
-            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_JULIA=YES
-          
           else
             exit 1
           fi
-          
-          (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Run tests
         continue-on-error: true
@@ -179,7 +175,7 @@ jobs:
             WORKSPACE=${{github.workspace}}/build/tests/mixed-integer/wrappers
           fi
           
-          (cd $WORKSPACE && (./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml) ) 
+          (cd $WORKSPACE && (./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml) )
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
@@ -248,8 +244,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install setuptools sphinx breathe sphinx-sitemap sphinx-press-theme sphinx-copybutton sphinx-mermaid sphinxcontrib-bibtex
-          sudo apt-get install doxygen
+          #pip install setuptools sphinx breathe sphinx-sitemap sphinx-press-theme sphinx-copybutton sphinx-mermaid sphinxcontrib-bibtex
+          sudo apt-get install doxygen graphviz
 
       - name: CMake
         run: |

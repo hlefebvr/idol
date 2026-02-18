@@ -1,6 +1,6 @@
 (cd ../cmake-build-debug && cmake --build .)
 
-TEST_EXECUTABLES=$(find ../cmake-build-debug -type f -name "test_*")
+TEST_EXECUTABLES=$(find ../cmake-build-debug/tests -type f -name "test_*")
 CURRENT_DIR=$(pwd)
 
 for EXEC in $TEST_EXECUTABLES

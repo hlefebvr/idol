@@ -3,7 +3,6 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeWithCGInfo.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h"
@@ -88,7 +87,7 @@ int main(int t_argc, const char** t_argv) {
     // All subproblems will be solved by Gurobi
     const auto subproblem_specifications = DantzigWolfe::SubProblem()
             .add_optimizer(Gurobi())
-            .with_column_pool_clean_up(1500, .75); // If the msater contains more tham 1500 columns, this will automatically remove the first 25% generated columns (if not used)
+            .with_column_pool_clean_up(1500, .75); // If the master contains more tham 1500 columns, this will automatically remove the first 25% generated columns (if not used)
     column_generation.with_default_sub_problem_spec(subproblem_specifications);
 
     // Use dual price stabilization à la Neame with a smoothing factor of 0.3

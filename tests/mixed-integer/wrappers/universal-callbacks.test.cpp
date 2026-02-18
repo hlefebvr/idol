@@ -15,7 +15,7 @@
 using namespace Catch::literals;
 using namespace idol;
 
-#ifndef IDOL_USE_GUROBI
+#ifndef ROBI
 namespace idol {
     class Gurobi;
 }
@@ -33,37 +33,49 @@ namespace idol {
 }
 #endif
 
-TEST_CASE("Can add universal callbacks to monitor the execution of the algorithm", "[callbacks]") {
+TEST_CASE("Can add universal callbacks to monitor the execution of the algorithm", "[Callbacks]") {
 
     SECTION("Can retrieve root node gap") {
+        if constexpr (std::is_same_v<OPTIMIZER, GLPK>) {
+            SKIP("The solver does not implement such callbacks.");
+        }
         CHECK(false);
     }
 
     SECTION("Can retrieve root node solution") {
+        if constexpr (std::is_same_v<OPTIMIZER, GLPK>) {
+            SKIP("The solver does not implement such callbacks.");
+        }
         CHECK(false);
     }
 
     SECTION("Can access nodes' solutions") {
+        if constexpr (std::is_same_v<OPTIMIZER, GLPK>) {
+            SKIP("The solver does not implement such callbacks.");
+        }
         CHECK(false);
     }
 
     SECTION("Can access integer solutions") {
+        if constexpr (std::is_same_v<OPTIMIZER, GLPK>) {
+            SKIP("The solver does not implement such callbacks.");
+        }
         CHECK(false);
     }
 
 }
 
-TEST_CASE("Can add universal callbacks to influence the execution of the algorithm", "[callbacks]") {
+TEST_CASE("Can add universal callbacks to influence the execution of the algorithm", "[Callbacks]") {
 
     Env env;
     Model model(env);
 
     SECTION("Can add user cut") {
 
-        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, GLPK> || std::is_same_v<OPTIMIZER, Cplex>) {
+        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, Cplex>) {
             CHECK(false);
         } else {
-           SKIP("The solver does not implement user cut.");
+           SKIP("The solver does not implement such callbacks.");
         }
 
     }
@@ -97,21 +109,18 @@ TEST_CASE("Can add universal callbacks to influence the execution of the algorit
         CHECK(model.get_status() == Optimal);
         CHECK(model.get_best_obj() == 5.4_a);
 
-#elif defined(OPTIMIZER_IS_GLPK)
-        CHECK(false);
 #else
-        SKIP("The solver des not implement lazy cuts");
+        SKIP("The solver does not implement such callbacks.");
 #endif
 
     }
 
     SECTION("Can terminate the algorithm") {
 
-
-        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, GLPK> || std::is_same_v<OPTIMIZER, Cplex>) {
+        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, Cplex>) {
             CHECK(false);
         } else {
-            SKIP("The solver does not implement early termination by user.");
+            SKIP("The solver does not implement such callbacks.");
         }
 
     }
