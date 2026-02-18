@@ -304,6 +304,7 @@ add_library(idol STATIC
         src/robust/optimizers/nested-branch-and-cut/Formulation.cpp
         include/idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h
         src/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.cpp
+        include/idol/general/utils/compatibility.h
 )
 
 target_link_libraries(idol PRIVATE dl)
