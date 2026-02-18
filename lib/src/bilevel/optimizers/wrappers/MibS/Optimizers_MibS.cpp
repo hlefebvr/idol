@@ -1,17 +1,14 @@
 //
 // Created by henri on 01.02.24.
 //
-#ifdef IDOL_USE_MIBS
 
 #include "idol/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromAPI.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromFile.h"
 
-#include <utility>
-
 idol::Optimizers::Bilevel::MibS::MibS(const idol::Model &t_parent,
                                       const idol::Bilevel::Description& t_description,
-                                      OsiSolverInterface* t_osi_solver,
+                                      void* t_osi_solver,
                                       bool t_use_file,
                                       bool t_use_cplex_for_feasibility)
                                       : Optimizer(t_parent),
@@ -105,10 +102,12 @@ void idol::Optimizers::Bilevel::MibS::write(const std::string &t_name) {
 }
 
 void idol::Optimizers::Bilevel::MibS::hook_optimize() {
-
+#ifdef IDOL_USE_MIBS
     if (m_mibs) {
         return;
     }
+
+    auto* osi_solver = static_cast<OsiSolverInterface*>(m_osi_solver);
 
     if (m_use_file) {
         if (!m_callbacks.empty()) {
@@ -116,19 +115,22 @@ void idol::Optimizers::Bilevel::MibS::hook_optimize() {
         }
         m_mibs = std::make_unique<impl::MibSFromFile>(parent(),
                                                      m_description,
-                                                     m_osi_solver->clone(),
+                                                     osi_solver->clone(),
                                                      m_use_cplex_for_feasibility,
                                                      get_param_logs());
     } else {
         m_mibs = std::make_unique<impl::MibSFromAPI>(parent(),
                                                      m_description,
-                                                     m_osi_solver->clone(),
+                                                     osi_solver->clone(),
                                                      m_callbacks,
                                                      m_use_cplex_for_feasibility,
                                                      get_param_logs());
     }
     
     m_mibs->solve();
+#else
+    throw Exception("idol was not linked with MibS.");
+#endif
 }
 
 void idol::Optimizers::Bilevel::MibS::set_solution_index(unsigned int t_index) {
@@ -205,5 +207,3 @@ void idol::Optimizers::Bilevel::MibS::add(const idol::QCtr &t_ctr) {
 void idol::Optimizers::Bilevel::MibS::remove(const idol::QCtr &t_ctr) {
     throw Exception("MibS does not support quadratic constraints.");
 }
-
-#endif

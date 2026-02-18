@@ -3,8 +3,6 @@
 //
 
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
-
-#include <utility>
 #include "idol/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.h"
 
 #ifdef IDOL_USE_OSI_CLP
@@ -18,17 +16,13 @@ idol::Bilevel::MibS::MibS(const Bilevel::Description& t_description)
 
 idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) const {
 #ifdef IDOL_USE_MIBS
-
     if (!m_description) {
         throw Exception("The bilevel description has not been set.");
     }
 
     OsiSolverInterface* osi_interface;
     if (m_osi_interface) {
-        if (!dynamic_cast<OsiClpSolverInterface*>(m_osi_interface.get())) {
-            std::cerr << "Warning: using other interface than OsiClpSolverInterface is not officially supported by MibS." << std::endl;
-        }
-        osi_interface = m_osi_interface->clone();
+        osi_interface = static_cast<OsiSolverInterface*>(m_osi_interface)->clone();
     } else {
         osi_interface = new OsiClpSolverInterface();
     }
@@ -61,27 +55,25 @@ idol::Bilevel::MibS::MibS(const idol::Bilevel::MibS &t_src)
     : OptimizerFactoryWithDefaultParameters<MibS>(t_src),
       m_description(t_src.m_description),
       m_use_file_interface(t_src.m_use_file_interface),
-      m_use_cplex_for_feasibility(t_src.m_use_cplex_for_feasibility)
-#ifdef IDOL_USE_OSI
-    , m_osi_interface(t_src.m_osi_interface ? t_src.m_osi_interface->clone() : nullptr)
-#endif
+      m_use_cplex_for_feasibility(t_src.m_use_cplex_for_feasibility),
+      m_osi_interface(t_src.m_osi_interface ? static_cast<OsiSolverInterface*>(t_src.m_osi_interface)->clone() : nullptr)
 {
     for (const auto &cb : t_src.m_callbacks) {
         m_callbacks.emplace_back(cb->clone());
     }
 }
 
-idol::Bilevel::MibS &idol::Bilevel::MibS::with_osi_interface(const OsiSolverInterface &t_osi_optimizer) {
-#ifdef IDOL_USE_OSI
+idol::Bilevel::MibS &idol::Bilevel::MibS::with_osi_interface(const void* t_osi_optimizer) {
+#ifdef IDOL_USE_MIBS
     if (m_osi_interface) {
         throw Exception("The optimizer has already been set.");
     }
 
-    m_osi_interface.reset(t_osi_optimizer.clone());
+    m_osi_interface = static_cast<const OsiSolverInterface*>(t_osi_optimizer)->clone();
 
     return *this;
 #else
-    throw Exception("idol was not linked with Osi.");
+    throw Exception("idol was not linked with MibS.");
 #endif
 }
 

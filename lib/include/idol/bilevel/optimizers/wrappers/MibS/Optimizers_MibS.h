@@ -5,12 +5,7 @@
 #ifndef IDOL_OPTIMIZERS_MIBS_H
 #define IDOL_OPTIMIZERS_MIBS_H
 
-#ifdef IDOL_USE_MIBS
-
-#include <OsiSolverInterface.hpp>
 #include "idol/general/optimizers/Optimizer.h"
-#include "idol/mixed-integer/modeling/annotations/Annotation.h"
-#include "idol/mixed-integer/modeling/constraints/Ctr.h"
 #include "idol/bilevel/modeling/Description.h"
 #include "impl_MibS.h"
 #include "idol/mixed-integer/optimizers/callbacks/Callback.h"
@@ -23,7 +18,7 @@ class idol::Optimizers::Bilevel::MibS : public Optimizer {
     const idol::Bilevel::Description& m_description;
 
     std::unique_ptr<idol::impl::MibS> m_mibs;
-    std::unique_ptr<OsiSolverInterface> m_osi_solver;
+    void* m_osi_solver;
     const bool m_use_file;
     const bool m_use_cplex_for_feasibility;
 
@@ -31,7 +26,7 @@ class idol::Optimizers::Bilevel::MibS : public Optimizer {
 public:
     MibS(const idol::Model& t_parent,
          const idol::Bilevel::Description& t_description,
-         OsiSolverInterface* t_osi_solver,
+         void* t_osi_solver,
          bool t_use_file,
          bool t_use_cplex_for_feasibility);
 
@@ -81,5 +76,3 @@ protected:
 };
 
 #endif
-
-#endif //IDOL_OPTIMIZERS_MIBS_H

@@ -72,7 +72,7 @@ jobs:
           # Install MibS
           wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
           chmod +x coinbrew
-          ./coinbrew --no-prompt --tests=none build MibS
+          ./coinbrew --no-prompt --tests=none build MibS@1.2
 
       - name: Configure & Build
         run: |

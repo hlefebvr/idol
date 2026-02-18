@@ -2,22 +2,16 @@
 // Created by henri on 01.02.24.
 //
 
-#ifdef IDOL_USE_MIBS
-
 #ifndef IDOL_IMPL_MIBS_FROM_API_H
 #define IDOL_IMPL_MIBS_FROM_API_H
 
 #include "idol/mixed-integer/modeling/models/Model.h"
-#include "MibSModel.hpp"
 #include "idol/bilevel/modeling/Description.h"
 #include "impl_MibS.h"
 #include "idol/mixed-integer/optimizers/callbacks/Callback.h"
 
-namespace idol {
-    class MibSCallbackI;
-    namespace impl {
-        class MibSFromAPI;
-    }
+namespace idol::impl {
+    class MibSFromAPI;
 }
 
 class idol::impl::MibSFromAPI : public idol::impl::MibS {
@@ -27,9 +21,9 @@ class idol::impl::MibSFromAPI : public idol::impl::MibS {
     const bool m_logs;
     const bool m_use_cplex_for_feasibility;
 
-    MibSModel m_mibs;
-    std::unique_ptr<AlpsKnowledgeBroker> m_broker;
-    std::unique_ptr<OsiSolverInterface> m_osi_solver;
+    void* m_mibs = nullptr; // MibSModel
+    void* m_broker = nullptr; // AlpsKnowledgeBroker
+    void* m_osi_solver = nullptr; // OsiSolverInterface
 
     std::vector<std::vector<unsigned int>> m_ctr_indices_in_mibs;
     unsigned int m_n_ctr_in_mibs = 0;
@@ -45,15 +39,17 @@ class idol::impl::MibSFromAPI : public idol::impl::MibS {
     void load_problem_data();
     std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> parse_variables();
     std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> parse_constraints();
-    CoinPackedMatrix parse_matrix();
+    void* parse_matrix(); // returns a CoinPackedMatrix
     std::vector<double> parse_objective();
 public:
     MibSFromAPI(const idol::Model& t_model,
                 const idol::Bilevel::Description& t_description,
-                OsiSolverInterface* t_osi_solver,
+                void* t_osi_solver,
                 const std::list<std::unique_ptr<Callback>>& t_callbacks,
                 bool t_use_cplex_for_feasibility,
                 bool t_logs);
+
+    ~MibSFromAPI() override;
 
     void solve() override;
 
@@ -67,9 +63,6 @@ public:
 
     [[nodiscard]] idol::SolutionReason get_reason() const override;
 
-    friend class ::idol::MibSCallbackI;
 };
 
 #endif //IDOL_IMPL_MIBS_FROM_API_H
-
-#endif

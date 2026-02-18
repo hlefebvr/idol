@@ -2,11 +2,6 @@
 // Created by henri on 20.06.24.
 //
 
-#ifdef IDOL_USE_MIBS
-
-#include <AlpsKnowledgeBrokerSerial.h>
-#include <MibSSolution.hpp>
-#include <fcntl.h>
 #include <filesystem>
 #include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromFile.h"
 #include "idol/bilevel/modeling/write_to_file.h"
@@ -14,27 +9,48 @@
 #include "idol/general/utils/SilentMode.h"
 #include "idol/general/utils/uuid.h"
 
-#ifdef _WIN32
-#define DEV_NULL "NUL"
-#else
-#define DEV_NULL "/dev/null"
+#ifdef IDOL_USE_MIBS
+#include <AlpsKnowledgeBrokerSerial.h>
+#include <MibSSolution.hpp>
 #endif
 
 idol::impl::MibSFromFile::MibSFromFile(const idol::Model &t_model,
                                        const idol::Bilevel::Description &t_description,
-                                       OsiSolverInterface* t_osi_solver,
+                                       void* t_osi_solver,
                                        bool t_use_cplex_for_feasibility,
                                        bool t_logs)
                                        : m_model(t_model),
                                          m_description(t_description),
                                          m_osi_solver(t_osi_solver),
                                          m_use_cplex_for_feasibility(t_use_cplex_for_feasibility),
-                                         m_logs(t_logs) {
+                                         m_logs(t_logs),
+#ifdef IDOL_USE_MIBS
+                                         m_mibs(new MibSModel())
+#else
+                                         m_mibs(nullptr)
+#endif
+{
 
 }
 
-void idol::impl::MibSFromFile::solve() {
+idol::impl::MibSFromFile::~MibSFromFile() {
+#ifdef IDOL_USE_MIBS
+    auto* mibs = static_cast<MibSModel*>(m_mibs);
+    delete mibs;
+    m_mibs = nullptr;
 
+    auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
+    delete broker;
+    m_broker = nullptr;
+
+    auto* osi_solver = static_cast<OsiSolverInterface*>(m_osi_solver);
+    delete osi_solver;
+    m_osi_solver = nullptr;
+#endif
+}
+
+void idol::impl::MibSFromFile::solve() {
+#ifdef IDOL_USE_MIBS
     if (!m_variable_index_in_mps.empty()) {
         throw Exception("solve() has already been called.");
     }
@@ -52,9 +68,12 @@ void idol::impl::MibSFromFile::solve() {
 
     Bilevel::write_to_file(m_model, m_description, filename);
 
-    m_osi_solver->messageHandler()->setLogLevel(0);
+    auto* osi_solver = static_cast<OsiSolverInterface*>(m_osi_solver);
+    osi_solver->messageHandler()->setLogLevel(0);
 
-    m_mibs.setSolver(m_osi_solver.get());
+    auto* mibs = static_cast<MibSModel*>(m_mibs);
+
+    mibs->setSolver(osi_solver);
 
     const auto time_limit = std::to_string(m_model.optimizer().get_remaining_time());
 
@@ -73,33 +92,45 @@ void idol::impl::MibSFromFile::solve() {
     idol::SilentMode silent_mode(!m_logs);
 
     try {
-        m_broker = std::make_unique<AlpsKnowledgeBrokerSerial>(argc, (char**) argv, m_mibs, false);
+        auto* broker = new AlpsKnowledgeBrokerSerial(argc, (char**) argv, *mibs, false);
+        m_broker = broker;
 
-        if (m_mibs.shouldInvokeSolver()) {
-            m_broker->search(&m_mibs);
+        if (mibs->shouldInvokeSolver()) {
+            broker->search(mibs);
         }
 
     } catch (const CoinError& t_error) {
         std::cerr << t_error.fileName() << ":" << t_error.lineNumber() << " " << t_error.className() << "::" << t_error.methodName() << " " << t_error.message() << std::endl;
         throw Exception("MibS thrown an exception: " + t_error.message() + ".");
     }
-
+#endif
 }
 
 
 double idol::impl::MibSFromFile::get_var_primal(const idol::Var &t_var) const {
+#ifdef IDOL_USE_MIBS
     const unsigned int index = m_variable_index_in_mps[m_model.get_var_index(t_var)];
-    const auto& solution = dynamic_cast<MibSSolution&>(*m_broker->getBestKnowledge(AlpsKnowledgeTypeSolution).first);
+    const auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
+    const auto& solution = dynamic_cast<MibSSolution&>(*broker->getBestKnowledge(AlpsKnowledgeTypeSolution).first);
     return solution.getValues()[index];
+#else
+    throw Exception("idol was not linked with MibS");
+#endif
 }
 
 double idol::impl::MibSFromFile::get_best_obj() const {
-    return m_model.get_obj_expr().affine().constant() + m_broker->getBestQuality();
+#ifdef IDOL_USE_MIBS
+    const auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
+    return m_model.get_obj_expr().affine().constant() + broker->getBestQuality();
+#else
+    throw Exception("idol was not linked with MibS");
+#endif
 }
 
 idol::SolutionStatus idol::impl::MibSFromFile::get_status() const {
-
-    switch (m_broker->getSolStatus()) {
+#ifdef IDOL_USE_MIBS
+    const auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
+    switch (broker->getSolStatus()) {
         case AlpsExitStatusUnknown: return Fail;
         case AlpsExitStatusOptimal: return Optimal;
         case AlpsExitStatusFeasible: return Feasible;
@@ -109,16 +140,19 @@ idol::SolutionStatus idol::impl::MibSFromFile::get_status() const {
         case AlpsExitStatusNodeLimit: [[fallthrough]];
         case AlpsExitStatusTimeLimit: [[fallthrough]];
         case AlpsExitStatusNoMemory: [[fallthrough]];
-        case AlpsExitStatusSolLimit: return m_broker->getBestNode() ? Feasible : Infeasible;
+        case AlpsExitStatusSolLimit: return broker->getBestNode() ? Feasible : Infeasible;
     }
 
     throw Exception("enum out of bounds.");
-
+#else
+    throw Exception("idol was not linked with MibS");
+#endif
 }
 
 idol::SolutionReason idol::impl::MibSFromFile::get_reason() const {
-
-    switch (m_broker->getSolStatus()) {
+#ifdef IDOL_USE_MIBS
+    const auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
+    switch (broker->getSolStatus()) {
         case AlpsExitStatusOptimal:  [[fallthrough]];
         case AlpsExitStatusFeasible: [[fallthrough]];
         case AlpsExitStatusUnbounded: [[fallthrough]];
@@ -132,17 +166,25 @@ idol::SolutionReason idol::impl::MibSFromFile::get_reason() const {
     }
 
     throw Exception("enum out of bounds.");
+#else
+    throw Exception("idol was not linked with MibS");
+#endif
 }
 
 double idol::impl::MibSFromFile::get_best_bound() const {
+#ifdef IDOL_USE_MIBS
     if (get_status() == Optimal) {
         return get_best_obj();
     }
-    const auto *node = m_broker->getBestNode();
+    const auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
+    const auto *node = broker->getBestNode();
     if (node) {
         return node->getQuality();
     }
     return -Inf;
+#else
+    throw Exception("idol was not linked with MibS");
+#endif
 }
 
 void idol::impl::MibSFromFile::make_variable_index_in_mps() {
@@ -169,5 +211,3 @@ void idol::impl::MibSFromFile::make_variable_index_in_mps() {
     }
 
 }
-
-#endif

@@ -2,14 +2,10 @@
 // Created by henri on 20.06.24.
 //
 
-#ifdef IDOL_USE_MIBS
-
 #ifndef IDOL_IMPL_MIBSFROMFILE_H
 #define IDOL_IMPL_MIBSFROMFILE_H
 
 #include "idol/mixed-integer/modeling/models/Model.h"
-
-#include "MibSModel.hpp"
 #include "idol/bilevel/modeling/Description.h"
 #include "impl_MibS.h"
 
@@ -23,18 +19,20 @@ class idol::impl::MibSFromFile : public idol::impl::MibS {
     const bool m_logs;
     const bool m_use_cplex_for_feasibility;
 
-    MibSModel m_mibs;
-    std::unique_ptr<AlpsKnowledgeBroker> m_broker;
-    std::unique_ptr<OsiSolverInterface> m_osi_solver;
+    void* m_mibs = nullptr; // MibSModel
+    void* m_broker = nullptr; // AlpsKnowledgeBroker
+    void* m_osi_solver = nullptr; // OsiSolverInterface
     std::vector<unsigned int> m_variable_index_in_mps;
 
     void make_variable_index_in_mps();
 public:
     MibSFromFile(const idol::Model& t_model,
          const idol::Bilevel::Description& t_description,
-         OsiSolverInterface* t_osi_solver,
+         void* t_osi_solver,
          bool t_use_cplex_for_feasibility,
          bool t_logs);
+
+    ~MibSFromFile() override;
 
     void solve() override;
 
@@ -51,5 +49,3 @@ public:
 };
 
 #endif //IDOL_IMPL_MIBSFROMFILE_H
-
-#endif

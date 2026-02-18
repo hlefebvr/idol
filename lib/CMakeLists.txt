@@ -206,7 +206,6 @@ add_library(idol STATIC
         include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h
         include/idol/general/utils/uuid.h
         src/general/utils/uuid.cpp
-        include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h
         include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h
         src/mixed-integer/optimizers/callbacks/watchers/PlotManager.cpp
         include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h

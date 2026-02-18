@@ -2,30 +2,23 @@
 // Created by henri on 01.02.24.
 //
 
-#ifdef IDOL_USE_MIBS
-
 #include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromAPI.h"
 #include "idol/mixed-integer/modeling/objects/Versions.h"
 #include "idol/general/utils/SilentMode.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
-#include "idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h"
 
 #include <utility>
 
-#ifdef IDOL_USE_CPLEX
-#include <OsiCpxSolverInterface.hpp>
-#endif
-
-#ifdef IDOL_USE_SYMPHONY
-#include <OsiSymSolverInterface.hpp>
-#endif
-
+#ifdef IDOL_USE_MIBS
+#include <MibSModel.hpp>
 #include <AlpsKnowledgeBrokerSerial.h>
+#include <OsiSolverInterface.hpp>
 #include <MibSSolution.hpp>
+#endif
 
 idol::impl::MibSFromAPI::MibSFromAPI(const idol::Model &t_model,
                                      const idol::Bilevel::Description &t_description,
-                                     OsiSolverInterface* t_osi_solver,
+                                     void* t_osi_solver,
                                      const std::list<std::unique_ptr<Callback>>& t_callbacks,
                                      bool t_use_cplex_for_feasibility,
                                      bool t_logs)
@@ -34,15 +27,37 @@ idol::impl::MibSFromAPI::MibSFromAPI(const idol::Model &t_model,
                          m_osi_solver(t_osi_solver),
                          m_callbacks(t_callbacks),
                          m_use_cplex_for_feasibility(t_use_cplex_for_feasibility),
-                         m_logs(t_logs) {
+                         m_logs(t_logs),
+#ifdef IDOL_USE_MIBS
+                         m_mibs(new MibSModel())
+#else
+                         m_mibs(nullptr)
+#endif
+{
 
     load_auxiliary_data();
     load_problem_data();
 
 }
 
-void idol::impl::MibSFromAPI::load_auxiliary_data() {
+idol::impl::MibSFromAPI::~MibSFromAPI() {
+#ifdef IDOL_USE_CPLEX
+    auto* mibs = static_cast<MibSModel*>(m_mibs);
+    delete mibs;
+    m_mibs = nullptr;
 
+    auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
+    delete broker;
+    m_broker = nullptr;
+
+    auto* osi_solver = static_cast<OsiSolverInterface*>(m_osi_solver);
+    delete osi_solver;
+    m_osi_solver = nullptr;
+#endif
+}
+
+void idol::impl::MibSFromAPI::load_auxiliary_data() {
+#ifdef IDOL_USE_MIBS
     auto [upper_level_variables_indices, lower_level_variables_indices] = dispatch_variable_indices();
     auto [upper_level_constraints_indices, lower_level_constraints_indices] = dispatch_constraint_indices();
     auto lower_level_objective_coefficients = find_lower_level_objective_coefficients(lower_level_variables_indices);
@@ -50,7 +65,8 @@ void idol::impl::MibSFromAPI::load_auxiliary_data() {
 
     assert(upper_level_constraints_indices.size() + lower_level_constraints_indices.size() == m_n_ctr_in_mibs);
 
-    m_mibs.loadAuxiliaryData(
+    auto* mibs = static_cast<MibSModel*>(m_mibs);
+    mibs->loadAuxiliaryData(
             (int) lower_level_variables_indices.size(),
             (int) lower_level_constraints_indices.size(),
             lower_level_variables_indices.data(),
@@ -68,26 +84,27 @@ void idol::impl::MibSFromAPI::load_auxiliary_data() {
             lower_level_lower_bounds.data(),
             lower_level_upper_bounds.data()
     );
-
+#endif
 }
 
 void idol::impl::MibSFromAPI::load_problem_data() {
-
+#ifdef IDOL_USE_MIBS
     auto [variable_lower_bounds, variable_upper_bounds, variable_types] = parse_variables();
     auto [constraint_lower_bounds, constraint_upper_bounds, constraint_types] = parse_constraints();
-    auto matrix = parse_matrix();
+    auto* matrix = static_cast<CoinPackedMatrix*>(parse_matrix());
     auto objective = parse_objective();
 
     assert(constraint_lower_bounds.size() == m_n_ctr_in_mibs);
     assert(constraint_upper_bounds.size() == m_n_ctr_in_mibs);
     assert(constraint_types.size() == m_n_ctr_in_mibs);
-    assert(matrix.getNumRows() == m_n_ctr_in_mibs);
+    assert(matrix->getNumRows() == m_n_ctr_in_mibs);
     assert(variable_lower_bounds.size() == m_model.vars().size());
     assert(variable_upper_bounds.size() == m_model.vars().size());
     assert(variable_types.size() == m_model.vars().size());
 
-    m_mibs.loadProblemData(
-            matrix,
+    auto* mibs = static_cast<MibSModel*>(m_mibs);
+    mibs->loadProblemData(
+            *matrix,
             variable_lower_bounds.data(),
             variable_upper_bounds.data(),
             objective.data(),
@@ -99,12 +116,17 @@ void idol::impl::MibSFromAPI::load_problem_data() {
             constraint_types.data()
     );
 
+    delete matrix;
+#endif
 }
 
 void idol::impl::MibSFromAPI::solve() {
+#ifdef IDOL_USE_MIBS
+    auto* mibs = static_cast<MibSModel*>(m_mibs);
+    auto* osi_solver = static_cast<OsiSolverInterface*>(m_osi_solver);
 
-    m_osi_solver->messageHandler()->setLogLevel(0);
-    m_mibs.setSolver(m_osi_solver.get());
+    osi_solver->messageHandler()->setLogLevel(0);
+    mibs->setSolver(osi_solver);
     const auto time_limit = std::to_string(std::ceil(m_model.optimizer().get_remaining_time()));
 
     int argc = 5;
@@ -115,25 +137,19 @@ void idol::impl::MibSFromAPI::solve() {
                      m_use_cplex_for_feasibility ? "CPLEX" : "SYMPHONY"
     };
 
-    std::unique_ptr<MibSCallbackI> callback_manager;
-    if (!m_callbacks.empty()) {
-        callback_manager = std::make_unique<MibSCallbackI>(*this);
-        m_mibs.addHeuristic(&callback_manager->heuristic());
-        m_mibs.addCutGenerator(&callback_manager->cut_generator());
-    }
-
     idol::SilentMode silent_mode(!m_logs);
 
     try {
-        m_broker = std::make_unique<AlpsKnowledgeBrokerSerial>(argc, (char**) argv, m_mibs, true);
-        if (m_mibs.shouldInvokeSolver()) {
-            m_broker->search(&m_mibs);
+        auto* broker = new AlpsKnowledgeBrokerSerial(argc, (char**) argv, *mibs, true);
+        m_broker = broker;
+        if (mibs->shouldInvokeSolver()) {
+            broker->search(mibs);
         }
     } catch (const CoinError& t_error) {
         std::cerr << t_error.fileName() << ":" << t_error.lineNumber() << " " << t_error.className() << "::" << t_error.methodName() << " " << t_error.message() << std::endl;
         throw Exception("MibS thrown an exception: " + t_error.message() + ".");
     }
-
+#endif
 }
 
 std::pair<std::vector<int>, std::vector<int>> idol::impl::MibSFromAPI::dispatch_variable_indices() {
@@ -235,6 +251,8 @@ idol::impl::MibSFromAPI::find_lower_level_objective_coefficients(const std::vect
 
 std::pair<std::vector<double>, std::vector<double>>
 idol::impl::MibSFromAPI::find_lower_level_bounds(const std::vector<int> &t_lower_level_variables_indices) {
+#ifdef IDOL_USE_MIBS
+    auto* osi_solver = static_cast<OsiSolverInterface*>(m_osi_solver);
 
     std::vector<double> lb, ub;
     lb.reserve(t_lower_level_variables_indices.size());
@@ -246,8 +264,8 @@ idol::impl::MibSFromAPI::find_lower_level_bounds(const std::vector<int> &t_lower
         const double lower_bound = m_model.get_var_lb(var);
         const double upper_bound = m_model.get_var_ub(var);
 
-        lb.emplace_back(is_neg_inf(lower_bound) ? -m_osi_solver->getInfinity() : lower_bound);
-        ub.emplace_back(is_pos_inf(upper_bound) ? m_osi_solver->getInfinity() : upper_bound);
+        lb.emplace_back(is_neg_inf(lower_bound) ? -osi_solver->getInfinity() : lower_bound);
+        ub.emplace_back(is_pos_inf(upper_bound) ? osi_solver->getInfinity() : upper_bound);
 
     }
 
@@ -257,7 +275,9 @@ idol::impl::MibSFromAPI::find_lower_level_bounds(const std::vector<int> &t_lower
         std::move(lb),
         std::move(ub)
     };
-
+#else
+    throw Exception("idol was not linked with MibS");
+#endif
 }
 
 std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> idol::impl::MibSFromAPI::parse_variables() {
@@ -345,11 +365,11 @@ idol::impl::MibSFromAPI::parse_constraints() {
 
 }
 
-CoinPackedMatrix idol::impl::MibSFromAPI::parse_matrix() {
-
+void* idol::impl::MibSFromAPI::parse_matrix() {
+#ifdef IDOL_USE_MIBS
     const unsigned int n_variables = m_model.vars().size();
 
-    CoinPackedMatrix result(true, n_variables, 0);
+    auto* result = new CoinPackedMatrix(true, n_variables, 0);
 
     for (const auto& var : m_model.vars()) {
 
@@ -367,10 +387,13 @@ CoinPackedMatrix idol::impl::MibSFromAPI::parse_matrix() {
 
         vector.sortIncrIndex();
 
-        result.appendCol(vector);
+        result->appendCol(vector);
     }
 
     return result;
+#else
+    throw Exception("idol was not linked with MiBS");
+#endif
 }
 
 
@@ -402,18 +425,29 @@ char idol::impl::MibSFromAPI::to_mibs_type(idol::VarType t_type) {
 }
 
 double idol::impl::MibSFromAPI::get_var_primal(const idol::Var &t_var) const {
+#ifdef IDOL_USE_MIBS
     const unsigned int index = m_model.get_var_index(t_var);
-    const auto& solution = dynamic_cast<MibSSolution&>(*m_broker->getBestKnowledge(AlpsKnowledgeTypeSolution).first);
+    auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
+    const auto& solution = dynamic_cast<MibSSolution&>(*broker->getBestKnowledge(AlpsKnowledgeTypeSolution).first);
     return solution.getValues()[index];
+#else
+    throw Exception("idol was not linked with MibS");
+#endif
 }
 
 double idol::impl::MibSFromAPI::get_best_obj() const {
-    return m_broker->getBestQuality();
+#ifdef IDOL_USE_MIBS
+    const auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
+    return broker->getBestQuality();
+#else
+    throw Exception("idol was not linked with MibS");
+#endif
 }
 
 idol::SolutionStatus idol::impl::MibSFromAPI::get_status() const {
-
-    switch (m_broker->getSolStatus()) {
+#ifdef IDOL_USE_MIBS
+    const auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
+    switch (broker->getSolStatus()) {
         case AlpsExitStatusUnknown: return Fail;
         case AlpsExitStatusOptimal: return Optimal;
         case AlpsExitStatusFeasible: return Feasible;
@@ -423,16 +457,19 @@ idol::SolutionStatus idol::impl::MibSFromAPI::get_status() const {
         case AlpsExitStatusNodeLimit: [[fallthrough]];
         case AlpsExitStatusTimeLimit: [[fallthrough]];
         case AlpsExitStatusNoMemory: [[fallthrough]];
-        case AlpsExitStatusSolLimit: return m_broker->getBestNode() ? Feasible : Infeasible;
+        case AlpsExitStatusSolLimit: return broker->getBestNode() ? Feasible : Infeasible;
     }
 
     throw Exception("enum out of bounds.");
-
+#else
+    throw Exception("idol was not linked with MibS");
+#endif
 }
 
 idol::SolutionReason idol::impl::MibSFromAPI::get_reason() const {
-
-    switch (m_broker->getSolStatus()) {
+#ifdef IDOL_USE_MIBS
+    const auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
+    switch (broker->getSolStatus()) {
         case AlpsExitStatusOptimal:  [[fallthrough]];
         case AlpsExitStatusFeasible: [[fallthrough]];
         case AlpsExitStatusUnbounded: [[fallthrough]];
@@ -446,17 +483,23 @@ idol::SolutionReason idol::impl::MibSFromAPI::get_reason() const {
     }
 
     throw Exception("enum out of bounds.");
+#else
+    throw Exception("idol was not linked with MibS");
+#endif
 }
 
 double idol::impl::MibSFromAPI::get_best_bound() const {
+#ifdef IDOL_USE_MIBS
     if (get_status() == Optimal) {
         return get_best_obj();
     }
-    const auto *node = m_broker->getBestNode();
+    const auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
+    const auto *node = broker->getBestNode();
     if (node) {
         return node->getQuality();
     }
     return -Inf;
 }
-
+#else
+    throw Exception("idol was not linked with MibS");
 #endif
