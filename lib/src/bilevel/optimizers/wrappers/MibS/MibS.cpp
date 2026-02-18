@@ -56,7 +56,11 @@ idol::Bilevel::MibS::MibS(const idol::Bilevel::MibS &t_src)
       m_description(t_src.m_description),
       m_use_file_interface(t_src.m_use_file_interface),
       m_use_cplex_for_feasibility(t_src.m_use_cplex_for_feasibility),
+#ifdef IDOL_USE_MIBS
       m_osi_interface(t_src.m_osi_interface ? static_cast<OsiSolverInterface*>(t_src.m_osi_interface)->clone() : nullptr)
+#else
+      m_osi_interface(nullptr)
+#endif
 {
     for (const auto &cb : t_src.m_callbacks) {
         m_callbacks.emplace_back(cb->clone());
