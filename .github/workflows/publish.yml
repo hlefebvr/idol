@@ -2,8 +2,8 @@ name: Build prebuilt idol
 
 on:
   push:
-    #tags: ['v*.*.*']
-    branches: [ "MacOSX", "!gh-pages" ]
+    tags: ['v*.*.*']
+    #branches: [ "MacOSX", "!gh-pages" ]
 
 jobs:
   build-macos:

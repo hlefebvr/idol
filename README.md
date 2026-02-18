@@ -1,4 +1,4 @@
-# A C++ Framework for Optimization 
+# idol, A C++ Framework for Optimization 
 
 ![License](https://img.shields.io/github/license/hlefebvr/idol?color=blue)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/release/hlefebvr/idol?color=blue)
@@ -9,6 +9,7 @@
 [![GitHub sponsors](https://img.shields.io/github/sponsors/hlefebvr)](https://github.com/sponsors/hlefebvr)
 
 ## What is idol?
+
 idol is a C++ framework for mathematical optimization and complex decision-making problems. It is designed to help you build new algorithms for solving complex optimization problems. The main philosophy behind idol is interoperability and ease of use. Hence, any algorithm can be seamlessly combined with any other algorithm to create a new one. 
 
 For instance, you can combine a branch-and-bound algorithm with a column generation algorithm to create a branch-and-price algorithm.
@@ -61,4 +62,4 @@ sudo make install
 
 ## Using idol for Research?
 
-If you're interested in idol or use it for research, don't hesitate to contact me at lefebvre@uni-trier.de.
+If you're interested in idol or use it for research, do not hesitate to contact me at henri.lefebvre@cnrs.fr.
