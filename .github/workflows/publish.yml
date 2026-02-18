@@ -49,6 +49,7 @@ jobs:
           else
             echo "No new tag needed"
             echo "tag_created=false" >> $GITHUB_OUTPUT
+          fi
 
   build-macos:
     needs: push-tag
