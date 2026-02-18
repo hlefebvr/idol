@@ -59,14 +59,13 @@ jobs:
           brew install bash
           echo "$(brew --prefix)/bin" >> $GITHUB_PATH
 
-      - name: Install Fortran compiler
-        run: brew install gcc
-
       - name: Select Xcode toolchain
         run: sudo xcode-select -switch /Applications/Xcode.app
 
-      - name: Verify compiler
-        run: clang++ --version
+      - name: Set compiler
+        run: |
+          echo "CC=clang" >> $GITHUB_ENV
+          echo "CXX=clang++" >> $GITHUB_ENV
 
       - name: Install MibS
         run: |
