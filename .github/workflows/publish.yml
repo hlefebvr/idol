@@ -2,10 +2,13 @@ name: Build prebuilt idol
 
 on:
   push:
-    tags: ['*.*.*']
-    #branches: [ "MacOSX", "!gh-pages" ]
+    tags: [ "*" ]
+
+env:
+  BUILD_TYPE: Release
 
 jobs:
+
   build-macos:
     runs-on: macos-latest
     env:
