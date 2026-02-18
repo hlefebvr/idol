@@ -35,7 +35,6 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: idol-${{ github.ref_name }}-macos.tar.gz
-          body: "Prebuilt idol ${{env.IDOL_VERSION}} for macOS"
           files: idol-${{ github.ref_name }}-macos.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -119,7 +118,36 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: idol-${{ github.ref_name }}-linux.deb
-          body: "Prebuilt idol ${{env.IDOL_VERSION}} for Linux"
           files: build/${{ env.DEB_PACKAGE }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to APT repository
+        env:
+          APT_REPO: hlefebvr/apt
+          DEB_PACKAGE: ${{ env.DEB_PACKAGE }}
+        run: |
+          # Clone the APT repo
+          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${APT_REPO}.git apt-repo
+          cd apt-repo
+
+          # Create standard APT structure
+          mkdir -p dists/stable/main/binary-amd64
+
+          # Copy the .deb package
+          cp ../build/${DEB_PACKAGE} dists/stable/main/binary-amd64/
+
+          # Generate Packages and Packages.gz
+          cd dists/stable/main/binary-amd64
+          dpkg-scanpackages . /dev/null > Packages
+          gzip -kf Packages
+
+          cd ../../../..
+
+          # Commit and push
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add .
+          git commit -m "Add idol ${IDOL_VERSION}" || echo "No changes to commit"
+          git push origin main
