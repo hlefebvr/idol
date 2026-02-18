@@ -6,6 +6,10 @@
 #include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromAPI.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromFile.h"
 
+#ifdef IDOL_USE_MIBS
+#include <OsiSolverInterface.hpp>
+#endif
+
 idol::Optimizers::Bilevel::MibS::MibS(const idol::Model &t_parent,
                                       const idol::Bilevel::Description& t_description,
                                       void* t_osi_solver,

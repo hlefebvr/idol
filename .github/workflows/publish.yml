@@ -59,14 +59,6 @@ jobs:
           brew install bash
           echo "$(brew --prefix)/bin" >> $GITHUB_PATH
 
-      - name: Select Xcode toolchain
-        run: sudo xcode-select -switch /Applications/Xcode.app
-
-      - name: Set compiler
-        run: |
-          echo "CC=clang" >> $GITHUB_ENV
-          echo "CXX=clang++" >> $GITHUB_ENV
-
       - name: Install MibS
         run: |
           # Install MibS
@@ -77,8 +69,12 @@ jobs:
       - name: Configure & Build
         run: |
           mkdir -p build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/install \
-            -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_MIBS=YES
+          cmake .. \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=$PWD/install \
+            -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_MIBS=YES \ 
+            -DCMAKE_C_COMPILER=/usr/bin/cc \
+            -DCMAKE_CXX_COMPILER=/usr/bin/c++
           make -j$(sysctl -n hw.ncpu)
 
       - name: Install
