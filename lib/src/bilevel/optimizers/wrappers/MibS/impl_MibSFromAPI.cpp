@@ -8,6 +8,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 
 #include <utility>
+#include <cassert>
 
 #ifdef IDOL_USE_MIBS
 #include <MibSModel.hpp>
@@ -499,7 +500,8 @@ double idol::impl::MibSFromAPI::get_best_bound() const {
         return node->getQuality();
     }
     return -Inf;
-}
 #else
     throw Exception("idol was not linked with MibS");
 #endif
+}
+
