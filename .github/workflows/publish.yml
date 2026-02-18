@@ -128,8 +128,8 @@ jobs:
           DEB_PACKAGE: ${{ env.DEB_PACKAGE }}
         run: |
           # Clone the APT repo
-          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${APT_REPO}.git apt-repo
-          cd apt-repo
+          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/${APT_REPO}.git apt
+          cd apt
 
           # Create standard APT structure
           mkdir -p dists/stable/main/binary-amd64
