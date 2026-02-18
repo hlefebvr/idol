@@ -12,9 +12,6 @@ jobs:
 
   push-tag:
     runs-on: ubuntu-latest
-    env:
-      IDOL_VERSION: ""
-      TAG_CREATED: "false"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
