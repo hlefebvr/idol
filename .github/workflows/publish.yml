@@ -34,16 +34,21 @@ jobs:
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
 
       - name: Compare and create tag if needed
-        if: env.PROJECT_VERSION != env.LATEST_TAG
+        id: create_tag
         run: |
+          if [ "${PROJECT_VERSION}" != "${LATEST_TAG}" ]; then
           echo "Creating new tag ${PROJECT_VERSION}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git tag -a "${PROJECT_VERSION}" -m "Release v${PROJECT_VERSION}"
           git push origin "${PROJECT_VERSION}"
+          echo "tag_created=true" >> $GITHUB_OUTPUT
+          else
+          echo "tag_created=false" >> $GITHUB_OUTPUT
+        shell: bash
 
   build-macos:
-    if: env.TAG_CREATED == 'true'
+    if: steps.create_tag.outputs.tag_created == 'true'
     runs-on: macos-latest
     env:
       IDOL_VERSION: ${{ github.ref_name }}
@@ -110,7 +115,7 @@ jobs:
           git push origin $TAP_BRANCH
 
   build-linux:
-    if: env.TAG_CREATED == 'true'
+    if: steps.create_tag.outputs.tag_created == 'true'
     runs-on: ubuntu-latest
     env:
       IDOL_VERSION: ${{ github.ref_name }}
