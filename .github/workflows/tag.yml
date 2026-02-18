@@ -35,8 +35,8 @@ jobs:
         - name: Compare and create tag if needed
           if: env.PROJECT_VERSION != env.LATEST_TAG
           run: |
-            echo "Creating new tag v${PROJECT_VERSION}"
+            echo "Creating new tag ${PROJECT_VERSION}"
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git tag -a "${PROJECT_VERSION}" -m "Release v${PROJECT_VERSION}"
-            git push origin "v${PROJECT_VERSION}"
+            git push origin "${PROJECT_VERSION}"
