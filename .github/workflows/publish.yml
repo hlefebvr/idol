@@ -39,7 +39,7 @@ jobs:
 
       - name: Compare and create tag if needed
         id: create_tag
-        if: env.PROJECT_VERSION != env.LATEST_TAG
+        #if: env.PROJECT_VERSION != env.LATEST_TAG #TODO restore uncommenting
         run: |
           echo "tag_created=true" >> $GITHUB_OUTPUT
           echo "version=${PROJECT_VERSION}" >> $GITHUB_OUTPUT
@@ -58,6 +58,12 @@ jobs:
         run: |
           brew install bash
           echo "$(brew --prefix)/bin" >> $GITHUB_PATH
+
+      - name: Select Xcode toolchain
+        run: sudo xcode-select -switch /Applications/Xcode.app
+
+      - name: Verify compiler
+        run: clang++ --version
 
       - name: Install MibS
         run: |
