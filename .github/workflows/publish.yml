@@ -39,24 +39,15 @@ jobs:
         id: create_tag
         if: env.PROJECT_VERSION != env.LATEST_TAG
         run: |
-          if [[ "$PROJECT_VERSION" != "$LATEST_TAG" ]]; then
-            echo "Creating new tag ${PROJECT_VERSION}"
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git tag -a "${PROJECT_VERSION}" -m "Release v${PROJECT_VERSION}"
-            git push origin "${PROJECT_VERSION}"
-            echo "tag_created=true" >> $GITHUB_OUTPUT
-          else
-            echo "No new tag needed"
-            echo "tag_created=false" >> $GITHUB_OUTPUT
-          fi
+          echo "tag_created=true" >> $GITHUB_OUTPUT
+          echo "version=${PROJECT_VERSION}" >> $GITHUB_OUTPUT
 
   build-macos:
     needs: push-tag
     if: needs.push-tag.outputs.tag_created == 'true'
     runs-on: macos-latest
     env:
-      IDOL_VERSION: ${{ github.ref_name }}
+      IDOL_VERSION: ${{ needs.push-tag.outputs.version }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -80,9 +71,9 @@ jobs:
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          name: idol-${{ github.ref_name }}-macos.tar.gz
-          files: idol-${{ github.ref_name }}-macos.tar.gz
+          tag_name: ${{ needs.push-tag.outputs.version }}
+          name: idol-${{ needs.push-tag.outputs.version }}-macos.tar.gz
+          files: idol-${{ needs.push-tag.outputs.version }}-macos.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -124,7 +115,7 @@ jobs:
     if: needs.push-tag.outputs.tag_created == 'true'
     runs-on: ubuntu-latest
     env:
-      IDOL_VERSION: ${{ github.ref_name }}
+      IDOL_VERSION: ${{ needs.push-tag.outputs.version }}
 
     steps:
       - name: Checkout repo
@@ -165,9 +156,9 @@ jobs:
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          name: idol-${{ github.ref_name }}-linux.deb
-          files: build/${{ env.DEB_PACKAGE }}
+          tag_name: ${{ needs.push-tag.outputs.version }}
+          name: idol-${{ needs.push-tag.outputs.version }}-linux.deb
+          files: build/${{ needs.push-tag.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
