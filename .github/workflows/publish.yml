@@ -59,6 +59,9 @@ jobs:
           brew install bash
           echo "$(brew --prefix)/bin" >> $GITHUB_PATH
 
+      - name: Install Fortran compiler
+        run: brew install gcc
+
       - name: Select Xcode toolchain
         run: sudo xcode-select -switch /Applications/Xcode.app
 
