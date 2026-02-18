@@ -137,11 +137,14 @@ jobs:
           
           # Rename .deb to standard Debian format
           NEW_DEB="idol_${IDOL_VERSION}_${ARCH}.deb"
-          mv ../build/${DEB_PACKAGE} $NEW_DEB
+          mv ../build/${DEB_PACKAGE} dists/stable/main/binary-${ARCH}/$NEW_DEB
           
-          # Generate Packages and Packages.gz in the repo root
-          dpkg-scanpackages . /dev/null > Packages
-          gzip -kf Packages
+          # Make sure the directory exists
+          mkdir -p dists/stable/main/binary-${ARCH}
+          
+          # Run dpkg-scanpackages from the root of the repo
+          dpkg-scanpackages dists/stable/main/binary-${ARCH} /dev/null > dists/stable/main/binary-${ARCH}/Packages
+          gzip -kf dists/stable/main/binary-${ARCH}/Packages
           
           # Commit and push changes
           git config user.name "github-actions[bot]"
