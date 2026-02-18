@@ -61,10 +61,11 @@ jobs:
 
       - name: Check compilers
         run: |
-          which cc
-          which c++
           cc --version
           c++ --version
+
+      - name: Switch to CommandLineTools
+        run: sudo xcode-select -s /Library/Developer/CommandLineTools
 
       - name: Install MibS
         run: |
