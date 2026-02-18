@@ -135,12 +135,12 @@ jobs:
           ARCH=$(dpkg-deb -f ../build/${DEB_PACKAGE} Architecture)
           echo "Detected architecture: $ARCH"
           
+          # Make sure the directory exists
+          mkdir -p dists/stable/main/binary-${ARCH}
+          
           # Rename .deb to standard Debian format
           NEW_DEB="idol_${IDOL_VERSION}_${ARCH}.deb"
           mv ../build/${DEB_PACKAGE} dists/stable/main/binary-${ARCH}/$NEW_DEB
-          
-          # Make sure the directory exists
-          mkdir -p dists/stable/main/binary-${ARCH}
           
           # Run dpkg-scanpackages from the root of the repo
           dpkg-scanpackages dists/stable/main/binary-${ARCH} /dev/null > dists/stable/main/binary-${ARCH}/Packages
