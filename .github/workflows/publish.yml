@@ -130,24 +130,29 @@ jobs:
           # Clone the APT repo
           git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/${APT_REPO}.git apt
           cd apt
-
+          
+          # Detect architecture of .deb
+          ARCH=$(dpkg-deb -f ../build/${DEB_PACKAGE} Architecture)
+          echo "Detected architecture: $ARCH"
+          
           # Create standard APT structure
-          mkdir -p dists/stable/main/binary-amd64
-
-          # Copy the .deb package
-          cp ../build/${DEB_PACKAGE} dists/stable/main/binary-amd64/
-
+          mkdir -p dists/stable/main/binary-$ARCH
+          
+          # Rename .deb to proper Debian format: idol_<version>_<arch>.deb
+          NEW_DEB="idol_${IDOL_VERSION}_${ARCH}.deb"
+          cp ../build/${DEB_PACKAGE} dists/stable/main/binary-$ARCH/$NEW_DEB
+          
           # Generate Packages and Packages.gz
-          cd dists/stable/main/binary-amd64
+          cd dists/stable/main/binary-$ARCH
           dpkg-scanpackages . /dev/null > Packages
           gzip -kf Packages
-
+          
           cd ../../../..
-
+          
           # Commit and push
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
+          
           git add .
-          git commit -m "Add idol ${IDOL_VERSION}" || echo "No changes to commit"
+          git commit -m "Add idol ${IDOL_VERSION} ($ARCH)" || echo "No changes to commit"
           git push origin main

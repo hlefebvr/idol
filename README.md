@@ -33,8 +33,8 @@ Visit our [online documentation](https://hlefebvr.github.io/idol/).
 ### Linux
 
 ```shell
-echo "deb [trusted=yes] https://henrilefebvre.com/apt stable main" | sudo tee /etc/apt/sources.list.d/idol.list
-
+echo "deb [arch=amd64 trusted=yes] https://henrilefebvre.com/apt stable main" \
+| sudo tee /etc/apt/sources.list.d/idol.list
 sudo apt update
 sudo apt install idol
 ```
@@ -43,7 +43,6 @@ sudo apt install idol
 
 ```shell
 brew tap hlefebvr/idol 
-
 brew update
 brew install idol
 ```
