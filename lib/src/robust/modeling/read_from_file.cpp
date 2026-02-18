@@ -62,11 +62,11 @@ idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, c
 
         // Check for section header
         if (line[0] == '@') {
-            if (line.starts_with("@RHS")) {
+            if (line.rfind("@RHS", 0) == 0) {
                 section = RHS;
-            } else if (line.starts_with("@OBJ")) {
+            } else if (line.rfind("@OBJ", 0) == 0) {
                 section = OBJ;
-            } else if (line.starts_with("@MAT")) {
+            } else if (line.rfind("@MAT", 0) == 0) {
                 section = MAT;
             } else {
                 throw Exception("Unexpected section name on line" + line);

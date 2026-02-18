@@ -107,7 +107,7 @@ void idol::impl::JuliaSessionManager::load_module(const std::string &t_module) {
 
     auto& julia_session_manager = get();
 
-    if (!julia_session_manager.m_loaded_modules.contains(t_module)) {
+    if (julia_session_manager.m_loaded_modules.find(t_module) == julia_session_manager.m_loaded_modules.end()) {
         jl_eval_string((std::string("using ") + t_module).c_str());
         julia_session_manager.m_loaded_modules.emplace(t_module);
         std::cout << "Julia package " + t_module + " successfully loaded." << std::endl;

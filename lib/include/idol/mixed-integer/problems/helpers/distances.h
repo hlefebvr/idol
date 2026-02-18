@@ -26,12 +26,12 @@ namespace idol {
         auto [lat2, lon2] = t_b;
         // distance between latitudes
         // and longitudes
-        const double dLat = (lat2 - lat1) * std::numbers::pi / 180.0;
-        const double dLon = (lon2 - lon1) * std::numbers::pi / 180.0;
+        const double dLat = (lat2 - lat1) * M_PI / 180.0;
+        const double dLon = (lon2 - lon1) * M_PI / 180.0;
 
         // convert to radians
-        lat1 = (lat1) * std::numbers::pi / 180.0;
-        lat2 = (lat2) * std::numbers::pi / 180.0;
+        lat1 = (lat1) * M_PI / 180.0;
+        lat2 = (lat2) * M_PI / 180.0;
 
         // apply formulae
         const double a =

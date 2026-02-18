@@ -338,7 +338,7 @@ double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_var_ub(const Va
     if (t_var.name() == "__slack___objective") {
         return m_parent.m_kappa;
     }
-    if (t_var.name().starts_with("__slack_")) {
+    if (t_var.name().rfind("__slack_", 0) == 0) {
         return m_parent.m_kappa / m_parent.m_M;
     }
     return Reformulators::KKT::BoundProvider::get_var_ub(t_var);
@@ -373,7 +373,7 @@ double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_var_ub_dual_lb(
 }
 
 double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_var_lb_dual_ub(const Var& t_var) {
-    assert(t_var.name().starts_with("__slack_"));
+    assert(t_var.name().rfind("__slack_") == 0);
     if (t_var.name() == "__slack___objective") {
         return 1;
     }
