@@ -59,6 +59,13 @@ jobs:
           brew install bash
           echo "$(brew --prefix)/bin" >> $GITHUB_PATH
 
+      - name: Check compilers
+        run: |
+          which cc
+          which c++
+          cc --version
+          c++ --version
+
       - name: Install MibS
         run: |
           # Install MibS
@@ -72,7 +79,8 @@ jobs:
           cmake .. \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_INSTALL_PREFIX=$PWD/install \
-            -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_MIBS=YES \ 
+            -DCOIN_OR_DIR=${{github.workspace}}/dist \
+            -DUSE_MIBS=YES \
             -DCMAKE_C_COMPILER=/usr/bin/cc \
             -DCMAKE_CXX_COMPILER=/usr/bin/c++
           make -j$(sysctl -n hw.ncpu)
