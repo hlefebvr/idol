@@ -10,7 +10,6 @@
 #include "idol/general/utils/uuid.h"
 
 #ifdef IDOL_USE_MIBS
-#include "idol/general/utils/compatibility.h"
 #include <AlpsKnowledgeBrokerSerial.h>
 #include <MibSSolution.hpp>
 #endif

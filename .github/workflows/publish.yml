@@ -59,20 +59,19 @@ jobs:
           brew install bash
           echo "$(brew --prefix)/bin" >> $GITHUB_PATH
 
-      - name: Check compilers
+      - name: Switch to CommandLineTools
         run: |
+          xcode-select --install
+          sudo xcode-select -s /Library/Developer/CommandLineTools
           cc --version
           c++ --version
-
-      - name: Switch to CommandLineTools
-        run: sudo xcode-select -s /Library/Developer/CommandLineTools
 
       - name: Install MibS
         run: |
           # Install MibS
           wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
           chmod +x coinbrew
-          ./coinbrew --no-prompt --tests=none build MibS@1.2
+          /opt/homebrew/bin/bash coinbrew build MibS@1.2 --no-prompt --disable-cplex-libcheck --tests=none
 
       - name: Configure & Build
         run: |
@@ -82,8 +81,8 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=$PWD/install \
             -DCOIN_OR_DIR=${{github.workspace}}/dist \
             -DUSE_MIBS=YES \
-            -DCMAKE_C_COMPILER=/usr/bin/cc \
-            -DCMAKE_CXX_COMPILER=/usr/bin/c++
+            -DCMAKE_C_COMPILER=/Library/Developer/CommandLineTools/usr/bin/cc \
+            -DCMAKE_CXX_COMPILER=/Library/Developer/CommandLineTools/usr/bin/c++
           make -j$(sysctl -n hw.ncpu)
 
       - name: Install

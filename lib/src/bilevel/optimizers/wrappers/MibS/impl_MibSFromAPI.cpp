@@ -12,7 +12,6 @@
 
 #ifdef IDOL_USE_MIBS
 #include <MibSModel.hpp>
-#include "idol/general/utils/compatibility.h"
 #include <AlpsKnowledgeBrokerSerial.h>
 #include <OsiSolverInterface.hpp>
 #include <MibSSolution.hpp>
