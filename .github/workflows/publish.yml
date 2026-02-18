@@ -89,12 +89,12 @@ jobs:
           cd tap
 
           # Download tarball and compute SHA256
-          curl -L -o idol-${IDOL_VERSION}-macos.tar.gz \
-               https://github.com/hlefebvr/idol/releases/download/${IDOL_VERSION}/idol-${IDOL_VERSION}-macos.tar.gz
-          sha=$(shasum -a 256 idol-${IDOL_VERSION}-macos.tar.gz | awk '{print $1}')
+          curl -L -o idol-${IDOL_VERSION}-macos-arm64.tar.gz \
+               https://github.com/hlefebvr/idol/releases/download/${IDOL_VERSION}/idol-${IDOL_VERSION}-macos-arm64.tar.gz
+          sha=$(shasum -a 256 idol-${IDOL_VERSION}-macos-arm64.tar.gz | awk '{print $1}')
 
           # Assign variables for sed
-          MACOS_TARBALL="idol-${IDOL_VERSION}-macos.tar.gz"
+          MACOS_TARBALL="idol-${IDOL_VERSION}-macos-arm64.tar.gz"
           MACOS_SHA="$sha"
           formula="Formula/idol.rb"
           IDOL_PROJECT_VERSION=$(cat ../build/IDOL_VERSION)
