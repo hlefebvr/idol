@@ -158,6 +158,19 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install MibS
+        run: |
+          # Install MibS
+          mkdir coin-or && cd coin-or
+          wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
+          chmod +x coinbrew
+          ./coinbrew fetch MibS@1.2
+
+          # Here, we need to replace std::unary_function by std::__unary_function because this class is deprecated 
+          sed -i '' 's/std::unary_function/std::__unary_function/g' Alps/Alps/src/AlpsHelperFunctions.h
+
+          ./coinbrew build MibS@1.2 --no-prompt --disable-cplex-libcheck --tests=none
+
       - name: Install build dependencies
         run: |
           sudo apt-get update
