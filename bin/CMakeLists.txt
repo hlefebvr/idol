@@ -3,6 +3,9 @@ add_executable(idol_cl
         solve_milp.h
         solve_bilevel.h
         output.h
+        MethodManager.cpp
+        MethodManager.h
+        VariableAnalysis.h
 )
 target_link_libraries(idol_cl PRIVATE idol)
 
