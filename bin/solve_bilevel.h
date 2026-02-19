@@ -26,6 +26,7 @@ inline void solve_bilevel(const cxxopts::ParseResult& t_args) {
     model.use(mibs);
     model.optimize();
 
+    report_standard_output(model);
 }
 
 #endif //IDOL_SOLVE_BILEVEL_H
