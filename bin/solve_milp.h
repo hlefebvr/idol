@@ -15,10 +15,15 @@ inline void solve_milp(const cxxopts::ParseResult& t_args) {
 
     using namespace idol;
 
+    const bool verbose = t_args.count("verbose");
+
     Env env;
     auto model = GLPK::read_from_file(env, t_args["file"].as<std::string>());
 
-    model.use(Gurobi());
+    auto gurobi = Gurobi();
+    gurobi.with_logs(verbose);
+
+    model.use(gurobi);
     model.optimize();
 
     report_standard_output(model);
