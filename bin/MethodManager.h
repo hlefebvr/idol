@@ -5,6 +5,7 @@
 #ifndef IDOL_METHODMANAGER_H
 #define IDOL_METHODMANAGER_H
 
+#include <unordered_map>
 #include <map>
 #include <ranges>
 
