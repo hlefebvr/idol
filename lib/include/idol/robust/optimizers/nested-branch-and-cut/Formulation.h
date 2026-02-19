@@ -7,16 +7,16 @@
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
 
-namespace idol::Robust::NBC {
+namespace idol::Robust::BBBB {
     class Formulation;
 }
 
 namespace idol::Optimizers::Robust {
-    class NestedBranchAndCut;
+    class BilevelBasedBranchAndBound;
 }
 
-class idol::Robust::NBC::Formulation {
-    const idol::Optimizers::Robust::NestedBranchAndCut& m_parent;
+class idol::Robust::BBBB::Formulation {
+    const idol::Optimizers::Robust::BilevelBasedBranchAndBound& m_parent;
 
     Model m_model;
     std::vector<Var> m_first_stage_decisions;
@@ -24,7 +24,7 @@ class idol::Robust::NBC::Formulation {
 protected:
     void build_model();
 public:
-    Formulation(const idol::Optimizers::Robust::NestedBranchAndCut& t_parent);
+    Formulation(const idol::Optimizers::Robust::BilevelBasedBranchAndBound& t_parent);
 
     Model& model() { return m_model; }
     const Model& model() const { return m_model; }

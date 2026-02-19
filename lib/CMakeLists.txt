@@ -57,8 +57,6 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h
         include/idol/solvers.h
         src/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.cpp
-        include/idol/mixed-integer/optimizers/wrappers/Mosek/Optimizers_Mosek.h
-        src/mixed-integer/optimizers/wrappers/Mosek/Optimizers_Mosek.cpp
         include/idol/general/linear-algebra/MatrixIndices.h
         include/idol/general/linear-algebra/SquareMatrix.h
         include/idol/general/linear-algebra/to_rotated_quadratic_cone.h
@@ -81,10 +79,8 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/BreadthFirst.h
         include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h
         include/idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h
-        include/idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h
         src/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.cpp
         src/mixed-integer/optimizers/wrappers/GLPK/GLPK.cpp
-        src/mixed-integer/optimizers/wrappers/Mosek/Mosek.cpp
         include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h
         include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h
         src/mixed-integer/optimizers/wrappers/Gurobi/GurobiCallbackI.cpp
@@ -182,8 +178,6 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/wrappers/Osi/Optimizers_Osi.h
         include/idol/bilevel/modeling/read_from_file.h
         src/bilevel/modeling/read_from_file.cpp
-        include/idol/mixed-integer/optimizers/wrappers/Mosek/MosekCallbackI.h
-        src/mixed-integer/optimizers/wrappers/Mosek/MosekCallbackI.cpp
         include/idol/bilevel/modeling/Description.h
         include/idol/bilevel/modeling/write_to_file.h
         src/bilevel/modeling/write_to_file.cpp
@@ -296,12 +290,12 @@ add_library(idol STATIC
         src/robust/optimizers/column-and-constraint-generation/separation/Separation.cpp
         include/idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h
         src/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.cpp
-        include/idol/robust/optimizers/nested-branch-and-cut/NestedBranchAndCut.h
-        src/robust/optimizers/nested-branch-and-cut/NestedBranchAndBound.cpp
-        include/idol/robust/optimizers/nested-branch-and-cut/Optimizers_NestedBranchAndCut.h
-        src/robust/optimizers/nested-branch-and-cut/Optimizers_NestedBranchAndCut.cpp
+        include/idol/robust/optimizers/nested-branch-and-cut/BilevelBasedBranchAndBound.h
+        src/robust/optimizers/bilevel-based-branch-and-bound/BilevelBasedBranchAndBound.cpp
+        include/idol/robust/optimizers/nested-branch-and-cut/Optimizers_BilevelBasedBranchAndCut.h
+        src/robust/optimizers/bilevel-based-branch-and-bound/Optimizers_BilevelBasedBranchAndCut.cpp
         include/idol/robust/optimizers/nested-branch-and-cut/Formulation.h
-        src/robust/optimizers/nested-branch-and-cut/Formulation.cpp
+        src/robust/optimizers/bilevel-based-branch-and-bound/Formulation.cpp
         include/idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h
         src/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.cpp
 )
@@ -372,17 +366,6 @@ if (${USE_EIGEN})
     find_package(EIGEN REQUIRED)
     target_link_libraries(idol PUBLIC eigen)
     target_compile_definitions(idol PUBLIC IDOL_USE_EIGEN)
-
-endif()
-
-set(USE_MOSEK OFF CACHE BOOL "Build idol with Mosek (https://www.mosek.com)")
-set_DIR_variable(Mosek)
-if (${USE_MOSEK})
-
-    find_package(MOSEK REQUIRED)
-    target_link_libraries(idol PUBLIC mosek)
-    target_compile_definitions(idol PUBLIC IDOL_USE_MOSEK)
-    list(APPEND AVAILABLE_MILP_SOLVERS "Mosek")
 
 endif()
 

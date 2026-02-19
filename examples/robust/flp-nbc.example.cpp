@@ -16,7 +16,7 @@
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
-#include "idol/robust/optimizers/nested-branch-and-cut/NestedBranchAndCut.h"
+#include "idol/robust/optimizers/nested-branch-and-cut/BilevelBasedBranchAndBound.h"
 
 using namespace idol;
 
@@ -91,7 +91,7 @@ int main(int t_argc, const char** t_argv) {
     auto mibs = Bilevel::MibS();
     mibs.with_cplex_for_feasibility(true);
 
-    auto nested_branch_and_cut = Robust::NestedBranchAndCut(robust_description, bilevel_description);
+    auto nested_branch_and_cut = Robust::BilevelBasedBranchAndBound(robust_description, bilevel_description);
     nested_branch_and_cut.with_optimality_bilevel_optimizer(mibs);
     nested_branch_and_cut.with_logs(true);
 

@@ -17,6 +17,7 @@
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
+#include "idol/robust/optimizers/nested-branch-and-cut/BilevelBasedBranchAndBound.h"
 
 class RobustMethodManager : public MethodManager {
 public:
@@ -24,9 +25,9 @@ public:
         { "CCG-Farkas", { 50, "column-and-constraint generation with Farkas-based separation; see Ayoub and Poss (2016) [https://doi.org/10.1007/s10287-016-0249-2]" } },
         { "CCG-MibS", { 25, "column-and-constraint generation with separation by MibS" } },
         { "CCG-KKT-SOS1", { 20, "column-and-constraint generation with KKT-based separation using SOS1" } },
-        { "Yasol", { 5, "quantified programming formulation solved with Yasol; see Goerigk and Hartisch (2021) [https://doi.org/10.1016/j.cor.2021.105434]" } },
-        { "BBB-KKT-SOS1", { 10, "bilevel-based branch-and-bound with KKT using SOS1; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]" } },
-        { "BBB-MibS", { 15, "bilevel-based branch-and-bound with MibS; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]" } }
+        { "Yasol", { 15, "quantified programming formulation solved with Yasol; see Goerigk and Hartisch (2021) [https://doi.org/10.1016/j.cor.2021.105434]" } },
+        { "BBBB-MibS", { 5, "bilevel-based branch-and-bound with MibS; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]" } },
+        { "BBBB-KKT-SOS1", { 0, "bilevel-based branch-and-bound with KKT using SOS1; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]" } }
     }) {}
 };
 
@@ -121,9 +122,10 @@ inline void solve_robust(const cxxopts::ParseResult& t_args) {
 
                     if (stage_analysis.second_stage.all_bounded) {
                         method_manager.add("CCG-Farkas");
+                        method_manager.add("BBBB-MibS");
                     }
 
-                    method_manager.add("BBB-KKT-SOS1");
+                    method_manager.add("BBBB-KKT-SOS1");
 
                 } else {
 
@@ -141,10 +143,9 @@ inline void solve_robust(const cxxopts::ParseResult& t_args) {
 
                     if (stage_analysis.second_stage.all_bounded) {
                         method_manager.add("CCG-Farkas");
-
                     }
 
-                    method_manager.add("BBB-KKT-SOS1");
+                    method_manager.add("BBBB-KKT-SOS1");
 
                 }
 
@@ -169,7 +170,7 @@ inline void solve_robust(const cxxopts::ParseResult& t_args) {
 
                 if (!uncertainty_analysis.has_general_integer) {
                     std::cout << "-- Detected: binary uncertainty set." << std::endl;
-                    method_manager.add("BBB-MibS");
+                    method_manager.add("BBBB-MibS");
                 } else {
                     std::cout << "-- Detected: integer uncertainty set." << std::endl;
                 }
@@ -189,7 +190,7 @@ inline void solve_robust(const cxxopts::ParseResult& t_args) {
 
     std::cout << "-- Solving problem using " << method << "." << std::endl;
 
-    if (method.starts_with("CCG")) {
+    if (method.starts_with("CCG-")) {
 
         auto ccg = Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
         ccg.with_initial_scenario_by_maximization(Gurobi());
@@ -227,6 +228,33 @@ inline void solve_robust(const cxxopts::ParseResult& t_args) {
         }
 
         model.use(ccg);
+
+    } else if (method.starts_with("BBBB-")) {
+
+        auto bbbb = Robust::BilevelBasedBranchAndBound(robust_description, bilevel_description);
+
+        bbbb.with_logs(p_verbose);
+
+        if (method == "BBBB-MibS") {
+
+            auto mibs = Bilevel::MibS();
+
+            bbbb.with_feasibility_bilevel_optimizer(mibs);
+            bbbb.with_optimality_bilevel_optimizer(mibs);
+
+        } else if (method == "BBBB-KKT-SOS1") {
+
+            auto kkt = Bilevel::KKT();
+            kkt.with_sos1_constraints(true);
+            kkt.with_single_level_optimizer(Gurobi());
+
+            bbbb.with_first_stage_relaxation(true);
+            bbbb.with_feasibility_bilevel_optimizer(kkt);
+            bbbb.with_optimality_bilevel_optimizer(kkt);
+
+        }
+
+        model.use(bbbb);
 
     }
 
