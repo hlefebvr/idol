@@ -12,16 +12,9 @@
 
 namespace idol::Bilevel {
 
-    namespace impl {
-        idol::Model
-        read_from_file(Env &t_env,
-                       const std::string &t_path_to_aux,
-                       idol::Bilevel::Description& t_lower_level_description,
-                       const std::function<Model(Env &, const std::string &)> &t_mps_reader);
-    }
-
     Model read_from_file(Env& t_env, const std::string& t_path_to_aux, Bilevel::Description& t_lower_level_description);
     std::pair<Model, Bilevel::Description> read_from_file(Env& t_env, const std::string& t_path_to_aux);
+    Description read_bilevel_description(const Model& t_model, const std::string& t_path_to_aux);
 
 }
 

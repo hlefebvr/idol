@@ -9,6 +9,7 @@
 #include <fstream>
 #include <filesystem>
 #include <algorithm>
+#include <assert.h>
 
 using namespace idol;
 
@@ -20,8 +21,10 @@ class AuxParser {
 
     unsigned int m_n_variables = 0;
     unsigned int m_n_constraints = 0;
-    std::unique_ptr<Model> m_high_point_relaxation;
+    Model* m_high_point_relaxation = nullptr;
     Bilevel::Description& m_lower_level_description;
+
+    void parse(const std::string& t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_create_model_from_mps);
 
     void read_aux_file(const std::string& t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file);
     bool read_tag(std::ifstream& t_file, const std::string& t_tag, bool t_mandatory = true);
@@ -38,12 +41,17 @@ class AuxParser {
     void set_ctr_annotations();
     void create_lower_level_objective();
 public:
-    explicit AuxParser(Env& t_env,
-                       Bilevel::Description& t_lower_level_description,
-                       const std::string& t_path_to_aux,
-                       const std::function<Model(Env&, const std::string&)>& t_create_model_from_mps);
+    AuxParser(Env& t_env,
+               Bilevel::Description& t_lower_level_description,
+               const std::string& t_path_to_aux,
+               const std::function<Model(Env&, const std::string&)>& t_create_model_from_mps);
 
-    [[nodiscard]] Model model() { auto result = std::move(*m_high_point_relaxation); m_high_point_relaxation.reset(); return result; }
+    AuxParser(const Model& t_model,
+               Bilevel::Description& t_lower_level_description,
+               const std::string& t_path_to_aux,
+               const std::function<Model(Env&, const std::string&)>& t_create_model_from_mps);
+
+    [[nodiscard]] Model model() { assert(m_high_point_relaxation); auto result = std::move(*m_high_point_relaxation); delete m_high_point_relaxation; m_high_point_relaxation = nullptr; return result; }
 };
 
 AuxParser::AuxParser(Env &t_env,
@@ -54,11 +62,26 @@ AuxParser::AuxParser(Env &t_env,
     : m_env(t_env),
       m_lower_level_description(t_lower_level_description) {
 
+    parse(t_path_to_aux, t_create_model_from_mps);
+
+}
+
+AuxParser::AuxParser(const Model& t_model, Bilevel::Description& t_lower_level_description, const std::string& t_path_to_aux,
+                     const std::function<Model(Env&, const std::string&)>& t_create_model_from_mps)
+                         : m_env(t_model.env()),
+                           m_lower_level_description(t_lower_level_description),
+                           m_high_point_relaxation(const_cast<Model*>(&t_model)) {
+
+    parse(t_path_to_aux, t_create_model_from_mps);
+
+}
+
+void AuxParser::parse(const std::string& t_path_to_aux,
+                     const std::function<Model(Env&, const std::string&)>& t_create_model_from_mps) {
     read_aux_file(t_path_to_aux, t_create_model_from_mps);
     set_var_annotations();
     set_ctr_annotations();
     create_lower_level_objective();
-
 }
 
 void AuxParser::read_aux_file(const std::string &t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file) {
@@ -162,12 +185,12 @@ void AuxParser::read_file(std::ifstream &t_file, const std::string &t_path_to_au
     const auto path = read_path(t_file, t_path_to_aux);
 
     if (std::filesystem::exists(path)) {
-        m_high_point_relaxation = std::make_unique<Model>(t_read_model_from_file(m_env, path));
+        m_high_point_relaxation = new Model(t_read_model_from_file(m_env, path));
         return;
     }
 
     if (std::filesystem::exists(path + ".gz")) {
-        m_high_point_relaxation = std::make_unique<Model>(t_read_model_from_file(m_env, path + ".gz"));
+        m_high_point_relaxation = new Model(t_read_model_from_file(m_env, path + ".gz"));
         return;
     }
 
@@ -247,31 +270,29 @@ void AuxParser::create_lower_level_objective() {
     m_lower_level_description.set_lower_level_obj(std::move(obj));
 }
 
-idol::Model
-idol::Bilevel::impl::read_from_file(Env& t_env,
-                              const std::string& t_path_to_aux,
-                              Bilevel::Description& t_lower_level_description,
-                              const std::function<Model(Env&, const std::string&)>& t_mps_reader) {
-
-    AuxParser parser(t_env, t_lower_level_description, t_path_to_aux, t_mps_reader);
-
-    return parser.model();
-
-}
-
-Model
-idol::Bilevel::read_from_file(Env& t_env, const std::string& t_path_to_aux, Bilevel::Description& t_lower_level_description) {
-    return idol::Bilevel::impl::read_from_file(t_env, t_path_to_aux, t_lower_level_description, [](Env& t_env, const std::string& t_file) { return GLPK::read_from_file(t_env, t_file); });
-}
-
 std::pair<Model, Bilevel::Description> Bilevel::read_from_file(Env& t_env, const std::string& t_path_to_aux)  {
 
     Bilevel::Description lower_level_description(t_env);
 
-    auto high_point_relaxation = Bilevel::impl::read_from_file(t_env, t_path_to_aux, lower_level_description,[](Env& t_env, const std::string& t_file) { return GLPK::read_from_file(t_env, t_file); });
+    AuxParser parser(t_env,
+                     lower_level_description,
+                       t_path_to_aux,
+                       [](Env& t_env, const std::string& t_file) { return GLPK::read_from_file(t_env, t_file); });
 
     return {
-        std::move(high_point_relaxation),
+        std::move(parser.model()),
         std::move(lower_level_description)
     };
+}
+
+Bilevel::Description idol::Bilevel::read_bilevel_description(const Model& t_model, const std::string& t_path_to_aux) {
+
+    Bilevel::Description result(t_model.env());
+
+    AuxParser parser(t_model,
+                     result,
+                       t_path_to_aux,
+                       [](Env& t_env, const std::string& t_file) { return GLPK::read_from_file(t_env, t_file); });
+
+    return result;
 }

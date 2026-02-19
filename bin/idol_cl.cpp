@@ -2,104 +2,82 @@
 // Created by Henri on 18/01/2026.
 //
 #include <iostream>
-#include <idol/mixed-integer/optimizers/padm/PADM.h>
+#include "solve_milp.h"
+#include "solve_robust.h"
+#include "solve_bilevel.h"
 
-#include "cxxopts.hpp"
-#include "idol/modeling.h"
-#include "idol/bilevel/modeling/read_from_file.h"
-#include "idol/bilevel/optimizers/KKT/KKT.h"
-#include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
-#include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
-#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
-#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
-#include "idol/robust/modeling/read_from_file.h"
-#include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
-#include "idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h"
-#include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
-#include "idol/robust/optimizers/nested-branch-and-cut/NestedBranchAndCut.h"
+enum ProblemType { MILP, RobustProblem, BilevelProblem, RobustBilevelProblem };
 
-using namespace idol;
+std::ostream& operator<<(std::ostream& t_os, ProblemType t_problem_type) {
+    switch (t_problem_type) {
+        case MILP: return t_os << "MILP";
+        case RobustProblem: return t_os << "Robust Problem";
+        case BilevelProblem: return t_os << "Bilevel Problem";
+        default:;
+    }
+    throw std::runtime_error("Undefined problem type.");
+}
 
 int main(int t_argc, const char ** t_argv) {
 
     cxxopts::Options options("idol_cli", "idol command line interface");
 
     options.add_options()
-        ("mps", ".mps file for the deterministic model", cxxopts::value<std::string>())
-        ("aux", ".aux file for the decision stages", cxxopts::value<std::string>())
-        ("par", ".par file for the uncertainty parametrization", cxxopts::value<std::string>())
-        ("unc", ".mps file for the uncertainty set", cxxopts::value<std::string>())
-        ("method", "Method", cxxopts::value<std::string>())
-        ("zero-one-uncertainty-set", "For robust problems, indicates if the uncertainty set has a 0-1 structure.")
-        ("view", "View")
-        ("h,help", "Print help")
-        ("v,verbose", "Verbose mode")
+        ("file", "Main model (.mps/.lp)", cxxopts::value<std::string>())
+        ("bilevel", "Bilevel structure / decision stages (.aux)", cxxopts::value<std::string>())
+        ("uncertainty-param", "Uncertainty parametrization (.par)", cxxopts::value<std::string>())
+        ("uncertainty-set", "Uncertainty set (.mps)", cxxopts::value<std::string>())
+        ("help", "Print help")
+        ("verbose", "Verbose mode")
         ("version", "Version");
 
-    const auto result = options.parse(t_argc, t_argv);
+    options.parse_positional({"file"});
+    options.positional_help("file");
 
-    if (result.count("help")) {
+    const auto args = options.parse(t_argc, t_argv);
+
+    if (args.count("help")) {
         std::cout << options.help() << "\n";
         return 0;
     }
 
-    if (result.count("version")) {
+    if (args.count("version")) {
         std::cout << "idol " << IDOL_VERSION << "\n";
         return 0;
     }
 
-    const auto mps = result["mps"].as<std::string>();
-    const auto aux = result["aux"].as<std::string>();
-    const auto unc_par = result["par"].as<std::string>();
-    const auto unc_mps = result["unc"].as<std::string>();
-    const auto method = result["method"].as<std::string>();
-    const auto view = result["view"].count() > 0;
-    const auto verbose = result["verbose"].count() > 0;
-    const auto zero_one_uncertainty_set = result["zero-one-uncertainty-set"].count() > 0;
+    const bool has_file = args.count("file") > 0;
+    const bool has_bilevel = args.count("bilevel") > 0;
+    const bool has_uncertainty_param = args.count("uncertainty_param") > 0;
+    const bool has_uncertainty_set = args.count("uncertainty_set") > 0;
 
-    Env env;
-    auto [model, bilevel_description] = Bilevel::read_from_file(env, aux);
-    auto robust_description = Robust::read_from_file(model, unc_par, unc_mps);
+    ProblemType problem_type = MILP;
 
-    if (view) {
-        std::cout << "Parameterized Model:\n";
-        std::cout << Robust::Description::View(model, robust_description) << '\n';
-        std::cout << "Uncertainty Set:\n";
-        std::cout << robust_description.uncertainty_set() << std::endl;
+    if (!has_file) {
+        std::cerr << "An .lp/.mps file is mandatory." << std::endl;
+        std::cout << options.help() << "\n";
+        return 1;
     }
 
-    if (method == "ccg") {
-
-        auto ccg = Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
-        ccg.with_master_optimizer(Gurobi());
-        ccg.with_initial_scenario_by_maximization(Gurobi());
-        //ccg.add_separation(Robust::CCG::OptimalitySeparation().with_bilevel_optimizer(kkt));
-        ccg.add_separation(
-            Robust::CCG::BigMFreeSeparation()
-                .with_single_level_optimizer(Gurobi())
-                .with_zero_one_uncertainty_set(zero_one_uncertainty_set)
-            );
-        ccg.with_logs(verbose);
-
-        model.use(ccg);
-
-    } else if (method == "nested-branch-and-cut") {
-
-        auto nested_branch_and_cut = Robust::NestedBranchAndCut(robust_description, bilevel_description);
-        nested_branch_and_cut.with_optimality_bilevel_optimizer(Bilevel::MibS());
-
-        model.use(nested_branch_and_cut);
-
-    } else {
-        throw Exception("Unknown method '" + method + "'.");
+    if (has_bilevel) {
+        problem_type = BilevelProblem;
     }
 
-    model.optimize();
+    if (has_uncertainty_param || has_uncertainty_set) {
+        problem_type = RobustProblem;
+        if (!has_uncertainty_param || !has_uncertainty_set) {
+            std::cerr << "For robust problems, you must provide both an uncertainty parametrization and an uncertainty set." << std::endl;
+            std::cout << options.help() << "\n";
+            return 1;
+        }
+    }
 
-    std::cout << "Total time: " << model.optimizer().time().count() << std::endl;
-    std::cout << "Status: " << model.get_status() << " (" << model.get_reason() << ")" << std::endl;
-    std::cout << "Objective: " << model.get_best_obj() << std::endl;
-    std::cout << "Bound: " << model.get_best_bound() << std::endl;
+    switch (problem_type) {
+        case MILP: solve_milp(args); break;
+        case BilevelProblem: solve_bilevel(args); break;
+        case RobustProblem: solve_robust(args);
+        default: throw std::runtime_error("Sorry, an error occurred... Undefined problem type.");
+    }
 
     return 0;
 }

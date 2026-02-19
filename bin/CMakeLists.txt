@@ -1,5 +1,7 @@
 add_executable(idol_cl
         idol_cl.cpp
+        solve_milp.h
+        solve_bilevel.h
 )
 target_link_libraries(idol_cl PRIVATE idol)
 
