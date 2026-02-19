@@ -39,7 +39,7 @@ public:
 
     BigMFreeSeparation& with_single_level_optimizer(const OptimizerFactory& t_optimizer);
 
-    BigMFreeSeparation& with_zero_one_uncertainty_set(bool t_value);
+    BigMFreeSeparation& with_binary_uncertainty_set(bool t_value);
 
     std::pair<idol::Model, idol::Bilevel::Description> build_separation_problem() override;
 

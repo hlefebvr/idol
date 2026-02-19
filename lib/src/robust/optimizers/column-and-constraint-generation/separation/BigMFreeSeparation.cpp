@@ -130,7 +130,7 @@ idol::Robust::CCG::BigMFreeSeparation& idol::Robust::CCG::BigMFreeSeparation::wi
     return *this;
 }
 
-idol::Robust::CCG::BigMFreeSeparation& idol::Robust::CCG::BigMFreeSeparation::with_zero_one_uncertainty_set(bool t_value) {
+idol::Robust::CCG::BigMFreeSeparation& idol::Robust::CCG::BigMFreeSeparation::with_binary_uncertainty_set(bool t_value) {
 
     if (m_with_zero_one_uncertainty_set) {
         throw Exception("Zero-one uncertainty set has already been configured.");

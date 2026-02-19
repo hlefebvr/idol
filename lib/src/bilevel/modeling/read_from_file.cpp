@@ -112,7 +112,6 @@ void AuxParser::read_aux_file(const std::string &t_path_to_aux, const std::funct
 
     if (m_high_point_relaxation) {
         file.close();
-        std::cout << "Skipping parsing HPR from MPS or LP file, using argument instead." << std::endl;
         return;
     }
 

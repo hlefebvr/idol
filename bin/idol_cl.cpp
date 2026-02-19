@@ -12,8 +12,8 @@ enum ProblemType { MILP, RobustProblem, BilevelProblem, RobustBilevelProblem };
 std::ostream& operator<<(std::ostream& t_os, ProblemType t_problem_type) {
     switch (t_problem_type) {
         case MILP: return t_os << "MILP";
-        case RobustProblem: return t_os << "Robust Problem";
-        case BilevelProblem: return t_os << "Bilevel Problem";
+        case RobustProblem: return t_os << "robust problem";
+        case BilevelProblem: return t_os << "bilevel problem";
         default:;
     }
     throw std::runtime_error("Undefined problem type.");
@@ -82,8 +82,8 @@ int main(int t_argc, const char ** t_argv) {
 
     const bool has_file = args.count("file") > 0;
     const bool has_bilevel = args.count("bilevel") > 0;
-    const bool has_uncertainty_param = args.count("uncertainty_param") > 0;
-    const bool has_uncertainty_set = args.count("uncertainty_set") > 0;
+    const bool has_uncertainty_param = args.count("uncertainty-param") > 0;
+    const bool has_uncertainty_set = args.count("uncertainty-set") > 0;
 
     ProblemType problem_type = MILP;
 
@@ -106,10 +106,14 @@ int main(int t_argc, const char ** t_argv) {
         }
     }
 
+    std::cout << "-- The main input file is " << args["file"].as<std::string>() << ".\n";
+
+    std::cout << '\n';
+
     switch (problem_type) {
         case MILP: solve_milp(args); break;
         case BilevelProblem: solve_bilevel(args); break;
-        case RobustProblem: solve_robust(args);
+        case RobustProblem: solve_robust(args); break;
         default: throw std::runtime_error("Sorry, an error occurred... Undefined problem type.");
     }
 
