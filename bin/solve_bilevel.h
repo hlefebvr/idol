@@ -14,7 +14,7 @@ inline void solve_bilevel(const cxxopts::ParseResult& t_args) {
 
     using namespace idol;
 
-    const bool verbose = t_args.count("verbose");
+    const bool verbose = t_args.count("mute") == 0;
 
     Env env;
     auto model = GLPK::read_from_file(env, t_args["file"].as<std::string>());

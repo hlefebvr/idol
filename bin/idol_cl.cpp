@@ -5,6 +5,7 @@
 #include "solve_milp.h"
 #include "solve_robust.h"
 #include "solve_bilevel.h"
+#include "idol/general/optimizers/logs.h"
 
 enum ProblemType { MILP, RobustProblem, BilevelProblem, RobustBilevelProblem };
 
@@ -18,7 +19,40 @@ std::ostream& operator<<(std::ostream& t_os, ProblemType t_problem_type) {
     throw std::runtime_error("Undefined problem type.");
 }
 
+void print_splash() {
+
+    constexpr int width = 40;
+
+    // Top border
+    std::cout << "╔════════════════════════════════════════╗\n";
+
+    // Title
+    std::cout << "║";
+    idol::center(std::cout, std::string("idol ") + IDOL_VERSION, width);
+    std::cout << "║\n";
+
+    // Subtitle
+    std::cout << "║";
+    idol::center(std::cout, "A C++ Framework for Optimization", width);
+    std::cout << "║\n";
+
+    // Credit
+    std::cout << "║";
+    idol::center(std::cout, "by Henri Lefebvre, 2026", width);
+    std::cout << "║\n";
+
+    // Website
+    std::cout << "║";
+    idol::center(std::cout, "https://henrilefebvre.com/idol", width);
+    std::cout << "║\n";
+
+    // Bottom border
+    std::cout << "╚════════════════════════════════════════╝\n";
+}
+
 int main(int t_argc, const char ** t_argv) {
+
+    print_splash();
 
     cxxopts::Options options("idol_cli", "idol command line interface");
 
@@ -28,7 +62,7 @@ int main(int t_argc, const char ** t_argv) {
         ("uncertainty-param", "Uncertainty parametrization (.par)", cxxopts::value<std::string>())
         ("uncertainty-set", "Uncertainty set (.mps)", cxxopts::value<std::string>())
         ("help", "Print help")
-        ("verbose", "Verbose mode")
+        ("mute", "Mute mode")
         ("version", "Version");
 
     options.parse_positional({"file"});

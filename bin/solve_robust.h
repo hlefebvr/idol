@@ -14,11 +14,13 @@ inline void solve_robust(const cxxopts::ParseResult& t_args) {
 
     using namespace idol;
 
+    const bool verbose = t_args.count("mute") == 0;
+
     Env env;
     // auto robust_description = Robust::read_from_file(model, uncertainty_param, uncertainty_set);
 
     throw Exception("Not implemented.");
-    
+
 }
 
 #endif //IDOL_SOLVE_ROBUST_H
