@@ -49,8 +49,8 @@ inline UncertaintySetAnalysisResult get_uncertainty_set_analysis(const idol::Mod
 }
 
 struct StageAnalysisResult {
-    struct FirstStage : public VariableAnalysisResult {};
-    struct SecondStage : public VariableAnalysisResult {};
+    struct FirstStage : VariableAnalysisResult {};
+    struct SecondStage : VariableAnalysisResult {};
 
     FirstStage first_stage;
     SecondStage second_stage;
@@ -238,6 +238,7 @@ inline void solve_robust(const cxxopts::ParseResult& t_args) {
         if (method == "BBBB-MibS") {
 
             auto mibs = Bilevel::MibS();
+            mibs.with_cplex_for_feasibility(true);
 
             bbbb.with_feasibility_bilevel_optimizer(mibs);
             bbbb.with_optimality_bilevel_optimizer(mibs);

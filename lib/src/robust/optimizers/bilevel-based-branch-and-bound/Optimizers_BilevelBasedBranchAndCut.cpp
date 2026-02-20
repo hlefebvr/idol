@@ -194,19 +194,13 @@ void idol::Optimizers::Robust::BilevelBasedBranchAndBound::Node::save(const Mode
     model.unuse();
     model.set_obj_expr((-l1_norm));
 
-    if (true) {
-        model.use(feasibility_optimizer);
-    } else {
-        model.use(Bilevel::PessimisticAsOptimistic(formulation.bilevel_description()) + feasibility_optimizer);
-    }
+    model.use(feasibility_optimizer);
 
     model.optimize();
 
     if (model.get_best_obj() > -.5) {
         return;
     }
-
-    auto sol = save_primal(model);
 
     bool is_feasible = true;
     for (const auto& var : formulation.first_stage_decisions()) {
