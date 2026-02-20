@@ -106,6 +106,10 @@ idol::Optimizers::Gurobi::DynamicLib::DynamicLib() {
     const auto gurobi_path = find_library();
     m_handle = dlopen(gurobi_path.c_str(), RTLD_LAZY);
 
+    if (!m_handle) {
+        return;
+    }
+
     GUROBI_SYM_LOAD(GRBversion);
 
     int major, minor, tech;
