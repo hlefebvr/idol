@@ -115,13 +115,17 @@ idol::Optimizers::HiGHS::DynamicLib::DynamicLib() {
 }
 
 idol::Optimizers::HiGHS::DynamicLib::~DynamicLib() {
-    dlclose(m_handle);
+    if (m_handle) {
+        dlclose(m_handle);
+    }
 }
 
-idol::Optimizers::HiGHS::DynamicLib& idol::Optimizers::HiGHS::get_dynamic_lib() {
-    if (!m_dynamic_lib)
-    {
+idol::Optimizers::HiGHS::DynamicLib& idol::Optimizers::HiGHS::get_dynamic_lib(bool t_throw_on_fail) {
+    if (!m_dynamic_lib) {
         m_dynamic_lib = std::make_unique<DynamicLib>();
+    }
+    if (t_throw_on_fail && !m_dynamic_lib->is_available()) {
+        throw Exception("Gurobi library is not available");
     }
     return *m_dynamic_lib;
 }
@@ -657,6 +661,11 @@ void idol::Optimizers::HiGHS::set_param_logs(bool t_value) {
     auto& lib = get_dynamic_lib();
     lib.Highs_setBoolOptionValue(m_model, "output_flag", t_value);
     Optimizer::set_param_logs(t_value);
+}
+
+bool idol::Optimizers::HiGHS::is_available() {
+    auto& lib = get_dynamic_lib(false);
+    return lib.is_available();
 }
 
 idol::Optimizers::HiGHS::~HiGHS() {

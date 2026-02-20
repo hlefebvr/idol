@@ -142,13 +142,17 @@ idol::Optimizers::GLPK::DynamicLib::DynamicLib() {
 }
 
 idol::Optimizers::GLPK::DynamicLib::~DynamicLib() {
-    dlclose(m_handle);
+    if (m_handle) {
+        dlclose(m_handle);
+    }
 }
 
-idol::Optimizers::GLPK::DynamicLib& idol::Optimizers::GLPK::get_dynamic_lib() {
-    if (!m_dynamic_lib)
-    {
+idol::Optimizers::GLPK::DynamicLib& idol::Optimizers::GLPK::get_dynamic_lib(bool t_throw_on_fail) {
+    if (!m_dynamic_lib) {
         m_dynamic_lib = std::make_unique<DynamicLib>();
+    }
+    if (t_throw_on_fail && !m_dynamic_lib->is_available()) {
+        throw Exception("Gurobi library is not available");
     }
     return *m_dynamic_lib;
 }
@@ -892,6 +896,11 @@ idol::Model idol::Optimizers::GLPK::read_from_file(idol::Env &t_env, const std::
     }
 
     throw Exception("Could not infer file type from file extension.");
+}
+
+bool idol::Optimizers::GLPK::is_available() {
+    auto& lib = get_dynamic_lib(false);
+    return lib.is_available();
 }
 
 idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t_model) {

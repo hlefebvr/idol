@@ -35,7 +35,7 @@ class idol::Optimizers::GLPK  : public OptimizerWithLazyUpdates<int, int, int, i
     std::stack<int> m_deleted_variables;
     std::stack<int> m_deleted_constraints;
 protected:
-    static DynamicLib& get_dynamic_lib();
+    static DynamicLib& get_dynamic_lib(bool t_throw_on_fail = true);
 
     void hook_build() override;
     void hook_optimize() override;
@@ -93,6 +93,7 @@ public:
 
     static Model read_from_file(Env& t_env, const std::string& t_filename);
 
+    static bool is_available();
 };
 
 #define GLPK_SYM_PTR(name) \
@@ -157,6 +158,8 @@ public:
     DynamicLib();
 
     ~DynamicLib();
+
+    [[nodiscard]] bool is_available() const { return m_handle; }
 };
 
 #endif //IDOL_OPTIMIZERS_GLPK_H

@@ -33,7 +33,7 @@ class idol::Optimizers::HiGHS  : public OptimizerWithLazyUpdates<int, int, int, 
     double* m_row_value = nullptr;
     double* m_row_dual = nullptr;
 protected:
-    static DynamicLib& get_dynamic_lib();
+    static DynamicLib& get_dynamic_lib(bool t_throw_on_fail = true);
 
     void hook_build() override;
     void hook_optimize() override;
@@ -86,6 +86,7 @@ public:
     void set_param_presolve(bool t_value) override;
     void set_param_logs(bool t_value) override;
 
+    static bool is_available();
 };
 
 
@@ -131,6 +132,8 @@ public:
     DynamicLib();
 
     ~DynamicLib();
+
+    [[nodiscard]] bool is_available() const { return m_handle; }
 };
 
 

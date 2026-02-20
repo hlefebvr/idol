@@ -158,14 +158,16 @@ idol::Optimizers::Gurobi::DynamicLib::DynamicLib() {
 }
 
 idol::Optimizers::Gurobi::DynamicLib::~DynamicLib() {
-    dlclose(m_handle);
+    if (m_handle) {
+        dlclose(m_handle);
+    }
 }
 
 idol::Optimizers::Gurobi::DynamicLib& idol::Optimizers::Gurobi::get_dynamic_lib(bool t_throw_on_fail) {
     if (!m_dynamic_lib) {
         m_dynamic_lib = std::make_unique<DynamicLib>();
     }
-    if (!m_dynamic_lib->is_available()) {
+    if (t_throw_on_fail && !m_dynamic_lib->is_available()) {
         throw Exception("Gurobi library is not available");
     }
     return *m_dynamic_lib;

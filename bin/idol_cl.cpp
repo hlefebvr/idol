@@ -6,6 +6,9 @@
 #include "solve_robust.h"
 #include "solve_bilevel.h"
 #include "idol/general/optimizers/logs.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"
 
 enum ProblemType { MILP, RobustProblem, BilevelProblem, RobustBilevelProblem };
 
@@ -76,7 +79,32 @@ int main(int t_argc, const char ** t_argv) {
     }
 
     if (args.count("version")) {
-        std::cout << "idol " << IDOL_VERSION << "\n";
+        std::cout << "-- Dependencies\n";
+
+        std::cout << "--\tGLPK: ";
+        if (idol::Optimizers::GLPK::is_available()) {
+            std::cout << "available";
+        } else {
+            std::cout << "not found";
+        }
+        std::cout << "\n";
+
+        std::cout << "--\tGurobi: ";
+        if (idol::Optimizers::Gurobi::is_available()) {
+            std::cout << "available";
+        } else {
+            std::cout << "not found";
+        }
+        std::cout << "\n";
+
+        std::cout << "--\tHiGHS: ";
+        if (idol::Optimizers::HiGHS::is_available()) {
+            std::cout << "available";
+        } else {
+            std::cout << "not found";
+        }
+        std::cout << "\n";
+
         return 0;
     }
 

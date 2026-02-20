@@ -493,11 +493,11 @@ install(DIRECTORY "${idol_SOURCE_DIR}/lib/include/"
 
 install(TARGETS idol
         EXPORT idol_targets
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin
-        INCLUDES DESTINATION include/idol
-        PUBLIC_HEADER DESTINATION include/idol
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 include(GNUInstallDirs)
@@ -521,7 +521,7 @@ write_basic_package_version_file(
 
 install(EXPORT idol_targets
         FILE idolTargets.cmake
-        DESTINATION lib/cmake/idol
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/idol
         )
 
 configure_file(idolConfig.cmake.in idolConfig.cmake @ONLY)
@@ -530,7 +530,7 @@ install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/idolConfig.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/idolConfigVersion.cmake"
         "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h"
-        DESTINATION lib/cmake/idol
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/idol
         )
 
 file(WRITE "${CMAKE_BINARY_DIR}/IDOL_VERSION" "${PROJECT_VERSION}")
