@@ -178,12 +178,12 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -B build \
-            -DCMAKE_BUILD_TYPE=Release
-
-      - name: Build
-        run: |
-          cmake --build build -j$(nproc)
+          mkdir -p build && cd build
+          cmake .. \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCOIN_OR_DIR=${{github.workspace}}/coin-or/dist \
+            -DUSE_MIBS=YES
+          make -j$(nproc)
 
       - name: Generate DEB package with CPack
         run: |
