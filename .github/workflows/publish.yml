@@ -182,7 +182,7 @@ jobs:
           cmake .. \
             -DCMAKE_BUILD_TYPE=Release \
             -DCOIN_OR_DIR=${{github.workspace}}/coin-or/dist \
-            -DCMAKE_INSTALL_PREFIX=$PWD/install \
+            -DCMAKE_INSTALL_PREFIX=$PWD/../install \
             -DUSE_MIBS=YES
           make -j$(nproc) install
 

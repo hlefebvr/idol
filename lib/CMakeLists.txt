@@ -299,8 +299,6 @@ add_library(idol STATIC
 
 target_link_libraries(idol PRIVATE dl)
 
-set(SHIP_COIN_OR OFF)
-
 if (APPLE)
     message("Apple detected, OpenMP will not be used.")
 elseif (NOT APPLE)
@@ -373,14 +371,11 @@ if (${USE_CPLEX})
 
 endif()
 
-set(USE_OSI_CPLEX OFF CACHE BOOL "Build idol with OsiCplex (https://projects.coin-or.org/OsiCplex)")
-if (${USE_OSI_CPLEX})
+#######################
+## COIN-OR LIBRARIES ##
+#######################
 
-    set(USE_OSI ON)
-    target_compile_definitions(idol PUBLIC IDOL_USE_OSI_CPLEX)
-    list(APPEND AVAILABLE_MILP_SOLVERS "OsiCplex")
-
-endif()
+set(SHIP_COIN_OR OFF)
 
 set_DIR_variable(coin_or)
 
@@ -393,7 +388,7 @@ if (${USE_OSI_SYMPHONY})
     target_compile_definitions(idol PUBLIC IDOL_USE_OSI_SYMPHONY)
     list(APPEND AVAILABLE_MILP_SOLVERS "OsiSymphony")
 
-    list(APPEND SHIPPED_LIBRARIES ${OSI_SYM_LIBRARY})
+    set(SHIP_COIN_OR ON)
 
 endif()
 
