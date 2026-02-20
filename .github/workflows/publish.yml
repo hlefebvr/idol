@@ -182,8 +182,9 @@ jobs:
           cmake .. \
             -DCMAKE_BUILD_TYPE=Release \
             -DCOIN_OR_DIR=${{github.workspace}}/coin-or/dist \
+            -DCMAKE_INSTALL_PREFIX=$PWD/build \
             -DUSE_MIBS=YES
-          make -j$(nproc)
+          make -j$(nproc) install
 
       - name: Generate DEB package with CPack
         run: |
