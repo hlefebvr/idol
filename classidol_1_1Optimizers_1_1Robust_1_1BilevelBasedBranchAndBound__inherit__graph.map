@@ -1,0 +1,9 @@
+<map id="idol::Optimizers::Robust::BilevelBasedBranchAndBound" name="idol::Optimizers::Robust::BilevelBasedBranchAndBound">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,565,240,1065"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Algorithm.html" title=" " alt="" coords="46,232,199,517"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,531,125,565,120,565,120,531"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Optimizer.html" title=" " alt="" coords="67,119,178,184"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="125,198,125,232,120,232,120,198"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="49,5,196,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="125,84,125,119,120,119,120,84"/>
+</map>

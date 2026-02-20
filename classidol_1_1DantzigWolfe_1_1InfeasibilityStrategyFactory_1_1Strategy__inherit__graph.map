@@ -1,0 +1,7 @@
+<map id="idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy" name="idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy">
+<area shape="rect" id="Node000001" title=" " alt="" coords="91,5,292,320"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1DantzigWolfe_1_1ArtificialCosts_1_1Strategy.html" title=" " alt="" coords="5,368,180,468"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,334,114,369,109,367,123,332"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1DantzigWolfe_1_1FarkasPricing_1_1Strategy.html" title=" " alt="" coords="205,378,375,458"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="260,332,277,377,272,379,255,334"/>
+</map>

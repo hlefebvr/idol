@@ -1,0 +1,11 @@
+<map id="idol::Optimizers::BranchAndBound&lt; NodeInfoT &gt;" name="idol::Optimizers::BranchAndBound&lt; NodeInfoT &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,569,211,1069"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1Optimizers_1_1BranchAndBound.html" title=" " alt="" coords="5,1132,211,1632"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="111,1083,111,1132,105,1132,105,1083"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Algorithm.html" title=" " alt="" coords="31,235,185,520"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,534,111,569,105,569,105,534"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Optimizer.html" title=" " alt="" coords="53,120,163,185"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="111,199,111,235,105,235,105,199"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="35,5,181,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="111,85,111,120,105,120,105,85"/>
+</map>

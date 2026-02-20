@@ -1,0 +1,15 @@
+<map id="idol::OptimizerWithLazyUpdates&lt; VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT &gt;" name="idol::OptimizerWithLazyUpdates&lt; VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="187,235,416,609"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1OptimizerWithLazyUpdates.html" title=" " alt="" coords="189,672,413,1032"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="304,623,304,672,299,672,299,623"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Optimizer.html" title=" " alt="" coords="246,120,357,185"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="304,199,304,234,299,234,299,199"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="228,5,375,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="304,85,304,120,299,120,299,85"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1Optimizers_1_1GLPK.html" title=" " alt="" coords="5,1081,187,1651"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="216,1045,201,1082,189,1112,184,1110,196,1080,212,1043"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1Optimizers_1_1Gurobi.html" title=" " alt="" coords="211,1086,392,1646"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="304,1046,304,1086,299,1086,299,1046"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1Optimizers_1_1HiGHS.html" title=" " alt="" coords="416,1111,629,1621"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="390,1044,406,1080,419,1110,414,1112,402,1082,386,1046"/>
+</map>

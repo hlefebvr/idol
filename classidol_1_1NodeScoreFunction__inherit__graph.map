@@ -1,0 +1,7 @@
+<map id="idol::NodeScoreFunction" name="idol::NodeScoreFunction">
+<area shape="rect" id="Node000001" title=" " alt="" coords="109,5,283,111"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1NodeScoreFunctions_1_1Linear.html" title=" " alt="" coords="5,159,184,379"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,124,150,159,145,157,163,122"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1NodeScoreFunctions_1_1Product.html" title=" " alt="" coords="208,159,387,379"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="229,122,247,157,242,159,225,124"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="idol::Optimizers::Bilevel::BranchAndCut" name="idol::Optimizers::Bilevel::BranchAndCut">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,565,189,1025"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Algorithm.html" title=" " alt="" coords="21,232,174,517"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,531,100,565,95,565,95,531"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Optimizer.html" title=" " alt="" coords="42,119,153,184"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="100,198,100,232,95,232,95,198"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="24,5,171,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="100,84,100,119,95,119,95,84"/>
+</map>

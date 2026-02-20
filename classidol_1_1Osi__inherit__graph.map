@@ -1,0 +1,16 @@
+<map id="idol::Osi" name="idol::Osi">
+<area shape="rect" id="Node000001" title=" " alt="" coords="61,1081,278,1327"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1OsiClp.html" title=" " alt="" coords="5,1376,93,1441"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="92,1340,70,1377,66,1375,88,1337"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1OsiCplex.html" title=" " alt="" coords="117,1376,221,1441"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="172,1341,172,1376,167,1376,167,1341"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1OsiSymphony.html" title=" " alt="" coords="245,1376,381,1441"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="266,1336,293,1374,289,1377,262,1339"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="55,657,284,1032"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,1046,172,1081,167,1081,167,1046"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1OptimizerFactory.html" title=" " alt="" coords="83,5,245,171"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="167,184,171,657,165,657,162,184"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="185,220,415,595"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="207,182,222,218,217,221,202,184"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="243,609,228,658,223,656,238,607"/>
+</map>

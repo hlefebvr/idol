@@ -1,0 +1,12 @@
+<map id="idol::Bilevel::BranchAndCut" name="idol::Bilevel::BranchAndCut">
+<area shape="rect" id="Node000001" title=" " alt="" coords="207,1081,433,1327"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="5,657,264,1032"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="240,1043,259,1080,254,1082,235,1045"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1OptimizerFactory.html" title=" " alt="" coords="49,5,210,171"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="133,184,136,657,131,657,127,184"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="151,220,380,595"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="172,182,188,218,183,221,167,184"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="208,609,193,658,188,656,203,607"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1Bilevel_1_1OptimizerInterface.html" title=" " alt="" coords="288,795,477,895"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="374,909,344,1082,339,1081,369,908"/>
+</map>

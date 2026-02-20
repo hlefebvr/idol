@@ -1,0 +1,10 @@
+<map id="idol::DantzigWolfeDecomposition" name="idol::DantzigWolfeDecomposition">
+<area shape="rect" id="Node000001" title=" " alt="" coords="9,1096,240,1391"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="5,657,244,1047"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,1061,127,1096,122,1096,122,1061"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1OptimizerFactory.html" title=" " alt="" coords="39,5,200,171"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="123,184,126,657,121,657,117,184"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="141,220,370,595"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="162,182,178,218,173,221,157,184"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="199,609,184,658,179,657,194,607"/>
+</map>

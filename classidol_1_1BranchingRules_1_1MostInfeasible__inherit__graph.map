@@ -1,0 +1,7 @@
+<map id="idol::BranchingRules::MostInfeasible&lt; NodeInfoT &gt;" name="idol::BranchingRules::MostInfeasible&lt; NodeInfoT &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,685,220,785"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1BranchingRules_1_1VariableBranching.html" title=" " alt="" coords="20,388,205,637"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,651,115,685,110,685,110,651"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1BranchingRule.html" title=" " alt="" coords="28,5,197,340"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="115,354,115,388,110,388,110,354"/>
+</map>

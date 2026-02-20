@@ -1,0 +1,10 @@
+<map id="idol::JuMP" name="idol::JuMP">
+<area shape="rect" id="Node000001" title=" " alt="" coords="29,1081,211,1207"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="5,657,235,1032"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,1046,123,1081,117,1081,117,1046"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1OptimizerFactory.html" title=" " alt="" coords="34,5,195,171"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="118,184,121,657,116,657,113,184"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="136,220,365,595"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="157,182,173,218,168,221,153,184"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="193,609,179,658,173,656,188,607"/>
+</map>

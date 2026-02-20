@@ -1,0 +1,9 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization_1_1Strategy.html" title=" " alt="" coords="5,62,248,117"/>
+<area shape="rect" id="Node000001" href="$classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy.html" title=" " alt="" coords="321,5,463,45"/>
+<area shape="poly" id="edge48_Node000000_Node000001" title=" " alt="" coords="253,56,321,40,322,45,255,61"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1DantzigWolfe_1_1NoStabilization_1_1Strategy.html" title=" " alt="" coords="296,69,488,109"/>
+<area shape="poly" id="edge49_Node000000_Node000002" title=" " alt="" coords="262,87,296,87,296,92,262,92"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1DantzigWolfe_1_1Wentges_1_1Strategy.html" title=" " alt="" coords="317,133,467,173"/>
+<area shape="poly" id="edge50_Node000000_Node000003" title=" " alt="" coords="255,117,318,133,316,138,253,123"/>
+</map>

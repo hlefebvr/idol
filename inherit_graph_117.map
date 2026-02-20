@@ -1,0 +1,17 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classidol_1_1VariableBranching.html" title=" " alt="" coords="5,153,177,179"/>
+<area shape="rect" id="Node000001" href="$classidol_1_1Diver.html" title=" " alt="" coords="225,5,447,31"/>
+<area shape="poly" id="edge178_Node000000_Node000001" title=" " alt="" coords="109,141,157,89,189,62,224,40,252,28,254,33,227,44,192,66,161,93,113,144"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1FirstInfeasibleFound.html" title=" " alt="" coords="243,55,429,80"/>
+<area shape="poly" id="edge179_Node000000_Node000002" title=" " alt="" coords="121,144,168,115,224,89,261,78,263,83,226,94,171,120,124,148"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1LeastInfeasible.html" title=" " alt="" coords="259,104,413,129"/>
+<area shape="poly" id="edge180_Node000000_Node000003" title=" " alt="" coords="168,148,272,127,273,132,169,153"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1MostInfeasible.html" title=" " alt="" coords="261,153,411,179"/>
+<area shape="poly" id="edge181_Node000000_Node000004" title=" " alt="" coords="191,163,260,163,260,169,191,169"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1PseudoCost.html" title=" " alt="" coords="271,203,401,228"/>
+<area shape="poly" id="edge182_Node000000_Node000005" title=" " alt="" coords="169,179,273,200,272,205,168,184"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1StrongBranching.html" title=" " alt="" coords="255,252,417,277"/>
+<area shape="poly" id="edge183_Node000000_Node000006" title=" " alt="" coords="124,184,171,211,226,237,267,249,265,254,224,242,169,216,122,188"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1UniformlyRandom.html" title=" " alt="" coords="249,301,423,327"/>
+<area shape="poly" id="edge184_Node000000_Node000007" title=" " alt="" coords="113,187,161,238,192,264,227,286,258,299,256,304,224,291,189,269,157,242,109,191"/>
+</map>

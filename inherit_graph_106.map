@@ -1,0 +1,31 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classidol_1_1SparseVector.html" title=" " alt="" coords="5,329,153,369"/>
+<area shape="rect" id="Node000001" href="$classidol_1_1LinExpr.html" title=" " alt="" coords="201,5,408,45"/>
+<area shape="poly" id="edge161_Node000000_Node000001" title=" " alt="" coords="83,315,94,259,116,189,150,118,173,85,200,55,217,43,220,48,203,59,177,88,154,120,121,191,99,260,88,316"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1LinExpr.html" title=" " alt="" coords="227,70,382,125"/>
+<area shape="poly" id="edge162_Node000000_Node000002" title=" " alt="" coords="89,315,105,274,129,226,160,178,200,135,226,118,228,123,203,139,165,181,134,229,110,276,94,317"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1LinExpr.html" title=" " alt="" coords="234,149,375,189"/>
+<area shape="poly" id="edge163_Node000000_Node000003" title=" " alt="" coords="97,316,139,257,167,226,200,199,233,183,235,187,203,204,171,230,143,260,101,319"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1LinExpr.html" title=" " alt="" coords="201,214,408,269"/>
+<area shape="poly" id="edge164_Node000000_Node000004" title=" " alt="" coords="124,320,200,279,229,266,231,271,203,284,126,325"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1LinExpr.html" title=" " alt="" coords="234,293,375,333"/>
+<area shape="poly" id="edge165_Node000000_Node000005" title=" " alt="" coords="167,333,233,322,234,327,168,338"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1LinExpr.html" title=" " alt="" coords="234,358,375,413"/>
+<area shape="poly" id="edge166_Node000000_Node000006" title=" " alt="" coords="168,361,234,371,233,377,167,366"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1LinExpr.html" title=" " alt="" coords="234,437,375,477"/>
+<area shape="poly" id="edge167_Node000000_Node000007" title=" " alt="" coords="122,375,160,399,202,422,235,435,233,440,200,426,157,404,119,379"/>
+<area shape="rect" id="Node000008" href="$classidol_1_1LinExpr.html" title=" " alt="" coords="234,502,375,557"/>
+<area shape="poly" id="edge168_Node000000_Node000008" title=" " alt="" coords="103,379,146,434,173,462,203,487,235,505,232,510,200,492,169,466,141,437,99,382"/>
+<area shape="rect" id="Node000009" href="$classidol_1_1Point.html" title=" " alt="" coords="235,581,374,606"/>
+<area shape="poly" id="edge169_Node000000_Node000009" title=" " alt="" coords="92,382,107,425,130,475,162,524,181,547,203,566,236,582,234,587,200,570,177,550,158,527,126,477,102,427,87,384"/>
+<area shape="rect" id="Node000010" href="$classidol_1_1LinExpr.html" title=" " alt="" coords="228,631,381,671"/>
+<area shape="poly" id="edge170_Node000000_Node000010" title=" " alt="" coords="89,382,102,433,124,496,157,560,178,589,203,615,229,632,226,636,200,619,174,593,153,563,119,498,97,435,84,383"/>
+<area shape="rect" id="Node000011" href="$classidol_1_1QuadExpr.html" title=" " alt="" coords="462,519,618,574"/>
+<area shape="poly" id="edge171_Node000010_Node000011" title=" " alt="" coords="387,623,407,615,431,600,455,584,479,572,481,576,457,589,434,605,409,620,390,628"/>
+<area shape="rect" id="Node000012" href="$classidol_1_1QuadExpr.html" title=" " alt="" coords="462,599,618,639"/>
+<area shape="poly" id="edge172_Node000010_Node000012" title=" " alt="" coords="395,636,462,627,462,632,395,641"/>
+<area shape="rect" id="Node000013" href="$classidol_1_1QuadExpr.html" title=" " alt="" coords="462,663,618,703"/>
+<area shape="poly" id="edge173_Node000010_Node000013" title=" " alt="" coords="395,660,462,669,462,675,395,666"/>
+<area shape="rect" id="Node000014" href="$classidol_1_1QuadExpr.html" title=" " alt="" coords="456,727,624,767"/>
+<area shape="poly" id="edge174_Node000010_Node000014" title=" " alt="" coords="365,674,457,712,487,724,485,729,455,717,363,678"/>
+</map>

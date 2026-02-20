@@ -1,0 +1,9 @@
+<map id="idol::Optimizers::Bilevel::KKT" name="idol::Optimizers::Bilevel::KKT">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,565,208,1091"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Algorithm.html" title=" " alt="" coords="30,232,183,517"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,531,109,565,104,565,104,531"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Optimizer.html" title=" " alt="" coords="51,119,162,184"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="109,198,109,232,104,232,104,198"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="33,5,180,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="109,84,109,119,104,119,104,84"/>
+</map>

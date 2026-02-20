@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classidol_1_1DefaultNodeInfo.html" title=" " alt="" coords="5,35,167,60"/>
+<area shape="rect" id="Node000001" href="$classidol_1_1NodeWithCGInfo.html" title=" " alt="" coords="267,5,430,31"/>
+<area shape="poly" id="edge55_Node000000_Node000001" title=" " alt="" coords="180,34,267,24,267,30,180,40"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Optimizers_1_1Robust_1_1BilevelBasedBranchAndBound_1_1Node.html" title=" " alt="" coords="215,55,483,95"/>
+<area shape="poly" id="edge56_Node000000_Node000002" title=" " alt="" coords="180,55,215,58,214,64,180,60"/>
+</map>

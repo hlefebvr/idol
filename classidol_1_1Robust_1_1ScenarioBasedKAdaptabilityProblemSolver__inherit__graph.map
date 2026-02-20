@@ -1,0 +1,10 @@
+<map id="idol::Robust::ScenarioBasedKAdaptabilityProblemSolver" name="idol::Robust::ScenarioBasedKAdaptabilityProblemSolver">
+<area shape="rect" id="Node000001" title=" " alt="" coords="22,1111,235,1320"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="5,672,252,1061"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,1075,131,1110,126,1110,126,1075"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1OptimizerFactory.html" title=" " alt="" coords="43,5,204,171"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="127,184,130,672,125,672,121,184"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1OptimizerFactoryWithDefaultParameters.html" title=" " alt="" coords="145,220,374,595"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="166,182,182,218,177,221,161,184"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="205,609,187,672,181,671,200,607"/>
+</map>

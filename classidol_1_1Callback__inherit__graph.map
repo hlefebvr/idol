@@ -1,0 +1,17 @@
+<map id="idol::Callback" name="idol::Callback">
+<area shape="rect" id="Node000001" title=" " alt="" coords="407,5,612,271"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Heuristics_1_1LocalBranching_1_1Strategy.html" title=" " alt="" coords="5,329,224,429"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="396,211,197,331,194,326,393,206"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Heuristics_1_1RENS_1_1Strategy.html" title=" " alt="" coords="248,329,403,429"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="401,283,365,330,361,327,397,280"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1Heuristics_1_1SimpleRounding_1_1Strategy.html" title=" " alt="" coords="427,339,591,419"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="512,285,512,339,507,339,507,285"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1Plots_1_1OptimalityGap_1_1Strategy.html" title=" " alt="" coords="616,319,797,439"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="623,272,660,317,656,320,619,275"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="822,346,997,411"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="625,205,858,343,855,348,623,210"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1LazyCutCallback_1_1Strategy.html" title=" " alt="" coords="743,487,897,607"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="888,425,854,488,849,485,883,422"/>
+<area shape="rect" id="Node000008" href="$classidol_1_1UserCutCallback_1_1Strategy.html" title=" " alt="" coords="921,487,1076,607"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="935,422,969,485,965,488,931,425"/>
+</map>

@@ -1,0 +1,45 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,532,160,557"/>
+<area shape="rect" id="Node000001" href="$classidol_1_1Optimizer.html" title=" " alt="" coords="208,532,327,557"/>
+<area shape="poly" id="edge61_Node000000_Node000001" title=" " alt="" coords="174,542,208,542,208,547,174,547"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1OptimizerWithLazyUpdates.html" title=" " alt="" coords="377,73,609,113"/>
+<area shape="poly" id="edge62_Node000001_Node000002" title=" " alt="" coords="279,518,480,112,484,114,284,521"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1Algorithm.html" title=" " alt="" coords="434,500,553,525"/>
+<area shape="poly" id="edge66_Node000001_Node000006" title=" " alt="" coords="340,532,433,518,434,524,341,537"/>
+<area shape="rect" id="Node000020" href="$classidol_1_1OptimizerWithLazyUpdates.html" title=" " alt="" coords="375,549,612,604"/>
+<area shape="poly" id="edge80_Node000001_Node000020" title=" " alt="" coords="341,552,375,557,374,562,340,558"/>
+<area shape="rect" id="Node000021" href="$classidol_1_1Optimizers_1_1Bilevel_1_1MibS.html" title=" " alt="" coords="404,629,583,669"/>
+<area shape="poly" id="edge81_Node000001_Node000021" title=" " alt="" coords="297,564,333,589,376,613,410,626,408,631,374,618,330,594,294,568"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Optimizers_1_1GLPK.html" title=" " alt="" coords="711,5,877,31"/>
+<area shape="poly" id="edge63_Node000002_Node000003" title=" " alt="" coords="566,66,659,39,713,28,714,33,661,45,567,71"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1Optimizers_1_1Gurobi.html" title=" " alt="" coords="706,55,882,80"/>
+<area shape="poly" id="edge64_Node000002_Node000004" title=" " alt="" coords="623,79,705,72,706,77,623,84"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1Optimizers_1_1HiGHS.html" title=" " alt="" coords="707,104,881,129"/>
+<area shape="poly" id="edge65_Node000002_Node000005" title=" " alt="" coords="623,100,707,107,706,112,623,106"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1Optimizers_1_1BranchAndBound.html" title=" " alt="" coords="705,154,883,194"/>
+<area shape="poly" id="edge67_Node000006_Node000007" title=" " alt="" coords="498,486,516,427,548,351,569,310,595,271,624,235,658,204,680,191,703,182,705,187,682,196,662,208,628,239,599,274,574,313,553,353,521,429,504,487"/>
+<area shape="rect" id="Node000008" href="$classidol_1_1Optimizers_1_1Bilevel_1_1BranchAndCut.html" title=" " alt="" coords="705,218,883,258"/>
+<area shape="poly" id="edge68_Node000006_Node000008" title=" " alt="" coords="502,486,524,438,558,379,602,319,629,291,659,268,680,256,704,247,705,252,682,261,661,272,633,295,606,322,562,382,529,441,507,488"/>
+<area shape="rect" id="Node000009" href="$classidol_1_1Optimizers_1_1Bilevel_1_1KKT.html" title=" " alt="" coords="689,283,899,308"/>
+<area shape="poly" id="edge69_Node000006_Node000009" title=" " alt="" coords="506,486,530,448,565,402,608,356,659,318,688,306,690,310,661,323,611,360,569,406,535,451,511,489"/>
+<area shape="rect" id="Node000010" href="$classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize.html" title=" " alt="" coords="705,333,883,373"/>
+<area shape="poly" id="edge70_Node000006_Node000010" title=" " alt="" coords="515,488,577,435,616,406,659,382,704,366,705,371,661,387,619,411,580,439,519,492"/>
+<area shape="rect" id="Node000011" href="$classidol_1_1Optimizers_1_1Bilevel_1_1PessimisticAsOptimistic.html" title=" " alt="" coords="701,397,887,437"/>
+<area shape="poly" id="edge71_Node000006_Node000011" title=" " alt="" coords="536,492,659,446,702,434,703,439,661,451,537,497"/>
+<area shape="rect" id="Node000012" href="$classidol_1_1Optimizers_1_1Bilevel_1_1StrongDuality.html" title=" " alt="" coords="705,461,883,501"/>
+<area shape="poly" id="edge72_Node000006_Node000012" title=" " alt="" coords="566,502,704,488,704,493,567,508"/>
+<area shape="rect" id="Node000013" href="$classidol_1_1Optimizers_1_1BranchAndBound.html" title=" " alt="" coords="701,525,887,565"/>
+<area shape="poly" id="edge73_Node000006_Node000013" title=" " alt="" coords="566,518,702,532,701,537,566,523"/>
+<area shape="rect" id="Node000014" href="$classidol_1_1Optimizers_1_1DantzigWolfeDecomposition.html" title=" " alt="" coords="703,589,885,629"/>
+<area shape="poly" id="edge74_Node000006_Node000014" title=" " alt="" coords="567,519,613,534,628,544,638,555,647,565,661,574,703,590,702,595,659,579,644,569,634,558,625,548,611,539,566,524"/>
+<area shape="rect" id="Node000015" href="$classidol_1_1Optimizers_1_1PADM.html" title=" " alt="" coords="709,653,879,679"/>
+<area shape="poly" id="edge75_Node000006_Node000015" title=" " alt="" coords="567,514,592,522,614,535,626,547,633,561,639,588,644,615,650,627,662,639,684,652,709,660,708,665,682,656,658,643,646,630,639,617,633,589,628,563,622,550,610,539,589,527,566,519"/>
+<area shape="rect" id="Node000016" href="$classidol_1_1Optimizers_1_1Robust_1_1BilevelBasedBranchAndBound.html" title=" " alt="" coords="681,703,907,743"/>
+<area shape="poly" id="edge76_Node000006_Node000016" title=" " alt="" coords="567,512,592,521,614,535,629,554,637,573,639,613,641,652,648,670,662,688,682,702,679,707,658,692,643,673,635,653,634,613,632,574,625,556,610,539,589,525,565,518"/>
+<area shape="rect" id="Node000017" href="$classidol_1_1Optimizers_1_1Robust_1_1ColumnAndConstraintGeneration.html" title=" " alt="" coords="672,767,916,807"/>
+<area shape="poly" id="edge77_Node000006_Node000017" title=" " alt="" coords="567,512,592,520,614,535,634,562,642,590,643,618,639,646,636,673,636,701,643,727,662,754,677,765,673,769,658,757,638,730,630,701,630,673,634,645,637,618,637,591,629,564,610,539,590,525,565,517"/>
+<area shape="rect" id="Node000018" href="$classidol_1_1Optimizers_1_1Robust_1_1CriticalValueColumnAndConstraintGeneration.html" title=" " alt="" coords="667,832,921,887"/>
+<area shape="poly" id="edge78_Node000006_Node000018" title=" " alt="" coords="567,511,592,520,614,535,638,570,648,606,647,641,640,677,634,712,632,748,640,782,662,818,676,830,672,834,658,821,635,785,627,748,628,712,635,676,641,641,642,606,634,572,610,539,590,524,566,516"/>
+<area shape="rect" id="Node000019" href="$classidol_1_1Optimizers_1_1Robust_1_1ScenarioBasedKAdaptabilityProblemSolver.html" title=" " alt="" coords="660,911,928,965"/>
+<area shape="poly" id="edge79_Node000006_Node000019" title=" " alt="" coords="567,511,592,519,614,535,632,558,644,580,651,603,654,626,651,672,640,717,630,762,626,807,628,830,635,852,646,875,662,898,674,909,670,913,658,901,641,878,630,854,623,831,621,807,625,761,635,716,645,671,649,626,646,604,639,582,627,560,610,539,590,524,566,516"/>
+</map>

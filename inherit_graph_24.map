@@ -1,0 +1,15 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classidol_1_1CallbackFactory.html" title=" " alt="" coords="5,141,163,167"/>
+<area shape="rect" id="Node000001" href="$classidol_1_1Heuristics_1_1LocalBranching.html" title=" " alt="" coords="211,5,437,31"/>
+<area shape="poly" id="edge38_Node000000_Node000001" title=" " alt="" coords="102,129,148,83,177,59,209,40,239,28,241,33,212,44,180,64,151,87,106,133"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Heuristics_1_1RENS.html" title=" " alt="" coords="243,55,405,80"/>
+<area shape="poly" id="edge39_Node000000_Node000002" title=" " alt="" coords="118,132,161,111,210,90,254,78,255,83,212,95,163,115,120,137"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Heuristics_1_1SimpleRounding.html" title=" " alt="" coords="238,105,410,145"/>
+<area shape="poly" id="edge40_Node000000_Node000003" title=" " alt="" coords="176,140,237,133,238,138,177,145"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1LazyCutCallback.html" title=" " alt="" coords="243,169,405,195"/>
+<area shape="poly" id="edge41_Node000000_Node000004" title=" " alt="" coords="177,162,243,170,242,175,176,167"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1Plots_1_1OptimalityGap.html" title=" " alt="" coords="229,219,419,244"/>
+<area shape="poly" id="edge42_Node000000_Node000005" title=" " alt="" coords="126,170,211,203,258,216,257,221,210,209,124,175"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1UserCutCallback.html" title=" " alt="" coords="243,268,405,293"/>
+<area shape="poly" id="edge43_Node000000_Node000006" title=" " alt="" coords="108,175,154,215,182,236,212,253,246,265,244,270,210,258,179,240,150,219,105,179"/>
+</map>

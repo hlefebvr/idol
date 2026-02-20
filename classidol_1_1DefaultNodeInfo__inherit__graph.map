@@ -1,0 +1,7 @@
+<map id="idol::DefaultNodeInfo" name="idol::DefaultNodeInfo">
+<area shape="rect" id="Node000001" title=" " alt="" coords="86,5,331,311"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1NodeWithCGInfo.html" title=" " alt="" coords="5,366,175,531"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,324,126,367,121,365,139,322"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1Optimizers_1_1Robust_1_1BilevelBasedBranchAndBound_1_1Node.html" title=" " alt="" coords="199,359,459,539"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="280,322,294,357,289,360,275,324"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="idol::DantzigWolfe::DualPriceSmoothingStabilization::Strategy" name="idol::DantzigWolfe::DualPriceSmoothingStabilization::Strategy">
+<area shape="rect" id="Node000001" title=" " alt="" coords="202,5,437,175"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy.html" title=" " alt="" coords="5,223,199,377"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,186,184,225,180,221,220,182"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1DantzigWolfe_1_1NoStabilization_1_1Strategy.html" title=" " alt="" coords="223,223,416,377"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="322,188,322,223,317,223,317,188"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1DantzigWolfe_1_1Wentges_1_1Strategy.html" title=" " alt="" coords="440,223,633,377"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="419,182,459,221,455,225,415,186"/>
+</map>

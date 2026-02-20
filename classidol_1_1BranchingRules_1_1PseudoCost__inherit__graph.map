@@ -1,0 +1,7 @@
+<map id="idol::BranchingRules::PseudoCost&lt; NodeInfoT &gt;" name="idol::BranchingRules::PseudoCost&lt; NodeInfoT &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,685,200,805"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1BranchingRules_1_1VariableBranching.html" title=" " alt="" coords="10,388,195,637"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,651,105,685,100,685,100,651"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1BranchingRule.html" title=" " alt="" coords="18,5,187,340"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,354,105,388,100,388,100,354"/>
+</map>

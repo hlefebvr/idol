@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classidol_1_1NodeSelectionRuleFactory.html" title=" " alt="" coords="5,133,229,173"/>
+<area shape="rect" id="Node000001" href="$classidol_1_1BestBound_1_1Strategy.html" title=" " alt="" coords="281,5,468,45"/>
+<area shape="poly" id="edge93_Node000000_Node000001" title=" " alt="" coords="157,123,213,89,276,55,305,43,307,48,278,60,215,93,160,128"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1BestEstimate_1_1Strategy.html" title=" " alt="" coords="296,69,453,109"/>
+<area shape="poly" id="edge94_Node000000_Node000002" title=" " alt="" coords="211,127,295,106,297,111,212,133"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1BreadthFirst_1_1Strategy.html" title=" " alt="" coords="296,133,453,173"/>
+<area shape="poly" id="edge95_Node000000_Node000003" title=" " alt="" coords="243,151,296,151,296,156,243,156"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1DepthFirst_1_1Strategy.html" title=" " alt="" coords="283,197,467,237"/>
+<area shape="poly" id="edge96_Node000000_Node000004" title=" " alt="" coords="212,174,294,195,293,200,211,179"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1WorstBound_1_1Strategy.html" title=" " alt="" coords="277,261,472,301"/>
+<area shape="poly" id="edge97_Node000000_Node000005" title=" " alt="" coords="160,179,215,213,278,247,307,259,305,264,276,252,213,218,157,183"/>
+</map>

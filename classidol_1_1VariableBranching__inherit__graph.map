@@ -1,0 +1,17 @@
+<map id="idol::VariableBranching" name="idol::VariableBranching">
+<area shape="rect" id="Node000001" title=" " alt="" coords="603,5,767,91"/>
+<area shape="rect" id="Node000002" href="$classidol_1_1Diver.html" title=" " alt="" coords="5,169,219,254"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="590,61,511,72,420,88,325,111,232,141,173,171,171,166,230,136,323,106,419,83,510,67,589,56"/>
+<area shape="rect" id="Node000003" href="$classidol_1_1FirstInfeasibleFound.html" title=" " alt="" coords="243,169,421,254"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="591,78,513,106,433,141,386,171,383,166,431,136,511,101,589,73"/>
+<area shape="rect" id="Node000004" href="$classidol_1_1LeastInfeasible.html" title=" " alt="" coords="445,169,590,254"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="634,102,563,170,559,166,630,99"/>
+<area shape="rect" id="Node000005" href="$classidol_1_1MostInfeasible.html" title=" " alt="" coords="614,169,757,254"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="688,104,688,168,683,168,683,104"/>
+<area shape="rect" id="Node000006" href="$classidol_1_1PseudoCost.html" title=" " alt="" coords="781,169,904,254"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="737,99,804,166,800,170,734,102"/>
+<area shape="rect" id="Node000007" href="$classidol_1_1StrongBranching.html" title=" " alt="" coords="929,139,1149,284"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="782,80,917,136,930,142,927,147,915,141,780,85"/>
+<area shape="rect" id="Node000008" href="$classidol_1_1UniformlyRandom.html" title=" " alt="" coords="1173,159,1339,264"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="781,52,865,61,962,76,1064,101,1162,136,1197,156,1195,161,1160,141,1063,106,961,82,864,66,781,57"/>
+</map>
