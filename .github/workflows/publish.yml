@@ -238,11 +238,3 @@ jobs:
           git add .
           git commit -m "Add idol ${IDOL_VERSION} ($ARCH)" || echo "No changes to commit"
           git push origin main
-
-      - name: Install with apt-get
-        run: |
-          echo "deb [arch=amd64 trusted=yes] https://henrilefebvre.com/apt stable main" \
-          | sudo tee /etc/apt/sources.list.d/idol.list
-          sudo apt update
-          sudo apt install idol
-          idol_cl --version

@@ -57,9 +57,6 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h
         include/idol/solvers.h
         src/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.cpp
-        include/idol/general/linear-algebra/MatrixIndices.h
-        include/idol/general/linear-algebra/SquareMatrix.h
-        include/idol/general/linear-algebra/to_rotated_quadratic_cone.h
         include/idol/mixed-integer/optimizers/branch-and-bound/Optimizers_BranchAndBound.h
         include/idol/general/optimizers/OptimizerFactory.h
         include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h
@@ -353,19 +350,6 @@ if (${USE_ROBINHOOD})
     find_package(ROBINHOOD REQUIRED)
     target_link_libraries(idol PUBLIC robin_hood)
     target_compile_definitions(idol PUBLIC IDOL_USE_ROBINHOOD)
-
-endif()
-
-set(USE_EIGEN OFF CACHE BOOL "Build idol with Eigen for linear algebra (https://eigen.tuxfamily.org)")
-set(EIGEN_DIR "${EIGEN_DIR}" CACHE STRING "Path to Eigen")
-if (NOT EIGEN_DIR)
-    set(EIGEN_DIR $ENV{EIGEN_HOME})
-endif()
-if (${USE_EIGEN})
-
-    find_package(EIGEN REQUIRED)
-    target_link_libraries(idol PUBLIC eigen)
-    target_compile_definitions(idol PUBLIC IDOL_USE_EIGEN)
 
 endif()
 
