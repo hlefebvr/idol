@@ -29,7 +29,6 @@
 // Wrappers
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
-#include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 
 #endif //OPTIMIZE_OPTIMIZERS_H

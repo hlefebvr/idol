@@ -22,7 +22,7 @@ model.optimize();
 
 With idol, you can also interface with your favorite solver:
 
-- Mixed-integer optimization ([Gurobi](https://www.gurobi.com/), [Cplex](https://www.ibm.com/products/ilog-cplex-optimization-studio), [Mosek](https://www.mosek.com/), [HiGHS](https://github.com/ERGO-Code/HiGHS), [GLPK](https://www.gnu.org/software/glpk/), [coin-or/Osi](https://github.com/coin-or/Osi/) and julia's framework [JuMP](https://github.com/jump-dev/JuMP.jl));
+- Mixed-integer optimization ([Gurobi](https://www.gurobi.com/), [Cplex](https://www.ibm.com/products/ilog-cplex-optimization-studio), [HiGHS](https://github.com/ERGO-Code/HiGHS), [GLPK](https://www.gnu.org/software/glpk/), [coin-or/Osi](https://github.com/coin-or/Osi/) and the Julia framework [JuMP](https://github.com/jump-dev/JuMP.jl));
 - Bilevel optimization ([coin-or/MibS](https://github.com/coin-or/MibS));
 
 ## Documentation

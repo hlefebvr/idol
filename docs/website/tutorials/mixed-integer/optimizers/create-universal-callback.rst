@@ -94,7 +94,6 @@ The following solvers support universal callbacks:
 
 - :code:`Gurobi`
 - :code:`BranchAndBound`
-- :code:`Mosek`
 
 Hence, for these solvers, you can create your own callback and add it to the optimizer without having to
 worry about the underlying solver.

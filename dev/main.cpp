@@ -29,7 +29,6 @@
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/bilevel/optimizers/KKT/KKT.h"
 #include "idol/mixed-integer/optimizers/callbacks/cutting-planes/LazyCutCallback.h"
-#include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
 #include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"

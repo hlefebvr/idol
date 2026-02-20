@@ -19,10 +19,6 @@
     "name": "Interfacing GLPK",
     "brief": "Can solve mixed-integer optimization problems using GLPK."
   },
-  "test_wrapper_Mosek": {
-    "name": "Interfacing Mosek",
-    "brief": "Can solve mixed-integer optimization problems using Mosek."
-  },
   "test_wrapper_OsiCplex": {
     "name": "Interfacing Cplex via Osi",
     "brief": "Can solve mixed-integer optimization problems using Cplex via coin-or/Osi."

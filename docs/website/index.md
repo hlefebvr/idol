@@ -30,7 +30,7 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
         <div class="frame">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/IP_polytope_with_LP_relaxation.svg">
         </div>
-        Interface with solvers like Gurobi, Mosek, HiGHS and many others or implement your own branch-and-bound algorithm. Code once, try multiple solvers.
+        Interface with solvers like Gurobi, Cplex, HiGHS and many others or implement your own branch-and-bound algorithm. Code once, try multiple solvers.
     </div>
     <div class="card" onclick="window.location = 'examples_mixed_integer.html#examples_mixed_integer_branch_and_price';">
         <a href="examples_mixed_integer.html#examples_mixed_integer_branch_and_price">
@@ -116,8 +116,7 @@ The following MIP solvers are currently supported by idol:
 * [GLPK](https://www.gnu.org/software/glpk/),
 * [Gurobi](https://www.gurobi.com/),
 * [HiGHS](https://highs.dev/),
-* [JuMP](https://jump.dev/) (julia framework),
-* [Mosek](https://www.mosek.com/),
+* [JuMP](https://jump.dev/) (Julia framework),
 * [coin-or/Osi](https://github.com/coin-or/Osi) (gives you acccess to any Osi-compatible solver).
 
 It also integrates with the following solvers for mixed-integer bilevel optimization:

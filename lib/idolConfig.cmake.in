@@ -4,26 +4,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "@CMAKE_INSTALL_PREFIX@/lib/cmake/ido
 
 set(USE_GUROBI @USE_GUROBI@)
 set(USE_GLPK @USE_GLPK@)
-set(USE_MOSEK @USE_MOSEK@)
 set(USE_EIGEN @USE_EIGEN@)
 
 find_dependency(OpenMP REQUIRED)
-
-if (@USE_MOSEK@)
-
-    set(MOSEK_DIR "@MOSEK_DIR@")
-    find_dependency(MOSEK REQUIRED)
-    add_compile_definitions(IDOL_USE_MOSEK)
-
-endif()
-
-if (@USE_EIGEN@)
-
-    set(EIGEN_DIR "@EIGEN_DIR@")
-    find_dependency(EIGEN REQUIRED)
-    add_compile_definitions(IDOL_USE_EIGEN)
-
-endif()
 
 if (@USE_CPLEX@)
 

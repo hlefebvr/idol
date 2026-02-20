@@ -8,7 +8,6 @@
 | \subpage test_wrapper_Cplex      | \copybrief test_wrapper_Cplex        |
 | \subpage test_wrapper_OsiClp     | \copybrief test_wrapper_OsiClp       |
 | \subpage test_wrapper_OsiCplex   | \copybrief test_wrapper_OsiCplex     |
-| \subpage test_wrapper_Mosek      | \copybrief test_wrapper_Mosek        |
 | \subpage test_wrapper_HiGHS      | \copybrief test_wrapper_HiGHS        |
 | \subpage test_wrapper_GLPK       | \copybrief test_wrapper_GLPK         |
 | \subpage test_wrapper_JuMP       | \copybrief test_wrapper_JuMP         |

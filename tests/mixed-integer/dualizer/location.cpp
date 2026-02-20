@@ -7,7 +7,6 @@
 #include "idol/modeling.h"
 #include "idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
-#include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/mixed-integer/modeling/models/KKT.h"

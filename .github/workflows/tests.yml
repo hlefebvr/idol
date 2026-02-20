@@ -69,7 +69,6 @@ jobs:
         test:
           - "GLPK"
           - "HiGHS"
-          #- "Mosek"
           #- "Clp"
           #- "JuMP"
           #- "MibS"
@@ -107,28 +106,10 @@ jobs:
           export JULIA_HOME="$(julia -e 'print(Sys.BINDIR)')/../"
 
       - name: "Install ${{ matrix.test }}"
-        env:
-          MOSEK_LICENSE: ${{secrets.MOSEK_LICENSE}}
         if: false
         run: |
           if [ "${{ matrix.test }}" == "GLPK" ]; then
           elif [ "${{ matrix.test }}" == "HiGHS" ]; then
-          elif [ "${{ matrix.test }}" == "Mosek" ]; then
-          
-            # Install Eigen
-            wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.bz2
-            tar -xvf eigen*.tar.bz2 && rm eigen*.tar.bz2 && find . -depth -type d -name eigen-* -execdir mv {} ${{github.workspace}}/Eigen \;
-            
-            # Install Mosek
-            wget https://download.mosek.com/stable/10.0.47/mosektoolslinux64x86.tar.bz2
-            tar -xvf mosektoolslinux64x86.tar.bz2 -C ${{github.workspace}} && (cd ${{github.workspace}}/mosek/10.0/tools/platform/linux64x86/src/fusion_cxx && make install)
-          
-            # Install Mosek license
-            echo "${MOSEK_LICENSE}" | base64 --decode > ${{github.workspace}}/mosek/mosek.lic
-          
-            # Configure CMake
-            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_EIGEN=YES -DEIGEN_DIR=${{github.workspace}}/Eigen -DUSE_MOSEK=YES -DUSE_EIGEN=YES -DMOSEK_DIR=${{github.workspace}}/mosek/10.0/tools/platform/linux64x86
-          
           elif [ "${{ matrix.test }}" == "Clp" ] || [ "${{ matrix.test }}" == "Symphony" ]; then
           
             # Install Coin-OR solver
@@ -159,8 +140,6 @@ jobs:
 
       - name: Run tests
         continue-on-error: true
-        env:
-          MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
         run: |
           
           OPTIMIZER=${{ matrix.test }}

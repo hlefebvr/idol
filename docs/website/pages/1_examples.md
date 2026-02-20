@@ -9,7 +9,7 @@
         <div class="frame">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/IP_polytope_with_LP_relaxation.svg">
         </div>
-        Interface with solvers like Gurobi, Mosek, HiGHS and many others or implement your own branch-and-bound algorithm.
+        Interface with solvers like Gurobi, Cplex, HiGHS and many others or implement your own branch-and-bound algorithm.
     </div>
     <div class="card" onclick="window.location = 'examples_mixed_integer.html#examples_mixed_integer_branch_and_price';">
         <a href="examples_mixed_integer.html#examples_mixed_integer_branch_and_price">
