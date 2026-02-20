@@ -186,6 +186,7 @@ jobs:
             -DUSE_MIBS=YES
           cmake --build . --target help
           cmake --build . -- -j$(nproc)
+          ls **
           cmake --install .
 
       - name: Generate DEB package with CPack
