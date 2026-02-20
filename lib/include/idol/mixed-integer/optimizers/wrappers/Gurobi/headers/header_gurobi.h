@@ -62,6 +62,7 @@ extern "C" {
     // Gurobi functions
     void GRBversion(int *majorP, int *minorP, int *technicalP);
     int GRBloadenvinternal(GRBenv **envP, const char *logfilename, int major, int minor, int tech);
+    int GRBloadenv(GRBenv **envP, const char *logfilename);
     int GRBgetintattr(GRBmodel *model, const char *attrname, int *valueP);
     const char* GRBgeterrormsg(GRBenv *env);
     void GRBfreeenv(GRBenv *env);

@@ -106,16 +106,16 @@ idol::Optimizers::Gurobi::DynamicLib::DynamicLib() {
     const auto gurobi_path = find_library();
     m_handle = dlopen(gurobi_path.c_str(), RTLD_LAZY);
 
-}
-
-void idol::Optimizers::Gurobi::DynamicLib::load_library() {
-
-    if (m_is_loaded) {
-        return;
-    }
-
     GUROBI_SYM_LOAD(GRBversion);
-    GUROBI_SYM_LOAD(GRBloadenvinternal);
+
+    int major, minor, tech;
+    GRBversion(&major, &minor, &tech);
+
+    if (major >= 12) {
+        GUROBI_SYM_LOAD(GRBloadenvinternal);
+    } else {
+        GUROBI_SYM_LOAD(GRBloadenv);
+    }
     GUROBI_SYM_LOAD(GRBgetintattr);
     GUROBI_SYM_LOAD(GRBgeterrormsg);
     GUROBI_SYM_LOAD(GRBfreeenv);
@@ -155,7 +155,6 @@ void idol::Optimizers::Gurobi::DynamicLib::load_library() {
     GUROBI_SYM_LOAD(GRBcblazy);
     GUROBI_SYM_LOAD(GRBterminate);
 
-    m_is_loaded = true;
 }
 
 idol::Optimizers::Gurobi::DynamicLib::~DynamicLib() {
@@ -168,11 +167,8 @@ idol::Optimizers::Gurobi::DynamicLib& idol::Optimizers::Gurobi::get_dynamic_lib(
     if (!m_dynamic_lib) {
         m_dynamic_lib = std::make_unique<DynamicLib>();
     }
-    if (t_load_library) {
-        if (!m_dynamic_lib->is_available()) {
-            throw Exception("Gurobi library is not available");
-        }
-        m_dynamic_lib->load_library();
+    if (t_load_library && !m_dynamic_lib->is_available()) {
+        throw Exception("Gurobi library is not available");
     }
     return *m_dynamic_lib;
 }
@@ -252,7 +248,7 @@ GRBenv* idol::Optimizers::Gurobi::get_new_env() {
     if (major >= 12) {
         lib.GRBloadenvinternal(&result, nullptr, major, minor, tech);
     } else {
-        throw Exception("Gurobi version " + std::to_string(major) + " is not supported (>= 12 required).");
+        lib.GRBloadenv(&result, nullptr);
     }
     return result;
 }

@@ -120,12 +120,12 @@ name##_t name = nullptr
 
 class idol::Optimizers::Gurobi::DynamicLib {
     void* m_handle = nullptr;
-    bool m_is_loaded = false;
 
     static std::string find_library();
 public:
     GUROBI_SYM_PTR(GRBversion);
     GUROBI_SYM_PTR(GRBloadenvinternal);
+    GUROBI_SYM_PTR(GRBloadenv);
     GUROBI_SYM_PTR(GRBgetintattr);
     GUROBI_SYM_PTR(GRBgeterrormsg);
     GUROBI_SYM_PTR(GRBfreeenv);
@@ -166,7 +166,6 @@ public:
     GUROBI_SYM_PTR(GRBterminate);
 
     [[nodiscard]] bool is_available() const { return m_handle; }
-    void load_library();
 
     DynamicLib();
 
