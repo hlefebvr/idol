@@ -182,19 +182,19 @@ jobs:
           cmake .. \
             -DCMAKE_BUILD_TYPE=Release \
             -DCOIN_OR_DIR=${{github.workspace}}/coin-or/dist \
-            -DCMAKE_INSTALL_PREFIX=$PWD/build \
+            -DCMAKE_INSTALL_PREFIX=$PWD/install \
             -DUSE_MIBS=YES
           make -j$(nproc) install
 
       - name: Generate DEB package with CPack
         run: |
-          cd build
+          cd install
           cpack -G DEB
           ls -l *.deb
 
       - name: Rename package
         run: |
-          cd build
+          cd install
           DEB=$(ls *.deb | head -n1)
           NEW_NAME="idol-${IDOL_VERSION}-linux-amd64.deb"
           mv "$DEB" "$NEW_NAME"
@@ -205,7 +205,7 @@ jobs:
         with:
           tag_name: ${{ needs.push-tag.outputs.version }}
           name: ${{ needs.push-tag.outputs.version }}
-          files: build/idol-${{ needs.push-tag.outputs.version }}-linux-amd64.deb
+          files: install/idol-${{ needs.push-tag.outputs.version }}-linux-amd64.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -219,7 +219,7 @@ jobs:
           cd apt
           
           # Detect architecture of .deb
-          ARCH=$(dpkg-deb -f ../build/${DEB_PACKAGE} Architecture)
+          ARCH=$(dpkg-deb -f ../install/${DEB_PACKAGE} Architecture)
           echo "Detected architecture: $ARCH"
           
           # Make sure the directory exists
@@ -227,7 +227,7 @@ jobs:
           
           # Rename .deb to standard Debian format
           NEW_DEB="idol_${IDOL_VERSION}_${ARCH}.deb"
-          mv ../build/${DEB_PACKAGE} dists/stable/main/binary-${ARCH}/$NEW_DEB
+          mv ../install/${DEB_PACKAGE} dists/stable/main/binary-${ARCH}/$NEW_DEB
           
           # Run dpkg-scanpackages from the root of the repo
           dpkg-scanpackages dists/stable/main/binary-${ARCH} /dev/null > dists/stable/main/binary-${ARCH}/Packages

@@ -299,6 +299,8 @@ add_library(idol STATIC
 
 target_link_libraries(idol PRIVATE dl)
 
+set(SHIP_COIN_OR OFF)
+
 if (APPLE)
     message("Apple detected, OpenMP will not be used.")
 elseif (NOT APPLE)
@@ -402,21 +404,15 @@ if (${USE_MIBS})
     find_package(BCPS REQUIRED)
     find_package(BLIS REQUIRED)
     find_package(CGL REQUIRED)
+    find_package(MIBS REQUIRED)
     set(USE_OSI_CLP ON)
     set(USE_OSI ON)
-    target_link_libraries(idol PUBLIC alps bcps blis cgl)
+    target_link_libraries(idol PUBLIC alps bcps blis cgl mibs)
 
-    find_package(MIBS REQUIRED)
-    target_link_libraries(idol PUBLIC mibs)
     target_compile_definitions(idol PUBLIC IDOL_USE_MIBS)
 
     list(APPEND AVAILABLE_BILEVEL_SOLVERS "MibS")
-
-    list(APPEND SHIPPED_LIBRARIES ${OSI_LIBRARY})
-    list(APPEND SHIPPED_LIBRARIES ${ALPS_LIBRARY})
-    list(APPEND SHIPPED_LIBRARIES ${CGL_LIBRARY})
-    list(APPEND SHIPPED_LIBRARIES ${BCPS_LIBRARY})
-    list(APPEND SHIPPED_LIBRARIES ${BLIS_LIBRARY})
+    set(SHIP_COIN_OR ON)
 
 endif()
 
@@ -429,7 +425,7 @@ if (${USE_OSI_CLP})
     target_compile_definitions(idol PUBLIC IDOL_USE_OSI_CLP)
     list(APPEND AVAILABLE_MILP_SOLVERS "OsiClp")
 
-    list(APPEND SHIPPED_LIBRARIES ${OSI_CLP_LIBRARY})
+    set(SHIP_COIN_OR ON)
 
 endif()
 
@@ -442,7 +438,7 @@ if (${USE_OSI})
     target_link_libraries(idol PUBLIC osi coinUtils)
     target_compile_definitions(idol PUBLIC IDOL_USE_OSI)
 
-    list(APPEND SHIPPED_LIBRARIES ${OSI_LIBRARY})
+    set(SHIP_COIN_OR ON)
 
 endif()
 
@@ -509,10 +505,17 @@ install(TARGETS idol
         PUBLIC_HEADER DESTINATION include/idol
 )
 
-install(FILES
-        ${SHIPPED_LIBRARIES}
-        DESTINATION lib
-)
+include(GNUInstallDirs)
+
+if (${SHIP_COIN_OR})
+    install(
+            DIRECTORY ${COIN_OR_DIR}/lib/
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            FILES_MATCHING
+            PATTERN *.so
+            PATTERN *.dylib
+    )
+endif ()
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
@@ -528,7 +531,6 @@ install(EXPORT idol_targets
 
 configure_file(idolConfig.cmake.in idolConfig.cmake @ONLY)
 
-#file(GLOB FIND_MODULES "${idol_SOURCE_DIR}/cmake/**/Find*.cmake")
 install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/idolConfig.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/idolConfigVersion.cmake"
