@@ -66,10 +66,7 @@ std::string idol::Optimizers::HiGHS::DynamicLib::find_library() {
         }
     }
 
-    throw std::runtime_error(
-        "HiGHS library not found. "
-        "Please, install HiGHS and set IDOL_HiGHS_PATH to its library file."
-    );
+    return "";
 }
 
 idol::Optimizers::HiGHS::DynamicLib::DynamicLib() {
@@ -79,7 +76,7 @@ idol::Optimizers::HiGHS::DynamicLib::DynamicLib() {
     m_handle = dlopen(HiGHS_path.c_str(), RTLD_LAZY);
 
     if (!m_handle) {
-        throw Exception("Could not load HiGHS.");
+        return;
     }
 
     HIGHS_SYM_LOAD(Highs_create);
@@ -112,6 +109,7 @@ idol::Optimizers::HiGHS::DynamicLib::DynamicLib() {
     HIGHS_SYM_LOAD(Highs_setOptionValue);
     HIGHS_SYM_LOAD(Highs_getBoolOptionValue);
     HIGHS_SYM_LOAD(Highs_writeModel);
+    HIGHS_SYM_LOAD(Highs_version);
 }
 
 idol::Optimizers::HiGHS::DynamicLib::~DynamicLib() {
@@ -666,6 +664,11 @@ void idol::Optimizers::HiGHS::set_param_logs(bool t_value) {
 bool idol::Optimizers::HiGHS::is_available() {
     auto& lib = get_dynamic_lib(false);
     return lib.is_available();
+}
+
+std::string idol::Optimizers::HiGHS::get_version() {
+    auto& lib = get_dynamic_lib();
+    return lib.Highs_version();
 }
 
 idol::Optimizers::HiGHS::~HiGHS() {

@@ -76,10 +76,7 @@ std::string idol::Optimizers::Gurobi::DynamicLib::find_library() {
     }
 
     if (candidates.empty()) {
-        throw std::runtime_error(
-            "Gurobi library not found. "
-            "Please, install Gurobi and set GUROBI_HOME, otherwise set IDOL_GUROBI_PATH to its library file."
-        );
+        return "";
     }
 
     // Pick the highest version by parsing the number

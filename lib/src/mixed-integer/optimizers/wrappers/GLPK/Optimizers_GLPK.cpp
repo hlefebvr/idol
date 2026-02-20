@@ -73,10 +73,7 @@ std::string idol::Optimizers::GLPK::DynamicLib::find_library() {
         }
     }
 
-    throw std::runtime_error(
-        "GLPK library not found. "
-        "Please, install GLPK and set IDOL_GLPK_PATH to its library file."
-    );
+    return "";
 }
 
 idol::Optimizers::GLPK::DynamicLib::DynamicLib() {
@@ -86,7 +83,7 @@ idol::Optimizers::GLPK::DynamicLib::DynamicLib() {
     m_handle = dlopen(glpk_path.c_str(), RTLD_LAZY);
 
     if (!m_handle) {
-        throw Exception("Could not load GLPK.");
+        return;
     }
 
     GLPK_SYM_LOAD(glp_init_smcp);
@@ -153,7 +150,7 @@ idol::Optimizers::GLPK::DynamicLib& idol::Optimizers::GLPK::get_dynamic_lib(bool
         m_dynamic_lib = std::make_unique<DynamicLib>();
     }
     if (t_throw_on_fail && !m_dynamic_lib->is_available()) {
-        throw Exception("Gurobi library is not available");
+        throw Exception("GLPK library is not available");
     }
     return *m_dynamic_lib;
 }

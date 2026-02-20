@@ -99,7 +99,7 @@ int main(int t_argc, const char ** t_argv) {
 
         std::cout << "--\tHiGHS: ";
         if (idol::Optimizers::HiGHS::is_available()) {
-            std::cout << "available";
+            std::cout << "available (version " << idol::Optimizers::HiGHS::get_version() << ")";
         } else {
             std::cout << "not found";
         }
@@ -107,7 +107,7 @@ int main(int t_argc, const char ** t_argv) {
 
         std::cout << "--\tMibS: ";
 #ifdef IDOL_USE_MIBS
-            std::cout << "available";
+            std::cout << "shipped with idol";
 #else
             std::cout << "not found";
 #endif

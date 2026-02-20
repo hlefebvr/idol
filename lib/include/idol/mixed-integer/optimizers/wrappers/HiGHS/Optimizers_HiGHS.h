@@ -87,6 +87,7 @@ public:
     void set_param_logs(bool t_value) override;
 
     static bool is_available();
+    static std::string get_version();
 };
 
 
@@ -128,6 +129,7 @@ public:
     HIGHS_SYM_PTR(Highs_setOptionValue);
     HIGHS_SYM_PTR(Highs_getBoolOptionValue);
     HIGHS_SYM_PTR(Highs_writeModel);
+    HIGHS_SYM_PTR(Highs_version);
 
     DynamicLib();
 
