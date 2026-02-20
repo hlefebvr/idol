@@ -111,6 +111,7 @@ public:
     // static Model read_from_file(Env& t_env, const std::string& t_filename);
 
     static bool is_available();
+    static std::string get_version();
 };
 
 #define GUROBI_SYM_PTR(name) \

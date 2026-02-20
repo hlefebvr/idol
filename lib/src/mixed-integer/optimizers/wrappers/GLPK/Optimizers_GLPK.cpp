@@ -138,6 +138,7 @@ idol::Optimizers::GLPK::DynamicLib::DynamicLib() {
     GLPK_SYM_LOAD(glp_get_row_type);
     GLPK_SYM_LOAD(glp_get_obj_dir);
     GLPK_SYM_LOAD(glp_write_lp);
+    GLPK_SYM_LOAD(glp_version);
 
 }
 
@@ -901,6 +902,11 @@ idol::Model idol::Optimizers::GLPK::read_from_file(idol::Env &t_env, const std::
 bool idol::Optimizers::GLPK::is_available() {
     auto& lib = get_dynamic_lib(false);
     return lib.is_available();
+}
+
+std::string idol::Optimizers::GLPK::get_version() {
+    auto& lib = get_dynamic_lib();
+    return lib.glp_version();
 }
 
 idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t_model) {

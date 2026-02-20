@@ -94,6 +94,7 @@ public:
     static Model read_from_file(Env& t_env, const std::string& t_filename);
 
     static bool is_available();
+    static std::string get_version();
 };
 
 #define GLPK_SYM_PTR(name) \
@@ -154,6 +155,7 @@ public:
     GLPK_SYM_PTR(glp_mip_obj_val);
     GLPK_SYM_PTR(glp_get_row_type);
     GLPK_SYM_PTR(glp_get_obj_dir);
+    GLPK_SYM_PTR(glp_version);
 
     DynamicLib();
 

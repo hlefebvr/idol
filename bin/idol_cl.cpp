@@ -83,7 +83,7 @@ int main(int t_argc, const char ** t_argv) {
 
         std::cout << "--\tGLPK: ";
         if (idol::Optimizers::GLPK::is_available()) {
-            std::cout << "available";
+            std::cout << "available (version " << idol::Optimizers::GLPK::get_version() << ")";
         } else {
             std::cout << "not found";
         }
@@ -91,7 +91,7 @@ int main(int t_argc, const char ** t_argv) {
 
         std::cout << "--\tGurobi: ";
         if (idol::Optimizers::Gurobi::is_available()) {
-            std::cout << "available";
+            std::cout << "available (version " << idol::Optimizers::Gurobi::get_version() << ")";
         } else {
             std::cout << "not found";
         }
@@ -103,6 +103,14 @@ int main(int t_argc, const char ** t_argv) {
         } else {
             std::cout << "not found";
         }
+        std::cout << "\n";
+
+        std::cout << "--\tMibS: ";
+#ifdef IDOL_USE_MIBS
+            std::cout << "available";
+#else
+            std::cout << "not found";
+#endif
         std::cout << "\n";
 
         return 0;

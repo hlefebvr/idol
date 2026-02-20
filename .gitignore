@@ -8,3 +8,4 @@ venv
 install
 CMakeCache.txt
 CMakeFiles
+build

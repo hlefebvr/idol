@@ -500,8 +500,6 @@ install(TARGETS idol
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-include(GNUInstallDirs)
-
 if (${SHIP_COIN_OR})
     install(
             DIRECTORY ${COIN_OR_DIR}/lib/

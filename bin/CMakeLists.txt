@@ -9,10 +9,6 @@ add_executable(idol_cl
 )
 target_link_libraries(idol_cl PRIVATE idol)
 
-install(TARGETS idol_cl
-        RUNTIME DESTINATION bin
-)
-
 include(FetchContent)
 
 FetchContent_Declare(
@@ -24,3 +20,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(cxxopts)
 
 target_link_libraries(idol_cl PRIVATE cxxopts::cxxopts)
+
+install(TARGETS idol_cl
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)

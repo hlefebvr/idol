@@ -245,7 +245,11 @@ GRBenv* idol::Optimizers::Gurobi::get_new_env() {
     auto& lib = get_dynamic_lib();
     int major, minor, tech;
     lib.GRBversion(&major, &minor, &tech);
-    lib.GRBloadenvinternal(&result, nullptr, major, minor, tech);
+    if (major >= 12) {
+        lib.GRBloadenvinternal(&result, nullptr, major, minor, tech);
+    } else {
+        throw Exception("Gurobi version " + std::to_string(major) + " is not supported (>= 12 required).");
+    }
     return result;
 }
 
@@ -1042,6 +1046,13 @@ void idol::Optimizers::Gurobi::set_tol_integer(double t_tol_integer) {
 bool idol::Optimizers::Gurobi::is_available() {
     auto& lib = get_dynamic_lib(false);
     return lib.is_available();
+}
+
+std::string idol::Optimizers::Gurobi::get_version() {
+    auto& lib = get_dynamic_lib();
+    int major, minor, tech;
+    lib.GRBversion(&major, &minor, &tech);
+    return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(tech);
 }
 
 /*
