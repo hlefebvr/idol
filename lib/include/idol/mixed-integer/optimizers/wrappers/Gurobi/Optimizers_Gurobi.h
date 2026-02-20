@@ -40,7 +40,7 @@ class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<int, int, int, 
     static ObjectiveSense idol_obj_sense(int t_sense);
     [[nodiscard]] std::pair<SolutionStatus, SolutionReason> gurobi_status(int t_status) const;
 protected:
-    static DynamicLib& get_dynamic_lib(bool t_throw_on_fail = true);
+    static DynamicLib& get_dynamic_lib(bool t_load_library = true);
     static GRBenv* get_new_env();
 
     void hook_build() override;
@@ -120,6 +120,7 @@ name##_t name = nullptr
 
 class idol::Optimizers::Gurobi::DynamicLib {
     void* m_handle = nullptr;
+    bool m_is_loaded = false;
 
     static std::string find_library();
 public:
@@ -165,6 +166,7 @@ public:
     GUROBI_SYM_PTR(GRBterminate);
 
     [[nodiscard]] bool is_available() const { return m_handle; }
+    void load_library();
 
     DynamicLib();
 

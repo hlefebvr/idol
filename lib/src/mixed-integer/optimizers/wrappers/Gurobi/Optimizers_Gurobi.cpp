@@ -104,10 +104,13 @@ std::string idol::Optimizers::Gurobi::DynamicLib::find_library() {
 idol::Optimizers::Gurobi::DynamicLib::DynamicLib() {
 
     const auto gurobi_path = find_library();
-
     m_handle = dlopen(gurobi_path.c_str(), RTLD_LAZY);
 
-    if (!m_handle) {
+}
+
+void idol::Optimizers::Gurobi::DynamicLib::load_library() {
+
+    if (m_is_loaded) {
         return;
     }
 
@@ -152,6 +155,7 @@ idol::Optimizers::Gurobi::DynamicLib::DynamicLib() {
     GUROBI_SYM_LOAD(GRBcblazy);
     GUROBI_SYM_LOAD(GRBterminate);
 
+    m_is_loaded = true;
 }
 
 idol::Optimizers::Gurobi::DynamicLib::~DynamicLib() {
@@ -160,12 +164,15 @@ idol::Optimizers::Gurobi::DynamicLib::~DynamicLib() {
     }
 }
 
-idol::Optimizers::Gurobi::DynamicLib& idol::Optimizers::Gurobi::get_dynamic_lib(bool t_throw_on_fail) {
+idol::Optimizers::Gurobi::DynamicLib& idol::Optimizers::Gurobi::get_dynamic_lib(bool t_load_library) {
     if (!m_dynamic_lib) {
         m_dynamic_lib = std::make_unique<DynamicLib>();
     }
-    if (t_throw_on_fail && !m_dynamic_lib->is_available()) {
-        throw Exception("Gurobi library is not available");
+    if (t_load_library) {
+        if (!m_dynamic_lib->is_available()) {
+            throw Exception("Gurobi library is not available");
+        }
+        m_dynamic_lib->load_library();
     }
     return *m_dynamic_lib;
 }

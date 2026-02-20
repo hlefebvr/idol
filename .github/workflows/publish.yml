@@ -159,7 +159,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install MibS
-        if: false
         run: |
           # Install MibS
           mkdir coin-or && cd coin-or
