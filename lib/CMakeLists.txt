@@ -446,13 +446,13 @@ if (${USE_JULIA})
     target_compile_definitions(idol PUBLIC IDOL_USE_JULIA)
     list(APPEND AVAILABLE_MILP_SOLVERS "JuMP")
 
-    add_custom_command(TARGET idol POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_CURRENT_SOURCE_DIR}/include/idol/mixed-integer/optimizers/wrappers/JuMP/module
-            $<TARGET_FILE_DIR:idol>/julia
-    )
-
 endif()
+
+add_custom_command(TARGET idol POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/idol/mixed-integer/optimizers/wrappers/JuMP/module
+    $<TARGET_FILE_DIR:idol>/julia
+)
 
 set(AVAILABLE_MILP_SOLVERS "${AVAILABLE_MILP_SOLVERS}" PARENT_SCOPE)
 set(AVAILABLE_BILEVEL_SOLVERS "${AVAILABLE_BILEVEL_SOLVERS}" PARENT_SCOPE)

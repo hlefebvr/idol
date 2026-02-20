@@ -111,7 +111,7 @@ idol::Optimizers::Gurobi::DynamicLib::DynamicLib() {
     m_handle = dlopen(gurobi_path.c_str(), RTLD_LAZY);
 
     if (!m_handle) {
-        throw Exception("Could not load Gurobi.");
+        return;
     }
 
     GUROBI_SYM_LOAD(GRBversion);
@@ -161,9 +161,12 @@ idol::Optimizers::Gurobi::DynamicLib::~DynamicLib() {
     dlclose(m_handle);
 }
 
-idol::Optimizers::Gurobi::DynamicLib& idol::Optimizers::Gurobi::get_dynamic_lib() {
+idol::Optimizers::Gurobi::DynamicLib& idol::Optimizers::Gurobi::get_dynamic_lib(bool t_throw_on_fail) {
     if (!m_dynamic_lib) {
         m_dynamic_lib = std::make_unique<DynamicLib>();
+    }
+    if (!m_dynamic_lib->is_available()) {
+        throw Exception("Gurobi library is not available");
     }
     return *m_dynamic_lib;
 }
@@ -1032,6 +1035,11 @@ void idol::Optimizers::Gurobi::set_tol_integer(double t_tol_integer) {
         m_model,
         GRBsetdblparam(lib.GRBgetenv(m_model), "IntFeasTol", t_tol_integer)
     )
+}
+
+bool idol::Optimizers::Gurobi::is_available() {
+    auto& lib = get_dynamic_lib(false);
+    return lib.is_available();
 }
 
 /*
