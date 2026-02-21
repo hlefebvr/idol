@@ -505,8 +505,8 @@ if (${SHIP_COIN_OR})
             DIRECTORY ${COIN_OR_DIR}/lib/
             DESTINATION ${CMAKE_INSTALL_LIBDIR}
             FILES_MATCHING
-            PATTERN *.so
-            PATTERN *.dylib
+            PATTERN *.so*
+            PATTERN *.dylib*
     )
 endif ()
 
