@@ -104,6 +104,11 @@ std::string idol::Optimizers::Gurobi::DynamicLib::find_library() {
 idol::Optimizers::Gurobi::DynamicLib::DynamicLib() {
 
     const auto gurobi_path = find_library();
+
+    if (gurobi_path.empty()) {
+        return;
+    }
+
     m_handle = dlopen(gurobi_path.c_str(), RTLD_LAZY);
 
     if (!m_handle) {
@@ -244,7 +249,7 @@ double idol::Optimizers::Gurobi::gurobi_numeric(double t_value) {
 }
 
 GRBenv* idol::Optimizers::Gurobi::get_new_env() {
-    SilentMode silent_mode(true);
+    //SilentMode silent_mode(true);
     GRBenv* result = NULL;
     auto& lib = get_dynamic_lib();
     int major, minor, tech, error;
