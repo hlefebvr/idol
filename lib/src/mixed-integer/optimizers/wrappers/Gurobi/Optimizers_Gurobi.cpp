@@ -245,14 +245,17 @@ double idol::Optimizers::Gurobi::gurobi_numeric(double t_value) {
 
 GRBenv* idol::Optimizers::Gurobi::get_new_env() {
     SilentMode silent_mode(true);
-    GRBenv* result;
+    GRBenv* result = NULL;
     auto& lib = get_dynamic_lib();
-    int major, minor, tech;
+    int major, minor, tech, error;
     lib.GRBversion(&major, &minor, &tech);
     if (major >= 12) {
-        lib.GRBloadenvinternal(&result, nullptr, major, minor, tech);
+        error = lib.GRBloadenvinternal(&result, NULL, major, minor, tech);
     } else {
-        lib.GRBloadenv(&result, nullptr);
+        error = lib.GRBloadenv(&result, NULL);
+    }
+    if (error || !result) {
+        throw Exception("Could not create gurobi environment.");
     }
     return result;
 }

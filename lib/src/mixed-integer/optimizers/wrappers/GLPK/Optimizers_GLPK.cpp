@@ -986,7 +986,7 @@ idol::Model idol::Optimizers::GLPK::read_from_lp_file(idol::Env &t_env, const st
     glp_prob* model = lib.glp_create_prob();
     auto result = lib.glp_read_lp(model,  NULL, t_filename.c_str());
     if (result != 0) {
-        throw Exception("Could not parse_variables MPS file.");
+        throw Exception("Could not parse MPS file.");
     }
     return read_from_glpk(t_env, model);
 

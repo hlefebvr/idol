@@ -53,6 +53,58 @@ void print_splash() {
     std::cout << "╚════════════════════════════════════════╝\n";
 }
 
+void print_versions() {
+    std::cout << "-- Dependencies\n";
+
+    std::cout << "--\tCplex: ";
+    if (false /* || idol::Optimizers::Cplex::is_available() */) {
+        //std::cout << "available (version " << idol::Optimizers::Cplex::get_version() << ")";
+    } else {
+        std::cout << "not found";
+    }
+    std::cout << "\n";
+
+    std::cout << "--\tGLPK: ";
+    if (idol::Optimizers::GLPK::is_available()) {
+        std::cout << "available (version " << idol::Optimizers::GLPK::get_version() << ")";
+    } else {
+        std::cout << "not found";
+    }
+    std::cout << "\n";
+
+    std::cout << "--\tGurobi: ";
+    if (idol::Optimizers::Gurobi::is_available()) {
+        std::cout << "available (version " << idol::Optimizers::Gurobi::get_version() << ")";
+    } else {
+        std::cout << "not found";
+    }
+    std::cout << "\n";
+
+    std::cout << "--\tHiGHS: ";
+    if (idol::Optimizers::HiGHS::is_available()) {
+        std::cout << "available (version " << idol::Optimizers::HiGHS::get_version() << ")";
+    } else {
+        std::cout << "not found";
+    }
+    std::cout << "\n";
+
+    std::cout << "--\tJulia: ";
+    if (false /* || idol::Optimizers::Julia::is_available() */) {
+        //std::cout << "available (version " << idol::Optimizers::Julia::get_version() << ")";
+    } else {
+        std::cout << "not found";
+    }
+    std::cout << "\n";
+
+    std::cout << "--\tMibS: ";
+#ifdef IDOL_USE_MIBS
+    std::cout << "shipped with idol";
+#else
+    std::cout << "not found";
+#endif
+    std::cout << "\n";
+}
+
 int main(int t_argc, const char ** t_argv) {
 
     print_splash();
@@ -79,40 +131,7 @@ int main(int t_argc, const char ** t_argv) {
     }
 
     if (args.count("version")) {
-        std::cout << "-- Dependencies\n";
-
-        std::cout << "--\tGLPK: ";
-        if (idol::Optimizers::GLPK::is_available()) {
-            std::cout << "available (version " << idol::Optimizers::GLPK::get_version() << ")";
-        } else {
-            std::cout << "not found";
-        }
-        std::cout << "\n";
-
-        std::cout << "--\tGurobi: ";
-        if (idol::Optimizers::Gurobi::is_available()) {
-            std::cout << "available (version " << idol::Optimizers::Gurobi::get_version() << ")";
-        } else {
-            std::cout << "not found";
-        }
-        std::cout << "\n";
-
-        std::cout << "--\tHiGHS: ";
-        if (idol::Optimizers::HiGHS::is_available()) {
-            std::cout << "available (version " << idol::Optimizers::HiGHS::get_version() << ")";
-        } else {
-            std::cout << "not found";
-        }
-        std::cout << "\n";
-
-        std::cout << "--\tMibS: ";
-#ifdef IDOL_USE_MIBS
-            std::cout << "shipped with idol";
-#else
-            std::cout << "not found";
-#endif
-        std::cout << "\n";
-
+        print_versions();
         return 0;
     }
 
