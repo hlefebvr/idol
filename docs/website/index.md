@@ -1,12 +1,123 @@
 \mainpage Home
 
-<h1 style="font-size:2.5em;border:none;margin-top:5px;margin-bottom:20px;">A C++ Framework for Optimization</h1>
-<h2 style="font-size:1.5em;color:gray;line-height:1.5em;border:none;margin-bottom:20px;">Start solving optimization problems now.</h2>
+<div id="welcome">
+    <span style="width: 58%">
+        <span style="display:block;line-height: 3.5em">
+            <span style="font-size:2.5em;color:#2f42ff;font-weight:700;">
+                Solve optimization problems
+            </span><br />
+            <span style="font-size:2.5em;font-weight:500;padding-left: 30px;">
+                and build custom algorithms
+            </span>
+        </span>
+        <span style="display: block; padding-top: 30px; line-height:1.4; font-size: 1.1em;font-weight: 500">
+            Solve <span class="highlight">bilevel</span> and <span class="highlight">two-stage robust optimization</span> problems with the command line interface, or build new custom algorithms
+            with the C++ library.
+        </span>
+        <span style="display:block;padding-top: 30px;padding-bottom: 5px;">
+            <a href="examples.html" class="my-button">
+                Get started
+            </a>
+            <a href="examples.html" class="my-button-secondary">
+                To the C++ API
+            </a>
+        </span>
+        <span style="font-size:.7em;">Compatible with Gurobi • Cplex • HiGHS • GLPK • CBC • MibS • JuMP</span>
+    </span>
+    <span style="width: 38%">
+        <span style="display: block; padding-right: 20px;margin-top:15%;" class="fragment" id="cli">
+<!--
+```cpp 
+idol_cl solve model.mps \ 
+    --bilevel follower.aux \
+    --method KKT-SOS1 \
+    --time-limit 300
+```
+-->
+        </span>
+    </span>
+</div>
 
-<a href="examples.html" class="my-button">Get started with examples</a>
-<a href="installation.html" class="my-button">To installation guidelines</a>
+<span style="font-weight:500;">Browse per problem type</span>
 
-\section what_is_idol What is idol?
+<div id="cards">
+    <div class="card" onclick="window.location = 'examples_mixed_integer.html';">
+        <a href="examples_mixed_integer.html">
+            Mixed-Integer Optimization
+        </a>
+        <div class="frame">
+            <img src="milp.png">
+        </div>
+        Interface with solvers like Gurobi and HiGHS, or write your own branch-and-bound algorithm.
+    </div>
+    <div class="card" onclick="window.location = 'examples_bilevel.html';">
+        <a href="examples_bilevel.html">
+            Bilevel Optimization
+        </a>
+            <div class="frame">
+                <img src="bilevel.png">
+            </div>
+            Solve bilevel problems by KKT reformulations or with bilevel solvers like MibS.
+    </div>
+    <div class="card" onclick="window.location = 'examples_robust.html';">
+        <a href="examples_robust.html">
+            Robust Optimization
+        </a>
+        <div class="frame">
+            <img src="robust.png" />
+        </div>
+        Handle uncertain problems using dualization or column-and-constraint generation algorithms.
+    </div>
+    <div class="card" onclick="window.location = 'examples_mixed_integer.html#examples_mixed_integer_branch_and_price';">
+        <a href="examples_mixed_integer.html#examples_mixed_integer_branch_and_price">
+            Branch-and-Price
+        </a>
+        <div class="frame">
+            <img src="column-generation.png">
+        </div>
+        Solve large-scale problems efficiently with column generation and branch-and-price techniques.
+    </div>
+</div>
+
+\section quick_start Quick Start
+
+<div class="tabbed">
+<ul>
+  <li>
+    <b class="tab-title">Linux</b>
+```cpp
+echo "deb [arch=amd64 trusted=yes] https://henrilefebvre.com/apt stable main" | sudo tee /etc/apt/sources.list.d/idol.list
+sudo apt-get update
+sudo apt-get install idol
+idol_cl --version
+```
+  </li>
+  <li><b class="tab-title">Mac</b>
+```cpp
+brew tap hlefebvr/idol
+brew install idol
+idol_cl --version
+```
+  </li>
+  <li><b class="tab-title">From Source</b>
+```cpp
+git clone https://github.com/hlefebvr/idol.git
+mkdir -p idol/build && cd idol/build
+cmake .. && cmake --build .
+sudo cmake --install .
+./idol_cl --version
+```
+</li>
+</ul>
+</div>
+
+\section highlights Highlights
+
+- <b>Unified CLI</b> Solve MILP, bilevel, and robust problems in one interface
+- <b>Composable C++ framework</b> Build, combine, and nest optimization algorithms
+- <b>Solver interoperability</b> Work with Gurobi, Cplex, HiGHS, and more
+- <b>Flexible modeling</b> Use your own branch-and-bound, branch-and-price, or decomposition methods
+
 
 idol is a C++ framework for **mathematical optimization** and complex decision-making problems.
 It is designed to help you build new algorithms for solving complex optimization problems.
@@ -22,45 +133,7 @@ model.optimize();
 
 idol offers a variety of tools to tackle many different kinds of optimization problems:
 
-<div id="cards">
-    <div class="card" onclick="window.location = 'examples_mixed_integer.html';">
-        <a href="examples_mixed_integer.html">
-            Mixed-integer Optimization
-        </a>
-        <div class="frame">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/IP_polytope_with_LP_relaxation.svg">
-        </div>
-        Interface with solvers like Gurobi, Cplex, HiGHS and many others or implement your own branch-and-bound algorithm. Code once, try multiple solvers.
-    </div>
-    <div class="card" onclick="window.location = 'examples_mixed_integer.html#examples_mixed_integer_branch_and_price';">
-        <a href="examples_mixed_integer.html#examples_mixed_integer_branch_and_price">
-            Branch-and-Price
-        </a>
-        <div class="frame">
-            <img src="https://media.springernature.com/full/springer-static/image/art%3A10.1007%2Fs00454-012-9421-9/MediaObjects/454_2012_9421_Fig1_HTML.gif">
-        </div>
-        Exploit your problem structure using branch-and-price and column generation. Solve large-scale problems with ease.
-    </div>
-    <div class="card" onclick="window.location = 'examples_bilevel.html';">
-        <a href="examples_bilevel.html">
-            Bilevel Optimization
-        </a>
-            <div class="frame">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Supply-demand-equilibrium.svg">
-            </div>
-            Tackle optimistic or pessimistic bilevel problems via KKT-based or strong duality reformulations,
-            or use the bilevel solver MibS.
-    </div>
-    <div class="card" onclick="window.location = 'examples_robust.html';">
-        <a href="examples_robust.html">
-            Robust Optimization
-        </a>
-        <div class="frame">
-            <img src="robust.png" />
-        </div>
-        Easily solve robust and two-stage robust optimization problems with techniques like dualization or column-and-constraint generation.
-    </div>
-</div>
+
 
 \section getting_started_with_idol Getting Started with idol
 

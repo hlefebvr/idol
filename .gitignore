@@ -9,3 +9,4 @@ install
 CMakeCache.txt
 CMakeFiles
 build
+.DS_Store

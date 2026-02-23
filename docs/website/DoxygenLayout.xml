@@ -21,7 +21,7 @@
       <tab type="interfaceindex" visible="$ALPHABETICAL_INDEX" title=""/>
       <tab type="interfacehierarchy" visible="yes" title="" intro=""/>
     </tab>
-    <tab type="classes" visible="yes" title="">
+    <tab type="classes" visible="yes" title="API">
       <tab type="classlist" visible="yes" title="" intro=""/>
       <tab type="classindex" visible="$ALPHABETICAL_INDEX" title=""/>
       <tab type="hierarchy" visible="yes" title="" intro=""/>
@@ -44,7 +44,7 @@
 
 
     <!-- External link -->
-    <tab type="user" visible="yes" title="</> GitHub Page" url="https://github.com/hlefebvr/idol"/>
+    <tab type="user" visible="yes" title="GitHub Page" url="https://github.com/hlefebvr/idol"/>
   </navindex>
 
   <!-- Layout definition for a class page -->
@@ -53,6 +53,7 @@
     <includes visible="$SHOW_HEADERFILE"/>
     <inheritancegraph visible="$CLASS_GRAPH"/>
     <collaborationgraph visible="yes"/>
+    <detaileddescription title="Description"/>
     <memberdecl>
       <nestedclasses visible="yes" title=""/>
       <publictypes title=""/>
@@ -60,15 +61,15 @@
       <interfaces title=""/>
       <publicslots title=""/>
       <signals title=""/>
-      <publicmethods title=""/>
-      <publicstaticmethods title=""/>
-      <publicattributes title=""/>
-      <publicstaticattributes title=""/>
+      <publicmethods title="Public Methods"/>
+      <publicstaticmethods title="Public Static Methods"/>
+      <publicattributes title="Public Attributes"/>
+      <publicstaticattributes title="Public Static Attributes"/>
       <protectedtypes title=""/>
       <protectedslots title=""/>
-      <protectedmethods title=""/>
-      <protectedstaticmethods title=""/>
-      <protectedattributes title=""/>
+      <protectedmethods title="Protected Methods"/>
+      <protectedstaticmethods title="Protected Static Methods"/>
+      <protectedattributes title="Protected Attributes"/>
       <protectedstaticattributes title=""/>
       <packagetypes title=""/>
       <packagemethods title=""/>
@@ -79,15 +80,14 @@
       <events title=""/>
       <privatetypes title=""/>
       <privateslots title=""/>
-      <privatemethods title=""/>
-      <privatestaticmethods title=""/>
-      <privateattributes title=""/>
-      <privatestaticattributes title=""/>
+      <privatemethods title="Private Methods"/>
+      <privatestaticmethods title="Private Static Methods"/>
+      <privateattributes title="Private Attributes"/>
+      <privatestaticattributes title="Private Static Attributes"/>
       <friends title=""/>
       <related title="" subtitle=""/>
       <membergroups visible="yes"/>
     </memberdecl>
-    <detaileddescription title=""/>
     <memberdef>
       <inlineclasses title=""/>
       <typedefs title=""/>
@@ -95,7 +95,7 @@
       <services title=""/>
       <interfaces title=""/>
       <constructors title=""/>
-      <functions title=""/>
+      <functions title="Methods Documentation"/>
       <related title=""/>
       <variables title=""/>
       <properties title=""/>
