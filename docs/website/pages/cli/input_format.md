@@ -1,16 +1,35 @@
 \page cli_input_format Input Format
-\brief Describes the input file format for MILPs, bilevel and robust problems.
 
 \tableofcontents
 
-\section milp MILPs
+`idol_cl` can solve different types of optimization problems. Each type requires input files in a specific format.
+Use the cards below to browse the documentation for each problem type and see the expected file formats.
 
-`idol_cl` accepts `.mps` and `.lp` file. The `.mps` format is recommended because it is  
+<span style="font-weight:500;">Browse per problem type</span>
 
-\section bilevel Bilevel Optimization
-
-\section robust Robust Optimization
-
-\subsection static_robust Static Robust Optimization
-
-\subsection two_stage_robust Two-stage Robust Optimization
+<div id="cards">
+    <div class="card" onclick="window.location = 'cli_input_format_milp.html';">
+        <a href="cli_input_format_milp.html">
+            Mixed-Integer Optimization
+        </a>
+        <div class="frame">
+            <img src="milp.png"/>
+        </div>
+    </div>
+    <div class="card" onclick="window.location = 'cli_input_format_bilevel.html';">
+        <a href="cli_input_format_bilevel.html">
+            Bilevel Optimization
+        </a>
+        <div class="frame">
+            <img src="bilevel.png"/>
+        </div>
+    </div>
+    <div class="card" onclick="window.location = 'cli_input_format_robust.html';">
+        <a href="cli_input_format_robust.html">
+            Robust Optimization
+        </a>
+        <div class="frame">
+            <img src="robust.png" />
+        </div>
+    </div>
+</div>

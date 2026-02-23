@@ -46,7 +46,7 @@ idol_cl solve model.mps \
             Mixed-Integer Optimization
         </a>
         <div class="frame">
-            <img src="milp.png">
+            <img src="milp.png"/>
         </div>
         Interface with solvers like Gurobi and HiGHS, or write your own branch-and-bound algorithm.
     </div>
@@ -55,7 +55,7 @@ idol_cl solve model.mps \
             Bilevel Optimization
         </a>
             <div class="frame">
-                <img src="bilevel.png">
+                <img src="bilevel.png"/>
             </div>
             Solve bilevel problems by KKT reformulations or with bilevel solvers like MibS.
     </div>
@@ -73,7 +73,7 @@ idol_cl solve model.mps \
             Branch-and-Price
         </a>
         <div class="frame">
-            <img src="column-generation.png">
+            <img src="column-generation.png"/>
         </div>
         Solve large-scale problems efficiently with column generation and branch-and-price techniques.
     </div>
