@@ -6,84 +6,130 @@
 For bilevel problems, `idol_cl` uses the `.aux` file format from the <a href="https://github.com/coin-or/MibS" target="_blank">MibS solver</a>
 coupled with an `.lp`/`.mps` file that stores the single-level relaxation.
 
-For more details, you may also refer to the <a href="https://coin-or.github.io/MibS/input.html" target="_blank">MibS documentation</a>.
-This file format is also the one in use by the <a href="https://bobilib.org/" target="_blank">BOBILib</a> instance library. 
-
 \subsection example Example
 
-Consider the bilevel optimization problem
+We consider the bilevel problem
 
 \f[
     \begin{align*}
-        \min_{x, y} \quad & -x - 7y \\
+        \min_{x, y} \quad & -x - 10y \\
         \text{s.t.} \quad
-        & -3x + 2y \le 12, \\
-        & x + 2y \le 20, \\
-        & x \le 10, \\
         & y \in \begin{array}[t]{rl}
-            \displaystyle\arg\min_{z} \ & z \\
-            \text{s.t.} \ & 2x - z \le 7, \\
-            & -2x + 4z \le 16, \\
-            & z \le 5.
-        \end{array}
+        \displaystyle\arg\min_{z} \ & z \\
+        \text{s.t.} \ & -25x + 20z \le 30, \\
+        & x + 2z \le 10, \\
+        & 2x - z \le 15, \\
+        & 2x + 10z \ge 15, \\
+        & z \ge 0, \\
+        & z \in \mathbb{Z}.
+        \end{array} \\
+        & x \in \mathbb{Z}_{\ge 0}.
     \end{align*}
 \f]
 
+This example is taken from the paper
+<a href="https://doi.org/10.1287/opre.38.5.911" target="_blank">"The Mixed Integer Linear Bilevel Programming Problem" by Moore and Bard (1990)</a>.
+
 The `.mps` stores the single-level relaxation.
 
-```
-NAME generalExample
+```text
+NAME moore-and-bard
 ROWS
- L  R0
- L  R1
- L  R2
- L  R3
- N  R4
+ N  OBJ
+ L  c_2
+ L  c_3
+ L  c_4
+ G  c_5
 COLUMNS
-    INT1 'MARKER' 'INTORG'
-    C0   R0       -3
-    C0   R1       1
-    C0   R2       2
-    C0   R3       -2
-    C0   R4       -1
-    C1   R0       2
-    C1   R1       2
-    C1   R2       -1
-    C1   R3       4
-    C1   R4       -7
-    INT1END 'MARKER' 'INTEND'
+    __constant OBJ        1
+    MARKER    'MARKER'                 'INTORG'
+    x          OBJ        -1
+    x          c_5        2
+    x          c_4        2
+    x          c_3        1
+    x          c_2        -25
+    y          OBJ        -10
+    y          c_5        10
+    y          c_4        -1
+    y          c_3        2
+    y          c_2        20
+    MARKER    'MARKER'                 'INTEND'
 RHS
-    B    R0       12
-    B    R1       20
-    B    R2       7
-    B    R3       16
+    RHS       c_2        30
+    RHS       c_3        10
+    RHS       c_4        15
+    RHS       c_5        15
 BOUNDS
- UP BOUND C0      10
- UP BOUND C1      5
+ FX BND       __constant 0
+ LI BND       x          0
+ LI BND       y          0
 ENDATA
 ```
 
 The `.aux` file describes what variables and constraints belong to the lower level and defines the lower-level objective coefficients.
 
-```
+```text
 @NUMVARS
 1
 @NUMCONSTRS
-2
+4
 @VARSBEGIN
-C1 1.
+y	1
 @VARSEND
 @CONSTRSBEGIN
-R2
-R3
+c_2
+c_3
+c_4
+c_5
 @CONSTRSEND
 @NAME
-General Example
+moore-and-bard
 @MPS
-generalExample.mps
+moore-and-bard.mps
 ```
 
-**Note**: in `idol_cl`, the field `@MPS` is typically ignored to avoid path corruption. 
-For that reason, the `.mps` file must explicitly be given.
+**Note**: in `idol_cl`, the field `@MPS` or `@LP` is typically ignored to avoid path corruption. 
+For that reason, the `.mps`/`.lp` file must explicitly be given.
 
 \subsection details Detailed Description
+
+Bilevel problem instances are described by two files. First, an `.mps` or `.lp` file stores the single-level relaxation model. 
+Then, the `.aux` file describes which variables and constraint belong to the lower-level problem.
+
+For more details on the `.mps` and `.lp` file formats, see the page \ref cli_input_format_milp.
+
+The `.aux` file is a plain-text file used to describe the structure of a bilevel optimization problem.
+Specifically, it defines:
+- The lower-level problem dimensions;
+- Which variables belong to the lower-level problem;
+- Which constraints belong to the lower-level problem;
+- The lower-level objective coefficients;
+- All variables and constraints not listed in the `.aux` file are implicitly part of the upper-level problem.
+
+Without the `.aux` file, the model is interpreted as a standard single-level optimization problem.
+
+\subsubsection sections Format of the `.aux` File
+
+The `.aux` file is composed of tagged sections, each identified by a keyword starting with `@`. The following table lists all supported tags and their meaning.
+
+| Tag             | Meanning                                                                                                      |
+|-----------------|---------------------------------------------------------------------------------------------------------------|
+| `@NUMVARS`      | The next line contains the number of lower-level variables                                                    |
+| `@NUMCONSTRS`   | The next line contains the number of lower-level constraints                                                  |
+| `@VARSBEGIN`    | Marks the beginning of the variables section                                                                  |
+| `@VARSEND`      | Marks the end of the variables section                                                                        |
+| `@CONSTRSBEGIN` | Marks the beginning of the constraints section                                                                |
+| `@CONSTRSEND`   | Marks the end of the constraints section                                                                      |
+| `@NAME`         | The next line contains the name of the instance (optional)                                                    |
+| `@MPS`          | The next line contains the name of the `.mps` file with which this instance is associated (typically ignored) |
+| `@LP`           | The next line contains the name of the `.lp` file with which this instance is associated (typically ignored)  |
+
+The variables section is composed by the list of variable names that belong to the lower-level problem directly followed by their 
+objective coefficient. The constraint section is composed by the list of constraint names that belong to the lower-level problem.
+
+Note that bounds on lower-level variables are always assumed to be constraints of the lower-level problem. 
+
+\section references References
+
+- <a href="https://coin-or.github.io/MibS/input.html" target="_blank">MibS documentation</a>.
+- <a href="https://bobilib.org/" target="_blank">BOBILib</a>, which is an instance library for mixed-integer bilevel optimization that uses this file format.

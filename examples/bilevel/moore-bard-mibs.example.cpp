@@ -2,6 +2,8 @@
 // Created by henri on 07.02.24.
 //
 #include <iostream>
+#include <idol/bilevel/modeling/write_to_file.h>
+
 #include "idol/modeling.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
 #include "idol/bilevel/modeling/Description.h"
@@ -48,6 +50,8 @@ int main(int t_argc, const char** t_argv) {
     description.make_lower_level(follower_c2);
     description.make_lower_level(follower_c3);
     description.make_lower_level(follower_c4);
+
+    Bilevel::write_to_file(high_point_relaxation, description, "moore-and-bard");
 
     // Use coin-or/MibS as external solver
     high_point_relaxation.use(
