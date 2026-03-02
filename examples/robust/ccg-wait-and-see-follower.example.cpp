@@ -2,11 +2,12 @@
 // Created by henri on 05.02.25.
 //
 #include <iostream>
+#include <idol/robust/modeling/read_from_file.h>
+
 #include "idol/modeling.h"
 #include "idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h"
 #include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
 #include "idol/robust/modeling/Description.h"
-#include "idol/robust/optimizers/deterministic/Deterministic.h"
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
@@ -17,6 +18,8 @@
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h"
 #include "idol/bilevel/optimizers/KKT/KKT.h"
+#include "idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h"
+#include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
 
 using namespace idol;
 
@@ -124,11 +127,6 @@ int main(int t_argc, const char** t_argv) {
                 .with_logs(false)
             ;
 
-    const auto mibs = Bilevel::MibS()
-            .with_cplex_for_feasibility(true)
-            .with_logs(false)
-            ;
-
     /************************************************/
     /* Creating the column-and-constraint optimizer */
     /************************************************/
@@ -141,9 +139,9 @@ int main(int t_argc, const char** t_argv) {
 
                     .with_master_optimizer(kkt)
 
-                    .add_feasibility_separation_optimizer(kkt)
+                    .add_separation(Robust::CCG::FeasibilitySeparation().with_bilevel_optimizer(kkt))
+                    .add_separation(Robust::CCG::OptimalitySeparation().with_bilevel_optimizer(kkt))
 
-                    .add_optimality_separation_optimizer(Bilevel::PessimisticAsOptimistic() + kkt)
                     .with_logs(true)
     );
 

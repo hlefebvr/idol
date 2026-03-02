@@ -51,8 +51,6 @@ int main(int t_argc, const char** t_argv) {
     description.make_lower_level(follower_c3);
     description.make_lower_level(follower_c4);
 
-    Bilevel::write_to_file(high_point_relaxation, description, "moore-and-bard");
-
     // Use coin-or/MibS as external solver
     high_point_relaxation.use(
                 Bilevel::MibS(description)

@@ -82,6 +82,10 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
 }
 
+#my-header .header-center .dropbtn::after {
+    content: " ▾"
+}
+
 /* Hover effect */
 #my-header .header-center a:hover,
 #my-header .header-center .dropbtn:hover {
@@ -415,4 +419,56 @@ div.header .title {
 
 div.contents .toc {
     top: 80px !important;
+}
+
+.warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+
+    background-color: #fff8e6;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+
+    color: #7a4b00;
+    font-size: 0.95rem;
+    line-height: 1.5;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.warning::before {
+    content: "⚠";
+    font-size: 1.2rem;
+    line-height: 1;
+    margin-top: 0.1rem;
+}
+
+.info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+
+    background-color: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    border-radius: 8px;
+
+    color: #1e3a8a;
+    font-size: 0.95rem;
+    line-height: 1.5;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.info::before {
+    content: "ℹ";
+    font-size: 1.2rem;
+    line-height: 1;
+    margin-top: 0.1rem;
 }

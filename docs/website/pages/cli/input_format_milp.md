@@ -12,7 +12,7 @@ In most cases, the file parsing is performed by the underlying solver used by `i
 For more details, refer to <a href="https://www.ibm.com/docs/en/icos/22.1.2?topic=cplex-lp-file-format-algebraic-representation" target="_blank">the IBM page on the .lp format</a>
 or the <a href="https://lpsolve.sourceforge.net/5.5/mps-format.htm" target="_blank">lpsolve page on the .mps format</a>.
 
-\subsection milp_example_lp Example (.lp and .mps)
+\section cli_milp_example_lp Example (.lp and .mps)
 
 Example of a simple MILP:
 

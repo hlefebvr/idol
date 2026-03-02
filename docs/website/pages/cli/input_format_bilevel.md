@@ -6,7 +6,7 @@
 For bilevel problems, `idol_cl` uses the `.aux` file format from the <a href="https://github.com/coin-or/MibS" target="_blank">MibS solver</a>
 coupled with an `.lp`/`.mps` file that stores the single-level relaxation.
 
-\subsection example Example
+\section cli_bilevel_example Example
 
 We consider the bilevel problem
 
@@ -91,7 +91,7 @@ moore-and-bard.mps
 **Note**: in `idol_cl`, the field `@MPS` or `@LP` is typically ignored to avoid path corruption. 
 For that reason, the `.mps`/`.lp` file must explicitly be given.
 
-\subsection details Detailed Description
+\section cli_bilevel_details Detailed Description
 
 Bilevel problem instances are described by two files. First, an `.mps` or `.lp` file stores the single-level relaxation model. 
 Then, the `.aux` file describes which variables and constraint belong to the lower-level problem.
@@ -108,28 +108,28 @@ Specifically, it defines:
 
 Without the `.aux` file, the model is interpreted as a standard single-level optimization problem.
 
-\subsubsection sections Format of the `.aux` File
+\subsection cli_bilevel_aux Format of the `.aux` File
 
 The `.aux` file is composed of tagged sections, each identified by a keyword starting with `@`. The following table lists all supported tags and their meaning.
 
-| Tag             | Meanning                                                                                                      |
-|-----------------|---------------------------------------------------------------------------------------------------------------|
-| `@NUMVARS`      | The next line contains the number of lower-level variables                                                    |
-| `@NUMCONSTRS`   | The next line contains the number of lower-level constraints                                                  |
-| `@VARSBEGIN`    | Marks the beginning of the variables section                                                                  |
-| `@VARSEND`      | Marks the end of the variables section                                                                        |
-| `@CONSTRSBEGIN` | Marks the beginning of the constraints section                                                                |
-| `@CONSTRSEND`   | Marks the end of the constraints section                                                                      |
-| `@NAME`         | The next line contains the name of the instance (optional)                                                    |
+| Tag             | Meaning                                                                                                      |
+|-----------------|--------------------------------------------------------------------------------------------------------------|
+| `@NUMVARS`      | The next line contains the number of lower-level variables                                                   |
+| `@NUMCONSTRS`   | The next line contains the number of lower-level constraints                                                 |
+| `@VARSBEGIN`    | Marks the beginning of the variables section                                                                 |
+| `@VARSEND`      | Marks the end of the variables section                                                                       |
+| `@CONSTRSBEGIN` | Marks the beginning of the constraints section                                                               |
+| `@CONSTRSEND`   | Marks the end of the constraints section                                                                     |
+| `@NAME`         | The next line contains the name of the instance (optional)                                                   |
 | `@MPS`          | The next line contains the name of the `.mps` file with which this instance is associated (typically ignored) |
-| `@LP`           | The next line contains the name of the `.lp` file with which this instance is associated (typically ignored)  |
+| `@LP`           | The next line contains the name of the `.lp` file with which this instance is associated (typically ignored) |
 
 The variables section is composed by the list of variable names that belong to the lower-level problem directly followed by their 
 objective coefficient. The constraint section is composed by the list of constraint names that belong to the lower-level problem.
 
 Note that bounds on lower-level variables are always assumed to be constraints of the lower-level problem. 
 
-\section references References
+\section cli_bilevel_references References
 
 - <a href="https://coin-or.github.io/MibS/input.html" target="_blank">MibS documentation</a>.
 - <a href="https://bobilib.org/" target="_blank">BOBILib</a>, which is an instance library for mixed-integer bilevel optimization that uses this file format.

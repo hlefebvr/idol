@@ -15,10 +15,10 @@
             with the C++ library.
         </span>
         <span style="display:block;padding-top: 30px;padding-bottom: 5px;">
-            <a href="examples.html" class="my-button">
+            <a href="cli_basics.html" class="my-button">
                 Get started
             </a>
-            <a href="examples.html" class="my-button-secondary">
+            <a href="lib_basics.html" class="my-button-secondary">
                 To the C++ API
             </a>
         </span>
@@ -27,7 +27,7 @@
     <span style="width: 38%">
         <span style="display: block; padding-right: 20px;margin-top:15%;" class="fragment" id="cli">
 <!--
-```cpp 
+```shell 
 idol_cl solve model.mps \ 
     --bilevel follower.aux \
     --method KKT-SOS1 \
