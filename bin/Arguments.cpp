@@ -111,9 +111,9 @@ std::ostream& operator<<(std::ostream& t_os, ProblemType t_problem_type) {
 
 void add_file_options(CLI::App* t_app, Arguments& t_result) {
     auto file = t_app->add_option("file",  t_result.file, "Input file")->required()->check(CLI::ExistingFile);
-    auto bilevel = t_app->add_option("--bilevel,--stages,--aux", t_result.aux_file, ".aux file for bilevel and two-stage robust problems");
-    auto uncertainty_param = t_app->add_option("--uncertainty-param,--par", t_result.uncertainty_param_file, ".par file for bilevel and two-stage robust problems");
-    auto uncertainty_set = t_app->add_option("--uncertainty-set,--unc", t_result.uncertainty_set_file, ".mps/.lp file for the uncertainty set in robust problems");
+    auto bilevel = t_app->add_option("--bilevel,--stages,--aux", t_result.aux_file, ".aux file for bilevel and two-stage robust problems")->configurable();
+    auto uncertainty_param = t_app->add_option("--uncertainty-param,--par", t_result.uncertainty_param_file, ".par file for bilevel and two-stage robust problems")->configurable();
+    auto uncertainty_set = t_app->add_option("--uncertainty-set,--unc", t_result.uncertainty_set_file, ".mps/.lp file for the uncertainty set in robust problems")->configurable();
 
     uncertainty_set->needs(uncertainty_param);
     uncertainty_param->needs(uncertainty_set);
@@ -127,18 +127,22 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
     CLI::App app {"idol command line interface"};
 
     app.require_subcommand(0, 1);
+    app.allow_config_extras(false);
     app.set_help_flag("--help, -h");
     app.set_help_all_flag("--help-all");
     app.add_flag("--version,-v", show_version, "Print version and third party tools versions.");
+    auto config = app.set_config("--config,-c")->check(CLI::ExistingFile);
 
     /* solve subcommand */
     auto solve = app.add_subcommand("solve", "Solve an instance");
+
+    solve->add_option("--time-limit", result.time_limit, "Time limit in seconds")->configurable();
+    solve->add_option("--method", result.method, "Solution method")->configurable();
+
     add_file_options(solve, result);
-    solve->add_option("--time-limit", result.time_limit, "Time limit in seconds");
-    solve->add_option("--method", result.method, "Solution method");
 
     /* list-method subcommand */
-    auto list_methods = app.add_subcommand("list-methods", "List available methods for the given problem");
+    auto list_methods = app.add_subcommand("list-methods", "List available methods for the given problem")->ignore_case();
     add_file_options(list_methods, result);
 
     /* PARSE ARGUMENTS */
@@ -156,6 +160,12 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
 
     if (*list_methods) {
         result.solve = false;
+    }
+
+    if (*config) {
+        std::cout << "-- The configuration file is " << config->as<std::string>() << std::endl;
+    }else {
+        std::cout << "-- No configuration file loaded" << std::endl;
     }
 
     if (!result.uncertainty_param_file.empty()) {
