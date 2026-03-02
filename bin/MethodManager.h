@@ -11,6 +11,8 @@
 
 #include "idol/general/utils/exceptions/Exception.h"
 
+class Arguments;
+
 class MethodManager {
 public:
     using storage = std::unordered_map<std::string, std::pair<unsigned int, std::string>>;
@@ -19,9 +21,11 @@ public:
 
     void add(const std::string& t_tag);
 
-    void print_available_methods(bool t_with_details);
+    void print_available_methods(const Arguments& t_args);
 
     [[nodiscard]] const std::string& get_default_method() const;
+
+    [[nodiscard]] const std::string& get_method(const Arguments& t_args) const;
 
 private:
     const storage m_all_methods;

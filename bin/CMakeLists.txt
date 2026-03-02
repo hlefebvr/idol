@@ -6,20 +6,21 @@ add_executable(idol_cl
         MethodManager.cpp
         MethodManager.h
         VariableAnalysis.h
+        Arguments.h
+        Arguments.cpp
 )
 target_link_libraries(idol_cl PRIVATE idol)
 
 include(FetchContent)
 
 FetchContent_Declare(
-        cxxopts
-        GIT_REPOSITORY https://github.com/jarro2783/cxxopts.git
-        GIT_TAG origin/master
+        CLI11
+        GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
+        GIT_TAG v2.6.2
 )
 
-FetchContent_MakeAvailable(cxxopts)
-
-target_link_libraries(idol_cl PRIVATE cxxopts::cxxopts)
+FetchContent_MakeAvailable(CLI11)
+target_link_libraries(idol_cl PRIVATE CLI11::CLI11)
 
 install(TARGETS idol_cl
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

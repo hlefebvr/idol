@@ -5,7 +5,7 @@
 #ifndef IDOL_SOLVE_ROBUST_H
 #define IDOL_SOLVE_ROBUST_H
 
-#include "cxxopts.hpp"
+#include "Arguments.h"
 #include "MethodManager.h"
 #include "VariableAnalysis.h"
 #include "idol/modeling.h"
@@ -22,16 +22,16 @@
 class RobustMethodManager : public MethodManager {
 public:
     RobustMethodManager() : MethodManager({
-        { "CCG-Farkas", { 50, "column-and-constraint generation with Farkas-based separation; see Ayoub and Poss (2016) [https://doi.org/10.1007/s10287-016-0249-2]" } },
-        { "CCG-MibS", { 25, "column-and-constraint generation with separation by MibS" } },
-        { "CCG-KKT-SOS1", { 20, "column-and-constraint generation with KKT-based separation using SOS1" } },
-        { "Yasol", { 15, "quantified programming formulation solved with Yasol; see Goerigk and Hartisch (2021) [https://doi.org/10.1016/j.cor.2021.105434]" } },
-        { "BBBB-MibS", { 5, "bilevel-based branch-and-bound with MibS; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]" } },
-        { "BBBB-KKT-SOS1", { 0, "bilevel-based branch-and-bound with KKT using SOS1; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]" } }
+        { "CCG-Farkas", { 50, "Column-and-constraint generation with Farkas-based separation; see Ayoub and Poss (2016) [https://doi.org/10.1007/s10287-016-0249-2]." } },
+        { "CCG-MibS", { 25, "Column-and-constraint generation with separation by MibS." } },
+        { "CCG-KKT-SOS1", { 20, "Column-and-constraint generation with KKT-based separation using SOS1." } },
+        { "Yasol", { 15, "Quantified programming formulation solved with Yasol; see Goerigk and Hartisch (2021) [https://doi.org/10.1016/j.cor.2021.105434]." } },
+        { "BBBB-MibS", { 5, "Bilevel-based branch-and-bound with MibS; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } },
+        { "BBBB-KKT-SOS1", { 0, "Bilevel-based branch-and-bound with KKT using SOS1; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } }
     }) {}
 };
 
-struct UncertaintySetAnalysisResult : public VariableAnalysisResult{
+struct UncertaintySetAnalysisResult : VariableAnalysisResult{
     bool is_zero_one_polytope = false;
     //bool has_rhs_uncerrtainty = false;
     //bool has_ctr_uncertainty = false;
@@ -78,18 +78,14 @@ inline StageAnalysisResult get_stage_analysis(const idol::Model& t_model,
     return result;
 }
 
-inline void solve_robust(const cxxopts::ParseResult& t_args) {
+inline void solve_adjustable_robust(const Arguments& t_args) {
 
     using namespace idol;
 
-    const bool p_verbose = t_args.count("mute") == 0;
-    const auto p_uncertainty_param = t_args["uncertainty-param"].as<std::string>();
-    const auto p_uncertainty_set = t_args["uncertainty-set"].as<std::string>();
-
     Env env;
-    auto model = GLPK::read_from_file(env, t_args["file"].as<std::string>());
-    auto bilevel_description = Bilevel::read_bilevel_description(model, t_args["bilevel"].as<std::string>());
-    auto robust_description = Robust::read_from_file(model, p_uncertainty_param, p_uncertainty_set);
+    auto model = GLPK::read_from_file(env, t_args.file);
+    auto bilevel_description = Bilevel::read_bilevel_description(model, t_args.aux_file);
+    auto robust_description = Robust::read_from_file(model, t_args.uncertainty_param_file, t_args.uncertainty_set_file);
     const auto& uncertainty_set = robust_description.uncertainty_set();
 
     const auto uncertainty_analysis = get_uncertainty_set_analysis(uncertainty_set);
@@ -184,9 +180,9 @@ inline void solve_robust(const cxxopts::ParseResult& t_args) {
 
     }
 
-    method_manager.print_available_methods(false);
+    method_manager.print_available_methods(t_args);
 
-    const auto method = method_manager.get_default_method();
+    const auto method = method_manager.get_method(t_args);
 
     std::cout << "-- Solving problem using " << method << "." << std::endl;
 
@@ -195,7 +191,7 @@ inline void solve_robust(const cxxopts::ParseResult& t_args) {
         auto ccg = Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
         ccg.with_initial_scenario_by_maximization(Gurobi());
         ccg.with_master_optimizer(Gurobi());
-        ccg.with_logs(p_verbose);
+        ccg.with_logs(!t_args.mute);
 
         if (method == "CCG-Farkas") {
 
@@ -233,7 +229,7 @@ inline void solve_robust(const cxxopts::ParseResult& t_args) {
 
         auto bbbb = Robust::BilevelBasedBranchAndBound(robust_description, bilevel_description);
 
-        bbbb.with_logs(p_verbose);
+        bbbb.with_logs(!t_args.mute);
 
         if (method == "BBBB-MibS") {
 
