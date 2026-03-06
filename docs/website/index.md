@@ -18,7 +18,7 @@
             <a href="cli_basics.html" class="my-button">
                 Get started
             </a>
-            <a href="lib_basics.html" class="my-button-secondary">
+            <a href="examples.html" class="my-button-secondary">
                 To the C++ API
             </a>
         </span>
