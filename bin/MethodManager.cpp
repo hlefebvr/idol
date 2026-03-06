@@ -38,7 +38,7 @@ void MethodManager::print_available_methods(const Arguments& t_args) {
 
         std::cout << "\nDetails (all methods):\n" << std::endl;
         for (auto & [key, pair] : m_all_methods) {
-            std::cout << " - " << key << ":\n\t" << pair.second << "\n\n";
+            std::cout << " - " << key << ": " << pair.second << "\n";
         }
 
         exit(0);

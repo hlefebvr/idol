@@ -27,7 +27,7 @@ public:
 
     [[nodiscard]] const std::string& get_method(const Arguments& t_args) const;
 
-private:
+protected:
     const storage m_all_methods;
     std::map<unsigned int, storage::const_iterator> m_available_methods;
 };

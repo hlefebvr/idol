@@ -13,7 +13,7 @@ namespace idol {
 }
 
 class idol::GLPK : public OptimizerFactoryWithDefaultParameters<GLPK> {
-    bool m_continuous_relaxation = false;
+    std::optional<bool> m_continuous_relaxation;
 
     explicit GLPK(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
 public:
@@ -30,6 +30,8 @@ public:
     static GLPK ContinuousRelaxation();
 
     [[nodiscard]] GLPK *clone() const override;
+
+    GLPK& with_continuous_relaxation_only(bool t_value);
 
     static Model read_from_file(Env& t_env, const std::string& t_filename);
 };

@@ -2,6 +2,7 @@ add_executable(idol_cl
         idol_cl.cpp
         solve_milp.h
         solve_bilevel.h
+        solve_robust.h
         output.h
         MethodManager.cpp
         MethodManager.h

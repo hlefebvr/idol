@@ -9,12 +9,13 @@
 #include "idol/mixed-integer/modeling/variables/TempVar.h"
 #include "idol/bilevel/modeling/Description.h"
 #include <cassert>
+#include <fstream>
 
 idol::Reformulators::KKT::KKT(const idol::Model &t_parent,
-                         const QuadExpr<Var, double> &t_primal_objective,
-                         const std::function<bool(const Var &)> &t_primal_variable_indicator,
-                         const std::function<bool(const Ctr &)> &t_primal_constraint_indicator,
-                         const std::function<bool(const QCtr &)> &t_primal_qconstraint_indicator)
+                              const QuadExpr<Var, double> &t_primal_objective,
+                              const std::function<bool(const Var &)> &t_primal_variable_indicator,
+                              const std::function<bool(const Ctr &)> &t_primal_constraint_indicator,
+                              const std::function<bool(const QCtr &)> &t_primal_qconstraint_indicator)
                          : m_primal(t_parent),
                            m_primal_objective(t_primal_objective),
                            m_primal_variable_indicator(t_primal_variable_indicator),
@@ -777,4 +778,133 @@ const std::variant<idol::Ctr, idol::QCtr> &idol::Reformulators::KKT::get_dual_ct
 
     return *m_dual_constraints[index];
 
+}
+
+void idol::Reformulators::KKT::BoundProviderMap::set(Map<std::string, double>& t_map, std::string const& t_name, double t_value) {
+    auto [it, success] = t_map.emplace(t_name, t_value);
+    if (!success) {
+        throw Exception("Duplicated bounds for " + t_name + ".");
+    }
+}
+
+double idol::Reformulators::KKT::BoundProviderMap::get_ctr_dual_lb(const Ctr& t_ctr) {
+    auto it = m_ctr_dual.find(t_ctr.name());
+    if (it == m_ctr_dual.end()) {
+        throw Exception("No bound for dual variable associated to " + t_ctr.name() + " was found.");
+    }
+    return it->second;
+}
+
+double idol::Reformulators::KKT::BoundProviderMap::get_ctr_dual_ub(const Ctr& t_ctr) {
+    auto it = m_ctr_dual.find(t_ctr.name());
+    if (it == m_ctr_dual.end()) {
+        throw Exception("No bound for dual variable associated to " + t_ctr.name() + " was found.");
+    }
+    return it->second;
+}
+
+double idol::Reformulators::KKT::BoundProviderMap::get_ctr_slack_lb(const Ctr& t_ctr) {
+    auto it = m_ctr_slack.find(t_ctr.name());
+    if (it == m_ctr_slack.end()) {
+        throw Exception("No bound for slack associated to " + t_ctr.name() + " was found.");
+    }
+    return it->second;
+}
+
+double idol::Reformulators::KKT::BoundProviderMap::get_ctr_slack_ub(const Ctr& t_ctr) {
+    auto it = m_ctr_slack.find(t_ctr.name());
+    if (it == m_ctr_slack.end()) {
+        throw Exception("No bound for slack associated to " + t_ctr.name() + " was found.");
+    }
+    return it->second;
+}
+
+double idol::Reformulators::KKT::BoundProviderMap::get_var_lb_dual_ub(const Var& t_var) {
+    auto it = m_var_lb_dual.find(t_var.name());
+    if (it == m_var_lb_dual.end()) {
+        throw Exception("No bound for dual associated to the lower bound of " + t_var.name() + " was found.");
+    }
+    return it->second;
+}
+
+double idol::Reformulators::KKT::BoundProviderMap::get_var_ub_dual_lb(const Var& t_var) {
+    auto it = m_var_ub_dual.find(t_var.name());
+    if (it == m_var_ub_dual.end()) {
+        throw Exception("No bound for dual associated to the upper bound of " + t_var.name() + " was found.");
+    }
+    return it->second;
+}
+
+double idol::Reformulators::KKT::BoundProviderMap::get_var_lb(const Var& t_var) {
+    auto it = m_var_lb.find(t_var.name());
+    if (it != m_var_lb.end()) {
+        return it->second;
+    }
+    return BoundProvider::get_var_lb(t_var);
+}
+
+double idol::Reformulators::KKT::BoundProviderMap::get_var_ub(const Var& t_var) {
+    auto it = m_var_ub.find(t_var.name());
+    if (it != m_var_ub.end()) {
+        return it->second;
+    }
+    return BoundProvider::get_var_ub(t_var);
+}
+
+idol::Reformulators::KKT::BoundProvider* idol::Reformulators::KKT::BoundProviderMap::clone() const {
+    return new BoundProviderMap(*this);
+}
+
+idol::Reformulators::KKT::BoundProviderMap idol::Reformulators::KKT::BoundProviderMap::from_file(const std::string& t_filename) {
+
+    BoundProviderMap result;
+
+    std::ifstream file(t_filename);
+
+    if (!file.is_open()) {
+        throw Exception("Could not open file " + t_filename + ".");
+    }
+
+    enum Section { Unknown, CtrDual, CtrPrimal, LbDual, LbPrimal, UbDual, UbPrimal };
+
+    std::string line;
+    Section current = Unknown;
+    while (std::getline(file, line)) {
+
+        if (line.empty()) {
+            continue;
+        }
+
+        if (line[0] == '@') {
+            if (line == "@CTR_DUAL") current = CtrDual;
+            else if (line == "@CTR_PRIMAL") current = CtrPrimal;
+            else if (line == "@LB_DUAL") current = LbDual;
+            else if (line == "@LB_PRIMAL") current = LbPrimal;
+            else if (line == "@UB_DUAL") current = UbDual;
+            else if (line == "@UB_PRIMAL") current = UbPrimal;
+            else throw Exception("Unknown section: " + line);
+            continue;
+        }
+
+        std::istringstream iss(line);
+        std::string name;
+        double value;
+
+        if (!(iss >> name >> value))
+            throw Exception("Invalid line: " + line);
+
+        switch (current) {
+            case CtrDual:   result.m_ctr_dual[name] = value; break;
+            case CtrPrimal: result.m_ctr_slack[name] = value; break;
+            case LbDual:    result.m_var_lb_dual[name]    = value; break;
+            case LbPrimal:  result.m_var_lb[name]  = value; break;
+            case UbDual:    result.m_var_ub_dual[name]    = value; break;
+            case UbPrimal:  result.m_var_ub[name]  = value; break;
+            default: throw Exception("Entry outside of a section: " + line);
+        }
+    }
+
+    file.close();
+
+    return result;
 }

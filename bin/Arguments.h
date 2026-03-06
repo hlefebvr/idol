@@ -26,9 +26,14 @@ public:
     // MILPs
     std::string file;
     double time_limit = idol::Inf;
+    std::string jump_optimizer;
+    std::string default_milp_method;
 
     // Bilevel
     std::string aux_file;
+    bool pessimistic = false;
+    bool no_kleinert_vi = false;
+    std::string bound_provider;
 
     // Robust
     std::string uncertainty_set_file;

@@ -138,11 +138,16 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
 
     solve->add_option("--time-limit", result.time_limit, "Time limit in seconds")->configurable();
     solve->add_option("--method", result.method, "Solution method")->configurable();
+    solve->add_option("--jump-optimizer", result.jump_optimizer, "JuMP optimizer to be used (required if --method JUMP)")->configurable();
+    solve->add_flag("--pessimistic", result.pessimistic, "For bilevel problems, indicates to solve the pessimistic variant of the problem")->configurable();
+    solve->add_flag("--no-kleinert-vi", result.no_kleinert_vi, "For bilevel problems, for KKT-based approaches, indicates to not use the valid inequalities from Kleinart et al. (2020) [https://doi.org/10.1007/s11590-020-01660-6]")->configurable();
+    solve->add_option("--bound-provider", result.bound_provider, "For bilevel or two-stage robust problems, provides a file storing big-m values for KKT-based reformulations.")->configurable();
+    solve->add_option("--default-sub-milp-method", result.default_milp_method, "Specifies a MILP method that is used to solved underlying MILPs in, e.g., decomposition algorithms, reformulation approaches, etc.")->configurable();
 
     add_file_options(solve, result);
 
     /* list-method subcommand */
-    auto list_methods = app.add_subcommand("list-methods", "List available methods for the given problem")->ignore_case();
+    auto list_methods = app.add_subcommand("list-methods", "List available methods for the given problem");
     add_file_options(list_methods, result);
 
     /* PARSE ARGUMENTS */
@@ -158,13 +163,18 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
         exit(0);
     }
 
+    if (!*list_methods && !*solve) {
+        std::cerr << "A subcommand is mandatory" << std::endl;
+        exit(1);
+    }
+
     if (*list_methods) {
         result.solve = false;
     }
 
     if (*config) {
         std::cout << "-- The configuration file is " << config->as<std::string>() << std::endl;
-    }else {
+    } else {
         std::cout << "-- No configuration file loaded" << std::endl;
     }
 

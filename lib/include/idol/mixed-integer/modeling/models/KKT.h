@@ -48,6 +48,7 @@ class idol::Reformulators::KKT {
     void create_dual_constraints();
 public:
     class BoundProvider;
+    class BoundProviderMap;
 
     KKT(const Model& t_parent,
               const QuadExpr<Var, double>& t_primal_objective,
@@ -116,7 +117,7 @@ public:
     [[nodiscard]] const Var& get_dual_var(const Ctr& t_ctr) const;
     [[nodiscard]] const Var& get_dual_var_lb(const Var& t_var) const;
     [[nodiscard]] const Var& get_dual_var_ub(const Var& t_var) const;
-    const std::variant<Ctr, QCtr>& get_dual_ctr(const Var& t_var) const;
+    [[nodiscard]] const std::variant<Ctr, QCtr>& get_dual_ctr(const Var& t_var) const;
 };
 
 class idol::Reformulators::KKT::BoundProvider {
@@ -138,6 +139,39 @@ public:
     [[nodiscard]] virtual BoundProvider* clone() const = 0;
 
     friend class idol::Reformulators::KKT;
+};
+
+class idol::Reformulators::KKT::BoundProviderMap : public BoundProvider {
+    Map<std::string, double> m_ctr_dual;
+    Map<std::string, double> m_ctr_slack;
+    Map<std::string, double> m_var_lb_dual;
+    Map<std::string, double> m_var_lb;
+    Map<std::string, double> m_var_ub_dual;
+    Map<std::string, double> m_var_ub;
+
+    static void set(Map<std::string, double>& t_map, std::string const& t_name, double t_value);
+public:
+    double get_ctr_dual_lb(const Ctr& t_ctr) override;
+    double get_ctr_dual_ub(const Ctr& t_ctr) override;
+    double get_ctr_slack_lb(const Ctr& t_ctr) override;
+    double get_ctr_slack_ub(const Ctr& t_ctr) override;
+    double get_var_lb_dual_ub(const Var& t_var) override;
+    double get_var_ub_dual_lb(const Var& t_var) override;
+    double get_var_lb(const Var& t_var) override;
+    double get_var_ub(const Var& t_var) override;
+
+    void set_ctr_dual_lb(const Ctr& t_ctr, double t_value) { set(m_ctr_dual, t_ctr.name(), t_value); }
+    void set_ctr_dual_ub(const Ctr& t_ctr, double t_value) { set(m_ctr_dual, t_ctr.name(), t_value); }
+    void set_ctr_slack_lb(const Ctr& t_ctr, double t_value) { set(m_ctr_dual, t_ctr.name(), t_value); }
+    void set_ctr_slack_ub(const Ctr& t_ctr, double t_value) { set(m_ctr_dual, t_ctr.name(), t_value); }
+    void set_var_lb_dual_ub(const Var& t_var, double t_value) { set(m_var_lb_dual, t_var.name(), t_value); }
+    void set_var_ub_dual_lb(const Var& t_var, double t_value) { set(m_var_lb_dual, t_var.name(), t_value); }
+    void set_var_lb(const Var& t_var, double t_value) { set(m_var_lb, t_var.name(), t_value); }
+    void set_var_ub(const Var& t_var, double t_value) { set(m_var_lb, t_var.name(), t_value); }
+
+    [[nodiscard]] BoundProvider* clone() const override;
+
+    static BoundProviderMap from_file(const std::string& t_filename);
 };
 
 #endif //IDOL_KKT_H

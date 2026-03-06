@@ -21,11 +21,12 @@
     $(document).ready(() => {
         var typed = new Typed('#cli', {
             strings: ["<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
-                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MibS \\ \n   --time-limit 300</pre>",
-                      "<pre>idol_cl solve model.mps \\ \n   --method Gurobi \\ \n   --time-limit 3600</pre>",
-                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-Farkas \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
                       "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
-                      "<pre>idol_cl solve model.mps \\ \n   --method HiGHS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
             ],
             showCursor: false,
             loop: true,
@@ -33,7 +34,7 @@
             smartBackspace: true,
             typeSpeed: 25,
             backSpeed: 25,
-            backDelay: 10 * 1000,
+            backDelay: 7 * 1000,
         });
     })
 </script>

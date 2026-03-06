@@ -7,6 +7,7 @@
 
 #include "Arguments.h"
 #include "MethodManager.h"
+#include "output.h"
 #include "VariableAnalysis.h"
 #include "idol/modeling.h"
 #include "idol/bilevel/modeling/read_from_file.h"
@@ -183,6 +184,8 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
     method_manager.print_available_methods(t_args);
 
     const auto method = method_manager.get_method(t_args);
+
+    std::cout << "-- Solving using " << method << std::endl;
 
     std::cout << "-- Solving problem using " << method << "." << std::endl;
 
