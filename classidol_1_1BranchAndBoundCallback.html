@@ -1,0 +1,775 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::BranchAndBoundCallback&lt; NodeInfoT &gt; Class Template Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_basics.html">Basics</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <li><a href="cli_input_format.html">Input Format</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <!-- <li><a href="#">Tutorials</a></li> -->
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><a href="classidol_1_1BranchAndBoundCallback.html">BranchAndBoundCallback</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pro-methods">Protected Methods</a> &#124;
+<a href="#friends">Friends</a> &#124;
+<a href="classidol_1_1BranchAndBoundCallback-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::BranchAndBoundCallback&lt; NodeInfoT &gt; Class Template Reference<span class="mlabels"><span class="mlabel abstract">abstract</span></span></div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class NodeInfoT&gt;<br />
+class idol::BranchAndBoundCallback&lt; NodeInfoT &gt;</div>
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00131">131</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Methods</h2></td></tr>
+<tr class="memitem:acfa261050e03bf300457218a38be51d6" id="r_acfa261050e03bf300457218a38be51d6"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#acfa261050e03bf300457218a38be51d6">initialize</a> ()</td></tr>
+<tr class="memitem:a01527d4fc8e048e4f54d3c79348e6653" id="r_a01527d4fc8e048e4f54d3c79348e6653"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#a01527d4fc8e048e4f54d3c79348e6653">operator()</a> (CallbackEvent t_event)=0</td></tr>
+<tr class="memitem:ad2b568d30b2ea4b47f885b3ad9119196" id="r_ad2b568d30b2ea4b47f885b3ad9119196"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#ad2b568d30b2ea4b47f885b3ad9119196">log_after_termination</a> ()</td></tr>
+<tr class="memitem:a232c9cf4520ea95bbd142fd56959ef1b" id="r_a232c9cf4520ea95bbd142fd56959ef1b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a232c9cf4520ea95bbd142fd56959ef1b">add_user_cut</a> (const <a class="el" href="classidol_1_1TempCtr.html">TempCtr</a> &amp;t_cut)</td></tr>
+<tr class="memitem:a3bfb09e103d540c1bf8a1abff252cd04" id="r_a3bfb09e103d540c1bf8a1abff252cd04"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a3bfb09e103d540c1bf8a1abff252cd04">add_lazy_cut</a> (const <a class="el" href="classidol_1_1TempCtr.html">TempCtr</a> &amp;t_cut)</td></tr>
+<tr class="memitem:a949f1fb81c728a38db4cf241e7fcfb01" id="r_a949f1fb81c728a38db4cf241e7fcfb01"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a949f1fb81c728a38db4cf241e7fcfb01">add_local_variable_branching</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var, CtrType t_type, double t_rhs)</td></tr>
+<tr class="memitem:a325b191475a118d605957ad57b9895de" id="r_a325b191475a118d605957ad57b9895de"><td class="memItemLeft">const <a class="el" href="classidol_1_1Node.html">Node</a>&lt; NodeInfoT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a325b191475a118d605957ad57b9895de">node</a> () const</td></tr>
+<tr class="memitem:a26670d598d1dd75498199087a0bf1a5d" id="r_a26670d598d1dd75498199087a0bf1a5d"><td class="memItemLeft">const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a26670d598d1dd75498199087a0bf1a5d">relaxation</a> () const</td></tr>
+<tr class="memitem:afce1fb1ed69b32f4450a91f05a105062" id="r_afce1fb1ed69b32f4450a91f05a105062"><td class="memItemLeft">const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#afce1fb1ed69b32f4450a91f05a105062">original_model</a> () const</td></tr>
+<tr class="memitem:a20f80c0b74e78b6bc7ee8cc8ef8c174d" id="r_a20f80c0b74e78b6bc7ee8cc8ef8c174d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a20f80c0b74e78b6bc7ee8cc8ef8c174d">submit_heuristic_solution</a> (NodeInfoT *t_info)</td></tr>
+<tr class="memitem:ae81dfc23113d406f7be2e4ecba59b0e4" id="r_ae81dfc23113d406f7be2e4ecba59b0e4"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ae81dfc23113d406f7be2e4ecba59b0e4">submit_bound</a> (double t_bound)</td></tr>
+<tr class="memitem:a2dd664ba2acaffb86a06475b64ec1492" id="r_a2dd664ba2acaffb86a06475b64ec1492"><td class="memItemLeft">const <a class="el" href="structidol_1_1SideEffectRegistry.html">SideEffectRegistry</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a2dd664ba2acaffb86a06475b64ec1492">side_effect_registry</a> () const</td></tr>
+<tr class="memitem:ad08bbcb3686b854a91ad7c3f78cb4746" id="r_ad08bbcb3686b854a91ad7c3f78cb4746"><td class="memItemLeft">const <a class="el" href="classidol_1_1Timer.html">Timer</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ad08bbcb3686b854a91ad7c3f78cb4746">time</a> () const</td></tr>
+<tr class="memitem:a7810cef6906de798464e9bdfbcdb03c9" id="r_a7810cef6906de798464e9bdfbcdb03c9"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a7810cef6906de798464e9bdfbcdb03c9">best_bound</a> () const</td></tr>
+<tr class="memitem:a04814f290af3d6c54dce2f96eba340b3" id="r_a04814f290af3d6c54dce2f96eba340b3"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a04814f290af3d6c54dce2f96eba340b3">best_obj</a> () const</td></tr>
+<tr class="memitem:a8dc2d16f64f736ca5404970b95e3ab3d" id="r_a8dc2d16f64f736ca5404970b95e3ab3d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a8dc2d16f64f736ca5404970b95e3ab3d">terminate</a> ()</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-friends" class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a9d3942e791de15a80e6ff8b5773730d2" id="r_a9d3942e791de15a80e6ff8b5773730d2"><td class="memItemLeft">class&#160;</td><td class="memItemRight"><a class="el" href="#a9d3942e791de15a80e6ff8b5773730d2">BranchAndBoundCallbackI&lt; NodeInfoT &gt;</a></td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a3bfb09e103d540c1bf8a1abff252cd04" name="a3bfb09e103d540c1bf8a1abff252cd04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bfb09e103d540c1bf8a1abff252cd04">&#9670;&#160;</a></span>add_lazy_cut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::add_lazy_cut </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1TempCtr.html">TempCtr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_cut</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Adds a lazy cut to the relaxation </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_cut</td><td>the cut to be added </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00286">286</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="a949f1fb81c728a38db4cf241e7fcfb01" name="a949f1fb81c728a38db4cf241e7fcfb01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a949f1fb81c728a38db4cf241e7fcfb01">&#9670;&#160;</a></span>add_local_variable_branching()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::add_local_variable_branching </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CtrType</td>          <td class="paramname"><span class="paramname"><em>t_type</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_rhs</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00220">220</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="a232c9cf4520ea95bbd142fd56959ef1b" name="a232c9cf4520ea95bbd142fd56959ef1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a232c9cf4520ea95bbd142fd56959ef1b">&#9670;&#160;</a></span>add_user_cut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::add_user_cut </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1TempCtr.html">TempCtr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_cut</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Adds a user cut to the relaxation </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_cut</td><td>the cut to be added </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00292">292</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="a7810cef6906de798464e9bdfbcdb03c9" name="a7810cef6906de798464e9bdfbcdb03c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7810cef6906de798464e9bdfbcdb03c9">&#9670;&#160;</a></span>best_bound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::best_bound </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00232">232</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="a04814f290af3d6c54dce2f96eba340b3" name="a04814f290af3d6c54dce2f96eba340b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04814f290af3d6c54dce2f96eba340b3">&#9670;&#160;</a></span>best_obj()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::best_obj </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00226">226</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="acfa261050e03bf300457218a38be51d6" name="acfa261050e03bf300457218a38be51d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfa261050e03bf300457218a38be51d6">&#9670;&#160;</a></span>initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::initialize </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method is called at the very beginning of the Branch-and-Bound algorithm </p>
+
+<p>Reimplemented in <a class="el" href="classidol_1_1Cuts_1_1KnapsackCover_1_1Strategy.html#ac3b637513554dd08621768a8dfd79dff">idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::Strategy</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00139">139</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="ad2b568d30b2ea4b47f885b3ad9119196" name="ad2b568d30b2ea4b47f885b3ad9119196"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2b568d30b2ea4b47f885b3ad9119196">&#9670;&#160;</a></span>log_after_termination()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::log_after_termination </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00147">147</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="a325b191475a118d605957ad57b9895de" name="a325b191475a118d605957ad57b9895de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a325b191475a118d605957ad57b9895de">&#9670;&#160;</a></span>node()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classidol_1_1Node.html">idol::Node</a>&lt; NodeInfoT &gt; &amp; <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::node </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the node which is currently explored </p><dl class="section return"><dt>Returns</dt><dd>the node which is currently explored </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00280">280</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="a01527d4fc8e048e4f54d3c79348e6653" name="a01527d4fc8e048e4f54d3c79348e6653"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01527d4fc8e048e4f54d3c79348e6653">&#9670;&#160;</a></span>operator()()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">CallbackEvent</td>          <td class="paramname"><span class="paramname"><em>t_event</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method is left for the user to write and consists in the main execution block of the callback. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_event</td><td>The event triggering the callback </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classidol_1_1CallbackAsBranchAndBoundCallback_1_1Strategy.html#acf7559e1cee998fafaeae01d9ca7bcff">idol::CallbackAsBranchAndBoundCallback&lt; NodeInfoT &gt;::Strategy</a>, <a class="el" href="classidol_1_1Cuts_1_1KnapsackCover_1_1Strategy.html#a6afecb6f46a6e8971419386f516ff60f">idol::Cuts::KnapsackCover&lt; NodeInfoT &gt;::Strategy</a>, <a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster_1_1Strategy.html#a7f6e5b141cccd4511946ebea8937fefc">idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;::Strategy</a>, <a class="el" href="classidol_1_1ReducedCostFixing_1_1Strategy.html#acad81b1be264af63671d07f5c99a69ef">idol::ReducedCostFixing&lt; NodeInfoT &gt;::Strategy</a>, and <a class="el" href="classidol_1_1Utils_1_1ExportBranchAndBoundTreeToCSV_1_1Strategy.html#a2d2a3ffd92207ed6af18fd5361c20e85">idol::Utils::ExportBranchAndBoundTreeToCSV&lt; NodeInfoT &gt;::Strategy</a>.</p>
+
+</div>
+</div>
+<a id="afce1fb1ed69b32f4450a91f05a105062" name="afce1fb1ed69b32f4450a91f05a105062"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afce1fb1ed69b32f4450a91f05a105062">&#9670;&#160;</a></span>original_model()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classidol_1_1Model.html">idol::Model</a> &amp; <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::original_model </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the original model from which the branch-and-bound algorithm started (i.e., the original non-relaxed model) </p><dl class="section return"><dt>Returns</dt><dd>the original model </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00268">268</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="a26670d598d1dd75498199087a0bf1a5d" name="a26670d598d1dd75498199087a0bf1a5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26670d598d1dd75498199087a0bf1a5d">&#9670;&#160;</a></span>relaxation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classidol_1_1Model.html">idol::Model</a> &amp; <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::relaxation </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the current node's model being solved </p><dl class="section return"><dt>Returns</dt><dd>the current node's model being solved </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00274">274</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="a2dd664ba2acaffb86a06475b64ec1492" name="a2dd664ba2acaffb86a06475b64ec1492"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dd664ba2acaffb86a06475b64ec1492">&#9670;&#160;</a></span>side_effect_registry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structidol_1_1SideEffectRegistry.html">idol::SideEffectRegistry</a> &amp; <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::side_effect_registry </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the side effect registry </p><dl class="section return"><dt>Returns</dt><dd>the side effect registry </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00244">244</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="ae81dfc23113d406f7be2e4ecba59b0e4" name="ae81dfc23113d406f7be2e4ecba59b0e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae81dfc23113d406f7be2e4ecba59b0e4">&#9670;&#160;</a></span>submit_bound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::submit_bound </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_bound</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Submits a new proven bound.</p>
+<p>The given bound is set as best bound if and only if it improves the current best bound. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_bound</td><td>a proven bound </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00256">256</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="a20f80c0b74e78b6bc7ee8cc8ef8c174d" name="a20f80c0b74e78b6bc7ee8cc8ef8c174d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20f80c0b74e78b6bc7ee8cc8ef8c174d">&#9670;&#160;</a></span>submit_heuristic_solution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::submit_heuristic_solution </td>
+          <td>(</td>
+          <td class="paramtype">NodeInfoT *</td>          <td class="paramname"><span class="paramname"><em>t_info</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Submits a new solution to the branch-and-bound tree algorithm.</p>
+<p>The solution is checked for validity according to the branch-and-bound tree branching rule and is set as incumbent if and only if it is valid and improves the current best objective. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_info</td><td>a node information storing the solution </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00262">262</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="a8dc2d16f64f736ca5404970b95e3ab3d" name="a8dc2d16f64f736ca5404970b95e3ab3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dc2d16f64f736ca5404970b95e3ab3d">&#9670;&#160;</a></span>terminate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::terminate </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00238">238</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a id="ad08bbcb3686b854a91ad7c3f78cb4746" name="ad08bbcb3686b854a91ad7c3f78cb4746"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad08bbcb3686b854a91ad7c3f78cb4746">&#9670;&#160;</a></span>time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classidol_1_1Timer.html">idol::Timer</a> &amp; <a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt;::time </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00250">250</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-related-members" id="doc-related-members"></a><h2 id="header-doc-related-members" class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a9d3942e791de15a80e6ff8b5773730d2" name="a9d3942e791de15a80e6ff8b5773730d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d3942e791de15a80e6ff8b5773730d2">&#9670;&#160;</a></span>BranchAndBoundCallbackI&lt; NodeInfoT &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classidol_1_1BranchAndBoundCallbackI.html">BranchAndBoundCallbackI</a>&lt; NodeInfoT &gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel friend">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBoundCallback_8h_source.html#l00214">214</a> of file <a class="el" href="BranchAndBoundCallback_8h_source.html">BranchAndBoundCallback.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

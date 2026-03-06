@@ -1,0 +1,1272 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Optimizers::HiGHS::DynamicLib Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_basics.html">Basics</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <li><a href="cli_input_format.html">Input Format</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <!-- <li><a href="#">Tutorials</a></li> -->
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><b>Optimizers</b></li><li class="navelem"><a href="classidol_1_1Optimizers_1_1HiGHS.html">HiGHS</a></li><li class="navelem"><a href="classidol_1_1Optimizers_1_1HiGHS_1_1DynamicLib.html">DynamicLib</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="classidol_1_1Optimizers_1_1HiGHS_1_1DynamicLib-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Optimizers::HiGHS::DynamicLib Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00098">98</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:aade449dbd8c0f0324aa74873fcf1af7b" id="r_aade449dbd8c0f0324aa74873fcf1af7b"><td class="memItemLeft">typedef decltype(::Highs_create) *&#160;</td><td class="memItemRight"><a class="el" href="#aade449dbd8c0f0324aa74873fcf1af7b">Highs_create_t</a></td></tr>
+<tr class="memitem:a87e7818a04c73171a3c4282c68a4b976" id="r_a87e7818a04c73171a3c4282c68a4b976"><td class="memItemLeft">typedef decltype(::Highs_clearSolver) *&#160;</td><td class="memItemRight"><a class="el" href="#a87e7818a04c73171a3c4282c68a4b976">Highs_clearSolver_t</a></td></tr>
+<tr class="memitem:a54000246177faf962eda8c37973d9beb" id="r_a54000246177faf962eda8c37973d9beb"><td class="memItemLeft">typedef decltype(::Highs_addCol) *&#160;</td><td class="memItemRight"><a class="el" href="#a54000246177faf962eda8c37973d9beb">Highs_addCol_t</a></td></tr>
+<tr class="memitem:ae1dcbbd9fa3e362706669301f4811c01" id="r_ae1dcbbd9fa3e362706669301f4811c01"><td class="memItemLeft">typedef decltype(::Highs_addRow) *&#160;</td><td class="memItemRight"><a class="el" href="#ae1dcbbd9fa3e362706669301f4811c01">Highs_addRow_t</a></td></tr>
+<tr class="memitem:a4550994ba79529861f1d0f75116c6d71" id="r_a4550994ba79529861f1d0f75116c6d71"><td class="memItemLeft">typedef decltype(::Highs_deleteColsByRange) *&#160;</td><td class="memItemRight"><a class="el" href="#a4550994ba79529861f1d0f75116c6d71">Highs_deleteColsByRange_t</a></td></tr>
+<tr class="memitem:afcc100c90b4b66343c1918ce158d9ac8" id="r_afcc100c90b4b66343c1918ce158d9ac8"><td class="memItemLeft">typedef decltype(::Highs_deleteRowsByRange) *&#160;</td><td class="memItemRight"><a class="el" href="#afcc100c90b4b66343c1918ce158d9ac8">Highs_deleteRowsByRange_t</a></td></tr>
+<tr class="memitem:a54ac70814ebe0b9f3878e0e128e82ed5" id="r_a54ac70814ebe0b9f3878e0e128e82ed5"><td class="memItemLeft">typedef decltype(::Highs_changeColBounds) *&#160;</td><td class="memItemRight"><a class="el" href="#a54ac70814ebe0b9f3878e0e128e82ed5">Highs_changeColBounds_t</a></td></tr>
+<tr class="memitem:a483b2c9842f3d4071604139c6f6bea9a" id="r_a483b2c9842f3d4071604139c6f6bea9a"><td class="memItemLeft">typedef decltype(::Highs_changeColCost) *&#160;</td><td class="memItemRight"><a class="el" href="#a483b2c9842f3d4071604139c6f6bea9a">Highs_changeColCost_t</a></td></tr>
+<tr class="memitem:a7f99716824acb033d2ec90ff8ab22166" id="r_a7f99716824acb033d2ec90ff8ab22166"><td class="memItemLeft">typedef decltype(::Highs_changeColIntegrality) *&#160;</td><td class="memItemRight"><a class="el" href="#a7f99716824acb033d2ec90ff8ab22166">Highs_changeColIntegrality_t</a></td></tr>
+<tr class="memitem:a4fe0768a83c19c62a540acb3844db457" id="r_a4fe0768a83c19c62a540acb3844db457"><td class="memItemLeft">typedef decltype(::Highs_changeRowBounds) *&#160;</td><td class="memItemRight"><a class="el" href="#a4fe0768a83c19c62a540acb3844db457">Highs_changeRowBounds_t</a></td></tr>
+<tr class="memitem:a84244a68d627c176df88974a6ddcd84e" id="r_a84244a68d627c176df88974a6ddcd84e"><td class="memItemLeft">typedef decltype(::Highs_changeCoeff) *&#160;</td><td class="memItemRight"><a class="el" href="#a84244a68d627c176df88974a6ddcd84e">Highs_changeCoeff_t</a></td></tr>
+<tr class="memitem:a804adfedb175dfdf77048f51c2201aba" id="r_a804adfedb175dfdf77048f51c2201aba"><td class="memItemLeft">typedef decltype(::Highs_changeObjectiveSense) *&#160;</td><td class="memItemRight"><a class="el" href="#a804adfedb175dfdf77048f51c2201aba">Highs_changeObjectiveSense_t</a></td></tr>
+<tr class="memitem:a9f6eca4142455eda4cbd86ec706a5baf" id="r_a9f6eca4142455eda4cbd86ec706a5baf"><td class="memItemLeft">typedef decltype(::Highs_changeObjectiveOffset) *&#160;</td><td class="memItemRight"><a class="el" href="#a9f6eca4142455eda4cbd86ec706a5baf">Highs_changeObjectiveOffset_t</a></td></tr>
+<tr class="memitem:a280aa36ac1ec1bf199fa0e0b0853ad3b" id="r_a280aa36ac1ec1bf199fa0e0b0853ad3b"><td class="memItemLeft">typedef decltype(::Highs_getObjectiveValue) *&#160;</td><td class="memItemRight"><a class="el" href="#a280aa36ac1ec1bf199fa0e0b0853ad3b">Highs_getObjectiveValue_t</a></td></tr>
+<tr class="memitem:a0848178f54c06af4ffb0e20693861b92" id="r_a0848178f54c06af4ffb0e20693861b92"><td class="memItemLeft">typedef decltype(::Highs_getNumCol) *&#160;</td><td class="memItemRight"><a class="el" href="#a0848178f54c06af4ffb0e20693861b92">Highs_getNumCol_t</a></td></tr>
+<tr class="memitem:a0f16975f6101e7d6ed59c1b4c07399e5" id="r_a0f16975f6101e7d6ed59c1b4c07399e5"><td class="memItemLeft">typedef decltype(::Highs_getNumRow) *&#160;</td><td class="memItemRight"><a class="el" href="#a0f16975f6101e7d6ed59c1b4c07399e5">Highs_getNumRow_t</a></td></tr>
+<tr class="memitem:ac4cab4a2f2ac630859388343a3ea579c" id="r_ac4cab4a2f2ac630859388343a3ea579c"><td class="memItemLeft">typedef decltype(::Highs_getNumRows) *&#160;</td><td class="memItemRight"><a class="el" href="#ac4cab4a2f2ac630859388343a3ea579c">Highs_getNumRows_t</a></td></tr>
+<tr class="memitem:addd290c92cf1bf25aa0d59cbda43d4e9" id="r_addd290c92cf1bf25aa0d59cbda43d4e9"><td class="memItemLeft">typedef decltype(::Highs_getInfinity) *&#160;</td><td class="memItemRight"><a class="el" href="#addd290c92cf1bf25aa0d59cbda43d4e9">Highs_getInfinity_t</a></td></tr>
+<tr class="memitem:a1122153847515e1bed6dab9d2efc3a20" id="r_a1122153847515e1bed6dab9d2efc3a20"><td class="memItemLeft">typedef decltype(::Highs_getRunTime) *&#160;</td><td class="memItemRight"><a class="el" href="#a1122153847515e1bed6dab9d2efc3a20">Highs_getRunTime_t</a></td></tr>
+<tr class="memitem:ab4597c8d3294bd4bb300366d229670b5" id="r_ab4597c8d3294bd4bb300366d229670b5"><td class="memItemLeft">typedef decltype(::Highs_getModelStatus) *&#160;</td><td class="memItemRight"><a class="el" href="#ab4597c8d3294bd4bb300366d229670b5">Highs_getModelStatus_t</a></td></tr>
+<tr class="memitem:a08e4f679b44e50175b4e1face3f54109" id="r_a08e4f679b44e50175b4e1face3f54109"><td class="memItemLeft">typedef decltype(::Highs_run) *&#160;</td><td class="memItemRight"><a class="el" href="#a08e4f679b44e50175b4e1face3f54109">Highs_run_t</a></td></tr>
+<tr class="memitem:ac99f429deb5180776489202dd53c52cc" id="r_ac99f429deb5180776489202dd53c52cc"><td class="memItemLeft">typedef decltype(::Highs_getSolution) *&#160;</td><td class="memItemRight"><a class="el" href="#ac99f429deb5180776489202dd53c52cc">Highs_getSolution_t</a></td></tr>
+<tr class="memitem:ab4973c8a2bfbbbbb704d7b74c393274f" id="r_ab4973c8a2bfbbbbb704d7b74c393274f"><td class="memItemLeft">typedef decltype(::Highs_getPrimalRay) *&#160;</td><td class="memItemRight"><a class="el" href="#ab4973c8a2bfbbbbb704d7b74c393274f">Highs_getPrimalRay_t</a></td></tr>
+<tr class="memitem:aa49c7c48330ae63228726f1d7ef3068f" id="r_aa49c7c48330ae63228726f1d7ef3068f"><td class="memItemLeft">typedef decltype(::Highs_getDualRay) *&#160;</td><td class="memItemRight"><a class="el" href="#aa49c7c48330ae63228726f1d7ef3068f">Highs_getDualRay_t</a></td></tr>
+<tr class="memitem:aedf60e6e683431b99a6299bd5b31c9bd" id="r_aedf60e6e683431b99a6299bd5b31c9bd"><td class="memItemLeft">typedef decltype(::Highs_setBoolOptionValue) *&#160;</td><td class="memItemRight"><a class="el" href="#aedf60e6e683431b99a6299bd5b31c9bd">Highs_setBoolOptionValue_t</a></td></tr>
+<tr class="memitem:aa28c20c82272861e90ee763ce2d76176" id="r_aa28c20c82272861e90ee763ce2d76176"><td class="memItemLeft">typedef decltype(::Highs_setDoubleOptionValue) *&#160;</td><td class="memItemRight"><a class="el" href="#aa28c20c82272861e90ee763ce2d76176">Highs_setDoubleOptionValue_t</a></td></tr>
+<tr class="memitem:a430e95311cae27d04e728ea89a49b8d1" id="r_a430e95311cae27d04e728ea89a49b8d1"><td class="memItemLeft">typedef decltype(::Highs_setOptionValue) *&#160;</td><td class="memItemRight"><a class="el" href="#a430e95311cae27d04e728ea89a49b8d1">Highs_setOptionValue_t</a></td></tr>
+<tr class="memitem:a472c603a3bfa61a4841bd3488096468d" id="r_a472c603a3bfa61a4841bd3488096468d"><td class="memItemLeft">typedef decltype(::Highs_getBoolOptionValue) *&#160;</td><td class="memItemRight"><a class="el" href="#a472c603a3bfa61a4841bd3488096468d">Highs_getBoolOptionValue_t</a></td></tr>
+<tr class="memitem:a81249a21649a23cf744e1b9b13d781c6" id="r_a81249a21649a23cf744e1b9b13d781c6"><td class="memItemLeft">typedef decltype(::Highs_writeModel) *&#160;</td><td class="memItemRight"><a class="el" href="#a81249a21649a23cf744e1b9b13d781c6">Highs_writeModel_t</a></td></tr>
+<tr class="memitem:af50115e0f8609502cd6d887d33fa4342" id="r_af50115e0f8609502cd6d887d33fa4342"><td class="memItemLeft">typedef decltype(::Highs_version) *&#160;</td><td class="memItemRight"><a class="el" href="#af50115e0f8609502cd6d887d33fa4342">Highs_version_t</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:ad13a9ef5611540f8789b9be80e7c9b47" id="r_ad13a9ef5611540f8789b9be80e7c9b47"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ad13a9ef5611540f8789b9be80e7c9b47">is_available</a> () const</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:ae44746265c4150fc7241099a88e22821" id="r_ae44746265c4150fc7241099a88e22821"><td class="memItemLeft">Highs_create_t&#160;</td><td class="memItemRight"><a class="el" href="#ae44746265c4150fc7241099a88e22821">Highs_create</a> = nullptr</td></tr>
+<tr class="memitem:a5a2b0a22b97da702a6b6429ea09e39be" id="r_a5a2b0a22b97da702a6b6429ea09e39be"><td class="memItemLeft">Highs_clearSolver_t&#160;</td><td class="memItemRight"><a class="el" href="#a5a2b0a22b97da702a6b6429ea09e39be">Highs_clearSolver</a> = nullptr</td></tr>
+<tr class="memitem:aa17a2046dec7c38611fc9368e4431cfe" id="r_aa17a2046dec7c38611fc9368e4431cfe"><td class="memItemLeft">Highs_addCol_t&#160;</td><td class="memItemRight"><a class="el" href="#aa17a2046dec7c38611fc9368e4431cfe">Highs_addCol</a> = nullptr</td></tr>
+<tr class="memitem:af23bbf6202ae5f97a5e82d105534e53b" id="r_af23bbf6202ae5f97a5e82d105534e53b"><td class="memItemLeft">Highs_addRow_t&#160;</td><td class="memItemRight"><a class="el" href="#af23bbf6202ae5f97a5e82d105534e53b">Highs_addRow</a> = nullptr</td></tr>
+<tr class="memitem:a7cdc47c04b65bdf40f1921d799827dbe" id="r_a7cdc47c04b65bdf40f1921d799827dbe"><td class="memItemLeft">Highs_deleteColsByRange_t&#160;</td><td class="memItemRight"><a class="el" href="#a7cdc47c04b65bdf40f1921d799827dbe">Highs_deleteColsByRange</a> = nullptr</td></tr>
+<tr class="memitem:ae08b7bd2df3e3beab196bb5f3ef68d74" id="r_ae08b7bd2df3e3beab196bb5f3ef68d74"><td class="memItemLeft">Highs_deleteRowsByRange_t&#160;</td><td class="memItemRight"><a class="el" href="#ae08b7bd2df3e3beab196bb5f3ef68d74">Highs_deleteRowsByRange</a> = nullptr</td></tr>
+<tr class="memitem:a352c3a06af3b5c9b53896ea50134ff1f" id="r_a352c3a06af3b5c9b53896ea50134ff1f"><td class="memItemLeft">Highs_changeColBounds_t&#160;</td><td class="memItemRight"><a class="el" href="#a352c3a06af3b5c9b53896ea50134ff1f">Highs_changeColBounds</a> = nullptr</td></tr>
+<tr class="memitem:a513f644004a79a2a63f9727bbacc3c86" id="r_a513f644004a79a2a63f9727bbacc3c86"><td class="memItemLeft">Highs_changeColCost_t&#160;</td><td class="memItemRight"><a class="el" href="#a513f644004a79a2a63f9727bbacc3c86">Highs_changeColCost</a> = nullptr</td></tr>
+<tr class="memitem:ad9e603e89cc2b74db0686eb4c6b9ad5e" id="r_ad9e603e89cc2b74db0686eb4c6b9ad5e"><td class="memItemLeft">Highs_changeColIntegrality_t&#160;</td><td class="memItemRight"><a class="el" href="#ad9e603e89cc2b74db0686eb4c6b9ad5e">Highs_changeColIntegrality</a> = nullptr</td></tr>
+<tr class="memitem:a4e529671420d1f77a96ae8b5e3b107bd" id="r_a4e529671420d1f77a96ae8b5e3b107bd"><td class="memItemLeft">Highs_changeRowBounds_t&#160;</td><td class="memItemRight"><a class="el" href="#a4e529671420d1f77a96ae8b5e3b107bd">Highs_changeRowBounds</a> = nullptr</td></tr>
+<tr class="memitem:a6aa0681a0c3b3945c30b47ffa18f63fb" id="r_a6aa0681a0c3b3945c30b47ffa18f63fb"><td class="memItemLeft">Highs_changeCoeff_t&#160;</td><td class="memItemRight"><a class="el" href="#a6aa0681a0c3b3945c30b47ffa18f63fb">Highs_changeCoeff</a> = nullptr</td></tr>
+<tr class="memitem:a65dda6d5bc24fc0c591db56e6b52e711" id="r_a65dda6d5bc24fc0c591db56e6b52e711"><td class="memItemLeft">Highs_changeObjectiveSense_t&#160;</td><td class="memItemRight"><a class="el" href="#a65dda6d5bc24fc0c591db56e6b52e711">Highs_changeObjectiveSense</a> = nullptr</td></tr>
+<tr class="memitem:a8a5ccba2ecabffd9bbc82ddd45f89504" id="r_a8a5ccba2ecabffd9bbc82ddd45f89504"><td class="memItemLeft">Highs_changeObjectiveOffset_t&#160;</td><td class="memItemRight"><a class="el" href="#a8a5ccba2ecabffd9bbc82ddd45f89504">Highs_changeObjectiveOffset</a> = nullptr</td></tr>
+<tr class="memitem:a6397a1438a4c1bbaa93af93ef093622d" id="r_a6397a1438a4c1bbaa93af93ef093622d"><td class="memItemLeft">Highs_getObjectiveValue_t&#160;</td><td class="memItemRight"><a class="el" href="#a6397a1438a4c1bbaa93af93ef093622d">Highs_getObjectiveValue</a> = nullptr</td></tr>
+<tr class="memitem:aaaa9b51d2f7be1a467fe2ee67a9c2789" id="r_aaaa9b51d2f7be1a467fe2ee67a9c2789"><td class="memItemLeft">Highs_getNumCol_t&#160;</td><td class="memItemRight"><a class="el" href="#aaaa9b51d2f7be1a467fe2ee67a9c2789">Highs_getNumCol</a> = nullptr</td></tr>
+<tr class="memitem:ad780f6672aa1aa76b606aa72ee5096b5" id="r_ad780f6672aa1aa76b606aa72ee5096b5"><td class="memItemLeft">Highs_getNumRow_t&#160;</td><td class="memItemRight"><a class="el" href="#ad780f6672aa1aa76b606aa72ee5096b5">Highs_getNumRow</a> = nullptr</td></tr>
+<tr class="memitem:ac4fefcb7f8ececcd46cccb91cf3d7e13" id="r_ac4fefcb7f8ececcd46cccb91cf3d7e13"><td class="memItemLeft">Highs_getNumRows_t&#160;</td><td class="memItemRight"><a class="el" href="#ac4fefcb7f8ececcd46cccb91cf3d7e13">Highs_getNumRows</a> = nullptr</td></tr>
+<tr class="memitem:accbd42ded3df92bf0754d746ef9260e1" id="r_accbd42ded3df92bf0754d746ef9260e1"><td class="memItemLeft">Highs_getInfinity_t&#160;</td><td class="memItemRight"><a class="el" href="#accbd42ded3df92bf0754d746ef9260e1">Highs_getInfinity</a> = nullptr</td></tr>
+<tr class="memitem:a0e2a67978e035695701b1e119c122a30" id="r_a0e2a67978e035695701b1e119c122a30"><td class="memItemLeft">Highs_getRunTime_t&#160;</td><td class="memItemRight"><a class="el" href="#a0e2a67978e035695701b1e119c122a30">Highs_getRunTime</a> = nullptr</td></tr>
+<tr class="memitem:a78f7f7dbbc4bfe666296563112135478" id="r_a78f7f7dbbc4bfe666296563112135478"><td class="memItemLeft">Highs_getModelStatus_t&#160;</td><td class="memItemRight"><a class="el" href="#a78f7f7dbbc4bfe666296563112135478">Highs_getModelStatus</a> = nullptr</td></tr>
+<tr class="memitem:a79fa69cc5c2e57aa4298286ebc669e2c" id="r_a79fa69cc5c2e57aa4298286ebc669e2c"><td class="memItemLeft">Highs_run_t&#160;</td><td class="memItemRight"><a class="el" href="#a79fa69cc5c2e57aa4298286ebc669e2c">Highs_run</a> = nullptr</td></tr>
+<tr class="memitem:aaa0db2cce7d1426928c3cae0286c051a" id="r_aaa0db2cce7d1426928c3cae0286c051a"><td class="memItemLeft">Highs_getSolution_t&#160;</td><td class="memItemRight"><a class="el" href="#aaa0db2cce7d1426928c3cae0286c051a">Highs_getSolution</a> = nullptr</td></tr>
+<tr class="memitem:a5fdb6e3bf3462b2f71ff31bc5b0565cb" id="r_a5fdb6e3bf3462b2f71ff31bc5b0565cb"><td class="memItemLeft">Highs_getPrimalRay_t&#160;</td><td class="memItemRight"><a class="el" href="#a5fdb6e3bf3462b2f71ff31bc5b0565cb">Highs_getPrimalRay</a> = nullptr</td></tr>
+<tr class="memitem:ab00f00925adb3fb5fa991911b7c68ef1" id="r_ab00f00925adb3fb5fa991911b7c68ef1"><td class="memItemLeft">Highs_getDualRay_t&#160;</td><td class="memItemRight"><a class="el" href="#ab00f00925adb3fb5fa991911b7c68ef1">Highs_getDualRay</a> = nullptr</td></tr>
+<tr class="memitem:a42624dd19f089c4e01586b984967a325" id="r_a42624dd19f089c4e01586b984967a325"><td class="memItemLeft">Highs_setBoolOptionValue_t&#160;</td><td class="memItemRight"><a class="el" href="#a42624dd19f089c4e01586b984967a325">Highs_setBoolOptionValue</a> = nullptr</td></tr>
+<tr class="memitem:a88f349426ef044fc40ecf81bedab8835" id="r_a88f349426ef044fc40ecf81bedab8835"><td class="memItemLeft">Highs_setDoubleOptionValue_t&#160;</td><td class="memItemRight"><a class="el" href="#a88f349426ef044fc40ecf81bedab8835">Highs_setDoubleOptionValue</a> = nullptr</td></tr>
+<tr class="memitem:ab3e2fcd567093e691891c8973485f2aa" id="r_ab3e2fcd567093e691891c8973485f2aa"><td class="memItemLeft">Highs_setOptionValue_t&#160;</td><td class="memItemRight"><a class="el" href="#ab3e2fcd567093e691891c8973485f2aa">Highs_setOptionValue</a> = nullptr</td></tr>
+<tr class="memitem:a880bfb60bcee0765a315076ef4f044ba" id="r_a880bfb60bcee0765a315076ef4f044ba"><td class="memItemLeft">Highs_getBoolOptionValue_t&#160;</td><td class="memItemRight"><a class="el" href="#a880bfb60bcee0765a315076ef4f044ba">Highs_getBoolOptionValue</a> = nullptr</td></tr>
+<tr class="memitem:a5e40491b2022bca827761dcd4951c8f6" id="r_a5e40491b2022bca827761dcd4951c8f6"><td class="memItemLeft">Highs_writeModel_t&#160;</td><td class="memItemRight"><a class="el" href="#a5e40491b2022bca827761dcd4951c8f6">Highs_writeModel</a> = nullptr</td></tr>
+<tr class="memitem:ac0c5b4c3b78997f15465b19eb126da68" id="r_ac0c5b4c3b78997f15465b19eb126da68"><td class="memItemLeft">Highs_version_t&#160;</td><td class="memItemRight"><a class="el" href="#ac0c5b4c3b78997f15465b19eb126da68">Highs_version</a> = nullptr</td></tr>
+</table>
+<a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
+<a id="a54000246177faf962eda8c37973d9beb" name="a54000246177faf962eda8c37973d9beb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54000246177faf962eda8c37973d9beb">&#9670;&#160;</a></span>Highs_addCol_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_addCol) * idol::Optimizers::HiGHS::DynamicLib::Highs_addCol_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00105">105</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ae1dcbbd9fa3e362706669301f4811c01" name="ae1dcbbd9fa3e362706669301f4811c01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1dcbbd9fa3e362706669301f4811c01">&#9670;&#160;</a></span>Highs_addRow_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_addRow) * idol::Optimizers::HiGHS::DynamicLib::Highs_addRow_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00106">106</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a84244a68d627c176df88974a6ddcd84e" name="a84244a68d627c176df88974a6ddcd84e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84244a68d627c176df88974a6ddcd84e">&#9670;&#160;</a></span>Highs_changeCoeff_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_changeCoeff) * idol::Optimizers::HiGHS::DynamicLib::Highs_changeCoeff_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00113">113</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a54ac70814ebe0b9f3878e0e128e82ed5" name="a54ac70814ebe0b9f3878e0e128e82ed5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54ac70814ebe0b9f3878e0e128e82ed5">&#9670;&#160;</a></span>Highs_changeColBounds_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_changeColBounds) * idol::Optimizers::HiGHS::DynamicLib::Highs_changeColBounds_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00109">109</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a483b2c9842f3d4071604139c6f6bea9a" name="a483b2c9842f3d4071604139c6f6bea9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a483b2c9842f3d4071604139c6f6bea9a">&#9670;&#160;</a></span>Highs_changeColCost_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_changeColCost) * idol::Optimizers::HiGHS::DynamicLib::Highs_changeColCost_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00110">110</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a7f99716824acb033d2ec90ff8ab22166" name="a7f99716824acb033d2ec90ff8ab22166"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f99716824acb033d2ec90ff8ab22166">&#9670;&#160;</a></span>Highs_changeColIntegrality_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_changeColIntegrality) * idol::Optimizers::HiGHS::DynamicLib::Highs_changeColIntegrality_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00111">111</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a9f6eca4142455eda4cbd86ec706a5baf" name="a9f6eca4142455eda4cbd86ec706a5baf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f6eca4142455eda4cbd86ec706a5baf">&#9670;&#160;</a></span>Highs_changeObjectiveOffset_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_changeObjectiveOffset) * idol::Optimizers::HiGHS::DynamicLib::Highs_changeObjectiveOffset_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00115">115</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a804adfedb175dfdf77048f51c2201aba" name="a804adfedb175dfdf77048f51c2201aba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a804adfedb175dfdf77048f51c2201aba">&#9670;&#160;</a></span>Highs_changeObjectiveSense_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_changeObjectiveSense) * idol::Optimizers::HiGHS::DynamicLib::Highs_changeObjectiveSense_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00114">114</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a4fe0768a83c19c62a540acb3844db457" name="a4fe0768a83c19c62a540acb3844db457"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fe0768a83c19c62a540acb3844db457">&#9670;&#160;</a></span>Highs_changeRowBounds_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_changeRowBounds) * idol::Optimizers::HiGHS::DynamicLib::Highs_changeRowBounds_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00112">112</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a87e7818a04c73171a3c4282c68a4b976" name="a87e7818a04c73171a3c4282c68a4b976"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87e7818a04c73171a3c4282c68a4b976">&#9670;&#160;</a></span>Highs_clearSolver_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_clearSolver) * idol::Optimizers::HiGHS::DynamicLib::Highs_clearSolver_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00104">104</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="aade449dbd8c0f0324aa74873fcf1af7b" name="aade449dbd8c0f0324aa74873fcf1af7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aade449dbd8c0f0324aa74873fcf1af7b">&#9670;&#160;</a></span>Highs_create_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_create) * idol::Optimizers::HiGHS::DynamicLib::Highs_create_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00103">103</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a4550994ba79529861f1d0f75116c6d71" name="a4550994ba79529861f1d0f75116c6d71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4550994ba79529861f1d0f75116c6d71">&#9670;&#160;</a></span>Highs_deleteColsByRange_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_deleteColsByRange) * idol::Optimizers::HiGHS::DynamicLib::Highs_deleteColsByRange_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00107">107</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="afcc100c90b4b66343c1918ce158d9ac8" name="afcc100c90b4b66343c1918ce158d9ac8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcc100c90b4b66343c1918ce158d9ac8">&#9670;&#160;</a></span>Highs_deleteRowsByRange_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_deleteRowsByRange) * idol::Optimizers::HiGHS::DynamicLib::Highs_deleteRowsByRange_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00108">108</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a472c603a3bfa61a4841bd3488096468d" name="a472c603a3bfa61a4841bd3488096468d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a472c603a3bfa61a4841bd3488096468d">&#9670;&#160;</a></span>Highs_getBoolOptionValue_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_getBoolOptionValue) * idol::Optimizers::HiGHS::DynamicLib::Highs_getBoolOptionValue_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00130">130</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="aa49c7c48330ae63228726f1d7ef3068f" name="aa49c7c48330ae63228726f1d7ef3068f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa49c7c48330ae63228726f1d7ef3068f">&#9670;&#160;</a></span>Highs_getDualRay_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_getDualRay) * idol::Optimizers::HiGHS::DynamicLib::Highs_getDualRay_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00126">126</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="addd290c92cf1bf25aa0d59cbda43d4e9" name="addd290c92cf1bf25aa0d59cbda43d4e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addd290c92cf1bf25aa0d59cbda43d4e9">&#9670;&#160;</a></span>Highs_getInfinity_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_getInfinity) * idol::Optimizers::HiGHS::DynamicLib::Highs_getInfinity_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00120">120</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ab4597c8d3294bd4bb300366d229670b5" name="ab4597c8d3294bd4bb300366d229670b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4597c8d3294bd4bb300366d229670b5">&#9670;&#160;</a></span>Highs_getModelStatus_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_getModelStatus) * idol::Optimizers::HiGHS::DynamicLib::Highs_getModelStatus_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00122">122</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a0848178f54c06af4ffb0e20693861b92" name="a0848178f54c06af4ffb0e20693861b92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0848178f54c06af4ffb0e20693861b92">&#9670;&#160;</a></span>Highs_getNumCol_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_getNumCol) * idol::Optimizers::HiGHS::DynamicLib::Highs_getNumCol_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00117">117</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a0f16975f6101e7d6ed59c1b4c07399e5" name="a0f16975f6101e7d6ed59c1b4c07399e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f16975f6101e7d6ed59c1b4c07399e5">&#9670;&#160;</a></span>Highs_getNumRow_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_getNumRow) * idol::Optimizers::HiGHS::DynamicLib::Highs_getNumRow_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00118">118</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ac4cab4a2f2ac630859388343a3ea579c" name="ac4cab4a2f2ac630859388343a3ea579c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4cab4a2f2ac630859388343a3ea579c">&#9670;&#160;</a></span>Highs_getNumRows_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_getNumRows) * idol::Optimizers::HiGHS::DynamicLib::Highs_getNumRows_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00119">119</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a280aa36ac1ec1bf199fa0e0b0853ad3b" name="a280aa36ac1ec1bf199fa0e0b0853ad3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a280aa36ac1ec1bf199fa0e0b0853ad3b">&#9670;&#160;</a></span>Highs_getObjectiveValue_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_getObjectiveValue) * idol::Optimizers::HiGHS::DynamicLib::Highs_getObjectiveValue_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00116">116</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ab4973c8a2bfbbbbb704d7b74c393274f" name="ab4973c8a2bfbbbbb704d7b74c393274f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4973c8a2bfbbbbb704d7b74c393274f">&#9670;&#160;</a></span>Highs_getPrimalRay_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_getPrimalRay) * idol::Optimizers::HiGHS::DynamicLib::Highs_getPrimalRay_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00125">125</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a1122153847515e1bed6dab9d2efc3a20" name="a1122153847515e1bed6dab9d2efc3a20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1122153847515e1bed6dab9d2efc3a20">&#9670;&#160;</a></span>Highs_getRunTime_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_getRunTime) * idol::Optimizers::HiGHS::DynamicLib::Highs_getRunTime_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00121">121</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ac99f429deb5180776489202dd53c52cc" name="ac99f429deb5180776489202dd53c52cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac99f429deb5180776489202dd53c52cc">&#9670;&#160;</a></span>Highs_getSolution_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_getSolution) * idol::Optimizers::HiGHS::DynamicLib::Highs_getSolution_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00124">124</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a08e4f679b44e50175b4e1face3f54109" name="a08e4f679b44e50175b4e1face3f54109"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08e4f679b44e50175b4e1face3f54109">&#9670;&#160;</a></span>Highs_run_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_run) * idol::Optimizers::HiGHS::DynamicLib::Highs_run_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00123">123</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="aedf60e6e683431b99a6299bd5b31c9bd" name="aedf60e6e683431b99a6299bd5b31c9bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedf60e6e683431b99a6299bd5b31c9bd">&#9670;&#160;</a></span>Highs_setBoolOptionValue_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_setBoolOptionValue) * idol::Optimizers::HiGHS::DynamicLib::Highs_setBoolOptionValue_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00127">127</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="aa28c20c82272861e90ee763ce2d76176" name="aa28c20c82272861e90ee763ce2d76176"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa28c20c82272861e90ee763ce2d76176">&#9670;&#160;</a></span>Highs_setDoubleOptionValue_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_setDoubleOptionValue) * idol::Optimizers::HiGHS::DynamicLib::Highs_setDoubleOptionValue_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00128">128</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a430e95311cae27d04e728ea89a49b8d1" name="a430e95311cae27d04e728ea89a49b8d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a430e95311cae27d04e728ea89a49b8d1">&#9670;&#160;</a></span>Highs_setOptionValue_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_setOptionValue) * idol::Optimizers::HiGHS::DynamicLib::Highs_setOptionValue_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00129">129</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="af50115e0f8609502cd6d887d33fa4342" name="af50115e0f8609502cd6d887d33fa4342"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af50115e0f8609502cd6d887d33fa4342">&#9670;&#160;</a></span>Highs_version_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_version) * idol::Optimizers::HiGHS::DynamicLib::Highs_version_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00132">132</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a81249a21649a23cf744e1b9b13d781c6" name="a81249a21649a23cf744e1b9b13d781c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81249a21649a23cf744e1b9b13d781c6">&#9670;&#160;</a></span>Highs_writeModel_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::Highs_writeModel) * idol::Optimizers::HiGHS::DynamicLib::Highs_writeModel_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00131">131</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="ad13a9ef5611540f8789b9be80e7c9b47" name="ad13a9ef5611540f8789b9be80e7c9b47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad13a9ef5611540f8789b9be80e7c9b47">&#9670;&#160;</a></span>is_available()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool idol::Optimizers::HiGHS::DynamicLib::is_available </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00138">138</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="aa17a2046dec7c38611fc9368e4431cfe" name="aa17a2046dec7c38611fc9368e4431cfe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa17a2046dec7c38611fc9368e4431cfe">&#9670;&#160;</a></span>Highs_addCol</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_addCol_t idol::Optimizers::HiGHS::DynamicLib::Highs_addCol = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00105">105</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="af23bbf6202ae5f97a5e82d105534e53b" name="af23bbf6202ae5f97a5e82d105534e53b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af23bbf6202ae5f97a5e82d105534e53b">&#9670;&#160;</a></span>Highs_addRow</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_addRow_t idol::Optimizers::HiGHS::DynamicLib::Highs_addRow = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00106">106</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a6aa0681a0c3b3945c30b47ffa18f63fb" name="a6aa0681a0c3b3945c30b47ffa18f63fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6aa0681a0c3b3945c30b47ffa18f63fb">&#9670;&#160;</a></span>Highs_changeCoeff</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_changeCoeff_t idol::Optimizers::HiGHS::DynamicLib::Highs_changeCoeff = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00113">113</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a352c3a06af3b5c9b53896ea50134ff1f" name="a352c3a06af3b5c9b53896ea50134ff1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a352c3a06af3b5c9b53896ea50134ff1f">&#9670;&#160;</a></span>Highs_changeColBounds</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_changeColBounds_t idol::Optimizers::HiGHS::DynamicLib::Highs_changeColBounds = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00109">109</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a513f644004a79a2a63f9727bbacc3c86" name="a513f644004a79a2a63f9727bbacc3c86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a513f644004a79a2a63f9727bbacc3c86">&#9670;&#160;</a></span>Highs_changeColCost</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_changeColCost_t idol::Optimizers::HiGHS::DynamicLib::Highs_changeColCost = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00110">110</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ad9e603e89cc2b74db0686eb4c6b9ad5e" name="ad9e603e89cc2b74db0686eb4c6b9ad5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9e603e89cc2b74db0686eb4c6b9ad5e">&#9670;&#160;</a></span>Highs_changeColIntegrality</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_changeColIntegrality_t idol::Optimizers::HiGHS::DynamicLib::Highs_changeColIntegrality = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00111">111</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a8a5ccba2ecabffd9bbc82ddd45f89504" name="a8a5ccba2ecabffd9bbc82ddd45f89504"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a5ccba2ecabffd9bbc82ddd45f89504">&#9670;&#160;</a></span>Highs_changeObjectiveOffset</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_changeObjectiveOffset_t idol::Optimizers::HiGHS::DynamicLib::Highs_changeObjectiveOffset = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00115">115</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a65dda6d5bc24fc0c591db56e6b52e711" name="a65dda6d5bc24fc0c591db56e6b52e711"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65dda6d5bc24fc0c591db56e6b52e711">&#9670;&#160;</a></span>Highs_changeObjectiveSense</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_changeObjectiveSense_t idol::Optimizers::HiGHS::DynamicLib::Highs_changeObjectiveSense = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00114">114</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a4e529671420d1f77a96ae8b5e3b107bd" name="a4e529671420d1f77a96ae8b5e3b107bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e529671420d1f77a96ae8b5e3b107bd">&#9670;&#160;</a></span>Highs_changeRowBounds</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_changeRowBounds_t idol::Optimizers::HiGHS::DynamicLib::Highs_changeRowBounds = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00112">112</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a5a2b0a22b97da702a6b6429ea09e39be" name="a5a2b0a22b97da702a6b6429ea09e39be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a2b0a22b97da702a6b6429ea09e39be">&#9670;&#160;</a></span>Highs_clearSolver</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_clearSolver_t idol::Optimizers::HiGHS::DynamicLib::Highs_clearSolver = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00104">104</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ae44746265c4150fc7241099a88e22821" name="ae44746265c4150fc7241099a88e22821"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae44746265c4150fc7241099a88e22821">&#9670;&#160;</a></span>Highs_create</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_create_t idol::Optimizers::HiGHS::DynamicLib::Highs_create = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00103">103</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a7cdc47c04b65bdf40f1921d799827dbe" name="a7cdc47c04b65bdf40f1921d799827dbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cdc47c04b65bdf40f1921d799827dbe">&#9670;&#160;</a></span>Highs_deleteColsByRange</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_deleteColsByRange_t idol::Optimizers::HiGHS::DynamicLib::Highs_deleteColsByRange = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00107">107</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ae08b7bd2df3e3beab196bb5f3ef68d74" name="ae08b7bd2df3e3beab196bb5f3ef68d74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae08b7bd2df3e3beab196bb5f3ef68d74">&#9670;&#160;</a></span>Highs_deleteRowsByRange</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_deleteRowsByRange_t idol::Optimizers::HiGHS::DynamicLib::Highs_deleteRowsByRange = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00108">108</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a880bfb60bcee0765a315076ef4f044ba" name="a880bfb60bcee0765a315076ef4f044ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a880bfb60bcee0765a315076ef4f044ba">&#9670;&#160;</a></span>Highs_getBoolOptionValue</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_getBoolOptionValue_t idol::Optimizers::HiGHS::DynamicLib::Highs_getBoolOptionValue = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00130">130</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ab00f00925adb3fb5fa991911b7c68ef1" name="ab00f00925adb3fb5fa991911b7c68ef1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab00f00925adb3fb5fa991911b7c68ef1">&#9670;&#160;</a></span>Highs_getDualRay</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_getDualRay_t idol::Optimizers::HiGHS::DynamicLib::Highs_getDualRay = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00126">126</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="accbd42ded3df92bf0754d746ef9260e1" name="accbd42ded3df92bf0754d746ef9260e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accbd42ded3df92bf0754d746ef9260e1">&#9670;&#160;</a></span>Highs_getInfinity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_getInfinity_t idol::Optimizers::HiGHS::DynamicLib::Highs_getInfinity = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00120">120</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a78f7f7dbbc4bfe666296563112135478" name="a78f7f7dbbc4bfe666296563112135478"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78f7f7dbbc4bfe666296563112135478">&#9670;&#160;</a></span>Highs_getModelStatus</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_getModelStatus_t idol::Optimizers::HiGHS::DynamicLib::Highs_getModelStatus = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00122">122</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="aaaa9b51d2f7be1a467fe2ee67a9c2789" name="aaaa9b51d2f7be1a467fe2ee67a9c2789"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaa9b51d2f7be1a467fe2ee67a9c2789">&#9670;&#160;</a></span>Highs_getNumCol</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_getNumCol_t idol::Optimizers::HiGHS::DynamicLib::Highs_getNumCol = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00117">117</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ad780f6672aa1aa76b606aa72ee5096b5" name="ad780f6672aa1aa76b606aa72ee5096b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad780f6672aa1aa76b606aa72ee5096b5">&#9670;&#160;</a></span>Highs_getNumRow</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_getNumRow_t idol::Optimizers::HiGHS::DynamicLib::Highs_getNumRow = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00118">118</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ac4fefcb7f8ececcd46cccb91cf3d7e13" name="ac4fefcb7f8ececcd46cccb91cf3d7e13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4fefcb7f8ececcd46cccb91cf3d7e13">&#9670;&#160;</a></span>Highs_getNumRows</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_getNumRows_t idol::Optimizers::HiGHS::DynamicLib::Highs_getNumRows = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00119">119</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a6397a1438a4c1bbaa93af93ef093622d" name="a6397a1438a4c1bbaa93af93ef093622d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6397a1438a4c1bbaa93af93ef093622d">&#9670;&#160;</a></span>Highs_getObjectiveValue</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_getObjectiveValue_t idol::Optimizers::HiGHS::DynamicLib::Highs_getObjectiveValue = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00116">116</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a5fdb6e3bf3462b2f71ff31bc5b0565cb" name="a5fdb6e3bf3462b2f71ff31bc5b0565cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fdb6e3bf3462b2f71ff31bc5b0565cb">&#9670;&#160;</a></span>Highs_getPrimalRay</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_getPrimalRay_t idol::Optimizers::HiGHS::DynamicLib::Highs_getPrimalRay = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00125">125</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a0e2a67978e035695701b1e119c122a30" name="a0e2a67978e035695701b1e119c122a30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e2a67978e035695701b1e119c122a30">&#9670;&#160;</a></span>Highs_getRunTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_getRunTime_t idol::Optimizers::HiGHS::DynamicLib::Highs_getRunTime = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00121">121</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="aaa0db2cce7d1426928c3cae0286c051a" name="aaa0db2cce7d1426928c3cae0286c051a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa0db2cce7d1426928c3cae0286c051a">&#9670;&#160;</a></span>Highs_getSolution</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_getSolution_t idol::Optimizers::HiGHS::DynamicLib::Highs_getSolution = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00124">124</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a79fa69cc5c2e57aa4298286ebc669e2c" name="a79fa69cc5c2e57aa4298286ebc669e2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79fa69cc5c2e57aa4298286ebc669e2c">&#9670;&#160;</a></span>Highs_run</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_run_t idol::Optimizers::HiGHS::DynamicLib::Highs_run = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00123">123</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a42624dd19f089c4e01586b984967a325" name="a42624dd19f089c4e01586b984967a325"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42624dd19f089c4e01586b984967a325">&#9670;&#160;</a></span>Highs_setBoolOptionValue</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_setBoolOptionValue_t idol::Optimizers::HiGHS::DynamicLib::Highs_setBoolOptionValue = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00127">127</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a88f349426ef044fc40ecf81bedab8835" name="a88f349426ef044fc40ecf81bedab8835"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88f349426ef044fc40ecf81bedab8835">&#9670;&#160;</a></span>Highs_setDoubleOptionValue</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_setDoubleOptionValue_t idol::Optimizers::HiGHS::DynamicLib::Highs_setDoubleOptionValue = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00128">128</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ab3e2fcd567093e691891c8973485f2aa" name="ab3e2fcd567093e691891c8973485f2aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3e2fcd567093e691891c8973485f2aa">&#9670;&#160;</a></span>Highs_setOptionValue</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_setOptionValue_t idol::Optimizers::HiGHS::DynamicLib::Highs_setOptionValue = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00129">129</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="ac0c5b4c3b78997f15465b19eb126da68" name="ac0c5b4c3b78997f15465b19eb126da68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c5b4c3b78997f15465b19eb126da68">&#9670;&#160;</a></span>Highs_version</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_version_t idol::Optimizers::HiGHS::DynamicLib::Highs_version = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00132">132</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+<a id="a5e40491b2022bca827761dcd4951c8f6" name="a5e40491b2022bca827761dcd4951c8f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e40491b2022bca827761dcd4951c8f6">&#9670;&#160;</a></span>Highs_writeModel</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Highs_writeModel_t idol::Optimizers::HiGHS::DynamicLib::Highs_writeModel = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__HiGHS_8h_source.html#l00131">131</a> of file <a class="el" href="Optimizers__HiGHS_8h_source.html">Optimizers_HiGHS.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

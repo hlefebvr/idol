@@ -1,0 +1,613 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::AffExpr&lt; KeyT, ValueT &gt; Class Template Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_basics.html">Basics</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <li><a href="cli_input_format.html">Input Format</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <!-- <li><a href="#">Tutorials</a></li> -->
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><a href="classidol_1_1AffExpr.html">AffExpr</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pub-static-attribs">Public Static Attributes</a> &#124;
+<a href="classidol_1_1AffExpr-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::AffExpr&lt; KeyT, ValueT &gt; Class Template Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class KeyT = idol::Var, class ValueT = double&gt;<br />
+class idol::AffExpr&lt; KeyT, ValueT &gt;</div>
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00019">19</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:ad038b3ba0a793c0ada966a751c27de66" id="r_ad038b3ba0a793c0ada966a751c27de66"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ad038b3ba0a793c0ada966a751c27de66">AffExpr</a> (ValueT t_constant)</td></tr>
+<tr class="memitem:a8a0cc48d9892d1c4e05b5f2e39f7cb45" id="r_a8a0cc48d9892d1c4e05b5f2e39f7cb45"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a8a0cc48d9892d1c4e05b5f2e39f7cb45">AffExpr</a> (const KeyT &amp;t_key)</td></tr>
+<tr class="memitem:a0da07ca438409b0d07408852f4bbb08b" id="r_a0da07ca438409b0d07408852f4bbb08b"><td class="memItemLeft"><a id="a0da07ca438409b0d07408852f4bbb08b" name="a0da07ca438409b0d07408852f4bbb08b"></a>
+&#160;</td><td class="memItemRight"><b>AffExpr</b> (<a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; KeyT &gt; t_expr)</td></tr>
+<tr class="memitem:ac4b93224e593a0cf7bceb6bd0a0c83d8" id="r_ac4b93224e593a0cf7bceb6bd0a0c83d8"><td class="memItemLeft"><a id="ac4b93224e593a0cf7bceb6bd0a0c83d8" name="ac4b93224e593a0cf7bceb6bd0a0c83d8"></a>
+&#160;</td><td class="memItemRight"><b>AffExpr</b> (const AffExpr &amp;t_src)=default</td></tr>
+<tr class="memitem:ade64f5c261c6f4d9023b8103259e124d" id="r_ade64f5c261c6f4d9023b8103259e124d"><td class="memItemLeft"><a id="ade64f5c261c6f4d9023b8103259e124d" name="ade64f5c261c6f4d9023b8103259e124d"></a>
+&#160;</td><td class="memItemRight"><b>AffExpr</b> (AffExpr &amp;&amp;) noexcept=default</td></tr>
+<tr class="memitem:ac11bd495f797ab7233dbb3d5c85f1ef1" id="r_ac11bd495f797ab7233dbb3d5c85f1ef1"><td class="memItemLeft"><a id="ac11bd495f797ab7233dbb3d5c85f1ef1" name="ac11bd495f797ab7233dbb3d5c85f1ef1"></a>
+AffExpr &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (const AffExpr &amp;t_rhs)=default</td></tr>
+<tr class="memitem:ab2ba6034812169d81fe746dbc9d69360" id="r_ab2ba6034812169d81fe746dbc9d69360"><td class="memItemLeft"><a id="ab2ba6034812169d81fe746dbc9d69360" name="ab2ba6034812169d81fe746dbc9d69360"></a>
+AffExpr &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (AffExpr &amp;&amp;) noexcept=default</td></tr>
+<tr class="memitem:a64c7f6eb697ef9a4c93165e39dc612c6" id="r_a64c7f6eb697ef9a4c93165e39dc612c6"><td class="memItemLeft">AffExpr &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a64c7f6eb697ef9a4c93165e39dc612c6">operator+=</a> (const AffExpr &amp;t_rhs)</td></tr>
+<tr class="memitem:a2a920f70a7efab53d4359e21851bfd92" id="r_a2a920f70a7efab53d4359e21851bfd92"><td class="memItemLeft">AffExpr &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a2a920f70a7efab53d4359e21851bfd92">operator-=</a> (const AffExpr &amp;t_rhs)</td></tr>
+<tr class="memitem:a793185a3d427873b478c2143293ae46a" id="r_a793185a3d427873b478c2143293ae46a"><td class="memItemLeft">AffExpr &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a793185a3d427873b478c2143293ae46a">operator*=</a> (double t_rhs)</td></tr>
+<tr class="memitem:a8c7781c4b98d04c45e34a8f76db95715" id="r_a8c7781c4b98d04c45e34a8f76db95715"><td class="memItemLeft">AffExpr &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a8c7781c4b98d04c45e34a8f76db95715">operator/=</a> (double t_rhs)</td></tr>
+<tr class="memitem:a19fefdbab5412e7d02f55105ee9256c4" id="r_a19fefdbab5412e7d02f55105ee9256c4"><td class="memItemLeft">AffExpr&#160;</td><td class="memItemRight"><a class="el" href="#a19fefdbab5412e7d02f55105ee9256c4">operator-</a> () const</td></tr>
+<tr class="memitem:afc9dde147af1e82b82ee2b4c13bc862a" id="r_afc9dde147af1e82b82ee2b4c13bc862a"><td class="memItemLeft"><a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; KeyT, ValueT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#afc9dde147af1e82b82ee2b4c13bc862a">linear</a> ()</td></tr>
+<tr class="memitem:a8d1f65c80a276387f9d22a58a99918d9" id="r_a8d1f65c80a276387f9d22a58a99918d9"><td class="memItemLeft">const <a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; KeyT, ValueT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a8d1f65c80a276387f9d22a58a99918d9">linear</a> () const</td></tr>
+<tr class="memitem:acec88d9cd2517a9c4d9892fa0de6d5a8" id="r_acec88d9cd2517a9c4d9892fa0de6d5a8"><td class="memItemLeft">ValueT &amp;&#160;</td><td class="memItemRight"><a class="el" href="#acec88d9cd2517a9c4d9892fa0de6d5a8">constant</a> ()</td></tr>
+<tr class="memitem:abc0634de19bc56c5f9152e90c768b4fe" id="r_abc0634de19bc56c5f9152e90c768b4fe"><td class="memItemLeft">const ValueT &amp;&#160;</td><td class="memItemRight"><a class="el" href="#abc0634de19bc56c5f9152e90c768b4fe">constant</a> () const</td></tr>
+<tr class="memitem:abac42723dfb46ce3a90a2c4cbe47c380" id="r_abac42723dfb46ce3a90a2c4cbe47c380"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#abac42723dfb46ce3a90a2c4cbe47c380">is_zero</a> (double t_tolerance) const</td></tr>
+<tr class="memitem:ac917d10e8fb0de9eb10c1396a6e3752b" id="r_ac917d10e8fb0de9eb10c1396a6e3752b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ac917d10e8fb0de9eb10c1396a6e3752b">clear</a> ()</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-attribs" class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Public Static Attributes</h2></td></tr>
+<tr class="memitem:a999435c04e85a26eb7fb9108b872a307" id="r_a999435c04e85a26eb7fb9108b872a307"><td class="memItemLeft">static const AffExpr&lt; KeyT, ValueT &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a999435c04e85a26eb7fb9108b872a307">Zero</a> {}</td></tr>
+</table>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aac13f59a1365077fcd2443e53cd890e0" name="aac13f59a1365077fcd2443e53cd890e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac13f59a1365077fcd2443e53cd890e0">&#9670;&#160;</a></span>AffExpr() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Key1, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; Key1, ValueT &gt;::AffExpr </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00076">76</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a id="ad038b3ba0a793c0ada966a751c27de66" name="ad038b3ba0a793c0ada966a751c27de66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad038b3ba0a793c0ada966a751c27de66">&#9670;&#160;</a></span>AffExpr() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Key1, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; Key1, ValueT &gt;::AffExpr </td>
+          <td>(</td>
+          <td class="paramtype">ValueT</td>          <td class="paramname"><span class="paramname"><em>t_constant</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00081">81</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a id="a8a0cc48d9892d1c4e05b5f2e39f7cb45" name="a8a0cc48d9892d1c4e05b5f2e39f7cb45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a0cc48d9892d1c4e05b5f2e39f7cb45">&#9670;&#160;</a></span>AffExpr() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; KeyT, ValueT &gt;::AffExpr </td>
+          <td>(</td>
+          <td class="paramtype">const KeyT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_key</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00063">63</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="ac917d10e8fb0de9eb10c1396a6e3752b" name="ac917d10e8fb0de9eb10c1396a6e3752b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac917d10e8fb0de9eb10c1396a6e3752b">&#9670;&#160;</a></span>clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT = idol::Var, class ValueT = double&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; KeyT, ValueT &gt;::clear </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00052">52</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a id="acec88d9cd2517a9c4d9892fa0de6d5a8" name="acec88d9cd2517a9c4d9892fa0de6d5a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acec88d9cd2517a9c4d9892fa0de6d5a8">&#9670;&#160;</a></span>constant() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT = idol::Var, class ValueT = double&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ValueT &amp; <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; KeyT, ValueT &gt;::constant </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00046">46</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a id="abc0634de19bc56c5f9152e90c768b4fe" name="abc0634de19bc56c5f9152e90c768b4fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc0634de19bc56c5f9152e90c768b4fe">&#9670;&#160;</a></span>constant() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT = idol::Var, class ValueT = double&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const ValueT &amp; <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; KeyT, ValueT &gt;::constant </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00048">48</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a id="abac42723dfb46ce3a90a2c4cbe47c380" name="abac42723dfb46ce3a90a2c4cbe47c380"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abac42723dfb46ce3a90a2c4cbe47c380">&#9670;&#160;</a></span>is_zero()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT = idol::Var, class ValueT = double&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; KeyT, ValueT &gt;::is_zero </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_tolerance</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00050">50</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a id="afc9dde147af1e82b82ee2b4c13bc862a" name="afc9dde147af1e82b82ee2b4c13bc862a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc9dde147af1e82b82ee2b4c13bc862a">&#9670;&#160;</a></span>linear() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT = idol::Var, class ValueT = double&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; KeyT, ValueT &gt; &amp; <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; KeyT, ValueT &gt;::linear </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00043">43</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a id="a8d1f65c80a276387f9d22a58a99918d9" name="a8d1f65c80a276387f9d22a58a99918d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d1f65c80a276387f9d22a58a99918d9">&#9670;&#160;</a></span>linear() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT = idol::Var, class ValueT = double&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; KeyT, ValueT &gt; &amp; <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; KeyT, ValueT &gt;::linear </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00044">44</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a id="a793185a3d427873b478c2143293ae46a" name="a793185a3d427873b478c2143293ae46a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a793185a3d427873b478c2143293ae46a">&#9670;&#160;</a></span>operator*=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Key1, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; Key1, ValueT &gt; &amp; <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; Key1, ValueT &gt;::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_rhs</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00105">105</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a id="a64c7f6eb697ef9a4c93165e39dc612c6" name="a64c7f6eb697ef9a4c93165e39dc612c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64c7f6eb697ef9a4c93165e39dc612c6">&#9670;&#160;</a></span>operator+=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Key1, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; Key1, ValueT &gt; &amp; <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; Key1, ValueT &gt;::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const AffExpr&lt; KeyT, ValueT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_rhs</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00091">91</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a id="a19fefdbab5412e7d02f55105ee9256c4" name="a19fefdbab5412e7d02f55105ee9256c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19fefdbab5412e7d02f55105ee9256c4">&#9670;&#160;</a></span>operator-()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Key1, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; Key1, ValueT &gt; <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; Key1, ValueT &gt;::operator- </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00068">68</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a id="a2a920f70a7efab53d4359e21851bfd92" name="a2a920f70a7efab53d4359e21851bfd92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a920f70a7efab53d4359e21851bfd92">&#9670;&#160;</a></span>operator-=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Key1, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; Key1, ValueT &gt; &amp; <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; Key1, ValueT &gt;::operator-= </td>
+          <td>(</td>
+          <td class="paramtype">const AffExpr&lt; KeyT, ValueT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_rhs</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00098">98</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a id="a8c7781c4b98d04c45e34a8f76db95715" name="a8c7781c4b98d04c45e34a8f76db95715"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c7781c4b98d04c45e34a8f76db95715">&#9670;&#160;</a></span>operator/=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Key1, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; Key1, ValueT &gt; &amp; <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; Key1, ValueT &gt;::operator/= </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_rhs</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00112">112</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="a999435c04e85a26eb7fb9108b872a307" name="a999435c04e85a26eb7fb9108b872a307"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a999435c04e85a26eb7fb9108b872a307">&#9670;&#160;</a></span>Zero</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; KeyT, ValueT &gt; <a class="el" href="classidol_1_1AffExpr.html">idol::AffExpr</a>&lt; KeyT, ValueT &gt;::Zero {}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AffExpr_8h_source.html#l00057">57</a> of file <a class="el" href="AffExpr_8h_source.html">AffExpr.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

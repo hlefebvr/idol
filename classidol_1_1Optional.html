@@ -1,0 +1,728 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Optional&lt; T &gt; Class Template Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_basics.html">Basics</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <li><a href="cli_input_format.html">Input Format</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <!-- <li><a href="#">Tutorials</a></li> -->
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><a href="classidol_1_1Optional.html">Optional</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="classidol_1_1Optional-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Optional&lt; T &gt; Class Template Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
+class idol::Optional&lt; T &gt;</div>
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00013">13</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:ac7b9e8e267d17bbc861cecb8fd53d34e" id="r_ac7b9e8e267d17bbc861cecb8fd53d34e"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ac7b9e8e267d17bbc861cecb8fd53d34e">Optional</a> (const Optional&lt; T &gt; &amp;t_optional)</td></tr>
+<tr class="memitem:acb05d87718829ebfcf960fa0f60584c3" id="r_acb05d87718829ebfcf960fa0f60584c3"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#acb05d87718829ebfcf960fa0f60584c3">Optional</a> (Optional&lt; T &gt; &amp;&amp;t_optional) noexcept</td></tr>
+<tr class="memitem:a8065bca1397becb0b36075c3b6b94005" id="r_a8065bca1397becb0b36075c3b6b94005"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a8065bca1397becb0b36075c3b6b94005">Optional</a> (const T &amp;t_value)</td></tr>
+<tr class="memitem:aa5c49a7d0ed73f19e89e96941b7c606e" id="r_aa5c49a7d0ed73f19e89e96941b7c606e"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#aa5c49a7d0ed73f19e89e96941b7c606e">Optional</a> (T &amp;&amp;t_value)</td></tr>
+<tr class="memitem:a9a6ed77cea0f679d89a63f8867f79e65" id="r_a9a6ed77cea0f679d89a63f8867f79e65"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a9a6ed77cea0f679d89a63f8867f79e65">has_value</a> () const</td></tr>
+<tr class="memitem:a6065357c5cd083f931ce49b062afb899" id="r_a6065357c5cd083f931ce49b062afb899"><td class="memItemLeft">T &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a6065357c5cd083f931ce49b062afb899">value</a> ()</td></tr>
+<tr class="memitem:abe9107737a119db06e78d79e026b1bf9" id="r_abe9107737a119db06e78d79e026b1bf9"><td class="memItemLeft">const T &amp;&#160;</td><td class="memItemRight"><a class="el" href="#abe9107737a119db06e78d79e026b1bf9">value</a> () const</td></tr>
+<tr class="memitem:a2586c1e3eab22e16e7c71156378988ac" id="r_a2586c1e3eab22e16e7c71156378988ac"><td class="memItemLeft">T &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a2586c1e3eab22e16e7c71156378988ac">operator*</a> ()</td></tr>
+<tr class="memitem:aa09424ed1d6f66ad6b379f946dbf6d44" id="r_aa09424ed1d6f66ad6b379f946dbf6d44"><td class="memItemLeft">const T &amp;&#160;</td><td class="memItemRight"><a class="el" href="#aa09424ed1d6f66ad6b379f946dbf6d44">operator*</a> () const</td></tr>
+<tr class="memitem:af4b97848c283ad001f9ee41e4783c198" id="r_af4b97848c283ad001f9ee41e4783c198"><td class="memItemLeft">T *&#160;</td><td class="memItemRight"><a class="el" href="#af4b97848c283ad001f9ee41e4783c198">operator-&gt;</a> ()</td></tr>
+<tr class="memitem:aacba7ab13137f50cac599f344c523725" id="r_aacba7ab13137f50cac599f344c523725"><td class="memItemLeft">const T *&#160;</td><td class="memItemRight"><a class="el" href="#aacba7ab13137f50cac599f344c523725">operator-&gt;</a> () const</td></tr>
+<tr class="memitem:acb5426c340bb7466791ceb425c9df765" id="r_acb5426c340bb7466791ceb425c9df765"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#acb5426c340bb7466791ceb425c9df765">operator bool</a> () const</td></tr>
+<tr class="memitem:ab10d8fa86c6000ef8992158a73cb3705" id="r_ab10d8fa86c6000ef8992158a73cb3705"><td class="memItemLeft">Optional&lt; T &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ab10d8fa86c6000ef8992158a73cb3705">operator=</a> (T &amp;&amp;t_value)</td></tr>
+<tr class="memitem:a1791d59422162231b52c2288f003fdeb" id="r_a1791d59422162231b52c2288f003fdeb"><td class="memItemLeft">Optional&lt; T &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a1791d59422162231b52c2288f003fdeb">operator=</a> (const T &amp;t_value)</td></tr>
+<tr class="memitem:aa8b6710fc8e7dd502bbca246ef85904e" id="r_aa8b6710fc8e7dd502bbca246ef85904e"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa8b6710fc8e7dd502bbca246ef85904e">reset</a> ()</td></tr>
+<tr class="memitem:aa2ad5902e954eecd946c5f1d10dd83d4" id="r_aa2ad5902e954eecd946c5f1d10dd83d4"><td class="memTemplParams" colspan="2">template&lt;class ... ArgsT&gt; </td></tr>
+<tr class="memitem:aa2ad5902e954eecd946c5f1d10dd83d4 template"><td class="memItemLeft">T &amp;&#160;</td><td class="memItemRight"><a class="el" href="#aa2ad5902e954eecd946c5f1d10dd83d4">emplace</a> (ArgsT &amp;&amp;...t_args)</td></tr>
+</table>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ac7b9e8e267d17bbc861cecb8fd53d34e" name="ac7b9e8e267d17bbc861cecb8fd53d34e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7b9e8e267d17bbc861cecb8fd53d34e">&#9670;&#160;</a></span>Optional() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::Optional </td>
+          <td>(</td>
+          <td class="paramtype">const Optional&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_optional</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00018">18</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="acb05d87718829ebfcf960fa0f60584c3" name="acb05d87718829ebfcf960fa0f60584c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb05d87718829ebfcf960fa0f60584c3">&#9670;&#160;</a></span>Optional() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::Optional </td>
+          <td>(</td>
+          <td class="paramtype">Optional&lt; T &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>t_optional</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00020">20</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="a8065bca1397becb0b36075c3b6b94005" name="a8065bca1397becb0b36075c3b6b94005"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8065bca1397becb0b36075c3b6b94005">&#9670;&#160;</a></span>Optional() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::Optional </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00024">24</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="aa5c49a7d0ed73f19e89e96941b7c606e" name="aa5c49a7d0ed73f19e89e96941b7c606e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5c49a7d0ed73f19e89e96941b7c606e">&#9670;&#160;</a></span>Optional() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::Optional </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00026">26</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="aaaed804ee47704f2b4f4d6724ad1a8fe" name="aaaed804ee47704f2b4f4d6724ad1a8fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaed804ee47704f2b4f4d6724ad1a8fe">&#9670;&#160;</a></span>~Optional()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::~Optional </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00028">28</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="aa2ad5902e954eecd946c5f1d10dd83d4" name="aa2ad5902e954eecd946c5f1d10dd83d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2ad5902e954eecd946c5f1d10dd83d4">&#9670;&#160;</a></span>emplace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class ... ArgsT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T &amp; <a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::emplace </td>
+          <td>(</td>
+          <td class="paramtype">ArgsT &amp;&amp;...</td>          <td class="paramname"><span class="paramname"><em>t_args</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00084">84</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="a9a6ed77cea0f679d89a63f8867f79e65" name="a9a6ed77cea0f679d89a63f8867f79e65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a6ed77cea0f679d89a63f8867f79e65">&#9670;&#160;</a></span>has_value()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::has_value </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00034">34</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="acb5426c340bb7466791ceb425c9df765" name="acb5426c340bb7466791ceb425c9df765"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb5426c340bb7466791ceb425c9df765">&#9670;&#160;</a></span>operator bool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::operator bool </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00058">58</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="a2586c1e3eab22e16e7c71156378988ac" name="a2586c1e3eab22e16e7c71156378988ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2586c1e3eab22e16e7c71156378988ac">&#9670;&#160;</a></span>operator*() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T &amp; <a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::operator* </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00050">50</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="aa09424ed1d6f66ad6b379f946dbf6d44" name="aa09424ed1d6f66ad6b379f946dbf6d44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa09424ed1d6f66ad6b379f946dbf6d44">&#9670;&#160;</a></span>operator*() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const T &amp; <a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::operator* </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00052">52</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="af4b97848c283ad001f9ee41e4783c198" name="af4b97848c283ad001f9ee41e4783c198"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4b97848c283ad001f9ee41e4783c198">&#9670;&#160;</a></span>operator-&gt;() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T * <a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::operator-&gt; </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00054">54</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="aacba7ab13137f50cac599f344c523725" name="aacba7ab13137f50cac599f344c523725"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacba7ab13137f50cac599f344c523725">&#9670;&#160;</a></span>operator-&gt;() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const T * <a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::operator-&gt; </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00056">56</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="a1791d59422162231b52c2288f003fdeb" name="a1791d59422162231b52c2288f003fdeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1791d59422162231b52c2288f003fdeb">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Optional&lt; T &gt; &amp; <a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00068">68</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="ab10d8fa86c6000ef8992158a73cb3705" name="ab10d8fa86c6000ef8992158a73cb3705"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab10d8fa86c6000ef8992158a73cb3705">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Optional&lt; T &gt; &amp; <a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00060">60</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="aa8b6710fc8e7dd502bbca246ef85904e" name="aa8b6710fc8e7dd502bbca246ef85904e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8b6710fc8e7dd502bbca246ef85904e">&#9670;&#160;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::reset </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00076">76</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="a6065357c5cd083f931ce49b062afb899" name="a6065357c5cd083f931ce49b062afb899"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6065357c5cd083f931ce49b062afb899">&#9670;&#160;</a></span>value() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T &amp; <a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::value </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00036">36</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+<a id="abe9107737a119db06e78d79e026b1bf9" name="abe9107737a119db06e78d79e026b1bf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe9107737a119db06e78d79e026b1bf9">&#9670;&#160;</a></span>value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const T &amp; <a class="el" href="classidol_1_1Optional.html">idol::Optional</a>&lt; T &gt;::value </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optional_8h_source.html#l00043">43</a> of file <a class="el" href="Optional_8h_source.html">Optional.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Problems::FLP::Instance Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_basics.html">Basics</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <li><a href="cli_input_format.html">Input Format</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <!-- <li><a href="#">Tutorials</a></li> -->
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><b>Problems</b></li><li class="navelem"><b>FLP</b></li><li class="navelem"><a href="classidol_1_1Problems_1_1FLP_1_1Instance.html">Instance</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="classidol_1_1Problems_1_1FLP_1_1Instance-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Problems::FLP::Instance Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00038">38</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:adc09f858d605248106d6dd06fa8969cc" id="r_adc09f858d605248106d6dd06fa8969cc"><td class="memItemLeft"><a id="adc09f858d605248106d6dd06fa8969cc" name="adc09f858d605248106d6dd06fa8969cc"></a>
+&#160;</td><td class="memItemRight"><b>Instance</b> (unsigned int t_n_facilities, unsigned int t_n_customers)</td></tr>
+<tr class="memitem:a3618c7fc05fd2c55e5397fb27755bee1" id="r_a3618c7fc05fd2c55e5397fb27755bee1"><td class="memItemLeft">unsigned int&#160;</td><td class="memItemRight"><a class="el" href="#a3618c7fc05fd2c55e5397fb27755bee1">n_facilities</a> () const</td></tr>
+<tr class="memitem:ac2897dada94ae992f5b67d0a7ccff5fe" id="r_ac2897dada94ae992f5b67d0a7ccff5fe"><td class="memItemLeft">unsigned int&#160;</td><td class="memItemRight"><a class="el" href="#ac2897dada94ae992f5b67d0a7ccff5fe">n_customers</a> () const</td></tr>
+<tr class="memitem:a27f90060e53d76f430992edfec40c36a" id="r_a27f90060e53d76f430992edfec40c36a"><td class="memItemLeft">virtual double&#160;</td><td class="memItemRight"><a class="el" href="#a27f90060e53d76f430992edfec40c36a">fixed_cost</a> (unsigned int t_i) const</td></tr>
+<tr class="memitem:ae364b67b80b7efa7f927e895cde77d20" id="r_ae364b67b80b7efa7f927e895cde77d20"><td class="memItemLeft">virtual double&#160;</td><td class="memItemRight"><a class="el" href="#ae364b67b80b7efa7f927e895cde77d20">capacity</a> (unsigned int t_i) const</td></tr>
+<tr class="memitem:a7332439ef95c3d357b85264c5c80f543" id="r_a7332439ef95c3d357b85264c5c80f543"><td class="memItemLeft">virtual double&#160;</td><td class="memItemRight"><a class="el" href="#a7332439ef95c3d357b85264c5c80f543">demand</a> (unsigned int t_j) const</td></tr>
+<tr class="memitem:a75d9c0234ab9133d55de65a69411dee6" id="r_a75d9c0234ab9133d55de65a69411dee6"><td class="memItemLeft">virtual double&#160;</td><td class="memItemRight"><a class="el" href="#a75d9c0234ab9133d55de65a69411dee6">per_unit_transportation_cost</a> (unsigned int t_i, unsigned int t_j) const</td></tr>
+<tr class="memitem:a66eb221060c7d7a69fb7d7a068d4f6ca" id="r_a66eb221060c7d7a69fb7d7a068d4f6ca"><td class="memItemLeft">virtual bool&#160;</td><td class="memItemRight"><a class="el" href="#a66eb221060c7d7a69fb7d7a068d4f6ca">has_penalties</a> () const</td></tr>
+<tr class="memitem:a2e591f51c4771e850630c541b43e201c" id="r_a2e591f51c4771e850630c541b43e201c"><td class="memItemLeft">virtual double&#160;</td><td class="memItemRight"><a class="el" href="#a2e591f51c4771e850630c541b43e201c">per_unit_penalty</a> (unsigned int t_j) const</td></tr>
+<tr class="memitem:a41d600bb979d318e0bde95f6dc8db5c5" id="r_a41d600bb979d318e0bde95f6dc8db5c5"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a41d600bb979d318e0bde95f6dc8db5c5">set_fixed_cost</a> (unsigned int t_i, double t_value)</td></tr>
+<tr class="memitem:a6fac8c533673fa7cae3acd7a461cfc68" id="r_a6fac8c533673fa7cae3acd7a461cfc68"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6fac8c533673fa7cae3acd7a461cfc68">set_capacity</a> (unsigned int t_i, double t_value)</td></tr>
+<tr class="memitem:a6eb6f74d6828396c82446fb034840178" id="r_a6eb6f74d6828396c82446fb034840178"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6eb6f74d6828396c82446fb034840178">set_demand</a> (unsigned int t_j, double t_value)</td></tr>
+<tr class="memitem:a44d571cc2e12bfcb59155dd2e94d54ab" id="r_a44d571cc2e12bfcb59155dd2e94d54ab"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a44d571cc2e12bfcb59155dd2e94d54ab">set_per_unit_transportation_cost</a> (unsigned int t_i, unsigned int t_j, double t_value)</td></tr>
+<tr class="memitem:a726da6e27d9326b436ae5289145bb414" id="r_a726da6e27d9326b436ae5289145bb414"><td class="memItemLeft"><a id="a726da6e27d9326b436ae5289145bb414" name="a726da6e27d9326b436ae5289145bb414"></a>
+void&#160;</td><td class="memItemRight"><b>set_per_unit_penalty</b> (unsigned int t_j, double t_value)</td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="ae364b67b80b7efa7f927e895cde77d20" name="ae364b67b80b7efa7f927e895cde77d20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae364b67b80b7efa7f927e895cde77d20">&#9670;&#160;</a></span>capacity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual double idol::Problems::FLP::Instance::capacity </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_i</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00056">56</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a7332439ef95c3d357b85264c5c80f543" name="a7332439ef95c3d357b85264c5c80f543"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7332439ef95c3d357b85264c5c80f543">&#9670;&#160;</a></span>demand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual double idol::Problems::FLP::Instance::demand </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_j</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00057">57</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a27f90060e53d76f430992edfec40c36a" name="a27f90060e53d76f430992edfec40c36a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27f90060e53d76f430992edfec40c36a">&#9670;&#160;</a></span>fixed_cost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual double idol::Problems::FLP::Instance::fixed_cost </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_i</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00055">55</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a66eb221060c7d7a69fb7d7a068d4f6ca" name="a66eb221060c7d7a69fb7d7a068d4f6ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66eb221060c7d7a69fb7d7a068d4f6ca">&#9670;&#160;</a></span>has_penalties()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool idol::Problems::FLP::Instance::has_penalties </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00059">59</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="ac2897dada94ae992f5b67d0a7ccff5fe" name="ac2897dada94ae992f5b67d0a7ccff5fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2897dada94ae992f5b67d0a7ccff5fe">&#9670;&#160;</a></span>n_customers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int idol::Problems::FLP::Instance::n_customers </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00053">53</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a3618c7fc05fd2c55e5397fb27755bee1" name="a3618c7fc05fd2c55e5397fb27755bee1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3618c7fc05fd2c55e5397fb27755bee1">&#9670;&#160;</a></span>n_facilities()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int idol::Problems::FLP::Instance::n_facilities </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00052">52</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a2e591f51c4771e850630c541b43e201c" name="a2e591f51c4771e850630c541b43e201c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e591f51c4771e850630c541b43e201c">&#9670;&#160;</a></span>per_unit_penalty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual double idol::Problems::FLP::Instance::per_unit_penalty </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_j</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00060">60</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a75d9c0234ab9133d55de65a69411dee6" name="a75d9c0234ab9133d55de65a69411dee6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75d9c0234ab9133d55de65a69411dee6">&#9670;&#160;</a></span>per_unit_transportation_cost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual double idol::Problems::FLP::Instance::per_unit_transportation_cost </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_i</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_j</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00058">58</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a6fac8c533673fa7cae3acd7a461cfc68" name="a6fac8c533673fa7cae3acd7a461cfc68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fac8c533673fa7cae3acd7a461cfc68">&#9670;&#160;</a></span>set_capacity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Problems::FLP::Instance::set_capacity </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_i</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00063">63</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a6eb6f74d6828396c82446fb034840178" name="a6eb6f74d6828396c82446fb034840178"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6eb6f74d6828396c82446fb034840178">&#9670;&#160;</a></span>set_demand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Problems::FLP::Instance::set_demand </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_j</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00064">64</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a41d600bb979d318e0bde95f6dc8db5c5" name="a41d600bb979d318e0bde95f6dc8db5c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41d600bb979d318e0bde95f6dc8db5c5">&#9670;&#160;</a></span>set_fixed_cost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Problems::FLP::Instance::set_fixed_cost </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_i</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00062">62</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a44d571cc2e12bfcb59155dd2e94d54ab" name="a44d571cc2e12bfcb59155dd2e94d54ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44d571cc2e12bfcb59155dd2e94d54ab">&#9670;&#160;</a></span>set_per_unit_transportation_cost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Problems::FLP::Instance::set_per_unit_transportation_cost </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_i</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_j</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="FLP__Instance_8h_source.html#l00065">65</a> of file <a class="el" href="FLP__Instance_8h_source.html">FLP_Instance.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['dantzig_20wolfe_20reformulation_0',['Dantzig Wolfe Reformulation',['../example_mixed_integer_bin_bap.html#autotoc_md1',1,'Dantzig-Wolfe Reformulation'],['../example_mixed_integer_gap_bap.html#autotoc_md4',1,'Dantzig-Wolfe Reformulation']]],
+  ['dantzigwolfedecomposition_1',['DantzigWolfeDecomposition',['../classidol_1_1DantzigWolfeDecomposition.html',1,'idol::DantzigWolfeDecomposition'],['../classidol_1_1Optimizers_1_1DantzigWolfeDecomposition.html',1,'idol::Optimizers::DantzigWolfeDecomposition']]],
+  ['deactivating_20kleinart_20et_20al_202020_20valid_20inequalities_2',['Deactivating Kleinart et al. (2020) Valid Inequalities',['../cli_bilevel_kkt.html#kkt_kleinert_vi',1,'']]],
+  ['decision_20dependent_20robust_20optimization_3',['Decision-Dependent Robust Optimization',['../cli_input_format_robust.html#cli_robust_ddro',1,'']]],
+  ['decision_20variables_4',['Decision Variables',['../example_mixed_integer_tsp_gurobi.html#autotoc_md8',1,'']]],
+  ['defaultnodeinfo_5',['DefaultNodeInfo',['../classidol_1_1DefaultNodeInfo.html',1,'idol']]],
+  ['defaultnodeupdator_6',['DefaultNodeUpdator',['../classidol_1_1DefaultNodeUpdator.html',1,'idol']]],
+  ['degree_20constraints_7',['Degree Constraints',['../example_mixed_integer_tsp_gurobi.html#autotoc_md10',1,'']]],
+  ['dependent_20robust_20optimization_8',['Decision-Dependent Robust Optimization',['../cli_input_format_robust.html#cli_robust_ddro',1,'']]],
+  ['depthfirst_9',['DepthFirst',['../classidol_1_1DepthFirst.html',1,'idol::DepthFirst'],['../classidol_1_1NodeSelectionRules_1_1DepthFirst.html',1,'idol::NodeSelectionRules::DepthFirst&lt; NodeT &gt;']]],
+  ['deriving_20the_20pricing_20problem_10',['Deriving the Pricing Problem',['../example_mixed_integer_gap_bap.html#autotoc_md5',1,'']]],
+  ['description_11',['Description',['../classidol_1_1Bilevel_1_1Description.html',1,'idol::Bilevel::Description'],['../classidol_1_1Robust_1_1Description.html',1,'idol::Robust::Description'],['../cli_input_format_bilevel.html#cli_bilevel_details',1,'Detailed Description'],['../cli_input_format_robust.html#cli_robust_classic_ro_detailed_description',1,'Detailed Description'],['../cli_input_format_robust.html#cli_robust_aro_details',1,'Detailed Description']]],
+  ['detailed_20description_12',['Detailed Description',['../cli_input_format_bilevel.html#cli_bilevel_details',1,'Detailed Description'],['../cli_input_format_robust.html#cli_robust_classic_ro_detailed_description',1,'Detailed Description'],['../cli_input_format_robust.html#cli_robust_aro_details',1,'Detailed Description']]],
+  ['dim_13',['Dim',['../classidol_1_1Dim.html',1,'idol']]],
+  ['directory_14',['directory',['../build_from_source.html#cmake_install_prefix',1,'Custom installation directory'],['../build_from_source.html#step_build_dir',1,'Step 2 — Create a build directory']]],
+  ['diver_15',['Diver',['../classidol_1_1BranchingRules_1_1Diver.html',1,'idol::BranchingRules::Diver&lt; BranchingRuleT &gt;'],['../classidol_1_1Diver.html',1,'idol::Diver&lt; BranchingRuleT &gt;']]],
+  ['download_20using_20cmake_20fetchcontent_16',['Automatic Download using CMake &lt;span class=&quot;tt&quot;&gt;FetchContent&lt;/span&gt;',['../lib_installation.html#lib_install_cmake',1,'']]],
+  ['dual_17',['lp-dual',['../example_mixed_integer_lp_dual.html',1,'examples_mixed_integer']]],
+  ['dual_20variable_20bounds_18',['Reference for Dual Variable Bounds',['../cli_bilevel_kkt.html#kkt_big_m_def',1,'']]],
+  ['dual_20variables_19',['The File Format for Providing Bounds on the Dual Variables',['../cli_bilevel_kkt.html#kkt_big_m_file',1,'']]],
+  ['dualize_20',['Dualize',['../classidol_1_1Bilevel_1_1MinMax_1_1Dualize.html',1,'idol::Bilevel::MinMax::Dualize'],['../classidol_1_1Optimizers_1_1Bilevel_1_1MinMax_1_1Dualize.html',1,'idol::Optimizers::Bilevel::MinMax::Dualize']]],
+  ['dualpricesmoothingstabilization_21',['DualPriceSmoothingStabilization',['../classidol_1_1DantzigWolfe_1_1DualPriceSmoothingStabilization.html',1,'idol::DantzigWolfe']]],
+  ['dynamiclib_22',['DynamicLib',['../classidol_1_1Optimizers_1_1GLPK_1_1DynamicLib.html',1,'idol::Optimizers::GLPK::DynamicLib'],['../classidol_1_1Optimizers_1_1Gurobi_1_1DynamicLib.html',1,'idol::Optimizers::Gurobi::DynamicLib'],['../classidol_1_1Optimizers_1_1HiGHS_1_1DynamicLib.html',1,'idol::Optimizers::HiGHS::DynamicLib']]]
+];

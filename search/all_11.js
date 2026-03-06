@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['m_20reformulation_0',['Using the Big-M Reformulation',['../cli_bilevel_kkt.html#kkt_big_m',1,'']]],
+  ['macos_20arm64_1',['MacOs arm64',['../cli_installation.html#mac',1,'MacOs (arm64)'],['../lib_installation.html#lib_install_mac',1,'MacOs (arm64)']]],
+  ['make_5fvector_2',['make_vector',['../classidol_1_1Ctr.html#adff189bf532775589a819d4e6a94ff32',1,'idol::Ctr::make_vector()'],['../classidol_1_1Var.html#aeb0693f77f998802e3b944a33b6b9c58',1,'idol::Var::make_vector()']]],
+  ['manager_3',['Manager',['../classidol_1_1Plots_1_1Manager.html',1,'idol::Plots']]],
+  ['matrix_20uncertainty_4',['Constraint Matrix Uncertainty',['../cli_input_format_robust.html#cli_robust_mat_file',1,'']]],
+  ['mibs_5',['MibS',['../classidol_1_1Bilevel_1_1MibS.html',1,'idol::Bilevel::MibS'],['../classidol_1_1Optimizers_1_1Bilevel_1_1MibS.html',1,'idol::Optimizers::Bilevel::MibS']]],
+  ['mibs_6',['moore-bard-mibs',['../example_bilevel_moore_bard_mibs.html',1,'examples_bilevel']]],
+  ['mibs_20support_7',['Enable MibS support',['../build_from_source.html#cmake_mibs',1,'']]],
+  ['milp_8',['Solving Your First MILP',['../cli_basics.html#cli_first_milp',1,'']]],
+  ['milp_20solver_9',['Changing the Underlying MILP Solver',['../cli_bilevel_kkt.html#kkt_other_milp_solver',1,'']]],
+  ['milps_10',['Input Format for MILPs',['../cli_input_format_milp.html',1,'']]],
+  ['mip_20solver_11',['Is this a MIP Solver?',['../index.html#is_this_a_mip_solver',1,'']]],
+  ['mipabsolutegap_12',['MIPAbsoluteGap',['../namespaceidol_1_1Tolerance.html#a3e653737a3ca4ba069e242126fd3091d',1,'idol::Tolerance']]],
+  ['miprelativegap_13',['MIPRelativeGap',['../namespaceidol_1_1Tolerance.html#ab4484c05875fa9025bb5fbfe0a13983d',1,'idol::Tolerance']]],
+  ['mixed_20integer_20bilevel_20optimization_14',['Mixed-integer bilevel optimization',['../examples_bilevel.html#examples_bilevel_mixed_integer',1,'']]],
+  ['mixed_20integer_20optimization_15',['Mixed integer optimization',['../examples_mixed_integer.html',1,'Mixed-integer optimization'],['../stable_features_mixed_integer.html',1,'Mixed-integer optimization']]],
+  ['model_16',['Model',['../example_mixed_integer_tsp_gurobi.html#autotoc_md7',1,'An Exponential-Size Model'],['../classidol_1_1Model.html',1,'idol::Model'],['../example_mixed_integer_tsp_gurobi.html#autotoc_md13',1,'The Full Model']]],
+  ['modeling_20interface_17',['Modeling interface',['../test_modeling_interface.html',1,'stable_features_mixed_integer']]],
+  ['models_18',['Building and solving simple models',['../examples_mixed_integer.html#examples_mixed_integer_modeling',1,'']]],
+  ['moore_20bard_20mibs_19',['moore-bard-mibs',['../example_bilevel_moore_bard_mibs.html',1,'examples_bilevel']]],
+  ['more_20advanced_20features_20',['More advanced features',['../examples_mixed_integer.html#examples_mixed_integer_mored_advanced_features',1,'']]],
+  ['mostinfeasible_21',['MostInfeasible',['../classidol_1_1BranchingRules_1_1MostInfeasible.html',1,'idol::BranchingRules::MostInfeasible&lt; NodeInfoT &gt;'],['../classidol_1_1MostInfeasible.html',1,'idol::MostInfeasible']]],
+  ['mps_22',['Example (.lp and .mps)',['../cli_input_format_milp.html#cli_milp_example_lp',1,'']]],
+  ['multiplicative_23',['Multiplicative',['../classidol_1_1PenaltyUpdates_1_1Multiplicative.html',1,'idol::PenaltyUpdates']]]
+];

@@ -1,0 +1,487 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: Solving Bilevel Problems via its KKT-Based Single-Level Reformulation</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_basics.html">Basics</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <li><a href="cli_input_format.html">Input Format</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <!-- <li><a href="#">Tutorials</a></li> -->
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div id="doc-content">
+<div><div class="header">
+  <div class="headertitle"><div class="title">Solving Bilevel Problems via its KKT-Based Single-Level Reformulation </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul>
+  <li class="level1">
+    <a href="#kkt_introduction">Introduction </a>
+  </li>
+  <li class="level1">
+    <a href="#kkt_nlp">Using the NLP Formulation </a>
+  </li>
+  <li class="level1">
+    <a href="#kkt_sos1">Using the SOS1 Formulation </a>
+  </li>
+  <li class="level1">
+    <a href="#kkt_big_m">Using the Big-M Reformulation </a>
+    <ul>
+      <li class="level2">
+        <a href="#kkt_big_m_file">The File Format for Providing Bounds on the Dual Variables </a>
+      </li>
+      <li class="level2">
+        <a href="#kkt_big_m_def">Reference for Dual Variable Bounds </a>
+      </li>
+    </ul>
+  </li>
+  <li class="level1">
+    <a href="#kkt_other_milp_solver">Changing the Underlying MILP Solver </a>
+  </li>
+  <li class="level1">
+    <a href="#kkt_kleinert_vi">Deactivating Kleinart et al. (2020) Valid Inequalities </a>
+  </li>
+</ul>
+</div>
+<div class="textblock"><p>Describes how to solve a bilevel problem with continuous lower level via its KKT-based single-level reformulation.</p>
+<h1 class="doxsection"><a class="anchor" id="kkt_introduction"></a>
+Introduction</h1>
+<p>We consider an LP-LP bilevel problem given by       </p><p class="formulaDsp">
+\[    \begin{align*}
+        \min_{x,y} \quad &amp; c^\top x + d^\top y \\
+        \text{s.t.} \quad &amp; Ax + By \ge a, \\
+        &amp; y \in S(x),
+    \end{align*}
+\]
+</p>
+<p> where \( S(x) \) denotes the set of solutions to the \( x \)-parameterized problem      </p><p class="formulaDsp">
+\[    \begin{align*}
+    \min_{y} \quad &amp; f^\top y \\
+    \text{s.t.} \quad &amp; Cx + Dy \ge b.
+    \end{align*}
+\]
+</p>
+<p>Because the lower-level problem is a linear problem, its Karush-Kuhn-Tucker (KKT) conditions are necessary and sufficient optimality conditions. Thus, one can derive a single-level reformulation of the bilevel problem by replacing the bilevel constraint by the KKT conditions of the lower level. This leads to</p>
+<p class="formulaDsp">
+\[    \begin{align*}
+    \min_{x,y,\lambda} \quad &amp; c^\top x + d^\top y \\
+    \text{s.t.} \quad &amp; Ax + By \ge a, \\
+    &amp;  Cx + Dy \ge b, \\
+    &amp; D^\top\lambda = f, \\
+    &amp; \lambda \ge 0, \\
+    &amp; \lambda^\top (Cx + Dy - b) = 0.
+    \end{align*}
+\]
+</p>
+<p>This formulation is called the KKT-based single-level reformulation of the bilevel problem and different approaches exist for solving it. This is detailed in the next sections.</p>
+<h1 class="doxsection"><a class="anchor" id="kkt_nlp"></a>
+Using the NLP Formulation</h1>
+<p>Using the option <span class="tt">--method KKT-NLP</span> automatically formulates and solves the KKT reformulation as a nonlinear optimization problem. Obviously, the underlying solver must handle nonlinear constraints.</p>
+<p>Simply run</p>
+<div class="fragment"><div class="line">idol_cl solve model.lp --bilevel follower.aux --method KKT-NLP</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="kkt_sos1"></a>
+Using the SOS1 Formulation</h1>
+<p>The only nonlinearities in the KKT-based single-level reformulation are due to the complementarity constraints</p>
+<p class="formulaDsp">
+\[    \lambda^\top(Cx + Dy - b) = 0.
+\]
+</p>
+<p>It is well-known that this constraint can be further reformulated as a set of disjunctive constraints of the form</p>
+<p class="formulaDsp">
+\[    ( \lambda_i = 0 ) \lor ( (Cx + Dy - b)_i = 0 ), \quad \text{for all } i = 1,\dots,m_y.
+\]
+</p>
+<p>Thus, one can further reformulate the KKT-based single-level reformulation as</p>
+<p class="formulaDsp">
+\[\begin{align*}
+    \min_{x,y,\lambda} \quad &amp; c^\top x + d^\top y \\
+    \text{s.t.} \quad &amp; Ax + By \ge a, \\
+    &amp;  Cx + Dy - b = s, \\
+    &amp; D^\top\lambda = f, \\
+    &amp; \lambda \ge 0, \\
+    &amp; s \ge 0, \\
+    &amp; \text{SOS1}(\lambda_i, s_i), \quad\text{for all } i = 1,\dots,m_y.
+    \end{align*}
+\]
+</p>
+<p>Here, \( \text{SOS1}(\lambda_i,s_i) \) models the fact that \( \{ \lambda_i, s_i \} \) must be a special ordered set of type 1, i.e., at most one value in the set can be nonzero.</p>
+<p>Using the option <span class="tt">--method KKT</span> together with <span class="tt">--sos1</span> automatically reformulates and solves the bilevel problem using this SOS1 approach. Obviously, the underlying solver must handle SOS1 constraints for this approach to work.</p>
+<p>Simply run</p>
+<div class="fragment"><div class="line">idol_cl solve model.lp --bilevel follower.aux --method KKT-SOS1</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="kkt_big_m"></a>
+Using the Big-M Reformulation</h1>
+<p>Using the Big-M reformulation requires an additional file to provide bounds on the dual variables of the primal lower-level problem. The format for this file is detailed in the next section. Given such a file, say <span class="tt">bounds.txt</span>, the method can be triggered as follows.</p>
+<div class="fragment"><div class="line">idol_cl solve model.lp --bilevel follower.aux --method KKT-BIGM --bound-provider bounds.txt</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="kkt_big_m_file"></a>
+The File Format for Providing Bounds on the Dual Variables</h2>
+<p>Consider the linear problem        </p><p class="formulaDsp">
+\[    \begin{align*}
+        \min_{y_1,y_2} \quad &amp; y_1 + 2y_2 \\
+        \text{s.t.} \quad &amp; y_1 + y_2 \ge 1, &amp; (\lambda\ge 0) \\
+        &amp; y_1\ge 0, &amp; (\alpha\ge 0) \\
+        &amp; y_2\ge 0 &amp; (\beta \ge 0).
+    \end{align*}
+\]
+</p>
+<p>For simplicity, it is not parameterized by any leader decision, this obviously does not affect the file format that we describe.</p>
+<p>The <span class="tt">.lp</span> file reads </p><div class="fragment"><div class="line">Minimize</div>
+<div class="line"> obj: y1 + 2 y2</div>
+<div class="line">Subject To</div>
+<div class="line"> c1: y1 + y2 &gt;= 1</div>
+<div class="line">Bounds</div>
+<div class="line"> y1 &gt;= 0</div>
+<div class="line"> y2 &gt;= 0</div>
+<div class="line">End</div>
+</div><!-- fragment --><p>Its KKT system reads</p>
+<p class="formulaDsp">
+\[    \begin{align*}
+        &amp; \lambda + \alpha \le 1, \\
+        &amp; \lambda + \beta \le 2, \\
+        &amp; \lambda, \alpha, \beta \ge 0, \\
+        &amp; \lambda(y1 + y2 - 1) = 0, \\
+        &amp; \alpha y1 = 0, \\
+        &amp; \beta y2 = 0.
+    \end{align*}
+\]
+</p>
+<p>We have the following bounds on the dual variables:       </p><p class="formulaDsp">
+\[    \begin{equation*}
+        0 \le \lambda \le 1, \quad
+        0 \le \alpha \le 1, \quad
+        0 \le \beta \le 2. \\
+    \end{equation*}
+\]
+</p>
+<p>Similarly, we have the following bounds on the primal constraints:       </p><p class="formulaDsp">
+\[    \begin{equation*}
+        0 \le y_1 + y_2 - 1 \le 2, \quad
+        0 \le y_1 \le 1, \quad
+        0 \le y_2 \le 2. \\
+    \end{equation*}
+\]
+</p>
+<p>These bounds are provided through an additional file whose format is described next.</p>
+<p>The associated file for this example reads</p>
+<div class="fragment"><div class="line">@CTR_DUAL</div>
+<div class="line">c1 1</div>
+<div class="line">@CTR_PRIMAL</div>
+<div class="line">c1 2</div>
+<div class="line">@LB_DUAL</div>
+<div class="line">y1 1</div>
+<div class="line">y2 2</div>
+<div class="line">@LB_PRIMAL</div>
+<div class="line">@UB_DUAL</div>
+<div class="line">@UB_PRIMAL</div>
+<div class="line">y1 1</div>
+<div class="line">y2 2</div>
+</div><!-- fragment --><p>The bounds file used by <span class="tt">idol_cl</span> is composed of tagged sections, each identified by a keyword starting with <span class="tt">@</span>. Each section contains entries specifying bounds associated with different components of the primal–dual system used in the KKT Big-M reformulation.</p>
+<p>The following table lists all supported tags and their meaning.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Tag  </th><th class="markdownTableHeadNone">Meaning  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">@CTR_DUAL</span>  </td><td class="markdownTableBodyNone">This section contains the bounds for the dual variables of the respective (primal) constraints  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">@CTR_PRIMAL</span>  </td><td class="markdownTableBodyNone">This section contains the bounds on the activity (slack) of the respective (primal) constraints  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">@LB_DUAL</span>  </td><td class="markdownTableBodyNone">This section contains the bounds for the dual variables of the lower-bound constraint of the respective (primal) variable  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">@LB_PRIMAL</span>  </td><td class="markdownTableBodyNone">This section contains the lower bounds of the respective (primal) variables (not needed if these are already part of the model)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">@UB_DUAL</span>  </td><td class="markdownTableBodyNone">This section contains the bounds for the dual variables of the upper-bound constraint of the respective (primal) variable  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">@UB_PRIMAL</span>  </td><td class="markdownTableBodyNone">This section contains the upper bounds of the respective (primal) variables (not needed if these are already part of the model)  </td></tr>
+</table>
+<p>Sections may be empty if no bounds of that type are provided.</p>
+<p>Each non-empty line inside a section follows the format </p><div class="fragment"><div class="line">&lt;NAME&gt; &lt;VALUE&gt;</div>
+</div><!-- fragment --><p> where</p><ul>
+<li><span class="tt">&lt;NAME&gt;</span> is the name of a constraint or variable appearing in the deterministic optimization model,</li>
+<li><span class="tt">&lt;VALUE&gt;</span> is a numeric value specifying the bound used in the Big-M reformulation.</li>
+</ul>
+<p>The interpretation of <span class="tt">&lt;NAME&gt;</span> depends on the section:</p><ul>
+<li>In <span class="tt">@CTR_*</span> sections, <span class="tt">&lt;NAME&gt;</span> must correspond to a constraint name;</li>
+<li>In <span class="tt">@LB_*</span> and <span class="tt">@UB_*</span> sections, <span class="tt">&lt;NAME&gt;</span> must correspond to a variable name.</li>
+</ul>
+<p>For example, </p><div class="fragment"><div class="line">@CTR_DUAL</div>
+<div class="line">c1 1</div>
+</div><!-- fragment --><p> indicates that the dual variable associated with constraint <em>c1</em> has an upper bound of 1 in the KKT Big-M formulation.</p>
+<h2 class="doxsection"><a class="anchor" id="kkt_big_m_def"></a>
+Reference for Dual Variable Bounds</h2>
+<p>The sign of the dual variables depend on the type of the constraint it is associated to. To be more formal, we consider an "extended" follower's problem with both equalities and inequalities. It is given by</p>
+<p class="formulaDsp">
+\[    \begin{align*}
+        \min_y \quad &amp; f^\top y \\
+        \text{s.t.} \quad &amp; C^=x + D^=y = b^=, &amp; (\lambda^=\in\mathbb{R}^{m_=}) \\
+        &amp; C^\le x + D^\le y \le b^\le, &amp; (\lambda^\le\in\mathbb{R}^{m_\le}_{\le 0}) \\
+        &amp; C^\ge x + D^\ge y \ge b^\ge, &amp; (\lambda^\ge\in\mathbb{R}^{m_\ge}_{\ge 0}) \\
+        &amp; y \le y^\le, &amp; (\pi^\le\in\mathbb{R}^{n}_{\le 0}) \\
+        &amp; y \ge y^\ge. &amp; (\pi^\ge\in\mathbb{R}^{n}_{\ge 0})
+    \end{align*}
+\]
+</p>
+<p>The dual problem then reads</p>
+<p class="formulaDsp">
+\[    \begin{align}
+        \max_{ \lambda^=, \lambda^\ge, \lambda^\le, \pi^\le, \pi^\ge } \quad &amp;
+        (b^= - C^=x)^\top\lambda^=
+        + (b^\le - C^\le x)^\top\lambda^\le
+          + (b^\ge - C^\ge x)^\top\lambda^\ge
+          +\sum_{j:y^\le_j &lt; \infty} (y^\le)^\top\pi^\le
+          +\sum_{j:y^\ge_j &gt; -\infty} (y^\ge)^\top\pi^\ge \\
+          \text{s.t.} \quad &amp; (D^=)^\top\lambda^= + (D^\le)^\top\lambda^\le + (D^\ge)^\top\lambda^\ge + \pi^\le + \pi^\ge = d, \\
+          &amp; \lambda^\le \le 0, \ \lambda^\ge \ge 0, \ \pi^\le \le 0, \ \pi^\ge \ge 0.
+    \end{align}
+\]
+</p>
+<p>Similarly, the KKT conditions are stated by</p>
+<p class="formulaDsp">
+\[    \begin{align*}
+        \text{Primal feasibility} \quad &amp;
+        \begin{cases}
+            C^=x + D^=y = b^=, \\
+            C^\le x + D^\le y \le b^\le, \\
+            C^\ge x + D^\ge y \ge b^\ge, \\
+            y \le y^\le, \\
+            y \ge y^\ge,
+        \end{cases} \\
+        \text{Dual feasibility} \quad &amp;
+        \begin{cases}
+            \lambda^\le \le 0, \\
+            \lambda^\ge \ge 0, \\
+            \pi^\le \le 0, \\
+            \pi^\ge \ge 0,
+        \end{cases} \\
+        \text{Stationarity} \quad &amp;
+        \begin{cases}
+            (D^=)^\top\lambda^= + (D^\le)^\top\lambda^\le + (D^\ge)^\top\lambda^\ge + \pi^\le + \pi^\ge = d,
+        \end{cases} \\
+        \text{Complementarity} \quad &amp;
+        \begin{cases}
+            (C^\le x + D^\le y - b^\le)^\top \lambda^\le = 0, \\
+            (C^\ge x + D^\ge y - b^\ge)^\top \lambda^\ge = 0, \\
+            (y - y^\le)^\top \pi^\le = 0, \\
+            (y - y^\ge)^\top \pi^\ge = 0.
+        \end{cases}
+    \end{align*}
+\]
+</p>
+<p>Hence, the linearized complementarity conditions are given as follows.</p>
+<p class="formulaDsp">
+\[    \begin{align*}
+        &amp; M_i^\le u^\le_i \le \lambda^\le_i \le 0,
+        \quad N_i^\le(1 - u_i^\le) \le (C^\le x + D^\le y - b^\le)_i \le 0,  \quad \text{for all } i=1,\dotsc,m_\le,\\
+        &amp; M_i^\ge u^\ge_i \ge \lambda^\ge_i \ge 0,
+        \quad N_i^\ge(1 - u_i^\ge) \ge (C^\ge x + D^\ge y - b^\ge \ge 0)_i,  \quad \text{for all } i=1,\dotsc,m_\ge,\\
+        &amp; O_j^\le v_j^\le \le \pi^\le_i \le 0,
+        \quad P_i^\le(1 - v_j^\le) \le (y - y^\le)_i \le 0, \quad \text{for all }j=1,\dotsc,n, \\
+        &amp; O_j^\ge v_j^\ge \ge \pi^\ge \ge 0,
+        \quad P_i^\le(1 - v_j^\le) \ge (y - y^\ge)_i \ge 0, \quad \text{for all }j=1,\dotsc,n, \\
+        &amp; u^\le\in\{0,1\}^{m_\le}, \quad u^\ge\in\{0,1\}^{m_\ge}, \quad
+        v^\le\in\{0,1\}^{n}, \quad v^\ge\in\{0,1\}^{n}.
+    \end{align*}
+\]
+</p>
+<p>Therefore, it is clear that every inequality constraint needs only one bound for its dual variable as well as only one bound for its slack. For less-or-equal-to constraints, the big-M values must be non-positive. For greater-or-equal-to, they must be non-negative.</p>
+<h1 class="doxsection"><a class="anchor" id="kkt_other_milp_solver"></a>
+Changing the Underlying MILP Solver</h1>
+<p>By default, <span class="tt">idol_cl</span> will choose a MILP solver automatically for solving the obtained single-level relaxation.</p>
+<p>To change the underlying solver, use the <span class="tt">--default-sub-milp-method</span> option as follows.</p>
+<div class="fragment"><div class="line">idol_cl solve model.lp --bilevel follower.aux --method KKT-BIGM --bound-provider bounds.txt --default-sub-milp-method GLPK</div>
+</div><!-- fragment --><p>Here, <span class="tt">GLPK</span> will now be used to solve the single-level reformulation of the bilevel problem.</p>
+<h1 class="doxsection"><a class="anchor" id="kkt_kleinert_vi"></a>
+Deactivating Kleinart et al. (2020) Valid Inequalities</h1>
+<p>If all upper-level variables are bounded, every KKT single-level reformulation incorporates the primal-dual valid inequality described in <a href="https://doi.org/10.1007/s11590-020-01660-6" target="_blank">Kleinart et al. (2020)</a>.</p>
+<p>This inequality is given as</p>
+<p class="formulaDsp">
+\[    f^\top y \le \lambda^\top( b - C^- ),
+\]
+</p>
+<p> where \( C^-_i \ge \min \{ C_i x \} \{ x\in \{ x^\ge, x^\le \} \} \) for all \( i \).</p>
+<p>This is done automatically. If, however, you want to deactivate this functionality, please use the <span class="tt">--no-kleinert-vi</span> option.</p>
+<p>Simply run</p>
+<div class="fragment"><div class="line">idol_cl solve model.lp --bilevel follower.aux --method KKT-SOS1 --no-kleinert-vi</div>
+</div><!-- fragment --> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

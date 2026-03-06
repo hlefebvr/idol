@@ -1,0 +1,364 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::StrongBranching::Strategy&lt; NodeInfoT &gt; Class Template Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_basics.html">Basics</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <li><a href="cli_input_format.html">Input Format</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <!-- <li><a href="#">Tutorials</a></li> -->
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><a href="classidol_1_1StrongBranching.html">StrongBranching</a></li><li class="navelem"><a href="classidol_1_1StrongBranching_1_1Strategy.html">Strategy</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pro-methods">Protected Methods</a> &#124;
+<a href="classidol_1_1StrongBranching_1_1Strategy-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::StrongBranching::Strategy&lt; NodeInfoT &gt; Class Template Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class NodeInfoT&gt;<br />
+class idol::StrongBranching::Strategy&lt; NodeInfoT &gt;</div>
+<p class="definition">Definition at line <a class="el" href="factories_2StrongBranching_8h_source.html#l00025">25</a> of file <a class="el" href="factories_2StrongBranching_8h_source.html">StrongBranching.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a7eed84bb25f557be2dc22dfa147c22db" id="r_a7eed84bb25f557be2dc22dfa147c22db"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a7eed84bb25f557be2dc22dfa147c22db">Strategy</a> (const Strategy&lt; NodeInfoT &gt; &amp;t_src)</td></tr>
+<tr class="memitem:a622b868fe581c75fc7853074463843e9" id="r_a622b868fe581c75fc7853074463843e9"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a622b868fe581c75fc7853074463843e9">Strategy</a> (const StrongBranching &amp;t_parent)</td></tr>
+<tr class="memitem:a90d84dd2f57b855fe9183805042cb138" id="r_a90d84dd2f57b855fe9183805042cb138"><td class="memItemLeft"><a class="el" href="classidol_1_1BranchingRules_1_1VariableBranching.html">BranchingRules::VariableBranching</a>&lt; NodeInfoT &gt; *&#160;</td><td class="memItemRight"><a class="el" href="#a90d84dd2f57b855fe9183805042cb138">operator()</a> (const <a class="el" href="classidol_1_1Optimizers_1_1BranchAndBound.html">Optimizers::BranchAndBound</a>&lt; NodeInfoT &gt; &amp;t_parent) const override</td></tr>
+<tr class="memitem:aa167dee71fe9fe9c983ef0c463cd7dc7" id="r_aa167dee71fe9fe9c983ef0c463cd7dc7"><td class="memItemLeft"><a class="el" href="classidol_1_1VariableBranching_1_1Strategy.html">VariableBranching::Strategy</a>&lt; NodeInfoT &gt; *&#160;</td><td class="memItemRight"><a class="el" href="#aa167dee71fe9fe9c983ef0c463cd7dc7">clone</a> () const override</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Methods</h2></td></tr>
+<tr class="memitem:aacdabc4cf7ae2a4e3cc29ef4edaf642c" id="r_aacdabc4cf7ae2a4e3cc29ef4edaf642c"><td class="memItemLeft">std::list&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1VariableBranching_1_1Strategy.html#aacdabc4cf7ae2a4e3cc29ef4edaf642c">create_branching_candidates</a> (const <a class="el" href="classidol_1_1Model.html">idol::Model</a> &amp;t_model) const</td></tr>
+</table>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7eed84bb25f557be2dc22dfa147c22db" name="a7eed84bb25f557be2dc22dfa147c22db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7eed84bb25f557be2dc22dfa147c22db">&#9670;&#160;</a></span>Strategy() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1StrongBranching_1_1Strategy.html">idol::StrongBranching::Strategy</a>&lt; NodeInfoT &gt;::Strategy </td>
+          <td>(</td>
+          <td class="paramtype">const Strategy&lt; NodeInfoT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_src</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="factories_2StrongBranching_8h_source.html#l00074">74</a> of file <a class="el" href="factories_2StrongBranching_8h_source.html">StrongBranching.h</a>.</p>
+
+</div>
+</div>
+<a id="a622b868fe581c75fc7853074463843e9" name="a622b868fe581c75fc7853074463843e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a622b868fe581c75fc7853074463843e9">&#9670;&#160;</a></span>Strategy() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1StrongBranching_1_1Strategy.html">idol::StrongBranching::Strategy</a>&lt; NodeInfoT &gt;::Strategy </td>
+          <td>(</td>
+          <td class="paramtype">const StrongBranching &amp;</td>          <td class="paramname"><span class="paramname"><em>t_parent</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="factories_2StrongBranching_8h_source.html#l00065">65</a> of file <a class="el" href="factories_2StrongBranching_8h_source.html">StrongBranching.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="aa167dee71fe9fe9c983ef0c463cd7dc7" name="aa167dee71fe9fe9c983ef0c463cd7dc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa167dee71fe9fe9c983ef0c463cd7dc7">&#9670;&#160;</a></span>clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1VariableBranching_1_1Strategy.html">VariableBranching::Strategy</a>&lt; NodeInfoT &gt; * <a class="el" href="classidol_1_1StrongBranching_1_1Strategy.html">idol::StrongBranching::Strategy</a>&lt; NodeInfoT &gt;::clone </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1BranchingRuleFactory.html">idol::BranchingRuleFactory&lt; NodeInfoT &gt;</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="factories_2StrongBranching_8h_source.html#l00048">48</a> of file <a class="el" href="factories_2StrongBranching_8h_source.html">StrongBranching.h</a>.</p>
+
+</div>
+</div>
+<a id="aacdabc4cf7ae2a4e3cc29ef4edaf642c" name="aacdabc4cf7ae2a4e3cc29ef4edaf642c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacdabc4cf7ae2a4e3cc29ef4edaf642c">&#9670;&#160;</a></span>create_branching_candidates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt; <a class="el" href="classidol_1_1Var.html">idol::Var</a> &gt; <a class="el" href="classidol_1_1VariableBranching_1_1Strategy.html">idol::VariableBranching::Strategy</a>&lt; NodeInfoT &gt;::create_branching_candidates </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Model.html">idol::Model</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_model</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="factories_2VariableBranching_8h_source.html#l00036">36</a> of file <a class="el" href="factories_2VariableBranching_8h_source.html">VariableBranching.h</a>.</p>
+
+</div>
+</div>
+<a id="a90d84dd2f57b855fe9183805042cb138" name="a90d84dd2f57b855fe9183805042cb138"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90d84dd2f57b855fe9183805042cb138">&#9670;&#160;</a></span>operator()()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchingRules_1_1VariableBranching.html">BranchingRules::VariableBranching</a>&lt; NodeInfoT &gt; * <a class="el" href="classidol_1_1StrongBranching_1_1Strategy.html">idol::StrongBranching::Strategy</a>&lt; NodeInfoT &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Optimizers_1_1BranchAndBound.html">Optimizers::BranchAndBound</a>&lt; NodeInfoT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_parent</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1BranchingRuleFactory.html">idol::BranchingRuleFactory&lt; NodeInfoT &gt;</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="factories_2StrongBranching_8h_source.html#l00038">38</a> of file <a class="el" href="factories_2StrongBranching_8h_source.html">StrongBranching.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

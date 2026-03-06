@@ -1,0 +1,265 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: Basics</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_basics.html">Basics</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <li><a href="cli_input_format.html">Input Format</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <!-- <li><a href="#">Tutorials</a></li> -->
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div id="doc-content">
+<div><div class="header">
+  <div class="headertitle"><div class="title">Basics </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul>
+  <li class="level1">
+    <a href="#cli_what_is">What is idol_cl? </a>
+  </li>
+  <li class="level1">
+    <a href="#cli_first_milp">Solving Your First MILP </a>
+  </li>
+  <li class="level1">
+    <a href="#cli_basics_bilevel">Bilevel Problems </a>
+  </li>
+  <li class="level1">
+    <a href="#cli_basics_aro">Two-Stage Robust Problems </a>
+  </li>
+</ul>
+</div>
+<div class="textblock"><p>Describes the basic usage of the <span class="tt">idol_cl</span> tool.</p>
+<h1 class="doxsection"><a class="anchor" id="cli_what_is"></a>
+What is idol_cl?</h1>
+<p><span class="tt">idol_cl</span> is a command-line tool for solving mathematical optimization problems, including:</p><ul>
+<li>Mixed-Integer Linear Programs (MILPs);</li>
+<li>Bilevel optimization problems;</li>
+<li>Robust and two-stage robust optimization problems.</li>
+</ul>
+<p>It allows you to model, solve, and analyze optimization problems directly from the command line.</p>
+<p>To install it, please refer to the <a class="el" href="cli_installation.html" title="Installation">Installation</a> page.</p>
+<h1 class="doxsection"><a class="anchor" id="cli_first_milp"></a>
+Solving Your First MILP</h1>
+<p>To solve a given MILP stored in an <span class="tt">.lp</span> file, all you need to do is</p>
+<div class="fragment"><div class="line">idol_cl solve model.lp</div>
+</div><!-- fragment --><p>If you want to set a time limit and use a specific method, run</p>
+<div class="fragment"><div class="line">idol_cl solve model.lp --time-limit 3600 --method GLK</div>
+</div><!-- fragment --><p>To see which solution methods are available for a given problem, use the <span class="tt">list-methods</span> subcommand.</p>
+<div class="fragment"><div class="line">idol_cl list-methods model.lp</div>
+</div><!-- fragment --><p><b>Sampled Output</b>: </p><div class="fragment"><div class="line">-- No configuration file loaded</div>
+<div class="line">-- The main input file is model.lp</div>
+<div class="line">-- Detected: problem type is MILP</div>
+<div class="line">-- Detected: applicable methods are [GUROBI, CPLEX, HIGHS, GLPK, JUMP]</div>
+<div class="line"> </div>
+<div class="line">Details (all methods):</div>
+<div class="line"> </div>
+<div class="line"> - HIGHS: High Performance Software for Linear Optimization [https://highs.dev/]</div>
+<div class="line"> - JUMP: Calls the Julia package JuMP [https://jump.dev/]</div>
+<div class="line"> - GLPK: GLPK (GNU Linear Programming Kit) [https://www.gnu.org/software/glpk/]</div>
+<div class="line"> - CPLEX: IBM ILOG CPLEX Optimization Studio [https://www.ibm.com/fr-fr/products/ilog-cplex-optimization-studio]</div>
+<div class="line"> - GUROBI: Gurobi Optimizer [https://www.gurobi.com/]</div>
+</div><!-- fragment --><p>If no method is specified, idol_cl automatically selects a suitable solver for the detected problem type.</p>
+<h1 class="doxsection"><a class="anchor" id="cli_basics_bilevel"></a>
+Bilevel Problems</h1>
+<p>Bilevel problems are represented using a pair of files:</p><ul>
+<li>an <span class="tt">.mps</span> file describing the main model,</li>
+<li>an <span class="tt">.aux</span> file describing the follower problem.</li>
+</ul>
+<p>For more information, see the dedicated page on <a class="el" href="cli_input_format_bilevel.html" title="Input Format for Bilevel Problems">Input Format for Bilevel Problems</a>.</p>
+<p>Given a bilevel problem, you can solve it by running</p>
+<div class="fragment"><div class="line">idol_cl solve model.mps --bilevel follower.aux</div>
+</div><!-- fragment --><p>Some commands require more parameters than others. For instance, here is how to solve an LP-LP bilevel problem using its KKT reformulation using big-M values.</p>
+<div class="fragment"><div class="line">idol_cl solve model.mps --bilevel follower.aux --method KKT-BIGM --bound-provider bounds.txt</div>
+</div><!-- fragment --><p>For more information, see our tutorial on <a class="el" href="cli_bilevel_kkt.html" title="Solving Bilevel Problems via its KKT-Based Single-Level Reformulation">Solving Bilevel Problems via its KKT-Based Single-Level Reformulation</a>.</p>
+<p>Here again, to list the available methods for your problem class, you may use</p>
+<div class="fragment"><div class="line">idol_cl list-methods model.mps --bilevel follower.aux</div>
+</div><!-- fragment --><p>Finally, if the bilevel problem does not have coupling constraints, it is possible to address its pessimistic variant by appending the <span class="tt">--pessimistic</span> flag. If so, the relaxation-and-correction scheme from <a href="https://doi.org/10.1287/ijoc.2019.0927" target="_blank">Zeng (2025)</a> will be applied.</p>
+<div class="fragment"><div class="line">idol_cl solve model.lp --bilevel follower.aux --method KKT-SOS1 --pessimistic</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="cli_basics_aro"></a>
+Two-Stage Robust Problems</h1>
+<div class="warning"> This section is still a work in progress. </div> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

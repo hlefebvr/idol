@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['bab_0',['flp-bab',['../example_mixed_integer_flp_bab.html',1,'examples_mixed_integer']]],
+  ['bap_1',['bap',['../example_mixed_integer_bin_bap.html',1,'bin-bap'],['../example_mixed_integer_gap_bap.html',1,'gap-bap']]],
+  ['bard_20mibs_2',['moore-bard-mibs',['../example_bilevel_moore_bard_mibs.html',1,'examples_bilevel']]],
+  ['based_20single_20level_20reformulation_3',['Solving Bilevel Problems via its KKT-Based Single-Level Reformulation',['../cli_bilevel_kkt.html',1,'']]],
+  ['basics_4',['Basics',['../cli_basics.html',1,'']]],
+  ['big_20m_20reformulation_5',['Using the Big-M Reformulation',['../cli_bilevel_kkt.html#kkt_big_m',1,'']]],
+  ['bilevel_20optimization_6',['Bilevel optimization',['../examples_bilevel.html',1,'Bilevel optimization'],['../stable_features_bilevel.html',1,'Bilevel optimization']]],
+  ['bilevel_20optimization_7',['bilevel optimization',['../examples_bilevel.html#examples_bilevel_continuous',1,'Continuous bilevel optimization'],['../examples_bilevel.html#examples_bilevel_mixed_integer',1,'Mixed-integer bilevel optimization'],['../examples_bilevel.html#examples_bilevel_mixed_integer_pessimistic',1,'Pessimistic bilevel optimization']]],
+  ['bilevel_20problems_8',['Bilevel Problems',['../cli_basics.html#cli_basics_bilevel',1,'Bilevel Problems'],['../cli_input_format_bilevel.html',1,'Input Format for Bilevel Problems']]],
+  ['bilevel_20problems_20via_20its_20kkt_20based_20single_20level_20reformulation_9',['Solving Bilevel Problems via its KKT-Based Single-Level Reformulation',['../cli_bilevel_kkt.html',1,'']]],
+  ['bin_20bap_10',['bin-bap',['../example_mixed_integer_bin_bap.html',1,'examples_mixed_integer']]],
+  ['bound_20algorithm_11',['Branch-and-bound algorithm',['../examples_mixed_integer.html#examples_mixed_integer_branch_and_bound',1,'']]],
+  ['bounds_12',['Reference for Dual Variable Bounds',['../cli_bilevel_kkt.html#kkt_big_m_def',1,'']]],
+  ['bounds_20on_20the_20dual_20variables_13',['The File Format for Providing Bounds on the Dual Variables',['../cli_bilevel_kkt.html#kkt_big_m_file',1,'']]],
+  ['branch_20and_20bound_20algorithm_14',['Branch-and-bound algorithm',['../examples_mixed_integer.html#examples_mixed_integer_branch_and_bound',1,'']]],
+  ['branch_20and_20price_20algorithm_15',['Branch-and-price algorithm',['../examples_mixed_integer.html#examples_mixed_integer_branch_and_price',1,'']]],
+  ['build_16',['Step 3 — Configure and build',['../build_from_source.html#step_configure',1,'']]],
+  ['build_20directory_17',['Step 2 — Create a build directory',['../build_from_source.html#step_build_dir',1,'']]],
+  ['build_20examples_18',['Build examples',['../build_from_source.html#cmake_examples',1,'']]],
+  ['build_20from_20source_19',['Build from source',['../build_from_source.html',1,'']]],
+  ['build_20instructions_20',['Build instructions',['../build_from_source.html#build_steps',1,'']]],
+  ['build_20tests_21',['Build tests',['../build_from_source.html#cmake_tests',1,'']]],
+  ['building_20and_20solving_20simple_20models_22',['Building and solving simple models',['../examples_mixed_integer.html#examples_mixed_integer_modeling',1,'']]]
+];

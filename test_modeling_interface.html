@@ -1,0 +1,880 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: Modeling interface</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_basics.html">Basics</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <li><a href="cli_input_format.html">Input Format</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <!-- <li><a href="#">Tutorials</a></li> -->
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div id="doc-content">
+<div><div class="header">
+  <div class="headertitle"><div class="title">Modeling interface </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><p>Can model mixed-integer optimization problems.</p>
+<div class="tabbed"> <ul>
+<li>
+<p class="startli"><b class="tab-title">Formatted</b></p><h2>expressions</h2>
+<h3>Can manipulate mathematical expressions</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can add mathematical expressions together via overloaded operator+</td><td class="progress-75">97 %</td></tr>
+<tr>
+<td>Can subtract mathematical expressions from each other via overloaded operator-</td><td class="progress-75">97 %</td></tr>
+<tr>
+<td>Can multiply mathematical expressions with each other via overloaded operator*</td><td class="progress-75">94 %</td></tr>
+<tr>
+<td>Can divide mathematical expressions by each other via overloaded operator/</td><td class="progress-75">86 %</td></tr>
+<tr>
+<td>Can iterate over terms in mathematical expressions</td><td class="progress-0">0 %</td></tr>
+</table>
+</div> <h2>variables</h2>
+<h3>Can add variables to a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can add a new variable with bounds and type</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can add a new variable with bounds, type and column</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can add an existing variable</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can add an existing variable with new bounds and type</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can add an existing variable with new bounds, type and column</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can add multiple new variables with bounds and type</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can add multiple existing variables</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Throws an exception if a variable is added twice</td><td class="progress-100">100 %</td></tr>
+</table>
+</div> <h3>Can update variables in a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can update a variable's bound</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can update a variable's type</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can update a variable's column</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can update a variable's objective coefficient</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Throws an exception if trying to update a variable that is not in the model</td><td class="progress-100">100 %</td></tr>
+</table>
+</div> <h3>Can remove a variable from a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can remove a variable</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Throws an exception if trying to remove a variable that is not in the model</td><td class="progress-100">100 %</td></tr>
+</table>
+</div> <h3>Can access a variable in a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can retrieve a variable's bound</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can retrieve a variable's type</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can retrieve a variable's column</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can retrieve a variable's objective coefficient</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Throws an exception if trying to retrieve info of a variable which is not in the model</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can iterate over variables in a model</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can retrieve a variable's index</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can retrieve a variable by index</td><td class="progress-100">100 %</td></tr>
+</table>
+</div> <h2>linear-constraints</h2>
+<h3>Can add a linear constraint to a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can add a new linear constraint with type and expression</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can add an existing linear constraint</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can add an existing linear constraint with new type and expression</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can add multiple new linear constraints with type and right-hand side</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can add multiple existing linear constraints with type and right-hand side</td><td class="progress-100">100 %</td></tr>
+</table>
+</div> <h3>Can update a linear constraint in a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can update a coefficient in the linear constraints matrix</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can update the left-hand side of a linear constraint</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can update the right-hand side of a linear constraint</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can update the type of a linear constraint</td><td class="progress-100">100 %</td></tr>
+</table>
+</div> <h3>Can remove a linear constraint from a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can remove a linear constraint</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Throws an exception if trying to remove a linear constraint which is not in the model</td><td class="progress-100">100 %</td></tr>
+</table>
+</div> <h3>Can access a linear constraint in a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can retrieve a linear constraint's type</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can retrieve a linear constraint's right-hand side</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can retrieve a linear constraint's left-hand side</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can retrieve a linear constraint's index</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can retrieve a linear constraint by index</td><td class="progress-100">100 %</td></tr>
+<tr>
+<td>Can iterate over linear constraints in a model</td><td class="progress-100">100 %</td></tr>
+</table>
+</div> <h2>quadratic-constraints</h2>
+<h3>Can add a quadratic constraint to a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can add a new quadratic constraint with type and expression</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can add an existing quadratic constraint</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can add an existing quadratic constraint with new type and expression</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can add multiple new quadratic constraints with type and right-hand side</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can add multiple existing quadratic constraints with type and right-hand side</td><td class="progress-0">0 %</td></tr>
+</table>
+</div> <h3>Can remove a quadratic constraint from a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can remove a quadratic constraint</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Throws an exception if trying to remove a quadratic constraint which is not in the model</td><td class="progress-100">100 %</td></tr>
+</table>
+</div> <h3>Can access a quadratic constraint in a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can retrieve a quadratic constraint's type</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can retrieve a quadratic constraint's expression</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can retrieve a quadratic constraint's index</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can retrieve a quadratic constraint by index</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can iterate over quadratic constraints in a model</td><td class="progress-0">0 %</td></tr>
+</table>
+</div> <h2>objective</h2>
+<h3>Can set the objective function of a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can set a linear objective function</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can set an affine objective function</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can set a quadratic objective function</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can set the objective sense</td><td class="progress-0">0 %</td></tr>
+</table>
+</div> <h3>Can update the objective function of a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can update the objective coefficient of a variable</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can update the objective constant</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can update the objective sense</td><td class="progress-0">0 %</td></tr>
+</table>
+</div> <h3>Can access the objective function of a model</h3>
+<div class="full_width_table"> <table class="doxtable">
+<tr>
+<th class="test-report-table-section">Tested Feature</th><th>Outcome</th></tr>
+<tr>
+<td>Can retrieve the objective function</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can retrieve the objective coefficient of a variable</td><td class="progress-0">0 %</td></tr>
+<tr>
+<td>Can retrieve the objective sense</td><td class="progress-0">0 %</td></tr>
+</table>
+</div> </li>
+<li>
+<b class="tab-title">Raw</b> This is the raw XML report generated by Catch2. <div class="fragment"><div class="line">&lt;?<span class="keyword">xml</span> <span class="keyword">version</span>=<span class="stringliteral">&quot;1.0&quot;</span> <span class="keyword">encoding</span>=<span class="stringliteral">&quot;UTF-8&quot;</span>?&gt;</div>
+<div class="line">&lt;<span class="keywordtype">Catch2TestRun</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;test_modeling_interface&quot;</span> <span class="keyword">rng-seed</span>=<span class="stringliteral">&quot;2021761562&quot;</span> <span class="keyword">xml-format-version</span>=<span class="stringliteral">&quot;2&quot;</span> <span class="keyword">catch2-version</span>=<span class="stringliteral">&quot;3.3.2&quot;</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can manipulate mathematical expressions&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[expressions]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/expressions.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;15&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add mathematical expressions together via overloaded operator+&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/expressions.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;19&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/expressions.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;21&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;34&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can subtract mathematical expressions from each other via overloaded operator-&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/expressions.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;75&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/expressions.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;77&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;34&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can multiply mathematical expressions with each other via overloaded operator*&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/expressions.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;131&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/expressions.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;133&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;16&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can divide mathematical expressions by each other via overloaded operator/&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/expressions.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;174&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/expressions.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;176&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;6&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can iterate over terms in mathematical expressions&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/expressions.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;203&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/expressions.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;205&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add variables to a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[variables]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;20&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add a new variable with bounds and type&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;29&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;18&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add a new variable with bounds, type and column&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;57&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;36&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add an existing variable&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;114&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;18&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add an existing variable with new bounds and type&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;146&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;18&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add an existing variable with new bounds, type and column&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;178&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;36&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add multiple new variables with bounds and type&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;239&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;153&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add multiple existing variables&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;273&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;153&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Throws an exception if a variable is added twice&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;311&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;true&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update variables in a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[variables]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;318&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update a variable&#39;s bound&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;329&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;2&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update a variable&#39;s type&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;336&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;3&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update a variable&#39;s column&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;345&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;12&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update a variable&#39;s objective coefficient&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;372&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;2&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Throws an exception if trying to update a variable that is not in the model&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;378&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;4&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;true&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can remove a variable from a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[variables]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;389&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can remove a variable&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;398&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;4&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Throws an exception if trying to remove a variable that is not in the model&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;407&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;true&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can access a variable in a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[variables]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;414&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a variable&#39;s bound&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;434&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;2&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a variable&#39;s type&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;439&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a variable&#39;s column&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;443&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;2&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a variable&#39;s objective coefficient&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;448&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;2&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Throws an exception if trying to retrieve info of a variable which is not in the model&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;453&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;5&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can iterate over variables in a model&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;462&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;4&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a variable&#39;s index&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;476&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;3&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a variable by index&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/variables.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;482&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;3&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;true&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add a linear constraint to a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[linear-constraints]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;20&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add a new linear constraint with type and expression&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;31&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;36&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add an existing linear constraint&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;78&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;36&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add an existing linear constraint with new type and expression&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;128&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;36&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add multiple new linear constraints with type and right-hand side&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;178&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;63&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add multiple existing linear constraints with type and right-hand side&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;203&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;63&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;true&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update a linear constraint in a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[linear-constraints]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;234&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update a coefficient in the linear constraints matrix&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;245&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;5&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update the left-hand side of a linear constraint&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;258&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;5&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update the right-hand side of a linear constraint&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;271&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update the type of a linear constraint&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;281&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;3&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;true&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can remove a linear constraint from a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[linear-constraints]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;298&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can remove a linear constraint&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;309&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;4&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Throws an exception if trying to remove a linear constraint which is not in the model&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;320&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;true&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can access a linear constraint in a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[linear-constraints]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;329&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a linear constraint&#39;s type&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;344&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;3&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a linear constraint&#39;s right-hand side&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;350&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;3&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a linear constraint&#39;s left-hand side&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;356&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;9&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a linear constraint&#39;s index&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;370&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;3&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a linear constraint by index&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;376&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;3&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can iterate over linear constraints in a model&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/linear-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;382&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;4&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;true&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add a quadratic constraint to a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[quadratic-constraints]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;20&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add a new quadratic constraint with type and expression&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;31&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;32&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add an existing quadratic constraint&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;35&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;36&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add an existing quadratic constraint with new type and expression&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;39&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;40&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add multiple new quadratic constraints with type and right-hand side&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;43&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;44&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can add multiple existing quadratic constraints with type and right-hand side&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;47&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;48&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can remove a quadratic constraint from a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[quadratic-constraints]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;53&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can remove a quadratic constraint&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;64&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;65&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Throws an exception if trying to remove a quadratic constraint which is not in the model&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;68&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can access a quadratic constraint in a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[quadratic-constraints]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;77&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a quadratic constraint&#39;s type&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;88&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;89&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a quadratic constraint&#39;s expression&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;92&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;93&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a quadratic constraint&#39;s index&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;96&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;97&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve a quadratic constraint by index&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;100&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;101&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can iterate over quadratic constraints in a model&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;104&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/quadratic-constraints.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;105&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can set the objective function of a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[objective]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;20&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can set a linear objective function&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;31&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;32&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can set an affine objective function&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;35&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;36&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can set a quadratic objective function&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;39&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;40&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can set the objective sense&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;43&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;44&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update the objective function of a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[objective]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;49&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update the objective coefficient of a variable&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;60&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;61&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update the objective constant&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;64&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;65&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can update the objective sense&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;68&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;69&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">TestCase</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can access the objective function of a model&quot;</span> <span class="keyword">tags</span>=<span class="stringliteral">&quot;[objective]&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;74&quot;</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve the objective function&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;85&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;86&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve the objective coefficient of a variable&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;89&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;90&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">Section</span> <span class="keyword">name</span>=<span class="stringliteral">&quot;Can retrieve the objective sense&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;93&quot;</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">Expression</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">type</span>=<span class="stringliteral">&quot;CHECK&quot;</span> <span class="keyword">filename</span>=<span class="stringliteral">&quot;/home/runner/work/idol/idol/tests/mixed-integer/modeling/objective.test.cpp&quot;</span> <span class="keyword">line</span>=<span class="stringliteral">&quot;94&quot;</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Original</span>&gt;</div>
+<div class="line">        &lt;<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">          <span class="keyword">false</span></div>
+<div class="line">        &lt;/<span class="keywordtype">Expanded</span>&gt;</div>
+<div class="line">      &lt;/<span class="keywordtype">Expression</span>&gt;</div>
+<div class="line">      &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;1&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skipped</span>=<span class="stringliteral">&quot;false&quot;</span>/&gt;</div>
+<div class="line">    &lt;/<span class="keywordtype">Section</span>&gt;</div>
+<div class="line">    &lt;<span class="keywordtype">OverallResult</span> <span class="keyword">success</span>=<span class="stringliteral">&quot;false&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;/<span class="keywordtype">TestCase</span>&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">OverallResults</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;852&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;26&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">  &lt;<span class="keywordtype">OverallResultsCases</span> <span class="keyword">successes</span>=<span class="stringliteral">&quot;8&quot;</span> <span class="keyword">failures</span>=<span class="stringliteral">&quot;7&quot;</span> <span class="keyword">expectedFailures</span>=<span class="stringliteral">&quot;0&quot;</span> <span class="keyword">skips</span>=<span class="stringliteral">&quot;0&quot;</span>/&gt;</div>
+<div class="line">&lt;/<span class="keywordtype">Catch2TestRun</span>&gt;</div>
+</div><!-- fragment -->  </li>
+</ul>
+</div> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

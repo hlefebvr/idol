@@ -1,0 +1,614 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::SOSCtr Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_basics.html">Basics</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <li><a href="cli_input_format.html">Input Format</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <!-- <li><a href="#">Tutorials</a></li> -->
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><a href="classidol_1_1SOSCtr.html">SOSCtr</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pub-static-methods">Public Static Methods</a> &#124;
+<a href="#pro-methods">Protected Methods</a> &#124;
+<a href="#friends">Friends</a> &#124;
+<a href="classidol_1_1SOSCtr-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::SOSCtr Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="SOSCtr_8h_source.html#l00028">28</a> of file <a class="el" href="SOSCtr_8h_source.html">SOSCtr.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:aa99d9c66173d4d7f20fc64c83a4ee08d" id="r_aa99d9c66173d4d7f20fc64c83a4ee08d"><td class="memItemLeft"><a id="aa99d9c66173d4d7f20fc64c83a4ee08d" name="aa99d9c66173d4d7f20fc64c83a4ee08d"></a>
+&#160;</td><td class="memItemRight"><b>SOSCtr</b> (Env &amp;t_env, bool t_is_sos1, std::vector&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt; t_vars, std::vector&lt; double &gt; t_weights, std::string t_name=&quot;&quot;)</td></tr>
+<tr class="memitem:a585b30e706a368bbe8a7eca03a1218b5" id="r_a585b30e706a368bbe8a7eca03a1218b5"><td class="memItemLeft"><a id="a585b30e706a368bbe8a7eca03a1218b5" name="a585b30e706a368bbe8a7eca03a1218b5"></a>
+unsigned int&#160;</td><td class="memItemRight"><b>index</b> (const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;t_index) const</td></tr>
+<tr class="memitem:a8906f1feec08f1a61631ea36eceae840" id="r_a8906f1feec08f1a61631ea36eceae840"><td class="memItemLeft">const std::string &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Object.html#a8906f1feec08f1a61631ea36eceae840">name</a> () const</td></tr>
+<tr class="memitem:ac8e398b9b937f08b1c5dbd2b32414036" id="r_ac8e398b9b937f08b1c5dbd2b32414036"><td class="memItemLeft">unsigned int&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Object.html#ac8e398b9b937f08b1c5dbd2b32414036">id</a> () const</td></tr>
+<tr class="memitem:aa25899704860cb066f885015ec1f11f3" id="r_aa25899704860cb066f885015ec1f11f3"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Object.html#aa25899704860cb066f885015ec1f11f3">is_in</a> (const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;t_model) const</td></tr>
+<tr class="memitem:a77f089c3508b7731ff6161f234e8499a" id="r_a77f089c3508b7731ff6161f234e8499a"><td class="memItemLeft">const ValueT &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Object.html#a77f089c3508b7731ff6161f234e8499a">get</a> (const <a class="el" href="classidol_1_1Annotation.html">Annotation</a>&lt; ValueT &gt; &amp;t_annotation) const</td></tr>
+<tr class="memitem:a7d1921eca2bb0e0453867839e80dde63" id="r_a7d1921eca2bb0e0453867839e80dde63"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Object.html#a7d1921eca2bb0e0453867839e80dde63">set</a> (const <a class="el" href="classidol_1_1Annotation.html">Annotation</a>&lt; ValueT &gt; &amp;t_annotation, ArgsT &amp;&amp;...t_args) const</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Public Static Methods</h2></td></tr>
+<tr class="memitem:ab8770b6f2d30a8227f87f43a08f4a279" id="r_ab8770b6f2d30a8227f87f43a08f4a279"><td class="memItemLeft">static SOSCtr&#160;</td><td class="memItemRight"><a class="el" href="#ab8770b6f2d30a8227f87f43a08f4a279">SOS1</a> (Env &amp;t_env, std::vector&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt; t_vars, std::vector&lt; double &gt; t_weights, std::string t_name=&quot;&quot;)</td></tr>
+<tr class="memitem:a61e1f1a30257f72626b0e38800fb8cdf" id="r_a61e1f1a30257f72626b0e38800fb8cdf"><td class="memItemLeft">static SOSCtr&#160;</td><td class="memItemRight"><a class="el" href="#a61e1f1a30257f72626b0e38800fb8cdf">SOS2</a> (Env &amp;t_env, std::vector&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt; t_vars, std::vector&lt; double &gt; t_weights, std::string t_name=&quot;&quot;)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Methods</h2></td></tr>
+<tr class="memitem:a3f4fdcf0b7ba6e92492288883e2384e2" id="r_a3f4fdcf0b7ba6e92492288883e2384e2"><td class="memItemLeft">auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Object.html#a3f4fdcf0b7ba6e92492288883e2384e2">versions</a> ()</td></tr>
+<tr class="memitem:aa7bae45c14dc473a743334722b30948f" id="r_aa7bae45c14dc473a743334722b30948f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Object.html#aa7bae45c14dc473a743334722b30948f">create_version</a> (const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;t_model, unsigned int t_index, ArgsT &amp;&amp;...t_args) const</td></tr>
+<tr class="memitem:a4e7aa71b3a721b2e333bbe324cf3e0ad" id="r_a4e7aa71b3a721b2e333bbe324cf3e0ad"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Object.html#a4e7aa71b3a721b2e333bbe324cf3e0ad">remove_version</a> (const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;t_model) const</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-friends" class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a40b6af78cce24bfa98bbef574f910496" id="r_a40b6af78cce24bfa98bbef574f910496"><td class="memItemLeft">class&#160;</td><td class="memItemRight"><a class="el" href="#a40b6af78cce24bfa98bbef574f910496">impl::Env</a></td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="aa7bae45c14dc473a743334722b30948f" name="aa7bae45c14dc473a743334722b30948f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7bae45c14dc473a743334722b30948f">&#9670;&#160;</a></span>create_version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1Object.html">idol::Object</a>&lt; <a class="el" href="classidol_1_1SOSCtrVersion.html">SOSCtrVersion</a>, SOSCtr &gt;::create_version </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_model</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ArgsT &amp;&amp;...</td>          <td class="paramname"><span class="paramname"><em>t_args</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Object_8h_source.html#l00034">34</a> of file <a class="el" href="Object_8h_source.html">Object.h</a>.</p>
+
+</div>
+</div>
+<a id="a77f089c3508b7731ff6161f234e8499a" name="a77f089c3508b7731ff6161f234e8499a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77f089c3508b7731ff6161f234e8499a">&#9670;&#160;</a></span>get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const ValueT &amp; <a class="el" href="classidol_1_1Object.html">idol::Object</a>&lt; <a class="el" href="classidol_1_1SOSCtrVersion.html">SOSCtrVersion</a>, SOSCtr &gt;::get </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Annotation.html">Annotation</a>&lt; ValueT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_annotation</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the value of the given annotation <span class="tt">t_annotation</span> associated to the object.</p>
+<p>If no value is found, the default value of the annotation is returned. If no default value was set, an exception is thrown. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ValueT</td><td>The value type of the annotation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_annotation</td><td>The annotation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of the annotation. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Object_8h_source.html#l00078">78</a> of file <a class="el" href="Object_8h_source.html">Object.h</a>.</p>
+
+</div>
+</div>
+<a id="ac8e398b9b937f08b1c5dbd2b32414036" name="ac8e398b9b937f08b1c5dbd2b32414036"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8e398b9b937f08b1c5dbd2b32414036">&#9670;&#160;</a></span>id()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classidol_1_1Object.html">idol::Object</a>&lt; <a class="el" href="classidol_1_1SOSCtrVersion.html">SOSCtrVersion</a>, SOSCtr &gt;::id </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the id of the optimization object. </p><dl class="section return"><dt>Returns</dt><dd>The id of the optimization object. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Object_8h_source.html#l00060">60</a> of file <a class="el" href="Object_8h_source.html">Object.h</a>.</p>
+
+</div>
+</div>
+<a id="aa25899704860cb066f885015ec1f11f3" name="aa25899704860cb066f885015ec1f11f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa25899704860cb066f885015ec1f11f3">&#9670;&#160;</a></span>is_in()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classidol_1_1Object.html">idol::Object</a>&lt; <a class="el" href="classidol_1_1SOSCtrVersion.html">SOSCtrVersion</a>, SOSCtr &gt;::is_in </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_model</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns true if the optimization object is part of the model <span class="tt">t_model</span>, false otherwise. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_model</td><td>The model. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the optimization object is part of the model <span class="tt">t_model</span>, false otherwise. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Object_8h_source.html#l00067">67</a> of file <a class="el" href="Object_8h_source.html">Object.h</a>.</p>
+
+</div>
+</div>
+<a id="a8906f1feec08f1a61631ea36eceae840" name="a8906f1feec08f1a61631ea36eceae840"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8906f1feec08f1a61631ea36eceae840">&#9670;&#160;</a></span>name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; <a class="el" href="classidol_1_1Object.html">idol::Object</a>&lt; <a class="el" href="classidol_1_1SOSCtrVersion.html">SOSCtrVersion</a>, SOSCtr &gt;::name </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the name of the optimization object. </p><dl class="section return"><dt>Returns</dt><dd>The name of the optimization object. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Object_8h_source.html#l00054">54</a> of file <a class="el" href="Object_8h_source.html">Object.h</a>.</p>
+
+</div>
+</div>
+<a id="a4e7aa71b3a721b2e333bbe324cf3e0ad" name="a4e7aa71b3a721b2e333bbe324cf3e0ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e7aa71b3a721b2e333bbe324cf3e0ad">&#9670;&#160;</a></span>remove_version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1Object.html">idol::Object</a>&lt; <a class="el" href="classidol_1_1SOSCtrVersion.html">SOSCtrVersion</a>, SOSCtr &gt;::remove_version </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_model</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Object_8h_source.html#l00038">38</a> of file <a class="el" href="Object_8h_source.html">Object.h</a>.</p>
+
+</div>
+</div>
+<a id="a7d1921eca2bb0e0453867839e80dde63" name="a7d1921eca2bb0e0453867839e80dde63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d1921eca2bb0e0453867839e80dde63">&#9670;&#160;</a></span>set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1Object.html">idol::Object</a>&lt; <a class="el" href="classidol_1_1SOSCtrVersion.html">SOSCtrVersion</a>, SOSCtr &gt;::set </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Annotation.html">Annotation</a>&lt; ValueT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_annotation</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ArgsT &amp;&amp;...</td>          <td class="paramname"><span class="paramname"><em>t_args</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the value of the given annotation <span class="tt">t_annotation</span> associated to the object. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ValueT</td><td>The value type of the annotation. </td></tr>
+    <tr><td class="paramname">ArgsT</td><td>The parameter pack types for constructing the value of the annotation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_annotation</td><td>The annotation. </td></tr>
+    <tr><td class="paramname">t_args</td><td>The parameter pack arguments used to construct "in place" the value of the annotation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="Object_8h_source.html#l00096">96</a> of file <a class="el" href="Object_8h_source.html">Object.h</a>.</p>
+
+</div>
+</div>
+<a id="ab8770b6f2d30a8227f87f43a08f4a279" name="ab8770b6f2d30a8227f87f43a08f4a279"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8770b6f2d30a8227f87f43a08f4a279">&#9670;&#160;</a></span>SOS1()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SOSCtr idol::SOSCtr::SOS1 </td>
+          <td>(</td>
+          <td class="paramtype">Env &amp;</td>          <td class="paramname"><span class="paramname"><em>t_env</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>t_vars</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; double &gt;</td>          <td class="paramname"><span class="paramname"><em>t_weights</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>t_name</em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;&quot;</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SOSCtr_8h_source.html#l00033">33</a> of file <a class="el" href="SOSCtr_8h_source.html">SOSCtr.h</a>.</p>
+
+</div>
+</div>
+<a id="a61e1f1a30257f72626b0e38800fb8cdf" name="a61e1f1a30257f72626b0e38800fb8cdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61e1f1a30257f72626b0e38800fb8cdf">&#9670;&#160;</a></span>SOS2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SOSCtr idol::SOSCtr::SOS2 </td>
+          <td>(</td>
+          <td class="paramtype">Env &amp;</td>          <td class="paramname"><span class="paramname"><em>t_env</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>t_vars</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; double &gt;</td>          <td class="paramname"><span class="paramname"><em>t_weights</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>t_name</em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;&quot;</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SOSCtr_8h_source.html#l00037">37</a> of file <a class="el" href="SOSCtr_8h_source.html">SOSCtr.h</a>.</p>
+
+</div>
+</div>
+<a id="a3f4fdcf0b7ba6e92492288883e2384e2" name="a3f4fdcf0b7ba6e92492288883e2384e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f4fdcf0b7ba6e92492288883e2384e2">&#9670;&#160;</a></span>versions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto &amp; <a class="el" href="classidol_1_1Object.html">idol::Object</a>&lt; <a class="el" href="classidol_1_1SOSCtrVersion.html">SOSCtrVersion</a>, SOSCtr &gt;::versions </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Object_8h_source.html#l00029">29</a> of file <a class="el" href="Object_8h_source.html">Object.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-related-members" id="doc-related-members"></a><h2 id="header-doc-related-members" class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a40b6af78cce24bfa98bbef574f910496" name="a40b6af78cce24bfa98bbef574f910496"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40b6af78cce24bfa98bbef574f910496">&#9670;&#160;</a></span>impl::Env</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class impl::Env</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel friend">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SOSCtr_8h_source.html#l00029">29</a> of file <a class="el" href="SOSCtr_8h_source.html">SOSCtr.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

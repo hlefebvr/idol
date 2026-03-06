@@ -1,0 +1,672 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::VarVersion Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --bilevel follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --stages stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_basics.html">Basics</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <li><a href="cli_input_format.html">Input Format</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <!-- <li><a href="#">Tutorials</a></li> -->
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><a href="classidol_1_1VarVersion.html">VarVersion</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="classidol_1_1VarVersion-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::VarVersion Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00017">17</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a3cd2d73d064820ab80ef14f8a929b728" id="r_a3cd2d73d064820ab80ef14f8a929b728"><td class="memItemLeft"><a id="a3cd2d73d064820ab80ef14f8a929b728" name="a3cd2d73d064820ab80ef14f8a929b728"></a>
+&#160;</td><td class="memItemRight"><b>VarVersion</b> (unsigned int t_index, double t_lb, double t_ub, VarType t_type, double t_obj, <a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &gt; &amp;&amp;t_column)</td></tr>
+<tr class="memitem:ab05b54df346399c6a4a35f2cf382b65e" id="r_ab05b54df346399c6a4a35f2cf382b65e"><td class="memItemLeft"><a id="ab05b54df346399c6a4a35f2cf382b65e" name="ab05b54df346399c6a4a35f2cf382b65e"></a>
+&#160;</td><td class="memItemRight"><b>VarVersion</b> (unsigned int t_index, <a class="el" href="classidol_1_1TempVar.html">TempVar</a> &amp;&amp;t_temp_var)</td></tr>
+<tr class="memitem:ab60d89cd6b29145748bd5c803fd5ea79" id="r_ab60d89cd6b29145748bd5c803fd5ea79"><td class="memItemLeft"><a id="ab60d89cd6b29145748bd5c803fd5ea79" name="ab60d89cd6b29145748bd5c803fd5ea79"></a>
+&#160;</td><td class="memItemRight"><b>VarVersion</b> (unsigned int t_index, const <a class="el" href="classidol_1_1TempVar.html">TempVar</a> &amp;t_temp_var)</td></tr>
+<tr class="memitem:ad3167e662cdc238a5a199b1fe17a8504" id="r_ad3167e662cdc238a5a199b1fe17a8504"><td class="memItemLeft"><a id="ad3167e662cdc238a5a199b1fe17a8504" name="ad3167e662cdc238a5a199b1fe17a8504"></a>
+&#160;</td><td class="memItemRight"><b>VarVersion</b> (const VarVersion &amp;t_other)</td></tr>
+<tr class="memitem:a7726b921db3f3d3c2775706ca8afb2f7" id="r_a7726b921db3f3d3c2775706ca8afb2f7"><td class="memItemLeft"><a id="a7726b921db3f3d3c2775706ca8afb2f7" name="a7726b921db3f3d3c2775706ca8afb2f7"></a>
+&#160;</td><td class="memItemRight"><b>VarVersion</b> (VarVersion &amp;&amp;t_other) noexcept=default</td></tr>
+<tr class="memitem:ad9dadfaca0929cbea8be64892c574821" id="r_ad9dadfaca0929cbea8be64892c574821"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#ad9dadfaca0929cbea8be64892c574821">lb</a> () const</td></tr>
+<tr class="memitem:a09d9c5c0b36eed783fcc76f766d2ec50" id="r_a09d9c5c0b36eed783fcc76f766d2ec50"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a09d9c5c0b36eed783fcc76f766d2ec50">set_lb</a> (double t_lb)</td></tr>
+<tr class="memitem:acd9973dca10e2139c6e779f8f2f804f8" id="r_acd9973dca10e2139c6e779f8f2f804f8"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#acd9973dca10e2139c6e779f8f2f804f8">ub</a> () const</td></tr>
+<tr class="memitem:aed295607f8de6b7c2491e21f9eb304e1" id="r_aed295607f8de6b7c2491e21f9eb304e1"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aed295607f8de6b7c2491e21f9eb304e1">set_ub</a> (double t_ub)</td></tr>
+<tr class="memitem:a4725e2519c99d311dc91f993dd6949dd" id="r_a4725e2519c99d311dc91f993dd6949dd"><td class="memItemLeft">VarType&#160;</td><td class="memItemRight"><a class="el" href="#a4725e2519c99d311dc91f993dd6949dd">type</a> () const</td></tr>
+<tr class="memitem:a63a0d727620a5b41e07e4b14c9188a54" id="r_a63a0d727620a5b41e07e4b14c9188a54"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a63a0d727620a5b41e07e4b14c9188a54">set_type</a> (VarType t_type)</td></tr>
+<tr class="memitem:a7d32f5eb64b75f6309a402f96a368f1d" id="r_a7d32f5eb64b75f6309a402f96a368f1d"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a7d32f5eb64b75f6309a402f96a368f1d">obj</a> () const</td></tr>
+<tr class="memitem:a8aba1e3fc0fe99da3447b6f5a1c05023" id="r_a8aba1e3fc0fe99da3447b6f5a1c05023"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a8aba1e3fc0fe99da3447b6f5a1c05023">set_obj</a> (double t_obj)</td></tr>
+<tr class="memitem:a226b3f08134b57acdf10505a508c66a3" id="r_a226b3f08134b57acdf10505a508c66a3"><td class="memItemLeft"><a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a226b3f08134b57acdf10505a508c66a3">column</a> ()</td></tr>
+<tr class="memitem:a752853f610a78d57ebac0a4125c70951" id="r_a752853f610a78d57ebac0a4125c70951"><td class="memItemLeft">const <a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a752853f610a78d57ebac0a4125c70951">column</a> () const</td></tr>
+<tr class="memitem:a580da56c56039c2f4b82d7e81d17670a" id="r_a580da56c56039c2f4b82d7e81d17670a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a580da56c56039c2f4b82d7e81d17670a">set_column</a> (<a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &gt; &amp;&amp;t_column)</td></tr>
+<tr class="memitem:ac63907b0825338c748058651183ad0cd" id="r_ac63907b0825338c748058651183ad0cd"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ac63907b0825338c748058651183ad0cd">has_column</a> () const</td></tr>
+<tr class="memitem:ae4cc49dd6b46762a4c76695e7bca3e67" id="r_ae4cc49dd6b46762a4c76695e7bca3e67"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ae4cc49dd6b46762a4c76695e7bca3e67">set_column</a> (const <a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &gt; &amp;t_column)</td></tr>
+<tr class="memitem:a7ce9c9ef9fb0834cc3fae34da80396ff" id="r_a7ce9c9ef9fb0834cc3fae34da80396ff"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a7ce9c9ef9fb0834cc3fae34da80396ff">reset_column</a> ()</td></tr>
+<tr class="memitem:a001025d4d96827039121ac0429fc7306" id="r_a001025d4d96827039121ac0429fc7306"><td class="memItemLeft">unsigned int&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Version.html#a001025d4d96827039121ac0429fc7306">index</a> () const</td></tr>
+<tr class="memitem:ab975bf3e614686035e2872b1b7e8fb32" id="r_ab975bf3e614686035e2872b1b7e8fb32"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Version.html#ab975bf3e614686035e2872b1b7e8fb32">set_index</a> (unsigned int t_index)</td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a226b3f08134b57acdf10505a508c66a3" name="a226b3f08134b57acdf10505a508c66a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a226b3f08134b57acdf10505a508c66a3">&#9670;&#160;</a></span>column() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &gt; &amp; idol::VarVersion::column </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00047">47</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="a752853f610a78d57ebac0a4125c70951" name="a752853f610a78d57ebac0a4125c70951"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a752853f610a78d57ebac0a4125c70951">&#9670;&#160;</a></span>column() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &gt; &amp; idol::VarVersion::column </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00049">49</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="ac63907b0825338c748058651183ad0cd" name="ac63907b0825338c748058651183ad0cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac63907b0825338c748058651183ad0cd">&#9670;&#160;</a></span>has_column()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool idol::VarVersion::has_column </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00053">53</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="a001025d4d96827039121ac0429fc7306" name="a001025d4d96827039121ac0429fc7306"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a001025d4d96827039121ac0429fc7306">&#9670;&#160;</a></span>index()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int idol::Version::index </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Version_8h_source.html#l00017">17</a> of file <a class="el" href="Version_8h_source.html">Version.h</a>.</p>
+
+</div>
+</div>
+<a id="ad9dadfaca0929cbea8be64892c574821" name="ad9dadfaca0929cbea8be64892c574821"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9dadfaca0929cbea8be64892c574821">&#9670;&#160;</a></span>lb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::VarVersion::lb </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00031">31</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="a7d32f5eb64b75f6309a402f96a368f1d" name="a7d32f5eb64b75f6309a402f96a368f1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d32f5eb64b75f6309a402f96a368f1d">&#9670;&#160;</a></span>obj()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::VarVersion::obj </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00043">43</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="a7ce9c9ef9fb0834cc3fae34da80396ff" name="a7ce9c9ef9fb0834cc3fae34da80396ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ce9c9ef9fb0834cc3fae34da80396ff">&#9670;&#160;</a></span>reset_column()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::VarVersion::reset_column </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00057">57</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="ae4cc49dd6b46762a4c76695e7bca3e67" name="ae4cc49dd6b46762a4c76695e7bca3e67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4cc49dd6b46762a4c76695e7bca3e67">&#9670;&#160;</a></span>set_column() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::VarVersion::set_column </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_column</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00055">55</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="a580da56c56039c2f4b82d7e81d17670a" name="a580da56c56039c2f4b82d7e81d17670a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a580da56c56039c2f4b82d7e81d17670a">&#9670;&#160;</a></span>set_column() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::VarVersion::set_column </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classidol_1_1LinExpr.html">LinExpr</a>&lt; <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>t_column</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00051">51</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="ab975bf3e614686035e2872b1b7e8fb32" name="ab975bf3e614686035e2872b1b7e8fb32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab975bf3e614686035e2872b1b7e8fb32">&#9670;&#160;</a></span>set_index()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Version::set_index </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_index</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Version_8h_source.html#l00019">19</a> of file <a class="el" href="Version_8h_source.html">Version.h</a>.</p>
+
+</div>
+</div>
+<a id="a09d9c5c0b36eed783fcc76f766d2ec50" name="a09d9c5c0b36eed783fcc76f766d2ec50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09d9c5c0b36eed783fcc76f766d2ec50">&#9670;&#160;</a></span>set_lb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::VarVersion::set_lb </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_lb</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00033">33</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="a8aba1e3fc0fe99da3447b6f5a1c05023" name="a8aba1e3fc0fe99da3447b6f5a1c05023"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aba1e3fc0fe99da3447b6f5a1c05023">&#9670;&#160;</a></span>set_obj()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::VarVersion::set_obj </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_obj</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00045">45</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="a63a0d727620a5b41e07e4b14c9188a54" name="a63a0d727620a5b41e07e4b14c9188a54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63a0d727620a5b41e07e4b14c9188a54">&#9670;&#160;</a></span>set_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::VarVersion::set_type </td>
+          <td>(</td>
+          <td class="paramtype">VarType</td>          <td class="paramname"><span class="paramname"><em>t_type</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00041">41</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="aed295607f8de6b7c2491e21f9eb304e1" name="aed295607f8de6b7c2491e21f9eb304e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed295607f8de6b7c2491e21f9eb304e1">&#9670;&#160;</a></span>set_ub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::VarVersion::set_ub </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_ub</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00037">37</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="a4725e2519c99d311dc91f993dd6949dd" name="a4725e2519c99d311dc91f993dd6949dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4725e2519c99d311dc91f993dd6949dd">&#9670;&#160;</a></span>type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">VarType idol::VarVersion::type </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00039">39</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+<a id="acd9973dca10e2139c6e779f8f2f804f8" name="acd9973dca10e2139c6e779f8f2f804f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd9973dca10e2139c6e779f8f2f804f8">&#9670;&#160;</a></span>ub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::VarVersion::ub </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="VarVersion_8h_source.html#l00035">35</a> of file <a class="el" href="VarVersion_8h_source.html">VarVersion.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>
