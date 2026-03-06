@@ -214,6 +214,14 @@ h1, h2, h3, h4, h5, h6 {
     /* background: linear-gradient(to bottom, #f5f7fb 0%, #ffffff 100%); */
 }
 
+#welcome > span:first-child {
+    width: 58%;
+}
+
+#welcome > span:last-child {
+    width: 38%;
+}
+
 .highlight {
     padding-left: 0.2em;
     padding-right: 0.2em;
@@ -477,4 +485,81 @@ blockquote::before, blockquote::after {
     font-size: 1.2rem;
     line-height: 1;
     margin-top: 0.1rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 767px) {
+
+    /* Reduce header padding and stack top row */
+    #my-header .header-inner {
+        padding: 0 8px;
+    }
+
+    #my-header .header-top {
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 0;
+    }
+
+    #my-header .header-center,
+    #my-header .header-bottom {
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        gap: 4px;
+    }
+
+    #my-header .header-center a,
+    #my-header .header-center .dropbtn {
+        margin: 4px 0;
+        font-size: 0.85em;
+        padding: 6px 8px;
+    }
+
+    #my-header .header-right a {
+        margin: 4px 0;
+        font-size: 0.85em;
+        padding: 6px 10px;
+    }
+
+    /* Stack welcome buttons */
+    #welcome {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    #welcome .my-button,
+    #welcome .my-button-secondary {
+        width: 90%;
+        text-align: center;
+    }
+
+    /* Cards grid: fewer columns */
+    #cards {
+        grid-template-columns: repeat(1, 1fr); /* single column for mobile */
+        gap: 12px;
+    }
+
+    /* Reduce padding in frames */
+    #cards .card .frame {
+        padding: 10px;
+        height: 140px;
+    }
+
+    /* Doc container padding */
+    #doc-content {
+        margin-top: 60px !important; /* adjust to match total header height */
+    }
+
+
+    #welcome > span:first-child {
+        width: 80%;
+    }
+
+    #welcome > span:last-child {
+        width: 80%;
+    }
+
 }

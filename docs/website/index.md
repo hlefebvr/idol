@@ -1,7 +1,7 @@
 \mainpage Home
 
 <div id="welcome">
-    <span style="width: 58%">
+    <span>
         <span style="display:block;line-height: 3.5em">
             <span style="font-size:2.5em;color:#2f42ff;font-weight:700;">
                 Solve optimization problems
@@ -24,7 +24,7 @@
         </span>
         <span style="font-size:.7em;">Compatible with Gurobi • Cplex • HiGHS • GLPK • CBC • MibS • JuMP</span>
     </span>
-    <span style="width: 38%">
+    <span>
         <span style="display: block; padding-right: 20px;margin-top:15%;" class="fragment" id="cli">
 <!--
 ```shell 

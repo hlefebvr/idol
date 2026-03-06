@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 'main'
-      - 'mibs-ship'
+      #- 'mibs-ship'
 
 env:
   BUILD_TYPE: Release
