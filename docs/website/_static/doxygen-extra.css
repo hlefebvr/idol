@@ -447,10 +447,7 @@ div.contents .toc {
     margin-top: 0.1rem;
 }
 
-.info {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
+.info, blockquote {
 
     padding: 1rem 1.25rem;
     margin: 1.5rem 0;
@@ -464,6 +461,15 @@ div.contents .toc {
     line-height: 1.5;
 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+blockquote::before, blockquote::after {
+    content: "";
 }
 
 .info::before {

@@ -118,12 +118,38 @@ sudo cmake --install .
 - <b>Solver interoperability</b> Work with Gurobi, Cplex, HiGHS, and more
 - <b>Flexible modeling</b> Use your own branch-and-bound, branch-and-price, or decomposition methods
 
+\section is_this_a_mip_solver Is this a MIP Solver?
 
-idol is a C++ framework for **mathematical optimization** and complex decision-making problems.
-It is designed to help you build new algorithms for solving complex optimization problems.
-The main philosophy behind idol is interoperability and ease of use.
-Hence, any algorithm can be seamlessly combined with any other algorithm to create a new one.
-For instance, you can combine a branch-and-bound algorithm with a column generation algorithm to create a branch-and-price algorithm.
+`idol` and `idol_cl` are not a MIP solvers in themselves. In fact, they typically need to call external
+solvers as a subroutines in more complex algorithms like, e.g., branch-and-cut-and-price algorithms, column-and-constraint generation or various reformulations.
+
+The idea is to work hand in hand with existing and well-engineered optimization
+software to enhance their possibilities. Not to replace them!
+
+Another advantage of using idol is that you can easily switch between different solvers.
+Write your model once and try different solvers.
+
+The following MIP solvers are currently supported through `idol` and `idol_cl`:
+
+* [Cplex](https://www.ibm.com/products/ilog-cplex-optimization-studio),
+* [GLPK](https://www.gnu.org/software/glpk/),
+* [Gurobi](https://www.gurobi.com/),
+* [HiGHS](https://highs.dev/),
+* [JuMP](https://jump.dev/) (Julia framework),
+* [coin-or/Osi](https://github.com/coin-or/Osi) (gives you acccess to any Osi-compatible solver).
+* [coin-or/MibS](https://github.com/coin-or/MibS) (the mixed-integer bilevel solver).
+
+
+\section getting_started_with_idol The `idol` C++ Library
+
+`idol` is the library underlying the command-line interface `idol_cl`.
+
+It is a C++ framework for mathematical optimization designed to help you build new algorithms
+for solving complex problems. The main philosophy behind idol is interoperability and ease of use.
+Any algorithm can be seamlessly combined with any other algorithm to create a new one.
+
+For instance, you can combine a branch-and-bound algorithm with a column-generation algorithm to create 
+a branch-and-price algorithm. The following code is an actual compiling code using `idol`.
 
 ```cpp 
 const auto branch_and_price = branch_and_bound + column_generation;
@@ -131,16 +157,7 @@ model.use(branch_and_price);
 model.optimize();
 ```
 
-idol offers a variety of tools to tackle many different kinds of optimization problems:
-
-
-
-\section getting_started_with_idol Getting Started with idol
-
-New to idol? Be sure to have a look at our [examples](/examples.html). If you want to get a fast hands-on
-start, have a look at our [local installation guideline](/automatic-installation.htmt). It is the easiest installation process
-one could think of: it automatically downloads the latest version of idol, and installs it locally in a subfolder of your CMake project.
-It's really a matter of seconds before you can start using idol.
+Next is an example to show you how natural it is to use `idol`.
 
 > Example
 >
@@ -158,41 +175,15 @@ It's really a matter of seconds before you can start using idol.
 > Env env;
 >
 > Model model(env);
->
 > const auto x = model.add_vars(Dim<1>(n_items), 0., 1., Binary, 0., "x");
->
 > model.add_ctr(idol_Sum(j, Range(n_items), weight[j] * x[j]) <= capacity);
->
 > model.set_obj_expr(idol_Sum(j, Range(n_items), -profit[j] * x[j]));
 >
 > model.use(Gurobi());
->
 > model.optimize();
 >
+> std::cout << "Status: " << model.get_status() << std::endl;
+> std::cout << "Reason: " << model.get_reason() << std::endl;
+> std::cout << "Time: " << model.optimizer().time().count() << std::endl;
 > std::cout << "Objective value: " << model.get_best_obj() << std::endl;
 > ```
-
-\section is_this_a_mip_solver Is this a MIP Solver?
-
-idol is not a MIP solver in itself. In fact, it typically needs to call external
-solvers as a subroutine of more complex algorithms like, e.g., branch-and-cut-and-price.
-
-The idea is to work hand in hand with existing well-engineered optimization
-software to enhance their possibilities. Not to replace them!
-
-Another advantage of using idol is that you can easily switch between different solvers.
-Write your model once and try different solvers.
-
-The following MIP solvers are currently supported by idol:
-
-* [Cplex](https://www.ibm.com/products/ilog-cplex-optimization-studio),
-* [GLPK](https://www.gnu.org/software/glpk/),
-* [Gurobi](https://www.gurobi.com/),
-* [HiGHS](https://highs.dev/),
-* [JuMP](https://jump.dev/) (Julia framework),
-* [coin-or/Osi](https://github.com/coin-or/Osi) (gives you acccess to any Osi-compatible solver).
-
-It also integrates with the following solvers for mixed-integer bilevel optimization:
-
-* [coin-or/MibS](https://github.com/coin-or/MibS) (the mixed-integer bilevel solver).
-
