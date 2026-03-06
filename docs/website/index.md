@@ -3,10 +3,10 @@
 <div id="welcome">
     <span>
         <span style="display:block;line-height: 3.5em">
-            <span style="font-size:2.5em;color:#2f42ff;font-weight:700;">
+            <span class="primary" style="font-size:2.5em;color:#2f42ff;font-weight:700;">
                 Solve optimization problems
             </span><br />
-            <span style="font-size:2.5em;font-weight:500;padding-left: 30px;">
+            <span class="secondary">
                 and build custom algorithms
             </span>
         </span>

@@ -222,6 +222,12 @@ h1, h2, h3, h4, h5, h6 {
     width: 38%;
 }
 
+#welcome .secondary {
+    font-size:2.5em;
+    font-weight:500;
+    padding-left: 30px;
+}
+
 .highlight {
     padding-left: 0.2em;
     padding-right: 0.2em;
@@ -487,13 +493,13 @@ blockquote::before, blockquote::after {
     margin-top: 0.1rem;
 }
 
-/* Mobile adjustments */
-@media (max-width: 767px) {
+.formulaDsp {
+    max-width: 100%;
+    overflow-x: auto;
+}
 
-    /* Reduce header padding and stack top row */
-    #my-header .header-inner {
-        padding: 0 8px;
-    }
+/* Mobile adjustments */
+@media (max-width: 925px) {
 
     #my-header .header-top {
         flex-direction: column;
@@ -550,7 +556,7 @@ blockquote::before, blockquote::after {
 
     /* Doc container padding */
     #doc-content {
-        margin-top: 60px !important; /* adjust to match total header height */
+        margin-top: 90px !important; /* adjust to match total header height */
     }
 
 
@@ -562,4 +568,15 @@ blockquote::before, blockquote::after {
         width: 80%;
     }
 
+    #welcome .secondary {
+        padding: 0;
+    }
+
+    #welcome .my-button {
+        margin-bottom: 10px;
+    }
+
+    div.contents .toc {
+        top: 0px !important;
+    }
 }
