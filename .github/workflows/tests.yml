@@ -221,12 +221,15 @@ jobs:
           FILES=$(find . -type d -name "docs" -prune -o -type f -name "*.xml" -print)
           mv -n $FILES docs/website/_static/reports/
 
-      - name: Install dependencies
+      - name: Install doxygen
         run: |
-          #pip install setuptools sphinx breathe sphinx-sitemap sphinx-press-theme sphinx-copybutton sphinx-mermaid sphinxcontrib-bibtex
-          sudo apt-get update
-          sudo apt-get install doxygen graphviz
+          wget https://github.com/doxygen/doxygen/releases/download/Release_1_16_1/doxygen-1.16.1.linux.bin.tar.gz
+          tar -xzf doxygen-1.16.1.linux.bin.tar.gz doxygen-1.16.1
+          sudo mv doxygen-1.16.1/bin/doxygen /usr/local/bin/
+          sudo chmod +x /usr/local/bin/doxygen
           doxygen --version
+          
+          sudo apt-get install graphviz
 
       - name: CMake
         run: |
