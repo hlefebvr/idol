@@ -152,7 +152,7 @@ void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_node_after_solve
         return;
     }
 
-    if (total_time - m_last_log_timestamp < m_frequency_in_seconds) {
+    if (t_node.id() > 0 && total_time - m_last_log_timestamp < m_frequency_in_seconds) {
         return;
     }
 
