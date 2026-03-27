@@ -12,6 +12,8 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
+#include "idol/mixed-integer/optimizers/callbacks/cutting-planes/CglCutCallback.h"
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
@@ -136,6 +138,8 @@ inline void solve_milp(const Arguments& t_args) {
         bnb.with_branching_rule(MostInfeasible());
         bnb.with_node_selection_rule(BestBound());
         bnb.with_node_optimizer(*method_manager.get_sub_milp_method(t_args, true));
+        bnb.add_callback(ReducedCostFixing());
+        bnb.add_callback(CglCutCallback());
         model.use(bnb);
     }
 

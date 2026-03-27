@@ -5,6 +5,7 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
+#include "idol/mixed-integer/optimizers/callbacks/cutting-planes/CglCutCallback.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 
 using namespace idol;
@@ -34,6 +35,7 @@ int main(int t_argc, const char** t_argv) {
     const auto n_customers = demands.size();
 
     const bool use_reduced_cost_fixing = true; // Set to false to disable reduced cost fixing
+    const bool use_cgl_cuts = true; // Set to false to disable cut generation
 
     /****************/
     /* Create model */
@@ -92,6 +94,12 @@ int main(int t_argc, const char** t_argv) {
     if (use_reduced_cost_fixing) {
         branch_and_bound.add_callback(ReducedCostFixing());
     }
+
+    if (use_cgl_cuts) {
+        branch_and_bound.add_callback(CglCutCallback());
+    }
+
+    branch_and_bound.with_logger(Logs::BranchAndBound::Info().with_frequency_in_seconds(0));
 
     /*******************/
     /* Solve the model */

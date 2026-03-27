@@ -295,6 +295,10 @@ add_library(idol STATIC
         src/robust/optimizers/bilevel-based-branch-and-bound/Formulation.cpp
         include/idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h
         src/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.cpp
+        include/idol/mixed-integer/optimizers/callbacks/cutting-planes/CglCutCallback.h
+        include/idol/mixed-integer/optimizers/callbacks/cutting-planes/OsiIdolCglSolverInterface.h
+        include/idol/mixed-integer/optimizers/callbacks/cutting-planes/CutFamily.h
+        src/mixed-integer/optimizers/callbacks/cutting-planes/CutFamily.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)
@@ -398,11 +402,11 @@ if (${USE_MIBS})
     find_package(ALPS REQUIRED)
     find_package(BCPS REQUIRED)
     find_package(BLIS REQUIRED)
-    find_package(CGL REQUIRED)
     find_package(MIBS REQUIRED)
+    set(USE_CGL ON)
     set(USE_OSI_CLP ON)
     set(USE_OSI ON)
-    target_link_libraries(idol PUBLIC alps bcps blis cgl mibs)
+    target_link_libraries(idol PUBLIC alps bcps blis mibs)
 
     target_compile_definitions(idol PUBLIC IDOL_USE_MIBS)
 
@@ -410,6 +414,16 @@ if (${USE_MIBS})
     set(SHIP_COIN_OR ON)
 
 endif()
+
+set(USE_CGL OFF CACHE BOOL "Build idol with OsiClp (https://projects.coin-or.org/OsiClp)")
+if (${USE_CGL})
+
+    find_package(CGL REQUIRED)
+    target_link_libraries(idol PUBLIC cgl)
+    target_compile_definitions(idol PUBLIC IDOL_USE_CGL)
+    set(SHIP_COIN_OR ON)
+
+endif ()
 
 set(USE_OSI_CLP OFF CACHE BOOL "Build idol with OsiClp (https://projects.coin-or.org/OsiClp)")
 if (${USE_OSI_CLP})

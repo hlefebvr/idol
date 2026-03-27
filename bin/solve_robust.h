@@ -23,11 +23,11 @@
 class RobustMethodManager : public MethodManager {
 public:
     RobustMethodManager() : MethodManager({
-        { "CCG-Farkas", { 50, "Column-and-constraint generation with Farkas-based separation; see Ayoub and Poss (2016) [https://doi.org/10.1007/s10287-016-0249-2]." } },
-        { "CCG-MibS", { 25, "Column-and-constraint generation with separation by MibS." } },
+        { "CCG-FARKAS", { 50, "Column-and-constraint generation with Farkas-based separation; see Ayoub and Poss (2016) [https://doi.org/10.1007/s10287-016-0249-2]." } },
+        { "CCG-MIBS", { 25, "Column-and-constraint generation with separation by MibS." } },
         { "CCG-KKT-SOS1", { 20, "Column-and-constraint generation with KKT-based separation using SOS1." } },
-        { "Yasol", { 15, "Quantified programming formulation solved with Yasol; see Goerigk and Hartisch (2021) [https://doi.org/10.1016/j.cor.2021.105434]." } },
-        { "BBBB-MibS", { 5, "Bilevel-based branch-and-bound with MibS; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } },
+        { "YASOL", { 15, "Quantified programming formulation solved with Yasol; see Goerigk and Hartisch (2021) [https://doi.org/10.1016/j.cor.2021.105434]." } },
+        { "BBBB-MIBS", { 5, "Bilevel-based branch-and-bound with MibS; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } },
         { "BBBB-KKT-SOS1", { 0, "Bilevel-based branch-and-bound with KKT using SOS1; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } }
     }) {}
 };
@@ -110,16 +110,16 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
 
             if (!uncertainty_analysis.has_continuous) {
 
-                method_manager.add("Yasol");
-                method_manager.add("CCG-MibS");
+                method_manager.add("YASOL");
+                method_manager.add("CCG-MIBS");
 
                 if (!uncertainty_analysis.has_general_integer) {
 
                     std::cout << "-- Detected: binary uncertainty set." << std::endl;
 
                     if (stage_analysis.second_stage.all_bounded) {
-                        method_manager.add("CCG-Farkas");
-                        method_manager.add("BBBB-MibS");
+                        method_manager.add("CCG-FARKAS");
+                        method_manager.add("BBBB-MIBS");
                     }
 
                     method_manager.add("BBBB-KKT-SOS1");
@@ -139,7 +139,7 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
                     std::cout << "-- Detected: zero-one polytope uncertainty set" << std::endl;
 
                     if (stage_analysis.second_stage.all_bounded) {
-                        method_manager.add("CCG-Farkas");
+                        method_manager.add("CCG-FARKAS");
                     }
 
                     method_manager.add("BBBB-KKT-SOS1");
@@ -167,13 +167,13 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
 
                 if (!uncertainty_analysis.has_general_integer) {
                     std::cout << "-- Detected: binary uncertainty set." << std::endl;
-                    method_manager.add("BBBB-MibS");
+                    method_manager.add("BBBB-MIBS");
                 } else {
                     std::cout << "-- Detected: integer uncertainty set." << std::endl;
                 }
 
-                method_manager.add("CCG-MibS");
-                method_manager.add("Yasol");
+                method_manager.add("CCG-MIBS");
+                method_manager.add("YASOL");
 
             }
 
@@ -196,7 +196,7 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
         ccg.with_master_optimizer(Gurobi());
         ccg.with_logs(!t_args.mute);
 
-        if (method == "CCG-Farkas") {
+        if (method == "CCG-FARKAS") {
 
             auto farkas = Robust::CCG::BigMFreeSeparation();
             farkas.with_single_level_optimizer(Gurobi());
@@ -215,7 +215,7 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
 
             ccg.add_separation(optimality_separation);
 
-        } else if (method == "CCG-MibS") {
+        } else if (method == "CCG-MIBS") {
 
             auto mibs = Bilevel::MibS();
 
@@ -234,7 +234,7 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
 
         bbbb.with_logs(!t_args.mute);
 
-        if (method == "BBBB-MibS") {
+        if (method == "BBBB-MIBS") {
 
             auto mibs = Bilevel::MibS();
             mibs.with_cplex_for_feasibility(true);
