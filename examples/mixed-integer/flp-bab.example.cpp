@@ -6,6 +6,8 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
 #include "idol/mixed-integer/optimizers/callbacks/cutting-planes/CglCutCallback.h"
+#include "idol/mixed-integer/optimizers/callbacks/heuristics/LocalMIP.h"
+#include "idol/mixed-integer/optimizers/callbacks/heuristics/RENS.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 
 using namespace idol;
@@ -98,6 +100,8 @@ int main(int t_argc, const char** t_argv) {
     if (use_cgl_cuts) {
         branch_and_bound.add_callback(CglCutCallback());
     }
+
+    branch_and_bound.add_callback(Heuristics::LocalMIP());
 
     branch_and_bound.with_logger(Logs::BranchAndBound::Info().with_frequency_in_seconds(0));
 

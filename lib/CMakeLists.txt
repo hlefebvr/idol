@@ -299,6 +299,8 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/callbacks/cutting-planes/OsiIdolCglSolverInterface.h
         include/idol/mixed-integer/optimizers/callbacks/cutting-planes/CutFamily.h
         src/mixed-integer/optimizers/callbacks/cutting-planes/CutFamily.cpp
+        include/idol/mixed-integer/optimizers/callbacks/heuristics/LocalMIP.h
+        src/mixed-integer/optimizers/callbacks/heuristics/LocalMIP.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)
@@ -375,13 +377,24 @@ if (${USE_CPLEX})
 
 endif()
 
+set_DIR_variable(coin_or)
+set(SHIP_LOCAL_MIP OFF)
+
+set(USE_LOCAL_MIP OFF CACHE BOOL "Build idol with Local-MIP (https://local-mip.github.io/)")
+if (${USE_LOCAL_MIP})
+
+    find_package(LocalMIP REQUIRED)
+    target_link_libraries(idol PUBLIC local_mip)
+    target_compile_definitions(idol PUBLIC IDOL_USE_LOCAL_MIP)
+
+endif ()
+
 #######################
 ## COIN-OR LIBRARIES ##
 #######################
 
-set(SHIP_COIN_OR OFF)
-
 set_DIR_variable(coin_or)
+set(SHIP_COIN_OR OFF)
 
 set(USE_OSI_SYMPHONY OFF CACHE BOOL "Build idol with SYMPHONY (https://projects.coin-or.org/SYMPHONY)")
 if (${USE_OSI_SYMPHONY})
@@ -514,12 +527,24 @@ install(TARGETS idol
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
+if (${SHIP_LOCAL_MIP})
+    install(
+            DIRECTORY ${LOCAL_MIP_DIR}/build/
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            FILES_MATCHING
+            PATTERN *.so*
+            PATTERN *.a*
+            PATTERN *.dylib*
+    )
+endif ()
+
 if (${SHIP_COIN_OR})
     install(
             DIRECTORY ${COIN_OR_DIR}/lib/
             DESTINATION ${CMAKE_INSTALL_LIBDIR}
             FILES_MATCHING
             PATTERN *.so*
+            PATTERN *.a*
             PATTERN *.dylib*
     )
 endif ()

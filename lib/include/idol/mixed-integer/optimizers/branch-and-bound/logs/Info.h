@@ -176,7 +176,12 @@ void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_node_after_solve
     std::cout << " | ";
     std::cout << std::setw(log_width_current_node_depth) << t_node.level();
     std::cout << std::setw(log_width_current_node_status) << t_node.info().status();
-    std::cout << std::setw(log_width_current_node_reason) << t_node.info().reason();
+    std::cout << std::setw(log_width_current_node_reason);
+    if (t_node.id() == -1) {
+        std::cout << "H";
+    } else {
+        std::cout << t_node.info().reason();
+    }
     std::cout << std::setw(log_width_current_node_obj) << pretty_double(t_node.info().objective_value(), double_precision);
     std::cout << " | ";
 

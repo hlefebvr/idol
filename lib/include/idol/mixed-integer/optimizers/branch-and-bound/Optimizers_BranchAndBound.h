@@ -412,6 +412,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(Node
 
         //if (m_branching_rule->is_valid(t_node)) {
             set_as_incumbent(t_node);
+            log_node_after_solve(t_node);
             // New incumbent by submission
         //} else {
         //    idol_Log(Trace, "Ignoring submitted heuristic solution, solution is not valid.");
