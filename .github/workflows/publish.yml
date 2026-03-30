@@ -78,6 +78,13 @@ jobs:
           
           /opt/homebrew/bin/bash coinbrew build MibS@1.2 --no-prompt --disable-cplex-libcheck --tests=none
 
+      - name: Install Local-MIP
+        run: |
+          # get latest release
+          git clone git@github.com:shaowei-cai-group/Local-MIP.git local-mip
+          cd local-mip
+          ./build.sh
+
       - name: Configure & Build
         run: |
           mkdir -p build && cd build
@@ -86,6 +93,8 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=$PWD/install \
             -DCOIN_OR_DIR=${{github.workspace}}/coin-or/dist \
             -DUSE_MIBS=YES \
+            -DUSE_LOCAL_MIP=YES \
+            -DLOCAL_MIP_DIR=${{github.workspace}}/local-mip \
             -DCMAKE_C_COMPILER=/Library/Developer/CommandLineTools/usr/bin/cc \
             -DCMAKE_CXX_COMPILER=/Library/Developer/CommandLineTools/usr/bin/c++
           make -j$(sysctl -n hw.ncpu)
@@ -167,6 +176,13 @@ jobs:
           ./coinbrew fetch MibS@1.2
           ./coinbrew build MibS@1.2 --no-prompt --disable-cplex-libcheck --tests=none
 
+      - name: Install Local-MIP
+        run: |
+          # get latest release
+          git clone git@github.com:shaowei-cai-group/Local-MIP.git local-mip
+          cd local-mip
+          ./build.sh
+
       - name: Install build dependencies
         run: |
           sudo apt-get update
@@ -184,6 +200,8 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=$PWD/install \
             -DCOIN_OR_DIR=${{github.workspace}}/coin-or/dist \
             -DUSE_MIBS=YES \
+            -DUSE_LOCAL_MIP=YES \
+            -DLOCAL_MIP_DIR=${{github.workspace}}/local-mip \
             -DCMAKE_INSTALL_RPATH='$ORIGIN/../lib'
           cmake --build . --target help
           cmake --build . -- -j$(nproc)
