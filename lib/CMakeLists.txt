@@ -301,6 +301,8 @@ add_library(idol STATIC
         src/mixed-integer/optimizers/callbacks/cutting-planes/CutFamily.cpp
         include/idol/mixed-integer/optimizers/callbacks/heuristics/LocalMIP.h
         src/mixed-integer/optimizers/callbacks/heuristics/LocalMIP.cpp
+        include/idol/mixed-integer/optimizers/branch-and-bound/CutPool.h
+        src/mixed-integer/optimizers/branch-and-bound/CutPool.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)

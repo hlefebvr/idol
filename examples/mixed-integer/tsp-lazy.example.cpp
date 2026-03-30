@@ -3,7 +3,6 @@
 //
 #include <iostream>
 #include "idol/modeling.h"
-#include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/callbacks/Callback.h"
 
@@ -92,9 +91,9 @@ int main(int t_argc, const char** t_argv) {
     /*****************************************/
 
     const auto gurobi = Gurobi()
-                            .with_logs(true)
-                            .with_lazy_cut(true) // this is necessary when using Gurobi with lazy constraints
-                            .add_callback(SubTourEliminationCallback(x));
+                                .with_logs(true)
+                                .with_lazy_cut(true) // this is necessary when using Gurobi with lazy constraints
+                                .add_callback(SubTourEliminationCallback(x));
 
     model.use(gurobi);
 
@@ -104,6 +103,7 @@ int main(int t_argc, const char** t_argv) {
 
     model.optimize();
 
+    std::cout << "Tour total cost is " << model.get_best_obj() << std::endl;
     for (unsigned int i = 0 ; i < n_cities ; ++i) {
         for (unsigned int j = 0 ; j < n_cities ; ++j) {
             if (i == j) { continue; }

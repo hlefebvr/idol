@@ -171,6 +171,8 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
 
     m_osi_solver->update_current_solution();
 
+    unsigned int n_added_cut_in_total = 0;
+    auto& registry = this->side_effect_registry();
     for (auto& cut_family : m_cut_families) {
 
         if (!is_root_node && cut_family->score() <= 1e-2) {
@@ -197,10 +199,15 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
                 continue;
             }
 
+            const unsigned int old_n_added_user_cuts = registry.n_added_user_cuts;
             this->add_user_cut(cut);
-            m_total_n_added_cuts++;
-            cut_context.add_accepted_cut();
-            cut_family->add_acceptance_statistics(1);
+
+            if (registry.n_added_user_cuts > old_n_added_user_cuts) {
+                m_total_n_added_cuts++;
+                cut_context.add_accepted_cut();
+                cut_family->add_acceptance_statistics(1);
+            }
+
         }
 
     }

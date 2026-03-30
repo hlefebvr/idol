@@ -390,14 +390,13 @@ const idol::Node<NodeInfoT> &idol::BranchAndBoundCallbackI<NodeInfoT>::node() co
 
 template<class NodeInfoT>
 void idol::BranchAndBoundCallbackI<NodeInfoT>::add_lazy_cut(const TempCtr &t_cut) {
-    m_relaxation->add_ctr(t_cut);
+    m_parent->add_lazy_cut(t_cut);
     ++m_registry->n_added_lazy_cuts;
 }
 
 template<class NodeInfoT>
 void idol::BranchAndBoundCallbackI<NodeInfoT>::add_user_cut(const TempCtr &t_cut) {
-    m_relaxation->add_ctr(t_cut);
-    ++m_registry->n_added_user_cuts;
+    m_registry->n_added_user_cuts += m_parent->add_user_cut(t_cut);;
 }
 
 #endif //IDOL_BRANCHANDBOUNDCALLBACK_H

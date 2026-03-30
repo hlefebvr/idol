@@ -17,6 +17,7 @@
 #include "idol/general/optimizers/OptimizerFactory.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/logs/Factory.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/CutPool.h"
 
 #include <memory>
 #include <cassert>
@@ -43,6 +44,9 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<NodeInfoT> m_root_node_info;
 
     std::unique_ptr<AbstractBranchAndBoundCallbackI<NodeInfoT>> m_callback;
+
+    // Cuts
+    CutPool m_user_cut_pool;
 
     bool m_has_integer_objective = false;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 0, 0 };
@@ -111,7 +115,7 @@ public:
 
     [[nodiscard]] std::string name() const override { return "Branch-and-Bound"; }
 
-    void solve(TreeNode& t_node, unsigned int t_relaxation_id) const;
+    void solve(TreeNode& t_node, unsigned int t_relaxation_id);
 
     virtual void set_subtree_depth(unsigned int t_depth) { m_steps.at(1) = t_depth; }
 
@@ -122,6 +126,12 @@ public:
     void submit_heuristic_solution(NodeInfoT* t_info);
 
     void submit_lower_bound(double t_lower_bound);
+
+    // Returns true if the cut was effectively added
+    bool add_lazy_cut(const TempCtr &t_cut);
+
+    // Returns true if the cut was effectively added
+    bool add_user_cut(const TempCtr &t_cut);
 
     [[nodiscard]] unsigned int n_created_nodes() const { return m_n_created_nodes; }
 
@@ -403,24 +413,39 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::submit_lower_bound(double t_lo
     }
 }
 
+template <class NodeInfoT>
+bool idol::Optimizers::BranchAndBound<NodeInfoT>::add_lazy_cut(const TempCtr& t_cut) {
+    // TODO: add to lazy constraint pool
+    m_relaxations.front()->add_ctr(t_cut);
+    return true;
+}
+
+template <class NodeInfoT>
+bool idol::Optimizers::BranchAndBound<NodeInfoT>::add_user_cut(const TempCtr& t_cut) {
+    return m_user_cut_pool.add_cut(t_cut, *m_relaxations.front());
+}
+
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(NodeInfoT* t_info) {
 
     auto t_node = Node<NodeInfoT>::create_detached_node(t_info);
 
-    if (t_node.info().objective_value() < get_best_obj()) {
-
-        //if (m_branching_rule->is_valid(t_node)) {
-            set_as_incumbent(t_node);
-            log_node_after_solve(t_node);
-            // New incumbent by submission
-        //} else {
-        //    idol_Log(Trace, "Ignoring submitted heuristic solution, solution is not valid.");
-        //}
-
-    } else {
-        // idol_Log(Trace, "Ignoring submitted heuristic solution, objective value is " << t_node.info().objective_value() << " while best obj is " << get_best_obj() << '.');
+    if (t_node.info().objective_value() > get_best_obj()) {
+        return;
     }
+
+    const auto registry = call_callbacks(IncumbentSolution, t_node, -1);
+
+    if (registry.n_added_lazy_cuts > 0) {
+        return;
+    }
+
+    set_as_incumbent(t_node);
+    log_node_after_solve(t_node);
+
+    //if (m_branching_rule->is_valid(t_node)) {
+        // New incumbent by submission
+    //}
 
 }
 
@@ -432,7 +457,12 @@ idol::Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(CallbackEvent t_even
         return {};
     }
 
-    return m_callback->operator()(this, t_event, t_node, m_relaxations[t_relaxation_id].get());
+    Model* relaxation = nullptr;
+    if (t_relaxation_id != -1) {
+        relaxation = m_relaxations[t_relaxation_id].get();
+    }
+
+    return m_callback->operator()(this, t_event, t_node, relaxation);
 }
 
 template<class NodeInfoT>
@@ -670,7 +700,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::explore(
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
-                                                        unsigned int t_relaxation_id) const {
+                                                        unsigned int t_relaxation_id) {
 
     auto& node_updator = *m_node_updators[t_relaxation_id];
     auto& relaxation = *m_relaxations[t_relaxation_id];
@@ -691,6 +721,8 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
         }
     }
     */
+
+    m_user_cut_pool.clean_up(relaxation);
 
     relaxation.optimize();
 
@@ -779,6 +811,12 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
         call_callbacks(PrunedSolution, t_node, t_relaxation_id);
         return;
 
+    }
+
+    const unsigned int recycled_user_cuts = m_user_cut_pool.recycle(t_node.info().primal_solution(), *m_relaxations[t_relaxation_id]);
+    if (recycled_user_cuts > 0) {
+        *t_reoptimize_flag = true;
+        return;
     }
 
     auto side_effects = call_callbacks(InvalidSolution, t_node, t_relaxation_id);
