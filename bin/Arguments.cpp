@@ -92,6 +92,14 @@ void Arguments::print_versions() {
     std::cout << "not found";
 #endif
     std::cout << "\n";
+
+    std::cout << "--\tLocal-MIP: ";
+#ifdef IDOL_USE_LOCAL_MIP
+    std::cout << "shipped with idol";
+#else
+    std::cout << "not found";
+#endif
+    std::cout << "\n";
 }
 
 Arguments::Arguments() {
