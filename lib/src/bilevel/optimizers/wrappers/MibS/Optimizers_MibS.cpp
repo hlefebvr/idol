@@ -204,6 +204,22 @@ void idol::Optimizers::Bilevel::MibS::add_callback(idol::Callback *t_callback) {
     m_callbacks.emplace_back(std::unique_ptr<Callback>(t_callback));
 }
 
+bool idol::Optimizers::Bilevel::MibS::is_available() {
+#ifdef IDOL_USE_MIBS
+    return true;
+#else
+    return false;
+#endif
+}
+
+std::string idol::Optimizers::Bilevel::MibS::get_version() {
+#ifdef IDOL_USE_MIBS
+    return "unknown";
+#else
+    throw Exception("idol was not linked with idol.");
+#endif
+}
+
 void idol::Optimizers::Bilevel::MibS::add(const idol::QCtr &t_ctr) {
     throw Exception("MibS does not support quadratic constraints.");
 }

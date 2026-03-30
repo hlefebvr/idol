@@ -50,6 +50,8 @@ public:
 
     [[nodiscard]] const idol::Bilevel::Description& bilevel_description() const { return m_description; }
 
+    static bool is_available();
+    static std::string get_version();
 protected:
     void build() override;
     void add(const Var &t_var) override;

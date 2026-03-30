@@ -81,7 +81,7 @@ jobs:
       - name: Install Local-MIP
         run: |
           # get latest release
-          git clone git@github.com:shaowei-cai-group/Local-MIP.git local-mip
+          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/shaowei-cai-group/Local-MIP.git local-mip
           cd local-mip
           ./build.sh
 
@@ -179,7 +179,7 @@ jobs:
       - name: Install Local-MIP
         run: |
           # get latest release
-          git clone git@github.com:shaowei-cai-group/Local-MIP.git local-mip
+          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/shaowei-cai-group/Local-MIP.git local-mip
           cd local-mip
           ./build.sh
 
