@@ -750,8 +750,13 @@ void idol::Optimizers::GLPK::save_milp_solution_status() {
     int status = lib.glp_mip_status(m_model);
 
     if (status == GLP_UNDEF) {
-        m_solution_status = Fail;
-        m_solution_reason = NotSpecified;
+        if (get_remaining_time() == 0) {
+            m_solution_status = Infeasible;
+            m_solution_reason = TimeLimit;
+        } else {
+            m_solution_status = Fail;
+            m_solution_reason = NotSpecified;
+        }
         return;
     }
 
