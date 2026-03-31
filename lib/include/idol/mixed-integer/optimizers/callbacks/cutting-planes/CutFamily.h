@@ -46,7 +46,7 @@ public:
     [[nodiscard]] double acceptance_ratio() const { return (double) m_n_accepted / m_n_generated; }
     [[nodiscard]] double average_time_per_call() const { return m_timer.cumulative_count() / m_n_calls; }
 
-    void add_acceptance_statistics(unsigned int t_n_accepted) { m_n_accepted += t_n_accepted; }
+    void add_accepted_cut() { m_n_accepted++; }
     void add_effectiveness_statistics(double t_effectiveness);
 
     OsiCuts generate(OsiSolverInterface& t_osi_solver, int t_agressiveness);

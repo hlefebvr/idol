@@ -9,13 +9,36 @@
 #include "model_api/Model_API.h"
 #endif
 
+template <typename T1, typename T2>
+void sort_by_first(std::vector<T1>& keys, std::vector<T2>& values) {
+    if (keys.size() != values.size()) {
+        throw std::invalid_argument("Vectors must have the same size");
+    }
+
+    // Combine keys and values into pairs
+    std::vector<std::pair<T1, T2>> combined(keys.size());
+    for (size_t i = 0; i < keys.size(); ++i) {
+        combined[i] = {keys[i], values[i]};
+    }
+
+    // Sort by the first element (keys)
+    std::sort(combined.begin(), combined.end(),
+              [](const auto& a, const auto& b) { return a.first < b.first; });
+
+    // Unpack back into separate vectors
+    for (size_t i = 0; i < keys.size(); ++i) {
+        keys[i] = combined[i].first;
+        values[i] = combined[i].second;
+    }
+}
+
 std::optional<idol::PrimalPoint>
 idol::Heuristics::impl::call_local_mip(const Model& t_model, const PrimalPoint& t_primal_point, double t_time_limit) {
 #ifdef IDOL_USE_LOCAL_MIP
     std::optional<idol::PrimalPoint> result;
 
     const double inf = std::numeric_limits<double>::infinity();
-    SilentMode silent_mode(true);
+    SilentMode silent_mode(false);
 
     // Create solver and enable Model API
     Local_MIP solver;
@@ -79,6 +102,8 @@ idol::Heuristics::impl::call_local_mip(const Model& t_model, const PrimalPoint& 
             k++;
         }
 
+        //sort_by_first(indices, coefficients);
+
         const double lb = type == GreaterOrEqual || type == Equal ? rhs : -inf;
         const double ub = type == LessOrEqual || type == Equal ? rhs : inf;
 
@@ -98,16 +123,24 @@ idol::Heuristics::impl::call_local_mip(const Model& t_model, const PrimalPoint& 
                 continue;
             }
             const double value = t_primal_point.get(var);
-            if ((type == Integer || type == Binary) && !is_integer(value, Tolerance::Integer)) {
+            if (!is_integer(value, Tolerance::Integer)) {
                 continue;
             }
-            values[j] = value;
+            values[j] = std::round(value);
         }
 
     };
 
+    Local_Search::Restart_Cbk restart_cb = [&](Restart::Restart_Ctx& ctx, void* p_user_data) {
+        if (ctx.m_shared.m_is_found_feasible) {
+            solver.terminate();
+        }
+    };
+
     // Register callback with user data
     solver.set_start_cbk(cb);
+    //solver.set_restart_cbk(restart_cb);
+    solver.set_bound_strengthen(2);
 
     solver.run();
 

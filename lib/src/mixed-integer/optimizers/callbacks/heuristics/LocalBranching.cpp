@@ -40,8 +40,6 @@ void idol::Heuristics::LocalBranching::Strategy::operator()(idol::CallbackEvent 
 
     const auto& primal_solution = this->primal_solution();
 
-    std::cout << primal_solution.objective_value() << std::endl;
-
     std::unique_ptr<Model> model(original_model().clone());
 
     model->unuse();
@@ -69,10 +67,15 @@ void idol::Heuristics::LocalBranching::Strategy::operator()(idol::CallbackEvent 
 
     model->use(*m_optimizer_factory);
 
+    std::cout << "Local branching called" << std::endl;
+
     model->optimize();
+
+    std::cout << model->get_status() << " / " << model->get_reason() << std::endl;
 
     if (const auto status = model->get_status() ; status == Optimal || status == Feasible) {
         submit_heuristic_solution(save_primal(*model));
+        std::cout << primal_solution.objective_value() << " -> " << model->get_best_obj() << std::endl;
         return;
     }
 

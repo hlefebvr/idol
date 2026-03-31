@@ -34,17 +34,17 @@ public:
         class NodeCutContext {
             const unsigned int m_node_id;
             unsigned int m_pass_count = 0;
-            unsigned int m_n_added_cuts = 0;
+            unsigned int m_n_accepted_cuts = 0;
         public:
             NodeCutContext(unsigned int node_id) : m_node_id(node_id) {}
 
             [[nodiscard]] unsigned int node_id() const { return m_node_id; }
             [[nodiscard]] bool is_root_node() const { return (m_node_id == 0); }
             [[nodiscard]] unsigned int pass() const { return m_pass_count; }
-            [[nodiscard]] unsigned int n_added_cuts() const { return m_n_added_cuts; }
+            [[nodiscard]] unsigned int n_added_cuts() const { return m_n_accepted_cuts; }
 
             void increment_pass() { m_pass_count++; }
-            void add_accepted_cut() { m_n_added_cuts++; }
+            void add_accepted_cut() { m_n_accepted_cuts++; }
         };
 
         class OsiIdolCglSolverInterface;
@@ -55,12 +55,12 @@ public:
         std::unique_ptr<NodeCutContext> m_cut_context;
 
         unsigned int m_total_n_added_cuts = 0;
-        const unsigned int m_max_pass_at_aggressive_node = 10;
+        const unsigned int m_max_pass_at_aggressive_node = 20;
         const unsigned int m_max_pass_per_regular_node = 1;
         const unsigned int m_max_depth_for_cuts = 50;
         const double m_effectiveness_threshold = 1e-3;
-        const unsigned int m_max_cut_at_root_node = std::numeric_limits<unsigned int>::max();
-        const unsigned int m_max_cut_per_node = std::numeric_limits<unsigned int>::max();
+        const unsigned int m_max_cut_at_aggressive_node = std::numeric_limits<unsigned int>::max();
+        const unsigned int m_max_cut_per_regular_node = std::numeric_limits<unsigned int>::max();
         const unsigned int m_max_cuts = std::numeric_limits<unsigned int>::max();
 
         std::list<TempCtr> to_idol_cuts(OsiCuts& t_cuts);
@@ -116,12 +116,10 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::log_after_termination() {
 
     BranchAndBoundCallback<NodeInfoT>::log_after_termination();
 
+    std::cout << "Cgl Cutting Planes:" << std::endl;
+
     for (const auto& cut_family : m_cut_families) {
-        std::cout << '\t' << cut_family->name() << " : " << cut_family->n_accepted()
-                  << " (score: " << cut_family->score() << ","
-                  << " effectiveness: " << cut_family->average_effectiveness() << ","
-                  << " time per call: " << cut_family->average_time_per_call()
-                  << ")\n";
+        std::cout << '\t' << cut_family->name() << ": " << cut_family->n_accepted() << "\n";
     }
 
 }
@@ -141,9 +139,9 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
         return;
     }
 
-    const double relative_gap = idol::relative_gap(this->best_bound(), this->best_obj());
+    const double relative_gap = idol::relative_gap(this->best_bound(), this->best_obj()) * 100;
 
-    if (relative_gap < .1) {
+    if (relative_gap < 1) {
         return;
     }
 
@@ -151,14 +149,14 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
     const bool is_root_node = cut_context.is_root_node();
 
     bool be_aggressive = false;
-    if (is_root_node || relative_gap > .5) {
+    if (is_root_node || relative_gap > 50) {
         be_aggressive = true;
     }
 
-    unsigned int max_n_added_cut_at_this_node = m_max_cut_per_node;
+    unsigned int max_n_added_cut_at_this_node = m_max_cut_per_regular_node;
     unsigned int max_pass_at_this_node = m_max_pass_per_regular_node;
     if (be_aggressive) {
-        max_n_added_cut_at_this_node = m_max_cut_at_root_node;
+        max_n_added_cut_at_this_node = m_max_cut_at_aggressive_node;
         max_pass_at_this_node = m_max_pass_at_aggressive_node;
     }
 
@@ -206,11 +204,12 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
 
             const unsigned int old_n_added_user_cuts = registry.n_added_user_cuts;
             this->add_user_cut(cut);
+            const bool cut_was_accepted_by_idol = registry.n_added_user_cuts > old_n_added_user_cuts;
 
-            if (registry.n_added_user_cuts > old_n_added_user_cuts) {
+            if (cut_was_accepted_by_idol) {
                 m_total_n_added_cuts++;
                 cut_context.add_accepted_cut();
-                cut_family->add_acceptance_statistics(1);
+                cut_family->add_accepted_cut();
             }
 
         }

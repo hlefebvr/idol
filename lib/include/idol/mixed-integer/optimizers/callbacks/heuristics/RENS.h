@@ -31,6 +31,7 @@ public:
         unsigned int m_frequency = 10;
     protected:
         void operator()(CallbackEvent t_event) override;
+
     public:
         Strategy(double t_minimum_ratio_of_integer_variables_to_fix,
                  double t_minimum_ratio_of_variables_to_fix,
