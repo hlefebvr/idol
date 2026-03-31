@@ -11,9 +11,6 @@
 
 std::optional<idol::PrimalPoint>
 idol::Heuristics::impl::call_local_mip(const Model& t_model, const PrimalPoint& t_primal_point, double t_time_limit) {
-
-    // TODO: how to handle lazy cut constraints ??
-
 #ifdef IDOL_USE_LOCAL_MIP
     std::optional<idol::PrimalPoint> result;
 
@@ -106,6 +103,7 @@ idol::Heuristics::impl::call_local_mip(const Model& t_model, const PrimalPoint& 
             }
             values[j] = value;
         }
+
     };
 
     // Register callback with user data

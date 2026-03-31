@@ -139,9 +139,9 @@ inline void solve_milp(const Arguments& t_args) {
         bnb.with_branching_rule(MostInfeasible());
         bnb.with_node_selection_rule(BestBound());
         bnb.with_node_optimizer(*method_manager.get_sub_milp_method(t_args, true));
-        //bnb.add_callback(ReducedCostFixing());
-        //bnb.add_callback(CglCutCallback());
-        //bnb.add_callback(Heuristics::LocalMIP());
+        bnb.add_callback(ReducedCostFixing());
+        bnb.add_callback(CglCutCallback());
+        bnb.add_callback(Heuristics::LocalMIP());
         model.use(bnb);
     }
 

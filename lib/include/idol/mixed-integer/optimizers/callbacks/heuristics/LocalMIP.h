@@ -20,7 +20,8 @@ template<class NodeInfoT = idol::DefaultNodeInfo>
 class idol::Heuristics::LocalMIP : public BranchAndBoundCallbackFactory<NodeInfoT> {
 public:
     class Strategy : public BranchAndBoundCallback<NodeInfoT> {
-        bool m_has_been_called = false;
+        unsigned int m_n_relevant_calls = 0;
+        const unsigned int m_frequency = 10;
     protected:
         void operator()(CallbackEvent t_event) override;
     };
@@ -36,14 +37,23 @@ void idol::Heuristics::LocalMIP<NodeInfoT>::Strategy::operator()(CallbackEvent t
         return;
     }
 
-    if (m_has_been_called) {
+    const bool is_root_node = this->node().id() == 0;
+
+    m_n_relevant_calls++;
+    if (is_root_node || m_n_relevant_calls % m_frequency > 0) {
         return;
     }
 
-    m_has_been_called = true;
+    const double relative_gap = idol::relative_gap(this->best_bound(), this->best_obj());
+
+    bool be_aggressive = false;
+    if (is_root_node || relative_gap > 1) {
+        be_aggressive = true;
+    }
 
     const double time_used_to_solve_node = this->relaxation().optimizer().time().count();
-    const double heuristic_time_limit = std::min(this->original_model().optimizer().get_remaining_time(), 10 * time_used_to_solve_node);
+    const double factor_for_heuristic = be_aggressive ? 100 : 10;
+    const double heuristic_time_limit = std::min(this->original_model().optimizer().get_remaining_time(), factor_for_heuristic * time_used_to_solve_node);
     auto point = impl::call_local_mip(this->original_model(), this->node().info().primal_solution(), heuristic_time_limit);
 
     if (!point) {

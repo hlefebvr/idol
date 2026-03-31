@@ -55,9 +55,9 @@ public:
         std::unique_ptr<NodeCutContext> m_cut_context;
 
         unsigned int m_total_n_added_cuts = 0;
-        const unsigned int m_max_pass_at_root_node = 5;
-        const unsigned int m_max_pass_per_node_in_tree = 1;
-        const unsigned int m_max_depth_for_cuts = 5;
+        const unsigned int m_max_pass_at_aggressive_node = 10;
+        const unsigned int m_max_pass_per_regular_node = 1;
+        const unsigned int m_max_depth_for_cuts = 50;
         const double m_effectiveness_threshold = 1e-3;
         const unsigned int m_max_cut_at_root_node = std::numeric_limits<unsigned int>::max();
         const unsigned int m_max_cut_per_node = std::numeric_limits<unsigned int>::max();
@@ -141,18 +141,25 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
         return;
     }
 
-    if (relative_gap(this->best_bound(), this->best_obj()) < .1) {
+    const double relative_gap = idol::relative_gap(this->best_bound(), this->best_obj());
+
+    if (relative_gap < .1) {
         return;
     }
 
     auto& cut_context = get_cut_context();
     const bool is_root_node = cut_context.is_root_node();
 
+    bool be_aggressive = false;
+    if (is_root_node || relative_gap > .5) {
+        be_aggressive = true;
+    }
+
     unsigned int max_n_added_cut_at_this_node = m_max_cut_per_node;
-    unsigned int max_pass_at_this_node = m_max_pass_per_node_in_tree;
-    if (is_root_node) {
+    unsigned int max_pass_at_this_node = m_max_pass_per_regular_node;
+    if (be_aggressive) {
         max_n_added_cut_at_this_node = m_max_cut_at_root_node;
-        max_pass_at_this_node = m_max_pass_at_root_node;
+        max_pass_at_this_node = m_max_pass_at_aggressive_node;
     }
 
     if (cut_context.pass() > max_pass_at_this_node) {
@@ -162,8 +169,7 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
     cut_context.increment_pass();
 
     // Count number of fractional over integer ?
-
-    if (!is_root_node) {
+    if (!be_aggressive) {
         std::sort(m_cut_families.begin(), m_cut_families.end(), [](const auto& t_a, const auto& t_b) {
             return t_a->score() > t_b->score();
         });
@@ -171,15 +177,14 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
 
     m_osi_solver->update_current_solution();
 
-    unsigned int n_added_cut_in_total = 0;
     auto& registry = this->side_effect_registry();
     for (auto& cut_family : m_cut_families) {
 
-        if (!is_root_node && cut_family->score() <= 1e-2) {
+        if (!be_aggressive && cut_family->score() <= 1e-2) {
             continue;
         }
 
-        auto osi_cuts = cut_family->generate(*m_osi_solver, is_root_node ? 100 : 0);
+        auto osi_cuts = cut_family->generate(*m_osi_solver, be_aggressive ? 100 : 0);
         auto idol_cuts = to_idol_cuts(osi_cuts);
         auto sorted_cuts = sort_cuts_by_effectiveness(idol_cuts);
 

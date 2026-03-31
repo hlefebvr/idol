@@ -849,7 +849,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::update_lower_bound(const Branc
 
     auto& lowest_node = *t_active_nodes.by_objective_value().begin();
     const double raw_lower_bound = lowest_node.info().objective_value();
-    const double lower_bound = m_has_integer_objective && !is_integer(raw_lower_bound, Tolerance::Integer) ? std::ceil(raw_lower_bound) : raw_lower_bound;
+    const double lower_bound = m_has_integer_objective ? std::ceil(raw_lower_bound - Tolerance::Integer) : raw_lower_bound;
     if (lower_bound > get_best_bound()) {
         set_best_bound(lower_bound);
     }

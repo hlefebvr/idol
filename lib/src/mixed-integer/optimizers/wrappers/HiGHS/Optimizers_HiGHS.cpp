@@ -509,7 +509,11 @@ void idol::Optimizers::HiGHS::analyze_status(HighsInt t_status) {
             m_solution_reason = TimeLimit;
             break;
         }
-        case HighsModelStatus::kObjectiveBound:
+        case HighsModelStatus::kObjectiveBound: {
+            m_solution_status = Feasible;
+            m_solution_reason = ObjLimit;
+            break;
+        }
         case HighsModelStatus::kObjectiveTarget:
         case HighsModelStatus::kIterationLimit:
         case HighsModelStatus::kSolutionLimit:
