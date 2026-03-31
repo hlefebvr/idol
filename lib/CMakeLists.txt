@@ -436,6 +436,7 @@ if (${USE_CGL})
     find_package(CGL REQUIRED)
     target_link_libraries(idol PUBLIC cgl)
     target_compile_definitions(idol PUBLIC IDOL_USE_CGL)
+    set(USE_OSI ON)
     set(SHIP_COIN_OR ON)
 
 endif ()

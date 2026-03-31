@@ -130,7 +130,7 @@ void add_file_options(CLI::App* t_app, Arguments& t_result) {
 Arguments Arguments::parse(int t_argc, const char** t_argv) {
 
     Arguments result;
-    bool show_version;
+    bool show_version = false;
 
     CLI::App app {"idol command line interface"};
 
