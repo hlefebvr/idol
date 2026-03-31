@@ -110,6 +110,7 @@ idol::Optimizers::HiGHS::DynamicLib::DynamicLib() {
     HIGHS_SYM_LOAD(Highs_getBoolOptionValue);
     HIGHS_SYM_LOAD(Highs_writeModel);
     HIGHS_SYM_LOAD(Highs_version);
+    HIGHS_SYM_LOAD(Highs_getDoubleInfoValue);
 }
 
 idol::Optimizers::HiGHS::DynamicLib::~DynamicLib() {
@@ -596,7 +597,10 @@ double idol::Optimizers::HiGHS::get_best_obj() const {
 }
 
 double idol::Optimizers::HiGHS::get_best_bound() const {
-    return get_best_obj();
+    auto& lib = get_dynamic_lib();
+    double result;
+    lib.Highs_getDoubleInfoValue(m_model, "mip_dual_bound", &result);
+    return result;
 }
 
 double idol::Optimizers::HiGHS::get_var_primal(const Var &t_var) const {

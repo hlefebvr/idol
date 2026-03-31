@@ -130,6 +130,7 @@ public:
     HIGHS_SYM_PTR(Highs_getBoolOptionValue);
     HIGHS_SYM_PTR(Highs_writeModel);
     HIGHS_SYM_PTR(Highs_version);
+    HIGHS_SYM_PTR(Highs_getDoubleInfoValue);
 
     DynamicLib();
 

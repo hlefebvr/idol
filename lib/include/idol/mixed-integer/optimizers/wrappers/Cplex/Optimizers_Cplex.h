@@ -18,7 +18,7 @@ namespace idol::Optimizers {
     class Cplex;
 
     namespace impl {
-        class CplexEnvKiller;
+        struct CplexEnvKiller;
     }
 }
 
