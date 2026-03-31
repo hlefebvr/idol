@@ -234,6 +234,7 @@ public:
                 me->m_matrix->appendRow(row_vector);
             }
             */
+
             // First pass: count total nonzeros
             CoinBigIndex nnz = 0;
             std::vector<int> row_lengths(n_rows);
@@ -270,13 +271,12 @@ public:
                 }
             }
 
-            // Build matrix (ROW-ORDERED!)
             auto* me = const_cast<OsiIdolCglSolverInterface*>(this);
             me->m_matrix.reset(new CoinPackedMatrix(
-                /* colordered = */ false,
-                /* minor = */ n_cols,
-                /* major = */ n_rows,
-                /* numels = */ nnz,
+                false,
+                n_cols,
+                n_rows,
+                nnz,
                 elem.data(),
                 ind.data(),
                 start.data(),
