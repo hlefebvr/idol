@@ -67,6 +67,7 @@ public:
             }
         }
 
+        assert(m_col_lower.size() == m_parent.original_model().vars().size());
         return m_col_lower.data();
     }
 
@@ -83,6 +84,7 @@ public:
             }
         }
 
+        assert(m_col_upper.size() == m_parent.original_model().vars().size());
         return m_col_upper.data();
     }
 
@@ -112,6 +114,7 @@ public:
             }
         }
 
+        assert(m_row_sense.size() == m_parent.original_model().ctrs().size());
         return m_row_sense.data();
     }
 
@@ -128,6 +131,7 @@ public:
             }
         }
 
+        assert(m_rhs.size() == m_parent.original_model().ctrs().size());
         return m_rhs.data();
     }
 
@@ -160,6 +164,7 @@ public:
             }
         }
 
+        assert(m_row_lower.size() == m_parent.original_model().ctrs().size());
         return m_row_lower.data();
     }
 
@@ -190,6 +195,7 @@ public:
             }
         }
 
+        assert(m_row_upper.size() == m_parent.original_model().ctrs().size());
         return m_row_upper.data();
     }
 
@@ -198,6 +204,7 @@ public:
 
     bool isContinuous(int colIndex) const override {
         const auto& model = m_parent.original_model();
+        assert(colIndex < model.vars().size());
         const auto& var = model.get_var_by_index(colIndex);
         return model.get_var_type(var) == Continuous;
     }
@@ -228,6 +235,9 @@ public:
 
         }
 
+        assert(m_matrix->getNumCols() == m_parent.original_model().vars().size());
+        assert(m_matrix->getNumRows() == m_parent.original_model().ctrs().size());
+
         return m_matrix.get();
     }
 
@@ -236,6 +246,7 @@ public:
     double getInfinity() const override { return Inf; }
 
     const double* getColSolution() const override {
+        assert(m_current_solution.size() == m_parent.original_model().vars().size());
         return m_current_solution.data();
     }
 
@@ -257,6 +268,7 @@ public:
             }
         }
 
+        assert(m_row_activity.size() == m_parent.original_model().ctrs().size());
         return m_row_activity.data();
     }
 
