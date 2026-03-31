@@ -151,6 +151,7 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
     solve->add_flag("--no-kleinert-vi", result.no_kleinert_vi, "For bilevel problems, for KKT-based approaches, indicates to not use the valid inequalities from Kleinart et al. (2020) [https://doi.org/10.1007/s11590-020-01660-6]")->configurable();
     solve->add_option("--bound-provider", result.bound_provider, "For bilevel or two-stage robust problems, provides a file storing big-m values for KKT-based reformulations.")->configurable();
     solve->add_option("--default-sub-milp-method", result.default_milp_method, "Specifies a MILP method that is used to solved underlying MILPs in, e.g., decomposition algorithms, reformulation approaches, etc.")->configurable();
+    solve->add_option("--csv-report", result.csv_report, "If set to true, additionally prints a report in csv format")->configurable();
 
     add_file_options(solve, result);
 

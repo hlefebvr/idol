@@ -170,9 +170,10 @@ inline void solve_bilevel(const Arguments& t_args) {
     }
 
     model.optimizer().set_param_logs(!t_args.mute);
+    model.optimizer().set_param_time_limit(t_args.time_limit);
     model.optimize();
 
-    report_standard_output(model);
+    report_standard_output(model, t_args);
 }
 
 #endif //IDOL_SOLVE_BILEVEL_H

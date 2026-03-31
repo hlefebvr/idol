@@ -21,6 +21,7 @@ public:
     ProblemType problem_type = MILP;
     bool mute = false;
     bool solve = true;
+    bool csv_report = false;
     std::string method;
 
     // MILPs
