@@ -111,6 +111,7 @@ idol::Optimizers::HiGHS::DynamicLib::DynamicLib() {
     HIGHS_SYM_LOAD(Highs_writeModel);
     HIGHS_SYM_LOAD(Highs_version);
     HIGHS_SYM_LOAD(Highs_getDoubleInfoValue);
+    HIGHS_SYM_LOAD(Highs_destroy);
 }
 
 idol::Optimizers::HiGHS::DynamicLib::~DynamicLib() {
@@ -686,6 +687,8 @@ idol::Optimizers::HiGHS::~HiGHS() {
     delete[] m_col_value;
     delete[] m_row_value;
     delete[] m_row_dual;
+    auto& lib = get_dynamic_lib();
+    lib.Highs_destroy(m_model);
 }
 
 void idol::Optimizers::HiGHS::update_objective_constant() {
