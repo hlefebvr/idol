@@ -217,6 +217,7 @@ public:
             const auto n_rows = model.ctrs().size();
             const auto n_cols = model.vars().size();
 
+            /*
             auto* me = const_cast<OsiIdolCglSolverInterface*>(this);
             me->m_matrix.reset(new CoinPackedMatrix(false, n_rows, n_cols));
 
@@ -232,6 +233,55 @@ public:
 
                 me->m_matrix->appendRow(row_vector);
             }
+            */
+            // First pass: count total nonzeros
+            CoinBigIndex nnz = 0;
+            std::vector<int> row_lengths(n_rows);
+
+            for (int i = 0; i < n_rows; ++i) {
+                const auto ctr = model.get_ctr_by_index(i);
+                const auto& row = model.get_ctr_row(ctr);
+
+                row_lengths[i] = row.size();
+                nnz += row_lengths[i];
+            }
+
+            // Allocate storage
+            std::vector<double> elem(nnz);
+            std::vector<int> ind(nnz);
+            std::vector<CoinBigIndex> start(n_rows);
+
+            // Fill data
+            CoinBigIndex pos = 0;
+
+            for (int i = 0; i < n_rows; ++i) {
+                start[i] = pos;
+
+                const auto ctr = model.get_ctr_by_index(i);
+                const auto& row = model.get_ctr_row(ctr);
+
+                for (const auto& [var, constant] : row) {
+                    const int index = (int) model.get_var_index(var);
+                    assert(index >= 0 && index < n_cols);
+
+                    ind[pos] = index;
+                    elem[pos] = constant;
+                    ++pos;
+                }
+            }
+
+            // Build matrix (ROW-ORDERED!)
+            auto* me = const_cast<OsiIdolCglSolverInterface*>(this);
+            me->m_matrix.reset(new CoinPackedMatrix(
+                /* colordered = */ false,
+                /* minor = */ n_cols,
+                /* major = */ n_rows,
+                /* numels = */ nnz,
+                elem.data(),
+                ind.data(),
+                start.data(),
+                row_lengths.data()
+            ));
 
         }
 

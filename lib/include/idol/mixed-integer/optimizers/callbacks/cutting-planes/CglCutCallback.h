@@ -243,12 +243,12 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
 
           return rowType;
         };
-    
+
         CoinPackedMatrix matrixByRow(*m_osi_solver->getMatrixByRow());
 
       int numRows = m_osi_solver->getNumRows();
       int numCols = m_osi_solver->getNumCols();
-      
+
       const char* sense        = m_osi_solver->getRowSense();
       const double* RHS        = m_osi_solver->getRightHandSide();
 
@@ -256,7 +256,7 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
       const int* colInds       = matrixByRow.getIndices();
       const CoinBigIndex* rowStarts     = matrixByRow.getVectorStarts();
       const int* rowLengths    = matrixByRow.getVectorLengths();
-      int iRow      = -1; 
+      int iRow      = -1;
       int iCol      = -1;
 
       auto numCols_ = numCols;     // Record col and row numbers for copy constructor
@@ -269,7 +269,7 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
       rowTypes_ = new CglFlowRowType [numRows];// Destructor will free memory
       // Get integer types
       const char * columnType = m_osi_solver->getColType (true);
-        
+
       // Summarize the row type infomation.
       int numUNDEFINED   = 0;
       int numVARUB       = 0;
@@ -292,7 +292,7 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
 
         CoinDisjointCopyN(colInds + rowStarts[iRow], rowLen, ind);
         CoinDisjointCopyN(coefByRow + rowStarts[iRow], rowLen, coef);
-     
+
         CglFlowRowType rowType = determineOneRowType(*m_osi_solver, rowLen, ind, coef,
 						     sen, rhs);
 
@@ -300,34 +300,34 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
 
         switch(rowType) {
         case  CGLFLOW_ROW_UNDEFINED:
-          ++numUNDEFINED; 
+          ++numUNDEFINED;
           break;
         case  CGLFLOW_ROW_VARUB:
-          ++numVARUB; 
+          ++numVARUB;
           break;
         case  CGLFLOW_ROW_VARLB:
-          ++numVARLB; 
+          ++numVARLB;
           break;
         case  CGLFLOW_ROW_VAREQ:
-          ++numVAREQ; 
+          ++numVAREQ;
           break;
         case  CGLFLOW_ROW_MIXUB:
-          ++numMIXUB; 
+          ++numMIXUB;
           break;
         case  CGLFLOW_ROW_MIXEQ:
-          ++numMIXEQ; 
+          ++numMIXEQ;
           break;
         case  CGLFLOW_ROW_NOBINUB:
-          ++numNOBINUB; 
+          ++numNOBINUB;
           break;
         case  CGLFLOW_ROW_NOBINEQ:
-          ++numNOBINEQ; 
+          ++numNOBINEQ;
           break;
         case  CGLFLOW_ROW_SUMVARUB:
-          ++numSUMVARUB; 
+          ++numSUMVARUB;
           break;
         case  CGLFLOW_ROW_SUMVAREQ:
-          ++numSUMVAREQ; 
+          ++numSUMVAREQ;
           break;
         case  CGLFLOW_ROW_UNINTERSTED:
           ++numUNINTERSTED;
@@ -336,7 +336,7 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
           throw CoinError("Unknown row type", "flowPreprocess",
 		          "CglFlowCover");
         }
-        
+
       }
       delete [] ind;  ind  = NULL;
       delete [] coef; coef = NULL;
@@ -354,21 +354,21 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
         vubs_[iCol].setVar(-1);     // but, need redo since may call
         vlbs_[iCol].setVar(-1);     // preprocess(...) more than once
       }
-      
+
       for (iRow = 0; iRow < numRows; ++iRow) {
-	    
+
         CglFlowRowType rowType2 = rowTypes_[iRow];
-        
-        if ( (rowType2 == CGLFLOW_ROW_VARUB) || 
-	     (rowType2 == CGLFLOW_ROW_VARLB) || 
-	     (rowType2 == CGLFLOW_ROW_VAREQ) )  { 
-          
+
+        if ( (rowType2 == CGLFLOW_ROW_VARUB) ||
+	     (rowType2 == CGLFLOW_ROW_VARLB) ||
+	     (rowType2 == CGLFLOW_ROW_VAREQ) )  {
+
           CoinBigIndex startPos = rowStarts[iRow];
           int index0   = colInds[startPos];
           int index1   = colInds[startPos + 1];
           double coef0 = coefByRow[startPos];
           double coef1 = coefByRow[startPos + 1];
-	        
+
           int    xInd,  yInd;   // x is binary
           double xCoef, yCoef;
 
@@ -397,7 +397,7 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
 	    vlbs_[yInd].setVal(-xCoef / yCoef);
 	    break;
           default:
-	    throw CoinError("Unknown row type: impossible", 
+	    throw CoinError("Unknown row type: impossible",
 			    "flowPreprocess", "CglFlowCover");
           }
         }
@@ -485,9 +485,7 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
                 cut_context.add_accepted_cut();
                 cut_family->add_accepted_cut();
             }
-
         }
-
     }
 #endif
 }
@@ -497,7 +495,7 @@ std::list<idol::TempCtr> idol::CglCutCallback<NodeInfoT>::Strategy::to_idol_cuts
 #ifdef IDOL_USE_CGL
     std::list<TempCtr> result;
 
-    for (unsigned int k = 0, n = t_cuts.sizeRowCuts() ; k < n ; k++) {
+    for (unsigned int k = 0, n = t_cuts.sizeRowCuts(); k < n; k++) {
         auto& cut = *t_cuts.rowCutPtr(k);
 
         if (!cut.consistent()) {
@@ -528,17 +526,21 @@ idol::TempCtr idol::CglCutCallback<NodeInfoT>::Strategy::to_idol_cut(OsiRowCut& 
     if (osi_sense == 'G') {
         cut.set_type(GreaterOrEqual);
         cut.set_rhs(t_cut.lb());
-    } else if (osi_sense == 'L') {
+    }
+    else if (osi_sense == 'L') {
         cut.set_type(LessOrEqual);
         cut.set_rhs(t_cut.ub());
-    } else if (osi_sense == 'R') {
-        if (const double lb = t_cut.lb() ; !is_neg_inf(lb)) {
+    }
+    else if (osi_sense == 'R') {
+        if (const double lb = t_cut.lb(); !is_neg_inf(lb)) {
             cut.set_type(GreaterOrEqual);
             cut.set_rhs(t_cut.lb());
-        } else if (const double ub = t_cut.ub() ; !is_pos_inf(ub)) {
+        }
+        else if (const double ub = t_cut.ub(); !is_pos_inf(ub)) {
             cut.set_type(LessOrEqual);
             cut.set_rhs(t_cut.ub());
-        } else {
+        }
+        else {
             throw Exception("Cgl returned a cut of type R, which is not handled in idol.");
         }
     }
@@ -550,7 +552,7 @@ idol::TempCtr idol::CglCutCallback<NodeInfoT>::Strategy::to_idol_cut(OsiRowCut& 
     const auto* indices = osi_row.getIndices();
     const auto* values = osi_row.getElements();
 
-    for (unsigned int k = 0, n = osi_row.getNumElements() ; k < n ; k++) {
+    for (unsigned int k = 0, n = osi_row.getNumElements(); k < n; k++) {
         const auto& var = model.get_var_by_index(indices[k]);
         cut.lhs() += values[k] * var;
     }
@@ -562,13 +564,12 @@ idol::TempCtr idol::CglCutCallback<NodeInfoT>::Strategy::to_idol_cut(OsiRowCut& 
 }
 
 template <class NodeInfoT>
-std::vector<std::pair<idol::TempCtr, double>> idol::CglCutCallback<NodeInfoT>::Strategy::sort_cuts_by_effectiveness(const std::list<TempCtr>& t_cuts) {
-
+std::vector<std::pair<idol::TempCtr, double>> idol::CglCutCallback<NodeInfoT>::Strategy::sort_cuts_by_effectiveness(
+    const std::list<TempCtr>& t_cuts) {
     std::vector<std::pair<TempCtr, double>> result;
     const auto primal_solution = this->node().info().primal_solution();
 
     for (auto& cut : t_cuts) {
-
         double activity = 0.;
         double norm = 0.;
 
@@ -584,7 +585,6 @@ std::vector<std::pair<idol::TempCtr, double>> idol::CglCutCallback<NodeInfoT>::S
         }
 
         result.emplace_back(std::move(cut), effectiveness);
-
     }
 
     std::sort(result.begin(), result.end(), [](const auto& t_a, const auto& t_b) {
@@ -595,8 +595,8 @@ std::vector<std::pair<idol::TempCtr, double>> idol::CglCutCallback<NodeInfoT>::S
 }
 
 template <class NodeInfoT>
-idol::CglCutCallback<NodeInfoT>::Strategy::NodeCutContext& idol::CglCutCallback<NodeInfoT>::Strategy::get_cut_context() {
-
+idol::CglCutCallback<NodeInfoT>::Strategy::NodeCutContext& idol::CglCutCallback<
+    NodeInfoT>::Strategy::get_cut_context() {
     const auto current_node_id = this->node().id();
 
     if (!m_cut_context || m_cut_context->node_id() != current_node_id) {
