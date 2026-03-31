@@ -682,6 +682,10 @@ std::string idol::Optimizers::HiGHS::get_version() {
 idol::Optimizers::HiGHS::~HiGHS() {
     delete[] m_farkas_certificate;
     delete[] m_extreme_ray;
+    delete[] m_col_dual;
+    delete[] m_col_value;
+    delete[] m_row_value;
+    delete[] m_row_dual;
 }
 
 void idol::Optimizers::HiGHS::update_objective_constant() {
