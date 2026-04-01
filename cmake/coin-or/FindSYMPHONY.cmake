@@ -6,7 +6,7 @@ find_path(
         SYMPHONY_INCLUDE_DIRS
         NAMES symphony.h
         HINTS ${COIN_OR_DIR}
-        PATH_SUFFIXES include/coin)
+        PATH_SUFFIXES include/coin include/coin-or)
 
 find_library(
         SYMPHONY_LIBRARY

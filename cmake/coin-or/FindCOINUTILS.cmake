@@ -6,7 +6,7 @@ find_path(
         COINUTILS_INCLUDE_DIRS
         NAMES CoinModel.hpp
         HINTS ${COIN_OR_DIR}
-        PATH_SUFFIXES include/coin)
+        PATH_SUFFIXES include/coin include/coin-or)
 
 find_library(
         COINUTILS_LIBRARY

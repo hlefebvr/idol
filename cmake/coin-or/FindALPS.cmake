@@ -6,7 +6,7 @@ find_path(
         ALPS_INCLUDE_DIRS
         NAMES Alps.h
         HINTS ${COIN_OR_DIR}
-        PATH_SUFFIXES include/coin)
+        PATH_SUFFIXES include/coin include/coin-or)
 
 find_library(
         ALPS_LIBRARY

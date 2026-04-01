@@ -6,7 +6,7 @@ find_path(
         BCPS_INCLUDE_DIRS
         NAMES Bcps.h
         HINTS ${COIN_OR_DIR}
-        PATH_SUFFIXES include/coin)
+        PATH_SUFFIXES include/coin include/coin-or)
 
 find_library(
         BCPS_LIBRARY

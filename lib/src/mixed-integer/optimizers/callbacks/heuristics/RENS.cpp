@@ -77,6 +77,7 @@ void idol::Heuristics::RENS::Strategy::operator()(idol::CallbackEvent t_event) {
     }
 
     model->use(*m_optimizer_factory);
+    model->optimizer().set_param_time_limit(10);
 
     model->optimize();
 

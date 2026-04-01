@@ -479,6 +479,14 @@ void idol::Optimizers::GLPK::hook_optimize() {
 
     if (lib.glp_get_num_int(m_model) > 0 && m_solution_status == Optimal) {
 
+        m_mip_parameters.gmi_cuts = GLP_ON;
+        m_mip_parameters.clq_cuts = GLP_ON;
+        m_mip_parameters.cov_cuts = GLP_ON;
+        m_mip_parameters.mir_cuts = GLP_ON;
+        m_mip_parameters.fp_heur = GLP_ON;
+        m_mip_parameters.sr_heur = GLP_ON;
+        m_mip_parameters.presolve = GLP_ON;
+
         lib.glp_intopt(m_model, &m_mip_parameters);
         m_solved_as_mip = true;
 

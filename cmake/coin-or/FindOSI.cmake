@@ -2,7 +2,7 @@ find_path(
         OSI_INCLUDE_DIRS
         NAMES OsiConfig.h
         HINTS ${COIN_OR_DIR}
-        PATH_SUFFIXES include/coin)
+        PATH_SUFFIXES include/coin include/coin-or)
 
 if (${USE_OSI_CBC})
     find_library(
