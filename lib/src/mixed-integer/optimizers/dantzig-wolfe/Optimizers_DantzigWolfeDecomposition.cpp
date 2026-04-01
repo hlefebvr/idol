@@ -222,7 +222,7 @@ double idol::Optimizers::DantzigWolfeDecomposition::get_var_reduced_cost(const i
     if (t_var.get(m_formulation.decomposition()) == MasterId) {
         return master.get_var_reduced_cost(t_var);
     }
-    throw Exception("Not implemented get_var_reduced_cost");
+    //throw Exception("Not implemented get_var_reduced_cost");
     const auto& generation_pattern = m_formulation.generation_pattern(t_var);
     double result = generation_pattern.constant().linear().get(t_var);
     for (const auto& [ctr, coefficient] : generation_pattern.linear()) {
