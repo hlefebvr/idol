@@ -623,6 +623,10 @@ void idol::DantzigWolfe::Formulation::remove(const idol::Ctr &t_ctr) {
 
     if (sub_problem_id == MasterId) {
         m_master.remove(t_ctr);
+        const unsigned int n_sub_problems = m_sub_problems.size();
+        for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+            m_generation_patterns[i].linear().remove(t_ctr);
+        }
         return;
     }
 

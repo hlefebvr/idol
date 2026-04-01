@@ -150,7 +150,7 @@ public:
                 const auto type = model.get_ctr_type(ctr);
                 switch (type) {
                 case LessOrEqual:
-                    me.m_row_lower[i] = -std::numeric_limits<double>::infinity();
+                    me.m_row_lower[i] = -Inf;
                     break;
                 case GreaterOrEqual:
                     me.m_row_lower[i] = rhs;
@@ -184,7 +184,7 @@ public:
                     me.m_row_upper[i] = rhs;
                     break;
                 case idol::GreaterOrEqual:
-                    me.m_row_upper[i] = std::numeric_limits<double>::infinity();
+                    me.m_row_upper[i] = Inf;
                     break;
                 case idol::Equal:
                     me.m_row_upper[i] = rhs;
