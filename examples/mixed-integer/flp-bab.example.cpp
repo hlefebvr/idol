@@ -8,6 +8,10 @@
 #include "idol/mixed-integer/optimizers/callbacks/cutting-planes/CglCutCallback.h"
 #include "idol/mixed-integer/optimizers/callbacks/heuristics/LocalMIP.h"
 #include "idol/mixed-integer/optimizers/callbacks/heuristics/RENS.h"
+#include "idol/mixed-integer/optimizers/presolve/BoundRounding.h"
+#include "idol/mixed-integer/optimizers/presolve/OneRowBoundTightening.h"
+#include "idol/mixed-integer/optimizers/presolve/Presolve.h"
+#include "idol/mixed-integer/optimizers/presolve/VariableFixing.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 
 using namespace idol;
@@ -50,8 +54,8 @@ int main(int t_argc, const char** t_argv) {
     Model model(env);
 
     // Add variables
-    auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, 0., "x");
-    auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, 0., "y");
+    auto x = model.add_vars(Dim<1>(n_facilities), 0., 1, Binary, 0., "x");
+    auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1, Binary, 0., "y");
 
     // Add constraints
 
@@ -101,7 +105,11 @@ int main(int t_argc, const char** t_argv) {
         branch_and_bound.add_callback(CglCutCallback());
     }
 
-    branch_and_bound.add_callback(Heuristics::LocalMIP());
+    branch_and_bound.add_presolver(Presolvers::BoundRounding());
+    branch_and_bound.add_presolver(Presolvers::OneRowBoundTightening());
+    //branch_and_bound.add_presolver(Presolvers::VariableFixing());
+
+    //branch_and_bound.add_callback(Heuristics::LocalMIP());
 
     branch_and_bound.with_logger(Logs::BranchAndBound::Info().with_frequency_in_seconds(0));
 

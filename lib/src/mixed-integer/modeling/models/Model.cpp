@@ -104,10 +104,24 @@ void idol::Model::add_column_to_rows(const idol::Var &t_var) {
 
 void idol::Model::add(const Var &t_var) {
     const auto& default_version = m_env[t_var];
+
+    double lb = default_version.lb();
+    double ub = default_version.ub();
+    const auto type = default_version.type();
+
+    if (type != Continuous) {
+        lb = std::ceil(lb - Tolerance::Integer);
+        ub = std::floor(ub + Tolerance::Integer);
+        if (type == Binary) {
+            lb = std::max(0., lb);
+            ub = std::min(1., ub);
+        }
+    }
+
     add(t_var, TempVar(
-             default_version.lb(),
-             default_version.ub(),
-             default_version.type(),
+             lb,
+             ub,
+             type,
              default_version.obj(),
              LinExpr<Ctr>(default_version.column())
     ));

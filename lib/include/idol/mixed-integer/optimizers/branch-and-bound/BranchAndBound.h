@@ -11,6 +11,7 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h"
+#include "idol/mixed-integer/optimizers/presolve/AbstractPresolver.h"
 #include "idol/mixed-integer/optimizers/callbacks/CallbackFactory.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/logs/Factory.h"
@@ -33,6 +34,7 @@ class idol::BranchAndBound : public OptimizerFactoryWithDefaultParameters<Branch
     std::unique_ptr<Logs::BranchAndBound::Factory<NodeT>> m_logger_factory;
     std::unique_ptr<NodeT> m_root_node_info;
 
+    std::list<std::unique_ptr<Presolvers::AbstractPresolver>> m_presolvers;
     std::list<std::unique_ptr<BranchAndBoundCallbackFactory<NodeT>>> m_callbacks;
 
     std::optional<unsigned int> m_subtree_depth;
@@ -205,6 +207,8 @@ public:
      */
     BranchAndBound<NodeT>& add_callback(const CallbackFactory& t_callback);
 
+    BranchAndBound<NodeT>& add_presolver(const Presolvers::AbstractPresolver& t_presolver);
+
     BranchAndBound<NodeT>& with_root_node_info(const NodeT& t_root_node_info);
 };
 
@@ -235,6 +239,12 @@ template<class NodeT>
 idol::BranchAndBound<NodeT> &
 idol::BranchAndBound<NodeT>::add_callback(const CallbackFactory &t_callback) {
     return add_callback(CallbackAsBranchAndBoundCallback<NodeT>(t_callback));
+}
+
+template <class NodeT>
+idol::BranchAndBound<NodeT>& idol::BranchAndBound<NodeT>::add_presolver(const Presolvers::AbstractPresolver& t_presolver) {
+    m_presolvers.emplace_back(t_presolver.clone());
+    return *this;
 }
 
 template <class NodeT>
@@ -331,6 +341,10 @@ idol::BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
           m_logger_factory(t_rhs.m_logger_factory ? t_rhs.m_logger_factory->clone() : nullptr),
           m_root_node_info(t_rhs.m_root_node_info ? t_rhs.m_root_node_info->clone() : nullptr) {
 
+    for (auto& presolve : t_rhs.m_presolvers) {
+        m_presolvers.emplace_back(presolve->clone());
+    }
+
     for (auto& cb : t_rhs.m_callbacks) {
         m_callbacks.emplace_back(cb->clone());
     }
@@ -372,6 +386,10 @@ idol::Optimizer *idol::BranchAndBound<NodeT>::operator()(const Model &t_model) c
 
     if (m_subtree_depth) {
         result->set_subtree_depth(m_subtree_depth.value());
+    }
+
+    for (auto& presolver : m_presolvers) {
+        result->add_presolver(*presolver);
     }
 
     for (auto& cb : m_callbacks) {

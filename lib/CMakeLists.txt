@@ -303,6 +303,17 @@ add_library(idol STATIC
         src/mixed-integer/optimizers/callbacks/heuristics/LocalMIP.cpp
         include/idol/mixed-integer/optimizers/branch-and-bound/CutPool.h
         src/mixed-integer/optimizers/branch-and-bound/CutPool.cpp
+        include/idol/mixed-integer/optimizers/presolve/Presolve.h
+        include/idol/mixed-integer/optimizers/presolve/AbstractPresolver.h
+        include/idol/mixed-integer/optimizers/presolve/OneRowBoundTightening.h
+        src/mixed-integer/optimizers/presolve/Presolve.cpp
+        src/mixed-integer/optimizers/presolve/OneRowBoundTightening.cpp
+        include/idol/mixed-integer/optimizers/presolve/BoundRounding.h
+        src/mixed-integer/optimizers/presolve/BoundRounding.cpp
+        src/mixed-integer/optimizers/presolve/AbstractPresolver.cpp
+        src/mixed-integer/optimizers/presolve/VariableFixing.cpp
+        include/idol/mixed-integer/optimizers/presolve/VariableFixing.h
+        include/idol/general/utils/Queue.h
 )
 
 target_link_libraries(idol PRIVATE dl)

@@ -23,6 +23,9 @@
 #include <cassert>
 #include <fstream>
 
+#include "idol/general/utils/Queue.h"
+#include "idol/mixed-integer/optimizers/presolve/Presolve.h"
+
 namespace idol::Optimizers {
     template<class NodeInfoT> class BranchAndBound;
 }
@@ -35,6 +38,10 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
 
     unsigned int m_n_threads = 1;
+    unsigned int m_solution_pool_size = 10;
+    unsigned int m_current_solution_index = 0;
+    unsigned int m_n_best_incumbent_index = -1;
+    std::unique_ptr<Model> m_presolved_model;
     std::vector<std::unique_ptr<Model>> m_relaxations;
     std::vector<std::unique_ptr<NodeUpdator<NodeInfoT>>> m_node_updators;
 
@@ -44,6 +51,9 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<NodeInfoT> m_root_node_info;
 
     std::unique_ptr<AbstractBranchAndBoundCallbackI<NodeInfoT>> m_callback;
+
+    // Presolve
+    Presolve m_presolve;
 
     // Cuts
     CutPool m_user_cut_pool;
@@ -56,8 +66,10 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     double m_root_node_best_bound = -Inf;
     double m_root_node_best_obj = +Inf;
 
-    std::optional<TreeNode> m_incumbent;
+    Queue<TreeNode> m_incumbents;
 protected:
+    [[nodiscard]] const Model& working_model() const { return m_presolved_model ? *m_presolved_model : parent(); }
+
     void build() override;
     void hook_before_optimize() override;
     void hook_optimize() override;
@@ -123,6 +135,8 @@ public:
 
     virtual void add_callback(BranchAndBoundCallback<NodeInfoT>* t_cb);
 
+    virtual void add_presolver(const Presolvers::AbstractPresolver& t_presolver);
+
     void submit_heuristic_solution(NodeInfoT* t_info);
 
     void submit_lower_bound(double t_lower_bound);
@@ -151,9 +165,9 @@ public:
 
     const BranchingRule<NodeInfoT>& branching_rule() const { return *m_branching_rule; }
 
-    [[nodiscard]] bool has_incumbent() const { return m_incumbent.has_value(); }
+    [[nodiscard]] bool has_incumbent() const { return !m_incumbents.empty(); }
 
-    const TreeNode& incumbent() const { return m_incumbent.value(); }
+    const TreeNode& incumbent() const { return m_incumbents.at(m_current_solution_index); }
 
     [[nodiscard]] double get_var_primal(const Var &t_var) const override;
 
@@ -177,7 +191,9 @@ public:
 
     void set_root_node_info(const NodeInfoT& t_node_info);
 
-    const OptimizerFactory& get_relaxation_optimizer_factory() const;
+    [[nodiscard]] const OptimizerFactory& get_relaxation_optimizer_factory() const;
+
+    [[nodiscard]] double get_best_obj() const override;
 };
 
 template<class NodeInfoT>
@@ -225,9 +241,17 @@ get_relaxation_optimizer_factory() const {
     return *m_relaxation_optimizer_factory;
 }
 
+template <class NodeInfoT>
+double idol::Optimizers::BranchAndBound<NodeInfoT>::get_best_obj() const {
+    if (m_current_solution_index == 0) {
+        return Algorithm::get_best_obj();
+    }
+    return m_incumbents.at(m_current_solution_index).info().objective_value();
+}
+
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::detect_integer_objective() {
-    const auto& src_model = parent();
+    const auto& src_model = working_model();
     const auto& objective = src_model.get_obj_expr();
 
     if (!is_integer(objective.affine().constant(), Tolerance::Integer)) {
@@ -275,9 +299,10 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::log_node_after_solve(const ido
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::set_solution_index(unsigned int t_index) {
-    if (t_index != 0) {
+    if (t_index > m_incumbents.size()) {
         throw Exception("Solution index out of bounds.");
     }
+    m_current_solution_index = t_index;
 }
 
 template<class NodeInfoT>
@@ -287,76 +312,76 @@ unsigned int idol::Optimizers::BranchAndBound<NodeInfoT>::get_solution_index() c
 
 template<class NodeInfoT>
 unsigned int idol::Optimizers::BranchAndBound<NodeInfoT>::get_n_solutions() const {
-    return m_incumbent.has_value();
+    return m_incumbents.size();
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_obj() {
     for (auto& relaxation : m_relaxations) {
-        relaxation->set_obj_expr(parent().get_obj_expr());
+        relaxation->set_obj_expr(working_model().get_obj_expr());
     }
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_rhs() {
     for (auto& relaxation : m_relaxations) {
-        relaxation->set_rhs_expr(parent().get_rhs_expr());
+        relaxation->set_rhs_expr(working_model().get_rhs_expr());
     }
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_obj_constant() {
     for (auto& relaxation : m_relaxations) {
-        relaxation->set_obj_const(parent().get_obj_expr().affine().constant());
+        relaxation->set_obj_const(working_model().get_obj_expr().affine().constant());
     }
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
     for (auto& relaxation : m_relaxations) {
-        relaxation->set_mat_coeff(t_ctr, t_var, parent().get_mat_coeff(t_ctr, t_var));
+        relaxation->set_mat_coeff(t_ctr, t_var, working_model().get_mat_coeff(t_ctr, t_var));
     }
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_ctr_type(const Ctr &t_ctr) {
     for (auto& relaxation : m_relaxations) {
-        relaxation->set_ctr_type(t_ctr, parent().get_ctr_type(t_ctr));
+        relaxation->set_ctr_type(t_ctr, working_model().get_ctr_type(t_ctr));
     }
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_ctr_rhs(const Ctr &t_ctr) {
     for (auto& relaxation : m_relaxations) {
-        relaxation->set_ctr_rhs(t_ctr, parent().get_ctr_rhs(t_ctr));
+        relaxation->set_ctr_rhs(t_ctr, working_model().get_ctr_rhs(t_ctr));
     }
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_var_type(const Var &t_var) {
     for (auto& relaxation : m_relaxations) {
-        relaxation->set_var_type(t_var, parent().get_var_type(t_var));
+        relaxation->set_var_type(t_var, working_model().get_var_type(t_var));
     }
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_var_lb(const Var &t_var) {
     for (auto& relaxation : m_relaxations) {
-        relaxation->set_var_lb(t_var, parent().get_var_lb(t_var));
+        relaxation->set_var_lb(t_var, working_model().get_var_lb(t_var));
     }
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_var_ub(const Var &t_var) {
     for (auto& relaxation : m_relaxations) {
-        relaxation->set_var_ub(t_var, parent().get_var_ub(t_var));
+        relaxation->set_var_ub(t_var, working_model().get_var_ub(t_var));
     }
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_var_obj(const Var &t_var) {
     for (auto& relaxation : m_relaxations) {
-        relaxation->set_var_obj(t_var, parent().get_var_obj(t_var));
+        relaxation->set_var_obj(t_var, working_model().get_var_obj(t_var));
     }
 }
 
@@ -392,11 +417,11 @@ double idol::Optimizers::BranchAndBound<NodeInfoT>::get_var_ray(const Var &t_var
 template<class NodeInfoT>
 double idol::Optimizers::BranchAndBound<NodeInfoT>::get_var_primal(const Var &t_var) const {
 
-    if (!m_incumbent.has_value()){
+    if (!has_incumbent()){
         throw Exception("Trying to access primal values while no incumbent was found.");
     }
 
-    return m_incumbent->info().primal_solution().get(t_var);
+    return incumbent().info().primal_solution().get(t_var);
 }
 
 template<class NodeInfoT>
@@ -470,6 +495,11 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::add_callback(BranchAndBoundCal
     m_callback->add_callback(t_cb);
 }
 
+template <class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::add_presolver(const Presolvers::AbstractPresolver& t_presolver) {
+    m_presolve.add(t_presolver);
+}
+
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::build() {
 
@@ -487,16 +517,15 @@ idol::Optimizers::BranchAndBound<NodeInfoT>::BranchAndBound(const Model &t_model
       m_branching_rule(t_branching_rule_factory(*this)),
       m_node_selection_rule(t_node_selection_rule_factory(*this)),
       m_callback(t_callback),
-      m_logger(t_logger_factory.operator()(*this)) {
-
-    create_relaxations();
+      m_logger(t_logger_factory.operator()(*this)),
+      m_incumbents(m_solution_pool_size) {
 
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::create_relaxations() {
 
-    const auto &original_model = parent();
+    const auto &original_model = working_model();
 
     m_relaxations.clear();
     m_relaxations.reserve(m_n_threads);
@@ -508,7 +537,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::create_relaxations() {
         auto* relaxation = original_model.clone();
         relaxation->use(*m_relaxation_optimizer_factory);
         m_relaxations.emplace_back(relaxation);
-        m_node_updators.emplace_back(dynamic_cast<NodeUpdator<NodeInfoT>*>(NodeInfoT::create_updator(parent(), *relaxation)));
+        m_node_updators.emplace_back(dynamic_cast<NodeUpdator<NodeInfoT>*>(NodeInfoT::create_updator(working_model(), *relaxation)));
     }
 
 }
@@ -539,16 +568,29 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
     // Reset solution
     set_best_bound(std::max(-Inf, get_param_best_obj_stop()));
     set_best_obj(std::min(+Inf, get_param_best_bound_stop()));
-    m_incumbent.reset();
+    m_incumbents.clear();
 
     detect_integer_objective();
 
     m_n_created_nodes = 0;
     m_n_solved_nodes = 0;
     m_n_active_nodes = 0;
+    m_current_solution_index = 0;
 
     m_root_node_best_bound = -Inf;
     m_root_node_best_obj = Inf;
+
+}
+
+template<class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
+
+    if (!m_presolve.empty()) {
+        m_presolved_model.reset(working_model().clone());
+        m_presolve.execute(*m_presolved_model);
+    }
+
+    create_relaxations();
 
     m_branching_rule->initialize();
     for (auto& node_updator : m_node_updators) {
@@ -557,10 +599,6 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
     m_callback->initialize(this);
 
     m_logger->initialize();
-}
-
-template<class NodeInfoT>
-void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
 
     auto root_node = create_root_node();
 
@@ -578,7 +616,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
         return;
     }
 
-    if (!m_incumbent.has_value()) {
+    if (!has_incumbent()) {
 
         if (is_pos_inf(get_best_obj())) {
             set_status(Infeasible);
@@ -713,7 +751,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
     // TODO call callback "before node"
 
     /*
-    for (const auto& var : parent().vars()) {
+    for (const auto& var : working_model().vars()) {
         const double lb = relaxation.get_var_lb(var);
         const double ub = relaxation.get_var_ub(var);
         if (lb > ub + Tolerance::Integer) {
@@ -726,7 +764,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
 
     relaxation.optimize();
 
-    t_node.info().save(parent(), relaxation);
+    t_node.info().save(working_model(), relaxation);
 
     m_branching_rule->on_node_solved(t_node);
 
@@ -837,7 +875,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::set_as_incumbent(const BranchAndBound::TreeNode &t_node) {
 #pragma omp critical
-    m_incumbent = t_node;
+    m_incumbents.push(t_node);
     set_best_obj(t_node.info().objective_value());
     set_status(Feasible);
 }
