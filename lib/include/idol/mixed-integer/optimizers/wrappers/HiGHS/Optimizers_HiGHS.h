@@ -80,11 +80,19 @@ public:
     ~HiGHS() override;
 
     [[nodiscard]] std::string name() const override { return "HiGHS"; }
-    void set_param_time_limit(double t_time_limit) override;
-    void set_param_best_obj_stop(double t_best_obj_stop) override;
-    void set_param_best_bound_stop(double t_best_bound_stop) override;
-    void set_param_presolve(bool t_value) override;
+
+    void set_tol_mip_relative_gap(double t_relative_gap_tolerance) override;
+    void set_tol_mip_absolute_gap(double t_absolute_gap_tolerance) override;
+    void set_tol_integer(double t_tol_integer) override;
+    void set_tol_feasibility(double t_tol_feasibility) override;
+    void set_tol_optimality(double t_tol_optimality) override;
+
     void set_param_logs(bool t_value) override;
+    void set_param_presolve(bool t_value) override;
+    void set_param_time_limit(double t_time_limit) override;
+    void set_param_threads(unsigned int t_value) override;
+    void set_param_best_bound_stop(double t_best_bound_stop) override;
+    void set_param_best_obj_stop(double t_best_obj_stop) override;
 
     static bool is_available();
     static std::string get_version();
@@ -131,6 +139,7 @@ public:
     HIGHS_SYM_PTR(Highs_writeModel);
     HIGHS_SYM_PTR(Highs_version);
     HIGHS_SYM_PTR(Highs_getDoubleInfoValue);
+    HIGHS_SYM_PTR(Highs_setIntOptionValue);
     HIGHS_SYM_PTR(Highs_destroy);
 
     DynamicLib();

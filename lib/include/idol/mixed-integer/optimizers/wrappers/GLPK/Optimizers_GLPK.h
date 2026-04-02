@@ -85,11 +85,22 @@ public:
     explicit GLPK(const Model& t_model, bool t_continuous_relaxation);
 
     [[nodiscard]] std::string name() const override { return "GLPK"; }
-    void set_param_time_limit(double t_time_limit) override;
-    void set_param_best_obj_stop(double t_best_obj_stop) override;
-    void set_param_best_bound_stop(double t_best_bound_stop) override;
-    void set_param_presolve(bool t_value) override;
+
+    // Tolerances
+    void set_tol_mip_relative_gap(double t_tol_mip_relative_gap) override;
+    void set_tol_mip_absolute_gap(double t_mip_tol_absolute_gap) override;
+    void set_tol_feasibility(double t_tol_feasibility) override;
+    void set_tol_integer(double t_tol_integer) override;
+
+    // Parameters
     void set_param_logs(bool t_value) override;
+    void set_param_presolve(bool t_value) override;
+    void set_param_time_limit(double t_time_limit) override;
+    // GLPK is single threads
+    void set_param_best_bound_stop(double t_best_bound_stop) override;
+    void set_param_best_obj_stop(double t_best_obj_stop) override;
+    // No node limit is possible
+    // No inf or unbounded option
 
     static Model read_from_file(Env& t_env, const std::string& t_filename);
 

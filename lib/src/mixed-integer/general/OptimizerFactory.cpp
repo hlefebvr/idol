@@ -15,6 +15,7 @@ idol::Optimizer* idol::OptimizerFactory::operator()(const Model& t_model) const 
     result->set_tol_mip_absolute_gap(m_tol_mip_absolute_gap.value_or(env.get_tol_mip_absolute_gap()));
     result->set_tol_integer(m_tol_integer.value_or(env.get_tol_integer()));
     result->set_tol_feasibility(m_tol_feasibility.value_or(env.get_tol_feasibility()));
+    result->set_tol_optimality(m_tol_optimality.value_or(env.get_tol_optimality()));
 
     // Set parameters
     result->set_param_logs(m_logs.value_or(env.get_param_logs()));

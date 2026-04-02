@@ -33,6 +33,7 @@ protected:
     std::optional<double> m_tol_mip_absolute_gap;
     std::optional<double> m_tol_integer;
     std::optional<double> m_tol_feasibility;
+    std::optional<double> m_tol_optimality;
 
     [[nodiscard]] virtual Optimizer* create(const Model& t_model) const = 0;
 public:
@@ -82,6 +83,7 @@ public:
     CRTP& with_tol_mip_absolute_gap(double t_tol_mip_absolute_gap);
     CRTP& with_tol_integer(double t_tol_integer);
     CRTP& with_tol_feasibility(double t_tol_feasibility);
+    CRTP& with_tol_optimality(double t_tol_optimality);
 
     CRTP& conditional(bool t_conditional_value, const std::function<void(CRTP&)>& t_if);
     CRTP& conditional(bool t_conditional_value, const std::function<void(CRTP&)>& t_if, const std::function<void(CRTP&)>& t_else);
@@ -152,6 +154,18 @@ CRTP& idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_tol_feasibility(do
         throw Exception("A tolerance for feasibility has already been given.");
     }
     m_tol_feasibility = t_tol_feasibility;
+    return crtp();
+}
+
+template <class CRTP>
+CRTP& idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_tol_optimality(double t_tol_optimality) {
+
+    if (m_tol_optimality.has_value()) {
+        throw Exception("An optimality tolerance has already been given.");
+    }
+
+    m_tol_optimality = t_tol_optimality;
+
     return crtp();
 }
 

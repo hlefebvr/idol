@@ -34,6 +34,26 @@ idol::Optimizers::GLPK::GLPK(const Model &t_model, bool t_continuous_relaxation)
 
 }
 
+void idol::Optimizers::GLPK::set_tol_mip_relative_gap(double t_tol_mip_relative_gap) {
+    OptimizerWithLazyUpdates<int, int, int, int>::set_tol_mip_relative_gap(t_tol_mip_relative_gap);
+    m_mip_parameters.mip_gap = t_tol_mip_relative_gap;
+}
+
+void idol::Optimizers::GLPK::set_tol_mip_absolute_gap(double t_mip_tol_absolute_gap) {
+    OptimizerWithLazyUpdates<int, int, int, int>::set_tol_mip_absolute_gap(t_mip_tol_absolute_gap);
+    m_mip_parameters.tol_obj = t_mip_tol_absolute_gap;
+}
+
+void idol::Optimizers::GLPK::set_tol_feasibility(double t_tol_feasibility) {
+    OptimizerWithLazyUpdates<int, int, int, int>::set_tol_feasibility(t_tol_feasibility);
+    m_simplex_parameters.tol_bnd = t_tol_feasibility;
+}
+
+void idol::Optimizers::GLPK::set_tol_integer(double t_tol_integer) {
+    OptimizerWithLazyUpdates<int, int, int, int>::set_tol_integer(t_tol_integer);
+    m_mip_parameters.tol_int = t_tol_integer;
+}
+
 std::string idol::Optimizers::GLPK::DynamicLib::find_library() {
 
     // 1. Environment variable override

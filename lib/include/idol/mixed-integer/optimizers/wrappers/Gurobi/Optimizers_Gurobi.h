@@ -90,25 +90,26 @@ public:
     [[nodiscard]] const GRBmodel* model() const { return m_model; }
 
     [[nodiscard]] std::string name() const override { return "Gurobi"; }
-    void set_param_time_limit(double t_time_limit) override;
-    void set_param_threads(unsigned int t_thread_limit) override;
-    void set_param_best_obj_stop(double t_best_obj_stop) override;
-    void set_param_best_bound_stop(double t_best_bound_stop) override;
-    void set_param_presolve(bool t_value) override;
-    void set_param_infeasible_or_unbounded_info(bool t_value) override;
     void add_callback(Callback* t_ptr_to_callback);
     void set_lazy_cut(bool t_value);
     void set_max_n_solution_in_pool(unsigned int t_value);
-    void set_param_logs(bool t_value) override;
-    void set_param(const std::string& t_param, int t_value);
-    void set_param(const std::string& t_param, double t_value);
+
     void set_tol_mip_relative_gap(double t_relative_gap_tolerance) override;
     void set_tol_mip_absolute_gap(double t_absolute_gap_tolerance) override;
+    void set_tol_integer(double t_tol_integer) override;
     void set_tol_feasibility(double t_tol_feasibility) override;
     void set_tol_optimality(double t_tol_optimality) override;
-    void set_tol_integer(double t_tol_integer) override;
 
-    // static Model read_from_file(Env& t_env, const std::string& t_filename);
+    void set_param_logs(bool t_value) override;
+    void set_param_presolve(bool t_value) override;
+    void set_param_time_limit(double t_time_limit) override;
+    void set_param_threads(unsigned int t_thread_limit) override;
+    void set_param_best_bound_stop(double t_best_bound_stop) override;
+    void set_param_best_obj_stop(double t_best_obj_stop) override;
+    void set_param_infeasible_or_unbounded_info(bool t_value) override;
+
+    void set_param(const std::string& t_param, int t_value);
+    void set_param(const std::string& t_param, double t_value);
 
     static bool is_available();
     static std::string get_version();

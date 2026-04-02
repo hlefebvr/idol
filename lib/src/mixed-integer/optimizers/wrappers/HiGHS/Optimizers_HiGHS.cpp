@@ -111,6 +111,7 @@ idol::Optimizers::HiGHS::DynamicLib::DynamicLib() {
     HIGHS_SYM_LOAD(Highs_writeModel);
     HIGHS_SYM_LOAD(Highs_version);
     HIGHS_SYM_LOAD(Highs_getDoubleInfoValue);
+    HIGHS_SYM_LOAD(Highs_setIntOptionValue);
     HIGHS_SYM_LOAD(Highs_destroy);
 }
 
@@ -554,28 +555,52 @@ void idol::Optimizers::HiGHS::run_without_presolve() {
     }
 }
 
+void idol::Optimizers::HiGHS::set_tol_mip_relative_gap(double t_relative_gap_tolerance) {
+    OptimizerWithLazyUpdates::set_tol_mip_relative_gap(t_relative_gap_tolerance);
+    auto& lib = get_dynamic_lib();
+    lib.Highs_setDoubleOptionValue(m_model, "mip_rel_gap", t_relative_gap_tolerance);
+}
+
+void idol::Optimizers::HiGHS::set_tol_mip_absolute_gap(double t_absolute_gap_tolerance) {
+    OptimizerWithLazyUpdates::set_tol_mip_absolute_gap(t_absolute_gap_tolerance);
+    auto& lib = get_dynamic_lib();
+    lib.Highs_setDoubleOptionValue(m_model, "mip_abs_gap", t_absolute_gap_tolerance);
+}
+
+void idol::Optimizers::HiGHS::set_tol_integer(double t_tol_integer) {
+    OptimizerWithLazyUpdates::set_tol_integer(t_tol_integer);
+    auto& lib = get_dynamic_lib();
+    lib.Highs_setDoubleOptionValue(m_model, "mip_feasibility_tolerance", t_tol_integer);
+}
+
 void idol::Optimizers::HiGHS::set_param_time_limit(double t_time_limit) {
     auto& lib = get_dynamic_lib();
     lib.Highs_setDoubleOptionValue(m_model, "time_limit", lib.Highs_getRunTime(m_model) + t_time_limit);
-    Optimizer::set_param_time_limit(t_time_limit);
+    OptimizerWithLazyUpdates::set_param_time_limit(t_time_limit);
 }
 
 void idol::Optimizers::HiGHS::set_param_best_obj_stop(double t_best_obj_stop) {
     auto& lib = get_dynamic_lib();
     lib.Highs_setDoubleOptionValue(m_model, "objective_target", t_best_obj_stop);
-    Optimizer::set_param_best_obj_stop(t_best_obj_stop);
+    OptimizerWithLazyUpdates::set_param_best_obj_stop(t_best_obj_stop);
 }
 
 void idol::Optimizers::HiGHS::set_param_best_bound_stop(double t_best_bound_stop) {
     auto& lib = get_dynamic_lib();
     lib.Highs_setDoubleOptionValue(m_model, "objective_bound", t_best_bound_stop);
-    Optimizer::set_param_best_bound_stop(t_best_bound_stop);
+    OptimizerWithLazyUpdates::set_param_best_bound_stop(t_best_bound_stop);
 }
 
 void idol::Optimizers::HiGHS::set_param_presolve(bool t_value) {
     auto& lib = get_dynamic_lib();
     lib.Highs_setOptionValue(m_model, "presolve", t_value ? "on" : "off");
-    Optimizer::set_param_presolve(t_value);
+    OptimizerWithLazyUpdates::set_param_presolve(t_value);
+}
+
+void idol::Optimizers::HiGHS::set_param_threads(unsigned int t_value) {
+    OptimizerWithLazyUpdates<int, int, int, int>::set_param_threads(t_value);
+    auto& lib = get_dynamic_lib();
+    lib.Highs_setIntOptionValue(m_model, "threads", t_value);
 }
 
 idol::SolutionStatus idol::Optimizers::HiGHS::get_status() const {
@@ -664,10 +689,22 @@ void idol::Optimizers::HiGHS::set_solution_index(unsigned int t_index) {
     }
 }
 
+void idol::Optimizers::HiGHS::set_tol_feasibility(double t_tol_feasibility) {
+    OptimizerWithLazyUpdates::set_tol_feasibility(t_tol_feasibility);
+    auto& lib = get_dynamic_lib();
+    lib.Highs_setDoubleOptionValue(m_model, "primal_feasibility_tolerance", t_tol_feasibility);
+}
+
+void idol::Optimizers::HiGHS::set_tol_optimality(double t_tol_optimality) {
+    OptimizerWithLazyUpdates::set_tol_optimality(t_tol_optimality);
+    auto& lib = get_dynamic_lib();
+    lib.Highs_setDoubleOptionValue(m_model, "optimality_tolerance", t_tol_optimality);
+}
+
 void idol::Optimizers::HiGHS::set_param_logs(bool t_value) {
     auto& lib = get_dynamic_lib();
     lib.Highs_setBoolOptionValue(m_model, "output_flag", t_value);
-    Optimizer::set_param_logs(t_value);
+    OptimizerWithLazyUpdates::set_param_logs(t_value);
 }
 
 bool idol::Optimizers::HiGHS::is_available() {

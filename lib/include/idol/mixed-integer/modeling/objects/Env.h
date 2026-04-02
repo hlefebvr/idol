@@ -57,7 +57,7 @@ class idol::impl::Env {
     double m_tol_mip_absolute_gap = 1e-5;
     double m_tol_integer = 1e-5;
     double m_tol_feasibility = 1e-6;
-    //double m_tol_min_reduced_cost = 1e-6;
+    double m_tol_optimality = 1e-6;
 
     // Parameters
     bool m_param_logs = false;
@@ -162,7 +162,7 @@ public:
     [[nodiscard]] double get_tol_mip_absolute_gap() const { return m_tol_mip_absolute_gap; }
     [[nodiscard]] double get_tol_integer() const { return m_tol_integer; }
     [[nodiscard]] double get_tol_feasibility() const { return m_tol_feasibility; }
-    //[[nodiscard]] double get_tol_min_reduced_cost() const { return m_tol_min_reduced_cost; }
+    [[nodiscard]] double get_tol_optimality() const { return m_tol_optimality; }
 
     // Parameters
     [[nodiscard]] bool get_param_logs() const { return m_param_logs; }
