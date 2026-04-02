@@ -31,7 +31,7 @@ class idol::CutPool {
     bool add_existing_cut_to_relaxation(const Ctr& t_cut, Model& t_relaxation);
 public:
     bool add_cut(const TempCtr& t_cut, Model& t_relaxation);
-    unsigned int recycle(const PrimalPoint& t_current_point, Model& t_relaxation);
+    unsigned int recycle(const PrimalPoint& t_current_point, Model& t_relaxation, double t_tol_feasibility);
     void clean_up(Model& t_relaxation);
 
     static double cosine(const Env& t_env, const Ctr& t_cut1, const Ctr& t_cut2);

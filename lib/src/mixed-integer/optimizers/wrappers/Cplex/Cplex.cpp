@@ -5,12 +5,10 @@
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 
 
-idol::Optimizer *idol::Cplex::operator()(const Model &t_model) const {
+idol::Optimizer *idol::Cplex::create(const Model &t_model) const {
 #ifdef IDOL_USE_CPLEX
 
     auto* result = new Optimizers::Cplex(t_model, m_continuous_relaxation.has_value() && m_continuous_relaxation.value());
-
-    this->handle_default_parameters(result);
 
     for (auto& cb : m_callbacks) {
         result->add_callback(cb->operator()());

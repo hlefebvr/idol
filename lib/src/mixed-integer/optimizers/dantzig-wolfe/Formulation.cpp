@@ -10,7 +10,8 @@
 
 idol::DantzigWolfe::Formulation::Formulation(const idol::Model &t_original_formulation,
                                              const idol::Annotation<unsigned int>& t_decomposition)
-    : m_decomposition(t_decomposition),
+    : m_original_formulation(t_original_formulation),
+      m_decomposition(t_decomposition),
       m_master(t_original_formulation.env())
 {
 
@@ -261,8 +262,9 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
                                                                  double t_upper_multiplicity) {
 
     auto& env = m_master.env();
+    const double tol_feasibility = m_original_formulation.env().get_tol_feasibility();
 
-    if (!equals(t_lower_multiplicity, 0., Tolerance::Feasibility) && !is_neg_inf(t_lower_multiplicity)) {
+    if (!equals(t_lower_multiplicity, 0., tol_feasibility) && !is_neg_inf(t_lower_multiplicity)) {
 
         Ctr lower(env, GreaterOrEqual, t_lower_multiplicity);
         m_master.add(lower);
@@ -376,10 +378,12 @@ void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, doub
         return;
     }
 
+    const double tol_feasibility = m_original_formulation.optimizer().get_tol_feasibility();
+
     if (t_remove_infeasible_columns) {
         remove_column_if(sub_problem_id, [&](const Var &t_object, const PrimalPoint &t_generator)-> bool {
             const double value = t_generator.get(t_var);
-            return !is(value, GreaterOrEqual, t_lb, Tolerance::Feasibility);
+            return !is(value, GreaterOrEqual, t_lb, tol_feasibility);
         });
     }
 
@@ -400,10 +404,12 @@ void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, doub
         return;
     }
 
+    const double tol_feasibility = m_original_formulation.optimizer().get_tol_feasibility();
+
     if (t_remove_infeasible_columns) {
         remove_column_if(sub_problem_id, [&](const Var &t_object, const PrimalPoint &t_generator)-> bool {
             const double value = t_generator.get(t_var);
-            return !is(value, LessOrEqual, t_ub, Tolerance::Feasibility);
+            return !is(value, LessOrEqual, t_ub, tol_feasibility);
         });
     }
 
@@ -677,6 +683,7 @@ bool
 idol::DantzigWolfe::Formulation::is_feasible(const idol::PrimalPoint &t_primal, unsigned int t_sub_problem_id) {
 
     const auto& model = m_sub_problems[t_sub_problem_id];
+    const double tol_feasibility = m_original_formulation.optimizer().get_tol_feasibility();
 
     // Check bounds
     for (const auto& var : model.vars()) {
@@ -686,9 +693,9 @@ idol::DantzigWolfe::Formulation::is_feasible(const idol::PrimalPoint &t_primal, 
         const double value = t_primal.get(var);
 
         if (
-                !is(value, GreaterOrEqual, lb, Tolerance::Feasibility)
+                !is(value, GreaterOrEqual, lb, tol_feasibility)
                 ||
-                !is(value, LessOrEqual, ub, Tolerance::Feasibility)
+                !is(value, LessOrEqual, ub, tol_feasibility)
             ) {
             return false;
         }
@@ -703,7 +710,7 @@ idol::DantzigWolfe::Formulation::is_feasible(const idol::PrimalPoint &t_primal, 
         const double rhs = model.get_ctr_rhs(ctr);
         const auto& type = model.get_ctr_type(ctr);
 
-        if (!is(lhs, type, rhs, Tolerance::Feasibility)) {
+        if (!is(lhs, type, rhs, tol_feasibility)) {
             return false;
         }
 

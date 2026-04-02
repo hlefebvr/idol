@@ -14,6 +14,8 @@
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/mixed-integer/optimizers/padm/PADM.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h"
+#include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
 
 using namespace idol;
 
@@ -130,7 +132,7 @@ int main(int t_argc, const char** t_argv) {
 
     const auto mibs = Bilevel::MibS()
             .with_cplex_for_feasibility(true)
-            .with_logs(true)
+            .with_logs(false)
             ;
 
     /************************************************/
@@ -144,11 +146,9 @@ int main(int t_argc, const char** t_argv) {
 
             .with_master_optimizer(Gurobi())
 
-            .add_feasibility_separation_optimizer(padm)
-            .add_feasibility_separation_optimizer(mibs)
+            .add_separation(Robust::CCG::FeasibilitySeparation().with_bilevel_optimizer(mibs).with_integer_slack_variables(true))
+            .add_separation(Robust::CCG::OptimalitySeparation().with_bilevel_optimizer(mibs))
 
-            .add_optimality_separation_optimizer(padm)
-            .add_optimality_separation_optimizer(mibs)
             .with_logs(true);
 
     model.use(ccg);

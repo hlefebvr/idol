@@ -23,6 +23,7 @@ void idol::Robust::BBBB::Formulation::build_model() {
     const auto& uncertainty_set = robust_optimization.uncertainty_set();
     const auto& bilevel_description = m_parent.get_bilevel_description();
     const auto& original_model = m_parent.parent();
+    const double tol_feasibility = m_parent.get_tol_feasibility();
 
     if (m_parent.relax_first_stage_decisions()) {
         for (const auto& var : original_model.vars()) {
@@ -73,7 +74,7 @@ void idol::Robust::BBBB::Formulation::build_model() {
         const auto var_type = m_model.get_var_type(t_var);
         const double ub = m_model.get_var_ub(t_var);
         const double lb = m_model.get_var_lb(t_var);
-        if (lb <= -Tolerance::Feasibility) {
+        if (lb <= -tol_feasibility) {
             throw Exception("Only implemented for non-negative variables.");
         }
         const auto product = m_model.add_var(0., ub, var_type, 0., "__product_" + t_var.name() + "_" + t_unc_param.name());

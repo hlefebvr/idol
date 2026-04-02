@@ -19,6 +19,8 @@ namespace idol {
 }
 
 class idol::PenaltyMethod : public OptimizerFactoryWithDefaultParameters<PenaltyMethod> {
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     explicit PenaltyMethod(Annotation<double> t_penalized_constraints);
 
@@ -35,8 +37,6 @@ public:
     PenaltyMethod& with_penalty_update(const PenaltyUpdate& t_penalty_update);
 
     PenaltyMethod& with_feasible_solution_status(SolutionStatus t_status);
-
-    Optimizers::PADM *operator()(const Model &t_model) const override;
 
     PenaltyMethod& operator+=(const OptimizerFactory& t_optimizer_factory);
 

@@ -17,7 +17,7 @@ idol::Bilevel::KKT::KKT(const idol::Bilevel::Description &t_description,
 
 }
 
-idol::Optimizer *idol::Bilevel::KKT::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::Bilevel::KKT::create(const idol::Model &t_model) const {
 
     if (!m_single_level_optimizer) {
         throw Exception("No deterministic optimizer has been set.");
@@ -36,8 +36,6 @@ idol::Optimizer *idol::Bilevel::KKT::operator()(const idol::Model &t_model) cons
                                                 *m_single_level_optimizer,
                                                 m_bound_provider,
                                                 m_use_sos1.value_or(false));
-
-    handle_default_parameters(result);
 
     return result;
 }

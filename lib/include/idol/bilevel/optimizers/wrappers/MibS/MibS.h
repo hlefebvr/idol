@@ -23,6 +23,8 @@ class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS>, 
     std::optional<bool> m_use_cplex_for_feasibility;
     std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
     void* m_osi_interface = nullptr;
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     MibS() = default;
 
@@ -33,8 +35,6 @@ public:
 
     MibS& operator=(const MibS&) = delete;
     MibS& operator=(MibS&&) noexcept = delete;
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     void set_bilevel_description(const Description &t_bilevel_description) override;
 

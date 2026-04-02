@@ -110,8 +110,9 @@ void idol::Model::add(const Var &t_var) {
     const auto type = default_version.type();
 
     if (type != Continuous) {
-        lb = std::ceil(lb - Tolerance::Integer);
-        ub = std::floor(ub + Tolerance::Integer);
+        const double tol_integer = m_env.get_tol_integer();
+        lb = std::ceil(lb - tol_integer);
+        ub = std::floor(ub + tol_integer);
         if (type == Binary) {
             lb = std::max(0., lb);
             ub = std::min(1., ub);

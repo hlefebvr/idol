@@ -210,7 +210,6 @@ add_library(idol STATIC
         include/idol/mixed-integer/modeling/constraints/QCtr.h
         include/idol/mixed-integer/modeling/constraints/QCtrVersion.h
         include/idol/mixed-integer/modeling/constraints/TempQCtr.h
-        src/mixed-integer/modeling/constraints/TempQCtr.cpp
         src/mixed-integer/modeling/constraints/QCtrVersion.cpp
         src/mixed-integer/modeling/constraints/QCtr.cpp
         include/idol/general/utils/GenerationPattern.h
@@ -247,7 +246,6 @@ add_library(idol STATIC
         src/bilevel/optimizers/BranchAndCut/BranchAndCut.cpp
         src/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.cpp
         include/idol/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.h
-        src/robust/optimizers/KAdaptabilityBranchAndBound/KAdaptabilityBranchAndBound.cpp
         include/idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h
         src/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.cpp
         src/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.cpp
@@ -314,6 +312,7 @@ add_library(idol STATIC
         src/mixed-integer/optimizers/presolve/VariableFixing.cpp
         include/idol/mixed-integer/optimizers/presolve/VariableFixing.h
         include/idol/general/utils/Queue.h
+        src/mixed-integer/general/OptimizerFactory.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)

@@ -3,6 +3,7 @@
 //
 #include "idol/mixed-integer/optimizers/callbacks/heuristics/RENS.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
+#include "idol/mixed-integer/modeling/objects/Env.h"
 
 idol::Heuristics::RENS::RENS(const RENS& t_src)
     : m_optimizer_factory(t_src.m_optimizer_factory->clone()),
@@ -39,6 +40,7 @@ void idol::Heuristics::RENS::Strategy::operator()(idol::CallbackEvent t_event) {
     }
 
     const auto& primal_solution = this->primal_solution();
+    const auto& tol_integer = this->original_model().optimizer().get_tol_integer();
 
     std::unique_ptr<Model> model(original_model().clone());
 
@@ -56,7 +58,7 @@ void idol::Heuristics::RENS::Strategy::operator()(idol::CallbackEvent t_event) {
 
         const double value = primal_solution.get(var);
 
-        if (is_integer(value, Tolerance::Integer)) {
+        if (is_integer(value, tol_integer)) {
             ++n_fixed_variables;
         }
 

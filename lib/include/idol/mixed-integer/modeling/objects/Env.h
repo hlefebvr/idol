@@ -6,6 +6,7 @@
 #define IDOL_ENV_H
 
 #include <list>
+#include <thread>
 
 #include "idol/mixed-integer/modeling/variables/Var.h"
 #include "idol/mixed-integer/modeling/variables/VarVersion.h"
@@ -51,6 +52,24 @@ public:
 };
 
 class idol::impl::Env {
+    // Tolerances
+    double m_tol_mip_relative_gap = 1e-4;
+    double m_tol_mip_absolute_gap = 1e-5;
+    double m_tol_integer = 1e-5;
+    double m_tol_feasibility = 1e-6;
+    //double m_tol_min_reduced_cost = 1e-6;
+
+    // Parameters
+    bool m_param_logs = false;
+    bool m_param_presolve = true;
+    double m_param_time_limit = std::numeric_limits<double>::max();
+    unsigned int m_param_thread_limit;
+    double m_param_best_bound_stop = Inf;
+    double m_param_best_obj_stop = -Inf;
+    unsigned int m_param_iteration_limit = std::numeric_limits<unsigned int>::max();
+    bool m_param_infeasible_or_unbounded_info = false;
+
+    // Objects
     unsigned int m_max_object_id = 0;
 
     IdProvider<1> m_model_ids;
@@ -119,7 +138,7 @@ protected:
     }
 
 public:
-    Env() = default;
+    Env() : m_param_thread_limit(std::max<unsigned int>(std::thread::hardware_concurrency(), 1)) {}
 
     Env(const Env&) = delete;
     Env(Env&&) noexcept = delete;
@@ -137,6 +156,23 @@ public:
     const auto& operator[](const T& t_object) const {
         return t_object.versions().get_default();
     }
+
+    // Tolerances
+    [[nodiscard]] double get_tol_mip_relative_gap() const { return m_tol_mip_relative_gap; }
+    [[nodiscard]] double get_tol_mip_absolute_gap() const { return m_tol_mip_absolute_gap; }
+    [[nodiscard]] double get_tol_integer() const { return m_tol_integer; }
+    [[nodiscard]] double get_tol_feasibility() const { return m_tol_feasibility; }
+    //[[nodiscard]] double get_tol_min_reduced_cost() const { return m_tol_min_reduced_cost; }
+
+    // Parameters
+    [[nodiscard]] bool get_param_logs() const { return m_param_logs; }
+    [[nodiscard]] bool get_param_presolve() const { return m_param_presolve; }
+    [[nodiscard]] double get_param_time_limit() const { return m_param_time_limit; }
+    [[nodiscard]] unsigned int get_param_thread_limit() const { return m_param_thread_limit; }
+    [[nodiscard]] double get_param_best_bound_stop() const { return m_param_best_bound_stop; }
+    [[nodiscard]] double get_param_best_obj_stop() const { return m_param_best_obj_stop; }
+    [[nodiscard]] unsigned int get_param_iteration_limit() const { return m_param_iteration_limit; }
+    [[nodiscard]] bool get_param_infeasible_or_unbounded_info() const { return m_param_infeasible_or_unbounded_info; }
 
 };
 

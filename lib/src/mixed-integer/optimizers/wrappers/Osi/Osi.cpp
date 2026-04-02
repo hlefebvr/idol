@@ -21,7 +21,7 @@ idol::Osi::Osi(const idol::Osi &t_src) : OptimizerFactoryWithDefaultParameters<O
 
 }
 
-idol::Optimizer *idol::Osi::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::Osi::create(const idol::Model &t_model) const {
 #ifdef IDOL_USE_OSI
     return new Optimizers::Osi(t_model, *m_solver_interface, m_continuous_relaxation);
 #else

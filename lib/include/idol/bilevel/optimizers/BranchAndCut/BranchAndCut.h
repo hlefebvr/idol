@@ -15,6 +15,8 @@ namespace idol::Bilevel {
 class idol::Bilevel::BranchAndCut : public OptimizerFactoryWithDefaultParameters<BranchAndCut>, public Bilevel::OptimizerInterface {
     const Bilevel::Description* m_description = nullptr;
     std::unique_ptr<OptimizerFactory> m_optimizer_for_sub_problems;
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     BranchAndCut() = default;
 
@@ -25,8 +27,6 @@ public:
 
     BranchAndCut& operator=(const BranchAndCut&) = delete;
     BranchAndCut& operator=(BranchAndCut&&) noexcept = delete;
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     BranchAndCut& with_sub_problem_optimizer(const OptimizerFactory& t_optimizer);
 

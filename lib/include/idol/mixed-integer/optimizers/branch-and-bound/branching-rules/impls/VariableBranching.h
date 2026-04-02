@@ -23,9 +23,10 @@ public:
     virtual bool is_valid(const Node<NodeInfoT> &t_node) {
 
         const auto& primal_solution = t_node.info().primal_solution();
+        const double tol_integer = this->parent().get_tol_integer();
 
         for (const auto& var : m_branching_candidates) {
-            if (const double value = primal_solution.get(var) ; !is_integer(value, Tolerance::Integer)) {
+            if (const double value = primal_solution.get(var) ; !is_integer(value, tol_integer)) {
                 return false;
             }
         }
@@ -83,9 +84,10 @@ protected:
     std::list<Var> get_invalid_variables(const PrimalPoint& t_primal_solution) {
 
         std::list<Var> result;
+        const double tol_integer = this->parent().get_tol_integer();
 
         for (const auto& var : m_branching_candidates) {
-            if (const double value = t_primal_solution.get(var) ; !is_integer(value, Tolerance::Integer)) {
+            if (const double value = t_primal_solution.get(var) ; !is_integer(value, tol_integer)) {
                 result.emplace_back(var);
             }
         }

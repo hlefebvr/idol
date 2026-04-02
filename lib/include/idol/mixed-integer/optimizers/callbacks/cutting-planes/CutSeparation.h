@@ -20,8 +20,6 @@ class idol::impl::CutSeparation : public Callback {
     GenerationPattern<Ctr> m_cut_pattern;
     GenerationPattern<Ctr> m_separation_objective_pattern;
     CtrType m_type;
-
-    double m_tolerance = idol::Tolerance::Feasibility;
 protected:
     void operator()(CallbackEvent t_event) override;
 

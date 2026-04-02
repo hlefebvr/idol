@@ -5,11 +5,9 @@
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/general/utils/exceptions/Exception.h"
 
-idol::Optimizer *idol::Gurobi::operator()(const Model &t_model) const {
+idol::Optimizer *idol::Gurobi::create(const Model &t_model) const {
 
     auto* result = new Optimizers::Gurobi(t_model, m_continuous_relaxation.has_value() && m_continuous_relaxation.value());
-
-    this->handle_default_parameters(result);
 
     for (auto& cb : m_callbacks) {
         result->add_callback(cb->operator()());

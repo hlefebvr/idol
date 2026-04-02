@@ -21,7 +21,7 @@ idol::Robust::ScenarioBasedKAdaptabilityProblemSolver::ScenarioBasedKAdaptabilit
 
 }
 
-idol::Optimizer *idol::Robust::ScenarioBasedKAdaptabilityProblemSolver::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::Robust::ScenarioBasedKAdaptabilityProblemSolver::create(const idol::Model &t_model) const {
 
     if (m_K == 0) {
         throw Exception("K must be at least 1.");
@@ -39,8 +39,6 @@ idol::Optimizer *idol::Robust::ScenarioBasedKAdaptabilityProblemSolver::operator
                                                                                    m_K,
                                                                                    *m_main_optimizer,
                                                                                    *separation_optimizer);
-
-    handle_default_parameters(result);
 
     return result;
 }

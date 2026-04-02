@@ -22,7 +22,7 @@ idol::Robust::BilevelBasedBranchAndBound::BilevelBasedBranchAndBound(const Bilev
 
 }
 
-idol::Optimizer* idol::Robust::BilevelBasedBranchAndBound::operator()(const Model& t_model) const {
+idol::Optimizer* idol::Robust::BilevelBasedBranchAndBound::create(const Model& t_model) const {
 
     if (!m_optimality_bilevel_optimizer) { // TODO build a default optimizer
         throw Exception("No bilevel optimizer for optimality has been configured.");
@@ -35,8 +35,6 @@ idol::Optimizer* idol::Robust::BilevelBasedBranchAndBound::operator()(const Mode
                                                               m_feasibility_bilevel_optimizer ? *m_feasibility_bilevel_optimizer : *m_optimality_bilevel_optimizer,
                                                               m_with_first_stage_relaxation.value_or(false)
     );
-
-    handle_default_parameters(result);
 
     return result;
 }

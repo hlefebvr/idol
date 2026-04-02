@@ -25,6 +25,8 @@ class idol::Gurobi : public OptimizerFactoryWithDefaultParameters<Gurobi> {
 
     Map<std::string, int> m_int_params;
     Map<std::string, double> m_double_params;
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     Gurobi() = default;
 
@@ -33,8 +35,6 @@ public:
 
     Gurobi& operator=(const Gurobi&) = delete;
     Gurobi& operator=(Gurobi&&) noexcept = default;
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     static Gurobi ContinuousRelaxation();
 

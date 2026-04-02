@@ -16,15 +16,13 @@ idol::JuMP::JuMP(std::string t_module) : JuMP(std::move(t_module), false) {
 
 }
 
-idol::Optimizer *idol::JuMP::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::JuMP::create(const idol::Model &t_model) const {
 #ifdef IDOL_USE_JULIA
     auto* result = new Optimizers::JuMP(t_model,
                                         m_module,
                                         m_optimizer_name.value_or(m_module + ".Optimizer"),
                                         m_is_continuous_relaxation
                                         );
-
-    handle_default_parameters(result);
 
     return result;
 #else

@@ -163,9 +163,11 @@ void idol::Optimizers::Robust::BilevelBasedBranchAndBound::Node::save(const Mode
          return;
     }
 
+    const double tol_integer = t_original_formulation.optimizer().get_tol_integer();
+
     if (m_parent->relax_first_stage_decisions()) {
         for (const auto& [var, val] : solution) {
-            if (!is_integer(val, Tolerance::Integer)) {
+            if (!is_integer(val, tol_integer)) {
                 return;
             }
         }

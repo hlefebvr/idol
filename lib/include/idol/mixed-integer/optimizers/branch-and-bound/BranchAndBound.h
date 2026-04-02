@@ -39,6 +39,8 @@ class idol::BranchAndBound : public OptimizerFactoryWithDefaultParameters<Branch
 
     std::optional<unsigned int> m_subtree_depth;
     std::optional<unsigned int> m_log_frequency;
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     /**
      * This type is used to exploit [SFINAE](https://en.wikipedia.org/wiki/Substitution_failure_is_not_an_error)
@@ -148,8 +150,6 @@ public:
     BranchAndBound(BranchAndBound&&) noexcept = default;
     BranchAndBound& operator=(const BranchAndBound&) = delete;
     BranchAndBound& operator=(BranchAndBound&&) noexcept = delete;
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] OptimizerFactory *clone() const override;
 
@@ -352,7 +352,7 @@ idol::BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
 }
 
 template<class NodeT>
-idol::Optimizer *idol::BranchAndBound<NodeT>::operator()(const Model &t_model) const {
+idol::Optimizer *idol::BranchAndBound<NodeT>::create(const Model &t_model) const {
 
     if (!m_relaxation_optimizer_factory) {
         throw Exception("No node solver has been given, please call BranchAndBound::with_node_optimizer to configure.");
@@ -377,8 +377,6 @@ idol::Optimizer *idol::BranchAndBound<NodeT>::operator()(const Model &t_model) c
                                                          *m_node_selection_rule_factory,
                                                          new BranchAndBoundCallbackI<NodeT>(),
                                                          m_logger_factory ? *m_logger_factory : *default_logger_factory);
-
-    this->handle_default_parameters(result);
 
     if (m_root_node_info) {
         result->set_root_node_info(*m_root_node_info);

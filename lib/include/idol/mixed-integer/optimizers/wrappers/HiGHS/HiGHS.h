@@ -16,6 +16,8 @@ class idol::HiGHS : public OptimizerFactoryWithDefaultParameters<HiGHS> {
     std::optional<bool> m_continuous_relaxation;
 
     explicit HiGHS(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     HiGHS() = default;
 
@@ -24,8 +26,6 @@ public:
 
     HiGHS& operator=(const HiGHS&) = delete;
     HiGHS& operator=(HiGHS&&) noexcept = delete;
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     static HiGHS ContinuousRelaxation();
 

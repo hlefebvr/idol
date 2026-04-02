@@ -170,7 +170,7 @@ void idol::Bilevel::PessimisticAsOptimistic::set_bilevel_description(const idol:
     m_description = &t_bilevel_description;
 }
 
-idol::Optimizer *idol::Bilevel::PessimisticAsOptimistic::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::Bilevel::PessimisticAsOptimistic::create(const idol::Model &t_model) const {
 
     if (!m_optimistic_bilevel_optimizer) {
         throw Exception("Single level optimizer not set.");
@@ -183,8 +183,6 @@ idol::Optimizer *idol::Bilevel::PessimisticAsOptimistic::operator()(const idol::
     auto* result = new Optimizers::Bilevel::PessimisticAsOptimistic(t_model,
                                                                     *m_description,
                                                                     *m_optimistic_bilevel_optimizer);
-
-    handle_default_parameters(result);
 
     return result;
 }

@@ -19,6 +19,7 @@ class idol::DantzigWolfe::Formulation {
 
     Annotation<unsigned int> m_decomposition;
 
+    const Model& m_original_formulation;
     Model m_master;
     std::vector<Model> m_sub_problems;
     std::vector<GenerationPattern<Var>> m_generation_patterns;

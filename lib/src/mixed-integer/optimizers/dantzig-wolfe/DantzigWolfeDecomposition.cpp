@@ -33,7 +33,7 @@ idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDec
       m_logger_factory(t_src.m_logger_factory ? t_src.m_logger_factory->clone() : nullptr)
 {}
 
-idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_model) const {
+idol::Optimizer *idol::DantzigWolfeDecomposition::create(const Model &t_model) const {
 
     if (!m_master_optimizer_factory) {
         throw Exception("No optimizer for master has been configured.");
@@ -79,8 +79,6 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
                                                      m_infeasibility_strategy ? *m_infeasibility_strategy : *default_strategy,
                                                      m_logger_factory ? *m_logger_factory : *default_logger_factory
                                                      );
-
-    this->handle_default_parameters(result);
 
     return result;
 }

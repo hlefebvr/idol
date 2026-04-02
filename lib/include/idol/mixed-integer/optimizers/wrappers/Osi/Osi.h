@@ -62,6 +62,7 @@ class idol::Osi : public OptimizerFactoryWithDefaultParameters<Osi> {
     Osi(const OsiSolverInterface& t_solver_interface, bool t_continuous_relaxation);
 protected:
     Osi(const std::string& t_solver);
+    Optimizer *create(const Model &t_model) const override;
 public:
     Osi(const OsiSolverInterface& t_solver_interface);
 
@@ -70,8 +71,6 @@ public:
 
     Osi& operator=(const Osi&) = delete;
     Osi& operator=(Osi&&) noexcept = delete;
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     OsiSolverInterface* create_osi_solver_interface() const;
 

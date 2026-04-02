@@ -29,7 +29,8 @@ class idol::Cplex : public OptimizerFactoryWithDefaultParameters<Cplex> {
     std::optional<bool> m_lazy_cuts;
     std::optional<unsigned int> m_max_n_solution_in_pool;
     std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
-
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     Cplex() = default;
 
@@ -38,8 +39,6 @@ public:
 
     Cplex& operator=(const Cplex&) = delete;
     Cplex& operator=(Cplex&&) noexcept = default;
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     static Cplex ContinuousRelaxation();
 

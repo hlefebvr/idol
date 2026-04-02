@@ -22,15 +22,13 @@ idol::Bilevel::BranchAndCut *idol::Bilevel::BranchAndCut::clone() const {
     return new BranchAndCut(*this);
 }
 
-idol::Optimizer *idol::Bilevel::BranchAndCut::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::Bilevel::BranchAndCut::create(const idol::Model &t_model) const {
 
     if (!m_optimizer_for_sub_problems) {
         throw Exception("No optimizer for sub-problems set.");
     }
 
     auto* result = new Optimizers::Bilevel::BranchAndCut(t_model, *m_description, *m_optimizer_for_sub_problems);
-
-    handle_default_parameters(result);
 
     return result;
 }

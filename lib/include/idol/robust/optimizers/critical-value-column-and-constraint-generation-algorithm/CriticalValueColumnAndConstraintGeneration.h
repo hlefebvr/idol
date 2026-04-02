@@ -18,10 +18,10 @@ class idol::Robust::CriticalValueColumnAndConstraintGeneration : public Optimize
     std::unique_ptr<OptimizerFactory> m_separation_optimizer;
 
     CriticalValueColumnAndConstraintGeneration(const CriticalValueColumnAndConstraintGeneration& t_src);
+protected:
+    [[nodiscard]] Optimizer* create(const Model& t_model) const override;
 public:
     CriticalValueColumnAndConstraintGeneration(const Robust::Description& t_description);
-
-    Optimizer* operator()(const Model& t_model) const override;
 
     [[nodiscard]] OptimizerFactory* clone() const override;
 

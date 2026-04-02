@@ -16,6 +16,8 @@ class idol::GLPK : public OptimizerFactoryWithDefaultParameters<GLPK> {
     std::optional<bool> m_continuous_relaxation;
 
     explicit GLPK(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
+protected:
+    Optimizer *create(const Model &t_model) const override;
 public:
     GLPK() = default;
 
@@ -24,8 +26,6 @@ public:
 
     GLPK& operator=(const GLPK&) = delete;
     GLPK& operator=(GLPK&&) noexcept = delete;
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     static GLPK ContinuousRelaxation();
 

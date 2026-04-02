@@ -27,19 +27,7 @@ idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
     for (const auto& optimizer : t_src.m_separations) {
         m_separations.emplace_back(optimizer->clone());
     }
-    /*
-    for (const auto& optimizer : t_src.m_optimizer_feasibility_separation) {
-        m_optimizer_feasibility_separation.emplace_back(optimizer->clone());
-    }
 
-    for (const auto& optimizer : t_src.m_optimizer_optimality_separation) {
-        m_optimizer_optimality_separation.emplace_back(optimizer->clone());
-    }
-
-    for (const auto& optimizer : t_src.m_optimizer_joint_separation) {
-        m_optimizer_joint_separation.emplace_back(optimizer->clone());
-    }
-    */
 }
 
 idol::OptimizerFactory *idol::Robust::ColumnAndConstraintGeneration::clone() const {
@@ -58,7 +46,7 @@ idol::Robust::ColumnAndConstraintGeneration &idol::Robust::ColumnAndConstraintGe
     return *this;
 }
 
-idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::create(const idol::Model &t_model) const {
 
     if (!m_master_optimizer) {
         throw Exception("Master optimizer not set");
@@ -78,8 +66,6 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
                                                                          m_separations,
                                                                          m_check_for_repeated_scenarios.value_or(false)
                                                                          );
-
-    handle_default_parameters(result);
 
     return result;
 }

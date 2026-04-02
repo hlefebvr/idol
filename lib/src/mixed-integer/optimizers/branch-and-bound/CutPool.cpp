@@ -40,7 +40,7 @@ bool idol::CutPool::add_cut(const TempCtr& t_cut, Model& t_relaxation) {
     return add_existing_cut_to_relaxation(cut, t_relaxation);
 }
 
-unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t_relaxation) {
+unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t_relaxation, double t_tol_feasibility) {
 
     unsigned int result = 0;
 
@@ -49,7 +49,7 @@ unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t
     for (auto& history : m_cuts_in_relaxation) {
         const auto& version = env[history.cut];
         history.age++;
-        history.n_active += equals(evaluate(version.lhs(), t_current_point), version.rhs(), Tolerance::Feasibility);
+        history.n_active += equals(evaluate(version.lhs(), t_current_point), version.rhs(), t_tol_feasibility);
     }
 
     // Check if the current point violates a previously generated cut

@@ -39,8 +39,10 @@ void idol::Heuristics::LocalBranching::Strategy::operator()(idol::CallbackEvent 
     }
 
     const auto& primal_solution = this->primal_solution();
+    const auto& src_model = this->original_model();
+    const double tol_integer = src_model.optimizer().get_tol_integer();
 
-    std::unique_ptr<Model> model(original_model().clone());
+    std::unique_ptr<Model> model(src_model.clone());
 
     model->unuse();
 
@@ -54,7 +56,7 @@ void idol::Heuristics::LocalBranching::Strategy::operator()(idol::CallbackEvent 
             throw Exception("LocalBranching is not implemented for general integers.");
         }
 
-        if (equals(primal_solution.get(var), 0., Tolerance::Integer)) {
+        if (equals(primal_solution.get(var), 0., tol_integer)) {
             distance_to_incumbent += var;
         } else {
             distance_to_incumbent += 1 - var;

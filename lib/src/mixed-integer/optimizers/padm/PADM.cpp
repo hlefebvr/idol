@@ -31,7 +31,7 @@ idol::PADM &idol::PADM::with_default_sub_problem_spec(idol::ADM::SubProblem t_su
 
 }
 
-idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::PADM::create(const idol::Model &t_model) const {
 
     if (!m_penalized_constraints && (m_rescaling || m_penalty_update)) {
         std::cout << "Warning: The penalized constraints have not been set. The rescaling and penalty update will be ignored." << std::endl;
@@ -57,8 +57,6 @@ idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
                 m_feasible_solution_status ? *m_feasible_solution_status : Feasible,
                 m_plot_manager ? *m_plot_manager : nullptr
             );
-
-    handle_default_parameters(result);
 
     return result;
 }

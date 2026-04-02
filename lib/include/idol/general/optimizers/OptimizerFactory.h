@@ -9,38 +9,38 @@
 
 #include <optional>
 #include <functional>
-#include <thread>
 
 namespace idol {
     class Model;
+    class Env;
     class OptimizerFactory;
     template<class CRTP>
     class OptimizerFactoryWithDefaultParameters;
 }
 
-/**
- * OptimizerFactory is the base class for all optimizer factories.
- *
- * An optimizer Factory is used to create an optimizer when actually needed. They can be seen as customizable
- * "building plans" for actually creating external-mip.
- */
 class idol::OptimizerFactory {
+protected:
+    std::optional<bool> m_logs;
+    std::optional<double> m_time_limit;
+    std::optional<unsigned int> m_thread_limit;
+    std::optional<unsigned int> m_iteration_count_limit;
+    std::optional<double> m_best_bound_stop;
+    std::optional<double> m_best_obj_stop;
+    std::optional<bool> m_presolve;
+    std::optional<bool> m_infeasible_or_unbounded_info;
+
+    std::optional<double> m_tol_mip_relative_gap;
+    std::optional<double> m_tol_mip_absolute_gap;
+    std::optional<double> m_tol_integer;
+    std::optional<double> m_tol_feasibility;
+
+    [[nodiscard]] virtual Optimizer* create(const Model& t_model) const = 0;
 public:
     virtual ~OptimizerFactory() = default;
 
-    /**
-     * Creates and returns a new optimizer to solve the model given as parameter.
-     * @param t_model The model which the optimizer will solve
-     * @return A new optimizer for the model
-     */
-    virtual Optimizer* operator()(const Model& t_model) const = 0;
+    virtual Optimizer* operator()(const Model& t_model) const;
 
-    /**
-     * Creates and return a copy of the optimizer factory. This is used for polymorphism.
-     * @return A copied object of the current object (i.e., *this)
-     */
     [[nodiscard]] virtual OptimizerFactory* clone() const = 0;
-
 
     template<class T> T& as() {
         auto* result = dynamic_cast<T*>(this);
@@ -65,199 +65,25 @@ public:
 
 template<class CRTP>
 class idol::OptimizerFactoryWithDefaultParameters : public OptimizerFactory {
-    std::optional<bool> m_logs;
-    std::optional<double> m_time_limit;
-    std::optional<unsigned int> m_thread_limit;
-    std::optional<unsigned int> m_iteration_count_limit;
-    std::optional<double> m_best_bound_stop;
-    std::optional<double> m_best_obj_stop;
-    std::optional<double> m_relative_gap_tolerance;
-    std::optional<double> m_absolute_gap_tolerance;
-    std::optional<bool> m_presolve;
-    std::optional<bool> m_infeasible_or_unbounded_info;
 protected:
     CRTP& crtp() { return static_cast<CRTP&>(*this); }
     const CRTP& crtp() const { return static_cast<const CRTP&>(*this); }
-
-    void handle_default_parameters(Optimizer* t_optimizer) const;
 public:
-    /**
-     * Sets the log_master level and color for the optimizer
-     *
-     * Example:
-     * ```cpp
-     * auto algorithm = GLPK()
-     *                      .with_logs(true);
-     * ```
-     * @param t_log_level the log_master level
-     * @param t_log_color the output color
-     * @return the optimizer factory itself
-     */
     CRTP& with_logs(bool t_value);
-
-    /**
-     * Sets the time limit for the optimizer
-     *
-     * Example:
-     * ```cpp
-     * auto algorithm = GLPK()
-     *                      .with_time_limit(3600);
-     * ```
-     * @param t_time_limit the time limit (in seconds)
-     * @return the optimizer factory itself
-     */
     CRTP& with_time_limit(double t_time_limit);
-
-    /**
-     * Sets the maximum number of threads which the optimizer can use
-     *
-     * Example:
-     * ```cpp
-     * auto algorithm = GLPK()
-     *                      .with_thread_limit(5);
-     * ```
-     * @param t_max_n_threads the number of threads which can be used
-     * @return the optimizer factory itself
-     */
     CRTP& with_thread_limit(unsigned int t_max_n_threads);
-
-    /**
-     * Sets the maximum number of iterations which the optimizer go through
-     *
-     * Example:
-     * ```cpp
-     * auto algorithm = GLPK()
-     *                      .with_iteration_limit(200);
-     * ```
-     * @param t_iteration_count_limit the maximum number of iterations
-     * @return the optimizer factory itself
-     */
     CRTP& with_iteration_limit(unsigned int t_iteration_count_limit);
-
-    /**
-     * Sets a threshold on the best bound for stopping the optimizer. When the optimizer have found a best bound
-     * which is greater than this threshold, the optimizer stops.
-     *
-     * Example:
-     * ```cpp
-     * const double my_known_best_obj = 0.;
-     * auto algorithm = GLPK()
-     *                      .with_best_bound_stop(my_known_best_obj);
-     * ```
-     * @param t_best_bound_stop the threshold
-     * @return the optimizer factory itself
-     */
     CRTP& with_best_bound_stop(double t_best_bound_stop);
-
-    /**
-     * Sets a threshold on the best objective value for stopping the optimizer.
-     * When the optimizer have found a best objective value which is less than this threshold, the optimizer stops.
-     *
-     * Example:
-     * ```cpp
-     * const double my_known_best_bound = 0;
-     * auto algorithm = GLPK()
-     *                      .with_best_obj_stop(my_known_best_bound);
-     * ```
-     * @param t_user_best_obj the threshold
-     * @return the optimizer factory itself
-     */
     CRTP& with_best_obj_stop(double t_user_best_obj);
-
-    /**
-     * Sets the relative gap tolerance for the optimizer. When the optimizer proves that the relative optimality gap
-     * is less than this threshold, the optimizer stops.
-     *
-     * Example:
-     * ```cpp
-     * auto algorithm = GLPK()
-     *                      .with_relative_gap_tolerance(.05); // sets a gap tolerance of 5%
-     * ```
-     * @param t_relative_gap_tolerance the relative gap tolerance
-     * @return the optimizer factory itself
-     */
-    CRTP& with_relative_gap_tolerance(double t_relative_gap_tolerance);
-
-    /**
-     * Sets the absolute gap tolerance for the optimizer. When the optimizer proves that the absolute optimality gap
-     * is less than this threshold, the optimizer stops.
-     *
-     * Example:
-     * ```cpp
-     * auto algorithm = GLPK()
-     *                      .with_absolute_gap_tolerance(1e-4);
-     * ```
-     * @param t_absolute_gap_tolerance the absolute gap tolerance
-     * @return the optimizer factory itself
-     */
-    CRTP& with_absolute_gap_tolerance(double t_absolute_gap_tolerance);
-
-    /**
-     * Sets the get_param_presolve activation for the optimizer.
-     *
-     * Example:
-     * ```cpp
-     * auto algorithm = GLPK()
-     *                      .with_presolve(false); // turns off get_param_presolve phase
-     * ```
-     * @param t_value the activation level for the optimizer's get_param_presolve (0 for disabling, 1 for enabling)
-     * @return the optimizer factory itself
-     */
     CRTP& with_presolve(bool t_value);
-
-    /**
-     * Sets the behaviour of the optimizer when a model is shown to be infeasible or unbounded. When set to true,
-     * the optimizer is forced to prove feasibility or unboundedness by providing a certificate.
-     *
-     * Example:
-     * ```cpp
-     * auto algorithm = GLPK()
-     *                      .with_infeasible_or_unbounded_info(true);
-     * ```
-     * @param t_value the activation level
-     * @return the optimizer factory itself
-     */
     CRTP& with_infeasible_or_unbounded_info(bool t_value);
 
-    /**
-     * Executes the lambda function given as second parameter if and only if its first argument is true. This function
-     * can be used to build different optimizer factories depending on some external variable.
-     *
-     * Example:
-     * ```cpp
-     * for (const bool use_presolve : {true, false}) {
-     *      auto algorithm = GLPK()
-     *                          .conditional(use_presolve, [](auto& x){ x.with_presolve(true); })
-     *       model.use(algorithm);
-     *       model.optimize();
-     * }
-     * ```
-     * @param t_conditional_value if true, the t_if lambda function is executed, if false, nothing happens.
-     * @param t_if lambda function to execute in case t_conditional_value is true
-     * @return the optimizer factory itself
-     */
-    CRTP& conditional(bool t_conditional_value, const std::function<void(CRTP&)>& t_if);
+    CRTP& with_tol_mip_relative_gap(double t_tol_mip_relative_gap);
+    CRTP& with_tol_mip_absolute_gap(double t_tol_mip_absolute_gap);
+    CRTP& with_tol_integer(double t_tol_integer);
+    CRTP& with_tol_feasibility(double t_tol_feasibility);
 
-    /**
-     * Executes the lambda function given as second parameter if and only if its first argument is true. This function
-     * can be used to build different optimizer factories depending on some external variable.
-     *
-     * Example:
-     * ```cpp
-     * for (const bool use_presolve : {true, false}) {
-     *      auto algorithm = GLPK()
-     *                          .conditional(use_presolve,
-     *                                          [](auto& x){ x.with_presolve(true); },
-     *                                          [](auto& x){ x.with_presolve(false); })
-     *       model.use(algorithm);
-     *       model.optimize();
-     * }
-     * ```
-     * @param t_conditional_value if true, the t_if lambda function is executed, if false, the t_else lambda function is.
-     * @param t_if lambda function to execute in case t_conditional_value is true
-     * @param t_else lambda function to execute in case t_conditional_value is false
-     * @return the optimizer factory itself
-     */
+    CRTP& conditional(bool t_conditional_value, const std::function<void(CRTP&)>& t_if);
     CRTP& conditional(bool t_conditional_value, const std::function<void(CRTP&)>& t_if, const std::function<void(CRTP&)>& t_else);
 
 };
@@ -300,25 +126,43 @@ CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_presolve(bool t_va
 }
 
 template<class CRTP>
-CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_absolute_gap_tolerance(double t_absolute_gap_tolerance) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_tol_mip_absolute_gap(double t_tol_mip_absolute_gap) {
 
-    if (m_absolute_gap_tolerance.has_value()) {
+    if (m_tol_mip_absolute_gap.has_value()) {
         throw Exception("An absolute gap tolerance count limit has already been given.");
     }
 
-    m_absolute_gap_tolerance = t_absolute_gap_tolerance;
+    m_tol_mip_absolute_gap = t_tol_mip_absolute_gap;
 
     return crtp();
 }
 
-template<class CRTP>
-CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_relative_gap_tolerance(double t_relative_gap_tolerance) {
+template <class CRTP>
+CRTP& idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_tol_integer(double t_tol_integer) {
+    if (m_tol_mip_absolute_gap.has_value()) {
+        throw Exception("A tolerance for integrality has already been given.");
+    }
+    m_tol_integer = t_tol_integer;
+    return crtp();
+}
 
-    if (m_relative_gap_tolerance.has_value()) {
+template <class CRTP>
+CRTP& idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_tol_feasibility(double t_tol_feasibility) {
+    if (m_tol_feasibility.has_value()) {
+        throw Exception("A tolerance for feasibility has already been given.");
+    }
+    m_tol_feasibility = t_tol_feasibility;
+    return crtp();
+}
+
+template<class CRTP>
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_tol_mip_relative_gap(double t_tol_mip_relative_gap) {
+
+    if (m_tol_mip_relative_gap.has_value()) {
         throw Exception("A relative gap tolerance count limit has already been given.");
     }
 
-    m_relative_gap_tolerance = t_relative_gap_tolerance;
+    m_tol_mip_relative_gap = t_tol_mip_relative_gap;
 
     return crtp();
 }
@@ -336,13 +180,13 @@ CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_best_obj_stop(doub
 }
 
 template<class CRTP>
-CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_best_bound_stop(double t_user_best_bound) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_best_bound_stop(double t_best_bound_stop) {
 
     if (m_best_bound_stop.has_value()) {
         throw Exception("A user best bound limit has already been given.");
     }
 
-    m_best_bound_stop = t_user_best_bound;
+    m_best_bound_stop = t_best_bound_stop;
 
     return crtp();
 }
@@ -393,22 +237,6 @@ CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_logs(bool t_value)
     m_logs = t_value;
 
     return crtp();
-}
-
-template<class CRTP>
-void idol::OptimizerFactoryWithDefaultParameters<CRTP>::handle_default_parameters(Optimizer *t_optimizer) const {
-
-    t_optimizer->set_param_logs(m_logs.value_or(false));
-    t_optimizer->set_param_time_limit(m_time_limit.value_or(std::numeric_limits<double>::max()));
-    t_optimizer->set_param_threads(m_thread_limit.value_or(std::max<unsigned int>(std::thread::hardware_concurrency(), 1)));
-    t_optimizer->set_param_best_bound_stop(m_best_bound_stop.value_or(Inf));
-    t_optimizer->set_param_best_obj_stop(m_best_obj_stop.value_or(-Inf));
-    t_optimizer->set_tol_mip_relative_gap(m_relative_gap_tolerance.value_or(Tolerance::MIPRelativeGap));
-    t_optimizer->set_tol_mip_absolute_gap(m_absolute_gap_tolerance.value_or(Tolerance::MIPAbsoluteGap));
-    t_optimizer->set_param_iteration_limit(m_iteration_count_limit.value_or(std::numeric_limits<unsigned int>::max()));
-    t_optimizer->set_param_presolve(m_presolve.value_or(true));
-    t_optimizer->set_param_infeasible_or_unbounded_info(m_infeasible_or_unbounded_info.value_or(false));
-
 }
 
 #endif //IDOL_OPTIMIZERFACTORY_H

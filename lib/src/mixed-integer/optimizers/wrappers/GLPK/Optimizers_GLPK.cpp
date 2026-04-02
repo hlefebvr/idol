@@ -157,8 +157,6 @@ idol::Optimizers::GLPK::DynamicLib& idol::Optimizers::GLPK::get_dynamic_lib(bool
 
 void idol::Optimizers::GLPK::hook_build() {
 
-    const auto& objective = parent().get_obj_expr();
-
     hook_update_objective_sense();
     set_objective_as_updated();
     set_rhs_as_updated();
@@ -193,7 +191,7 @@ void idol::Optimizers::GLPK::set_var_attr(int t_index, int t_type, double t_lb, 
 
     // Set bounds
     if (has_lb && has_ub) {
-        if (equals(t_lb, t_ub, Tolerance::Integer)) {
+        if (equals(t_lb, t_ub, get_tol_integer())) {
             lib.glp_set_col_bnds(m_model, t_index, GLP_FX, t_lb, t_ub);
         } else {
             lib.glp_set_col_bnds(m_model, t_index, GLP_DB, t_lb, t_ub);

@@ -14,7 +14,7 @@ idol::Bilevel::StrongDuality::StrongDuality(const Bilevel::Description &t_descri
 
 }
 
-idol::Optimizer *idol::Bilevel::StrongDuality::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::Bilevel::StrongDuality::create(const idol::Model &t_model) const {
 
     if (!m_description) {
         throw Exception("No bilevel description has been set.");
@@ -25,8 +25,6 @@ idol::Optimizer *idol::Bilevel::StrongDuality::operator()(const idol::Model &t_m
     }
 
     auto* result = new Optimizers::Bilevel::StrongDuality(t_model, *m_description, *m_single_level_optimizer);
-
-    handle_default_parameters(result);
 
     return result;
 }

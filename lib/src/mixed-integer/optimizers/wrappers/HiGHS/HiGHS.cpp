@@ -5,10 +5,9 @@
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"
 #include "idol/general/utils/exceptions/Exception.h"
 
-idol::Optimizer *idol::HiGHS::operator()(const Model &t_model) const {
-    auto* result = new Optimizers::HiGHS(t_model, m_continuous_relaxation.value_or(false));
+idol::Optimizer *idol::HiGHS::create(const Model &t_model) const {
 
-    this->handle_default_parameters(result);
+    auto* result = new Optimizers::HiGHS(t_model, m_continuous_relaxation.value_or(false));
 
     return result;
 }

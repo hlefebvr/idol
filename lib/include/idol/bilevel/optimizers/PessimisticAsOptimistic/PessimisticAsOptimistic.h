@@ -16,6 +16,8 @@ namespace idol::Bilevel {
 class idol::Bilevel::PessimisticAsOptimistic : public OptimizerFactoryWithDefaultParameters<PessimisticAsOptimistic>, public Bilevel::OptimizerInterface {
     const Bilevel::Description* m_description = nullptr;
     std::unique_ptr<OptimizerFactory> m_optimistic_bilevel_optimizer;
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     PessimisticAsOptimistic() = default;
 
@@ -30,8 +32,6 @@ public:
     }
 
     void set_bilevel_description(const Description &t_bilevel_description) override;
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] OptimizerFactory *clone() const override;
 

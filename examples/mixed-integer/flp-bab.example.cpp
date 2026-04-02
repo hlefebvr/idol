@@ -107,7 +107,6 @@ int main(int t_argc, const char** t_argv) {
 
     branch_and_bound.add_presolver(Presolvers::BoundRounding());
     branch_and_bound.add_presolver(Presolvers::OneRowBoundTightening());
-    //branch_and_bound.add_presolver(Presolvers::VariableFixing());
 
     //branch_and_bound.add_callback(Heuristics::LocalMIP());
 

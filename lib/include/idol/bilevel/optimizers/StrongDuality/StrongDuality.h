@@ -16,14 +16,14 @@ namespace idol::Bilevel {
 class idol::Bilevel::StrongDuality : public OptimizerFactoryWithDefaultParameters<StrongDuality>, public Bilevel::OptimizerInterface {
     const Bilevel::Description* m_description = nullptr;
     std::unique_ptr<OptimizerFactory> m_single_level_optimizer;
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     StrongDuality();
 
     explicit StrongDuality(const Bilevel::Description& t_description);
 
     StrongDuality(const StrongDuality& t_src);
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] OptimizerFactory *clone() const override;
 

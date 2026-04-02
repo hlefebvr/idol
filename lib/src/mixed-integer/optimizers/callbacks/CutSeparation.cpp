@@ -32,17 +32,18 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
     }
 
     const auto& current_solution = primal_solution();
+    const auto& src_model = this->original_model();
+    const double tol_feasibility = src_model.optimizer().get_tol_feasibility();
 
     auto objective = m_separation_objective_pattern(current_solution);
 
     m_separation_problem->set_obj_expr(std::move(objective));
     m_separation_problem->set_obj_sense(Minimize);
 
-    m_separation_problem->optimizer().set_param_time_limit(this->original_model().optimizer().get_remaining_time());
+    m_separation_problem->optimizer().set_param_time_limit(src_model.optimizer().get_remaining_time());
     m_separation_problem->optimize();
 
     const auto status = m_separation_problem->get_status();
-
 
     if (status != Optimal && status != Feasible) {
         return;
@@ -56,7 +57,7 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
         const double objective_value = m_separation_problem->get_best_obj();
 
-        if (objective_value >= -m_tolerance) {
+        if (objective_value >= -tol_feasibility) {
             break;
         }
 

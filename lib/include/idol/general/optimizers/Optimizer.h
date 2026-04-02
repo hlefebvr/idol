@@ -5,6 +5,7 @@
 #ifndef IDOL_OPTIMIZER_H
 #define IDOL_OPTIMIZER_H
 
+#include <cassert>
 #include <string>
 #include <optional>
 
@@ -41,11 +42,11 @@ class idol::impl::Optimizer {
     bool m_param_presolve = true;
     bool m_param_infeasible_or_unbounded_info = false;
 
-    double m_tol_mip_relative_gap = Tolerance::MIPRelativeGap;
-    double m_tol_mip_absolute_gap = Tolerance::MIPAbsoluteGap;
-    double m_tol_integer = Tolerance::Integer;
-    double m_tol_feasibility = Tolerance::Feasibility;
-    double m_tol_optimality = Tolerance::Optimality;
+    std::optional<double> m_tol_mip_relative_gap;
+    std::optional<double> m_tol_mip_absolute_gap;
+    std::optional<double> m_tol_integer;
+    std::optional<double> m_tol_feasibility;
+    std::optional<double> m_tol_optimality;
 
     Timer m_timer;
 protected:
@@ -155,23 +156,23 @@ public:
 
     virtual void set_param_best_bound_stop(double t_best_bound_stop) { m_param_best_bound_stop = t_best_bound_stop; }
 
-    [[nodiscard]] double get_tol_mip_relative_gap() const { return m_tol_mip_relative_gap; }
+    [[nodiscard]] double get_tol_mip_relative_gap() const { assert(m_tol_mip_relative_gap); return *m_tol_mip_relative_gap; }
 
     virtual void set_tol_mip_relative_gap(double t_tol_mip_relative_gap) { m_tol_mip_relative_gap = t_tol_mip_relative_gap; }
 
-    [[nodiscard]] double get_tol_mip_absolute_gap() const { return m_tol_mip_absolute_gap; }
+    [[nodiscard]] double get_tol_mip_absolute_gap() const { assert(m_tol_mip_absolute_gap); return *m_tol_mip_absolute_gap; }
 
     virtual void set_tol_mip_absolute_gap(double t_mip_tol_absolute_gap) { m_tol_mip_absolute_gap = t_mip_tol_absolute_gap; }
 
-    [[nodiscard]] double get_tol_feasibility() const { return m_tol_feasibility; }
+    [[nodiscard]] double get_tol_feasibility() const { assert(m_tol_feasibility); return *m_tol_feasibility; }
 
     virtual void set_tol_feasibility(double t_tol_feasibility) { m_tol_feasibility = t_tol_feasibility; }
 
-    [[nodiscard]] double get_tol_optimality() const { return m_tol_optimality; }
+    [[nodiscard]] double get_tol_optimality() const { assert(m_tol_optimality); return *m_tol_optimality; }
 
     virtual void set_tol_optimality(double t_tol_optimality) { m_tol_optimality = t_tol_optimality; }
 
-    [[nodiscard]] double get_tol_integer() const { return m_tol_integer; }
+    [[nodiscard]] double get_tol_integer() const { assert(m_tol_integer); return *m_tol_integer; }
 
     virtual void set_tol_integer(double t_tol_integer) { m_tol_integer = t_tol_integer; }
 

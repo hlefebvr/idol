@@ -32,12 +32,13 @@ public:
             const auto& relaxation = this->relaxation();
             const double best_obj = this->best_obj();
             const double current_obj = this->relaxation().get_best_obj();
+            const double tol_mip_absolute_gap = original_model.optimizer().get_tol_mip_absolute_gap();
 
             for (const auto &var : original_model.vars()) {
 
                 double reduced_cost = relaxation.get_var_reduced_cost(var);
 
-                if (current_obj + reduced_cost > best_obj + Tolerance::MIPAbsoluteGap) {
+                if (current_obj + reduced_cost > best_obj + tol_mip_absolute_gap) {
                     const double relaxation_lb = relaxation.get_var_lb(var);
                     const double current_ub = relaxation.get_var_ub(var);
                     //if (!equals(relaxation_lb, current_ub, Tolerance::Integer)) {
@@ -45,7 +46,7 @@ public:
                     //}
                 }
 
-                if (current_obj - reduced_cost > best_obj + Tolerance::MIPAbsoluteGap) {
+                if (current_obj - reduced_cost > best_obj + tol_mip_absolute_gap) {
                     const double relaxation_ub = relaxation.get_var_ub(var);
                     const double current_lb = relaxation.get_var_lb(var);
                     //if (!equals(relaxation_ub, current_lb, Tolerance::Integer)) {

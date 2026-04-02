@@ -209,6 +209,8 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
 
     m_formulation->update_separation_problems(*m_last_master_solution);
 
+    const double tol_feasibility = get_tol_feasibility();
+
     //std::cout << "MASTER PROBLEM:\n" << m_formulation->master() << std::endl;
 
 // TODO: Parallelize
@@ -229,7 +231,7 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
         }
 
         const double obj = separation_problem.get_best_obj();
-        if (obj <= -Tolerance::Feasibility) {
+        if (obj <= -tol_feasibility) {
             all_feasible = false;
             break;
         }
@@ -248,9 +250,10 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
 
 void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::add_scenario_to_master_problem() {
 
+    const double tol_feasibility = get_tol_feasibility();
     for (const auto& [ctr, separation_problem] : m_formulation->separation_problems()) {
         const double obj = separation_problem.get_best_obj();
-        if (obj <= -Tolerance::Feasibility) {
+        if (obj <= -tol_feasibility) {
             const auto scenario = save_primal(separation_problem);
             m_formulation->add_scenario(ctr, scenario); // this constraint is violated by this scenario
         }

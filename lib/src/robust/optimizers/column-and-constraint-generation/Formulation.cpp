@@ -246,7 +246,7 @@ void idol::CCG::Formulation::copy_bilevel_description(const ::idol::Bilevel::Des
 }
 
 bool idol::CCG::Formulation::is_adjustable_robust_problem() const {
-    return m_bilevel_description.lower_level_obj().is_zero(Tolerance::Feasibility);
+    return m_bilevel_description.lower_level_obj().empty_all();
 }
 
 idol::QuadExpr<idol::Var>

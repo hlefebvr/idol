@@ -38,7 +38,10 @@ idol::Heuristics::impl::call_local_mip(const Model& t_model, const PrimalPoint& 
     std::optional<idol::PrimalPoint> result;
 
     const double inf = std::numeric_limits<double>::infinity();
-    SilentMode silent_mode(false);
+
+    const double tol_integer = t_model.optimizer().get_tol_integer();
+
+    SilentMode silent_mode(true);
 
     // Create solver and enable Model API
     Local_MIP solver;
@@ -123,7 +126,7 @@ idol::Heuristics::impl::call_local_mip(const Model& t_model, const PrimalPoint& 
                 continue;
             }
             const double value = t_primal_point.get(var);
-            if (!is_integer(value, Tolerance::Integer)) {
+            if (!is_integer(value, tol_integer)) {
                 continue;
             }
             values[j] = std::round(value);

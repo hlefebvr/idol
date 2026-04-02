@@ -17,13 +17,14 @@ idol::DantzigWolfe::ArtificialCosts::Strategy::Strategy(double t_initial_costs,
 void idol::DantzigWolfe::ArtificialCosts::Strategy::execute(Optimizers::DantzigWolfeDecomposition &t_parent) {
 
     auto& formulation = t_parent.formulation();
+    const double tol_feasibility = t_parent.get_tol_feasibility();
 
     save_objective_function(t_parent.parent());
     create_artificial_variables(formulation);
 
     Optimizers::DantzigWolfeDecomposition::ColumnGeneration column_generation(t_parent, false, Inf);
 
-    find_initial_columns(column_generation);
+    find_initial_columns(column_generation, tol_feasibility);
 
     restore_objective_function(formulation);
     delete_artificial_variables(formulation);
@@ -50,7 +51,8 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::execute(Optimizers::DantzigW
 
 }
 
-void idol::DantzigWolfe::ArtificialCosts::Strategy::find_initial_columns(idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration &t_column_generation) {
+void idol::DantzigWolfe::ArtificialCosts::Strategy::find_initial_columns(idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration &t_column_generation,
+                                                                         double t_tol_feasibility) {
 
     double current_costs = m_initial_costs;
     auto& formulation = t_column_generation.parent().formulation();
@@ -73,17 +75,17 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::find_initial_columns(idol::O
 
         const auto& primal_values = t_column_generation.primal_solution();
 
-        if (all_artificial_variables_are_non_basic(primal_values)) {
+        if (all_artificial_variables_are_non_basic(primal_values, t_tol_feasibility)) {
             set_status(Feasible);
             return;
         }
 
-        update_objective_function(formulation, primal_values, true);
+        update_objective_function(formulation, primal_values, true, t_tol_feasibility);
 
         current_costs *= m_update_factor;
     }
 
-    update_objective_function(formulation, PrimalPoint(), false);
+    update_objective_function(formulation, PrimalPoint(), false, t_tol_feasibility);
 
     t_column_generation.execute();
 
@@ -97,7 +99,7 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::find_initial_columns(idol::O
 
     const auto& primal_values = t_column_generation.primal_solution();
 
-    if (!all_artificial_variables_are_non_basic(primal_values)) {
+    if (!all_artificial_variables_are_non_basic(primal_values, t_tol_feasibility)) {
         set_status(Infeasible);
         set_reason(Proved);
         return;
@@ -154,10 +156,11 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::delete_artificial_variables(
 
 }
 
-bool idol::DantzigWolfe::ArtificialCosts::Strategy::all_artificial_variables_are_non_basic(const PrimalPoint &t_primal_values) const {
+bool idol::DantzigWolfe::ArtificialCosts::Strategy::all_artificial_variables_are_non_basic(const PrimalPoint &t_primal_values, double t_tol_feasibility) const {
+
 
     for (const auto& var : m_artificial_variables) {
-        if (!equals(t_primal_values.get(var), 0., Tolerance::Feasibility)) {
+        if (!equals(t_primal_values.get(var), 0., t_tol_feasibility)) {
             return false;
         }
     }
@@ -172,7 +175,8 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::restore_objective_function(D
 void idol::DantzigWolfe::ArtificialCosts::Strategy::update_objective_function(
         DantzigWolfe::Formulation& t_formulation,
         const PrimalPoint& t_primal_values,
-        bool t_include_original_objective_function) {
+        bool t_include_original_objective_function,
+        double t_tol_feasibility) {
 
     if (!t_include_original_objective_function) {
         t_formulation.update_obj(idol_Sum(var, m_artificial_variables, var));
@@ -183,7 +187,7 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::update_objective_function(
     QuadExpr<Var> objective = m_objective_function;
 
     for (const auto& var : m_artificial_variables) {
-        if (!equals(t_primal_values.get(var), 0., Tolerance::Feasibility)) {
+        if (!equals(t_primal_values.get(var), 0., t_tol_feasibility)) {
             const double current_cost = master.get_var_obj(var);
             master.set_var_obj(var, m_update_factor * current_cost);
         }

@@ -17,7 +17,7 @@ idol::Robust::CriticalValueColumnAndConstraintGeneration::CriticalValueColumnAnd
 
 }
 
-idol::Optimizer* idol::Robust::CriticalValueColumnAndConstraintGeneration::operator()(const Model& t_model) const {
+idol::Optimizer* idol::Robust::CriticalValueColumnAndConstraintGeneration::create(const Model& t_model) const {
 
     if (!m_master_optimizer) {
         throw Exception("No optimizer for solving the master problem has been set.");
@@ -31,8 +31,6 @@ idol::Optimizer* idol::Robust::CriticalValueColumnAndConstraintGeneration::opera
         *m_master_optimizer,
         *m_separation_optimizer
     );
-
-    handle_default_parameters(result);
 
     return result;
 }

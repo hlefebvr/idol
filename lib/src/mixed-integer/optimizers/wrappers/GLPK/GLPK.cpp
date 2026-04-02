@@ -5,9 +5,8 @@
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
 #include "idol/general/utils/exceptions/Exception.h"
 
-idol::Optimizer *idol::GLPK::operator()(const Model &t_model) const {
+idol::Optimizer *idol::GLPK::create(const Model &t_model) const {
     auto* result = new Optimizers::GLPK(t_model, m_continuous_relaxation.value_or(false));
-    handle_default_parameters(result);
     return result;
 }
 

@@ -17,12 +17,12 @@ class idol::JuMP : public idol::OptimizerFactoryWithDefaultParameters<JuMP> {
     bool m_is_continuous_relaxation = false;
 
     JuMP(std::string t_module, bool t_is_continuous_relaxation);
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     explicit JuMP(std::string t_module = "HiGHS");
 
     static JuMP ContinuousRelaxation(std::string t_module = "HiGHS");
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] OptimizerFactory *clone() const override;
 };

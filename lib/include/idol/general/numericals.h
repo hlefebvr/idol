@@ -38,58 +38,6 @@ namespace idol {
 
         static unsigned int Digits = 8;
 
-        /**
-         * **Default:** \f$ 10^{-4} \f$
-         *
-         * **Recommended range:** \f$ [ 0, +\infty ] \f$
-         *
-         * Used to declare optimality of a MIP solution by comparing with the current relative gap.
-         *
-         * The relative gap is computed as follows:
-         * \f[ \gamma_{\text{rel}} := \frac{ |UB - LB| }{ 10^{-10} + |UB| }. \f]
-         */
-        static double MIPRelativeGap = 1e-4;
-
-        /**
-         * **Default:** \f$ 10^{-5} \f$
-         *
-         * **Recommended range:** \f$ [ 0, \infty ] \f$
-         *
-         * Used to declare optimality of a MIP solution by comparing with the current absolute gap.
-         *
-         * The absolute gap is computed as follows:
-         * \f[ \gamma_{\text{abs}} := |UB - LB| \f]
-         */
-        static double MIPAbsoluteGap = 1e-5;
-
-        /**
-         * **Default:** \f$ 10^{-5} \f$
-         *
-         * **Recommended range:** \f$ [ 10^{-9}, 10^{-1} ] \f$
-         *
-         * Used to recognized integer values, i.e., a given value is considered integer when the closest integer point
-         * is closer than this tolerance.
-         */
-        static double Integer = 10e-5;
-
-        /**
-         *  **Default:** \f$ 10^{-6} \f$
-         *
-         * **Recommended range:** \f$ [ 10^{-9}, 10^{-2} ] \f$
-         *
-         * Used to characterized constraint satisfaction, i.e., a constraint is satisfied if it is not violated by a
-         * larger amount than this tolerance.
-         */
-        static double Feasibility = 10e-6;
-
-        /**
-         *  **Default:** \f$ 10^{-6} \f$
-         *
-         * **Recommended range:** \f$ [ 10^{-9}, 10^{-2} ] \f$
-         *
-         * Used to characterize optimality, i.e., all reduced costs must be smaller than this tolerance.
-         */
-        static double Optimality = 10e-6;
     };
 
     static bool is_pos_inf(double t_value) {

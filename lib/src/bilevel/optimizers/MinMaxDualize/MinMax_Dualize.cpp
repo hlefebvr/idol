@@ -13,7 +13,7 @@ idol::Bilevel::MinMax::Dualize::Dualize(const Bilevel::Description &t_descriptio
 
 }
 
-idol::Optimizer *idol::Bilevel::MinMax::Dualize::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::Bilevel::MinMax::Dualize::create(const idol::Model &t_model) const {
 
     if (!m_description) {
         throw Exception("No bilevel description has been set.");
@@ -27,8 +27,6 @@ idol::Optimizer *idol::Bilevel::MinMax::Dualize::operator()(const idol::Model &t
                                                             *m_description,
                                                             *m_single_level_optimizer,
                                                             m_bound_provider);
-
-    handle_default_parameters(result);
 
     return result;
 }

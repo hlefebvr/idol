@@ -20,13 +20,13 @@ class idol::Robust::BilevelBasedBranchAndBound : public OptimizerFactoryWithDefa
     std::unique_ptr<OptimizerFactory> m_optimality_bilevel_optimizer;
     std::unique_ptr<OptimizerFactory> m_feasibility_bilevel_optimizer;
     std::optional<bool> m_with_first_stage_relaxation;
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     BilevelBasedBranchAndBound(const Robust::Description& t_robust_description,
                        const Bilevel::Description& t_bilevel_description);
 
     BilevelBasedBranchAndBound(const BilevelBasedBranchAndBound& t_src);
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] OptimizerFactory *clone() const override { return new BilevelBasedBranchAndBound(*this); }
 

@@ -19,6 +19,8 @@ namespace idol {
 }
 
 class idol::PADM : public OptimizerFactoryWithDefaultParameters<PADM> {
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     explicit PADM(Annotation<unsigned int> t_decomposition);
 
@@ -41,8 +43,6 @@ public:
     PADM& with_feasible_solution_status(SolutionStatus t_status);
 
     PADM& with_iteration_plot(Plots::Manager& t_manager);
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] OptimizerFactory *clone() const override;
 private:

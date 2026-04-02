@@ -584,12 +584,14 @@ void OsiIdolSolverInterface::deleteCols(const int num, const int *colIndices) {
 void OsiIdolSolverInterface::addRow(const CoinPackedVectorBase &vec, const double rowlb, const double rowub) {
     OSI_IDOL_DEBUG
 
+    const double tol_feasibility = m_model.optimizer().get_tol_feasibility();
+
     const auto* indices = vec.getIndices();
     const auto* values = vec.getElements();
 
     double rhs;
     idol::CtrType type;
-    if (idol::equals(rowlb, rowub, idol::Tolerance::Feasibility)) {
+    if (idol::equals(rowlb, rowub, tol_feasibility)) {
         type = idol::Equal;
         rhs = rowlb;
     } else if (idol::is_pos_inf(rowub)) {

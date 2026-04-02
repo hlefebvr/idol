@@ -18,14 +18,14 @@ class idol::Bilevel::MinMax::Dualize : public OptimizerFactoryWithDefaultParamet
     const Bilevel::Description* m_description = nullptr;
     std::unique_ptr<OptimizerFactory> m_single_level_optimizer;
     std::unique_ptr<Reformulators::KKT::BoundProvider> m_bound_provider;
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     Dualize();
 
     explicit Dualize(const Bilevel::Description& t_description);
 
     Dualize(const Dualize& t_src);
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] OptimizerFactory *clone() const override;
 

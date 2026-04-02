@@ -20,6 +20,8 @@ class idol::Bilevel::KKT : public OptimizerFactoryWithDefaultParameters<KKT>, pu
     std::unique_ptr<Reformulators::KKT::BoundProvider> m_bound_provider;
     std::optional<bool> m_use_sos1;
     std::optional<bool> m_use_kleinart_cuts;
+protected:
+    Optimizer *create(const Model &t_model) const override;
 public:
     KKT() = default;
 
@@ -30,8 +32,6 @@ public:
     KKT(const KKT& t_src);
 
     void set_bilevel_description(const Description &t_bilevel_description) override;
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] OptimizerFactory *clone() const override;
 

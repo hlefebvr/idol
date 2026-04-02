@@ -7,6 +7,8 @@
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h"
 #include "idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h"
+#include "idol/mixed-integer/optimizers/presolve/BoundRounding.h"
+#include "idol/mixed-integer/optimizers/presolve/OneRowBoundTightening.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 
 using namespace idol;
@@ -116,6 +118,10 @@ int main(int t_argc, const char** t_argv) {
 
     // Add a heuristic which solves the master problem with integrality constraints applied to the master's variables
     branch_and_bound.add_callback(Heuristics::IntegerMaster().with_optimizer(Gurobi()));
+
+    // Add presolve that tightens the bounds
+    branch_and_bound.add_presolver(Presolvers::BoundRounding());
+    branch_and_bound.add_presolver(Presolvers::OneRowBoundTightening());
 
     // Turn on logs
     branch_and_bound.with_logs(true);

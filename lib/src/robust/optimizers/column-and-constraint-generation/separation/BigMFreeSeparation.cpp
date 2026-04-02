@@ -64,6 +64,7 @@ void idol::Robust::CCG::BigMFreeSeparation::operator()() {
     auto [model, description] = build_separation_problem();
     const auto& ccg = get_parent();
     const auto& formulation = get_formulation();
+    const double tol_feasibility = ccg.get_tol_feasibility();
 
     BoundProvider bound_provider(*this);
 
@@ -95,7 +96,7 @@ void idol::Robust::CCG::BigMFreeSeparation::operator()() {
 
         bool is_feasible = true;
         for (const auto& slack : m_slack_for_constraints) {
-            if (const double value = model.get_var_primal(slack) ; !is_zero(value, ccg.get_tol_feasibility())) {
+            if (const double value = model.get_var_primal(slack) ; !is_zero(value, tol_feasibility)) {
                 is_feasible = false;
                 break;
             }
@@ -109,7 +110,7 @@ void idol::Robust::CCG::BigMFreeSeparation::operator()() {
         }
     }
 
-    if (formulation.should_have_epigraph_and_epigraph_is_not_in_master() || model.get_best_obj() < -Tolerance::Feasibility) {
+    if (formulation.should_have_epigraph_and_epigraph_is_not_in_master() || model.get_best_obj() < -tol_feasibility) {
 
         auto scenario = save_primal(get_robust_description().uncertainty_set(), model);
         add_scenario(std::move(scenario));

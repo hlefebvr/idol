@@ -254,13 +254,13 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::detect_integer_objective() {
     const auto& src_model = working_model();
     const auto& objective = src_model.get_obj_expr();
 
-    if (!is_integer(objective.affine().constant(), Tolerance::Integer)) {
+    if (!is_integer(objective.affine().constant(), get_tol_integer())) {
         m_has_integer_objective = false;
         return;
     }
 
     for (const auto& [var, val] : objective.affine().linear()) {
-        if (src_model.get_var_type(var) == Continuous || !is_integer(val, Tolerance::Integer)) {
+        if (src_model.get_var_type(var) == Continuous || !is_integer(val, get_tol_integer())) {
             m_has_integer_objective = false;
             return;
         }
@@ -851,7 +851,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
 
     }
 
-    const unsigned int recycled_user_cuts = m_user_cut_pool.recycle(t_node.info().primal_solution(), *m_relaxations[t_relaxation_id]);
+    const unsigned int recycled_user_cuts = m_user_cut_pool.recycle(t_node.info().primal_solution(), *m_relaxations[t_relaxation_id], get_tol_feasibility());
     if (recycled_user_cuts > 0) {
         *t_reoptimize_flag = true;
         return;
@@ -887,7 +887,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::update_lower_bound(const Branc
 
     auto& lowest_node = *t_active_nodes.by_objective_value().begin();
     const double raw_lower_bound = lowest_node.info().objective_value();
-    const double lower_bound = m_has_integer_objective ? std::ceil(raw_lower_bound - Tolerance::Integer) : raw_lower_bound;
+    const double lower_bound = m_has_integer_objective ? std::ceil(raw_lower_bound - get_tol_integer()) : raw_lower_bound;
     if (lower_bound > get_best_bound()) {
         set_best_bound(lower_bound);
     }
@@ -906,7 +906,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::prune_nodes_by_bound(BranchAnd
 
         const auto& node = *it;
         const double raw_lower_bound = node.info().objective_value();
-        const double lower_bound = m_has_integer_objective && !is_integer(raw_lower_bound, Tolerance::Integer) ? std::ceil(raw_lower_bound) : raw_lower_bound;
+        const double lower_bound = m_has_integer_objective && !is_integer(raw_lower_bound, get_tol_integer()) ? std::ceil(raw_lower_bound) : raw_lower_bound;
 
         if (lower_bound >= upper_bound - get_tol_mip_absolute_gap()) {
             it = t_active_nodes.erase(it);

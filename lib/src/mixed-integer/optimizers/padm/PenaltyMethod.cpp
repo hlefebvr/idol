@@ -60,7 +60,7 @@ idol::PenaltyMethod *idol::PenaltyMethod::clone() const {
     return new PenaltyMethod(*this);
 }
 
-idol::Optimizers::PADM *idol::PenaltyMethod::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::PenaltyMethod::create(const idol::Model &t_model) const {
 
     if (!m_optimizer) {
         throw Exception("The optimizer has not been set.");
@@ -84,8 +84,6 @@ idol::Optimizers::PADM *idol::PenaltyMethod::operator()(const idol::Model &t_mod
             m_feasible_solution_status ? *m_feasible_solution_status : Feasible,
             nullptr
     );
-
-    handle_default_parameters(result);
 
     return result;
 }

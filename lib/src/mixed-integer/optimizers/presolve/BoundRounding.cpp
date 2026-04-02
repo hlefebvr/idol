@@ -3,8 +3,13 @@
 //
 #include "idol/mixed-integer/optimizers/presolve/BoundRounding.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
+#include "idol/mixed-integer/modeling/objects/Env.h"
 
 bool idol::Presolvers::BoundRounding::execute(Model& t_model) {
+
+    const auto& env = t_model.env();
+    const double tol_integer = env.get_tol_integer();
+    const double tol_feasibility = env.get_tol_feasibility();
 
     unsigned int changes = 0;
 
@@ -16,20 +21,20 @@ bool idol::Presolvers::BoundRounding::execute(Model& t_model) {
 
         if (type != Continuous) {
 
-            double new_lb = std::ceil(lb - Tolerance::Integer);
-            double new_ub = std::floor(ub + Tolerance::Integer);
+            double new_lb = std::ceil(lb - tol_integer);
+            double new_ub = std::floor(ub + tol_integer);
 
             if (type == Binary) {
                 new_lb = std::max(0., new_lb);
                 new_ub = std::min(1., new_ub);
             }
 
-            if (!equals(lb, new_lb, Tolerance::Feasibility)) {
+            if (!equals(lb, new_lb, tol_feasibility)) {
                 t_model.set_var_lb(var, new_lb);
                 changes++;
             }
 
-            if (!equals(ub, new_ub, Tolerance::Feasibility)) {
+            if (!equals(ub, new_ub, tol_feasibility)) {
                 t_model.set_var_ub(var, new_ub);
                 changes++;
             }

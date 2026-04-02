@@ -13,12 +13,13 @@ void idol::Heuristics::SimpleRounding::Strategy::operator()(CallbackEvent t_even
 
     const auto& model = this->original_model();
     const auto& primal_solution = this->primal_solution();
+    const double tol_integer = model.optimizer().get_tol_integer();
 
     auto result = primal_solution;
 
     for (const auto& [var, value] : primal_solution) {
 
-        if (is_integer(value, Tolerance::Integer) || model.get_var_type(var) == Continuous) {
+        if (is_integer(value, tol_integer) || model.get_var_type(var) == Continuous) {
             continue;
         }
 

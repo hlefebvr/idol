@@ -27,13 +27,13 @@ class idol::Robust::ColumnAndConstraintGeneration : public OptimizerFactoryWithD
     // Separation
     std::list<std::unique_ptr<CCG::Separation>> m_separations;
     std::optional<bool> m_check_for_repeated_scenarios;
+protected:
+    [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
     ColumnAndConstraintGeneration(const Robust::Description& t_robust_description,
                                   const Bilevel::Description& t_bilevel_description);
 
     ColumnAndConstraintGeneration(const ColumnAndConstraintGeneration& t_src);
-
-    Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] OptimizerFactory *clone() const override;
 

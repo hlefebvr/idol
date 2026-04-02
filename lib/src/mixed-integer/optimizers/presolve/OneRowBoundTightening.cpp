@@ -3,10 +3,14 @@
 //
 #include "idol/mixed-integer/optimizers/presolve/OneRowBoundTightening.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
+#include "idol/mixed-integer/modeling/objects/Env.h"
 
 unsigned int idol::Presolvers::OneRowBoundTightening::do_single_row_bound_tightening(Model& t_model, const LinExpr<Var>& t_row, CtrType t_type, double t_rhs) {
 
     unsigned int result = 0;
+
+    const auto& env = t_model.env();
+    const double tol_feasibility = env.get_tol_feasibility();
 
     const double min_activity = get_min_activity(t_model, t_row);
 
@@ -22,7 +26,7 @@ unsigned int idol::Presolvers::OneRowBoundTightening::do_single_row_bound_tighte
             const double ub = t_model.get_var_ub(var);
             const double new_ub = (t_rhs - (min_activity - coefficient * lb)) / coefficient;
 
-            if (ub - new_ub > 1e-3 * Tolerance::Feasibility && std::abs(new_ub) < 1e8) {
+            if (ub - new_ub > 1e3 * tol_feasibility && std::abs(new_ub) < 1e8) {
                 t_model.set_var_ub(var, new_ub);
                 result++;
             }
@@ -33,7 +37,7 @@ unsigned int idol::Presolvers::OneRowBoundTightening::do_single_row_bound_tighte
             const double ub = t_model.get_var_ub(var);
             const double new_lb = (t_rhs - (min_activity - coefficient * ub)) / coefficient;
 
-            if (new_lb -lb > 1e-3 * Tolerance::Feasibility && std::abs(new_lb) < 1e8) {
+            if (new_lb -lb > 1e3 * tol_feasibility && std::abs(new_lb) < 1e8) {
                 t_model.set_var_lb(var, new_lb);
                 result++;
             }

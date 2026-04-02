@@ -14,7 +14,7 @@ idol::Bilevel::MibS::MibS(const Bilevel::Description& t_description)
 
 }
 
-idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::Bilevel::MibS::create(const idol::Model &t_model) const {
 #ifdef IDOL_USE_MIBS
     if (!m_description) {
         throw Exception("The bilevel description has not been set.");
@@ -38,8 +38,6 @@ idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) con
     for (auto& cb : m_callbacks) {
         result->add_callback(cb->operator()());
     }
-
-    this->handle_default_parameters(result);
 
     return result;
 #else
