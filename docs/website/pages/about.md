@@ -23,7 +23,8 @@ Do not hesitate to add the `urldate` field to this bib entry with the date you h
 
 The `idol_cl` binary is shipped with the following open-source tools:
 
-- <a href="https://github.com/coin-or/MibS" target="_blank">MibS</a>, the mixed-integer bilevel optimization solver (published under the Eclipse Public License - v2.0).
+- <a href="https://github.com/coin-or/MibS" target="_blank">MibS</a> and its dependencies, the mixed-integer bilevel optimization solver (published under the Eclipse Public License - v2.0);
+- <a href="https://github.com/shaowei-cai-group/Local-MIP">Local-MIP</a>, the local-search solver for mixed integer programming (published under the MIT License).
 
 ## License
 
