@@ -398,6 +398,14 @@ Once all the variables in this batch have integer values, it considers the low-p
 
 \tableofcontents
 
+\section lib_milp_bnb_cutting_planes_cut_pool The Cut Pool
+
+\section lib_milp_bnb_cutting_planes_cgl Using the Coin-OR Cut Generation Library (Cgl)
+
+\section lib_milp_bnb_cutting_planes_user_cuts Adding Your Own User Cuts
+
+\section lib_milp_bnb_cutting_planes_lazy_cuts Adding Your Own Lazy Cuts
+
 \page lib_milp_bnb_heuristics Heuristics
 
 \tableofcontents
@@ -476,5 +484,7 @@ Only one round per constraint is applied per presolve pass.
 \tableofcontents
 
 \section lib_milp_bnb_options_solution_pool Solution Pool Size
+
+\section lib_milp_bnb_options_sub_tree Sub-Trees
 
 \section lib_milp_bnb_options_logs Logging
