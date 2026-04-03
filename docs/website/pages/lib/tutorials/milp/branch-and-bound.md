@@ -4,10 +4,12 @@
 \tableofcontents
 
 The branch-and-bound algorithm is a very well-known approach to solve combinatorial problems. 
-It is a divide and conquer type of algorithms. For an introduction, please refer to the <a href="https://en.wikipedia.org/wiki/Branch_and_bound">Wikipedia page</a>
-or to the book <a href="https://doi.org/10.1007/978-3-319-11008-0">Integer Programming</a>.
+It is a divide and conquer type of algorithms. 
 
-\warning The rest of this tutorial assumes a basic understanding of branch-and-bound procedures.
+> For an introduction, please refer to the <a href="https://en.wikipedia.org/wiki/Branch_and_bound">Wikipedia page</a>
+> or to the book <a href="https://doi.org/10.1007/978-3-319-11008-0">Integer Programming</a>.
+> 
+> Otherwise, we assume that you are familiar with the branch-and-bound algorithm.
 
 \section lib_milp_bnb_basics Basics
 

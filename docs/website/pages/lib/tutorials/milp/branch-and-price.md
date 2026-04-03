@@ -21,26 +21,26 @@
 
 - \subpage lib_milp_branch_and_price_bap_IntegerMaster
 
-\page lib_milp_branch_and_price_phaseI Making the Master Problem Feasible (Phase I)
+\page lib_milp_branch_and_price_cg_phaseI Making the Master Problem Feasible (Phase I)
 \tableofcontents
 
-\page lib_milp_branch_and_price_in_out Stabilizing Column Generation via in-out Separation
+\page lib_milp_branch_and_price_cg_in_out Stabilizing Column Generation via in-out Separation
 \tableofcontents
 
-\page lib_milp_branch_and_price_HeuristicPricing Using Heuristics for Pricing
+\page lib_milp_branch_and_price_cg_HeuristicPricing Using Heuristics for Pricing
 \tableofcontents
 
-\page lib_milp_branch_and_price_callback Using Your Own Pricing Callback
+\page lib_milp_branch_and_price_cg_callback Using Your Own Pricing Callback
 \tableofcontents
 
-\page lib_milp_branch_and_price_IntegerMaster The "Integer Master" Heuristic
+\page lib_milp_branch_and_price_bap_IntegerMaster The "Integer Master" Heuristic
 \tableofcontents
 
-\page lib_milp_branch_and_price_options Other Options
+\page lib_milp_branch_and_price_cg_options Other Options
 \tableofcontents
 
-\section lib_milp_branch_and_price_options_parallel Parallel Pricing
+\section lib_milp_branch_and_price_cg_options_parallel Parallel Pricing
 
-\section lib_milp_branch_and_price_options_multiplicities Multiplicities
+\section lib_milp_branch_and_price_cg_options_multiplicities Multiplicities
 
-\section lib_milp_branch_and_price_options_clean_up Column Pool Clean Up
+\section lib_milp_branch_and_price_cg_options_clean_up Column Pool Clean Up

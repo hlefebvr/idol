@@ -262,7 +262,7 @@ TAB_SIZE               = 4
 # a double escape (\\{ and \\})
 
 ALIASES                =
-ALIASES += card{3||}="<div id=\"cards\"><div class=\"card\" onclick=\"window.location='\1.html';\"><a href=\"\1.html\">\2</a><div class=\"frame\"><img src=\"\1.png\"/></div>\3</div></div>"
+ALIASES += card{3||}="<div class=\"card\" onclick=\"window.location='\1.html';\"><a href=\"\1.html\">\2</a><div class=\"frame\"><img src=\"\1.png\"/></div>\3</div>"
 
 # Set the OPTIMIZE_OUTPUT_FOR_C tag to YES if your project consists of C sources
 # only. Doxygen will then generate output that is more tailored for C. For

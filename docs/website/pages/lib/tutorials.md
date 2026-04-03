@@ -3,7 +3,11 @@
 
 <span style="font-weight:500;">Mixed-Integer Optimization</span>
 
-\card{lib_milp_branch_and_bound||Custom Branch-and-Bound||Create your own branch-and-bound algorithm.}
+<div id="cards">
+\card{lib_milp_basics||Basics||Learn how to model a MILP and solve it with different optimizers. Write your own optimizer.}
+\card{lib_milp_branch_and_bound||Branch-and-Bound||Create your own branch-and-bound algorithm.}
+<!-- \card{lib_milp_branch_and_price||Branch-and-Price||Use the Dantzig-Wolfe decomposition to solve your large scale problem. Implement a branch-and-price-and-cut algorithm.} -->
+</div>
 
 <span style="font-weight:500;">Bilevel Optimization</span>
 
