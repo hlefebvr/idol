@@ -60,8 +60,8 @@ like callbacks, presolve, cutting planes, etc.
 
 - \subpage lib_milp_bnb_node_selection
 - \subpage lib_milp_bnb_branching_rule
-- \subpage lib_milp_bnb_callbacks
-- \subpage lib_milp_bnb_presolve (TODO)
+- \subpage lib_milp_bnb_callbacks (TODO)
+- \subpage lib_milp_bnb_presolve
 - \subpage lib_milp_bnb_cutting_planes (TODO)
 - \subpage lib_milp_bnb_heuristics (TODO)
 - \subpage lib_milp_bnb_node_type (TODO)
@@ -406,9 +406,66 @@ Once all the variables in this batch have integer values, it considers the low-p
 
 \tableofcontents
 
+Presolve techniques analyze the problem before starting the branch-and-bound search to simplify it and reduce the search space. 
+For instance, it may tighten variable bounds, remove redundancies, or strengthen constraints.
+Presolve can significantly speed up the solution process.
+
+Typically, a presolve operation is added using the `.with_presolver` method. For instance, here is how to add the 
+`OneRowBoundStrengthening` presolver detailed bellow. 
+
+```cpp
+branch_and_bound.add_presolver(OneRowBoundStrengthening());
+```
+
+For more details, please refer to <a href="https://doi.org/10.1287/ijoc.2018.0857">Achterberg et al. (2019)</a>.
+
 \section lib_milp_bnb_presolve_BoundRounding Bound Rounding
 
+This presolve simply rounds down or up the variable bounds associated to integer or binary variables.
+This is typically used in combination with other presolvers that may affect variable bounds.
+
+Here is how to add it.
+
+```cpp
+branch_and_bound.add_presolver(BoundRounding());
+```
+
 \section lib_milp_bnb_presolve_OneRowBoundStrengthening One Row Bound Strengthening
+
+One-row bound strengthening tightens variable bounds by analyzing each constraint individually. Consider a linear inequality
+
+\f[
+    A_{iS} x_S + a_{ik} x_k \le b_i,
+\f]
+
+where \\( S = \text{supp}(A_i\cdot) \setminus \\{k\\} \\) and \\( a_{ik} \neq 0 \\). First, a lower bound on the sum of the other variables is computed
+
+\f[
+    \ell_{iS} = \inf \{ A_{iS} x_S \}.
+\f]
+
+Then, depending on the sign of \\(a_{ik}\\), the bound of \\(x_k\\) is updated as follows:
+
+- If \\(a_{ik} > 0\\), update the upper bound:
+
+\f[
+    u_k := \min \Big\{ u_k, \frac{b_i - \ell_{iS}}{a_{ik}} \Big\}.
+\f]
+
+- If \\(a_{ik} < 0\\), update the lower bound:
+
+\f[
+    \ell_k := \max \Big\{ \ell_k, \frac{b_i - \ell_{iS}}{a_{ik}} \Big\}.
+\f]
+
+This procedure is applied iteratively across all constraints, with safeguards to prevent infinite sequences of tiny reductions. 
+More specifically, 
+- a change is ignored if the improvement is smaller than \\(10^3 \cdot \varepsilon\\), where \\(\varepsilon\\) is the feasibility tolerance,
+- bounds with absolute values exceeding \\(10^8\\) are also ignored.  
+
+Only one round per constraint is applied per presolve pass. 
+
+> Note that this presolver does not round the bounds for integer variables. Please, use this in combination with the `BoundRounding` presolver for better performance.
 
 \page lib_milp_bnb_node_type Using Your Own Node Type
 
