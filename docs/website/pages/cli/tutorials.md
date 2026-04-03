@@ -7,17 +7,7 @@ Also see \ref cli_input_format_milp
 
 <span style="font-weight:500;">Bilevel Optimization</span>
 
-<div id="cards">
-    <div class="card" onclick="window.location = 'cli_bilevel_kkt.html';">
-        <a href="cli_bilevel_kkt.html">
-            KKT Reformulation
-        </a>
-        <div class="frame">
-            <img src="kkt.png"/>
-        </div>
-        Solve bilevel problems with continuous lower-level problem via their KKT-based single-level reformulation.
-    </div>
-</div>
+\card{cli_bilevel_kkt||KKT Reformulation||Solve bilevel problems with continuous lower-level problem via their KKT-based single-level reformulation.}
 
 Also see \ref cli_input_format_bilevel
 

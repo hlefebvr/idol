@@ -25,7 +25,7 @@ class idol::NodeSelectionRules::BestEstimate : public NodeSelectionRule<NodeT> {
         const double node_sum_of_infeasibilities = t_node.info().sum_of_infeasibilities();
         const double incumbent_obj = this->parent().incumbent().info().objective_value();
 
-        return node_obj - ( m_root_node_obj.value() - incumbent_obj ) * node_sum_of_infeasibilities / m_root_node_sum_of_infeasibilities.value();
+        return node_obj + ( m_root_node_obj.value() - incumbent_obj ) * node_sum_of_infeasibilities / m_root_node_sum_of_infeasibilities.value();
     }
 public:
     explicit BestEstimate(Optimizers::BranchAndBound<NodeT>& t_parent) : NodeSelectionRule<NodeT>(t_parent) {}
@@ -43,21 +43,20 @@ public:
             return t_active_nodes.by_objective_value().begin();
         }
 
-        double max = std::numeric_limits<double>::lowest();
-        typename NodeSet<Node<NodeT>>::const_iterator argmax;
+        double min_score = std::numeric_limits<double>::max();
+        typename NodeSet<Node<NodeT>>::const_iterator argmin;
         for (auto it = t_active_nodes.by_objective_value().begin(),
-                end = t_active_nodes.by_objective_value().end() ; it != end ; ++it) {
+                  end = t_active_nodes.by_objective_value().end() ; it != end ; ++it) {
 
             const double score = compute_score(*it);
 
-            if (score > max) {
-                max = score;
-                argmax = it;
+            if (score < min_score) {
+                min_score = score;
+                argmin = it;
             }
-
         }
 
-        return argmax;
+        return argmin;
     }
 };
 
