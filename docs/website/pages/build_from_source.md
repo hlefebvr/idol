@@ -5,7 +5,7 @@
 
 \section requirements Requirements
 
-To build `idol` from source, you need:
+To build `idol` and `idol_cl` from source, you need:
 
 - **CMake ≥ 3.22**
 - **C++20 compiler** (GCC or Clang)
@@ -78,8 +78,10 @@ You can customize the build using CMake options.
 
 \subsection cmake_mibs Enable MibS support
 
-When installing via package managers (`apt-get` or `brew`), MibS is  included automatically.  
-When building from source, you must enable and configure it manually.
+MibS is a mixed-integer linear solver that can be integrated in idol.
+
+When installing via package managers (`apt-get` or `brew`), it is  included automatically.  
+When building from source, you must install it on your own, enable and configure it manually.
 
 First, install MibS by following the instructions on the <a href="https://github.com/coin-or/MibS" target="_blank">official MibS documentation</a>. Then either:
 
@@ -99,6 +101,43 @@ cmake -DUSE_MIBS=ON -DCOIN_OR_DIR=/path/to/coin-or/dist ..
 
 Both `COIN_OR_HOME` and `COIN_OR_DIR` must point to the COIN-OR `dist` directory.
 
+\subsection cmake_cgl Enable Cgl support
+
+Cgl is a cut generation library from coin-or. It can be used by idol to generate cutting planes in a branch-and-bound algorithm.
+
+When installing via package managers (`apt-get` or `brew`), Cgl is  included automatically.  
+When building from source, you must install it on your own, enable and configure it manually.
+
+First, install Cgl from source followin the instructions on the
+<a href="https://github.com/coin-or/Cgl" target="_blank">official Cgl documentation</a>. 
+Namely, do as follows 
+
+```shell
+mkdir coin-or
+cd coin-or 
+wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
+chmod u+x coinbrew
+./coinbrew fetch Cgl@master
+./coinbrew build Cgl
+```
+
+Then either:
+
+- set the environment variable:
+
+```shell
+export COIN_OR_HOME=/path/to/coin-or/dist
+```
+
+- or pass the directory directly to CMake with the option `COIN_OR_DIR`.
+
+Finally, enable Cgl with the CMake option `USE_CGL=ON`.
+
+```shell
+cmake -DUSE_CGL=ON -DCOIN_OR_DIR=/path/to/coin-or/dist ..
+```
+
+Both `COIN_OR_HOME` and `COIN_OR_DIR` must point to the COIN-OR `dist` directory.
 
 \subsection cmake_install_prefix Custom installation directory
 
