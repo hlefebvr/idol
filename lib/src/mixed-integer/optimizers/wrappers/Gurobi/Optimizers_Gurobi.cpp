@@ -1006,7 +1006,7 @@ void idol::Optimizers::Gurobi::set_param(const std::string& t_param, double t_va
     auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
-        GRBsetintparam(lib.GRBgetenv(m_model), t_param.c_str(), t_value)
+        GRBsetdblparam(lib.GRBgetenv(m_model), t_param.c_str(), t_value)
     )
 }
 
