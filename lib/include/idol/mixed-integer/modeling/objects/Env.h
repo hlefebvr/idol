@@ -164,6 +164,12 @@ public:
     [[nodiscard]] double get_tol_feasibility() const { return m_tol_feasibility; }
     [[nodiscard]] double get_tol_optimality() const { return m_tol_optimality; }
 
+    void set_tol_mip_relative_gap(double t_value) { m_tol_mip_relative_gap = t_value; }
+    void set_tol_mip_absolute_gap(double t_value) { m_tol_mip_absolute_gap = t_value; }
+    void set_tol_integer(double t_value) { m_tol_integer = t_value; }
+    void set_tol_feasibility(double t_value) { m_tol_feasibility = t_value; }
+    void set_tol_optimality(double t_value) { m_tol_optimality = t_value; }
+
     // Parameters
     [[nodiscard]] bool get_param_logs() const { return m_param_logs; }
     [[nodiscard]] bool get_param_presolve() const { return m_param_presolve; }
@@ -174,6 +180,14 @@ public:
     [[nodiscard]] unsigned int get_param_iteration_limit() const { return m_param_iteration_limit; }
     [[nodiscard]] bool get_param_infeasible_or_unbounded_info() const { return m_param_infeasible_or_unbounded_info; }
 
+    void set_param_logs(bool t_param_logs) { m_param_logs = t_param_logs; }
+    void set_param_presolve(bool t_param_press) { m_param_presolve = t_param_press; }
+    void set_param_time_limit(double t_param_time) { m_param_time_limit = t_param_time; }
+    void set_param_thread_limit(unsigned int t_param_thread_limit) { m_param_thread_limit = t_param_thread_limit; }
+    void set_param_best_bound_stop(double t_best_bound_stop) { m_param_best_bound_stop = t_best_bound_stop; }
+    void set_param_best_obj_stop(double t_best_obj_stop) { m_param_best_obj_stop = t_best_obj_stop; }
+    void set_param_iteration_limit(unsigned int t_iteration_limit) { m_param_iteration_limit = t_iteration_limit; }
+    void set_param_infeasible_or_unbounded_info(bool t_param_infeasible_or_unbounded_info) { m_param_best_bound_stop = t_param_infeasible_or_unbounded_info; }
 };
 
 /**
