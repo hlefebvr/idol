@@ -44,23 +44,29 @@ void idol::GurobiCallbackI::call() {
 void idol::GurobiCallbackI::add_lazy_cut(const TempCtr &t_lazy_cut) {
     auto& lib = idol::Optimizers::Gurobi::get_dynamic_lib();
     const auto temp_ctr = gurobi_temp_constr(t_lazy_cut);
-    lib.GRBcblazy(m_cbdata,
+    int error = lib.GRBcblazy(m_cbdata,
               (int) temp_ctr.indices.size(),
               temp_ctr.indices.data(),
               temp_ctr.coefficients.data(),
               temp_ctr.sense,
               temp_ctr.rhs);
+    if (error) {
+        throw Exception("Gurobi reported an error while adding a lazy constraint (error code: " + std::to_string(error) + ").");
+    }
 }
 
 void idol::GurobiCallbackI::add_user_cut(const TempCtr &t_user_cut) {
     auto& lib = idol::Optimizers::Gurobi::get_dynamic_lib();
     const auto temp_ctr = gurobi_temp_constr(t_user_cut);
-    lib.GRBcbcut(m_cbdata,
+    int error = lib.GRBcbcut(m_cbdata,
               (int) temp_ctr.indices.size(),
               temp_ctr.indices.data(),
               temp_ctr.coefficients.data(),
               temp_ctr.sense,
               temp_ctr.rhs);
+    if (error) {
+        throw Exception("Gurobi reported an error while adding a user cut (error code: " + std::to_string(error) + ").");
+    }
 }
 
 idol::GurobiCallbackI::GurobiTempConstr
@@ -78,7 +84,7 @@ idol::GurobiCallbackI::gurobi_temp_constr(const TempCtr &t_temp_ctr) const {
 
     switch (t_temp_ctr.type()) {
         case LessOrEqual: result.sense = '<'; break;
-        case GreaterOrEqual: result.sense = '<'; break;
+        case GreaterOrEqual: result.sense = '>'; break;
         case Equal: result.sense = '='; break;
         default: throw Exception("Unexpected constraint type.");
     }

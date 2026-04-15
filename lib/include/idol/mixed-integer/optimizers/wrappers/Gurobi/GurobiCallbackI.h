@@ -39,7 +39,7 @@ class idol::GurobiCallbackI : public CallbackI {
         double rhs = 0;
     };
 
-    GurobiTempConstr gurobi_temp_constr(const TempCtr& t_temp_ctr) const;
+    [[nodiscard]] GurobiTempConstr gurobi_temp_constr(const TempCtr& t_temp_ctr) const;
 public:
     explicit GurobiCallbackI(Optimizers::Gurobi& t_parent);
 
