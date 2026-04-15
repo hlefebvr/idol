@@ -245,10 +245,6 @@ add_library(idol STATIC
         include/idol/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.h
         src/bilevel/optimizers/BranchAndCut/BranchAndCut.cpp
         src/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.cpp
-        include/idol/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.h
-        include/idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h
-        src/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.cpp
-        src/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.cpp
         include/idol/mixed-integer/modeling/constraints/SOSCtr.h
         include/idol/mixed-integer/modeling/constraints/SOSCtrVersion.h
         src/mixed-integer/modeling/constraints/SOSCtr.cpp
@@ -264,12 +260,6 @@ add_library(idol STATIC
         src/mixed-integer/optimizers/wrappers/JuMP/Optimizers_Coluna.cpp
         include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeWithCGInfo.h
         src/mixed-integer/optimizers/branch-and-bound/nodes/NodeWithCGInfo.cpp
-        include/idol/robust/optimizers/critical-value-column-and-constraint-generation-algorithm/CriticalValueColumnAndConstraintGeneration.h
-        include/idol/robust/optimizers/critical-value-column-and-constraint-generation-algorithm/Formulation.h
-        include/idol/robust/optimizers/critical-value-column-and-constraint-generation-algorithm/Optimizers_CriticalValueColumnAndConstraintGeneration.h
-        src/robust/optimizers/critical-value-column-and-constraint-generation/CriticalValueColumnAndConstraintGeneration.cpp
-        src/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.cpp
-        src/robust/optimizers/critical-value-column-and-constraint-generation/Formulation.cpp
         include/idol/mixed-integer/optimizers/wrappers/GLPK/headers/header_glpk.h
         include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_c_api.h
         include/idol/mixed-integer/optimizers/wrappers/HiGHS/headers/header_HighsCallbacktruct.h
@@ -285,12 +275,6 @@ add_library(idol STATIC
         src/robust/optimizers/column-and-constraint-generation/separation/Separation.cpp
         include/idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h
         src/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.cpp
-        include/idol/robust/optimizers/nested-branch-and-cut/BilevelBasedBranchAndBound.h
-        src/robust/optimizers/bilevel-based-branch-and-bound/BilevelBasedBranchAndBound.cpp
-        include/idol/robust/optimizers/nested-branch-and-cut/Optimizers_BilevelBasedBranchAndCut.h
-        src/robust/optimizers/bilevel-based-branch-and-bound/Optimizers_BilevelBasedBranchAndCut.cpp
-        include/idol/robust/optimizers/nested-branch-and-cut/Formulation.h
-        src/robust/optimizers/bilevel-based-branch-and-bound/Formulation.cpp
         include/idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h
         src/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.cpp
         include/idol/mixed-integer/optimizers/callbacks/cutting-planes/CglCutCallback.h

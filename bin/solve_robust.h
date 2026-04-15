@@ -18,7 +18,6 @@
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
-#include "idol/robust/optimizers/nested-branch-and-cut/BilevelBasedBranchAndBound.h"
 
 class RobustMethodManager : public MethodManager {
 public:
@@ -27,8 +26,8 @@ public:
         { "CCG-MIBS", { 25, "Column-and-constraint generation with separation by MibS." } },
         { "CCG-KKT-SOS1", { 20, "Column-and-constraint generation with KKT-based separation using SOS1." } },
         { "YASOL", { 15, "Quantified programming formulation solved with Yasol; see Goerigk and Hartisch (2021) [https://doi.org/10.1016/j.cor.2021.105434]." } },
-        { "BBBB-MIBS", { 5, "Bilevel-based branch-and-bound with MibS; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } },
-        { "BBBB-KKT-SOS1", { 0, "Bilevel-based branch-and-bound with KKT using SOS1; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } }
+        //{ "BBBB-MIBS", { 5, "Bilevel-based branch-and-bound with MibS; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } },
+        //{ "BBBB-KKT-SOS1", { 0, "Bilevel-based branch-and-bound with KKT using SOS1; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } }
     }) {}
 };
 
@@ -227,34 +226,6 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
         }
 
         model.use(ccg);
-
-    } else if (method.starts_with("BBBB-")) {
-
-        auto bbbb = Robust::BilevelBasedBranchAndBound(robust_description, bilevel_description);
-
-        bbbb.with_logs(!t_args.mute);
-
-        if (method == "BBBB-MIBS") {
-
-            auto mibs = Bilevel::MibS();
-            mibs.with_cplex_for_feasibility(true);
-
-            bbbb.with_feasibility_bilevel_optimizer(mibs);
-            bbbb.with_optimality_bilevel_optimizer(mibs);
-
-        } else if (method == "BBBB-KKT-SOS1") {
-
-            auto kkt = Bilevel::KKT();
-            kkt.with_sos1_constraints(true);
-            kkt.with_single_level_optimizer(Gurobi());
-
-            bbbb.with_first_stage_relaxation(true);
-            bbbb.with_feasibility_bilevel_optimizer(kkt);
-            bbbb.with_optimality_bilevel_optimizer(kkt);
-
-        }
-
-        model.use(bbbb);
 
     }
 
