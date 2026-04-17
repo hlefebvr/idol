@@ -8,7 +8,8 @@
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
-#include "idol/robust/optimizers/critical-value-column-and-constraint-generation-algorithm/CriticalValueColumnAndConstraintGeneration.h"
+#include "idol/robust/modeling/Description.h"
+#include "idol/robust/optimizers/critical-value-column-and-constraint-generation/CriticalValueColumnAndConstraintGeneration.h"
 
 using namespace idol;
 
@@ -69,12 +70,12 @@ void solve_with_critical_value_ccg(Env& t_env, const Instance& t_instance) {
     // std::cout << Robust::Description::View(model, description) << std::endl;
 
     // Set optimizer
-    auto lozano_borrero = Robust::CriticalValueColumnAndConstraintGeneration(description);
-    lozano_borrero.with_master_optimizer(Cplex().with_logs(false));
-    lozano_borrero.with_adversarial_optimizer(Cplex().with_logs(false));
-    lozano_borrero.with_logs(true);
+    auto ccg = Robust::CriticalValueColumnAndConstraintGeneration(description);
+    //ccg.with_master_optimizer(Cplex().with_logs(false));
+    //ccg.with_adversarial_optimizer(Cplex().with_logs(false));
+    ccg.with_logs(true);
 
-    model.use(lozano_borrero);
+    model.use(ccg);
 
     // Optimize
     model.optimize();

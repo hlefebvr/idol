@@ -15,7 +15,7 @@
             with the C++ library.
         </span>
         <span style="display:block;padding-top: 30px;padding-bottom: 5px;">
-            <a href="cli_basics.html" class="my-button">
+            <a href="cli_tutorials.html" class="my-button">
                 Get started
             </a>
             <a href="examples.html" class="my-button-secondary">

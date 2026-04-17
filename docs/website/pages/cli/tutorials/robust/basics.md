@@ -1,11 +1,11 @@
-\page cli_input_format_robust Input Format for Robust Problems
+\page cli_robust_basics Basics of the Command Line Interface for Robust Problems
 \brief Describes the input file format for robust problems.
 
 \tableofcontents
 
-\section cli_robust_static Static Robust Optimization
+\section cli_robust_basics_static Static Robust Optimization
 
-\subsection cli_robust_classic_ro Classic Robust Optimization
+\subsection cli_robust_basics_intro Introduction
 
 A (classic) static robust optimization considers problems of the form 
 
@@ -18,7 +18,11 @@ A (classic) static robust optimization considers problems of the form
 
 Here \\(U\\) models the uncertainty set which contains a (possibly infinite) set of possible scenarios for the parameters \\(u\\).
 
-\subsubsection cli_robust_classic_ro_example Example
+\warning TODO, add decision-dependent problems
+
+\subsection cli_robust_basics_input Input File Format
+
+\subsubsection cli_robust_basics_input_example A First Example
 
 We consider the robust problem 
 
@@ -96,7 +100,7 @@ c	x	u_1	1
 Here, the uncertain parameters enter the constraint matrix. 
 For instance, in the constraint with name "c", the variable with name "x" has an uncertain coefficient of one associated to the parameter "u_1".
 
-\subsubsection cli_robust_classic_ro_detailed_description Detailed Description
+\subsubsection cli_robust_basics_input_detailed Detailed Description
 
 In `idol` a static robust instance is made of three files:
 - A first `.mps`/`.lp` stores the model for the deterministic problem, i.e., here,
@@ -143,13 +147,11 @@ The `@MAT` section is composed of a list of entries with the format `<CTR> <VAR>
 `<VAR>` is a variable name, `<UNC_VAR>` is an uncertainty parameter name (which must be defined in the uncertainty set), and `<COEFF>` is a number. 
 Each entry specifies that the coefficient of the variable `<VAR>` in the constraint `<CTR>` has an uncertain contribution equal to `<COEFF>` times `<UNC_VAR>`.
 
-\subsection cli_robust_ddro Decision-Dependent Robust Optimization
+\warning TODO, add decision-dependent problems
 
-<div class="warning">
-    Decision-dependent robust problems are not yet supported, but are a work in progress.
-</div>
+\section cli_robust_basics_aro Two-Stage Robust Optimization
 
-\section cli_robust_aro Two-Stage Robust Optimization
+\subsection cli_robust_basics_aro_introduction Introduction
 
 Two-stage robust optimization problems are problems of the form
 
@@ -161,7 +163,9 @@ Two-stage robust optimization problems are problems of the form
 where \\( U \\) denotes the uncertainty set, \\( X \\) denotes the first-stage decision feasible region and \\( Y(x,u) \\)
 denotes the second-stage decision feasible region.
 
-\subsection cli_robust_aro_example Example
+\subsection cli_robust_basics_aro_input Input File Format
+
+\subsubsection cli_robust_basics_aro_input_example A First Example
 
 We consider the two-stage robust problem 
 
@@ -239,7 +243,7 @@ instance
 instance.mps
 ```
 
-\subsection cli_robust_aro_details Detailed Description
+\subsubsection cli_robust_basics_aro_input_detailed Detailed Description
 
 The format used to describe two-stage robust problems is based on how static robust problems are described but with an additional file
 indicating which variable and constraint belong to the second stage.

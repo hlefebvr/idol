@@ -1,30 +1,32 @@
-\page cli_input_format_bilevel Input Format for Bilevel Problems
-\brief Describes the input file format for bilevel problems.
+\page cli_bilevel_basics Basics of the Command Line Interface for Bilevel Optimization
+\brief Describes the basic usage of `idol_cl` for bilevel problems, including the expected input file format.
 
 \tableofcontents
+
+\section cli_bilevel_basics_input Input File Format
 
 For bilevel problems, `idol_cl` uses the `.aux` file format from the <a href="https://github.com/coin-or/MibS" target="_blank">MibS solver</a>
 coupled with an `.lp`/`.mps` file that stores the single-level relaxation.
 
-\section cli_bilevel_example Example
+\subsection cli_bilevel_basics_input_example A First Example
 
 We consider the bilevel problem
 
 \f[
-    \begin{align*}
-        \min_{x, y} \quad & -x - 10y \\
-        \text{s.t.} \quad
-        & y \in \begin{array}[t]{rl}
-        \displaystyle\arg\min_{z} \ & z \\
-        \text{s.t.} \ & -25x + 20z \le 30, \\
-        & x + 2z \le 10, \\
-        & 2x - z \le 15, \\
-        & 2x + 10z \ge 15, \\
-        & z \ge 0, \\
-        & z \in \mathbb{Z}.
-        \end{array} \\
-        & x \in \mathbb{Z}_{\ge 0}.
-    \end{align*}
+\begin{align*}
+\min_{x, y} \quad & -x - 10y \\
+\text{s.t.} \quad
+& y \in \begin{array}[t]{rl}
+\displaystyle\arg\min_{z} \ & z \\
+\text{s.t.} \ & -25x + 20z \le 30, \\
+& x + 2z \le 10, \\
+& 2x - z \le 15, \\
+& 2x + 10z \ge 15, \\
+& z \ge 0, \\
+& z \in \mathbb{Z}.
+\end{array} \\
+& x \in \mathbb{Z}_{\ge 0}.
+\end{align*}
 \f]
 
 This example is taken from the paper
@@ -88,12 +90,12 @@ moore-and-bard
 moore-and-bard.mps
 ```
 
-**Note**: in `idol_cl`, the field `@MPS` or `@LP` is typically ignored to avoid path corruption. 
+**Note**: in `idol_cl`, the field `@MPS` or `@LP` is typically ignored to avoid path corruption.
 For that reason, the `.mps`/`.lp` file must explicitly be given.
 
-\section cli_bilevel_details Detailed Description
+\subsection cli_bilevel_basics_input_details Detailed Description
 
-Bilevel problem instances are described by two files. First, an `.mps` or `.lp` file stores the single-level relaxation model. 
+Bilevel problem instances are described by two files. First, an `.mps` or `.lp` file stores the single-level relaxation model.
 Then, the `.aux` file describes which variables and constraint belong to the lower-level problem.
 
 For more details on the `.mps` and `.lp` file formats, see the page \ref cli_input_format_milp.
@@ -124,12 +126,45 @@ The `.aux` file is composed of tagged sections, each identified by a keyword sta
 | `@MPS`          | The next line contains the name of the `.mps` file with which this instance is associated (typically ignored) |
 | `@LP`           | The next line contains the name of the `.lp` file with which this instance is associated (typically ignored) |
 
-The variables section is composed by the list of variable names that belong to the lower-level problem directly followed by their 
+The variables section is composed by the list of variable names that belong to the lower-level problem directly followed by their
 objective coefficient. The constraint section is composed by the list of constraint names that belong to the lower-level problem.
 
-Note that bounds on lower-level variables are always assumed to be constraints of the lower-level problem. 
+Note that bounds on lower-level variables are always assumed to be constraints of the lower-level problem.
 
-\section cli_bilevel_references References
+\subsection cli_bilevel_basics_input_references References
 
 - <a href="https://coin-or.github.io/MibS/input.html" target="_blank">MibS documentation</a>.
 - <a href="https://bobilib.org/" target="_blank">BOBILib</a>, which is an instance library for mixed-integer bilevel optimization that uses this file format.
+
+\section cli_bilevel_basics_optimistic Solving An Optimistic Bilevel Problem
+
+Given a bilevel problem, you can solve it by running
+
+```shell 
+idol_cl solve model.mps --bilevel follower.aux
+```
+
+Some commands require more parameters than others. For instance, here is how to solve an LP-LP bilevel problem
+using its KKT reformulation using big-M values.
+
+```shell
+idol_cl solve model.mps --bilevel follower.aux --method KKT-BIGM --bound-provider bounds.txt
+```
+
+For more information, see our tutorial on \ref cli_bilevel_kkt.
+
+Here again, to list the available methods for your problem class, you may use
+
+```shell
+idol_cl list-methods model.mps --bilevel follower.aux
+```
+
+\section cli_bilevel_basics_pessimistic Solving A Pessimistic Bilevel Problem
+
+**If the bilevel problem does not have coupling constraints**, it is possible to address its pessimistic version by
+appending the `--pessimistic` flag. If so, the relaxation-and-correction scheme from <a href="https://doi.org/10.1287/ijoc.2019.0927" target="_blank">Zeng (2025)</a>
+will be applied.
+
+```shell
+idol_cl solve model.lp --bilevel follower.aux --method KKT-SOS1 --pessimistic
+```

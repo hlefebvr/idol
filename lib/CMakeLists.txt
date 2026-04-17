@@ -297,6 +297,7 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/presolve/VariableFixing.h
         include/idol/general/utils/Queue.h
         src/mixed-integer/general/OptimizerFactory.cpp
+        include/idol/robust/optimizers/critical-value-column-and-constraint-generation/CriticalValueColumnAndConstraintGeneration.h
 )
 
 target_link_libraries(idol PRIVATE dl)

@@ -454,6 +454,10 @@ div.contents .toc {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
+.warning dt {
+    display: none;
+}
+
 .warning::before {
     content: "⚠";
     font-size: 1.2rem;
@@ -477,11 +481,16 @@ div.contents .toc {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
+.info dt, blockquote dt {
+    display: none;
+}
+
 .info {
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
 }
+
 blockquote::before, blockquote::after {
     content: "";
 }
