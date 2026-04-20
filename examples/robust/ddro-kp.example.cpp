@@ -71,8 +71,8 @@ void solve_with_critical_value_ccg(Env& t_env, const Instance& t_instance) {
 
     // Set optimizer
     auto ccg = Robust::CriticalValueColumnAndConstraintGeneration(description);
-    //ccg.with_master_optimizer(Cplex().with_logs(false));
-    //ccg.with_adversarial_optimizer(Cplex().with_logs(false));
+    ccg.with_master_optimizer(Gurobi().with_logs(true));
+    ccg.with_deterministic_optimizer(Cplex().with_logs(true));
     ccg.with_logs(true);
 
     model.use(ccg);

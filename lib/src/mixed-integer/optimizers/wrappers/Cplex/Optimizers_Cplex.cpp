@@ -42,6 +42,7 @@ idol::Optimizers::Cplex::Cplex(const Model &t_model, bool t_continuous_relaxatio
           m_objective(m_env),
           m_cplex(m_model) {
 
+    /*
     // Parameters
     m_cplex.setParam(IloCplex::Param::MIP::Display, ((int) get_param_logs()) * 4);
     m_cplex.setParam(IloCplex::Param::MIP::Limits::LowerObjStop, get_param_best_obj_stop());
@@ -57,6 +58,7 @@ idol::Optimizers::Cplex::Cplex(const Model &t_model, bool t_continuous_relaxatio
     m_cplex.setParam(IloCplex::Param::MIP::Tolerances::Integrality, get_tol_integer());
     m_cplex.setParam(IloCplex::Param::Simplex::Tolerances::Feasibility, get_tol_feasibility());
     m_cplex.setParam(IloCplex::Param::Simplex::Tolerances::Optimality, get_tol_optimality());
+    */
 
     m_model.add(m_objective);
 

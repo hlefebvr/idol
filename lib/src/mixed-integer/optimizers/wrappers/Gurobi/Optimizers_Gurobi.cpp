@@ -581,7 +581,7 @@ void idol::Optimizers::Gurobi::hook_remove(const Var& t_var) {
     GUROBI_CATCH(m_model, GRBdelvars(m_model, 1, (int*) &index));
     for (auto& lazy : lazy_vars()) {
         if (!lazy.has_impl()) { continue; }
-        if (lazy.impl() < index) { continue; }
+        if (lazy.impl() <= index) { continue; }
         lazy.impl()--;
     }
 
@@ -595,7 +595,7 @@ void idol::Optimizers::Gurobi::hook_remove(const Ctr& t_ctr) {
     GUROBI_CATCH(m_model, GRBdelconstrs(m_model, 1, (int*) &index));
     for (auto& lazy : lazy_ctrs()) {
         if (!lazy.has_impl()) { continue; }
-        if (lazy.impl() < index) { continue; }
+        if (lazy.impl() <= index) { continue; }
         lazy.impl()--;
     }
 
@@ -1242,7 +1242,7 @@ void idol::Optimizers::Gurobi::hook_remove(const idol::QCtr &t_ctr) {
     lib.GRBdelqconstrs(m_model, 1, (int*) &index);
     for (auto& lazy : lazy_vars()) {
         if (!lazy.has_impl()) { continue; }
-        if (lazy.impl() < index) { continue; }
+        if (lazy.impl() <= index) { continue; }
         lazy.impl()--;
     }
 
@@ -1290,7 +1290,7 @@ void idol::Optimizers::Gurobi::hook_remove(const idol::SOSCtr &t_ctr) {
     lib.GRBdelsos(m_model, 1, (int*) &index);
     for (auto& lazy : lazy_vars()) {
         if (!lazy.has_impl()) { continue; }
-        if (lazy.impl() < index) { continue; }
+        if (lazy.impl() <= index) { continue; }
         lazy.impl()--;
     }
 }

@@ -298,6 +298,11 @@ add_library(idol STATIC
         include/idol/general/utils/Queue.h
         src/mixed-integer/general/OptimizerFactory.cpp
         include/idol/robust/optimizers/critical-value-column-and-constraint-generation/CriticalValueColumnAndConstraintGeneration.h
+        src/robust/optimizers/critical-value-column-and-constraint-generation/CriticalValueColumnAndConstraintGeneration.cpp
+        include/idol/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.h
+        src/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.cpp
+        include/idol/robust/optimizers/critical-value-column-and-constraint-generation/Formulation.h
+        src/robust/optimizers/critical-value-column-and-constraint-generation/Formulation.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)
