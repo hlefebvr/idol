@@ -31,7 +31,7 @@ int main(int t_argc, const char** t_argv) {
     Env env;
 
     solve_with_critical_value_ccg(env, instance);
-    solve_as_bilevel(env, instance);
+    //solve_as_bilevel(env, instance);
 
     return 0;
 }
@@ -71,8 +71,8 @@ void solve_with_critical_value_ccg(Env& t_env, const Instance& t_instance) {
 
     // Set optimizer
     auto ccg = Robust::CriticalValueColumnAndConstraintGeneration(description);
-    ccg.with_master_optimizer(Gurobi().with_logs(true));
-    ccg.with_deterministic_optimizer(Cplex().with_logs(true));
+    ccg.with_master_optimizer(Gurobi().with_logs(false));
+    ccg.with_deterministic_optimizer(Gurobi().with_logs(false));
     ccg.with_logs(true);
 
     model.use(ccg);

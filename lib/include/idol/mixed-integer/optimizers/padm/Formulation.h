@@ -79,6 +79,11 @@ public:
 
     void update(unsigned int t_sub_problem_id, const std::vector<PrimalPoint>& t_primals);
 
+    const Annotation<unsigned int>& decomposition() { return m_decomposition; }
+
+    [[nodiscard]] bool is_penalized(const Ctr& t_ctr) const;
+    [[nodiscard]] bool is_penalized(const QCtr& t_ctr) const;
+
     struct CurrentPenalty {
         const Var variable;
         const double max_violation;

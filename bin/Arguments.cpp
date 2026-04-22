@@ -117,14 +117,10 @@ std::ostream& operator<<(std::ostream& t_os, ProblemType t_problem_type) {
     throw std::runtime_error("Undefined problem type.");
 }
 
-void add_file_options(CLI::App* t_app, Arguments& t_result) {
-    auto file = t_app->add_option("file",  t_result.file, "Input file")->required()->check(CLI::ExistingFile);
-    auto bilevel = t_app->add_option("--bilevel,--stages,--aux", t_result.aux_file, ".aux file for bilevel and two-stage robust problems")->configurable();
-    auto uncertainty_param = t_app->add_option("--uncertainty-param,--par", t_result.uncertainty_param_file, ".par file for bilevel and two-stage robust problems")->configurable();
-    auto uncertainty_set = t_app->add_option("--uncertainty-set,--unc", t_result.uncertainty_set_file, ".mps/.lp file for the uncertainty set in robust problems")->configurable();
-
-    uncertainty_set->needs(uncertainty_param);
-    uncertainty_param->needs(uncertainty_set);
+void add_default_args(CLI::App* t_app, Arguments& t_result) {
+    t_app->add_option("--method", t_result.method, "Solution method")->configurable();
+    t_app->add_option("--time-limit", t_result.time_limit, "Time limit in seconds")->configurable();
+    t_app->add_flag("--csv-report", t_result.csv_report, "If set to true, additionally prints a report in csv format")->configurable();
 }
 
 Arguments Arguments::parse(int t_argc, const char** t_argv) {
@@ -134,30 +130,71 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
 
     CLI::App app {"idol command line interface"};
 
-    app.require_subcommand(0, 1);
+    // Configuration file and default tools (help, version, etc.)
+    app.require_subcommand(0, 2);
     app.allow_config_extras(false);
-    app.set_help_flag("--help, -h");
-    app.set_help_all_flag("--help-all");
-    app.add_flag("--version,-v", show_version, "Print version and third party tools versions.");
-    auto config = app.set_config("--config,-c")->check(CLI::ExistingFile);
+    app.set_help_flag("--help, -h", "Prints help.");
+    app.set_help_all_flag("--help-all", "Prints help of all sub-commands.");
+    app.add_flag("--version,-v", show_version, "Prints the version and third-party tools versions.");
+    auto* config = app.set_config("--config,-c", "", "Reads a configuration file (.ini).")->check(CLI::ExistingFile);
 
-    /* solve subcommand */
-    auto solve = app.add_subcommand("solve", "Solve an instance");
+    auto* solve = app.add_subcommand("solve", "Solves a given problem.");
+    auto* list = app.add_subcommand("list", "Lists available methods for a given problem.");
 
-    solve->add_option("--time-limit", result.time_limit, "Time limit in seconds")->configurable();
-    solve->add_option("--method", result.method, "Solution method")->configurable();
-    solve->add_option("--jump-optimizer", result.jump_optimizer, "JuMP optimizer to be used (required if --method JUMP)")->configurable();
-    solve->add_flag("--pessimistic", result.pessimistic, "For bilevel problems, indicates to solve the pessimistic variant of the problem")->configurable();
-    solve->add_flag("--no-kleinert-vi", result.no_kleinert_vi, "For bilevel problems, for KKT-based approaches, indicates to not use the valid inequalities from Kleinart et al. (2020) [https://doi.org/10.1007/s11590-020-01660-6]")->configurable();
-    solve->add_option("--bound-provider", result.bound_provider, "For bilevel or two-stage robust problems, provides a file storing big-m values for KKT-based reformulations.")->configurable();
-    solve->add_option("--default-sub-milp-method", result.default_milp_method, "Specifies a MILP method that is used to solved underlying MILPs in, e.g., decomposition algorithms, reformulation approaches, etc.")->configurable();
-    solve->add_flag("--csv-report", result.csv_report, "If set to true, additionally prints a report in csv format")->configurable();
+    /// MILP
+    const auto add_args_for_milp = [&](auto* t_target) {
 
-    add_file_options(solve, result);
+        t_target->add_option("file",  result.file, ".mps or .lp file")->required()->check(CLI::ExistingFile);
+        t_target->add_option("--jump-optimizer", result.jump_optimizer, "JuMP optimizer to be used (required if --method JUMP)")->configurable();
+        t_target->add_option("--default-method", result.default_milp_method, "Specifies a MILP method that is used to solved underlying MILPs in, e.g., decomposition algorithms, reformulation approaches, etc.")->configurable();
 
-    /* list-method subcommand */
-    auto list_methods = app.add_subcommand("list-methods", "List available methods for the given problem");
-    add_file_options(list_methods, result);
+        add_default_args(t_target, result);
+
+        return t_target;
+    };
+    auto* solve_milp = add_args_for_milp(solve->add_subcommand("milp", "MILP"));
+    auto* list_milp = add_args_for_milp(list->add_subcommand("milp", "MILP"));
+
+    /// Bilevel
+    const auto add_args_for_bilevel = [&](auto* t_target) {
+
+        t_target->add_option("file",  result.file, ".mps or .lp file containing the single-level relaxation")->required()->check(CLI::ExistingFile);
+        auto* aux = t_target->add_option("--aux", result.aux_file, ".aux file")->configurable()->check(CLI::ExistingFile);
+        auto* ce = t_target->add_option("--ce", result.ce_file, "counterfactual explanation input file")->configurable()->check(CLI::ExistingFile);
+        t_target->add_flag("--pessimistic", result.pessimistic, "For bilevel problems, indicates to solve the pessimistic variant of the problem")->configurable();
+        t_target->add_flag("--no-kleinert-vi", result.no_kleinert_vi, "For bilevel problems, for KKT-based approaches, indicates to not use the valid inequalities from Kleinart et al. (2020) [https://doi.org/10.1007/s11590-020-01660-6]")->configurable();
+        t_target->add_option("--bound-provider", result.bound_provider, "Provides a file storing big-M values for KKT-based reformulations.")->configurable();
+        t_target->add_option("--default-method", result.default_milp_method, "Specifies a MILP method that is used to solved underlying MILPs in, e.g., decomposition algorithms, reformulation approaches, etc.")->configurable();
+
+        add_default_args(t_target, result);
+
+        aux->excludes(ce);
+        ce->excludes(aux);
+
+        t_target->require_option(2, 0);
+
+        return t_target;
+    };
+    auto* solve_bilevel = add_args_for_bilevel(solve->add_subcommand("bilevel", "Bilevel"));
+    auto* list_bilevel = add_args_for_bilevel(list->add_subcommand("bilevel", "Bilevel"));
+
+    /// Robust
+    const auto add_args_for_robust = [&](auto* t_target) {
+        t_target->add_option("file",  result.file, ".mps or .lp file containing the deterministic problem")->required()->check(CLI::ExistingFile);
+        t_target->add_option("--aux", result.aux_file, ".aux file used to indicate stages")->configurable();
+        auto* uncertainty_param = t_target->add_option("--uncertainty-param,--par", result.uncertainty_param_file, ".par file for bilevel and two-stage robust problems")->configurable();
+        auto* uncertainty_set = t_target->add_option("--uncertainty-set,--unc", result.uncertainty_set_file, ".mps/.lp file for the uncertainty set in robust problems")->configurable();
+        t_target->add_option("--bound-provider", result.bound_provider, "For two-stage robust problems, provides a file storing big-m values for KKT-based reformulations.")->configurable();
+        t_target->add_option("--default-method", result.default_milp_method, "Specifies a MILP method that is used to solved underlying MILPs in, e.g., decomposition algorithms, reformulation approaches, etc.")->configurable();
+
+        uncertainty_set->needs(uncertainty_param);
+        uncertainty_param->needs(uncertainty_set);
+
+        add_default_args(t_target, result);
+        return t_target;
+    };
+    auto* solve_robust = add_args_for_robust(solve->add_subcommand("robust", "Robust"));
+    auto* list_robust = add_args_for_robust(list->add_subcommand("robust", "Robust"));
 
     /* PARSE ARGUMENTS */
     try {
@@ -172,12 +209,19 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
         exit(0);
     }
 
-    if (!*list_methods && !*solve) {
-        std::cerr << "A subcommand is mandatory" << std::endl;
+    if (!*list && !*solve) {
+        std::cerr << "a subcommand is mandatory\nRun with --help or --help-all for more information." << std::endl;
         exit(1);
     }
 
-    if (*list_methods) {
+    if ((*solve && !*solve_milp && !*solve_bilevel && !*solve_robust)
+        || (*list && !*list_milp && !*list_bilevel && !*list_robust)
+    ) {
+        std::cerr << "a problem type is mandatory\nRun with --help or --help-all for more information." << std::endl;
+        exit(1);
+    }
+
+    if (*list) {
         result.solve = false;
     }
 
@@ -187,12 +231,12 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
         std::cout << "-- No configuration file loaded" << std::endl;
     }
 
-    if (!result.uncertainty_param_file.empty()) {
+    if (*solve_robust || *list_robust) {
         result.problem_type = RobustProblem;
         if (!result.aux_file.empty()) {
             result.problem_type = AdjustableRobustProblem;
         }
-    } else if (!result.aux_file.empty()) {
+    } else if (*solve_bilevel || *list_bilevel) {
         result.problem_type = BilevelProblem;
     }
 

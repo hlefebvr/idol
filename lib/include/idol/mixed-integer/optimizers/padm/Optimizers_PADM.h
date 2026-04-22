@@ -100,6 +100,7 @@ protected:
     void make_history();
     void log_inner_loop(unsigned int t_inner_loop_iteration);
     void log_outer_loop();
+    void assert_feasibility();
     [[nodiscard]] double infeasibility_linf(unsigned int t_sub_problem_id, const PrimalPoint& t_solution) const;
     [[nodiscard]] double infeasibility_l1(unsigned int t_sub_problem_id, const PrimalPoint& t_solution) const;
     void detect_stagnation(bool t_feasibility_has_changed);

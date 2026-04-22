@@ -32,6 +32,7 @@ public:
 
     // Bilevel
     std::string aux_file;
+    std::string ce_file;
     bool pessimistic = false;
     bool no_kleinert_vi = false;
     std::string bound_provider;

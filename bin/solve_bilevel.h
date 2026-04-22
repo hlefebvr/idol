@@ -12,9 +12,11 @@
 #include "idol/modeling.h"
 #include "idol/bilevel/modeling/read_from_file.h"
 #include "idol/bilevel/optimizers/KKT/KKT.h"
+#include "idol/bilevel/optimizers/PADM/PADM.h"
 #include "idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h"
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
+#include "idol/bilevel/problems/counterfactual/Counterfactual_Instance.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 
 class BilevelMethodManager : public MethodManager {
@@ -25,6 +27,7 @@ public:
         { "KKT-SOS1", { 140, "Solves via the KKT-based single-level reformulation using SOS1 constraints" } },
         { "KKT-BIGM", { 150, "Solves via the KKT-based single-level reformulation using user-provided Big-M values" } },
         { "STRONG_DUALITY", { 90, "Solves via the strong-duality-based single-level reformulation as an NLP" } },
+        { "PADM", { 40, "Computes a feasible point using a penalty alternating direction method." } },
     }) {}
 };
 
@@ -99,10 +102,19 @@ inline void solve_bilevel(const Arguments& t_args) {
     using namespace idol;
 
     Env env;
-    auto model = GLPK::read_from_file(env, t_args.file);
-    auto bilevel_description = Bilevel::read_bilevel_description(model, t_args.aux_file);
 
-    const auto analysis = get_bilevel_analysis(model, bilevel_description);
+    auto model = GLPK::read_from_file(env, t_args.file);
+    const bool is_counterfactual = !t_args.ce_file.empty();
+
+    std::optional<Bilevel::Description> bilevel_description;
+    if (is_counterfactual) {
+        const auto instance = Problems::Counterfactual::Instance(t_args.ce_file, t_args.file);
+        bilevel_description = Bilevel::make_weak_CE_bilevel_model(model, instance);
+    } else {
+        bilevel_description = Bilevel::read_bilevel_description(model, t_args.aux_file);
+    }
+
+    const auto analysis = get_bilevel_analysis(model, *bilevel_description);
 
     BilevelMethodManager method_manager;
     MILPMethodManager submilp_method_manager;
@@ -118,6 +130,7 @@ inline void solve_bilevel(const Arguments& t_args) {
         method_manager.add("KKT-NLP");
         method_manager.add("KKT-SOS1");
         method_manager.add("STRONG_DUALITY");
+        method_manager.add("PADM");
         if (!t_args.bound_provider.empty()) {
             method_manager.add("KKT-BIGM");
         }
@@ -131,15 +144,15 @@ inline void solve_bilevel(const Arguments& t_args) {
 
     std::unique_ptr<OptimizerFactory> optimizer_factory;
     if (method == "MIBS") {
-        auto mibs = Bilevel::MibS(bilevel_description);
+        auto mibs = Bilevel::MibS(*bilevel_description);
         optimizer_factory.reset(mibs.clone());
     } else if (method == "STRONG_DUALITY") {
-        auto strong_duality = Bilevel::StrongDuality(bilevel_description);
+        auto strong_duality = Bilevel::StrongDuality(*bilevel_description);
         strong_duality.with_single_level_optimizer(*submilp_optimizer);
         optimizer_factory.reset(strong_duality.clone());
     } else if (method.starts_with("KKT-")) {
 
-        auto kkt = Bilevel::KKT(bilevel_description);
+        auto kkt = Bilevel::KKT(*bilevel_description);
 
         if (method == "KKT-NLP") {
             // Nothing to do here
@@ -159,11 +172,18 @@ inline void solve_bilevel(const Arguments& t_args) {
 
         optimizer_factory.reset(kkt.clone());
 
+    } else if (method == "PADM") {
+
+        auto padm = Bilevel::PADM(*bilevel_description);
+        padm.with_single_level_optimizer(*submilp_optimizer);
+
+        optimizer_factory.reset(padm.clone());
+
     }
 
     if (t_args.pessimistic) {
         std::cout << "-- Solving the pessimistic version of the problem" << std::endl;
-        model.use(Bilevel::PessimisticAsOptimistic(bilevel_description) + *optimizer_factory);
+        model.use(Bilevel::PessimisticAsOptimistic(*bilevel_description) + *optimizer_factory);
     } else {
         std::cout << "-- Solving the optimistic version of the problem" << std::endl;
         model.use(*optimizer_factory);
@@ -174,6 +194,7 @@ inline void solve_bilevel(const Arguments& t_args) {
     model.optimize();
 
     report_standard_output(model, t_args);
+
 }
 
 #endif //IDOL_SOLVE_BILEVEL_H

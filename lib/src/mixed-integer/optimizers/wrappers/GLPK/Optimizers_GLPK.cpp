@@ -359,6 +359,7 @@ void idol::Optimizers::GLPK::hook_update_matrix(const Ctr &t_ctr, const Var &t_v
         bool inserted = false;
         for (const auto& [var, constant] : row) {
 
+            /*
             if (var.id() == t_var.id()) {
                 indices.push_back(lazy(var).impl());
                 coefficients.push_back(constant);
@@ -371,13 +372,14 @@ void idol::Optimizers::GLPK::hook_update_matrix(const Ctr &t_ctr, const Var &t_v
                 coefficients.push_back(constant);
                 inserted = true;
             }
+            */
 
             indices.push_back(lazy(var).impl());
             coefficients.push_back(constant);
         }
     }
 
-    lib.glp_set_mat_row(m_model, lazy(t_ctr).impl(), indices.size() - 1, indices.data(), coefficients.data());
+    lib.glp_set_mat_row(m_model, lazy(t_ctr).impl(), (int) indices.size() - 1, indices.data(), coefficients.data());
 
 }
 

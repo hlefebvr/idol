@@ -26,8 +26,6 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::hook_
         if (check_stopping_criterion()) { break; }
 
     } while (true);
-
-    throw Exception("STOPPED");
 }
 
 void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve_master_problem() {
@@ -40,6 +38,8 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::analy
     const auto status = master.get_status();
     const auto reason = master.get_reason();
 
+    std::cout << status << "\t" << reason << '\t';
+
     if (status != Optimal) {
         set_status(status);
         set_reason(reason);
@@ -49,12 +49,14 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::analy
 
     const double objective_value = master.get_best_obj();
 
-    set_best_obj(objective_value);
+    std::cout << objective_value << '\n';
+
+    set_best_bound(objective_value);
 
 }
 
 bool idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::check_stopping_criterion() {
-    return true;
+    return is_terminated();
 }
 
 void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve_sub_problems() {
@@ -88,10 +90,19 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
 
     }
 
-    // TODO: should apply unique() to avoid adding twice the same scenario
+    if (scenarios.empty()) {
+        set_status(Optimal);
+        set_reason(Proved);
+        set_best_obj(get_best_bound());
+        terminate();
+        return;
+    }
 
-    for (const auto& scenario : scenarios) {
-        m_formulation->add_scenario(scenario);
+    assert(scenarios.size() == 1); // TODO: should apply unique() to avoid adding twice the same scenario
+
+    for (auto&& scenario : scenarios) {
+        const auto it = m_formulation->add_scenario_to_pool(std::move(scenario), PrimalPoint(master_solution));
+        m_formulation->add_scenario_to_master(it);
     }
 
 }

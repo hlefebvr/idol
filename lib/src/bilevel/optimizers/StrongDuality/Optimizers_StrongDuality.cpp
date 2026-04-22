@@ -93,6 +93,22 @@ void idol::Optimizers::Bilevel::StrongDuality::hook_optimize() {
         m_deterministic_model->use(*m_deterministic_optimizer);
     }
 
+    // Parameters
+    m_deterministic_model->optimizer().set_param_logs(get_param_logs());
+    m_deterministic_model->optimizer().set_param_time_limit(get_param_time_limit());
+    m_deterministic_model->optimizer().set_param_threads(get_param_thread_limit());
+    m_deterministic_model->optimizer().set_param_best_bound_stop(get_param_best_bound_stop());
+    m_deterministic_model->optimizer().set_param_best_obj_stop(get_param_best_obj_stop());
+    m_deterministic_model->optimizer().set_param_presolve(get_param_presolve());
+    m_deterministic_model->optimizer().set_param_infeasible_or_unbounded_info(get_param_infeasible_or_unbounded_info());
+
+    // Tolerances
+    m_deterministic_model->optimizer().set_tol_feasibility(get_tol_feasibility());
+    m_deterministic_model->optimizer().set_tol_integer(get_tol_integer());
+    m_deterministic_model->optimizer().set_tol_mip_absolute_gap(get_tol_mip_absolute_gap());
+    m_deterministic_model->optimizer().set_tol_mip_relative_gap(get_tol_mip_relative_gap());
+    m_deterministic_model->optimizer().set_tol_optimality(get_tol_optimality());
+
     m_deterministic_model->optimize();
 
 }

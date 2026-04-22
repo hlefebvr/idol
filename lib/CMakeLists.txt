@@ -303,6 +303,12 @@ add_library(idol STATIC
         src/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.cpp
         include/idol/robust/optimizers/critical-value-column-and-constraint-generation/Formulation.h
         src/robust/optimizers/critical-value-column-and-constraint-generation/Formulation.cpp
+        include/idol/bilevel/problems/counterfactual/Counterfactual_Instance.h
+        src/bilevel/problems/Counterfactual_Instance.cpp
+        include/idol/bilevel/optimizers/PADM/PADM.h
+        include/idol/bilevel/optimizers/PADM/Optimizers_PADM.h
+        src/bilevel/optimizers/PADM/PADM.cpp
+        src/bilevel/optimizers/PADM/Optimizers_PADM.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)

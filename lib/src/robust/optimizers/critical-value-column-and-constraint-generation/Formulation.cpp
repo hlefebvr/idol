@@ -34,7 +34,7 @@ void idol::CVCCG::Formulation::check_assumptions() {
             continue;
         }
 
-        m_has_linking_variables = true;
+        m_linking_variables.emplace_back(var);
 
         const auto type = model.get_var_type(var);
         const double lb = model.get_var_lb(var);
@@ -51,9 +51,22 @@ void idol::CVCCG::Formulation::check_assumptions() {
     }
 
     // Check that all data in uncertainty set is integer
-    std::cerr << "Skipped checking all data is integer since working with no-good cuts for now" << std::endl;
     for (const auto& ctr : uncertainty_set.ctrs()) {
-        // TODO
+
+        const auto& row = uncertainty_set.get_ctr_row(ctr);
+        bool is_linking_constraint = false;
+        for (const auto& [var, coeff] : row) {
+            if (model.has(var)) {
+                is_linking_constraint = true;
+            }
+            if (!is_integer(coeff, m_parent.get_tol_integer())) {
+                m_all_data_in_linking_constraints_is_integer = false;
+            }
+        }
+        if (is_linking_constraint) {
+            m_linking_constraints.emplace_back(ctr);
+        }
+
     }
 
 }
@@ -137,7 +150,7 @@ void idol::CVCCG::Formulation::initialize_sub_problem() {
 
 void idol::CVCCG::Formulation::update_sub_problem_constraints(const PrimalPoint& t_master_solution) {
 
-    if (!m_has_linking_variables) {
+    if (m_linking_variables.empty()) {
         return;
     }
 
@@ -205,6 +218,93 @@ update_sub_problem_objective(const PrimalPoint& t_master_solution, unsigned int 
 
 }
 
-void idol::CVCCG::Formulation::add_scenario(const PrimalPoint& t_scenario) {
-    std::cout << "todo: add scenario\n" << t_scenario << std::endl;
+void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedScenario>::iterator& t_iterator_in_pool) {
+
+    for (auto& uncertainty : m_uncertainties) {
+        add_scenario_to_master(t_iterator_in_pool, uncertainty);
+    }
+
+}
+
+std::list<idol::CVCCG::Formulation::GeneratedScenario>::iterator idol::CVCCG::Formulation::add_scenario_to_pool(PrimalPoint&& t_scenario, PrimalPoint&& t_master_scenario) {
+
+    m_scenario_pool.emplace_back(std::move(t_scenario), std::move(t_master_scenario));
+
+    return --m_scenario_pool.end();
+}
+
+void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedScenario>::iterator& t_iterator_in_pool, Uncertainty& t_uncertainty) {
+
+    if (!t_uncertainty.is_constraint()) {
+        throw Exception("Not implemented.");
+    }
+
+    const auto& ctr = t_uncertainty.ctr();
+    const auto& model = m_parent.parent();
+    const auto& description = m_parent.description();
+    const auto& uncertainty_set = description.uncertainty_set();
+    const auto& [scenario, master_solution] = *t_iterator_in_pool;
+
+    const auto type = model.get_ctr_type(ctr);
+    auto lhs = model.get_ctr_row(ctr);
+    double rhs = model.get_ctr_rhs(ctr);
+
+    for (const auto& [var, unc_coeff] : description.uncertain_mat_coeffs(ctr)) {
+        lhs += evaluate(unc_coeff, scenario) * var;
+    }
+    for (const auto& [unc_param, coeff] : description.uncertain_rhs(ctr)) {
+        rhs += coeff * scenario.get(unc_param);
+    }
+
+    const double penalty = (type == LessOrEqual ? -1. : 1.) * 1e4;
+    std::cerr << "Warning: Penalty parameter is arbitrary... " << penalty << std::endl;
+
+    if (m_linking_constraints.empty() || m_use_indicator) { // add indicator
+
+        for (const auto& var : m_linking_variables) {
+            const double val = master_solution.get(var);
+            lhs += penalty * ( var - 2 * val * var );
+            rhs -= penalty * val;
+        }
+
+        m_master.add_ctr(std::move(lhs), type, rhs);
+
+    } else { // Add critical value
+
+        LinExpr sum_of_activations;
+        for (auto& linking : m_linking_constraints) {
+
+            const auto& row = uncertainty_set.get_ctr_row(linking.ctr_in_uncertainty_set);
+            const auto type = uncertainty_set.get_ctr_type(linking.ctr_in_uncertainty_set);
+            assert(type == LessOrEqual);
+
+            double critical_value = uncertainty_set.get_ctr_rhs(linking.ctr_in_uncertainty_set) + 1;
+            LinExpr parameterized_part;
+            for (const auto& [var, coeff] : row) {
+                if (model.has(var)) {
+                    parameterized_part += coeff * var;
+                } else {
+                    critical_value -= coeff * scenario.get(var);
+                }
+            }
+            const auto activation = m_master.add_var(0, 1, Binary, 0);
+            m_master.add_ctr(critical_value * activation <= parameterized_part);
+
+            assert(is_integer(critical_value, m_parent.get_tol_integer()));
+
+            const auto [it, success] = linking.critical_values.emplace((long int) critical_value, activation);
+            if (!success) {
+                std::cout << "Could recycle critical value " << critical_value << std::endl;
+            }
+
+            lhs += penalty * activation;
+            sum_of_activations += activation;
+
+        }
+
+        m_master.add_ctr(std::move(lhs), type, rhs);
+        m_master.add_ctr(sum_of_activations <= 1);
+
+    }
+
 }

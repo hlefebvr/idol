@@ -334,6 +334,14 @@ void idol::ADM::Formulation::update(unsigned int t_sub_problem_id, const std::ve
 
 }
 
+bool idol::ADM::Formulation::is_penalized(const Ctr& t_ctr) const {
+    return m_initial_penalty_parameters.has_value() && t_ctr.get(*m_initial_penalty_parameters) > 1e-4;
+}
+
+bool idol::ADM::Formulation::is_penalized(const QCtr& t_ctr) const {
+    return m_initial_penalty_parameters.has_value() && t_ctr.get(*m_initial_penalty_parameters) > 1e-4;
+}
+
 idol::ADM::Formulation::SubProblem &idol::ADM::Formulation::sub_problem(const idol::Var &t_var) {
     return m_sub_problems[t_var.get(m_decomposition)];
 }

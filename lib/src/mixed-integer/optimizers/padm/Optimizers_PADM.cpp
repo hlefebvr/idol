@@ -4,6 +4,7 @@
 
 #include "idol/mixed-integer/optimizers/padm/Optimizers_PADM.h"
 #include "idol/general/optimizers/logs.h"
+#include "idol/mixed-integer/modeling/objects/Versions.h"
 
 #include <utility>
 #include <fstream>
@@ -229,10 +230,6 @@ void idol::Optimizers::PADM::hook_optimize() {
 
         run_inner_loop();
 
-        if (m_outer_loop_iteration > 4) {
-            //throw Exception("STOP");
-        }
-
         ++m_outer_loop_iteration;
 
         if (is_terminated()) {
@@ -241,9 +238,17 @@ void idol::Optimizers::PADM::hook_optimize() {
 
         check_outer_iteration_limit();
         check_time_limit();
-        check_feasibility();
+
+
+        if (!m_first_run) {
+            check_feasibility();
+        }
 
     } while (!is_terminated());
+
+    if (get_status() == Optimal || get_status() == Feasible) {
+        assert_feasibility();
+    }
 
 }
 
@@ -303,7 +308,7 @@ void idol::Optimizers::PADM::update_var_obj(const idol::Var &t_var) {
 bool idol::Optimizers::PADM::is_feasible() const {
     for (unsigned int i = 0, n = m_formulation.n_sub_problems(); i < n; ++i) {
         for (const auto& var : m_formulation.sub_problem(i).l1_epigraph_vars) {
-            if (m_last_solutions[i].get(var) > 1e-4) {
+            if (m_last_solutions[i].get(var) > get_tol_feasibility()) {
                 return false;
             }
         }
@@ -346,7 +351,7 @@ void idol::Optimizers::PADM::run_inner_loop() {
 
         detect_stagnation(feasibility_has_changed);
 
-        if (!objective_value_has_changed) {
+        if (m_first_run || !objective_value_has_changed) {
             break;
         }
 
@@ -382,7 +387,34 @@ idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
 
     //sub_problem.model.write("sub_problem_" + std::to_string(t_sub_problem_id) + "_" + std::to_string(m_outer_loop_iteration) + "_" + std::to_string(m_inner_loop_iterations) + ".lp");
 
+    //std::cout << "Sub-problem " << t_sub_problem_id << ":\n" << sub_problem.model << std::endl;
+
+    for (const auto& qctr : sub_problem.model.qctrs()) {
+        const auto& expr = sub_problem.model.get_qctr_expr(qctr);
+        std::cout << qctr << " -> " << expr << std::endl;
+        for (const auto& [pair, coeff] : expr) {
+            std::cout << pair.first << " = " << pair.second << std::endl;
+            const auto& decomposition = m_formulation.decomposition();
+            std::cout << pair.first.get(decomposition) << " = " << pair.second.get(decomposition) << std::endl;
+        }
+    }
+
+    // Parameters
+    sub_problem.model.optimizer().set_param_logs(false);
     sub_problem.model.optimizer().set_param_time_limit(get_remaining_time());
+    sub_problem.model.optimizer().set_param_threads(get_param_thread_limit());
+    sub_problem.model.optimizer().set_param_best_bound_stop(get_param_best_bound_stop());
+    sub_problem.model.optimizer().set_param_best_obj_stop(get_param_best_obj_stop());
+    sub_problem.model.optimizer().set_param_presolve(get_param_presolve());
+    sub_problem.model.optimizer().set_param_infeasible_or_unbounded_info(get_param_infeasible_or_unbounded_info());
+
+    // Tolerances
+    sub_problem.model.optimizer().set_tol_feasibility(get_tol_feasibility());
+    sub_problem.model.optimizer().set_tol_integer(get_tol_integer());
+    sub_problem.model.optimizer().set_tol_mip_absolute_gap(get_tol_mip_absolute_gap());
+    sub_problem.model.optimizer().set_tol_mip_relative_gap(get_tol_mip_relative_gap());
+    sub_problem.model.optimizer().set_tol_optimality(get_tol_optimality());
+    
     sub_problem.model.optimize();
 
     const auto status = sub_problem.model.get_status();
@@ -405,6 +437,7 @@ idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
     }
 
     auto current_solution = save_primal(sub_problem.model);
+
     // bool obj_has_changed = m_inner_loop_iterations == 0 || (m_last_solutions[t_sub_problem_id] + -1. * current_solution).norm(2) > 1e-4;
     const bool obj_has_changed = m_first_run || std::abs(m_last_solutions[t_sub_problem_id].objective_value() - current_solution.objective_value()) > 1e-4;
     const bool feas_has_changed = m_first_run || std::abs(infeasibility_l1(t_sub_problem_id, m_last_solutions[t_sub_problem_id]) - infeasibility_l1(t_sub_problem_id, current_solution)) > 1e-5;
@@ -532,6 +565,42 @@ void idol::Optimizers::PADM::log_outer_loop() {
 
     center(std::cout, " Outer loop iteration: " + std::to_string(m_outer_loop_iteration) + ' ', 100, '-');
     std::cout << std::endl;
+
+}
+
+void idol::Optimizers::PADM::assert_feasibility() {
+
+    const auto& model = parent();
+
+    for (const auto& qctr : model.qctrs()) {
+        if (m_formulation.is_penalized(qctr)) {
+
+            const auto& expr = model.get_qctr_expr(qctr);
+            const auto type = model.get_qctr_type(qctr);
+
+            double violation = expr.affine().constant();
+            for (const auto& [pair, coeff] : expr) {
+                violation += coeff * get_var_primal(pair.first) * get_var_primal(pair.second);
+            }
+            for (const auto& [var, coeff] : expr.affine().linear()) {
+                violation += coeff * get_var_primal(var);
+            }
+
+            if (type == LessOrEqual) {
+                violation = std::max(0., violation);
+            } else if (type == GreaterOrEqual) {
+                violation = std::max(0., -violation);
+            } else {
+                violation = std::abs(violation);
+            }
+
+            if (violation > get_tol_feasibility()) {
+                std::cerr << "Error: " << qctr.name() << " has violation = " << violation << " in thought feasible point." << std::endl;
+                set_status(Fail);
+                set_reason(Numerical);
+            }
+        }
+    }
 
 }
 
