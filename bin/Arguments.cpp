@@ -120,6 +120,7 @@ std::ostream& operator<<(std::ostream& t_os, ProblemType t_problem_type) {
 void add_default_args(CLI::App* t_app, Arguments& t_result) {
     t_app->add_option("--method", t_result.method, "Solution method")->configurable();
     t_app->add_option("--time-limit", t_result.time_limit, "Time limit in seconds")->configurable();
+    t_app->add_option("--tol-feasibility", t_result.tol_feasibility, "Tolerance used to check feasibility")->configurable();
     t_app->add_flag("--csv-report", t_result.csv_report, "If set to true, additionally prints a report in csv format")->configurable();
 }
 

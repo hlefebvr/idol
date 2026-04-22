@@ -156,8 +156,13 @@ inline void solve_milp(const Arguments& t_args) {
         model.use(bnb);
     }
 
+    // Set Parameters
     model.optimizer().set_param_logs(!t_args.mute);
     model.optimizer().set_param_time_limit(t_args.time_limit);
+
+    // Set Tolerances
+    if (t_args.tol_feasibility >= 0.) { model.optimizer().set_tol_feasibility(t_args.tol_feasibility); }
+
     model.optimize();
 
     report_standard_output(model, t_args);

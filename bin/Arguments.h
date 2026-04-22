@@ -6,6 +6,8 @@
 #define IDOL_PARSE_ARGUMENTS_H
 
 #include <string>
+
+#include "idol/mixed-integer/modeling/objects/Env.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h"
 
 enum ProblemType { MILP, RobustProblem, AdjustableRobustProblem, BilevelProblem };
@@ -27,6 +29,7 @@ public:
     // MILPs
     std::string file;
     double time_limit = idol::Inf;
+    double tol_feasibility = -1.;
     std::string jump_optimizer;
     std::string default_milp_method;
 
