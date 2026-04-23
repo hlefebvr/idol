@@ -118,10 +118,10 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
 
                     if (stage_analysis.second_stage.all_bounded) {
                         method_manager.add("CCG-FARKAS");
-                        method_manager.add("BBBB-MIBS");
+                        //method_manager.add("BBBB-MIBS");
                     }
 
-                    method_manager.add("BBBB-KKT-SOS1");
+                    //method_manager.add("BBBB-KKT-SOS1");
 
                 } else {
 
@@ -141,7 +141,7 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
                         method_manager.add("CCG-FARKAS");
                     }
 
-                    method_manager.add("BBBB-KKT-SOS1");
+                    //method_manager.add("BBBB-KKT-SOS1");
 
                 }
 
@@ -166,7 +166,7 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
 
                 if (!uncertainty_analysis.has_general_integer) {
                     std::cout << "-- Detected: binary uncertainty set." << std::endl;
-                    method_manager.add("BBBB-MIBS");
+                    //method_manager.add("BBBB-MIBS");
                 } else {
                     std::cout << "-- Detected: integer uncertainty set." << std::endl;
                 }

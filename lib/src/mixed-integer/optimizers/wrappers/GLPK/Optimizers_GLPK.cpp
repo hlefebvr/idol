@@ -968,24 +968,6 @@ idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t
 
     for (int i = 1 ; i <= n_constraints ; ++i) {
 
-        CtrType type;
-        double rhs;
-        switch (lib.glp_get_row_type(t_model, i)) {
-            case GLP_UP:
-                type = LessOrEqual;
-                rhs = lib.glp_get_row_ub(t_model, i);
-                break;
-            case GLP_LO:
-                type = GreaterOrEqual;
-                rhs = lib.glp_get_row_lb(t_model, i);
-                break;
-            case GLP_FX:
-                type = Equal;
-                rhs = lib.glp_get_row_ub(t_model, i);
-                break;
-            default: throw Exception("Unexpected variable type while parsing.");
-        }
-
         const std::string name = lib.glp_get_row_name(t_model, i);
         const int nz = lib.glp_get_mat_row(t_model, i, NULL, NULL);
 
@@ -1000,10 +982,39 @@ idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t
             lhs += coefficient * result.get_var_by_index(var_index);
         }
 
+        const auto add_ctr_with_type = [&](CtrType t_type, double t_rhs) {
+            result.add_ctr(std::move(lhs), t_type, t_rhs, name);
+        };
+
+        const auto glpk_type = lib.glp_get_row_type(t_model, i);
+        switch (glpk_type) {
+            case GLP_UP: {
+                const double rhs = lib.glp_get_row_ub(t_model, i);
+                add_ctr_with_type(LessOrEqual, rhs);
+                break;
+            }
+            case GLP_LO: {
+                const double rhs = lib.glp_get_row_lb(t_model, i);
+                add_ctr_with_type(GreaterOrEqual, rhs);
+                break;
+            }
+            case GLP_FX: {
+                const double rhs = lib.glp_get_row_ub(t_model, i);
+                add_ctr_with_type(Equal, rhs);
+                break;
+            }
+            case GLP_DB: {
+                const double ub = lib.glp_get_row_ub(t_model, i);
+                add_ctr_with_type(LessOrEqual, ub);
+                const double lb = lib.glp_get_row_lb(t_model, i);
+                add_ctr_with_type(GreaterOrEqual, lb);
+                break;
+            }
+            default: throw Exception("Unexpected constraint type while parsing.");
+        }
+
         delete[] indices;
         delete[] coefficients;
-
-        result.add_ctr(std::move(lhs), type, rhs, name);
     }
 
     if (lib.glp_get_obj_dir(t_model) == GLP_MAX) {
