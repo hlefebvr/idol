@@ -47,7 +47,7 @@ Obviously, the underlying solver must handle nonlinear constraints.
 Simply run
 
 ```shell
-idol_cl solve model.lp --bilevel follower.aux --method KKT-NLP
+idol_cl solve bilevel model.lp --aux follower.aux --method KKT-NLP
 ```
 
 \section kkt_sos1 Using the SOS1 Formulation
@@ -88,7 +88,7 @@ Obviously, the underlying solver must handle SOS1 constraints for this approach 
 Simply run
 
 ```shell
-idol_cl solve model.lp --bilevel follower.aux --method KKT-SOS1
+idol_cl solve bilevel model.lp --aux follower.aux --method KKT-SOS1
 ```
 
 \section kkt_big_m Using the Big-M Reformulation 
@@ -98,7 +98,7 @@ problem. The format for this file is detailed in the next section. Given such a 
 triggered as follows.
 
 ```shell
-idol_cl solve model.lp --bilevel follower.aux --method KKT-BIGM --bound-provider bounds.txt
+idol_cl solve bilevel model.lp --aux follower.aux --method KKT-BIGM --bound-provider bounds.txt
 ```
 
 \subsection kkt_big_m_file The File Format for Providing Bounds on the Dual Variables
@@ -305,7 +305,7 @@ By default, `idol_cl` will choose a MILP solver automatically for solving the ob
 To change the underlying solver, use the `--default-sub-milp-method` option as follows.
 
 ```shell
-idol_cl solve model.lp --bilevel follower.aux --method KKT-BIGM --bound-provider bounds.txt --default-sub-milp-method GLPK
+idol_cl solve bilevel model.lp --aux follower.aux --method KKT-BIGM --bound-provider bounds.txt --default-sub-milp-method GLPK
 ```
 
 Here, `GLPK` will now be used to solve the single-level reformulation of the bilevel problem.
@@ -327,5 +327,5 @@ This is done automatically. If, however, you want to deactivate this functionali
 Simply run
 
 ```shell
-idol_cl solve model.lp --bilevel follower.aux --method KKT-SOS1 --no-kleinert-vi
+idol_cl solve bilevel model.lp --aux follower.aux --method KKT-SOS1 --no-kleinert-vi
 ```

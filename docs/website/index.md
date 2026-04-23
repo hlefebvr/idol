@@ -28,8 +28,8 @@
         <span style="display: block; padding-right: 20px;margin-top:15%;" class="fragment" id="cli">
 <!--
 ```shell 
-idol_cl solve model.mps \ 
-    --bilevel follower.aux \
+idol_cl solve bilevel model.mps \ 
+    --aux follower.aux \
     --method KKT-SOS1 \
     --time-limit 300
 ```
@@ -138,7 +138,6 @@ The following MIP solvers are currently supported through `idol` and `idol_cl`:
 * [JuMP](https://jump.dev/) (Julia framework),
 * [coin-or/Osi](https://github.com/coin-or/Osi) (gives you acccess to any Osi-compatible solver).
 * [coin-or/MibS](https://github.com/coin-or/MibS) (the mixed-integer bilevel solver).
-
 
 \section getting_started_with_idol The `idol` C++ Library
 

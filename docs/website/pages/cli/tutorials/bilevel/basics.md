@@ -141,14 +141,14 @@ Note that bounds on lower-level variables are always assumed to be constraints o
 Given a bilevel problem, you can solve it by running
 
 ```shell 
-idol_cl solve model.mps --bilevel follower.aux
+idol_cl solve bilevel model.mps --aux follower.aux
 ```
 
 Some commands require more parameters than others. For instance, here is how to solve an LP-LP bilevel problem
 using its KKT reformulation using big-M values.
 
 ```shell
-idol_cl solve model.mps --bilevel follower.aux --method KKT-BIGM --bound-provider bounds.txt
+idol_cl solve bilevel model.mps --aux follower.aux --method KKT-BIGM --bound-provider bounds.txt
 ```
 
 For more information, see our tutorial on \ref cli_bilevel_kkt.
@@ -156,7 +156,7 @@ For more information, see our tutorial on \ref cli_bilevel_kkt.
 Here again, to list the available methods for your problem class, you may use
 
 ```shell
-idol_cl list-methods model.mps --bilevel follower.aux
+idol_cl list bilevel model.mps --aux follower.aux
 ```
 
 \section cli_bilevel_basics_pessimistic Solving A Pessimistic Bilevel Problem
@@ -166,5 +166,5 @@ appending the `--pessimistic` flag. If so, the relaxation-and-correction scheme 
 will be applied.
 
 ```shell
-idol_cl solve model.lp --bilevel follower.aux --method KKT-SOS1 --pessimistic
+idol_cl solve bilevel model.lp --aux follower.aux --method KKT-SOS1 --pessimistic
 ```

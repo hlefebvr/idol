@@ -78,19 +78,19 @@ ENDATA
 To solve a given MILP stored in an `.lp` file, all you need to do is
 
 ```shell
-idol_cl solve model.lp
+idol_cl solve milp model.lp
 ```
 
 If you want to set a time limit and use a specific method, run
 
 ```shell
-idol_cl solve model.lp --time-limit 3600 --method GLK
+idol_cl solve milp model.lp --time-limit 3600 --method GLPK
 ```
 
 To see which solution methods are available for a given problem, use the `list-methods` subcommand.
 
 ```shell
-idol_cl list-methods model.lp
+idol_cl list milp model.lp
 ```
 
 **Sampled Output**:
@@ -109,5 +109,5 @@ Details (all methods):
  - GUROBI: Gurobi Optimizer [https://www.gurobi.com/]
 ```
 
-If no method is specified, idol_cl automatically selects a suitable solver
+If no method is specified, `idol_cl` automatically selects a suitable solver
 for the detected problem type.
