@@ -1171,6 +1171,9 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(Env& t_env, const std::stri
         throw Exception("The model contains SOS-type constraints. Reading such input files is not yet supported.");
     }
 
+    lib.GRBfreemodel(model);
+    lib.GRBfreeenv(env);
+
     return std::move(result);
 }
 
