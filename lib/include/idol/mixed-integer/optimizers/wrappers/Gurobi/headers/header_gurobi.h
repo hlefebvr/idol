@@ -100,6 +100,10 @@ extern "C" {
     int GRBcbsolution(void *cbdata, const double *solution, double *objvalP);
     int GRBcbcut(void *cbdata, int cutlen, const int *cutind, const double *cutval, char cutsense, double cutrhs);
     int GRBcblazy(void *cbdata, int lazylen, const int *lazyind, const double *lazyval, char lazysense, double lazyrhs);
+    int GRBreadmodel(GRBenv *env, const char *filename, GRBmodel **modelP);
+    int GRBgetcharattrarray(GRBmodel *model, const char *attrname, int start, int len, char *values);
+    int GRBgetstrattrarray(GRBmodel *model, const char *attrname, int start, int len, char **values);
+    int GRBgetconstrs(GRBmodel *model, int *numnzP, int *cbeg, int *cind, double *cval, int start, int len);
     void GRBterminate(GRBmodel *model);
 
 }

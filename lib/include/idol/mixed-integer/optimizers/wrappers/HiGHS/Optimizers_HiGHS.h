@@ -96,6 +96,8 @@ public:
 
     static bool is_available();
     static std::string get_version();
+
+    static Model read_from_file(Env& t_env, const std::string& t_filename);
 };
 
 
@@ -141,6 +143,7 @@ public:
     HIGHS_SYM_PTR(Highs_getDoubleInfoValue);
     HIGHS_SYM_PTR(Highs_setIntOptionValue);
     HIGHS_SYM_PTR(Highs_destroy);
+    HIGHS_SYM_PTR(Highs_readModel);
 
     DynamicLib();
 

@@ -113,6 +113,7 @@ idol::Optimizers::HiGHS::DynamicLib::DynamicLib() {
     HIGHS_SYM_LOAD(Highs_getDoubleInfoValue);
     HIGHS_SYM_LOAD(Highs_setIntOptionValue);
     HIGHS_SYM_LOAD(Highs_destroy);
+    HIGHS_SYM_LOAD(Highs_readModel);
 }
 
 idol::Optimizers::HiGHS::DynamicLib::~DynamicLib() {
@@ -715,6 +716,23 @@ bool idol::Optimizers::HiGHS::is_available() {
 std::string idol::Optimizers::HiGHS::get_version() {
     auto& lib = get_dynamic_lib();
     return lib.Highs_version();
+}
+
+idol::Model idol::Optimizers::HiGHS::read_from_file(Env& t_env, const std::string& t_filename) {
+
+    const auto& lib = get_dynamic_lib();
+    void* model = lib.Highs_create();
+    //lib.Highs_setBoolOptionValue(model, "output_flag", false);
+    lib.Highs_readModel(model, t_filename.c_str());
+
+    const auto n_vars = lib.Highs_getNumCol(model);
+    const auto n_ctrs = lib.Highs_getNumRow(model);
+
+    std::cout << n_vars << " " << n_ctrs << std::endl;
+
+    lib.Highs_destroy(model);
+
+    throw Exception("Not implemented.");
 }
 
 idol::Optimizers::HiGHS::~HiGHS() {

@@ -113,6 +113,8 @@ public:
 
     static bool is_available();
     static std::string get_version();
+
+    static Model read_from_file(Env& t_env, const std::string& t_filename);
 };
 
 #define GUROBI_SYM_PTR(name) \
@@ -164,6 +166,10 @@ public:
     GUROBI_SYM_PTR(GRBcbsolution);
     GUROBI_SYM_PTR(GRBcbcut);
     GUROBI_SYM_PTR(GRBcblazy);
+    GUROBI_SYM_PTR(GRBreadmodel);
+    GUROBI_SYM_PTR(GRBgetcharattrarray);
+    GUROBI_SYM_PTR(GRBgetstrattrarray);
+    GUROBI_SYM_PTR(GRBgetconstrs);
     GUROBI_SYM_PTR(GRBterminate);
 
     [[nodiscard]] bool is_available() const { return m_handle; }

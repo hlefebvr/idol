@@ -173,6 +173,13 @@ idol::Bilevel::Description idol::Bilevel::make_weak_CE_bilevel_model(Model& t_mo
     for (const auto& var : t_model.vars()) { result.make_lower_level(var); }
     for (const auto& ctr : t_model.ctrs()) { result.make_lower_level(ctr); }
 
+    // Add Desired Space
+    for (const auto& spec : t_instance.desired_space()) {
+        const auto& var = t_model.get_var_by_index(spec.column);
+        if (!is_pos_inf(spec.ub)) { t_model.add_ctr(var <= spec.ub); }
+        if (!is_neg_inf(spec.lb)) { t_model.add_ctr(var >= spec.lb); }
+    }
+
     // Mutable Coefficients
     Map<Ctr, QuadExpr<Var>> quadratic_expressions;
     for (const auto &spec : t_instance.mutable_coefficients()) {
@@ -219,13 +226,6 @@ idol::Bilevel::Description idol::Bilevel::make_weak_CE_bilevel_model(Model& t_mo
         deltas.emplace_back(delta);
     }
     result.set_lower_level_obj(std::move(lower_level_objective));
-
-    // Add Desired Space
-    for (const auto& spec : t_instance.desired_space()) {
-        const auto& var = t_model.get_var_by_index(spec.column);
-        if (!is_pos_inf(spec.ub)) { t_model.add_ctr(var <= spec.ub); }
-        if (!is_neg_inf(spec.lb)) { t_model.add_ctr(var >= spec.lb); }
-    }
 
     // TODO add some norm
     t_model.set_obj_expr(0);

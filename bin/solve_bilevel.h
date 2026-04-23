@@ -103,7 +103,7 @@ inline void solve_bilevel(const Arguments& t_args) {
 
     Env env;
 
-    auto model = GLPK::read_from_file(env, t_args.file);
+    auto model = Model::read_from_file(env, t_args.file);
     const bool is_counterfactual = !t_args.ce_file.empty();
 
     std::optional<Bilevel::Description> bilevel_description;

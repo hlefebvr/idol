@@ -6,6 +6,9 @@
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"
 
 idol::Model::Model(Env &t_env, Storage t_storage) : m_env(t_env), m_id(t_env.create_model_id()), m_storage(t_storage) {}
 
@@ -1023,6 +1026,19 @@ void idol::Model::reset_minor_representation() {
         return;
     }
 
+}
+
+idol::Model idol::Model::read_from_file(Env& t_env, const std::string& t_filename) {
+    if (Optimizers::Gurobi::is_available()) {
+        return Optimizers::Gurobi::read_from_file(t_env, t_filename);
+    }
+    if (Optimizers::HiGHS::is_available()) {
+        return Optimizers::HiGHS::read_from_file(t_env, t_filename);
+    }
+    if (Optimizers::GLPK::is_available()) {
+        return Optimizers::GLPK::read_from_file(t_env, t_filename);
+    }
+    throw Exception("Reading .mps or .lp files is only possible if Gurobi, GLPK or HiGHS is available.\nPlease install one of these solvers.");
 }
 
 void idol::Model::build_rows() {

@@ -301,6 +301,8 @@ public:
     void set_storage(Storage t_storage, bool t_reset_minor_representation = false);
 
     void reset_minor_representation();
+
+    static Model read_from_file(Env& t_env, const std::string& t_filename);
 };
 
 template<class T, unsigned int N>

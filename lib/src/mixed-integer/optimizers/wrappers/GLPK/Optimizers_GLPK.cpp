@@ -945,6 +945,8 @@ idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t
     const int n_variables = lib.glp_get_num_cols(t_model);
     const int n_constraints = lib.glp_get_num_rows(t_model);
 
+    std::cout << "HERE: " << n_variables << std::endl;
+
     Model result(t_env);
 
     Finally on_terminate([&]() { lib.glp_delete_prob(t_model); });
@@ -1030,7 +1032,7 @@ idol::Model idol::Optimizers::GLPK::read_from_lp_file(idol::Env &t_env, const st
     glp_prob* model = lib.glp_create_prob();
     auto result = lib.glp_read_lp(model,  NULL, t_filename.c_str());
     if (result != 0) {
-        throw Exception("Could not parse MPS file.");
+        throw Exception("Could not parse LP file.");
     }
     return read_from_glpk(t_env, model);
 

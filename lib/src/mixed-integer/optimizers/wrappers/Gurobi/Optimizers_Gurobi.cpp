@@ -162,6 +162,10 @@ idol::Optimizers::Gurobi::DynamicLib::DynamicLib() {
     GUROBI_SYM_LOAD(GRBcbsolution);
     GUROBI_SYM_LOAD(GRBcbcut);
     GUROBI_SYM_LOAD(GRBcblazy);
+    GUROBI_SYM_LOAD(GRBreadmodel);
+    GUROBI_SYM_LOAD(GRBgetcharattrarray);
+    GUROBI_SYM_LOAD(GRBgetstrattrarray);
+    GUROBI_SYM_LOAD(GRBgetconstrs);
     GUROBI_SYM_LOAD(GRBterminate);
 
 }
@@ -1067,110 +1071,108 @@ std::string idol::Optimizers::Gurobi::get_version() {
     return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(tech);
 }
 
-/*
-idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env *t_env, const std::string &t_filename) {
+idol::Model idol::Optimizers::Gurobi::read_from_file(Env& t_env, const std::string& t_filename) {
+
+    const auto& lib = get_dynamic_lib();
+    GRBenv   *env = get_new_env();
+    GRBmodel *model = NULL;
+    int error = lib.GRBreadmodel(env, t_filename.c_str(), &model);
+    if (error) { throw Exception("Could not create model for read with gurobi."); }
+
+    int n_vars, n_ctrs;
+    GUROBI_CATCH(model, GRBgetintattr(model, "NumVars", &n_vars));
+    GUROBI_CATCH(model, GRBgetintattr(model, "NumConstrs", &n_ctrs));
 
     Model result(t_env);
-
-    std::unique_ptr<GRBModel> model;
-    GUROBI_CATCH(model = std::make_unique<GRBModel>(get_global_env(), t_filename);)
-
-    const unsigned int n_vars = model->get(GRB_IntAttr_NumVars);
-    const unsigned int n_ctrs = model->get(GRB_IntAttr_NumConstrs);
-    const unsigned int n_quad_ctrs = model->get(GRB_IntAttr_NumQConstrs);
-
     result.reserve_vars(n_vars);
-    for (unsigned int j = 0 ; j < n_vars ; ++j) {
-
-        const auto& var = model->getVar(j);
-        const double lb = var.get(GRB_DoubleAttr_LB);
-        const double ub = var.get(GRB_DoubleAttr_UB);
-        const double obj = var.get(GRB_DoubleAttr_Obj);
-        VarType type = idol_var_type(var.get(GRB_CharAttr_VType));
-        const auto name = var.get(GRB_StringAttr_VarName);
-
-        result.add_var(lb, ub, type, obj, name);
-    }
-
-    const auto parse_linear = [&](const GRBLinExpr& t_lin_expr) {
-
-        AffExpr<Var> result_ = t_lin_expr.getConstant();
-        auto& linear_ = result_.linear();
-        const auto n_terms = t_lin_expr.size();
-        linear_.reserve(n_terms);
-
-        for (unsigned int j = 0 ; j < n_terms ; ++j) {
-            auto var = t_lin_expr.getVar(j);
-            linear_.set(result.get_var_by_index(var.index()), t_lin_expr.getCoeff(j));
-        }
-
-        return result_;
-    };
-
-    // This was commented out
-    const auto parse_quadratic = [&](const GRBQuadExpr& t_quad_expr) {
-        AffExpr result_ = parse_linear(t_quad_expr.getLinExpr());
-
-        for (unsigned int j = 0, n = t_quad_expr.size() ; j < n ; ++j) {
-            auto var1 = t_quad_expr.getVar1(j);
-            auto var2 = t_quad_expr.getVar2(j);
-            result_ += t_quad_expr.getCoeff(j) * result.get_var_by_index(var1.index()) * result.get_var_by_index(var2.index());
-        }
-
-        return result_;
-    };
-
-    const auto add_ctr = [&](
-            const auto& t_lhs,
-            const auto& t_rhs,
-            char t_type,
-            const std::string& t_name) {
-
-        switch (t_type) {
-            case LessOrEqual: result.add_ctr(t_lhs <= t_rhs, t_name); break;
-            case GreaterOrEqual: result.add_ctr(t_lhs >= t_rhs, t_name); break;
-            case Equal: result.add_ctr(t_lhs == t_rhs, t_name); break;
-            default: throw Exception("Enum out of bounds.");
-        }
-
-    };
-
     result.reserve_ctrs(n_ctrs);
-    for (unsigned int i = 0 ; i < n_ctrs ; ++i) {
 
-        const auto& ctr = model->getConstr(i);
-        const auto& expr = model->getRow(ctr);
-        const double rhs = ctr.get(GRB_DoubleAttr_RHS);
-        const auto type = idol_ctr_type(ctr.get(GRB_CharAttr_Sense));
-        const auto& name = ctr.get(GRB_StringAttr_ConstrName);
+    // Read variables
+    std::vector<double> lb(n_vars), ub(n_vars), obj(n_vars);
+    std::vector<char> vtype(n_vars);
+    std::vector<char*> names(n_vars);
 
-        AffExpr lhs = parse_linear(expr);
-        add_ctr(lhs, rhs, type, name);
+    GUROBI_CATCH(model, GRBgetdblattrarray(model, "LB", 0, n_vars, lb.data()));
+    GUROBI_CATCH(model, GRBgetdblattrarray(model, "UB", 0, n_vars, ub.data()));
+    GUROBI_CATCH(model, GRBgetdblattrarray(model, "OBJ", 0, n_vars, obj.data()));
+    GUROBI_CATCH(model, GRBgetcharattrarray(model, "VType", 0, n_vars, vtype.data()));
+    GUROBI_CATCH(model, GRBgetstrattrarray(model, "Varname", 0, n_vars, names.data()));
+
+    for (int j = 0; j < n_vars; ++j) {
+
+        VarType type;
+        switch (vtype[j]) {
+            case 'C': type = Continuous; break;
+            case 'B': type = Binary; break;
+            case 'I': type = Integer; break;
+            default: throw Exception("Unexpected variable type while parsing with Gurobi.");
+        }
+
+        result.add_var( lb[j], ub[j], type, obj[j], std::string(names[j]) );
+
     }
 
-    // This was commented out
-    for (unsigned int i = 0 ; i < n_quad_ctrs ; ++i) {
+    std::vector<double> rhs(n_ctrs);
+    std::vector<char> sense(n_ctrs);
+    std::vector<char*> ctr_names(n_ctrs);
+    std::vector<int> cbeg(n_ctrs);
 
-        const auto& original_ctr = model->getQConstrs()[i];
-        const auto& expr = model->getQCRow(original_ctr);
-        const double rhs = original_ctr.get(GRB_DoubleAttr_QCRHS);
-        const auto type = idol_ctr_type(original_ctr.get(GRB_CharAttr_QCSense));
-        const auto& name = original_ctr.get(GRB_StringAttr_QCName);
+    GUROBI_CATCH(model, GRBgetdblattrarray(model, "RHS", 0, n_ctrs, rhs.data()));
+    GUROBI_CATCH(model, GRBgetcharattrarray(model, "Sense", 0, n_ctrs, sense.data()));
+    GUROBI_CATCH(model, GRBgetstrattrarray(model, "ConstrName", 0, n_ctrs, ctr_names.data()));
 
-        AffExpr lhs = parse_quadratic(expr);
-        add_ctr(row, rhs, type, name);
+    int numnz;
+    GUROBI_CATCH(model, GRBgetintattr(model, "NumNZs", &numnz));
+    std::vector<int> cind(numnz);
+    std::vector<double> cval(numnz);
+    GUROBI_CATCH(model, GRBgetconstrs(model, &numnz, cbeg.data(), cind.data(), cval.data(), 0, n_ctrs));
 
+    for (int i = 0; i < n_ctrs; ++i) {
+
+        int start = cbeg[i];
+        int end   = (i == n_ctrs - 1) ? numnz : cbeg[i + 1];
+
+        LinExpr expr;
+        for (int k = start; k < end; ++k) {
+            const auto& var = result.get_var_by_index(cind[k]);
+            const double coef = cval[k];
+            expr += coef * var;
+        }
+
+        switch (sense[i]) {
+        case '<': result.add_ctr(expr <= rhs[i], ctr_names[i]); break;
+        case '>': result.add_ctr(expr >= rhs[i], ctr_names[i]); break;
+        case '=': result.add_ctr(expr == rhs[i], ctr_names[i]); break;
+            default: throw Exception("Unexpected constraint type while parsing with Gurobi.");
+        }
     }
 
-    const auto sense = model->get(GRB_IntAttr_ModelSense);
-    result.set_obj_sense(idol_obj_sense(sense));
+    int sense_obj;
+    GUROBI_CATCH(model, GRBgetintattr(model, "ModelSense", &sense_obj));
+    if (sense_obj < 0) {
+        // We are maximizing
+        std::cerr << "Given file contains a maximization problem, idol only supports minimization problems, multiplying the objective function by -1" << std::endl;
+        result.set_obj_expr(-1. * result.get_obj_expr());
+    }
 
-    const auto& objective = model->getObjective();
-    result.set_obj_expr(parse_linear(objective.getLinExpr()));
+    // Quadratic Constraints
+    int nqconstrs = 0;
+    GUROBI_CATCH(model, GRBgetintattr(model, "NumQConstrs", &nqconstrs));
+
+    if (nqconstrs > 0) {
+        throw Exception("The model contains quadratic constraints. Reading such input files is not yet supported.");
+    }
+
+    // SOS-Type Constraints
+    int nsos = 0;
+
+    GUROBI_CATCH(model, GRBgetintattr(model, "NumSOS", &nsos));
+    if (nsos > 0) {
+        throw Exception("The model contains SOS-type constraints. Reading such input files is not yet supported.");
+    }
 
     return std::move(result);
 }
-*/
 
 idol::VarType idol::Optimizers::Gurobi::idol_var_type(char t_type) {
 
