@@ -30,6 +30,8 @@ public:
 
     ~JuMP() override;
 
+    static bool is_available();
+
     [[nodiscard]] std::string name() const override;
     [[nodiscard]] SolutionStatus get_status() const override;
     [[nodiscard]] SolutionReason get_reason() const override;

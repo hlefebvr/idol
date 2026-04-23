@@ -81,7 +81,7 @@ void idol::impl::JuliaSessionManager::load_idol_jump_module() {
     throw_if_julia_error();
 
     julia_session_manager.m_idol_jump_module_is_loaded = true;
-    std::cout << "Idol's julia interface to JuMP successfully loaded." << std::endl;
+    std::cout << "-- idol's julia interface to JuMP successfully loaded." << std::endl;
 }
 
 void idol::impl::JuliaSessionManager::load_idol_coluna_module() {
@@ -104,6 +104,11 @@ void idol::impl::JuliaSessionManager::load_idol_coluna_module() {
 }
 
 void idol::impl::JuliaSessionManager::load_module(const std::string &t_module) {
+
+    if (t_module.empty()) {
+        throw Exception("Trying to load an empty module in Julia. Did you provide a module to load?\n"
+                        "If you are using idol_cl, you most likely forgot to specify --jump-optimizer.");
+    }
 
     auto& julia_session_manager = get();
 
@@ -418,6 +423,10 @@ void idol::Optimizers::JuMP::hook_remove(const idol::QCtr &t_ctr) {
 
 void idol::Optimizers::JuMP::hook_remove(const idol::SOSCtr &t_ctr) {
     throw Exception("Not implemented.");
+}
+
+bool idol::Optimizers::JuMP::is_available() {
+    return system("julia -v > /dev/null 2>&1") == 0;
 }
 
 void idol::Optimizers::JuMP::debug_print() const {

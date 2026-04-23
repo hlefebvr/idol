@@ -55,10 +55,11 @@ public:
         if (Optimizers::Cplex::is_available()) {
             method_manager.add("CPLEX");
         }
-        if (Optimizers::JuMP::is_available()) {
-            method_manager.add("JUMP");
-        }
         */
+        if (idol::Optimizers::JuMP::is_available()) {
+            add("JUMP");
+        }
+
         if (!m_available_methods.empty()) { // This ensures that the nodes can be solved by, at least, some other approach
             add("BNB");
         }
