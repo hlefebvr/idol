@@ -10,6 +10,8 @@
 
 #include <CLI/CLI.hpp>
 
+#include "idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h"
+
 void Arguments::print_splash() {
 
     constexpr int width = 40;
@@ -78,8 +80,8 @@ void Arguments::print_versions() {
     std::cout << "\n";
 
     std::cout << "--\tJulia: ";
-    if (false /* || idol::Optimizers::Julia::is_available() */) {
-        //std::cout << "available (version " << idol::Optimizers::Julia::get_version() << ")";
+    if (idol::Optimizers::JuMP::is_available()) {
+        std::cout << "available (version " << idol::Optimizers::JuMP::get_version() << ")";
     } else {
         std::cout << "not found";
     }

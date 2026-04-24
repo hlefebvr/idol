@@ -4,6 +4,9 @@
 
 #include <filesystem>
 #include "idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h"
+
+#include <regex>
+
 #include "idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h"
 
 #ifdef IDOL_USE_JULIA
@@ -502,4 +505,31 @@ idol::impl::JuliaSessionManager &idol::impl::JuliaSessionManager::get() {
 
 bool idol::Optimizers::JuMP::is_available() {
     return system("julia -v > /dev/null 2>&1") == 0;
+}
+
+std::string idol::Optimizers::JuMP::get_version() {
+
+    std::array<char, 128> buffer;
+    std::string result;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(
+        popen("julia -v 2>&1", "r"),
+        pclose
+    );
+
+    if (!pipe) {
+        return "Could not get julia version.";
+    }
+
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+        result += buffer.data();
+    }
+
+    std::regex version_regex(R"((\d+\.\d+\.\d+))");
+    std::smatch match;
+
+    if (std::regex_search(result, match, version_regex)) {
+        return match[1];
+    }
+
+    return "Could not get julia version.";
 }
