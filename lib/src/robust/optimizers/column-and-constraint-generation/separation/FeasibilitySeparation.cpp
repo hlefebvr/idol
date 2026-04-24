@@ -77,17 +77,37 @@ void idol::Robust::CCG::FeasibilitySeparation::operator()() {
 
 std::pair<idol::Model, idol::Bilevel::Description> idol::Robust::CCG::FeasibilitySeparation::build_separation_problem() {
 
-    std::cerr << "ERROR: Slack variables are artificially bounded in FeasibilitySeparation." << std::endl;
-
     auto [result_model, result_description] = Separation::build_separation_problem();
 
     result_model.set_obj_expr(0);
 
     const auto add_slack = [&](const Ctr& t_ctr, double t_coeff) {
+
+        const double rhs = result_model.get_ctr_rhs(t_ctr);
+        const auto& row = result_model.get_ctr_row(t_ctr);
+        double L = 0.;
+        double U = 0.;
+        for (const auto& [var, coeff] : row) {
+            const double lb = result_model.get_var_lb(var);
+            const double ub = result_model.get_var_ub(var);
+            if (is_pos_inf(ub) || is_neg_inf(lb)) {
+                throw Exception("Variable " + var.name() + " has infinite bounds." );
+            }
+            if (coeff > 0) {
+                U += coeff * ub;
+                L += coeff * lb;
+            } else {
+                U += coeff * lb;
+                L += coeff * ub;
+            }
+        }
+
+        double slack_ub = t_coeff < 0 ? std::max(0., U - rhs) : std::max(0., rhs - L);
+
         LinExpr<Ctr> column = t_coeff * t_ctr;
         auto name = "__slack_" + t_ctr.name() + (t_coeff < 0 ? "_le" : "_ge");
         const auto type = m_with_integer_slack_variables.value_or(false) ? Integer : Continuous;
-        const auto slack = result_model.add_var(0, 1e5, type, -1, std::move(column), std::move(name));
+        const auto slack = result_model.add_var(0, slack_ub, type, -1, std::move(column), std::move(name));
         result_description.make_lower_level(slack);
     };
 

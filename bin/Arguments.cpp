@@ -187,6 +187,7 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
         auto* uncertainty_set = t_target->add_option("--uncertainty-set,--unc", result.uncertainty_set_file, ".mps/.lp file for the uncertainty set in robust problems")->configurable();
         t_target->add_option("--bound-provider", result.bound_provider, "For two-stage robust problems, provides a file storing big-m values for KKT-based reformulations.")->configurable();
         t_target->add_option("--default-method", result.default_milp_method, "Specifies a MILP method that is used to solved underlying MILPs in, e.g., decomposition algorithms, reformulation approaches, etc.")->configurable();
+        t_target->add_flag("--complete-recourse", result.complete_recourse, "If present, indicates that the two-stage robust problem has complete recourse.")->configurable();
 
         uncertainty_set->needs(uncertainty_param);
         uncertainty_param->needs(uncertainty_set);

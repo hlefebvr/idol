@@ -17,6 +17,7 @@
 #include "idol/robust/modeling/read_from_file.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h"
+#include "idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
 
 class RobustMethodManager : public MethodManager {
@@ -209,6 +210,13 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
             kkt.with_sos1_constraints(true);
             kkt.with_single_level_optimizer(Gurobi());
 
+            if (!t_args.complete_recourse) {
+                auto feasibility_separation = Robust::CCG::FeasibilitySeparation();
+                feasibility_separation.with_bilevel_optimizer(kkt);
+
+                ccg.add_separation(feasibility_separation);
+            }
+
             auto optimality_separation = Robust::CCG::OptimalitySeparation();
             optimality_separation.with_bilevel_optimizer(kkt);
 
@@ -217,6 +225,14 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
         } else if (method == "CCG-MIBS") {
 
             auto mibs = Bilevel::MibS();
+            //mibs.with_cplex_for_feasibility(true);
+
+            if (!t_args.complete_recourse) {
+                auto feasibility_separation = Robust::CCG::FeasibilitySeparation();
+                feasibility_separation.with_bilevel_optimizer(mibs);
+
+                ccg.add_separation(feasibility_separation);
+            }
 
             auto optimality_separation = Robust::CCG::OptimalitySeparation();
             optimality_separation.with_bilevel_optimizer(mibs);
