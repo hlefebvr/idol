@@ -13,8 +13,8 @@ namespace idol::Optimizers {
 }
 
 #ifdef IDOL_USE_JULIA
-
 #include <julia.h>
+#endif
 
 class idol::Optimizers::JuMP : public OptimizerWithLazyUpdates<bool, bool, bool, bool> {
 protected:
@@ -49,7 +49,9 @@ public:
     void debug_print() const;
 protected:
     void hook_optimize() override;
+#ifdef IDOL_USE_JULIA
     virtual uint64_t hook_create_julia_model(jl_value_t* t_optimizer);
+#endif
     void set_solution_index(unsigned int t_index) override;
     void hook_build() override;
     void hook_write(const std::string &t_name) override;
@@ -69,6 +71,7 @@ protected:
     void hook_remove(const QCtr &t_ctr) override;
     void hook_remove(const SOSCtr &t_ctr) override;
 
+#ifdef IDOL_USE_JULIA
     template<class T>
     jl_value_t* make_julia_vector(const std::vector<T>& t_vector) {
 
@@ -86,6 +89,7 @@ protected:
 
         return (jl_value_t*) result;
     }
+#endif
 };
 
 namespace idol::impl {
@@ -116,5 +120,3 @@ namespace idol::impl {
 }
 
 #endif
-
-#endif //IDOL_OPTIMIZERS_JUMP_H

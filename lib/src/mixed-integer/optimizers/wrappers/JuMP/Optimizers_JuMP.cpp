@@ -425,10 +425,6 @@ void idol::Optimizers::JuMP::hook_remove(const idol::SOSCtr &t_ctr) {
     throw Exception("Not implemented.");
 }
 
-bool idol::Optimizers::JuMP::is_available() {
-    return system("julia -v > /dev/null 2>&1") == 0;
-}
-
 void idol::Optimizers::JuMP::debug_print() const {
 
     jl_function_t* print_model = jl_get_function(jl_main_module, "idol_print_model");
@@ -503,3 +499,7 @@ idol::impl::JuliaSessionManager &idol::impl::JuliaSessionManager::get() {
 }
 
 #endif // IDOL_USE_JULIA
+
+bool idol::Optimizers::JuMP::is_available() {
+    return system("julia -v > /dev/null 2>&1") == 0;
+}
