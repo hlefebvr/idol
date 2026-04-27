@@ -3,12 +3,7 @@ name: Tests
 on:
   push:
     branches-ignore:
-      - main
       - gh-pages
-  pull_request:
-    branches:
-      - main
-
 env:
   BUILD_TYPE: Release
 
