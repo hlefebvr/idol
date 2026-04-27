@@ -2,7 +2,8 @@ name: Version check
 
 on:
   pull_request:
-    branches: ["main"]
+    branches:
+      - main
 
 jobs:
   check-version:
