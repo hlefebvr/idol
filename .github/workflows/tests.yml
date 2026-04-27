@@ -2,9 +2,14 @@ name: Tests
 
 on:
   push:
-    branches: [ "*", "!main", "!gh-pages" ]
+    branches:
+        - *
+    branches-ignore:
+      - main
+      - gh-pages
   pull_request:
-    branches: [ "*" ]
+    branches:
+      - *
 
 env:
   BUILD_TYPE: Release
