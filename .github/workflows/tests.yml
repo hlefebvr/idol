@@ -27,16 +27,7 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests/mixed-integer/modeling
-        continue-on-error: true
-        run: ./test_modeling_interface --reporter xml -o test_modeling_interface.xml
-
-      - name: Check report has been created
-        working-directory: ${{github.workspace}}/build/tests/mixed-integer/modeling
-        run: |
-          if [ ! -f test_modeling_interface.xml ]; then
-            echo "Test report not found!"
-            exit 1
-          fi
+        run: ./test_modeling_interface
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
@@ -54,12 +45,6 @@ jobs:
         with:
           name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
           path: "coverage__*.info"
-
-      - name: Upload report
-        uses: actions/upload-artifact@v4
-        with:
-          name: report__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
-          path: "${{github.workspace}}/build/tests/mixed-integer/modeling/*.xml"
 
   Wrappers:
     name: "Solver Interface"
@@ -154,7 +139,7 @@ jobs:
             WORKSPACE=${{github.workspace}}/build/tests/mixed-integer/wrappers
           fi
           
-          (cd $WORKSPACE && (./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml) )
+          (cd $WORKSPACE && ./test_wrapper_${OPTIMIZER} )
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
@@ -173,14 +158,6 @@ jobs:
           name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
           path: "coverage__*.info"
 
-      - name: Upload report
-        uses: actions/upload-artifact@v4
-        with:
-          name: report__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
-          path: |
-            build/tests/mixed-integer/wrappers/*.xml
-            build/tests/bilevel/wrappers/*.xml
-
   Coverage:
     name: "Send coverage report to Codecov"
     runs-on: ubuntu-latest
@@ -194,7 +171,7 @@ jobs:
       - name: Install lcov
         run: sudo apt-get install lcov
 
-      - name: Merge all reports
+      - name: Merge all coverage reports
         run: ./scripts/merge_coverage.sh
 
       - name: Upload coverage reports to Codecov
@@ -207,19 +184,10 @@ jobs:
   Documentation:
     name: "Build documentation"
     runs-on: ubuntu-latest
-    needs: [Modeling, Wrappers]
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v2
-
-      - name: Download test report
-        uses: actions/download-artifact@v4
-
-      - name: Move all xml inside _static
-        run: |
-          FILES=$(find . -type d -name "docs" -prune -o -type f -name "*.xml" -print)
-          mv -n $FILES docs/website/_static/reports/
 
       - name: Install doxygen
         run: |

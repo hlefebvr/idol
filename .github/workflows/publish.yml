@@ -71,12 +71,14 @@ jobs:
           mkdir coin-or && cd coin-or
           wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
           chmod +x coinbrew
-          /opt/homebrew/bin/bash coinbrew fetch MibS@1.2
+          /opt/homebrew/bin/bash coinbrew fetch https://github.com/hlefebvr/MibS@idol
+          # /opt/homebrew/bin/bash coinbrew fetch MibS@1.2
           
           # Here, we need to replace std::unary_function by std::__unary_function because this class is deprecated 
           sed -i '' 's/std::unary_function/std::__unary_function/g' Alps/Alps/src/AlpsHelperFunctions.h
           
-          /opt/homebrew/bin/bash coinbrew build MibS@1.2 --no-prompt --disable-cplex-libcheck --tests=none
+          /opt/homebrew/bin/bash coinbrew build https://github.com/hlefebvr/MibS@idol  --no-prompt --disable-cplex-libcheck --tests=none
+          # /opt/homebrew/bin/bash coinbrew build MibS@1.2 --no-prompt --disable-cplex-libcheck --tests=none
 
       - name: Install Local-MIP
         run: |
@@ -173,8 +175,8 @@ jobs:
           mkdir coin-or && cd coin-or
           wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
           chmod +x coinbrew
-          ./coinbrew fetch MibS@1.2
-          ./coinbrew build MibS@1.2 --no-prompt --disable-cplex-libcheck --tests=none
+          ./coinbrew fetch https://github.com/hlefebvr/MibS@idol@1.2
+          ./coinbrew build https://github.com/hlefebvr/MibS@idol@1.2 --no-prompt --disable-cplex-libcheck --tests=none
 
       - name: Install Local-MIP
         run: |
