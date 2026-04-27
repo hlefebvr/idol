@@ -2,7 +2,7 @@ name: Version check
 
 on:
   pull_request:
-    branches: ["main", "dev"]
+    branches: ["main"]
 
 jobs:
   check-version:
@@ -25,7 +25,7 @@ jobs:
         run: |
           git fetch origin main
           git show origin/main:CMakeLists.txt > main_CMakeLists.txt
-          $PROJECT_VERSION=$(grep -Eo 'project\(idol VERSION [0-9]+\.[0-9]+\.[0-9]+' main_CMakeLists.txt | grep -Eo "[0-9]+\.[0-9]+\.[0-9]+")
+          PROJECT_VERSION=$(grep -Eo 'project\(idol VERSION [0-9]+\.[0-9]+\.[0-9]+' main_CMakeLists.txt | grep -Eo "[0-9]+\.[0-9]+\.[0-9]+")
           echo "version=$PROJECT_VERSION" >> $GITHUB_OUTPUT
 
       - name: Install semver CLI
