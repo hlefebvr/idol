@@ -160,6 +160,7 @@ jobs:
     name: "Send coverage report to Codecov"
     runs-on: ubuntu-latest
     needs: [Modeling, Wrappers]
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v3
 
