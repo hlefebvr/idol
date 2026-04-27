@@ -175,8 +175,8 @@ jobs:
           mkdir coin-or && cd coin-or
           wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
           chmod +x coinbrew
-          ./coinbrew fetch https://github.com/hlefebvr/MibS@idol@1.2
-          ./coinbrew build https://github.com/hlefebvr/MibS@idol@1.2 --no-prompt --disable-cplex-libcheck --tests=none
+          ./coinbrew fetch https://github.com/hlefebvr/MibS@idol
+          ./coinbrew build https://github.com/hlefebvr/MibS@idol --no-prompt --disable-cplex-libcheck --tests=none
 
       - name: Install Local-MIP
         run: |
