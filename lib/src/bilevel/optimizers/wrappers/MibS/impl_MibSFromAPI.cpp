@@ -6,6 +6,7 @@
 #include "idol/mixed-integer/modeling/objects/Versions.h"
 #include "idol/general/utils/SilentMode.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/OsiIdolSolverInterface.h"
 
 #include <utility>
 #include <cassert>
@@ -14,23 +15,42 @@
 #include <MibSModel.hpp>
 #include <AlpsKnowledgeBrokerSerial.h>
 #include <OsiSolverInterface.hpp>
+#include <OsiSymSolverInterface.hpp>
 #include <MibSSolution.hpp>
+
+class IdolMibSModel : public ::MibSModel {
+    idol::Env& m_env;
+    const idol::OptimizerFactory* m_feasibility_checker = nullptr;
+public:
+    IdolMibSModel(idol::Env& env, const idol::OptimizerFactory* t_optimizer) : m_env(env), m_feasibility_checker(t_optimizer) {}
+
+    OsiSolverInterface* createFeasCheckSolver() override {
+        if (m_feasibility_checker) {
+            return new OsiIdolSolverInterface(m_env, *m_feasibility_checker);
+        }
+        return MibSModel::createFeasCheckSolver();
+    }
+};
+
+#else
+class idolMibSModel {};
 #endif
 
 idol::impl::MibSFromAPI::MibSFromAPI(const idol::Model &t_model,
                                      const idol::Bilevel::Description &t_description,
-                                     void* t_osi_solver,
                                      const std::list<std::unique_ptr<Callback>>& t_callbacks,
-                                     bool t_use_cplex_for_feasibility,
+                                     std::string t_native_feasibility_checker,
+                                     OptimizerFactory* t_optimizer_factory,
                                      bool t_logs)
                        : m_model(t_model),
                          m_description(t_description),
-                         m_osi_solver(t_osi_solver),
                          m_callbacks(t_callbacks),
-                         m_use_cplex_for_feasibility(t_use_cplex_for_feasibility),
+                         m_use_native_feasibility_checker(!t_optimizer_factory),
+                         m_native_feasibility_checker(std::move(t_native_feasibility_checker)),
                          m_logs(t_logs),
 #ifdef IDOL_USE_MIBS
-                         m_mibs(new MibSModel())
+                         m_mibs(new IdolMibSModel(m_model.env(), t_optimizer_factory)),
+                         m_osi_solver(new OsiClpSolverInterface())
 #else
                          m_mibs(nullptr)
 #endif
@@ -43,7 +63,7 @@ idol::impl::MibSFromAPI::MibSFromAPI(const idol::Model &t_model,
 
 idol::impl::MibSFromAPI::~MibSFromAPI() {
 #ifdef IDOL_USE_CPLEX
-    auto* mibs = static_cast<MibSModel*>(m_mibs);
+    auto* mibs = static_cast<IdolMibSModel*>(m_mibs);
     delete mibs;
     m_mibs = nullptr;
 
@@ -51,7 +71,7 @@ idol::impl::MibSFromAPI::~MibSFromAPI() {
     delete broker;
     m_broker = nullptr;
 
-    auto* osi_solver = static_cast<OsiSolverInterface*>(m_osi_solver);
+    auto* osi_solver = static_cast<OsiClpSolverInterface*>(m_osi_solver);
     delete osi_solver;
     m_osi_solver = nullptr;
 #endif
@@ -66,7 +86,7 @@ void idol::impl::MibSFromAPI::load_auxiliary_data() {
 
     assert(upper_level_constraints_indices.size() + lower_level_constraints_indices.size() == m_n_ctr_in_mibs);
 
-    auto* mibs = static_cast<MibSModel*>(m_mibs);
+    auto* mibs = static_cast<IdolMibSModel*>(m_mibs);
     mibs->loadAuxiliaryData(
             (int) lower_level_variables_indices.size(),
             (int) lower_level_constraints_indices.size(),
@@ -103,7 +123,7 @@ void idol::impl::MibSFromAPI::load_problem_data() {
     assert(variable_upper_bounds.size() == m_model.vars().size());
     assert(variable_types.size() == m_model.vars().size());
 
-    auto* mibs = static_cast<MibSModel*>(m_mibs);
+    auto* mibs = static_cast<IdolMibSModel*>(m_mibs);
     mibs->loadProblemData(
             *matrix,
             variable_lower_bounds.data(),
@@ -123,22 +143,23 @@ void idol::impl::MibSFromAPI::load_problem_data() {
 
 void idol::impl::MibSFromAPI::solve() {
 #ifdef IDOL_USE_MIBS
-    auto* mibs = static_cast<MibSModel*>(m_mibs);
-    auto* osi_solver = static_cast<OsiSolverInterface*>(m_osi_solver);
+    auto* mibs = static_cast<IdolMibSModel*>(m_mibs);
 
+    auto* osi_solver = static_cast<OsiClpSolverInterface*>(m_osi_solver);
     osi_solver->messageHandler()->setLogLevel(0);
     mibs->setSolver(osi_solver);
+
     const auto time_limit = std::to_string(std::ceil(m_model.optimizer().get_remaining_time()));
 
     int argc = 5;
     const char* argv[] = {"./mibs",
                      "-Alps_timeLimit",
-                     time_limit.data(),
+                     time_limit.c_str(),
                      "-feasCheckSolver",
-                     m_use_cplex_for_feasibility ? "CPLEX" : "SYMPHONY"
+                     m_use_native_feasibility_checker ? m_native_feasibility_checker.c_str() : "c++"
     };
 
-    idol::SilentMode silent_mode(!m_logs);
+    SilentMode silent_mode(!m_logs);
 
     try {
         auto* broker = new AlpsKnowledgeBrokerSerial(argc, (char**) argv, *mibs, true);
@@ -148,8 +169,9 @@ void idol::impl::MibSFromAPI::solve() {
         }
     } catch (const CoinError& t_error) {
         std::cerr << t_error.fileName() << ":" << t_error.lineNumber() << " " << t_error.className() << "::" << t_error.methodName() << " " << t_error.message() << std::endl;
-        throw Exception("MibS thrown an exception: " + t_error.message() + ".");
+        throw Exception("MibS threw an exception: " + t_error.message() + ".");
     }
+
 #endif
 }
 

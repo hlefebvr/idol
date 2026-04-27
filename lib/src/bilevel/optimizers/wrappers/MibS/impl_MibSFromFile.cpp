@@ -16,13 +16,11 @@
 
 idol::impl::MibSFromFile::MibSFromFile(const idol::Model &t_model,
                                        const idol::Bilevel::Description &t_description,
-                                       void* t_osi_solver,
-                                       bool t_use_cplex_for_feasibility,
+                                       std::string t_native_feasibility_checker,
                                        bool t_logs)
                                        : m_model(t_model),
                                          m_description(t_description),
-                                         m_osi_solver(t_osi_solver),
-                                         m_use_cplex_for_feasibility(t_use_cplex_for_feasibility),
+                                         m_native_feasibility_checker(std::move(t_native_feasibility_checker)),
                                          m_logs(t_logs),
 #ifdef IDOL_USE_MIBS
                                          m_mibs(new MibSModel())
@@ -68,6 +66,11 @@ void idol::impl::MibSFromFile::solve() {
 
     Bilevel::write_to_file(m_model, m_description, filename);
 
+    if (m_osi_solver) {
+        delete static_cast<OsiSolverInterface*>(m_osi_solver);
+    }
+    m_osi_solver = new OsiClpSolverInterface();
+
     auto* osi_solver = static_cast<OsiSolverInterface*>(m_osi_solver);
     osi_solver->messageHandler()->setLogLevel(0);
 
@@ -86,7 +89,7 @@ void idol::impl::MibSFromFile::solve() {
                      "-Alps_timeLimit",
                      time_limit.data(),
                      "-feasCheckSolver",
-                     m_use_cplex_for_feasibility ? "CPLEX" : "SYMPHONY"
+                     m_native_feasibility_checker.c_str()
     };
 
     idol::SilentMode silent_mode(!m_logs);

@@ -379,7 +379,7 @@ void idol::Optimizers::Bilevel::BranchAndCut::hook_optimize() {
     main_optimizer.with_logs(get_param_logs());
 
     auto mibs_model = parent().copy();
-    mibs_model.use(::idol::Bilevel::MibS(m_description).with_cplex_for_feasibility(true));
+    mibs_model.use(::idol::Bilevel::MibS(m_description));
     mibs_model.optimize();
 
     m_hpr->use(main_optimizer);

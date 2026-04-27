@@ -18,17 +18,17 @@ class idol::Optimizers::Bilevel::MibS : public Optimizer {
     const idol::Bilevel::Description& m_description;
 
     std::unique_ptr<idol::impl::MibS> m_mibs;
-    void* m_osi_solver;
     const bool m_use_file;
-    const bool m_use_cplex_for_feasibility;
+    const std::string m_native_feasibility_checker;
+    std::unique_ptr<OptimizerFactory> m_feasibility_checker;
 
     std::list<std::unique_ptr<Callback>> m_callbacks;
 public:
     MibS(const idol::Model& t_parent,
          const idol::Bilevel::Description& t_description,
-         void* t_osi_solver,
          bool t_use_file,
-         bool t_use_cplex_for_feasibility);
+         std::string  t_native_feasibility_checker,
+         OptimizerFactory* t_feasibility_checker = nullptr);
 
     [[nodiscard]] std::string name() const override { return "mibs"; }
     void throw_if_no_mibs() const;

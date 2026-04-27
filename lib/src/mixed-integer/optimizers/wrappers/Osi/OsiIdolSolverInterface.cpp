@@ -11,6 +11,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/Osi/OsiIdolSolverInterface.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
+#include "idol/mixed-integer/modeling/objects/Env.h"
 
 #define OSI_IDOL_DEBUG std::cout << __FUNCTION__ << std::endl;
 
@@ -53,54 +54,86 @@ IdolConvertSenseToBound(const char rowsen, const double rowrng,
     }
 }
 
-OsiIdolSolverInterface::OsiIdolSolverInterface(idol::Model &t_model) : m_model(t_model) {
+OsiIdolSolverInterface::OsiIdolSolverInterface(idol::Model &t_model) : m_model(&t_model), m_model_has_to_be_destroy(false) {
 
+}
+
+OsiIdolSolverInterface::OsiIdolSolverInterface(idol::Env& t_env, const idol::OptimizerFactory& t_optimizer) :
+    m_model(new idol::Model(t_env)), m_model_has_to_be_destroy(true), m_optimizer(t_optimizer.clone()) {
+
+
+}
+
+OsiIdolSolverInterface::~OsiIdolSolverInterface() {
+
+    delete[] m_row_sense; m_row_sense = nullptr;
+    delete[] m_row_range; m_row_range = nullptr;
+    delete[] m_row_activity; m_row_activity = nullptr;
+    delete[] m_row_upper; m_row_upper = nullptr;
+    delete[] m_row_lower; m_row_lower = nullptr;
+    delete[] m_row_price; m_row_price = nullptr;
+    delete[] m_matrix_by_col; m_matrix_by_col = nullptr;
+    delete[] m_matrix_by_row; m_matrix_by_row = nullptr;
+    delete[] m_col_lower; m_col_lower = nullptr;
+    delete[] m_col_upper; m_col_upper = nullptr;
+    delete[] m_col_obj; m_col_obj = nullptr;
+    delete[] m_col_solution; m_col_solution = nullptr;
+
+    if (m_model_has_to_be_destroy) {
+        delete m_model; m_model = nullptr;
+    }
+}
+
+void OsiIdolSolverInterface::set_optimizer_if_not_exists() {
+    if (m_model->has_optimizer()) {
+        return;
+    }
+    m_model->use(*m_optimizer);
 }
 
 void OsiIdolSolverInterface::initialSolve() {
     OSI_IDOL_DEBUG
+    set_optimizer_if_not_exists();
     resolve();
 }
 
 void OsiIdolSolverInterface::resolve() {
     OSI_IDOL_DEBUG
+    set_optimizer_if_not_exists();
     relax();
-    m_model.optimize();
-    delete[] m_col_solution;
-    m_col_solution = nullptr;
+    m_model->optimize();
+
+    delete[] m_col_solution; m_col_solution = nullptr;
 }
 
 void OsiIdolSolverInterface::branchAndBound() {
-    OSI_IDOL_DEBUG
     unrelax();
-    m_model.optimize();
-    delete[] m_col_solution;
-    m_col_solution = nullptr;
+
+    set_optimizer_if_not_exists();
+
+    m_model->optimize();
+
+    delete[] m_col_solution; m_col_solution = nullptr;
 }
 
 bool OsiIdolSolverInterface::isAbandoned() const {
-    OSI_IDOL_DEBUG
-    return m_model.get_status() == idol::Fail;
+    return m_model->get_status() == idol::Fail;
 }
 
 bool OsiIdolSolverInterface::isProvenOptimal() const {
-    OSI_IDOL_DEBUG
-    return m_model.get_status() == idol::Optimal;
+    return m_model->get_status() == idol::Optimal;
 }
 
 bool OsiIdolSolverInterface::isProvenPrimalInfeasible() const {
-    OSI_IDOL_DEBUG
-    return m_model.get_status() == idol::Infeasible;
+    return m_model->get_status() == idol::Infeasible;
 }
 
 bool OsiIdolSolverInterface::isProvenDualInfeasible() const {
-    OSI_IDOL_DEBUG
-    return m_model.get_status() == idol::Unbounded;
+    return m_model->get_status() == idol::Unbounded;
 }
 
 bool OsiIdolSolverInterface::isIterationLimitReached() const {
-    OSI_IDOL_DEBUG
-    return m_model.get_reason() == idol::IterLimit;
+    return m_model->get_reason() == idol::IterLimit;
 }
 
 CoinWarmStart *OsiIdolSolverInterface::getEmptyWarmStart() const {
@@ -120,48 +153,45 @@ bool OsiIdolSolverInterface::setWarmStart(const CoinWarmStart *warmstart) {
 }
 
 int OsiIdolSolverInterface::getNumCols() const {
-    OSI_IDOL_DEBUG
-    return (int) m_model.vars().size();
+    return (int) m_model->vars().size();
 }
 
 int OsiIdolSolverInterface::getNumRows() const {
-    OSI_IDOL_DEBUG
-    return (int) m_model.ctrs().size();
+    return (int) m_model->ctrs().size();
 }
 
 CoinBigIndex OsiIdolSolverInterface::getNumElements() const {
-    OSI_IDOL_DEBUG
+    if (m_matrix_by_row) {
+        return m_matrix_by_row->getNumElements();
+    }
     return getMatrixByCol()->getNumElements();
 }
 
 const double *OsiIdolSolverInterface::getColLower() const {
-    OSI_IDOL_DEBUG
     if (!m_col_lower) {
         const unsigned int n_cols = getNumCols();
         m_col_lower = new double[n_cols];
         for (int i = 0 ; i < n_cols ; ++i) {
-            const auto var = m_model.get_var_by_index(i);
-            m_col_lower[i] = m_model.get_var_lb(var);
+            const auto var = m_model->get_var_by_index(i);
+            m_col_lower[i] = m_model->get_var_lb(var);
         }
     }
     return m_col_lower;
 }
 
 const double *OsiIdolSolverInterface::getColUpper() const {
-    OSI_IDOL_DEBUG
     if (!m_col_upper) {
         const unsigned int n_cols = getNumCols();
         m_col_upper = new double[n_cols];
         for (int i = 0 ; i < n_cols ; ++i) {
-            const auto var = m_model.get_var_by_index(i);
-            m_col_upper[i] = m_model.get_var_ub(var);
+            const auto var = m_model->get_var_by_index(i);
+            m_col_upper[i] = m_model->get_var_ub(var);
         }
     }
     return m_col_upper;
 }
 
 const char *OsiIdolSolverInterface::getRowSense() const {
-    OSI_IDOL_DEBUG
     if (!m_row_sense) {
         getRightHandSide();
     }
@@ -169,21 +199,23 @@ const char *OsiIdolSolverInterface::getRowSense() const {
 }
 
 const double *OsiIdolSolverInterface::getRightHandSide() const {
-    OSI_IDOL_DEBUG
 
-    if (!m_row_rhs) {
-
-        assert(!m_row_range && !m_row_range);
+    if (!m_row_rhs || !m_row_range || !m_row_sense) {
 
         const unsigned int n_rows = getNumRows();
+
+        delete[] m_row_sense;
+        delete[] m_row_rhs;
+        delete[] m_row_range;
 
         m_row_sense = new char[n_rows];
         m_row_rhs = new double[n_rows];
         m_row_range = new double[n_rows];
+
         auto* row_lower = getRowLower();
         auto* row_upper = getRowUpper();
 
-        for (int i = 0 ; i < n_rows; ++i) {
+        for (int i = 0 ; i < n_rows ; ++i) {
             convertBoundToSense(row_lower[i], row_upper[i], m_row_sense[i], m_row_rhs[i], m_row_range[i]);
         }
 
@@ -193,7 +225,6 @@ const double *OsiIdolSolverInterface::getRightHandSide() const {
 }
 
 const double *OsiIdolSolverInterface::getRowRange() const {
-    OSI_IDOL_DEBUG
     if (!m_row_range) {
         getRightHandSide();
     }
@@ -201,17 +232,17 @@ const double *OsiIdolSolverInterface::getRowRange() const {
 }
 
 const double *OsiIdolSolverInterface::getRowLower() const {
-    OSI_IDOL_DEBUG
+
     if (!m_row_lower) {
         const unsigned int n_rows = getNumRows();
         m_row_lower = new double[n_rows];
         for (int i = 0 ; i < n_rows ; ++i) {
-            const auto ctr = m_model.get_ctr_by_index(i);
-            const auto rhs = m_model.get_ctr_rhs(ctr);
-            const auto type = m_model.get_ctr_type(ctr);
+            const auto ctr = m_model->get_ctr_by_index(i);
+            const auto rhs = m_model->get_ctr_rhs(ctr);
+            const auto type = m_model->get_ctr_type(ctr);
             switch (type) {
                 case idol::LessOrEqual:
-                    m_row_lower[i] = -std::numeric_limits<double>::infinity();
+                    m_row_lower[i] = -getInfinity();
                     break;
                 case idol::GreaterOrEqual:
                     m_row_lower[i] = rhs;
@@ -226,20 +257,20 @@ const double *OsiIdolSolverInterface::getRowLower() const {
 }
 
 const double *OsiIdolSolverInterface::getRowUpper() const {
-    OSI_IDOL_DEBUG
+
     if (!m_row_upper) {
         const unsigned int n_rows = getNumRows();
         m_row_upper = new double[n_rows];
         for (int i = 0 ; i < n_rows ; ++i) {
-            const auto ctr = m_model.get_ctr_by_index(i);
-            const auto rhs = m_model.get_ctr_rhs(ctr);
-            const auto type = m_model.get_ctr_type(ctr);
+            const auto ctr = m_model->get_ctr_by_index(i);
+            const auto rhs = m_model->get_ctr_rhs(ctr);
+            const auto type = m_model->get_ctr_type(ctr);
             switch (type) {
                 case idol::LessOrEqual:
                     m_row_upper[i] = rhs;
                     break;
                 case idol::GreaterOrEqual:
-                    m_row_upper[i] = std::numeric_limits<double>::infinity();
+                    m_row_upper[i] = getInfinity();
                     break;
                 case idol::Equal:
                     m_row_upper[i] = rhs;
@@ -256,8 +287,8 @@ const double *OsiIdolSolverInterface::getObjCoefficients() const {
         const unsigned int n_cols = getNumCols();
         m_col_obj = new double[n_cols];
         for (int i = 0 ; i < n_cols ; ++i) {
-            const auto var = m_model.get_var_by_index(i);
-            m_col_obj[i] = m_model.get_var_obj(var);
+            const auto var = m_model->get_var_by_index(i);
+            m_col_obj[i] = m_model->get_var_obj(var);
         }
     }
     return m_col_obj;
@@ -265,13 +296,12 @@ const double *OsiIdolSolverInterface::getObjCoefficients() const {
 
 double OsiIdolSolverInterface::getObjSense() const {
     OSI_IDOL_DEBUG
-    return m_model.get_obj_sense() == idol::Minimize ? 1.0 : -1.0;
+    return m_model->get_obj_sense() == idol::Minimize ? 1. : -1.;
 }
 
 bool OsiIdolSolverInterface::isContinuous(int colIndex) const {
-    OSI_IDOL_DEBUG
-    const auto var = m_model.get_var_by_index(colIndex);
-    return m_model.get_var_type(var) == idol::Continuous;
+    const auto var = m_model->get_var_by_index(colIndex);
+    return m_model->get_var_type(var) == idol::Continuous;
 }
 
 const CoinPackedMatrix *OsiIdolSolverInterface::getMatrixByRow() const {
@@ -284,12 +314,12 @@ const CoinPackedMatrix *OsiIdolSolverInterface::getMatrixByRow() const {
         m_matrix_by_row = new CoinPackedMatrix(false, n_rows, n_cols);
 
         for (int i = 0 ; i < n_rows ; ++i) {
-            const auto ctr = m_model.get_ctr_by_index(i);
-            const auto &row = m_model.get_ctr_row(ctr);
+            const auto ctr = m_model->get_ctr_by_index(i);
+            const auto &row = m_model->get_ctr_row(ctr);
 
             CoinPackedVector row_vector;
             for (const auto &[var, constant]: row) {
-                const int index = (int) m_model.get_var_index(var);
+                const int index = (int) m_model->get_var_index(var);
                 row_vector.insert(index, constant);
             }
 
@@ -311,12 +341,12 @@ const CoinPackedMatrix *OsiIdolSolverInterface::getMatrixByCol() const {
         m_matrix_by_col = new CoinPackedMatrix(true, n_cols, n_rows);
 
         for (int i = 0 ; i < n_cols ; ++i) {
-            const auto var = m_model.get_var_by_index(i);
-            const auto &column = m_model.get_var_column(var);
+            const auto var = m_model->get_var_by_index(i);
+            const auto &column = m_model->get_var_column(var);
 
             CoinPackedVector col_vector;
             for (const auto &[ctr, constant]: column) {
-                const int index = (int) m_model.get_ctr_index(ctr);
+                const int index = (int) m_model->get_ctr_index(ctr);
                 col_vector.insert(index, constant);
             }
 
@@ -329,22 +359,20 @@ const CoinPackedMatrix *OsiIdolSolverInterface::getMatrixByCol() const {
 }
 
 double OsiIdolSolverInterface::getInfinity() const {
-    OSI_IDOL_DEBUG
     return idol::Inf;
 }
 
 const double *OsiIdolSolverInterface::getColSolution() const {
-    OSI_IDOL_DEBUG
 
-    if (const unsigned int n_cols = getNumCols() ; n_cols > 0 && !m_col_solution) {
 
-        std::cout << idol::save_primal(m_model) << std::endl;
+    const unsigned int n_cols = getNumCols();
+
+    if (n_cols > 0 && !m_col_solution) {
 
         m_col_solution = new double[n_cols];
         for (int i = 0 ; i < n_cols ; ++i) {
-            const auto var = m_model.get_var_by_index(i);
-            m_col_solution[i] = m_model.get_var_primal(var);
-            std::cout << var << " = " << m_col_solution[i] << std::endl;
+            const auto var = m_model->get_var_by_index(i);
+            m_col_solution[i] = m_model->get_var_primal(var);
         }
 
     }
@@ -359,8 +387,8 @@ const double *OsiIdolSolverInterface::getRowPrice() const {
 
         m_row_price = new double[n_rows];
         for (int i = 0 ; i < n_rows ; ++i) {
-            const auto ctr = m_model.get_ctr_by_index(i);
-            m_row_price[i] = m_model.get_ctr_dual(ctr);
+            const auto ctr = m_model->get_ctr_by_index(i);
+            m_row_price[i] = m_model->get_ctr_dual(ctr);
         }
 
     }
@@ -376,8 +404,8 @@ const double *OsiIdolSolverInterface::getReducedCost() const {
 
         m_reduced_cost = new double[n_cols];
         for (int i = 0 ; i < n_cols ; ++i) {
-            const auto var = m_model.get_var_by_index(i);
-            m_reduced_cost[i] = m_model.get_var_reduced_cost(var);
+            const auto var = m_model->get_var_by_index(i);
+            m_reduced_cost[i] = m_model->get_var_reduced_cost(var);
         }
 
     }
@@ -388,6 +416,8 @@ const double *OsiIdolSolverInterface::getReducedCost() const {
 
 const double *OsiIdolSolverInterface::getRowActivity() const {
     OSI_IDOL_DEBUG
+
+    throw idol::Exception("OsiSolverInterface::getRowActivity not implemented.");
 
     if (const unsigned int n_rows = getNumRows() ; n_rows > 0 && !m_row_activity) {
         m_row_activity = new double[n_rows];
@@ -400,8 +430,8 @@ const double *OsiIdolSolverInterface::getRowActivity() const {
 }
 
 double OsiIdolSolverInterface::getObjValue() const {
-    OSI_IDOL_DEBUG
-    return m_model.get_best_obj();
+    assert(idol::equals(m_model->get_obj_expr().affine().constant(), 0., 1e-4));
+    return m_model->get_best_obj();
 }
 
 int OsiIdolSolverInterface::getIterationCount() const {
@@ -421,8 +451,8 @@ std::vector<double *> OsiIdolSolverInterface::getDualRays(int maxNumRays, bool f
     auto* ray = new double[n_rows];
 
     for (int i = 0 ; i < n_rows ; ++i) {
-        const auto ctr = m_model.get_ctr_by_index(i);
-        ray[i] = m_model.get_ctr_farkas(ctr);
+        const auto ctr = m_model->get_ctr_by_index(i);
+        ray[i] = m_model->get_ctr_farkas(ctr);
     }
 
     return std::vector<double*>(1, ray);
@@ -435,8 +465,8 @@ std::vector<double *> OsiIdolSolverInterface::getPrimalRays(int maxNumRays) cons
     auto* ray = new double[n_cols];
 
     for (int i = 0 ; i < n_cols ; ++i) {
-        const auto var = m_model.get_var_by_index(i);
-        ray[i] = m_model.get_var_ray(var);
+        const auto var = m_model->get_var_by_index(i);
+        ray[i] = m_model->get_var_ray(var);
     }
 
     return std::vector<double*>(1, ray);
@@ -446,32 +476,22 @@ void OsiIdolSolverInterface::setObjCoeff(int elementIndex, double elementValue) 
     OSI_IDOL_DEBUG
 
     if (m_col_obj) {
-
         m_col_obj[elementIndex] = elementValue;
-
-        if (m_reduced_cost) {
-            m_reduced_cost[elementIndex] += elementValue - m_col_obj[elementIndex];
-        }
-
+        delete[] m_reduced_cost; m_reduced_cost = nullptr;
     }
 
-    const auto var = m_model.get_var_by_index(elementIndex);
-    m_model.set_var_obj(var, elementValue);
+    const auto var = m_model->get_var_by_index(elementIndex);
+    m_model->set_var_obj(var, elementValue);
 }
 
 void OsiIdolSolverInterface::setObjSense(double s) {
-    OSI_IDOL_DEBUG
-    if (s < 0) {
-        throw idol::Exception("OsiIdolSolverInterface: Maximization is not implemented.");
-    }
-    m_model.set_obj_sense(idol::Minimize);
+    m_model->set_obj_sense(s > 0 ? idol::Minimize : idol::Maximize);
 }
 
 void OsiIdolSolverInterface::setColLower(int elementIndex, double elementValue) {
-    OSI_IDOL_DEBUG
 
-    const auto var = m_model.get_var_by_index(elementIndex);
-    m_model.set_var_lb(var, elementValue);
+    const auto var = m_model->get_var_by_index(elementIndex);
+    m_model->set_var_lb(var, elementValue);
 
     if (m_col_lower) {
         m_col_lower[elementIndex] = elementValue;
@@ -480,10 +500,9 @@ void OsiIdolSolverInterface::setColLower(int elementIndex, double elementValue) 
 }
 
 void OsiIdolSolverInterface::setColUpper(int elementIndex, double elementValue) {
-    OSI_IDOL_DEBUG
 
-    const auto var = m_model.get_var_by_index(elementIndex);
-    m_model.set_var_ub(var, elementValue);
+    const auto var = m_model->get_var_by_index(elementIndex);
+    m_model->set_var_ub(var, elementValue);
 
     if (m_col_upper) {
         m_col_upper[elementIndex] = elementValue;
@@ -492,40 +511,55 @@ void OsiIdolSolverInterface::setColUpper(int elementIndex, double elementValue) 
 }
 
 void OsiIdolSolverInterface::setRowLower(int elementIndex, double elementValue) {
-    OSI_IDOL_DEBUG
 
-    double rhs   = getRightHandSide()[elementIndex];
+    double rhs = getRightHandSide()[elementIndex];
     double range = getRowRange()[elementIndex];
-    char   sense = getRowSense()[elementIndex];
-    double lower = -idol::Inf, upper = idol::Inf;
+    char sense = getRowSense()[elementIndex];
+    double lower = 0, upper = 0;
 
-    convertSenseToBound( sense, rhs, range, lower, upper );
-    if( lower != elementValue ) {
-        convertBoundToSense( elementValue, upper, sense, rhs, range );
-        setRowType(elementIndex, sense, rhs, range );
+    convertSenseToBound(sense, rhs, range, lower, upper);
+    if (!idol::equals(lower, elementValue, m_model->env().get_tol_feasibility())) {
+        convertBoundToSense(elementValue, upper, sense, rhs, range);
+        setRowType(elementIndex, sense, rhs, range);
     }
-
 }
 
 void OsiIdolSolverInterface::setRowUpper(int i, double elementValue) {
-    OSI_IDOL_DEBUG
 
-    double rhs   = getRightHandSide()[i];
+    double rhs = getRightHandSide()[i];
     double range = getRowRange()[i];
-    char   sense = getRowSense()[i];
-    double lower = -idol::Inf, upper = idol::Inf;
+    char sense = getRowSense()[i];
+    double lower = 0, upper = 0;
 
-    convertSenseToBound( sense, rhs, range, lower, upper );
-    if( upper != elementValue ) {
-        convertBoundToSense( lower, elementValue, sense, rhs, range );
-        setRowType( i, sense, rhs, range );
+    convertSenseToBound(sense, rhs, range, lower, upper);
+    if (!idol::equals(upper, elementValue, m_model->env().get_tol_feasibility())) {
+        convertBoundToSense(lower, elementValue, sense, rhs, range);
+        setRowType(i, sense, rhs, range);
     }
 
 }
 
 void OsiIdolSolverInterface::setRowType(int index, char sense, double rightHandSide, double range) {
-    OSI_IDOL_DEBUG
-    throw idol::Exception("OsiIdolSolverInterface: Not implemented.");
+
+    idol::CtrType type;
+    if (sense == 'E') {
+        type = idol::Equal;
+    } else if (sense == 'L') {
+        type = idol::LessOrEqual;
+    } else if (sense == 'G') {
+        type = idol::GreaterOrEqual;
+    } else if (sense == 'R') {
+        // range constraint: lb = rhs - range, ub = rhs
+        throw idol::Exception("Range constraints not implemented yet.");
+    } else {
+        throw idol::Exception("Unknown sense.");
+    }
+
+    const auto& ctr = m_model->get_ctr_by_index(index);
+    m_model->set_ctr_type(ctr, type);
+    m_model->set_ctr_rhs(ctr, rightHandSide);
+
+    delete[] m_row_sense; m_row_sense = nullptr;
 }
 
 void OsiIdolSolverInterface::setColSolution(const double *colsol) {
@@ -539,15 +573,13 @@ void OsiIdolSolverInterface::setRowPrice(const double *rowprice) {
 }
 
 void OsiIdolSolverInterface::setContinuous(int index) {
-    OSI_IDOL_DEBUG
-    const auto var = m_model.get_var_by_index(index);
-    m_model.set_var_type(var, idol::Continuous);
+    const auto var = m_model->get_var_by_index(index);
+    m_model->set_var_type(var, idol::Continuous);
 }
 
 void OsiIdolSolverInterface::setInteger(int index) {
-    OSI_IDOL_DEBUG
-    const auto var = m_model.get_var_by_index(index);
-    m_model.set_var_type(var, idol::Integer);
+    const auto var = m_model->get_var_by_index(index);
+    m_model->set_var_type(var, idol::Integer);
 }
 
 void OsiIdolSolverInterface::addCol(const CoinPackedVectorBase &vec, const double collb, const double colub,
@@ -561,22 +593,22 @@ void OsiIdolSolverInterface::addCol(const CoinPackedVectorBase &vec, const doubl
     for (unsigned int i = 0, n = vec.getNumElements() ; i < n ; ++i) {
         const int index = indices[i];
         const double value = values[i];
-        const auto& ctr = m_model.get_ctr_by_index(index);
+        const auto& ctr = m_model->get_ctr_by_index(index);
         column.set(ctr, value);
     }
 
-    m_model.add_var(collb, colub, idol::Continuous, obj, std::move(column));
+    m_model->add_var(collb, colub, idol::Continuous, obj, std::move(column));
 
     std::cout << "WARNING: adding column relying on potentially wrong indices..." << std::endl;
 }
 
 void OsiIdolSolverInterface::deleteCols(const int num, const int *colIndices) {
     OSI_IDOL_DEBUG
-
+    throw idol::Exception("OsiIdolSolverInterface: Delete columns is not implemented.");
     for (int i = 0 ; i < num ; ++i) {
         const int index = colIndices[i];
-        const auto var = m_model.get_var_by_index(index);
-        m_model.remove(var);
+        const auto var = m_model->get_var_by_index(index);
+        m_model->remove(var);
     }
 
 }
@@ -584,7 +616,7 @@ void OsiIdolSolverInterface::deleteCols(const int num, const int *colIndices) {
 void OsiIdolSolverInterface::addRow(const CoinPackedVectorBase &vec, const double rowlb, const double rowub) {
     OSI_IDOL_DEBUG
 
-    const double tol_feasibility = m_model.optimizer().get_tol_feasibility();
+    const double tol_feasibility = m_model->optimizer().get_tol_feasibility();
 
     const auto* indices = vec.getIndices();
     const auto* values = vec.getElements();
@@ -601,6 +633,7 @@ void OsiIdolSolverInterface::addRow(const CoinPackedVectorBase &vec, const doubl
         type = idol::LessOrEqual;
         rhs = rowub;
     } else {
+        std::cout << rowlb << " " << rowub << std::endl;
         throw idol::Exception("Range constraints are not implemented.");
     }
 
@@ -608,11 +641,11 @@ void OsiIdolSolverInterface::addRow(const CoinPackedVectorBase &vec, const doubl
     for (unsigned int i = 0, n = vec.getNumElements() ; i < n ; ++i) {
         const int index = indices[i];
         const double value = values[i];
-        const auto& var = m_model.get_var_by_index(index);
+        const auto& var = m_model->get_var_by_index(index);
         lhs += value * var;
     }
 
-    m_model.add_ctr(idol::TempCtr(std::move(lhs), type, rhs));
+    m_model->add_ctr(idol::TempCtr(std::move(lhs), type, rhs));
 
     // TODO: this can be handled more efficiently for the matrix (i.e., just add the row)
     delete[] m_row_sense; m_row_sense = nullptr;
@@ -639,7 +672,6 @@ void OsiIdolSolverInterface::addRow(const CoinPackedVectorBase &vec, const char 
 
 void OsiIdolSolverInterface::loadProblem(const CoinPackedMatrix &matrix, const double *collb, const double *colub,
                                          const double *obj, const double *rowlb, const double *rowub) {
-    OSI_IDOL_DEBUG
 
     int n_rows = matrix.getNumRows();
 
@@ -684,7 +716,6 @@ void OsiIdolSolverInterface::loadProblem(const CoinPackedMatrix &matrix, const d
 
 void OsiIdolSolverInterface::assignProblem(CoinPackedMatrix *&matrix, double *&collb, double *&colub, double *&obj,
                                            double *&rowlb, double *&rowub) {
-    OSI_IDOL_DEBUG
 
     loadProblem( *matrix, collb, colub, obj, rowlb, rowub );
 
@@ -704,40 +735,78 @@ void OsiIdolSolverInterface::loadProblem(const CoinPackedMatrix &matrix,
                                          const char *rowsen,
                                          const double *rowrhs,
                                          const double *rowrng) {
-    OSI_IDOL_DEBUG
 
-    assert(m_model.vars().size() == 0 && m_model.ctrs().size() == 0);
-    assert(matrix.isColOrdered());
+    assert(m_model->vars().size() == 0 && m_model->ctrs().size() == 0);
 
     const int n_cols = matrix.getNumCols();
     const int n_rows = matrix.getNumRows();
 
-    for (int i = 0 ; i < n_rows ; ++i) {
-        double lb = -idol::Inf, ub = idol::Inf;
-        IdolConvertSenseToBound( rowsen[i], rowrng[i], rowrhs[i], lb, ub );
-        idol::CtrType type;
-        if (rowsen[i] == 'E') {
-            type = idol::Equal;
-        } else if (rowsen[i] == 'L') {
-            type = idol::LessOrEqual;
-        } else if (rowsen[i] == 'G') {
-            type = idol::GreaterOrEqual;
-        } else {
-            throw idol::Exception("OsiIdolSolverInterface: Unknown sense.");
-        }
-        m_model.add_ctr(idol::LinExpr<idol::Var>(), type, rowrhs[i]);
-    }
+    if (matrix.isColOrdered()) {
+        // Add constraints
+        for (int i = 0 ; i < n_rows ; ++i) {
 
-    for (int i = 0 ; i < n_cols ; ++i) {
-        idol::LinExpr<idol::Ctr> column;
-        const CoinShallowPackedVector& col = matrix.getVector(i);
-        for (int j = 0 ; j < col.getNumElements() ; ++j) {
-            const int row = col.getIndices()[j];
-            const double value = col.getElements()[j];
-            const auto& ctr = m_model.get_ctr_by_index(row);
-            column.set(ctr, value);
+            idol::CtrType type;
+            if (rowsen[i] == 'E') {
+                type = idol::Equal;
+            } else if (rowsen[i] == 'L') {
+                type = idol::LessOrEqual;
+            } else if (rowsen[i] == 'G') {
+                type = idol::GreaterOrEqual;
+            } else {
+                throw idol::Exception("OsiIdolSolverInterface: Unknown sense.");
+            }
+            assert(idol::equals(rowrng[i], 0., 1e-4));
+            m_model->add_ctr(idol::LinExpr<idol::Var>(), type, rowrhs[i]);
         }
-        m_model.add_var(collb[i], colub[i], idol::Continuous, obj[i], std::move(column));
+
+        // Add variables
+        for (int i = 0 ; i < n_cols ; ++i) {
+            idol::LinExpr<idol::Ctr> column;
+            const CoinShallowPackedVector& col = matrix.getVector(i);
+            for (int j = 0 ; j < col.getNumElements() ; ++j) {
+                const int row = col.getIndices()[j];
+                const double value = col.getElements()[j];
+                const auto& ctr = m_model->get_ctr_by_index(row);
+                column += value * ctr;
+            }
+            m_model->add_var(collb[i], colub[i], idol::Continuous, obj[i], std::move(column));
+        }
+    } else {
+
+        // Add variables
+        for (int i = 0 ; i < n_cols ; ++i) {
+            m_model->add_var(collb[i], colub[i], idol::Continuous, obj[i]);
+        }
+
+        // Add constraints
+        for (int i = 0 ; i < n_rows ; ++i) {
+
+            idol::CtrType type;
+            if (rowsen[i] == 'E') {
+                type = idol::Equal;
+            } else if (rowsen[i] == 'L') {
+                type = idol::LessOrEqual;
+            } else if (rowsen[i] == 'G') {
+                type = idol::GreaterOrEqual;
+            } else {
+                throw idol::Exception("OsiIdolSolverInterface: Unknown sense.");
+            }
+            assert(idol::equals(rowrng[i], 0., 1e-4));
+
+            idol::LinExpr expr;
+            const CoinShallowPackedVector& row = matrix.getVector(i);
+
+            for (int j = 0 ; j < row.getNumElements() ; ++j) {
+                const int col = row.getIndices()[j];
+                const double value = row.getElements()[j];
+                const auto& var = m_model->get_var_by_index(col);
+
+                expr += value * var;
+            }
+
+            m_model->add_ctr(std::move(expr), type, rowrhs[i]);
+
+        }
     }
 
 }
@@ -798,17 +867,14 @@ void OsiIdolSolverInterface::writeMps(const char *filename, const char *extensio
     std::string e(extension);
     std::string fullname = f + "." + e;
 
-    OsiSolverInterface::writeMpsNative(fullname.c_str(),NULL, NULL, 0, 2, objSense);
+    writeMpsNative(fullname.c_str(),NULL, NULL, 0, 2, objSense);
 
 }
 
 OsiSolverInterface *OsiIdolSolverInterface::clone(bool copyData) const {
     OSI_IDOL_DEBUG
 
-    if (!copyData) {
-        throw idol::Exception("OsiIdolSolverInterface::clone with copyData = false not implemented.");
-    }
-    return new OsiIdolSolverInterface(*this);
+    throw idol::Exception("OsiIdolSolverInterface::clone is not implemented.");
 }
 
 void OsiIdolSolverInterface::applyRowCut(const OsiRowCut &rc) {
@@ -848,32 +914,28 @@ void OsiIdolSolverInterface::applyColCut(const OsiColCut &cc) {
 
 void OsiIdolSolverInterface::deleteRows(const int num, const int *rowIndices) {
     OSI_IDOL_DEBUG
-
-    throw idol::Exception("OsiIdolSolverInterface: Not implemented.");
-}
-
-OsiIdolSolverInterface::OsiIdolSolverInterface(const OsiIdolSolverInterface &t_src)
-    : m_model(t_src.m_model) {
-
+    throw idol::Exception("OsiIdolSolverInterface: Delete rows is not implemented.");
 }
 
 void OsiIdolSolverInterface::writeLp(const char *filename, const char *extension, double epsilon, int numberAcross,
                                      int decimals, double objSense, bool useRowNames) const {
-    const_cast<idol::Model &>(m_model).write(std::string(filename).append(".").append(extension));
+    m_model->write(std::string(filename).append(".").append(extension));
 }
 
 void OsiIdolSolverInterface::relax() {
-    for (const auto& var : m_model.vars()) {
-        if (m_model.get_var_type(var) == idol::Integer) {
-            m_model.set_var_type(var, idol::Continuous);
-            m_relaxed_variables.push_back(var);
+    for (const auto& var : m_model->vars()) {
+        const auto type = m_model->get_var_type(var);
+        if (type == idol::Integer || type == idol::Binary) {
+            m_model->set_var_type(var, idol::Continuous);
+            m_relaxed_variables.emplace_back(var, type);
         }
     }
 }
 
 void OsiIdolSolverInterface::unrelax() {
-    for (const auto& var : m_relaxed_variables) {
-        m_model.set_var_type(var, idol::Integer);
+    for (const auto& [var, prev_type] : m_relaxed_variables) {
+        assert(prev_type == idol::Integer || prev_type == idol::Binary);
+        m_model->set_var_type(var, prev_type);
     }
     m_relaxed_variables.clear();
 }

@@ -19,10 +19,12 @@ class OsiSolverInterface;
 
 class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS>, public Bilevel::OptimizerInterface {
     const Bilevel::Description* m_description = nullptr;
+
     std::optional<bool> m_use_file_interface;
-    std::optional<bool> m_use_cplex_for_feasibility;
+    std::optional<std::string> m_native_feasibility_checker;
+    std::unique_ptr<OptimizerFactory> m_feasibility_checker_optimizer;
+
     std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
-    void* m_osi_interface = nullptr;
 protected:
     [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
@@ -38,9 +40,9 @@ public:
 
     void set_bilevel_description(const Description &t_bilevel_description) override;
 
-    MibS& with_osi_interface(const void* t_osi_optimizer);
+    MibS& with_native_feasibility_checker(const std::string& t_native_feasibility_checker);
 
-    MibS& with_cplex_for_feasibility(bool t_value);
+    MibS& with_feasibility_checker(const OptimizerFactory& t_feasibility_checker);
 
     MibS& with_file_interface(bool t_value);
 

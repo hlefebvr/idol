@@ -4,11 +4,13 @@ add_executable(idol_cl
         solve_bilevel.h
         solve_robust.h
         output.h
-        MethodManager.cpp
-        MethodManager.h
+        method-managers/MethodManager.cpp
+        method-managers/MethodManager.h
         VariableAnalysis.h
         Arguments.h
         Arguments.cpp
+        method-managers/MILPMethodManager.cpp
+        method-managers/MILPMethodManager.h
 )
 target_link_libraries(idol_cl PRIVATE idol)
 

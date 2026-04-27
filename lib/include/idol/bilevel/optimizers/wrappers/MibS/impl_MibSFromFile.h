@@ -17,7 +17,7 @@ class idol::impl::MibSFromFile : public idol::impl::MibS {
     const idol::Model& m_model;
     const idol::Bilevel::Description& m_description;
     const bool m_logs;
-    const bool m_use_cplex_for_feasibility;
+    const std::string m_native_feasibility_checker;
 
     void* m_mibs = nullptr; // MibSModel
     void* m_broker = nullptr; // AlpsKnowledgeBroker
@@ -28,8 +28,7 @@ class idol::impl::MibSFromFile : public idol::impl::MibS {
 public:
     MibSFromFile(const idol::Model& t_model,
          const idol::Bilevel::Description& t_description,
-         void* t_osi_solver,
-         bool t_use_cplex_for_feasibility,
+         std::string t_native_feasibility_checker,
          bool t_logs);
 
     ~MibSFromFile() override;

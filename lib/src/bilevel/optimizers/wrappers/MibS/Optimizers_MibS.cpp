@@ -3,23 +3,27 @@
 //
 
 #include "idol/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.h"
+
+#include <OsiSymSolverInterface.hpp>
+
 #include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromAPI.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromFile.h"
 
 #ifdef IDOL_USE_MIBS
 #include <OsiSolverInterface.hpp>
+#include <utility>
 #endif
 
 idol::Optimizers::Bilevel::MibS::MibS(const idol::Model &t_parent,
                                       const idol::Bilevel::Description& t_description,
-                                      void* t_osi_solver,
                                       bool t_use_file,
-                                      bool t_use_cplex_for_feasibility)
+                                      std::string  t_native_feasibility_checker,
+                                      OptimizerFactory* t_feasibility_checker)
                                       : Optimizer(t_parent),
                                         m_description(t_description),
-                                        m_osi_solver(t_osi_solver),
                                         m_use_file(t_use_file),
-                                        m_use_cplex_for_feasibility(t_use_cplex_for_feasibility) {
+                                        m_native_feasibility_checker(std::move(t_native_feasibility_checker)),
+                                        m_feasibility_checker(t_feasibility_checker) {
 
 }
 
@@ -107,27 +111,28 @@ void idol::Optimizers::Bilevel::MibS::write(const std::string &t_name) {
 
 void idol::Optimizers::Bilevel::MibS::hook_optimize() {
 #ifdef IDOL_USE_MIBS
+
     if (m_mibs) {
         return;
     }
-
-    auto* osi_solver = static_cast<OsiSolverInterface*>(m_osi_solver);
 
     if (m_use_file) {
         if (!m_callbacks.empty()) {
             throw Exception("Callbacks are not supported when using file interface.");
         }
+        if (m_feasibility_checker) {
+            throw Exception("Non-native feasibility checker is not supported when using file interface.");
+        }
         m_mibs = std::make_unique<impl::MibSFromFile>(parent(),
                                                      m_description,
-                                                     osi_solver->clone(),
-                                                     m_use_cplex_for_feasibility,
+                                                     m_native_feasibility_checker,
                                                      get_param_logs());
     } else {
         m_mibs = std::make_unique<impl::MibSFromAPI>(parent(),
                                                      m_description,
-                                                     osi_solver->clone(),
                                                      m_callbacks,
-                                                     m_use_cplex_for_feasibility,
+                                                     m_native_feasibility_checker,
+                                                     m_feasibility_checker.get(),
                                                      get_param_logs());
     }
     

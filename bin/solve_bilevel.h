@@ -6,7 +6,7 @@
 #define IDOL_SOLVE_BILEVEL_H
 
 #include "Arguments.h"
-#include "MethodManager.h"
+#include "method-managers/MethodManager.h"
 #include "output.h"
 #include "VariableAnalysis.h"
 #include "idol/modeling.h"
@@ -118,7 +118,7 @@ inline void solve_bilevel(const Arguments& t_args) {
 
     BilevelMethodManager method_manager;
     MILPMethodManager submilp_method_manager;
-    auto submilp_optimizer = submilp_method_manager.get_sub_milp_method(t_args, false);
+    auto submilp_optimizer = submilp_method_manager.get_sub_milp_optimizer(t_args, false);
 
     if (analysis.has_general_integer_linking_variables || analysis.has_binary_linking_variables) {
         std::cout << "-- Detected: binary or integer linking variables only" << std::endl;

@@ -19,7 +19,8 @@ class idol::impl::MibSFromAPI : public idol::impl::MibS {
     const idol::Bilevel::Description& m_description;
     const std::list<std::unique_ptr<Callback>>& m_callbacks;
     const bool m_logs;
-    const bool m_use_cplex_for_feasibility;
+    const std::string m_native_feasibility_checker;
+    const bool m_use_native_feasibility_checker;
 
     void* m_mibs = nullptr; // MibSModel
     void* m_broker = nullptr; // AlpsKnowledgeBroker
@@ -44,9 +45,9 @@ class idol::impl::MibSFromAPI : public idol::impl::MibS {
 public:
     MibSFromAPI(const idol::Model& t_model,
                 const idol::Bilevel::Description& t_description,
-                void* t_osi_solver,
                 const std::list<std::unique_ptr<Callback>>& t_callbacks,
-                bool t_use_cplex_for_feasibility,
+                std::string t_native_feasibility_checker,
+                OptimizerFactory* t_optimizer_factory,
                 bool t_logs);
 
     ~MibSFromAPI() override;

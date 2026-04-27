@@ -20,19 +20,12 @@ idol::Optimizer *idol::Bilevel::MibS::create(const idol::Model &t_model) const {
         throw Exception("The bilevel description has not been set.");
     }
 
-    OsiSolverInterface* osi_interface;
-    if (m_osi_interface) {
-        osi_interface = static_cast<OsiSolverInterface*>(m_osi_interface)->clone();
-    } else {
-        osi_interface = new OsiClpSolverInterface();
-    }
-
     auto* result = new Optimizers::Bilevel::MibS(
                 t_model,
                 *m_description,
-                osi_interface,
                 m_use_file_interface.value_or(false),
-                m_use_cplex_for_feasibility.value_or(false)
+                m_native_feasibility_checker.value_or("SYMPHONY"),
+                m_feasibility_checker_optimizer ? m_feasibility_checker_optimizer->clone() : nullptr
             );
 
     for (auto& cb : m_callbacks) {
@@ -53,30 +46,44 @@ idol::Bilevel::MibS::MibS(const idol::Bilevel::MibS &t_src)
     : OptimizerFactoryWithDefaultParameters<MibS>(t_src),
       m_description(t_src.m_description),
       m_use_file_interface(t_src.m_use_file_interface),
-      m_use_cplex_for_feasibility(t_src.m_use_cplex_for_feasibility),
-#ifdef IDOL_USE_MIBS
-      m_osi_interface(t_src.m_osi_interface ? static_cast<OsiSolverInterface*>(t_src.m_osi_interface)->clone() : nullptr)
-#else
-      m_osi_interface(nullptr)
-#endif
+      m_native_feasibility_checker(t_src.m_native_feasibility_checker),
+      m_feasibility_checker_optimizer(t_src.m_feasibility_checker_optimizer ? t_src.m_feasibility_checker_optimizer->clone() : nullptr)
 {
     for (const auto &cb : t_src.m_callbacks) {
         m_callbacks.emplace_back(cb->clone());
     }
 }
 
-idol::Bilevel::MibS &idol::Bilevel::MibS::with_osi_interface(const void* t_osi_optimizer) {
-#ifdef IDOL_USE_MIBS
-    if (m_osi_interface) {
-        throw Exception("The optimizer has already been set.");
+idol::Bilevel::MibS& idol::Bilevel::MibS::with_native_feasibility_checker( const std::string& t_native_feasibility_checker) {
+
+    if (m_feasibility_checker_optimizer) {
+        throw Exception("A non-native feasibility checker has already been set.\n"
+                        "This is exclusive with a native feasibility checker.");
     }
 
-    m_osi_interface = static_cast<const OsiSolverInterface*>(t_osi_optimizer)->clone();
+    if (m_native_feasibility_checker) {
+        throw Exception("A native feasibility checker has already been set.");
+    }
+
+    m_native_feasibility_checker = t_native_feasibility_checker;
 
     return *this;
-#else
-    throw Exception("idol was not linked with MibS.");
-#endif
+}
+
+idol::Bilevel::MibS& idol::Bilevel::MibS::with_feasibility_checker(const OptimizerFactory& t_feasibility_checker) {
+
+    if (m_native_feasibility_checker) {
+        throw Exception("A native feasibility checker has already been set.\n"
+                        "This is exclusive with a non-native feasibility checker.");
+    }
+
+    if (m_feasibility_checker_optimizer) {
+        throw Exception("A feasibility checker has already been set.");
+    }
+
+    m_feasibility_checker_optimizer.reset(t_feasibility_checker.clone());
+
+    return *this;
 }
 
 idol::Bilevel::MibS &idol::Bilevel::MibS::with_file_interface(bool t_value) {
@@ -86,17 +93,6 @@ idol::Bilevel::MibS &idol::Bilevel::MibS::with_file_interface(bool t_value) {
     }
 
     m_use_file_interface = t_value;
-
-    return *this;
-}
-
-idol::Bilevel::MibS &idol::Bilevel::MibS::with_cplex_for_feasibility(bool t_value) {
-
-    if (m_use_cplex_for_feasibility) {
-        throw Exception("The use of CPLEX for feasibility has already been set.");
-    }
-
-    m_use_cplex_for_feasibility = t_value;
 
     return *this;
 }

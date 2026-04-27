@@ -3,8 +3,7 @@
 //
 
 #include "MethodManager.h"
-
-#include "Arguments.h"
+#include "../Arguments.h"
 
 MethodManager::MethodManager(storage&& t_all_methods) : m_all_methods(std::move(t_all_methods)) {}
 

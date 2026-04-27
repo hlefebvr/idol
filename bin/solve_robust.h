@@ -6,7 +6,7 @@
 #define IDOL_SOLVE_ROBUST_H
 
 #include "Arguments.h"
-#include "MethodManager.h"
+#include "method-managers/MethodManager.h"
 #include "output.h"
 #include "VariableAnalysis.h"
 #include "idol/modeling.h"
@@ -92,7 +92,8 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
     const auto uncertainty_analysis = get_uncertainty_set_analysis(uncertainty_set);
     const auto stage_analysis = get_stage_analysis(model, bilevel_description, robust_description);
 
-    RobustMethodManager method_manager;
+    RobustMethodManager robust_method_manager;
+    MILPMethodManager sub_milp_method_manager;
 
     if (stage_analysis.has_second_stage) {
 
@@ -106,19 +107,19 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
 
             std::cout << "-- Detected: continuous second-stage decisions." << std::endl;
 
-            method_manager.add("CCG-KKT-SOS1");
+            robust_method_manager.add("CCG-KKT-SOS1");
 
             if (!uncertainty_analysis.has_continuous) {
 
-                method_manager.add("YASOL");
-                method_manager.add("CCG-MIBS");
+                robust_method_manager.add("YASOL");
+                robust_method_manager.add("CCG-MIBS");
 
                 if (!uncertainty_analysis.has_general_integer) {
 
                     std::cout << "-- Detected: binary uncertainty set." << std::endl;
 
                     if (stage_analysis.second_stage.all_bounded) {
-                        method_manager.add("CCG-FARKAS");
+                        robust_method_manager.add("CCG-FARKAS");
                         //method_manager.add("BBBB-MIBS");
                     }
 
@@ -139,7 +140,7 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
                     std::cout << "-- Detected: zero-one polytope uncertainty set" << std::endl;
 
                     if (stage_analysis.second_stage.all_bounded) {
-                        method_manager.add("CCG-FARKAS");
+                        robust_method_manager.add("CCG-FARKAS");
                     }
 
                     //method_manager.add("BBBB-KKT-SOS1");
@@ -172,8 +173,8 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
                     std::cout << "-- Detected: integer uncertainty set." << std::endl;
                 }
 
-                method_manager.add("CCG-MIBS");
-                method_manager.add("YASOL");
+                robust_method_manager.add("CCG-MIBS");
+                robust_method_manager.add("YASOL");
 
             }
 
@@ -181,9 +182,9 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
 
     }
 
-    method_manager.print_available_methods(t_args);
+    robust_method_manager.print_available_methods(t_args);
 
-    const auto method = method_manager.get_method(t_args);
+    const auto method = robust_method_manager.get_method(t_args);
 
     std::cout << "-- Solving using " << method << std::endl;
 
@@ -224,10 +225,13 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
 
         } else if (method == "CCG-MIBS") {
 
+            auto sub_milp_optimizer = sub_milp_method_manager.get_sub_milp_optimizer(t_args);
+
             auto mibs = Bilevel::MibS();
-            //mibs.with_cplex_for_feasibility(true);
+            mibs.with_feasibility_checker(*sub_milp_optimizer);
 
             if (!t_args.complete_recourse) {
+                std::cout << "-- The problem is not known to have complete recourse, adding feasibility separation." << std::endl;
                 auto feasibility_separation = Robust::CCG::FeasibilitySeparation();
                 feasibility_separation.with_bilevel_optimizer(mibs);
 

@@ -11,10 +11,13 @@
 #include "idol/mixed-integer/modeling/models/Model.h"
 
 class OsiIdolSolverInterface : public OsiSolverInterface {
-    idol::Model& m_model;
-    std::list<idol::Var> m_relaxed_variables;
+    idol::Model* m_model = nullptr;
+    const bool m_model_has_to_be_destroy;
+    std::list<std::pair<idol::Var, idol::VarType>> m_relaxed_variables;
     std::vector<int> m_variable_indices_in_mibs;
     std::vector<int> m_constraint_indices_in_mibs;
+    //double m_objective_sense = 1.; // 1. is minimization, -1. is maximization.
+    std::unique_ptr<idol::OptimizerFactory> m_optimizer;
 
     mutable double* m_col_lower = nullptr;
     mutable double* m_col_upper = nullptr;
@@ -34,9 +37,14 @@ class OsiIdolSolverInterface : public OsiSolverInterface {
     void relax();
     void unrelax();
 public:
+    OsiIdolSolverInterface(idol::Env& t_env, const idol::OptimizerFactory& t_optimizer);
     OsiIdolSolverInterface(idol::Model& t_model);
 
-    OsiIdolSolverInterface(const OsiIdolSolverInterface& t_src);
+    ~OsiIdolSolverInterface() override;
+
+    //OsiIdolSolverInterface(const OsiIdolSolverInterface& t_src);
+
+    void set_optimizer_if_not_exists();
 
     void initialSolve() override;
     void resolve() override;
