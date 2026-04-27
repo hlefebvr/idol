@@ -39,8 +39,28 @@ jobs:
       - name: Compare and create tag if needed
         id: create_tag
         run: |
+          set -e
+          VERSION="${PROJECT_VERSION}"
+      
+          echo "Latest tag: $LATEST_TAG"
+          echo "Target version: $VERSION"
+      
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "Tag already exists"
+            echo "tag_created=false" >> $GITHUB_OUTPUT
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+      
+          echo "Creating tag $VERSION"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git tag "$VERSION"
+          git push origin "$VERSION"
+      
           echo "tag_created=true" >> $GITHUB_OUTPUT
-          echo "version=${PROJECT_VERSION}" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
   build-macos:
     needs: push-tag

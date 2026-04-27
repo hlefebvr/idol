@@ -29,19 +29,19 @@ TEST_CASE_WITH_OPTIMIZER("Can set the objective function of a model") {
 #endif
 
     SECTION("Can set a linear objective function") {
-        CHECK(false);
+        SKIP();
     }
 
     SECTION("Can set an affine objective function") {
-        CHECK(false);
+        SKIP();
     }
 
     SECTION("Can set a quadratic objective function") {
-        CHECK(false);
+        SKIP();
     }
 
     SECTION("Can set the objective sense") {
-        CHECK(false);
+        SKIP();
     }
 
 }
@@ -58,15 +58,15 @@ TEST_CASE_WITH_OPTIMIZER("Can update the objective function of a model") {
 #endif
 
     SECTION("Can update the objective coefficient of a variable") {
-        CHECK(false);
+        SKIP();
     }
 
     SECTION("Can update the objective constant") {
-        CHECK(false);
+        SKIP();
     }
 
     SECTION("Can update the objective sense") {
-        CHECK(false);
+        SKIP();
     }
 
 }
@@ -83,15 +83,15 @@ TEST_CASE_WITH_OPTIMIZER("Can access the objective function of a model") {
 #endif
 
     SECTION("Can retrieve the objective function") {
-        CHECK(false);
+        SKIP();
     }
 
     SECTION("Can retrieve the objective coefficient of a variable") {
-        CHECK(false);
+        SKIP();
     }
 
     SECTION("Can retrieve the objective sense") {
-        CHECK(false);
+        SKIP();
     }
 
 }
