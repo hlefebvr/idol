@@ -46,8 +46,8 @@ TEST_CASE_WITH_OPTIMIZER("Can add variables to a model") {
 
         const auto z = model.add_var(-2, 2, Binary, 1, "z");
         CHECK(model.vars().size() == 3);
-        CHECK(model.get_var_lb(z) == -2_a);
-        CHECK(model.get_var_ub(z) == 2_a);
+        CHECK(model.get_var_lb(z) == 0_a);
+        CHECK(model.get_var_ub(z) == 1_a);
         CHECK(model.get_var_obj(z) == 1_a);
         CHECK(model.get_obj_expr().affine().linear().get(z) == 1_a);
         CHECK(model.get_var_type(z) == Binary);
@@ -97,8 +97,8 @@ TEST_CASE_WITH_OPTIMIZER("Can add variables to a model") {
 
         const auto z = model.add_var(-2, 2, Binary, 1, column,"z");
         CHECK(model.vars().size() == 3);
-        CHECK(model.get_var_lb(z) == -2_a);
-        CHECK(model.get_var_ub(z) == 2_a);
+        CHECK(model.get_var_lb(z) == 0_a);
+        CHECK(model.get_var_ub(z) == 1_a);
         CHECK(model.get_var_obj(z) == 1_a);
         CHECK(model.get_obj_expr().affine().linear().get(z) == 1_a);
         CHECK(model.get_mat_coeff(c1, z) == 0_a);
@@ -135,8 +135,8 @@ TEST_CASE_WITH_OPTIMIZER("Can add variables to a model") {
 
         model.add(z);
         CHECK(model.vars().size() == 3);
-        CHECK(model.get_var_lb(z) == -2_a);
-        CHECK(model.get_var_ub(z) == 2_a);
+        CHECK(model.get_var_lb(z) == 0_a);
+        CHECK(model.get_var_ub(z) == 1_a);
         CHECK(model.get_var_obj(z) == 1_a);
         CHECK(model.get_obj_expr().affine().linear().get(z) == 1_a);
         CHECK(model.get_var_type(z) == Binary);
@@ -261,8 +261,8 @@ TEST_CASE_WITH_OPTIMIZER("Can add variables to a model") {
         const auto z = model.add_vars(Dim<1>(15), -2, 2, Binary, 1, "z");
         CHECK(model.vars().size() == 30);
         for (const auto& z_i : z) {
-            CHECK(model.get_var_lb(z_i) == -2_a);
-            CHECK(model.get_var_ub(z_i) == 2_a);
+            CHECK(model.get_var_lb(z_i) == 0_a);
+            CHECK(model.get_var_ub(z_i) == 1_a);
             CHECK(model.get_var_obj(z_i) == 1_a);
             CHECK(model.get_obj_expr().affine().linear().get(z_i) == 1_a);
             CHECK(model.get_var_type(z_i) == Binary);
@@ -299,8 +299,8 @@ TEST_CASE_WITH_OPTIMIZER("Can add variables to a model") {
         model.add_vector<Var, 1>(z);
         CHECK(model.vars().size() == 30);
         for (const auto& z_i : z) {
-            CHECK(model.get_var_lb(z_i) == -2_a);
-            CHECK(model.get_var_ub(z_i) == 2_a);
+            CHECK(model.get_var_lb(z_i) == 0_a);
+            CHECK(model.get_var_ub(z_i) == 1_a);
             CHECK(model.get_var_obj(z_i) == 1_a);
             CHECK(model.get_obj_expr().affine().linear().get(z_i) == 1_a);
             CHECK(model.get_var_type(z_i) == Binary);
