@@ -1,10 +1,9 @@
-name: Build prebuilt idol
+name: Publishing new version
 
 on:
   push:
     branches:
       - 'main'
-      #- 'mibs-ship'
 
 env:
   BUILD_TYPE: Release

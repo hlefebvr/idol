@@ -1,0 +1,48 @@
+name: Version check
+
+on:
+  pull_request:
+    branches: ["main", "dev"]
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract CMake project version
+        id: pr
+        run: |
+          PROJECT_VERSION=$(grep -Eo 'project\(idol VERSION [0-9]+\.[0-9]+\.[0-9]+' CMakeLists.txt | egrep -o "[0-9]+\.[0-9]+\.[0-9]+")
+          echo "version=$PROJECT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Extract main CMake project version
+        id: main
+        run: |
+          git fetch origin main
+          git show origin/main:CMakeLists.txt > main_CMakeLists.txt
+          $PROJECT_VERSION=$(grep -Eo 'project\(idol VERSION [0-9]+\.[0-9]+\.[0-9]+' main_CMakeLists.txt | grep -Eo "[0-9]+\.[0-9]+\.[0-9]+")
+          echo "version=$PROJECT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Install semver CLI
+        run: npm install -g semver
+
+      - name: Validate and compare versions
+        run: |
+          PR_VERSION=${{ steps.pr.outputs.version }}
+          MAIN_VERSION=${{ steps.main.outputs.version }}
+
+          echo "pull request version: $PR_VERSION"
+          echo "main version: $MAIN_VERSION"
+
+          # Compare versions (PR must be strictly greater)
+          if npx semver -r ">$MAIN_VERSION" "$PR_VERSION" >/dev/null 2>&1; then
+            echo "✅ Version bump is valid"
+          else
+            echo "❌ Version must be greater than $MAIN_VERSION"
+            exit 1
+          fi
