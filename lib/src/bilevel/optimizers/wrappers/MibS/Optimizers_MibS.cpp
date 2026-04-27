@@ -3,9 +3,6 @@
 //
 
 #include "idol/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.h"
-
-#include <OsiSymSolverInterface.hpp>
-
 #include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromAPI.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromFile.h"
 
