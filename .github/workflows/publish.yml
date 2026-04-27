@@ -1,4 +1,4 @@
-name: Publishing new version
+name: Publish and Tag New Version.
 
 on:
   push:
@@ -38,7 +38,6 @@ jobs:
 
       - name: Compare and create tag if needed
         id: create_tag
-        #if: env.PROJECT_VERSION != env.LATEST_TAG #TODO restore uncommenting
         run: |
           echo "tag_created=true" >> $GITHUB_OUTPUT
           echo "version=${PROJECT_VERSION}" >> $GITHUB_OUTPUT

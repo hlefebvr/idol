@@ -1,4 +1,4 @@
-name: Tests
+name: Run Tests.
 
 on:
   push:
@@ -178,36 +178,3 @@ jobs:
           token: ${{secrets.CODECOV_TOKEN}}
           file: coverage.info
           flags: default
-
-  Documentation:
-    name: "Build documentation"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v2
-
-      - name: Install doxygen
-        run: |
-          wget https://github.com/doxygen/doxygen/releases/download/Release_1_16_1/doxygen-1.16.1.linux.bin.tar.gz
-          tar -xzf doxygen-1.16.1.linux.bin.tar.gz doxygen-1.16.1
-          sudo mv doxygen-1.16.1/bin/doxygen /usr/local/bin/
-          sudo chmod +x /usr/local/bin/doxygen
-          doxygen --version
-          
-          sudo apt-get install graphviz
-
-      - name: CMake
-        run: |
-          cmake -B ${{github.workspace}}/build
-
-      - name: Build
-        run: (cd ${{github.workspace}}/build && make doc)
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          publish_branch: gh-pages
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/website/_build/html
-          force_orphan: true

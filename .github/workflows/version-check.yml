@@ -1,4 +1,4 @@
-name: Version check
+name: Check that Version is Increasing.
 
 on:
   pull_request:
