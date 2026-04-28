@@ -18,7 +18,7 @@ idol::Optimizer* idol::OptimizerFactory::operator()(const Model& t_model) const 
     result->set_param_best_obj_stop(m_best_obj_stop.value_or(env.get_param_best_obj_stop()));
     result->set_param_iteration_limit(m_iteration_count_limit.value_or(env.get_param_iteration_limit()));
     result->set_param_presolve(m_presolve.value_or(env.get_param_presolve()));
-    result->set_param_infeasible_or_unbounded_info(env.get_param_infeasible_or_unbounded_info());
+    result->set_param_infeasible_or_unbounded_info(m_infeasible_or_unbounded_info.value_or(env.get_param_infeasible_or_unbounded_info()));
 
     // Set tolerances
     result->set_tol_mip_relative_gap(m_tol_mip_relative_gap.value_or(env.get_tol_mip_relative_gap()));

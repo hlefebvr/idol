@@ -192,15 +192,17 @@ const double *OsiIdolSolverInterface::getColUpper() const {
 }
 
 const char *OsiIdolSolverInterface::getRowSense() const {
-    if (!m_row_sense) {
+    /* @MEM@ */ if (!m_row_sense) {
         getRightHandSide();
-    }
+    /* @MEM@ */ }
     return m_row_sense;
 }
 
 const double *OsiIdolSolverInterface::getRightHandSide() const {
 
-    if (!m_row_rhs || !m_row_range || !m_row_sense) {
+    /* @MEM@ */ if (!m_row_rhs || !m_row_range || !m_row_sense) {
+
+        assert(!m_row_rhs && !m_row_range && !m_row_sense);
 
         const unsigned int n_rows = getNumRows();
 
@@ -219,21 +221,21 @@ const double *OsiIdolSolverInterface::getRightHandSide() const {
             convertBoundToSense(row_lower[i], row_upper[i], m_row_sense[i], m_row_rhs[i], m_row_range[i]);
         }
 
-    }
+    /* @MEM@ */ }
 
     return m_row_rhs;
 }
 
 const double *OsiIdolSolverInterface::getRowRange() const {
-    if (!m_row_range) {
+    /* @MEM@ */ if (!m_row_range) {
         getRightHandSide();
-    }
+    /* @MEM@ */ }
     return m_row_range;
 }
 
 const double *OsiIdolSolverInterface::getRowLower() const {
 
-    if (!m_row_lower) {
+    /* @MEM@ */ if (!m_row_lower) {
         const unsigned int n_rows = getNumRows();
         m_row_lower = new double[n_rows];
         for (int i = 0 ; i < n_rows ; ++i) {
@@ -252,13 +254,13 @@ const double *OsiIdolSolverInterface::getRowLower() const {
                     break;
             }
         }
-    }
+    /* @MEM@ */ }
     return m_row_lower;
 }
 
 const double *OsiIdolSolverInterface::getRowUpper() const {
 
-    if (!m_row_upper) {
+    /* @MEM@ */ if (!m_row_upper) {
         const unsigned int n_rows = getNumRows();
         m_row_upper = new double[n_rows];
         for (int i = 0 ; i < n_rows ; ++i) {
@@ -277,7 +279,7 @@ const double *OsiIdolSolverInterface::getRowUpper() const {
                     break;
             }
         }
-    }
+    /* @MEM@ */ }
     return m_row_upper;
 }
 
@@ -306,7 +308,7 @@ bool OsiIdolSolverInterface::isContinuous(int colIndex) const {
 
 const CoinPackedMatrix *OsiIdolSolverInterface::getMatrixByRow() const {
     OSI_IDOL_DEBUG
-    if (!m_matrix_by_row) {
+    /* @MEM@ */ if (!m_matrix_by_row) {
 
         const unsigned int n_rows = getNumRows();
         const unsigned int n_cols = getNumCols();
@@ -326,14 +328,14 @@ const CoinPackedMatrix *OsiIdolSolverInterface::getMatrixByRow() const {
             m_matrix_by_row->appendRow(row_vector);
         }
 
-    }
+    /* @MEM@ */ }
     return m_matrix_by_row;
 }
 
 const CoinPackedMatrix *OsiIdolSolverInterface::getMatrixByCol() const {
     OSI_IDOL_DEBUG
 
-    if (!m_matrix_by_col) {
+    /* @MEM@ */ if (!m_matrix_by_col) {
 
         const unsigned int n_rows = getNumRows();
         const unsigned int n_cols = getNumCols();
@@ -353,7 +355,7 @@ const CoinPackedMatrix *OsiIdolSolverInterface::getMatrixByCol() const {
             m_matrix_by_col->appendCol(col_vector);
         }
 
-    }
+    /* @MEM@ */ }
 
     return m_matrix_by_col;
 }
@@ -559,7 +561,12 @@ void OsiIdolSolverInterface::setRowType(int index, char sense, double rightHandS
     m_model->set_ctr_type(ctr, type);
     m_model->set_ctr_rhs(ctr, rightHandSide);
 
-    delete[] m_row_sense; m_row_sense = nullptr;
+    if (m_row_sense) {
+        m_row_sense[index] = sense;
+    }
+    if (m_row_rhs) {
+        m_row_rhs[index] = rightHandSide;
+    }
 }
 
 void OsiIdolSolverInterface::setColSolution(const double *colsol) {

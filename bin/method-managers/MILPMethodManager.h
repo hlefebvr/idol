@@ -62,6 +62,7 @@ public:
         if (t_name == "GUROBI") {
             auto gurobi = idol::Gurobi();
             gurobi.with_continuous_relaxation_only(t_continuous_relaxation);
+            //gurobi.with_infeasible_or_unbounded_info(true);
             result.reset(gurobi.clone());
         } else if (t_name == "GLPK") {
             auto glpk = idol::GLPK();
