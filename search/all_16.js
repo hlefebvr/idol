@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['random_20branching_0',['Uniformly Random Branching',['../lib_milp_bnb_branching_rule.html#lib_milp_bnb_branching_rule_UniformlyRandom',1,'']]],
+  ['range_1',['Range',['../classidol_1_1Range.html',1,'idol']]],
+  ['reducedcostfixing_2',['ReducedCostFixing',['../classidol_1_1ReducedCostFixing.html',1,'idol']]],
+  ['reference_20for_20dual_20variable_20bounds_3',['Reference for Dual Variable Bounds',['../cli_bilevel_kkt.html#kkt_big_m_def',1,'']]],
+  ['references_4',['References',['../cli_bilevel_basics.html#cli_bilevel_basics_input_references',1,'']]],
+  ['reformulation_5',['Reformulation',['../example_mixed_integer_bin_bap.html#autotoc_md1',1,'Dantzig-Wolfe Reformulation'],['../example_mixed_integer_gap_bap.html#autotoc_md4',1,'Dantzig-Wolfe Reformulation'],['../cli_bilevel_kkt.html',1,'Solving Bilevel Problems via its KKT-Based Single-Level Reformulation'],['../cli_bilevel_kkt.html#kkt_big_m',1,'Using the Big-M Reformulation']]],
+  ['relaxation_6',['relaxation',['../classidol_1_1BranchAndBoundCallback.html#a26670d598d1dd75498199087a0bf1a5d',1,'idol::BranchAndBoundCallback']]],
+  ['removing_20variables_7',['Removing Variables',['../lib_milp_basics_advanced_variables.html#lib_milp_basics_advanced_variables_remove',1,'']]],
+  ['rens_8',['RENS',['../classidol_1_1Heuristics_1_1RENS.html',1,'idol::Heuristics']]],
+  ['repository_9',['Step 1 — Clone the repository',['../build_from_source.html#step_clone',1,'']]],
+  ['requirements_10',['Requirements',['../build_from_source.html#requirements',1,'']]],
+  ['restricted_20strong_20branching_11',['Restricted Strong Branching',['../lib_milp_bnb_branching_rule.html#lib_milp_bnb_branching_rule_StrongBranching_restricted',1,'']]],
+  ['rhsfixation_12',['RhsFixation',['../structidol_1_1ADM_1_1Formulation_1_1SubProblem_1_1RhsFixation.html',1,'idol::ADM::Formulation::SubProblem']]],
+  ['right_20hand_20side_20uncertainty_13',['Right-hand Side Uncertainty',['../cli_robust_basics.html#cli_robust_rhs_file',1,'']]],
+  ['robust_20optimization_14',['Robust Optimization',['../cli_tutorials.html#cli_tutorials_robust',1,'Robust Optimization'],['../cli_robust_basics.html#cli_robust_basics_static',1,'Static Robust Optimization'],['../cli_robust_basics.html#cli_robust_basics_aro',1,'Two-Stage Robust Optimization']]],
+  ['robust_20optimization_15',['Robust optimization',['../examples_robust.html',1,'Robust optimization'],['../stable_features_robust.html',1,'Robust optimization']]],
+  ['robust_20problem_16',['Solving a Two-Stage Robust Problem',['../cli_robust_basics.html#cli_robust_basics_aro_solving',1,'']]],
+  ['robust_20problems_17',['Basics of the Command Line Interface for Robust Problems',['../cli_robust_basics.html',1,'']]],
+  ['rounding_18',['Bound Rounding',['../lib_milp_bnb_presolve.html#lib_milp_bnb_presolve_BoundRounding',1,'']]],
+  ['row_20bound_20strengthening_19',['One Row Bound Strengthening',['../lib_milp_bnb_presolve.html#lib_milp_bnb_presolve_OneRowBoundStrengthening',1,'']]],
+  ['rowfixation_20',['RowFixation',['../structidol_1_1ADM_1_1Formulation_1_1SubProblem_1_1RowFixation.html',1,'idol::ADM::Formulation::SubProblem']]],
+  ['rule_21',['Rule',['../lib_milp_bnb_branching_rule.html#lib_milp_bnb_branching_rule_writing',1,'Writing Your Own Branching Rule'],['../lib_milp_bnb_node_selection.html#lib_milp_bnb_node_selection_writing',1,'Writing Your Own Node Selection Rule']]],
+  ['rules_22',['Rules',['../lib_milp_bnb_branching_rule.html',1,'Branching Rules'],['../lib_milp_bnb_node_selection.html',1,'Node Selection Rules']]]
+];

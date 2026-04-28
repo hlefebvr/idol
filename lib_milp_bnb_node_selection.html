@@ -1,0 +1,287 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: Node Selection Rules</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div id="doc-content">
+<div><div class="header">
+  <div class="headertitle"><div class="title">Node Selection Rules </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul>
+  <li class="level1">
+    <a href="#lib_milp_bnb_node_selection_BestBound">Best Bound </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_node_selection_BestEstimate">Best Estimate </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_node_selection_BreadthFirst">Breadth First </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_node_selection_DepthFirst">Depth First </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_node_selection_WorstBound">Worst Bound </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_node_selection_writing">Writing Your Own Node Selection Rule </a>
+  </li>
+</ul>
+</div>
+<div class="textblock"><p>Node selection rules are responsible for picking the next node to be explored within the list of active nodes. Different strategies are possible, and can be configured with the help of the <span class="tt">with_node_selection_rule</span> method.</p>
+<p>Here is a quick sumary.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Rule  </th><th class="markdownTableHeadNone">Purpose / Guideline  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>Best Bound</b>  </td><td class="markdownTableBodyNone">Pick node with best bound; fast convergence.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>Best Estimate</b>  </td><td class="markdownTableBodyNone">Balance objective and feasibility; favors near-feasible nodes.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>Breadth First</b>  </td><td class="markdownTableBodyNone">Explore level by level; uniform search.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>Depth First</b>  </td><td class="markdownTableBodyNone">Explore deep branches first; memory-efficient, finds feasible solutions quickly.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>Worst Bound</b>  </td><td class="markdownTableBodyNone">Pick worst bound; mainly for testing.  </td></tr>
+</table>
+<h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_node_selection_BestBound"></a>
+Best Bound</h1>
+<p>The best bound strategy selects the node with the best (i.e., the lowest) bound among all active nodes.</p>
+<p>Here is how to use it.</p>
+<div class="fragment"><div class="line">branch_and_bound.with_node_selection_rule(BestBound());</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_node_selection_BestEstimate"></a>
+Best Estimate</h1>
+<p>The best estimate strategy selects the node that is expected to lead to the best final solution by combining objective value and degree of infeasibility.</p>
+<p>To do so, a score is computed for each node and the one with the lowest score is selected. The score is computed as follows.</p>
+<p class="formulaDsp">
+\[    \begin{equation}
+        \text{score} = \text{objective\_value} + \frac{
+            (\text{root\_node\_objective} - \text{incumbent\_objective}) \times \text{sum\_of\_infeasibilities}
+        }{
+            \text{root\_node\_sum\_of\_infeasibilities}
+        }
+    \end{equation}
+\]
+</p>
+<p>where</p>
+<ul>
+<li>objective_value is the objective value at the current node;</li>
+<li>sum_of_infeasibilities is the sum of violation of integralities constraints at the node;</li>
+<li>incumbent_objective is the objective value of the best known feasible point so far;</li>
+<li>root_onode_bjective and root_node_sum_of_infeasibilities are the values stored at the root node of "objective_value" and "sum_of_infeasibilities".</li>
+</ul>
+<p>Intuitively, this balances two factors: nodes with high objective values are promising, but nodes that are less infeasible (closer to satisfying integrality constraints) are more likely to lead to feasible solutions.</p>
+<blockquote class="doxtable">
+<p>If there is no incumbent solution yet, the strategy defaults to the node with the best objective value. Thus, it acts like the best bound approach. </p>
+</blockquote>
+<p>Here is how to use it.</p>
+<div class="fragment"><div class="line">branch_and_bound.with_node_selection_rule(BestEstimate());</div>
+</div><!-- fragment --><p>This node selection rule is due to <a href="https://doi.org/10.1287/mnsc.20.5.736">J. J. H. Forrest et al. (1974)</a> under the name "Best Projection".</p>
+<h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_node_selection_BreadthFirst"></a>
+Breadth First</h1>
+<p>The breadth first strategy explores nodes level by level, starting from the root and moving across all nodes at a given depth before descending further.</p>
+<p>Here is how to use it.</p>
+<div class="fragment"><div class="line">branch_and_bound.with_node_selection_rule(BreadthFirst());</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_node_selection_DepthFirst"></a>
+Depth First</h1>
+<p>The depth first strategy explores a branch as far as possible before backtracking. It can quickly find feasible solutions deep in the tree, which helps prune other branches early. However, it may waste time exploring suboptimal branches if the initial path is not promising.</p>
+<p>Here is how to use it.</p>
+<div class="fragment"><div class="line">branch_and_bound.with_node_selection_rule(DepthFirst());</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_node_selection_WorstBound"></a>
+Worst Bound</h1>
+<p>The worst bound strategy selects the node with the worst (i.e., the highest) bound among all active nodes.</p>
+<p>Here is how to use it.</p>
+<div class="fragment"><div class="line">branch_and_bound.with_node_selection_rule(WorstBound());</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_node_selection_writing"></a>
+Writing Your Own Node Selection Rule</h1>
+<dl class="section warning"><dt>Warning</dt><dd>TODO write this section </dd></dl>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

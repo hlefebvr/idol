@@ -1,0 +1,271 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: The Optimization Environment</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div id="doc-content">
+<div><div class="header">
+  <div class="headertitle"><div class="title">The Optimization Environment </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul>
+  <li class="level1">
+    <a href="#lib_milp_basics_advanced_environment_what">What is an Optimization Environment </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_basics_advanced_environment_tolerances">Handling of Default Tolerances and Parameters </a>
+  </li>
+</ul>
+</div>
+<div class="textblock"><p>Describes what is an optimization environment and how it is used.</p>
+<h1 class="doxsection"><a class="anchor" id="lib_milp_basics_advanced_environment_what"></a>
+What is an Optimization Environment</h1>
+<p>Any optimization object, such as variables, constraints and models, are managed through a central entity called an "optimization environment". This environment is represented by the <span class="tt">Env</span> class. It acts as a container and controller for all optimization-related objects created within its scope.</p>
+<p>The environment has two primary responsibilities:</p><ul>
+<li><b>Lifecycle Management.</b> When an environment is destroyed, all objects created by this environment are automatically deleted. This eliminates the need for manual memory management. Also, once an object is no longer referenced, it is safely cleaned up by the environment, i.e., you do not need to manually delete objects.</li>
+<li><b>Version Tracking.</b> During the execution of an optimization program, objects like variables and constraints may appear in different models with model-specific changes. These different versions of a single object are all stored and managed in the environment.</li>
+</ul>
+<p>Typically, a single environment should suffice for your application. While <span class="tt">idol</span> technically allows the creation of multiple environments, this is strongly discouraged because this is a source of error. Objects created in one environment must not be mixed with those from another. For example, adding a variable from one environment to a model created by a different environment will lead to an undefined behavior, often resulting in a segmentation fault and a program crash.</p>
+<p>Creating an environment is straightforward.</p>
+<div class="fragment"><div class="line">Env env; <span class="comment">// Creates a new optimization environment.</span></div>
+</div><!-- fragment --><p>Once initialized, the environment can be used to create models, variables, and constraints. All such objects are associated with <span class="tt">env</span> and are managed by it throughout their lifetime.</p>
+<h1 class="doxsection"><a class="anchor" id="lib_milp_basics_advanced_environment_tolerances"></a>
+Handling of Default Tolerances and Parameters</h1>
+<p>Another role of the optimization environment is to store default values for parameters and tolerances used by underlying methods. In practice, however, it is often more relevant to modify these parameters at the optimizer level.</p>
+<p>For instance, the following code snippet sets the default tolerance for checking that the optimality gap is closed at the environment level. Unless specified otherwise, all methods used to solve problems created with this environment will use this value.</p>
+<div class="fragment"><div class="line">Env env;</div>
+<div class="line">env.set_tol_mip_relative_gap(1e-3);</div>
+</div><!-- fragment --><p>On the other hand, the following code snippet modifies the gap tolerance only for one given optimizer.</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> glpk = GLPK();</div>
+<div class="line">glpk.with_tol_mip_relative_gap(1e-3);</div>
+<div class="line"> </div>
+<div class="line">model.use(glpk);</div>
+</div><!-- fragment --><p>Here is a list of tolerances that can be adjusted at an environment level.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Name  </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">tol_mip_relative_gap</span>  </td><td class="markdownTableBodyNone">Relative optimality gap tolerance  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">tol_mip_absolute_gap</span>  </td><td class="markdownTableBodyNone">Absolute optimality gap tolerance  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">tol_integer</span>  </td><td class="markdownTableBodyNone">Integrality tolerance  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">tol_feasibility</span>  </td><td class="markdownTableBodyNone">Feasibility tolerance for constraints  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">tol_optimality</span>  </td><td class="markdownTableBodyNone">Optimality tolerance (used for reduced cost testing)  </td></tr>
+</table>
+<p>Here is a list of parameters that can be adjusted at an environment level.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Name  </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">param_logs</span>  </td><td class="markdownTableBodyNone">Enable or disable solver logs  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">param_presolve</span>  </td><td class="markdownTableBodyNone">Enable or disable presolve  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">param_time_limit</span>  </td><td class="markdownTableBodyNone">Time limit (in seconds)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">param_thread_limit</span>  </td><td class="markdownTableBodyNone">Maximum number of threads  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">param_best_bound_stop</span>  </td><td class="markdownTableBodyNone">Stop when a given bound is reached  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">param_best_obj_stop</span>  </td><td class="markdownTableBodyNone">Stop when a given objective value is reached  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">param_iteration_limit</span>  </td><td class="markdownTableBodyNone">Maximum number of iterations  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">param_infeasible_or_unbounded_info</span>  </td><td class="markdownTableBodyNone">Enable detailed infeasible/unbounded information  </td></tr>
+</table>
+<p>To modify one of these, simply use the corresponding the <span class="tt">Env::set_*</span> method. Similarly, reading it is done with the corresponding <span class="tt">Env::get_*</span> method.</p>
+<p>Here is an example to impose a thread limit of one on all underlying methods.</p>
+<div class="fragment"><div class="line">env.set_thread_limit(5);</div>
+<div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;Using at most &quot;</span> &lt;&lt; env.get_thread_limit(); &lt;&lt; <span class="stringliteral">&quot; threads.&quot;</span> &lt;&lt; std::endl; </div>
+</div><!-- fragment --> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

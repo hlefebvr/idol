@@ -1,0 +1,258 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: Creating a Branch-and-Bound Algorithm</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div id="doc-content">
+<div><div class="header">
+  <div class="headertitle"><div class="title">Creating a Branch-and-Bound Algorithm </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul>
+  <li class="level1">
+    <a href="#lib_milp_bnb_basics">Basics </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_sub_pages">More Advanced Topics </a>
+  </li>
+</ul>
+</div>
+<div class="textblock"><p>Describes how to create a branch-and-bound algorithm.</p>
+<p>The branch-and-bound algorithm is a very well-known approach to solve combinatorial problems. It is a divide and conquer type of algorithms.</p>
+<blockquote class="doxtable">
+<p>For an introduction, please refer to the <a href="https://en.wikipedia.org/wiki/Branch_and_bound">Wikipedia page</a> or to the book <a href="https://doi.org/10.1007/978-3-319-11008-0">Integer Programming</a>.</p>
+<p>Otherwise, we assume that you are familiar with the branch-and-bound algorithm. </p>
+</blockquote>
+<h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_basics"></a>
+Basics</h1>
+<p>Writing a branch-and-bound algorithm with <span class="tt">idol</span> can be done using the <span class="tt">BranchAndBound&lt;NodeTypeT&gt;</span> class. This is a template class where the template argument, <span class="tt">NodeTypeT</span>, is the class that stores the information of each node in the tree. If none is specified, the default one is picked, i.e., <span class="tt">DefaultNodeInfo</span>. This class is more than enough for classic LP-based branch-and-bounds.</p>
+<p>Then, at least three ingredients need to be provided in order to set up the algorithm:</p>
+<ul>
+<li>An optimizer, for solving each node;</li>
+<li>A node selection rule, for choosing which node to be solved next;</li>
+<li>A branching rule, for choosing how to branch on a node whose solution is not feasible for the original problem.</li>
+</ul>
+<blockquote class="doxtable">
+<p>Clearly, the <span class="tt">BranchAndBound</span> class can be used to create any sort of branch-and-bound algorithm. To streamline the discussion, however, we will focus on a branch-and-bound algorithm for solving an MILP, based on the LP relaxation. </p>
+</blockquote>
+<p>To start with, we give a minimal example for constructing such a branch-and-bound method. Assume to have an object called <span class="tt">model</span> of the class <span class="tt">Model</span>, storing your MILP. Here is how to define a branch-and-bound method to solve it.</p>
+<div class="fragment"><div class="line"><span class="comment">// Create the algorithm</span></div>
+<div class="line"><span class="keyword">auto</span> branch_and_bound = BranchAndBound();</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Set the optimizer used to solve the nodes</span></div>
+<div class="line">branch_and_bound.with_node_optimizer(Gurobi::ContinuousRelaxation());</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Set the node selection rule</span></div>
+<div class="line">branch_and_bound.with_node_selection_rule(BestBound());</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Set the branching rule</span></div>
+<div class="line">branch_and_bound.with_branching_rule(MostInfeasible());</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Use the optimizer</span></div>
+<div class="line">model.use(branch_and_bound);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Solve</span></div>
+<div class="line">model.optimize();</div>
+</div><!-- fragment --><p>Pretty easy no? Beware, however, that we are using here the <span class="tt">Gurobi::ContinuousRelaxation()</span> optimizer, and not <span class="tt">Gurobi()</span>. This is because <span class="tt">Gurobi()</span> would not relax the integrality requirements by default and solve the node's problem directly as a MILP. Here, we really want to solve each node by means of the continuous relaxation of the problem at that node.</p>
+<h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_sub_pages"></a>
+More Advanced Topics</h1>
+<p>In the following sub-pages, we give a more in-depth description for these basic ingredients as well as more advanced features like callbacks, presolve, cutting planes, etc.</p>
+<ul>
+<li><a class="el" href="lib_milp_bnb_node_selection.html" title="Node Selection Rules">Node Selection Rules</a></li>
+<li><a class="el" href="lib_milp_bnb_branching_rule.html" title="Branching Rules">Branching Rules</a></li>
+<li><a class="el" href="lib_milp_bnb_callbacks.html" title="Callbacks">Callbacks</a> (TODO)</li>
+<li><a class="el" href="lib_milp_bnb_presolve.html" title="Presolve">Presolve</a></li>
+<li><a class="el" href="lib_milp_bnb_cutting_planes.html" title="Cutting Planes">Cutting Planes</a> (TODO)</li>
+<li><a class="el" href="lib_milp_bnb_heuristics.html" title="Heuristics">Heuristics</a> (TODO)</li>
+<li><a class="el" href="lib_milp_bnb_node_type.html" title="Using Your Own Node Type">Using Your Own Node Type</a> (TODO)</li>
+<li><a class="el" href="lib_milp_bnb_options.html" title="Other Options">Other Options</a> (TODO) </li>
+</ul>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

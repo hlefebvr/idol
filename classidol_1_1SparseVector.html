@@ -1,0 +1,909 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::SparseVector&lt; IndexT, ValueT &gt; Class Template Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><a href="classidol_1_1SparseVector.html">SparseVector</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="classidol_1_1SparseVector-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::SparseVector&lt; IndexT, ValueT &gt; Class Template Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class IndexT, class ValueT&gt;<br />
+class idol::SparseVector&lt; IndexT, ValueT &gt;</div>
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00066">66</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:acc6881fa129094c02512d0ef5a79e13c" id="r_acc6881fa129094c02512d0ef5a79e13c"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#acc6881fa129094c02512d0ef5a79e13c">iterator</a> = typename map_t::iterator</td></tr>
+<tr class="memitem:a3e7762adf8580706d251fadfe8807fb2" id="r_a3e7762adf8580706d251fadfe8807fb2"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#a3e7762adf8580706d251fadfe8807fb2">const_iterator</a> = typename map_t::const_iterator</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a92be99dba685b81dd55fbbb130bbc9a9" id="r_a92be99dba685b81dd55fbbb130bbc9a9"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a92be99dba685b81dd55fbbb130bbc9a9">SparseVector</a> (const IndexT &amp;t_index, const ValueT &amp;t_value)</td></tr>
+<tr class="memitem:a20e6a079e07f52ae769732fcf1c0d6f6" id="r_a20e6a079e07f52ae769732fcf1c0d6f6"><td class="memItemLeft"><a id="a20e6a079e07f52ae769732fcf1c0d6f6" name="a20e6a079e07f52ae769732fcf1c0d6f6"></a>
+&#160;</td><td class="memItemRight"><b>SparseVector</b> (const SparseVector &amp;)=default</td></tr>
+<tr class="memitem:ad9e8fed9e26109c9d00d3bb7541b39a9" id="r_ad9e8fed9e26109c9d00d3bb7541b39a9"><td class="memItemLeft"><a id="ad9e8fed9e26109c9d00d3bb7541b39a9" name="ad9e8fed9e26109c9d00d3bb7541b39a9"></a>
+&#160;</td><td class="memItemRight"><b>SparseVector</b> (SparseVector &amp;&amp;)=default</td></tr>
+<tr class="memitem:aa452f068f7ffbc435411385ded33b68d" id="r_aa452f068f7ffbc435411385ded33b68d"><td class="memItemLeft"><a id="aa452f068f7ffbc435411385ded33b68d" name="aa452f068f7ffbc435411385ded33b68d"></a>
+SparseVector &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (const SparseVector &amp;)=default</td></tr>
+<tr class="memitem:acfdaab87c971e4baa52acc86f598cfb4" id="r_acfdaab87c971e4baa52acc86f598cfb4"><td class="memItemLeft"><a id="acfdaab87c971e4baa52acc86f598cfb4" name="acfdaab87c971e4baa52acc86f598cfb4"></a>
+SparseVector &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (SparseVector &amp;&amp;) noexcept=default</td></tr>
+<tr class="memitem:a25e20bc440d157ff11fb37f99793addb" id="r_a25e20bc440d157ff11fb37f99793addb"><td class="memItemLeft">virtual SparseVector &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a25e20bc440d157ff11fb37f99793addb">operator+=</a> (const SparseVector &amp;t_vector)</td></tr>
+<tr class="memitem:ab6889b650524c621dc142e799c9ff7c8" id="r_ab6889b650524c621dc142e799c9ff7c8"><td class="memItemLeft">virtual SparseVector &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ab6889b650524c621dc142e799c9ff7c8">operator-=</a> (const SparseVector &amp;t_vector)</td></tr>
+<tr class="memitem:aa3e67a6ca43ab25a5a68d02dbbaed840" id="r_aa3e67a6ca43ab25a5a68d02dbbaed840"><td class="memItemLeft">virtual SparseVector &amp;&#160;</td><td class="memItemRight"><a class="el" href="#aa3e67a6ca43ab25a5a68d02dbbaed840">operator*=</a> (std::conditional_t&lt; std::is_arithmetic_v&lt; ValueT &gt;, ValueT, double &gt; t_scalar)</td></tr>
+<tr class="memitem:a76863d02db4858a78942c8f32d929c4a" id="r_a76863d02db4858a78942c8f32d929c4a"><td class="memItemLeft">virtual SparseVector &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a76863d02db4858a78942c8f32d929c4a">operator/=</a> (std::conditional_t&lt; std::is_arithmetic_v&lt; ValueT &gt;, ValueT, double &gt; t_scalar)</td></tr>
+<tr class="memitem:a0d0bb8bebeaa2692e7fe0f4b345e1c87" id="r_a0d0bb8bebeaa2692e7fe0f4b345e1c87"><td class="memItemLeft">SparseVector&#160;</td><td class="memItemRight"><a class="el" href="#a0d0bb8bebeaa2692e7fe0f4b345e1c87">operator-</a> () const</td></tr>
+<tr class="memitem:a10973acd1ba2f0d03ed6f23aa2da8ba0" id="r_a10973acd1ba2f0d03ed6f23aa2da8ba0"><td class="memItemLeft">unsigned int&#160;</td><td class="memItemRight"><a class="el" href="#a10973acd1ba2f0d03ed6f23aa2da8ba0">size</a> () const</td></tr>
+<tr class="memitem:abf70b5c41a77a676f63dc9382370f008" id="r_abf70b5c41a77a676f63dc9382370f008"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#abf70b5c41a77a676f63dc9382370f008">empty</a> () const</td></tr>
+<tr class="memitem:ad71afc1061a3dc5f84bf8aa568ce9985" id="r_ad71afc1061a3dc5f84bf8aa568ce9985"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ad71afc1061a3dc5f84bf8aa568ce9985">has_index</a> (const IndexT &amp;t_index) const</td></tr>
+<tr class="memitem:af9f5439a3c22822fab911157401744c0" id="r_af9f5439a3c22822fab911157401744c0"><td class="memItemLeft">const ValueT &amp;&#160;</td><td class="memItemRight"><a class="el" href="#af9f5439a3c22822fab911157401744c0">get</a> (const IndexT &amp;t_index1) const</td></tr>
+<tr class="memitem:a46fd679d337d038c3627628b292f58c1" id="r_a46fd679d337d038c3627628b292f58c1"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a46fd679d337d038c3627628b292f58c1">set</a> (const IndexT &amp;t_index, const ValueT &amp;t_value)</td></tr>
+<tr class="memitem:a3750db27bdd4d6653ab81eafc20cd8ae" id="r_a3750db27bdd4d6653ab81eafc20cd8ae"><td class="memItemLeft">virtual bool&#160;</td><td class="memItemRight"><a class="el" href="#a3750db27bdd4d6653ab81eafc20cd8ae">is_zero</a> (double t_tolerance) const</td></tr>
+<tr class="memitem:a16b43a0159393f1052025b6cdea6d73f" id="r_a16b43a0159393f1052025b6cdea6d73f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a16b43a0159393f1052025b6cdea6d73f">remove</a> (const IndexT &amp;t_index)</td></tr>
+<tr class="memitem:a603b7a810ea49295d992f58e4dd6a3a0" id="r_a603b7a810ea49295d992f58e4dd6a3a0"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a603b7a810ea49295d992f58e4dd6a3a0">clear</a> ()</td></tr>
+<tr class="memitem:a4a7022646bd0dcdb0995f5de40db02cb" id="r_a4a7022646bd0dcdb0995f5de40db02cb"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a4a7022646bd0dcdb0995f5de40db02cb">reserve</a> (unsigned int t_capacity)</td></tr>
+<tr class="memitem:a6c31b1015417dc4841c8476e734a5ea5" id="r_a6c31b1015417dc4841c8476e734a5ea5"><td class="memItemLeft">iterator&#160;</td><td class="memItemRight"><a class="el" href="#a6c31b1015417dc4841c8476e734a5ea5">begin</a> ()</td></tr>
+<tr class="memitem:aa73d2ecd9a097221d2d5f38e8fb7e1c5" id="r_aa73d2ecd9a097221d2d5f38e8fb7e1c5"><td class="memItemLeft">iterator&#160;</td><td class="memItemRight"><a class="el" href="#aa73d2ecd9a097221d2d5f38e8fb7e1c5">end</a> ()</td></tr>
+<tr class="memitem:ae8a626759377bfca91428a4bdb5b39e5" id="r_ae8a626759377bfca91428a4bdb5b39e5"><td class="memItemLeft">const_iterator&#160;</td><td class="memItemRight"><a class="el" href="#ae8a626759377bfca91428a4bdb5b39e5">begin</a> () const</td></tr>
+<tr class="memitem:adfbda2f774a6bf63e023a9eb7e5fc345" id="r_adfbda2f774a6bf63e023a9eb7e5fc345"><td class="memItemLeft">const_iterator&#160;</td><td class="memItemRight"><a class="el" href="#adfbda2f774a6bf63e023a9eb7e5fc345">end</a> () const</td></tr>
+<tr class="memitem:aeeb03e20bd12b9411663a57c9fd2db8f" id="r_aeeb03e20bd12b9411663a57c9fd2db8f"><td class="memItemLeft">const_iterator&#160;</td><td class="memItemRight"><a class="el" href="#aeeb03e20bd12b9411663a57c9fd2db8f">cbegin</a> () const</td></tr>
+<tr class="memitem:a305e0237d0b64e95f63f82f2da7ac214" id="r_a305e0237d0b64e95f63f82f2da7ac214"><td class="memItemLeft">const_iterator&#160;</td><td class="memItemRight"><a class="el" href="#a305e0237d0b64e95f63f82f2da7ac214">cend</a> () const</td></tr>
+<tr class="memitem:aec57b6e046097f51c09982dd05d4bfbf" id="r_aec57b6e046097f51c09982dd05d4bfbf"><td class="memItemLeft">SparseVector &amp;&#160;</td><td class="memItemRight"><a class="el" href="#aec57b6e046097f51c09982dd05d4bfbf">merge_without_conflict</a> (const SparseVector &amp;t_vec)</td></tr>
+</table>
+<a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
+<a id="a3e7762adf8580706d251fadfe8807fb2" name="a3e7762adf8580706d251fadfe8807fb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e7762adf8580706d251fadfe8807fb2">&#9670;&#160;</a></span>const_iterator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::const_iterator = typename map_t::const_iterator</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00130">130</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="acc6881fa129094c02512d0ef5a79e13c" name="acc6881fa129094c02512d0ef5a79e13c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc6881fa129094c02512d0ef5a79e13c">&#9670;&#160;</a></span>iterator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::iterator = typename map_t::iterator</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00129">129</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a92be99dba685b81dd55fbbb130bbc9a9" name="a92be99dba685b81dd55fbbb130bbc9a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92be99dba685b81dd55fbbb130bbc9a9">&#9670;&#160;</a></span>SparseVector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::SparseVector </td>
+          <td>(</td>
+          <td class="paramtype">const IndexT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ValueT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00087">87</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a6c31b1015417dc4841c8476e734a5ea5" name="a6c31b1015417dc4841c8476e734a5ea5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c31b1015417dc4841c8476e734a5ea5">&#9670;&#160;</a></span>begin() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">iterator <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::begin </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00132">132</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="ae8a626759377bfca91428a4bdb5b39e5" name="ae8a626759377bfca91428a4bdb5b39e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8a626759377bfca91428a4bdb5b39e5">&#9670;&#160;</a></span>begin() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const_iterator <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::begin </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00136">136</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="aeeb03e20bd12b9411663a57c9fd2db8f" name="aeeb03e20bd12b9411663a57c9fd2db8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeeb03e20bd12b9411663a57c9fd2db8f">&#9670;&#160;</a></span>cbegin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const_iterator <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::cbegin </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00140">140</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="a305e0237d0b64e95f63f82f2da7ac214" name="a305e0237d0b64e95f63f82f2da7ac214"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a305e0237d0b64e95f63f82f2da7ac214">&#9670;&#160;</a></span>cend()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const_iterator <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::cend </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00142">142</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="a603b7a810ea49295d992f58e4dd6a3a0" name="a603b7a810ea49295d992f58e4dd6a3a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a603b7a810ea49295d992f58e4dd6a3a0">&#9670;&#160;</a></span>clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::clear </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00121">121</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="abf70b5c41a77a676f63dc9382370f008" name="abf70b5c41a77a676f63dc9382370f008"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf70b5c41a77a676f63dc9382370f008">&#9670;&#160;</a></span>empty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::empty </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00109">109</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="aa73d2ecd9a097221d2d5f38e8fb7e1c5" name="aa73d2ecd9a097221d2d5f38e8fb7e1c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa73d2ecd9a097221d2d5f38e8fb7e1c5">&#9670;&#160;</a></span>end() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">iterator <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::end </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00134">134</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="adfbda2f774a6bf63e023a9eb7e5fc345" name="adfbda2f774a6bf63e023a9eb7e5fc345"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfbda2f774a6bf63e023a9eb7e5fc345">&#9670;&#160;</a></span>end() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const_iterator <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::end </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00138">138</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="af9f5439a3c22822fab911157401744c0" name="af9f5439a3c22822fab911157401744c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9f5439a3c22822fab911157401744c0">&#9670;&#160;</a></span>get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const ValueT &amp; <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::get </td>
+          <td>(</td>
+          <td class="paramtype">const IndexT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_index1</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00273">273</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="ad71afc1061a3dc5f84bf8aa568ce9985" name="ad71afc1061a3dc5f84bf8aa568ce9985"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad71afc1061a3dc5f84bf8aa568ce9985">&#9670;&#160;</a></span>has_index()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::has_index </td>
+          <td>(</td>
+          <td class="paramtype">const IndexT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_index</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00111">111</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="a3750db27bdd4d6653ab81eafc20cd8ae" name="a3750db27bdd4d6653ab81eafc20cd8ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3750db27bdd4d6653ab81eafc20cd8ae">&#9670;&#160;</a></span>is_zero()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::is_zero </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_tolerance</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00228">228</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="aec57b6e046097f51c09982dd05d4bfbf" name="aec57b6e046097f51c09982dd05d4bfbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec57b6e046097f51c09982dd05d4bfbf">&#9670;&#160;</a></span>merge_without_conflict()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt; &amp; <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::merge_without_conflict </td>
+          <td>(</td>
+          <td class="paramtype">const SparseVector&lt; IndexT, ValueT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_vec</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00260">260</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="aa3e67a6ca43ab25a5a68d02dbbaed840" name="aa3e67a6ca43ab25a5a68d02dbbaed840"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3e67a6ca43ab25a5a68d02dbbaed840">&#9670;&#160;</a></span>operator*=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt; &amp; <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">std::conditional_t&lt; std::is_arithmetic_v&lt; ValueT &gt;, ValueT, double &gt;</td>          <td class="paramname"><span class="paramname"><em>t_scalar</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00208">208</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="a25e20bc440d157ff11fb37f99793addb" name="a25e20bc440d157ff11fb37f99793addb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25e20bc440d157ff11fb37f99793addb">&#9670;&#160;</a></span>operator+=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt; &amp; <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const SparseVector&lt; IndexT, ValueT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_vector</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00239">239</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="a0d0bb8bebeaa2692e7fe0f4b345e1c87" name="a0d0bb8bebeaa2692e7fe0f4b345e1c87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d0bb8bebeaa2692e7fe0f4b345e1c87">&#9670;&#160;</a></span>operator-()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt; <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::operator- </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00151">151</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="ab6889b650524c621dc142e799c9ff7c8" name="ab6889b650524c621dc142e799c9ff7c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6889b650524c621dc142e799c9ff7c8">&#9670;&#160;</a></span>operator-=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt; &amp; <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::operator-= </td>
+          <td>(</td>
+          <td class="paramtype">const SparseVector&lt; IndexT, ValueT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_vector</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00184">184</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="a76863d02db4858a78942c8f32d929c4a" name="a76863d02db4858a78942c8f32d929c4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76863d02db4858a78942c8f32d929c4a">&#9670;&#160;</a></span>operator/=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt; &amp; <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::operator/= </td>
+          <td>(</td>
+          <td class="paramtype">std::conditional_t&lt; std::is_arithmetic_v&lt; ValueT &gt;, ValueT, double &gt;</td>          <td class="paramname"><span class="paramname"><em>t_scalar</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00163">163</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="a16b43a0159393f1052025b6cdea6d73f" name="a16b43a0159393f1052025b6cdea6d73f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16b43a0159393f1052025b6cdea6d73f">&#9670;&#160;</a></span>remove()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::remove </td>
+          <td>(</td>
+          <td class="paramtype">const IndexT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_index</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00119">119</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="a4a7022646bd0dcdb0995f5de40db02cb" name="a4a7022646bd0dcdb0995f5de40db02cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a7022646bd0dcdb0995f5de40db02cb">&#9670;&#160;</a></span>reserve()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::reserve </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_capacity</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00123">123</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="a46fd679d337d038c3627628b292f58c1" name="a46fd679d337d038c3627628b292f58c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46fd679d337d038c3627628b292f58c1">&#9670;&#160;</a></span>set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::set </td>
+          <td>(</td>
+          <td class="paramtype">const IndexT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ValueT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00285">285</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+<a id="a10973acd1ba2f0d03ed6f23aa2da8ba0" name="a10973acd1ba2f0d03ed6f23aa2da8ba0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10973acd1ba2f0d03ed6f23aa2da8ba0">&#9670;&#160;</a></span>size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class IndexT, class ValueT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classidol_1_1SparseVector.html">idol::SparseVector</a>&lt; IndexT, ValueT &gt;::size </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SparseVector_8h_source.html#l00107">107</a> of file <a class="el" href="SparseVector_8h_source.html">SparseVector.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

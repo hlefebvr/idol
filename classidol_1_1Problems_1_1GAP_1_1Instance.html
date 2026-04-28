@@ -1,0 +1,559 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Problems::GAP::Instance Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><b>Problems</b></li><li class="navelem"><b>GAP</b></li><li class="navelem"><a href="classidol_1_1Problems_1_1GAP_1_1Instance.html">Instance</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classidol_1_1Problems_1_1GAP_1_1Instance-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Problems::GAP::Instance Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>&gt;</code></p>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock"><p>See also <a href="https://en.wikipedia.org/wiki/Generalized_assignment_problem">https://en.wikipedia.org/wiki/Generalized_assignment_problem</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="GAP__Instance_8h_source.html#l00021">21</a> of file <a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:ae33ed06d518cd45cf542a0ff4186025e" id="r_ae33ed06d518cd45cf542a0ff4186025e"><td class="memItemLeft"><a id="ae33ed06d518cd45cf542a0ff4186025e" name="ae33ed06d518cd45cf542a0ff4186025e"></a>
+&#160;</td><td class="memItemRight"><b>Instance</b> (unsigned int t_n_agents, unsigned int t_n_jobs)</td></tr>
+<tr class="memitem:ab35cbc401190a1bea07557ff95624c14" id="r_ab35cbc401190a1bea07557ff95624c14"><td class="memItemLeft"><a id="ab35cbc401190a1bea07557ff95624c14" name="ab35cbc401190a1bea07557ff95624c14"></a>
+&#160;</td><td class="memItemRight"><b>Instance</b> (const Instance &amp;)=default</td></tr>
+<tr class="memitem:aaf8d520d6f280d276c729bb886e1f69e" id="r_aaf8d520d6f280d276c729bb886e1f69e"><td class="memItemLeft"><a id="aaf8d520d6f280d276c729bb886e1f69e" name="aaf8d520d6f280d276c729bb886e1f69e"></a>
+&#160;</td><td class="memItemRight"><b>Instance</b> (Instance &amp;&amp;) noexcept=default</td></tr>
+<tr class="memitem:a8650493eb7b967a5ba32f58110e5e513" id="r_a8650493eb7b967a5ba32f58110e5e513"><td class="memItemLeft"><a id="a8650493eb7b967a5ba32f58110e5e513" name="a8650493eb7b967a5ba32f58110e5e513"></a>
+Instance &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (const Instance &amp;)=default</td></tr>
+<tr class="memitem:a02d2c26980c9688077e1a8c63ef3a21f" id="r_a02d2c26980c9688077e1a8c63ef3a21f"><td class="memItemLeft"><a id="a02d2c26980c9688077e1a8c63ef3a21f" name="a02d2c26980c9688077e1a8c63ef3a21f"></a>
+Instance &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (Instance &amp;&amp;) noexcept=default</td></tr>
+<tr class="memitem:ade7272f9732e620641b0d75c777131e0" id="r_ade7272f9732e620641b0d75c777131e0"><td class="memItemLeft">unsigned int&#160;</td><td class="memItemRight"><a class="el" href="#ade7272f9732e620641b0d75c777131e0">n_agents</a> () const</td></tr>
+<tr class="memitem:adb8da7a386c958c77398bb7388a1ce28" id="r_adb8da7a386c958c77398bb7388a1ce28"><td class="memItemLeft">unsigned int&#160;</td><td class="memItemRight"><a class="el" href="#adb8da7a386c958c77398bb7388a1ce28">n_jobs</a> () const</td></tr>
+<tr class="memitem:acf403b42d054b73ffd737e6b7b48ec86" id="r_acf403b42d054b73ffd737e6b7b48ec86"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#acf403b42d054b73ffd737e6b7b48ec86">cost</a> (unsigned int t_agent, unsigned int t_job) const</td></tr>
+<tr class="memitem:a7bc7622bc663f5592207a57fa4bc70a9" id="r_a7bc7622bc663f5592207a57fa4bc70a9"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a7bc7622bc663f5592207a57fa4bc70a9">resource_consumption</a> (unsigned int t_agent, unsigned int t_job) const</td></tr>
+<tr class="memitem:a7c002b1272f695b6e941116b5f7d5cfc" id="r_a7c002b1272f695b6e941116b5f7d5cfc"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a7c002b1272f695b6e941116b5f7d5cfc">capacity</a> (unsigned int t_agent) const</td></tr>
+<tr class="memitem:ab5b52f34ac111d90ccfd46985fbd1ea5" id="r_ab5b52f34ac111d90ccfd46985fbd1ea5"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ab5b52f34ac111d90ccfd46985fbd1ea5">set_cost</a> (unsigned int t_agent, unsigned int t_job, double t_value)</td></tr>
+<tr class="memitem:a45d50f7e2d844a7e3f34c53ee630f1f1" id="r_a45d50f7e2d844a7e3f34c53ee630f1f1"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a45d50f7e2d844a7e3f34c53ee630f1f1">set_resource_consumption</a> (unsigned int t_agent, unsigned int t_job, double t_value)</td></tr>
+<tr class="memitem:ab94837755402de95831628e666f21a12" id="r_ab94837755402de95831628e666f21a12"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ab94837755402de95831628e666f21a12">set_capacity</a> (unsigned int t_agent, double t_value)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a7c57b79b4324bbf8732aa17bd1fa629b" id="r_a7c57b79b4324bbf8732aa17bd1fa629b"><td class="memItemLeft">std::vector&lt; std::vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a7c57b79b4324bbf8732aa17bd1fa629b">m_costs</a></td></tr>
+<tr class="memitem:a5be05a47bb0d9eed272142f966127387" id="r_a5be05a47bb0d9eed272142f966127387"><td class="memItemLeft">std::vector&lt; std::vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a5be05a47bb0d9eed272142f966127387">m_resource_consumptions</a></td></tr>
+<tr class="memitem:af35b480fd101526dde972dd9f8b4ab37" id="r_af35b480fd101526dde972dd9f8b4ab37"><td class="memItemLeft">std::vector&lt; double &gt;&#160;</td><td class="memItemRight"><a class="el" href="#af35b480fd101526dde972dd9f8b4ab37">m_capacities</a></td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a7c002b1272f695b6e941116b5f7d5cfc" name="a7c002b1272f695b6e941116b5f7d5cfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c002b1272f695b6e941116b5f7d5cfc">&#9670;&#160;</a></span>capacity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Problems::GAP::Instance::capacity </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_agent</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GAP__Instance_8h_source.html#l00040">40</a> of file <a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="acf403b42d054b73ffd737e6b7b48ec86" name="acf403b42d054b73ffd737e6b7b48ec86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf403b42d054b73ffd737e6b7b48ec86">&#9670;&#160;</a></span>cost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Problems::GAP::Instance::cost </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_agent</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_job</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GAP__Instance_8h_source.html#l00038">38</a> of file <a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="ade7272f9732e620641b0d75c777131e0" name="ade7272f9732e620641b0d75c777131e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade7272f9732e620641b0d75c777131e0">&#9670;&#160;</a></span>n_agents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int idol::Problems::GAP::Instance::n_agents </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GAP__Instance_8h_source.html#l00036">36</a> of file <a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="adb8da7a386c958c77398bb7388a1ce28" name="adb8da7a386c958c77398bb7388a1ce28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb8da7a386c958c77398bb7388a1ce28">&#9670;&#160;</a></span>n_jobs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int idol::Problems::GAP::Instance::n_jobs </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GAP__Instance_8h_source.html#l00037">37</a> of file <a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a7bc7622bc663f5592207a57fa4bc70a9" name="a7bc7622bc663f5592207a57fa4bc70a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bc7622bc663f5592207a57fa4bc70a9">&#9670;&#160;</a></span>resource_consumption()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Problems::GAP::Instance::resource_consumption </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_agent</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_job</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GAP__Instance_8h_source.html#l00039">39</a> of file <a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="ab94837755402de95831628e666f21a12" name="ab94837755402de95831628e666f21a12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab94837755402de95831628e666f21a12">&#9670;&#160;</a></span>set_capacity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Problems::GAP::Instance::set_capacity </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_agent</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GAP__Instance_8h_source.html#l00044">44</a> of file <a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="ab5b52f34ac111d90ccfd46985fbd1ea5" name="ab5b52f34ac111d90ccfd46985fbd1ea5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5b52f34ac111d90ccfd46985fbd1ea5">&#9670;&#160;</a></span>set_cost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Problems::GAP::Instance::set_cost </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_agent</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_job</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GAP__Instance_8h_source.html#l00042">42</a> of file <a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a45d50f7e2d844a7e3f34c53ee630f1f1" name="a45d50f7e2d844a7e3f34c53ee630f1f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45d50f7e2d844a7e3f34c53ee630f1f1">&#9670;&#160;</a></span>set_resource_consumption()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Problems::GAP::Instance::set_resource_consumption </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_agent</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_job</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GAP__Instance_8h_source.html#l00043">43</a> of file <a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="af35b480fd101526dde972dd9f8b4ab37" name="af35b480fd101526dde972dd9f8b4ab37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af35b480fd101526dde972dd9f8b4ab37">&#9670;&#160;</a></span>m_capacities</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; idol::Problems::GAP::Instance::m_capacities</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GAP__Instance_8h_source.html#l00025">25</a> of file <a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a7c57b79b4324bbf8732aa17bd1fa629b" name="a7c57b79b4324bbf8732aa17bd1fa629b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c57b79b4324bbf8732aa17bd1fa629b">&#9670;&#160;</a></span>m_costs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;double&gt; &gt; idol::Problems::GAP::Instance::m_costs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GAP__Instance_8h_source.html#l00023">23</a> of file <a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>.</p>
+
+</div>
+</div>
+<a id="a5be05a47bb0d9eed272142f966127387" name="a5be05a47bb0d9eed272142f966127387"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5be05a47bb0d9eed272142f966127387">&#9670;&#160;</a></span>m_resource_consumptions</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;double&gt; &gt; idol::Problems::GAP::Instance::m_resource_consumptions</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GAP__Instance_8h_source.html#l00024">24</a> of file <a class="el" href="GAP__Instance_8h_source.html">GAP_Instance.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

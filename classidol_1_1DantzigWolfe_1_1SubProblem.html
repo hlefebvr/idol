@@ -1,0 +1,318 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::DantzigWolfe::SubProblem Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><b>DantzigWolfe</b></li><li class="navelem"><a href="classidol_1_1DantzigWolfe_1_1SubProblem.html">SubProblem</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="classidol_1_1DantzigWolfe_1_1SubProblem-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::DantzigWolfe::SubProblem Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="dantzig-wolfe_2SubProblem_8h_source.html#l00018">18</a> of file <a class="el" href="dantzig-wolfe_2SubProblem_8h_source.html">SubProblem.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a3ec5c9582569506d15b299a710f50600" id="r_a3ec5c9582569506d15b299a710f50600"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#a3ec5c9582569506d15b299a710f50600">PhaseId</a> = std::list&lt;std::unique_ptr&lt;<a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a>&gt;&gt;::const_iterator</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:abdc1fd67e47d9031ebdd8c94ec3d3fe7" id="r_abdc1fd67e47d9031ebdd8c94ec3d3fe7"><td class="memItemLeft"><a id="abdc1fd67e47d9031ebdd8c94ec3d3fe7" name="abdc1fd67e47d9031ebdd8c94ec3d3fe7"></a>
+&#160;</td><td class="memItemRight"><b>SubProblem</b> (const SubProblem &amp;t_src)</td></tr>
+<tr class="memitem:a75f2e95353d60660e65c4fc0ebf635f3" id="r_a75f2e95353d60660e65c4fc0ebf635f3"><td class="memItemLeft"><a id="a75f2e95353d60660e65c4fc0ebf635f3" name="a75f2e95353d60660e65c4fc0ebf635f3"></a>
+&#160;</td><td class="memItemRight"><b>SubProblem</b> (SubProblem &amp;&amp;t_src)=default</td></tr>
+<tr class="memitem:ac41db1d37e0edac9efd0bae48e5fe2de" id="r_ac41db1d37e0edac9efd0bae48e5fe2de"><td class="memItemLeft"><a id="ac41db1d37e0edac9efd0bae48e5fe2de" name="ac41db1d37e0edac9efd0bae48e5fe2de"></a>
+SubProblem &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (const SubProblem &amp;)=delete</td></tr>
+<tr class="memitem:ad07af441d31812547494a497aa9532b1" id="r_ad07af441d31812547494a497aa9532b1"><td class="memItemLeft"><a id="ad07af441d31812547494a497aa9532b1" name="ad07af441d31812547494a497aa9532b1"></a>
+SubProblem &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (SubProblem &amp;&amp;)=default</td></tr>
+<tr class="memitem:a68664fae3eabfeb522656af30518e3d7" id="r_a68664fae3eabfeb522656af30518e3d7"><td class="memItemLeft"><a id="a68664fae3eabfeb522656af30518e3d7" name="a68664fae3eabfeb522656af30518e3d7"></a>
+SubProblem &amp;&#160;</td><td class="memItemRight"><b>with_multiplicities</b> (double t_lower, double t_upper)</td></tr>
+<tr class="memitem:a99e3264dcc158235a2d0b8d0bb30981c" id="r_a99e3264dcc158235a2d0b8d0bb30981c"><td class="memItemLeft"><a id="a99e3264dcc158235a2d0b8d0bb30981c" name="a99e3264dcc158235a2d0b8d0bb30981c"></a>
+SubProblem &amp;&#160;</td><td class="memItemRight"><b>with_lower_multiplicity</b> (double t_lower)</td></tr>
+<tr class="memitem:a7ab6e2b244e98f5a50750db7f484f98e" id="r_a7ab6e2b244e98f5a50750db7f484f98e"><td class="memItemLeft"><a id="a7ab6e2b244e98f5a50750db7f484f98e" name="a7ab6e2b244e98f5a50750db7f484f98e"></a>
+SubProblem &amp;&#160;</td><td class="memItemRight"><b>with_upper_multiplicity</b> (double t_upper)</td></tr>
+<tr class="memitem:aa2d294a748d947f4d1d177e70c6ea9ca" id="r_aa2d294a748d947f4d1d177e70c6ea9ca"><td class="memItemLeft"><a id="aa2d294a748d947f4d1d177e70c6ea9ca" name="aa2d294a748d947f4d1d177e70c6ea9ca"></a>
+SubProblem &amp;&#160;</td><td class="memItemRight"><b>add_optimizer</b> (const <a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a> &amp;t_optimizer)</td></tr>
+<tr class="memitem:ac405d30dd4ec44e7d825de6e48014181" id="r_ac405d30dd4ec44e7d825de6e48014181"><td class="memItemLeft"><a id="ac405d30dd4ec44e7d825de6e48014181" name="ac405d30dd4ec44e7d825de6e48014181"></a>
+SubProblem &amp;&#160;</td><td class="memItemRight"><b>with_max_column_per_pricing</b> (unsigned int t_n_columns)</td></tr>
+<tr class="memitem:a9905ce6d7b0bf381e958b6a945f9a8f1" id="r_a9905ce6d7b0bf381e958b6a945f9a8f1"><td class="memItemLeft"><a id="a9905ce6d7b0bf381e958b6a945f9a8f1" name="a9905ce6d7b0bf381e958b6a945f9a8f1"></a>
+SubProblem &amp;&#160;</td><td class="memItemRight"><b>with_column_pool_clean_up</b> (unsigned int t_threshold, double t_ratio)</td></tr>
+<tr class="memitem:af2e96bf5c2cc3dbfcf2ef6376d6d3026" id="r_af2e96bf5c2cc3dbfcf2ef6376d6d3026"><td class="memItemLeft">unsigned int&#160;</td><td class="memItemRight"><a class="el" href="#af2e96bf5c2cc3dbfcf2ef6376d6d3026">max_column_per_pricing</a> () const</td></tr>
+<tr class="memitem:acb0c77d077e27f61264928fb97557cb9" id="r_acb0c77d077e27f61264928fb97557cb9"><td class="memItemLeft"><a id="acb0c77d077e27f61264928fb97557cb9" name="acb0c77d077e27f61264928fb97557cb9"></a>
+double&#160;</td><td class="memItemRight"><b>lower_multiplicity</b> () const</td></tr>
+<tr class="memitem:a455bc19aab8956c2d9b02e40ea866cda" id="r_a455bc19aab8956c2d9b02e40ea866cda"><td class="memItemLeft"><a id="a455bc19aab8956c2d9b02e40ea866cda" name="a455bc19aab8956c2d9b02e40ea866cda"></a>
+double&#160;</td><td class="memItemRight"><b>upper_multiplicity</b> () const</td></tr>
+<tr class="memitem:a19c291136375f08336541aec3fb0d809" id="r_a19c291136375f08336541aec3fb0d809"><td class="memItemLeft"><a id="a19c291136375f08336541aec3fb0d809" name="a19c291136375f08336541aec3fb0d809"></a>
+unsigned int&#160;</td><td class="memItemRight"><b>column_pool_clean_up_threshold</b> () const</td></tr>
+<tr class="memitem:a14f5b234e036ee00177af92c4c27f5fd" id="r_a14f5b234e036ee00177af92c4c27f5fd"><td class="memItemLeft"><a id="a14f5b234e036ee00177af92c4c27f5fd" name="a14f5b234e036ee00177af92c4c27f5fd"></a>
+double&#160;</td><td class="memItemRight"><b>column_pool_clean_up_ratio</b> () const</td></tr>
+<tr class="memitem:a78df6f18bac536d2b24e6d3b0fcd49fd" id="r_a78df6f18bac536d2b24e6d3b0fcd49fd"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a78df6f18bac536d2b24e6d3b0fcd49fd">phases</a> () const</td></tr>
+</table>
+<a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
+<a id="a3ec5c9582569506d15b299a710f50600" name="a3ec5c9582569506d15b299a710f50600"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ec5c9582569506d15b299a710f50600">&#9670;&#160;</a></span>PhaseId</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using idol::DantzigWolfe::SubProblem::PhaseId = std::list&lt;std::unique_ptr&lt;<a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a>&gt;&gt;::const_iterator</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dantzig-wolfe_2SubProblem_8h_source.html#l00057">57</a> of file <a class="el" href="dantzig-wolfe_2SubProblem_8h_source.html">SubProblem.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="af2e96bf5c2cc3dbfcf2ef6376d6d3026" name="af2e96bf5c2cc3dbfcf2ef6376d6d3026"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2e96bf5c2cc3dbfcf2ef6376d6d3026">&#9670;&#160;</a></span>max_column_per_pricing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int idol::DantzigWolfe::SubProblem::max_column_per_pricing </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dantzig-wolfe_2SubProblem_8h_source.html#l00047">47</a> of file <a class="el" href="dantzig-wolfe_2SubProblem_8h_source.html">SubProblem.h</a>.</p>
+
+</div>
+</div>
+<a id="a78df6f18bac536d2b24e6d3b0fcd49fd" name="a78df6f18bac536d2b24e6d3b0fcd49fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78df6f18bac536d2b24e6d3b0fcd49fd">&#9670;&#160;</a></span>phases()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto idol::DantzigWolfe::SubProblem::phases </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dantzig-wolfe_2SubProblem_8h_source.html#l00059">59</a> of file <a class="el" href="dantzig-wolfe_2SubProblem_8h_source.html">SubProblem.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

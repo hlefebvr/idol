@@ -1,0 +1,1675 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::BranchAndBound&lt; NodeT &gt; Class Template Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><a href="classidol_1_1BranchAndBound.html">BranchAndBound</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pro-methods">Protected Methods</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classidol_1_1BranchAndBound-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::BranchAndBound&lt; NodeT &gt; Class Template Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>&gt;</code></p>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class NodeT = idol::DefaultNodeInfo&gt;<br />
+class idol::BranchAndBound&lt; NodeT &gt;</div><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">NodeT</td><td>the class used to store nodes information. It is strongly advised to inherit from NodeVarInfo in order to create your own node type. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00030">30</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:aa42256409107a9c2909a0a85b3862a08" id="r_aa42256409107a9c2909a0a85b3862a08"><td class="memTemplParams" colspan="2">template&lt;class ReturnT, class T&gt; </td></tr>
+<tr class="memitem:aa42256409107a9c2909a0a85b3862a08 template"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#aa42256409107a9c2909a0a85b3862a08">only_if_has_Strategy</a> = typename std::pair&lt;typename T::template Strategy&lt;NodeT&gt;, ReturnT&gt;::second_type</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a96fec5e9e6f278c51ec788b317321616" id="r_a96fec5e9e6f278c51ec788b317321616"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a> ()=default</td></tr>
+<tr class="memitem:a15e010f0ecbb6ddde4ec3fee723564f0" id="r_a15e010f0ecbb6ddde4ec3fee723564f0"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a15e010f0ecbb6ddde4ec3fee723564f0">BranchAndBound</a> (const BranchAndBound &amp;t_rhs)</td></tr>
+<tr class="memitem:a8ece634603121d7f538e0a5a5e47312b" id="r_a8ece634603121d7f538e0a5a5e47312b"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a8ece634603121d7f538e0a5a5e47312b">with_node_optimizer</a> (const <a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a> &amp;t_node_optimizer)</td></tr>
+<tr class="memitem:a7afa51162050c25b2a6c47a96cc6d0a8" id="r_a7afa51162050c25b2a6c47a96cc6d0a8"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a7afa51162050c25b2a6c47a96cc6d0a8">set_node_optimizer</a> (const <a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a> &amp;t_node_optimizer)</td></tr>
+<tr class="memitem:aa22f3b652c188cc7f7005ea753f73cd5" id="r_aa22f3b652c188cc7f7005ea753f73cd5"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#aa22f3b652c188cc7f7005ea753f73cd5">operator+=</a> (const <a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a> &amp;t_node_optimizer)</td></tr>
+<tr class="memitem:a4da44c69626f3a6e6273b29af12d62dd" id="r_a4da44c69626f3a6e6273b29af12d62dd"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a4da44c69626f3a6e6273b29af12d62dd">with_branching_rule</a> (const <a class="el" href="classidol_1_1BranchingRuleFactory.html">BranchingRuleFactory</a>&lt; NodeT &gt; &amp;t_branching_rule)</td></tr>
+<tr class="memitem:a0c48e1e644d7bcaea249d4d922ad28cf" id="r_a0c48e1e644d7bcaea249d4d922ad28cf"><td class="memTemplParams" colspan="2">template&lt;class BranchingRuleFactoryT&gt; </td></tr>
+<tr class="memitem:a0c48e1e644d7bcaea249d4d922ad28cf template"><td class="memItemLeft"><a class="el" href="#aa42256409107a9c2909a0a85b3862a08">only_if_has_Strategy</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;, BranchingRuleFactoryT &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a0c48e1e644d7bcaea249d4d922ad28cf">with_branching_rule</a> (const BranchingRuleFactoryT &amp;t_branching_rule)</td></tr>
+<tr class="memitem:a899d89528f5a06aa1fdc245d78b991dd" id="r_a899d89528f5a06aa1fdc245d78b991dd"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a899d89528f5a06aa1fdc245d78b991dd">with_node_selection_rule</a> (const <a class="el" href="classidol_1_1NodeSelectionRuleFactory.html">NodeSelectionRuleFactory</a>&lt; NodeT &gt; &amp;t_node_selection)</td></tr>
+<tr class="memitem:ae7792eada87eb3f3630c79bc7c9b0144" id="r_ae7792eada87eb3f3630c79bc7c9b0144"><td class="memTemplParams" colspan="2">template&lt;class NodeSelectionRuleFactoryT&gt; </td></tr>
+<tr class="memitem:ae7792eada87eb3f3630c79bc7c9b0144 template"><td class="memItemLeft"><a class="el" href="#aa42256409107a9c2909a0a85b3862a08">only_if_has_Strategy</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;, NodeSelectionRuleFactoryT &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ae7792eada87eb3f3630c79bc7c9b0144">with_node_selection_rule</a> (const NodeSelectionRuleFactoryT &amp;t_node_selection_rule)</td></tr>
+<tr class="memitem:a0ad2d9a03ac409cbe14c79b47b485268" id="r_a0ad2d9a03ac409cbe14c79b47b485268"><td class="memItemLeft"><a id="a0ad2d9a03ac409cbe14c79b47b485268" name="a0ad2d9a03ac409cbe14c79b47b485268"></a>
+&#160;</td><td class="memItemRight"><b>BranchAndBound</b> (BranchAndBound &amp;&amp;) noexcept=default</td></tr>
+<tr class="memitem:a6fad3c212acd86ebee8053c41fba3e08" id="r_a6fad3c212acd86ebee8053c41fba3e08"><td class="memItemLeft"><a id="a6fad3c212acd86ebee8053c41fba3e08" name="a6fad3c212acd86ebee8053c41fba3e08"></a>
+<a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a> &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (const <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a> &amp;)=delete</td></tr>
+<tr class="memitem:af61eb8ca7b4c829fad2c56a723e49be9" id="r_af61eb8ca7b4c829fad2c56a723e49be9"><td class="memItemLeft"><a id="af61eb8ca7b4c829fad2c56a723e49be9" name="af61eb8ca7b4c829fad2c56a723e49be9"></a>
+<a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a> &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (<a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a> &amp;&amp;) noexcept=delete</td></tr>
+<tr class="memitem:a9aea0205e36cc09c10fe280c265d1215" id="r_a9aea0205e36cc09c10fe280c265d1215"><td class="memItemLeft"><a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a9aea0205e36cc09c10fe280c265d1215">clone</a> () const override</td></tr>
+<tr class="memitem:aaa45a4815818ee36fa0838223a09c1b6" id="r_aaa45a4815818ee36fa0838223a09c1b6"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#aaa45a4815818ee36fa0838223a09c1b6">with_subtree_depth</a> (unsigned int t_depth)</td></tr>
+<tr class="memitem:a2edf65be4254ff2a85e447ae97661505" id="r_a2edf65be4254ff2a85e447ae97661505"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a2edf65be4254ff2a85e447ae97661505">with_logger</a> (const <a class="el" href="classidol_1_1Logs_1_1BranchAndBound_1_1Factory.html">Logs::BranchAndBound::Factory</a>&lt; NodeT &gt; &amp;t_log_factory)</td></tr>
+<tr class="memitem:a946aaee3c50f86c76c45e245dcf77148" id="r_a946aaee3c50f86c76c45e245dcf77148"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a946aaee3c50f86c76c45e245dcf77148">add_callback</a> (const <a class="el" href="classidol_1_1BranchAndBoundCallbackFactory.html">BranchAndBoundCallbackFactory</a>&lt; NodeT &gt; &amp;t_callback)</td></tr>
+<tr class="memitem:aa02f32f7120d917e8b843d0b280fcd2a" id="r_aa02f32f7120d917e8b843d0b280fcd2a"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#aa02f32f7120d917e8b843d0b280fcd2a">add_callback</a> (const <a class="el" href="classidol_1_1CallbackFactory.html">CallbackFactory</a> &amp;t_callback)</td></tr>
+<tr class="memitem:a31d57dc73d73edbaeb57448f01d80167" id="r_a31d57dc73d73edbaeb57448f01d80167"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a31d57dc73d73edbaeb57448f01d80167">add_presolver</a> (const <a class="el" href="classidol_1_1Presolvers_1_1AbstractPresolver.html">Presolvers::AbstractPresolver</a> &amp;t_presolver)</td></tr>
+<tr class="memitem:a650195d266a2f51e18dda086105125b8" id="r_a650195d266a2f51e18dda086105125b8"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a650195d266a2f51e18dda086105125b8">with_root_node_info</a> (const NodeT &amp;t_root_node_info)</td></tr>
+<tr class="memitem:a8309d3a097a7c51ca5a3d235c5f4b95a" id="r_a8309d3a097a7c51ca5a3d235c5f4b95a"><td class="memTemplParams" colspan="2">template&lt;class NodeSelectionRuleFactoryT&gt; </td></tr>
+<tr class="memitem:a8309d3a097a7c51ca5a3d235c5f4b95a template"><td class="memItemLeft"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::template <a class="el" href="#aa42256409107a9c2909a0a85b3862a08">only_if_has_Strategy</a>&lt; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp;, NodeSelectionRuleFactoryT &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a8309d3a097a7c51ca5a3d235c5f4b95a">with_node_selection_rule</a> (const NodeSelectionRuleFactoryT &amp;t_node_selection_rule)</td></tr>
+<tr class="memitem:ab1a245963c527821b421aa3f82542b05" id="r_ab1a245963c527821b421aa3f82542b05"><td class="memTemplParams" colspan="2">template&lt;class BranchingRuleFactoryT&gt; </td></tr>
+<tr class="memitem:ab1a245963c527821b421aa3f82542b05 template"><td class="memItemLeft"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::template <a class="el" href="#aa42256409107a9c2909a0a85b3862a08">only_if_has_Strategy</a>&lt; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp;, BranchingRuleFactoryT &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ab1a245963c527821b421aa3f82542b05">with_branching_rule</a> (const BranchingRuleFactoryT &amp;t_branching_rule)</td></tr>
+<tr class="memitem:a495f616340209e28fde87270f69ce28f" id="r_a495f616340209e28fde87270f69ce28f"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#a495f616340209e28fde87270f69ce28f">with_logs</a> (bool t_value)</td></tr>
+<tr class="memitem:a192ee8cb58e8e1b2d33b0d58df3b0123" id="r_a192ee8cb58e8e1b2d33b0d58df3b0123"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#a192ee8cb58e8e1b2d33b0d58df3b0123">with_time_limit</a> (double t_time_limit)</td></tr>
+<tr class="memitem:a62819967487a06cacad8ca03d0891090" id="r_a62819967487a06cacad8ca03d0891090"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#a62819967487a06cacad8ca03d0891090">with_thread_limit</a> (unsigned int t_max_n_threads)</td></tr>
+<tr class="memitem:ac342238df14873996a25d1182b5a2a7d" id="r_ac342238df14873996a25d1182b5a2a7d"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#ac342238df14873996a25d1182b5a2a7d">with_iteration_limit</a> (unsigned int t_iteration_count_limit)</td></tr>
+<tr class="memitem:a10a7490342b8cb9a0719f150ad70513d" id="r_a10a7490342b8cb9a0719f150ad70513d"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#a10a7490342b8cb9a0719f150ad70513d">with_best_bound_stop</a> (double t_best_bound_stop)</td></tr>
+<tr class="memitem:ad3e0bc7a6d07853f2f54b4b47aec52ce" id="r_ad3e0bc7a6d07853f2f54b4b47aec52ce"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#ad3e0bc7a6d07853f2f54b4b47aec52ce">with_best_obj_stop</a> (double t_user_best_obj)</td></tr>
+<tr class="memitem:a31b5bc10c1e96a84b4617b35bf137ea2" id="r_a31b5bc10c1e96a84b4617b35bf137ea2"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#a31b5bc10c1e96a84b4617b35bf137ea2">with_presolve</a> (bool t_value)</td></tr>
+<tr class="memitem:ae015603918a608ffe8ef04e6145e40e0" id="r_ae015603918a608ffe8ef04e6145e40e0"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#ae015603918a608ffe8ef04e6145e40e0">with_infeasible_or_unbounded_info</a> (bool t_value)</td></tr>
+<tr class="memitem:a6ca3cd9c1cc6af9292df8fab57572a83" id="r_a6ca3cd9c1cc6af9292df8fab57572a83"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#a6ca3cd9c1cc6af9292df8fab57572a83">with_tol_mip_relative_gap</a> (double t_tol_mip_relative_gap)</td></tr>
+<tr class="memitem:a4ae3f1270b11217b3c4afe408d6c7090" id="r_a4ae3f1270b11217b3c4afe408d6c7090"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#a4ae3f1270b11217b3c4afe408d6c7090">with_tol_mip_absolute_gap</a> (double t_tol_mip_absolute_gap)</td></tr>
+<tr class="memitem:adaaa178af5ce90f1838d8d67607f8041" id="r_adaaa178af5ce90f1838d8d67607f8041"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#adaaa178af5ce90f1838d8d67607f8041">with_tol_integer</a> (double t_tol_integer)</td></tr>
+<tr class="memitem:a0e83a53606a7f33dcc66ff308e3c14c1" id="r_a0e83a53606a7f33dcc66ff308e3c14c1"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#a0e83a53606a7f33dcc66ff308e3c14c1">with_tol_feasibility</a> (double t_tol_feasibility)</td></tr>
+<tr class="memitem:a2f15e5cc3043f2be3243c6cfa4a08e2b" id="r_a2f15e5cc3043f2be3243c6cfa4a08e2b"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#a2f15e5cc3043f2be3243c6cfa4a08e2b">with_tol_optimality</a> (double t_tol_optimality)</td></tr>
+<tr class="memitem:a3197aa27445d62fd0491104238275c97" id="r_a3197aa27445d62fd0491104238275c97"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#a3197aa27445d62fd0491104238275c97">conditional</a> (bool t_conditional_value, const std::function&lt; void(<a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;)&gt; &amp;t_if)</td></tr>
+<tr class="memitem:ab729ab631b94367acf6d777f7900b459" id="r_ab729ab631b94367acf6d777f7900b459"><td class="memItemLeft"><a id="ab729ab631b94367acf6d777f7900b459" name="ab729ab631b94367acf6d777f7900b459"></a>
+virtual <a class="el" href="classidol_1_1Optimizer.html">Optimizer</a> *&#160;</td><td class="memItemRight"><b>operator()</b> (const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;t_model) const</td></tr>
+<tr class="memitem:ad2994ca625eb148c8f3df5852dfb4bd3" id="r_ad2994ca625eb148c8f3df5852dfb4bd3"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:ad2994ca625eb148c8f3df5852dfb4bd3 template"><td class="memItemLeft">T &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#ad2994ca625eb148c8f3df5852dfb4bd3">as</a> ()</td></tr>
+<tr class="memitem:a39f8b8ba3fe2be0ffe150746820f9cd3" id="r_a39f8b8ba3fe2be0ffe150746820f9cd3"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:a39f8b8ba3fe2be0ffe150746820f9cd3 template"><td class="memItemLeft">const T &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#a39f8b8ba3fe2be0ffe150746820f9cd3">as</a> () const</td></tr>
+<tr class="memitem:a8282a87bf2a07d6bf4d5f391632dc423" id="r_a8282a87bf2a07d6bf4d5f391632dc423"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:a8282a87bf2a07d6bf4d5f391632dc423 template"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#a8282a87bf2a07d6bf4d5f391632dc423">is</a> () const</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Methods</h2></td></tr>
+<tr class="memitem:abb0f22165fdeeeddc20834c4d5329fbc" id="r_abb0f22165fdeeeddc20834c4d5329fbc"><td class="memItemLeft"><a class="el" href="classidol_1_1Optimizer.html">Optimizer</a> *&#160;</td><td class="memItemRight"><a class="el" href="#abb0f22165fdeeeddc20834c4d5329fbc">create</a> (const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;t_model) const override</td></tr>
+<tr class="memitem:addd94d63c05b44ac7a528098a3abd94e" id="r_addd94d63c05b44ac7a528098a3abd94e"><td class="memItemLeft"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html#addd94d63c05b44ac7a528098a3abd94e">crtp</a> ()</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:af3802f486fa2b0fe48323a9248588fcc" id="r_af3802f486fa2b0fe48323a9248588fcc"><td class="memItemLeft">std::optional&lt; bool &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#af3802f486fa2b0fe48323a9248588fcc">m_logs</a></td></tr>
+<tr class="memitem:aab8cd0a7604df667af35025e76e4c5bc" id="r_aab8cd0a7604df667af35025e76e4c5bc"><td class="memItemLeft">std::optional&lt; double &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#aab8cd0a7604df667af35025e76e4c5bc">m_time_limit</a></td></tr>
+<tr class="memitem:ac259ce55e56a97b73367577f3624bff8" id="r_ac259ce55e56a97b73367577f3624bff8"><td class="memItemLeft">std::optional&lt; unsigned int &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#ac259ce55e56a97b73367577f3624bff8">m_thread_limit</a></td></tr>
+<tr class="memitem:a3b56df1d7943547cdd2259e5d1094e86" id="r_a3b56df1d7943547cdd2259e5d1094e86"><td class="memItemLeft">std::optional&lt; unsigned int &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#a3b56df1d7943547cdd2259e5d1094e86">m_iteration_count_limit</a></td></tr>
+<tr class="memitem:adc094a846dbbdc6fdf72a2370cd528ab" id="r_adc094a846dbbdc6fdf72a2370cd528ab"><td class="memItemLeft">std::optional&lt; double &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#adc094a846dbbdc6fdf72a2370cd528ab">m_best_bound_stop</a></td></tr>
+<tr class="memitem:ad41fe758a500c3fc00eb6e0caa4369b0" id="r_ad41fe758a500c3fc00eb6e0caa4369b0"><td class="memItemLeft">std::optional&lt; double &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#ad41fe758a500c3fc00eb6e0caa4369b0">m_best_obj_stop</a></td></tr>
+<tr class="memitem:a45240878f5bc507d9df9b9fb1a513ec1" id="r_a45240878f5bc507d9df9b9fb1a513ec1"><td class="memItemLeft">std::optional&lt; bool &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#a45240878f5bc507d9df9b9fb1a513ec1">m_presolve</a></td></tr>
+<tr class="memitem:a4f8d390cbeb1c0d51959775693ac29ad" id="r_a4f8d390cbeb1c0d51959775693ac29ad"><td class="memItemLeft">std::optional&lt; bool &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#a4f8d390cbeb1c0d51959775693ac29ad">m_infeasible_or_unbounded_info</a></td></tr>
+<tr class="memitem:a9ae226c958d9ee7a42de82ab2d234680" id="r_a9ae226c958d9ee7a42de82ab2d234680"><td class="memItemLeft">std::optional&lt; double &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#a9ae226c958d9ee7a42de82ab2d234680">m_tol_mip_relative_gap</a></td></tr>
+<tr class="memitem:ab79ded36ce32ca838c6c95a1b8a19d5a" id="r_ab79ded36ce32ca838c6c95a1b8a19d5a"><td class="memItemLeft">std::optional&lt; double &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#ab79ded36ce32ca838c6c95a1b8a19d5a">m_tol_mip_absolute_gap</a></td></tr>
+<tr class="memitem:a055162a4670d4e94332fe1ef233cfa07" id="r_a055162a4670d4e94332fe1ef233cfa07"><td class="memItemLeft">std::optional&lt; double &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#a055162a4670d4e94332fe1ef233cfa07">m_tol_integer</a></td></tr>
+<tr class="memitem:a9aac1e6070a1afc65a55b307aaa6984f" id="r_a9aac1e6070a1afc65a55b307aaa6984f"><td class="memItemLeft">std::optional&lt; double &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#a9aac1e6070a1afc65a55b307aaa6984f">m_tol_feasibility</a></td></tr>
+<tr class="memitem:a6e89db15c584a47f9ba95f60349e13f0" id="r_a6e89db15c584a47f9ba95f60349e13f0"><td class="memItemLeft">std::optional&lt; double &gt;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerFactory.html#a6e89db15c584a47f9ba95f60349e13f0">m_tol_optimality</a></td></tr>
+</table>
+<a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
+<a id="aa42256409107a9c2909a0a85b3862a08" name="aa42256409107a9c2909a0a85b3862a08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa42256409107a9c2909a0a85b3862a08">&#9670;&#160;</a></span>only_if_has_Strategy</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT = idol::DefaultNodeInfo&gt; </div>
+<div class="memtemplate">
+template&lt;class ReturnT, class T&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::only_if_has_Strategy = typename std::pair&lt;typename T::template Strategy&lt;NodeT&gt;, ReturnT&gt;::second_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This type is used to exploit <a href="https://en.wikipedia.org/wiki/Substitution_failure_is_not_an_error">SFINAE</a> in order to identify classes having a sub-class named <span class="tt">Strategy&lt;NodeInfoT&gt;</span>. This is used to make calls like <span class="tt">.with_node_selection_rule(DepthFirst());</span> which will actually call <span class="tt">.<a class="el" href="#a899d89528f5a06aa1fdc245d78b991dd">with_node_selection_rule</a>(<a class="el" href="classidol_1_1DepthFirst_1_1Strategy.html">DepthFirst::Strategy</a>&lt;NodeInfoT&gt;())</span>. </p>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00051">51</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a96fec5e9e6f278c51ec788b317321616" name="a96fec5e9e6f278c51ec788b317321616"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96fec5e9e6f278c51ec788b317321616">&#9670;&#160;</a></span>BranchAndBound() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT = idol::DefaultNodeInfo&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::BranchAndBound </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel default">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Creates a new branch-and-bound algorithm.</p>
+<p>Example: </p><div class="fragment"><div class="line">model.use( <a class="code hl_function" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>() );</div>
+<div class="ttc" id="aclassidol_1_1BranchAndBound_html_a96fec5e9e6f278c51ec788b317321616"><div class="ttname"><a href="#a96fec5e9e6f278c51ec788b317321616">idol::BranchAndBound::BranchAndBound</a></div><div class="ttdeci">BranchAndBound()=default</div></div>
+</div><!-- fragment --> 
+</div>
+</div>
+<a id="a15e010f0ecbb6ddde4ec3fee723564f0" name="a15e010f0ecbb6ddde4ec3fee723564f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15e010f0ecbb6ddde4ec3fee723564f0">&#9670;&#160;</a></span>BranchAndBound() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::BranchAndBound </td>
+          <td>(</td>
+          <td class="paramtype">const BranchAndBound&lt; NodeT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_rhs</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Copy constructor </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_rhs</td><td>the object to copy </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00334">334</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a946aaee3c50f86c76c45e245dcf77148" name="a946aaee3c50f86c76c45e245dcf77148"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a946aaee3c50f86c76c45e245dcf77148">&#9670;&#160;</a></span>add_callback() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::add_callback </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1BranchAndBoundCallbackFactory.html">BranchAndBoundCallbackFactory</a>&lt; NodeT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_callback</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Adds a callback which will be called by the optimizer.</p>
+<p>Note that this method can be called multiple times so that multiple callbacks can be added.</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> algorithm = <a class="code hl_function" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>()</div>
+<div class="line">                     .with_callback(IntegerMaster.rst());</div>
+</div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_callback</td><td>the callback factory </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the optimizer factory itself </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00263">263</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="aa02f32f7120d917e8b843d0b280fcd2a" name="aa02f32f7120d917e8b843d0b280fcd2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa02f32f7120d917e8b843d0b280fcd2a">&#9670;&#160;</a></span>add_callback() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::add_callback </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1CallbackFactory.html">CallbackFactory</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_callback</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Adds a (solver independent) callback which will be called by the optimizer.</p>
+<p>Note that this method can be called multiple times so that multiple callbacks can be added.</p>
+<p>Here, the <span class="tt"><a class="el" href="classidol_1_1Callback.html">Callback</a></span> is automatically converted into a <span class="tt"><a class="el" href="classidol_1_1BranchAndBoundCallback.html">BranchAndBoundCallback</a>&lt;NodeInfoT&gt;</span>.</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> algorithm = <a class="code hl_function" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>()</div>
+<div class="line">                     .with_callback(<a class="code hl_class" href="classidol_1_1UserCutCallback.html">UserCutCallback</a>(separation_model, my_cut));</div>
+<div class="ttc" id="aclassidol_1_1UserCutCallback_html"><div class="ttname"><a href="classidol_1_1UserCutCallback.html">idol::UserCutCallback</a></div><div class="ttdef"><b>Definition</b> <a href="UserCutCallback_8h_source.html#l00015">UserCutCallback.h:15</a></div></div>
+</div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_callback</td><td>the callback factory </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the optimizer factory itself </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00240">240</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="a31d57dc73d73edbaeb57448f01d80167" name="a31d57dc73d73edbaeb57448f01d80167"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31d57dc73d73edbaeb57448f01d80167">&#9670;&#160;</a></span>add_presolver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::add_presolver </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Presolvers_1_1AbstractPresolver.html">Presolvers::AbstractPresolver</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_presolver</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00245">245</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="ad2994ca625eb148c8f3df5852dfb4bd3" name="ad2994ca625eb148c8f3df5852dfb4bd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2994ca625eb148c8f3df5852dfb4bd3">&#9670;&#160;</a></span>as() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T &amp; idol::OptimizerFactory::as </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00046">46</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a39f8b8ba3fe2be0ffe150746820f9cd3" name="a39f8b8ba3fe2be0ffe150746820f9cd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39f8b8ba3fe2be0ffe150746820f9cd3">&#9670;&#160;</a></span>as() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const T &amp; idol::OptimizerFactory::as </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00054">54</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a9aea0205e36cc09c10fe280c265d1215" name="a9aea0205e36cc09c10fe280c265d1215"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9aea0205e36cc09c10fe280c265d1215">&#9670;&#160;</a></span>clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1OptimizerFactory.html">idol::OptimizerFactory</a> * <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::clone </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1OptimizerFactory.html">idol::OptimizerFactory</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00401">401</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="a3197aa27445d62fd0491104238275c97" name="a3197aa27445d62fd0491104238275c97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3197aa27445d62fd0491104238275c97">&#9670;&#160;</a></span>conditional()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::conditional </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>t_conditional_value</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; void(<a class="el" href="classidol_1_1BranchAndBound.html">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp;)&gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_if</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00088">88</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="abb0f22165fdeeeddc20834c4d5329fbc" name="abb0f22165fdeeeddc20834c4d5329fbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb0f22165fdeeeddc20834c4d5329fbc">&#9670;&#160;</a></span>create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Optimizer.html">idol::Optimizer</a> * <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::create </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_model</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1OptimizerFactory.html">idol::OptimizerFactory</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00355">355</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="addd94d63c05b44ac7a528098a3abd94e" name="addd94d63c05b44ac7a528098a3abd94e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addd94d63c05b44ac7a528098a3abd94e">&#9670;&#160;</a></span>crtp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::crtp </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00070">70</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a8282a87bf2a07d6bf4d5f391632dc423" name="a8282a87bf2a07d6bf4d5f391632dc423"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8282a87bf2a07d6bf4d5f391632dc423">&#9670;&#160;</a></span>is()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool idol::OptimizerFactory::is </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00062">62</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="aa22f3b652c188cc7f7005ea753f73cd5" name="aa22f3b652c188cc7f7005ea753f73cd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa22f3b652c188cc7f7005ea753f73cd5">&#9670;&#160;</a></span>operator+=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_node_optimizer</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00234">234</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="a7afa51162050c25b2a6c47a96cc6d0a8" name="a7afa51162050c25b2a6c47a96cc6d0a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7afa51162050c25b2a6c47a96cc6d0a8">&#9670;&#160;</a></span>set_node_optimizer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::set_node_optimizer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_node_optimizer</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00216">216</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="a10a7490342b8cb9a0719f150ad70513d" name="a10a7490342b8cb9a0719f150ad70513d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10a7490342b8cb9a0719f150ad70513d">&#9670;&#160;</a></span>with_best_bound_stop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_best_bound_stop </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_best_bound_stop</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00077">77</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="ad3e0bc7a6d07853f2f54b4b47aec52ce" name="ad3e0bc7a6d07853f2f54b4b47aec52ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3e0bc7a6d07853f2f54b4b47aec52ce">&#9670;&#160;</a></span>with_best_obj_stop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_best_obj_stop </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_user_best_obj</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00078">78</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a4da44c69626f3a6e6273b29af12d62dd" name="a4da44c69626f3a6e6273b29af12d62dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4da44c69626f3a6e6273b29af12d62dd">&#9670;&#160;</a></span>with_branching_rule() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::with_branching_rule </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1BranchingRuleFactory.html">BranchingRuleFactory</a>&lt; NodeT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_branching_rule</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the branching rule used to create child nodes</p>
+<p>Example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> algorithm = <a class="code hl_function" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound&lt;NodeVarInfo&gt;</a>()</div>
+<div class="line">                     .with_branching_rule(<a class="code hl_class" href="classidol_1_1MostInfeasible_1_1Strategy.html">MostInfeasible::Strategy&lt;NodeVarInfo&gt;</a>());</div>
+<div class="ttc" id="aclassidol_1_1MostInfeasible_1_1Strategy_html"><div class="ttname"><a href="classidol_1_1MostInfeasible_1_1Strategy.html">idol::MostInfeasible::Strategy</a></div><div class="ttdef"><b>Definition</b> <a href="factories_2MostInfeasible_8h_source.html#l00023">MostInfeasible.h:23</a></div></div>
+</div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_branching_rule</td><td>the branching rule </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the optimizer factory itself </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00310">310</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="ab1a245963c527821b421aa3f82542b05" name="ab1a245963c527821b421aa3f82542b05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1a245963c527821b421aa3f82542b05">&#9670;&#160;</a></span>with_branching_rule() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT = idol::DefaultNodeInfo&gt; </div>
+<div class="memtemplate">
+template&lt;class BranchingRuleFactoryT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::template <a class="el" href="#aa42256409107a9c2909a0a85b3862a08">only_if_has_Strategy</a>&lt; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp;, BranchingRuleFactoryT &gt; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::with_branching_rule </td>
+          <td>(</td>
+          <td class="paramtype">const BranchingRuleFactoryT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_branching_rule</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00305">305</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="a0c48e1e644d7bcaea249d4d922ad28cf" name="a0c48e1e644d7bcaea249d4d922ad28cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c48e1e644d7bcaea249d4d922ad28cf">&#9670;&#160;</a></span>with_branching_rule() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT = idol::DefaultNodeInfo&gt; </div>
+<div class="memtemplate">
+template&lt;class BranchingRuleFactoryT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#aa42256409107a9c2909a0a85b3862a08">only_if_has_Strategy</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;, BranchingRuleFactoryT &gt; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::with_branching_rule </td>
+          <td>(</td>
+          <td class="paramtype">const BranchingRuleFactoryT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_branching_rule</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the branching rule used to create child nodes.</p>
+<p>Here, the function is called only when <span class="tt">BranchingRuleFactoryT</span> has a nested template class named <span class="tt">Strategy&lt;NodeInfoT&gt;</span>. In such a case, the branching rule is created by calling <span class="tt">BranchingRuleFactoryT::Strategy&lt;NodeInfoT&gt;(t_branching_rule)</span>. This is used to avoid the user repeating the node type <span class="tt">NodeInfoT</span> being used.</p>
+<p>Example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> algorithm = <a class="code hl_function" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound&lt;NodeVarInfo&gt;</a>()</div>
+<div class="line">                     .with_branching_rule(<a class="code hl_class" href="classidol_1_1MostInfeasible.html">MostInfeasible</a>());</div>
+<div class="ttc" id="aclassidol_1_1MostInfeasible_html"><div class="ttname"><a href="classidol_1_1MostInfeasible.html">idol::MostInfeasible</a></div><div class="ttdef"><b>Definition</b> <a href="factories_2MostInfeasible_8h_source.html#l00015">MostInfeasible.h:15</a></div></div>
+</div><!-- fragment --> <dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">BranchingRuleFactoryT</td><td>the class containing a nested template class named Strategy </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_branching_rule</td><td>the branching rule </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the optimizer factory itself </dd></dl>
+
+</div>
+</div>
+<a id="ae015603918a608ffe8ef04e6145e40e0" name="ae015603918a608ffe8ef04e6145e40e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae015603918a608ffe8ef04e6145e40e0">&#9670;&#160;</a></span>with_infeasible_or_unbounded_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_infeasible_or_unbounded_info </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00080">80</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="ac342238df14873996a25d1182b5a2a7d" name="ac342238df14873996a25d1182b5a2a7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac342238df14873996a25d1182b5a2a7d">&#9670;&#160;</a></span>with_iteration_limit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_iteration_limit </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_iteration_count_limit</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00076">76</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a2edf65be4254ff2a85e447ae97661505" name="a2edf65be4254ff2a85e447ae97661505"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2edf65be4254ff2a85e447ae97661505">&#9670;&#160;</a></span>with_logger()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT = idol::DefaultNodeInfo&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::with_logger </td>
+          <td>(</td>
+          <td class="paramtype">const Logs::BranchAndBound&lt; NodeT &gt;::Factory&lt; NodeT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_log_factory</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00222">222</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="a495f616340209e28fde87270f69ce28f" name="a495f616340209e28fde87270f69ce28f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a495f616340209e28fde87270f69ce28f">&#9670;&#160;</a></span>with_logs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_logs </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00073">73</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a8ece634603121d7f538e0a5a5e47312b" name="a8ece634603121d7f538e0a5a5e47312b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ece634603121d7f538e0a5a5e47312b">&#9670;&#160;</a></span>with_node_optimizer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::with_node_optimizer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_node_optimizer</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the optimizer for solving each of the branch-and-bound tree nodes</p>
+<p>Example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> algorithm = <a class="code hl_function" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>()</div>
+<div class="line">                     .with_node_optimizer(GLPK::ContinuousRelaxation());</div>
+</div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_node_optimizer</td><td>the optimizer factory the node problems </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the optimizer factory itself </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00322">322</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="a899d89528f5a06aa1fdc245d78b991dd" name="a899d89528f5a06aa1fdc245d78b991dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a899d89528f5a06aa1fdc245d78b991dd">&#9670;&#160;</a></span>with_node_selection_rule() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::with_node_selection_rule </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1NodeSelectionRuleFactory.html">NodeSelectionRuleFactory</a>&lt; NodeT &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_node_selection</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the node selection rule to explore the branch and bound tree.</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> algorithm = <a class="code hl_function" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound&lt;NodeVarInfo&gt;</a>()</div>
+<div class="line">                     .with_node_selection(<a class="code hl_class" href="classidol_1_1BestBound_1_1Strategy.html">BestBound::Strategy&lt;NodeVarInfo&gt;</a>());</div>
+<div class="ttc" id="aclassidol_1_1BestBound_1_1Strategy_html"><div class="ttname"><a href="classidol_1_1BestBound_1_1Strategy.html">idol::BestBound::Strategy</a></div><div class="ttdef"><b>Definition</b> <a href="factories_2BestBound_8h_source.html#l00018">BestBound.h:18</a></div></div>
+</div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_node_selection</td><td>the node selection rule </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the optimizer factory itself </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00291">291</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="a8309d3a097a7c51ca5a3d235c5f4b95a" name="a8309d3a097a7c51ca5a3d235c5f4b95a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8309d3a097a7c51ca5a3d235c5f4b95a">&#9670;&#160;</a></span>with_node_selection_rule() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT = idol::DefaultNodeInfo&gt; </div>
+<div class="memtemplate">
+template&lt;class NodeSelectionRuleFactoryT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::template <a class="el" href="#aa42256409107a9c2909a0a85b3862a08">only_if_has_Strategy</a>&lt; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp;, NodeSelectionRuleFactoryT &gt; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::with_node_selection_rule </td>
+          <td>(</td>
+          <td class="paramtype">const NodeSelectionRuleFactoryT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_node_selection_rule</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00285">285</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="ae7792eada87eb3f3630c79bc7c9b0144" name="ae7792eada87eb3f3630c79bc7c9b0144"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7792eada87eb3f3630c79bc7c9b0144">&#9670;&#160;</a></span>with_node_selection_rule() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT = idol::DefaultNodeInfo&gt; </div>
+<div class="memtemplate">
+template&lt;class NodeSelectionRuleFactoryT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#aa42256409107a9c2909a0a85b3862a08">only_if_has_Strategy</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; NodeT &gt; &amp;, NodeSelectionRuleFactoryT &gt; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::with_node_selection_rule </td>
+          <td>(</td>
+          <td class="paramtype">const NodeSelectionRuleFactoryT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_node_selection_rule</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the node selection rule to explore the branch and bound tree.</p>
+<p>Here, the function is called only when <span class="tt">NodeSelectionRuleFactoryT</span> has a nested template class named <span class="tt">Strategy&lt;NodeInfoT&gt;</span>. In such a case, the node selection rule is created by calling <span class="tt">NodeSelectionRuleFactoryT::Strategy&lt;NodeInfoT&gt;(t_node_selection_rule)</span>. This is used to avoid the user repeating the node type <span class="tt">NodeInfoT</span> being used.</p>
+<p>Example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> algorithm = <a class="code hl_function" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound&lt;NodeVarInfo&gt;</a>()</div>
+<div class="line">                     .with_node_selection_rule(<a class="code hl_class" href="classidol_1_1BestBound.html">BestBound</a>());</div>
+<div class="ttc" id="aclassidol_1_1BestBound_html"><div class="ttname"><a href="classidol_1_1BestBound.html">idol::BestBound</a></div><div class="ttdef"><b>Definition</b> <a href="factories_2BestBound_8h_source.html#l00015">BestBound.h:15</a></div></div>
+</div><!-- fragment --> <dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">NodeSelectionRuleFactoryT</td><td>the class containing a nested template class named Strategy </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_node_selection_rule</td><td>the node selection rule </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the optimizer factory itself </dd></dl>
+
+</div>
+</div>
+<a id="a31b5bc10c1e96a84b4617b35bf137ea2" name="a31b5bc10c1e96a84b4617b35bf137ea2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31b5bc10c1e96a84b4617b35bf137ea2">&#9670;&#160;</a></span>with_presolve()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_presolve </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00079">79</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a650195d266a2f51e18dda086105125b8" name="a650195d266a2f51e18dda086105125b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a650195d266a2f51e18dda086105125b8">&#9670;&#160;</a></span>with_root_node_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::with_root_node_info </td>
+          <td>(</td>
+          <td class="paramtype">const NodeT &amp;</td>          <td class="paramname"><span class="paramname"><em>t_root_node_info</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00251">251</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="aaa45a4815818ee36fa0838223a09c1b6" name="aaa45a4815818ee36fa0838223a09c1b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa45a4815818ee36fa0838223a09c1b6">&#9670;&#160;</a></span>with_subtree_depth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt; &amp; <a class="el" href="classidol_1_1BranchAndBound.html">idol::BranchAndBound</a>&lt; NodeT &gt;::with_subtree_depth </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_depth</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the depth for sub-tree exploration.</p>
+<p>When a node is selected for branching, each of its children is explored. This exploration takes the form of a sub-tree exploration. When this parameter is set to 0, only the root node of this sub-tree is solved. Thus every child node are solved and the branch-and-bound algorithm is continued.</p>
+<p>For strictly greater values of this parameter, the sub-tree is explored with a maximum depth equal to the value of this parameter.</p>
+<p>For example, with a value of 1, each child node is solved along with its child nodes.</p>
+<p>Example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> algorithm = <a class="code hl_function" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>()</div>
+<div class="line">                     .with_subtree_depth(1);</div>
+</div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_depth</td><td>the maximum sub-tree exploration depth </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the optimizer factory itself </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="BranchAndBound_8h_source.html#l00271">271</a> of file <a class="el" href="BranchAndBound_8h_source.html">BranchAndBound.h</a>.</p>
+
+</div>
+</div>
+<a id="a62819967487a06cacad8ca03d0891090" name="a62819967487a06cacad8ca03d0891090"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62819967487a06cacad8ca03d0891090">&#9670;&#160;</a></span>with_thread_limit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_thread_limit </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_max_n_threads</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00075">75</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a192ee8cb58e8e1b2d33b0d58df3b0123" name="a192ee8cb58e8e1b2d33b0d58df3b0123"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a192ee8cb58e8e1b2d33b0d58df3b0123">&#9670;&#160;</a></span>with_time_limit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_time_limit </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_time_limit</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00074">74</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a0e83a53606a7f33dcc66ff308e3c14c1" name="a0e83a53606a7f33dcc66ff308e3c14c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e83a53606a7f33dcc66ff308e3c14c1">&#9670;&#160;</a></span>with_tol_feasibility()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_tol_feasibility </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_tol_feasibility</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00085">85</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="adaaa178af5ce90f1838d8d67607f8041" name="adaaa178af5ce90f1838d8d67607f8041"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaaa178af5ce90f1838d8d67607f8041">&#9670;&#160;</a></span>with_tol_integer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_tol_integer </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_tol_integer</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00084">84</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a4ae3f1270b11217b3c4afe408d6c7090" name="a4ae3f1270b11217b3c4afe408d6c7090"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ae3f1270b11217b3c4afe408d6c7090">&#9670;&#160;</a></span>with_tol_mip_absolute_gap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_tol_mip_absolute_gap </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_tol_mip_absolute_gap</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00083">83</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a6ca3cd9c1cc6af9292df8fab57572a83" name="a6ca3cd9c1cc6af9292df8fab57572a83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ca3cd9c1cc6af9292df8fab57572a83">&#9670;&#160;</a></span>with_tol_mip_relative_gap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_tol_mip_relative_gap </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_tol_mip_relative_gap</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00082">82</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a2f15e5cc3043f2be3243c6cfa4a08e2b" name="a2f15e5cc3043f2be3243c6cfa4a08e2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f15e5cc3043f2be3243c6cfa4a08e2b">&#9670;&#160;</a></span>with_tol_optimality()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &amp; <a class="el" href="classidol_1_1OptimizerFactoryWithDefaultParameters.html">idol::OptimizerFactoryWithDefaultParameters</a>&lt; <a class="el" href="#a96fec5e9e6f278c51ec788b317321616">BranchAndBound</a>&lt; <a class="el" href="classidol_1_1DefaultNodeInfo.html">idol::DefaultNodeInfo</a> &gt; &gt;::with_tol_optimality </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_tol_optimality</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00086">86</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="adc094a846dbbdc6fdf72a2370cd528ab" name="adc094a846dbbdc6fdf72a2370cd528ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc094a846dbbdc6fdf72a2370cd528ab">&#9670;&#160;</a></span>m_best_bound_stop</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;double&gt; idol::OptimizerFactory::m_best_bound_stop</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00027">27</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="ad41fe758a500c3fc00eb6e0caa4369b0" name="ad41fe758a500c3fc00eb6e0caa4369b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad41fe758a500c3fc00eb6e0caa4369b0">&#9670;&#160;</a></span>m_best_obj_stop</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;double&gt; idol::OptimizerFactory::m_best_obj_stop</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00028">28</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a4f8d390cbeb1c0d51959775693ac29ad" name="a4f8d390cbeb1c0d51959775693ac29ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f8d390cbeb1c0d51959775693ac29ad">&#9670;&#160;</a></span>m_infeasible_or_unbounded_info</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;bool&gt; idol::OptimizerFactory::m_infeasible_or_unbounded_info</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00030">30</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a3b56df1d7943547cdd2259e5d1094e86" name="a3b56df1d7943547cdd2259e5d1094e86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b56df1d7943547cdd2259e5d1094e86">&#9670;&#160;</a></span>m_iteration_count_limit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;unsigned int&gt; idol::OptimizerFactory::m_iteration_count_limit</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00026">26</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="af3802f486fa2b0fe48323a9248588fcc" name="af3802f486fa2b0fe48323a9248588fcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3802f486fa2b0fe48323a9248588fcc">&#9670;&#160;</a></span>m_logs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;bool&gt; idol::OptimizerFactory::m_logs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00023">23</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a45240878f5bc507d9df9b9fb1a513ec1" name="a45240878f5bc507d9df9b9fb1a513ec1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45240878f5bc507d9df9b9fb1a513ec1">&#9670;&#160;</a></span>m_presolve</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;bool&gt; idol::OptimizerFactory::m_presolve</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00029">29</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="ac259ce55e56a97b73367577f3624bff8" name="ac259ce55e56a97b73367577f3624bff8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac259ce55e56a97b73367577f3624bff8">&#9670;&#160;</a></span>m_thread_limit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;unsigned int&gt; idol::OptimizerFactory::m_thread_limit</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00025">25</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="aab8cd0a7604df667af35025e76e4c5bc" name="aab8cd0a7604df667af35025e76e4c5bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab8cd0a7604df667af35025e76e4c5bc">&#9670;&#160;</a></span>m_time_limit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;double&gt; idol::OptimizerFactory::m_time_limit</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00024">24</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a9aac1e6070a1afc65a55b307aaa6984f" name="a9aac1e6070a1afc65a55b307aaa6984f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9aac1e6070a1afc65a55b307aaa6984f">&#9670;&#160;</a></span>m_tol_feasibility</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;double&gt; idol::OptimizerFactory::m_tol_feasibility</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00035">35</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a055162a4670d4e94332fe1ef233cfa07" name="a055162a4670d4e94332fe1ef233cfa07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a055162a4670d4e94332fe1ef233cfa07">&#9670;&#160;</a></span>m_tol_integer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;double&gt; idol::OptimizerFactory::m_tol_integer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00034">34</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="ab79ded36ce32ca838c6c95a1b8a19d5a" name="ab79ded36ce32ca838c6c95a1b8a19d5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab79ded36ce32ca838c6c95a1b8a19d5a">&#9670;&#160;</a></span>m_tol_mip_absolute_gap</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;double&gt; idol::OptimizerFactory::m_tol_mip_absolute_gap</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00033">33</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a9ae226c958d9ee7a42de82ab2d234680" name="a9ae226c958d9ee7a42de82ab2d234680"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ae226c958d9ee7a42de82ab2d234680">&#9670;&#160;</a></span>m_tol_mip_relative_gap</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;double&gt; idol::OptimizerFactory::m_tol_mip_relative_gap</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00032">32</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a6e89db15c584a47f9ba95f60349e13f0" name="a6e89db15c584a47f9ba95f60349e13f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e89db15c584a47f9ba95f60349e13f0">&#9670;&#160;</a></span>m_tol_optimality</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;double&gt; idol::OptimizerFactory::m_tol_optimality</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerFactory_8h_source.html#l00036">36</a> of file <a class="el" href="OptimizerFactory_8h_source.html">OptimizerFactory.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

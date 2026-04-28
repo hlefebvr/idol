@@ -1,0 +1,1462 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Optimizers::JuMP Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><b>Optimizers</b></li><li class="navelem"><a href="classidol_1_1Optimizers_1_1JuMP.html">JuMP</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pub-static-methods">Public Static Methods</a> &#124;
+<a href="#pro-methods">Protected Methods</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classidol_1_1Optimizers_1_1JuMP-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Optimizers::JuMP Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00019">19</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a2d6fc02fd496261e6ddc33f2fc74e57b" id="r_a2d6fc02fd496261e6ddc33f2fc74e57b"><td class="memItemLeft"><a id="a2d6fc02fd496261e6ddc33f2fc74e57b" name="a2d6fc02fd496261e6ddc33f2fc74e57b"></a>
+&#160;</td><td class="memItemRight"><b>JuMP</b> (const Model &amp;t_parent, std::string t_module, std::string t_optimizer, bool t_is_continuous_relaxation)</td></tr>
+<tr class="memitem:a1ab031e5ad7c7799f7f8dba52c6be194" id="r_a1ab031e5ad7c7799f7f8dba52c6be194"><td class="memItemLeft"><a id="a1ab031e5ad7c7799f7f8dba52c6be194" name="a1ab031e5ad7c7799f7f8dba52c6be194"></a>
+std::string&#160;</td><td class="memItemRight"><b>name</b> () const override</td></tr>
+<tr class="memitem:a1e1db468b341e97e7ce797e459e63865" id="r_a1e1db468b341e97e7ce797e459e63865"><td class="memItemLeft"><a id="a1e1db468b341e97e7ce797e459e63865" name="a1e1db468b341e97e7ce797e459e63865"></a>
+SolutionStatus&#160;</td><td class="memItemRight"><b>get_status</b> () const override</td></tr>
+<tr class="memitem:a1c73ef2d7bcd1d668eaa5307b20ef7ba" id="r_a1c73ef2d7bcd1d668eaa5307b20ef7ba"><td class="memItemLeft"><a id="a1c73ef2d7bcd1d668eaa5307b20ef7ba" name="a1c73ef2d7bcd1d668eaa5307b20ef7ba"></a>
+SolutionReason&#160;</td><td class="memItemRight"><b>get_reason</b> () const override</td></tr>
+<tr class="memitem:a9fbae743b37e2c2a96fcd19903983e5e" id="r_a9fbae743b37e2c2a96fcd19903983e5e"><td class="memItemLeft"><a id="a9fbae743b37e2c2a96fcd19903983e5e" name="a9fbae743b37e2c2a96fcd19903983e5e"></a>
+double&#160;</td><td class="memItemRight"><b>get_best_obj</b> () const override</td></tr>
+<tr class="memitem:aa8016836a908885b8827f076d7d40946" id="r_aa8016836a908885b8827f076d7d40946"><td class="memItemLeft"><a id="aa8016836a908885b8827f076d7d40946" name="aa8016836a908885b8827f076d7d40946"></a>
+double&#160;</td><td class="memItemRight"><b>get_best_bound</b> () const override</td></tr>
+<tr class="memitem:a984e186ad84f0832179ecf363a56e761" id="r_a984e186ad84f0832179ecf363a56e761"><td class="memItemLeft"><a id="a984e186ad84f0832179ecf363a56e761" name="a984e186ad84f0832179ecf363a56e761"></a>
+double&#160;</td><td class="memItemRight"><b>get_var_primal</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) const override</td></tr>
+<tr class="memitem:ac9dbf34d7cb4f5b77cf8527d67b243d8" id="r_ac9dbf34d7cb4f5b77cf8527d67b243d8"><td class="memItemLeft"><a id="ac9dbf34d7cb4f5b77cf8527d67b243d8" name="ac9dbf34d7cb4f5b77cf8527d67b243d8"></a>
+double&#160;</td><td class="memItemRight"><b>get_var_reduced_cost</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) const override</td></tr>
+<tr class="memitem:a11747fc108666cafc83e2351a3b1a936" id="r_a11747fc108666cafc83e2351a3b1a936"><td class="memItemLeft"><a id="a11747fc108666cafc83e2351a3b1a936" name="a11747fc108666cafc83e2351a3b1a936"></a>
+double&#160;</td><td class="memItemRight"><b>get_var_ray</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) const override</td></tr>
+<tr class="memitem:a4a5f3c2c5557497e941f3f399b6b87d2" id="r_a4a5f3c2c5557497e941f3f399b6b87d2"><td class="memItemLeft"><a id="a4a5f3c2c5557497e941f3f399b6b87d2" name="a4a5f3c2c5557497e941f3f399b6b87d2"></a>
+double&#160;</td><td class="memItemRight"><b>get_ctr_dual</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) const override</td></tr>
+<tr class="memitem:aadbcbb902257bb45cbb91c4ef69d43d5" id="r_aadbcbb902257bb45cbb91c4ef69d43d5"><td class="memItemLeft"><a id="aadbcbb902257bb45cbb91c4ef69d43d5" name="aadbcbb902257bb45cbb91c4ef69d43d5"></a>
+double&#160;</td><td class="memItemRight"><b>get_ctr_farkas</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) const override</td></tr>
+<tr class="memitem:ac1f69362df5c689a54790419fe34e509" id="r_ac1f69362df5c689a54790419fe34e509"><td class="memItemLeft"><a id="ac1f69362df5c689a54790419fe34e509" name="ac1f69362df5c689a54790419fe34e509"></a>
+double&#160;</td><td class="memItemRight"><b>get_relative_gap</b> () const override</td></tr>
+<tr class="memitem:a1c241fda42c5ee6080ca2aacf4ed1da6" id="r_a1c241fda42c5ee6080ca2aacf4ed1da6"><td class="memItemLeft"><a id="a1c241fda42c5ee6080ca2aacf4ed1da6" name="a1c241fda42c5ee6080ca2aacf4ed1da6"></a>
+double&#160;</td><td class="memItemRight"><b>get_absolute_gap</b> () const override</td></tr>
+<tr class="memitem:a89c7cbee072802ae38817ac97543cc56" id="r_a89c7cbee072802ae38817ac97543cc56"><td class="memItemLeft"><a id="a89c7cbee072802ae38817ac97543cc56" name="a89c7cbee072802ae38817ac97543cc56"></a>
+unsigned int&#160;</td><td class="memItemRight"><b>get_n_solutions</b> () const override</td></tr>
+<tr class="memitem:ae06e35ab69b31d3e7859e1ddcc3fac91" id="r_ae06e35ab69b31d3e7859e1ddcc3fac91"><td class="memItemLeft"><a id="ae06e35ab69b31d3e7859e1ddcc3fac91" name="ae06e35ab69b31d3e7859e1ddcc3fac91"></a>
+unsigned int&#160;</td><td class="memItemRight"><b>get_solution_index</b> () const override</td></tr>
+<tr class="memitem:a27fffd2e2d3e9c792692d9dc6a75b046" id="r_a27fffd2e2d3e9c792692d9dc6a75b046"><td class="memItemLeft"><a id="a27fffd2e2d3e9c792692d9dc6a75b046" name="a27fffd2e2d3e9c792692d9dc6a75b046"></a>
+void&#160;</td><td class="memItemRight"><b>debug_print</b> () const</td></tr>
+<tr class="memitem:ae4c28fa0db1eda560ba00e64ff05c0f6" id="r_ae4c28fa0db1eda560ba00e64ff05c0f6"><td class="memItemLeft">bool &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#ae4c28fa0db1eda560ba00e64ff05c0f6">operator[]</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Public Static Methods</h2></td></tr>
+<tr class="memitem:a0eae64005b04683c79041104b9be8a9b" id="r_a0eae64005b04683c79041104b9be8a9b"><td class="memItemLeft"><a id="a0eae64005b04683c79041104b9be8a9b" name="a0eae64005b04683c79041104b9be8a9b"></a>
+static bool&#160;</td><td class="memItemRight"><b>is_available</b> ()</td></tr>
+<tr class="memitem:a1d00208bc44d0e133b7c3c3d805476df" id="r_a1d00208bc44d0e133b7c3c3d805476df"><td class="memItemLeft"><a id="a1d00208bc44d0e133b7c3c3d805476df" name="a1d00208bc44d0e133b7c3c3d805476df"></a>
+static std::string&#160;</td><td class="memItemRight"><b>get_version</b> ()</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Methods</h2></td></tr>
+<tr class="memitem:aca1e139057a9d803cbce12f1bba0143c" id="r_aca1e139057a9d803cbce12f1bba0143c"><td class="memItemLeft"><a id="aca1e139057a9d803cbce12f1bba0143c" name="aca1e139057a9d803cbce12f1bba0143c"></a>
+void&#160;</td><td class="memItemRight"><b>hook_optimize</b> () override</td></tr>
+<tr class="memitem:aea8e23ea758d3f36fcb4d3d2b7632e09" id="r_aea8e23ea758d3f36fcb4d3d2b7632e09"><td class="memItemLeft"><a id="aea8e23ea758d3f36fcb4d3d2b7632e09" name="aea8e23ea758d3f36fcb4d3d2b7632e09"></a>
+void&#160;</td><td class="memItemRight"><b>set_solution_index</b> (unsigned int t_index) override</td></tr>
+<tr class="memitem:a413daa9dc74ada6fee265a0aaae47f8a" id="r_a413daa9dc74ada6fee265a0aaae47f8a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a413daa9dc74ada6fee265a0aaae47f8a">hook_build</a> () override</td></tr>
+<tr class="memitem:acc95a2d2db26a60a5119bbadcffa5e3f" id="r_acc95a2d2db26a60a5119bbadcffa5e3f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#acc95a2d2db26a60a5119bbadcffa5e3f">hook_write</a> (const std::string &amp;t_name) override</td></tr>
+<tr class="memitem:a5929761e1262ffadef6b0401f922651f" id="r_a5929761e1262ffadef6b0401f922651f"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a5929761e1262ffadef6b0401f922651f">hook_add</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var, bool t_add_column) override</td></tr>
+<tr class="memitem:a8b0763c2e6eaeee822358c944fda18bd" id="r_a8b0763c2e6eaeee822358c944fda18bd"><td class="memItemLeft"><a id="a8b0763c2e6eaeee822358c944fda18bd" name="a8b0763c2e6eaeee822358c944fda18bd"></a>
+bool&#160;</td><td class="memItemRight"><b>hook_add</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a6cfed8c53b7b8cde8d178d0862ad8ce8" id="r_a6cfed8c53b7b8cde8d178d0862ad8ce8"><td class="memItemLeft"><a id="a6cfed8c53b7b8cde8d178d0862ad8ce8" name="a6cfed8c53b7b8cde8d178d0862ad8ce8"></a>
+bool&#160;</td><td class="memItemRight"><b>hook_add</b> (const <a class="el" href="classidol_1_1QCtr.html">QCtr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a5c2160e7889656476d3b6369d78bcf49" id="r_a5c2160e7889656476d3b6369d78bcf49"><td class="memItemLeft"><a id="a5c2160e7889656476d3b6369d78bcf49" name="a5c2160e7889656476d3b6369d78bcf49"></a>
+bool&#160;</td><td class="memItemRight"><b>hook_add</b> (const <a class="el" href="classidol_1_1SOSCtr.html">SOSCtr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:aed052e7a594cb137851afa2a98ce1080" id="r_aed052e7a594cb137851afa2a98ce1080"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aed052e7a594cb137851afa2a98ce1080">hook_update_objective_sense</a> () override</td></tr>
+<tr class="memitem:a40f86dc7a9ca8de4f875442b3d3bed6b" id="r_a40f86dc7a9ca8de4f875442b3d3bed6b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a40f86dc7a9ca8de4f875442b3d3bed6b">hook_update_matrix</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr, const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var, double t_constant) override</td></tr>
+<tr class="memitem:a1a62d2cf57280dc00fc6fe0bf683ae19" id="r_a1a62d2cf57280dc00fc6fe0bf683ae19"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a1a62d2cf57280dc00fc6fe0bf683ae19">hook_update</a> () override</td></tr>
+<tr class="memitem:a6ebb696280fae4d3d0c8accf5de8024a" id="r_a6ebb696280fae4d3d0c8accf5de8024a"><td class="memItemLeft"><a id="a6ebb696280fae4d3d0c8accf5de8024a" name="a6ebb696280fae4d3d0c8accf5de8024a"></a>
+void&#160;</td><td class="memItemRight"><b>hook_update</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a458f24430805a0fdc46f54fb691fe398" id="r_a458f24430805a0fdc46f54fb691fe398"><td class="memItemLeft"><a id="a458f24430805a0fdc46f54fb691fe398" name="a458f24430805a0fdc46f54fb691fe398"></a>
+void&#160;</td><td class="memItemRight"><b>hook_update</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a8325dfad15f853d8aa30a5d5ecc8a4d8" id="r_a8325dfad15f853d8aa30a5d5ecc8a4d8"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a8325dfad15f853d8aa30a5d5ecc8a4d8">hook_update_objective</a> () override</td></tr>
+<tr class="memitem:a13ced47c5ce6eaa0112f1accdc534335" id="r_a13ced47c5ce6eaa0112f1accdc534335"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a13ced47c5ce6eaa0112f1accdc534335">hook_update_rhs</a> () override</td></tr>
+<tr class="memitem:a9da2b9c0b03700a508b83bdf726adbde" id="r_a9da2b9c0b03700a508b83bdf726adbde"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a9da2b9c0b03700a508b83bdf726adbde">hook_remove</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a711c7f66f0bf536fde5e460d4f8168f6" id="r_a711c7f66f0bf536fde5e460d4f8168f6"><td class="memItemLeft"><a id="a711c7f66f0bf536fde5e460d4f8168f6" name="a711c7f66f0bf536fde5e460d4f8168f6"></a>
+void&#160;</td><td class="memItemRight"><b>hook_remove</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:ad5222d8e0fcd2bda6c4bc81f58c135ed" id="r_ad5222d8e0fcd2bda6c4bc81f58c135ed"><td class="memItemLeft"><a id="ad5222d8e0fcd2bda6c4bc81f58c135ed" name="ad5222d8e0fcd2bda6c4bc81f58c135ed"></a>
+void&#160;</td><td class="memItemRight"><b>hook_remove</b> (const <a class="el" href="classidol_1_1QCtr.html">QCtr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a56c3d227dad58e3ed8d771b3b5af8b8b" id="r_a56c3d227dad58e3ed8d771b3b5af8b8b"><td class="memItemLeft"><a id="a56c3d227dad58e3ed8d771b3b5af8b8b" name="a56c3d227dad58e3ed8d771b3b5af8b8b"></a>
+void&#160;</td><td class="memItemRight"><b>hook_remove</b> (const <a class="el" href="classidol_1_1SOSCtr.html">SOSCtr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:ac6d2ca51fccd54725b953b00648cd0cc" id="r_ac6d2ca51fccd54725b953b00648cd0cc"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#ac6d2ca51fccd54725b953b00648cd0cc">build</a> () final</td></tr>
+<tr class="memitem:a6e7e481c584e219797f6f192513aba5a" id="r_a6e7e481c584e219797f6f192513aba5a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a6e7e481c584e219797f6f192513aba5a">write</a> (const std::string &amp;t_name) final</td></tr>
+<tr class="memitem:a6b04405ac487c1efa2c6a3591381c1cc" id="r_a6b04405ac487c1efa2c6a3591381c1cc"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a6b04405ac487c1efa2c6a3591381c1cc">add</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) final</td></tr>
+<tr class="memitem:ad47d7ea59893bd1180d9355920489458" id="r_ad47d7ea59893bd1180d9355920489458"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#ad47d7ea59893bd1180d9355920489458">update</a> () final</td></tr>
+<tr class="memitem:a2a2f242f99524cbe48ad5fcfac27d450" id="r_a2a2f242f99524cbe48ad5fcfac27d450"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a2a2f242f99524cbe48ad5fcfac27d450">remove</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) final</td></tr>
+<tr class="memitem:ab4e10ddc08c02ed073b31a99205b4e71" id="r_ab4e10ddc08c02ed073b31a99205b4e71"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#ab4e10ddc08c02ed073b31a99205b4e71">has_lazy</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) const</td></tr>
+<tr class="memitem:a53be7c5ac95ab81302f7c0bbe791f090" id="r_a53be7c5ac95ab81302f7c0bbe791f090"><td class="memItemLeft">auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a53be7c5ac95ab81302f7c0bbe791f090">lazy</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var)</td></tr>
+<tr class="memitem:ab3e0dea568e9620a4a122428eaf8752a" id="r_ab3e0dea568e9620a4a122428eaf8752a"><td class="memItemLeft">auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#ab3e0dea568e9620a4a122428eaf8752a">lazy_vars</a> ()</td></tr>
+<tr class="memitem:a0b44e7ca85a5ff60a63c288966a850dd" id="r_a0b44e7ca85a5ff60a63c288966a850dd"><td class="memItemLeft">auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a0b44e7ca85a5ff60a63c288966a850dd">lazy_ctrs</a> ()</td></tr>
+<tr class="memitem:aa9bdfc4a6433c1553134f069caa20a5a" id="r_aa9bdfc4a6433c1553134f069caa20a5a"><td class="memItemLeft">auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#aa9bdfc4a6433c1553134f069caa20a5a">lazy_qctrs</a> ()</td></tr>
+<tr class="memitem:a6c792f670cf83d83256cf3c7a07dd8dd" id="r_a6c792f670cf83d83256cf3c7a07dd8dd"><td class="memItemLeft">auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a6c792f670cf83d83256cf3c7a07dd8dd">lazy_sosctrs</a> ()</td></tr>
+<tr class="memitem:a32185d2aacf63a72c9efdc1e7471081f" id="r_a32185d2aacf63a72c9efdc1e7471081f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a32185d2aacf63a72c9efdc1e7471081f">set_objective_to_be_updated</a> ()</td></tr>
+<tr class="memitem:a5d97af670cd90cbf79bd54a0f2087232" id="r_a5d97af670cd90cbf79bd54a0f2087232"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a5d97af670cd90cbf79bd54a0f2087232">is_objective_to_be_updated</a> () const</td></tr>
+<tr class="memitem:a412037595f2455772188b4f53b3b599f" id="r_a412037595f2455772188b4f53b3b599f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a412037595f2455772188b4f53b3b599f">set_objective_as_updated</a> ()</td></tr>
+<tr class="memitem:aec626141fa369dbe95840f168e1d2fca" id="r_aec626141fa369dbe95840f168e1d2fca"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#aec626141fa369dbe95840f168e1d2fca">set_rhs_to_be_updated</a> ()</td></tr>
+<tr class="memitem:ab1e00bef62bdeda91857f07ffb5c51a7" id="r_ab1e00bef62bdeda91857f07ffb5c51a7"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#ab1e00bef62bdeda91857f07ffb5c51a7">is_rhs_to_be_updated</a> () const</td></tr>
+<tr class="memitem:a78446a40d25acd488ade53a8090e868d" id="r_a78446a40d25acd488ade53a8090e868d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a78446a40d25acd488ade53a8090e868d">set_rhs_as_updated</a> ()</td></tr>
+<tr class="memitem:a9a0b7ab294656fc1b5885c4cd0195ec4" id="r_a9a0b7ab294656fc1b5885c4cd0195ec4"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a9a0b7ab294656fc1b5885c4cd0195ec4">update_obj_sense</a> () override</td></tr>
+<tr class="memitem:a379439d595fe61e4eafa50c04c6745a8" id="r_a379439d595fe61e4eafa50c04c6745a8"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a379439d595fe61e4eafa50c04c6745a8">update_obj</a> () override</td></tr>
+<tr class="memitem:a9946479443d34b183d31c8a92de0e80a" id="r_a9946479443d34b183d31c8a92de0e80a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a9946479443d34b183d31c8a92de0e80a">update_rhs</a> () override</td></tr>
+<tr class="memitem:aadada370164034f9cb7e303ae0bceec7" id="r_aadada370164034f9cb7e303ae0bceec7"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#aadada370164034f9cb7e303ae0bceec7">update_obj_constant</a> () override</td></tr>
+<tr class="memitem:ac784b860e68c0fdc00479fcc58e493ec" id="r_ac784b860e68c0fdc00479fcc58e493ec"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#ac784b860e68c0fdc00479fcc58e493ec">update_mat_coeff</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr, const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a04d104e84c5e3abd5f23334c146b8219" id="r_a04d104e84c5e3abd5f23334c146b8219"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a04d104e84c5e3abd5f23334c146b8219">update_ctr_type</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:adf46c5ada88ac610b74c9b0c42475a6d" id="r_adf46c5ada88ac610b74c9b0c42475a6d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#adf46c5ada88ac610b74c9b0c42475a6d">update_ctr_rhs</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a577b41037b1b6a0e6d7388c8593af95d" id="r_a577b41037b1b6a0e6d7388c8593af95d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a577b41037b1b6a0e6d7388c8593af95d">update_var_type</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a2a25e54be0be97c2de3072b7c89f1045" id="r_a2a25e54be0be97c2de3072b7c89f1045"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#a2a25e54be0be97c2de3072b7c89f1045">update_var_lb</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:af80a9f62a386edae5113ed565ef4507a" id="r_af80a9f62a386edae5113ed565ef4507a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#af80a9f62a386edae5113ed565ef4507a">update_var_ub</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:aae63066627a541a213f78ec46e539a42" id="r_aae63066627a541a213f78ec46e539a42"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html#aae63066627a541a213f78ec46e539a42">update_var_obj</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:ab1c1c7e145be0cbf4a10e38e3727b4bd" id="r_ab1c1c7e145be0cbf4a10e38e3727b4bd"><td class="memItemLeft">std::optional&lt; uint64_t &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ab1c1c7e145be0cbf4a10e38e3727b4bd">m_model_id</a> = 0</td></tr>
+<tr class="memitem:aab40f4a0ea366d2755842c7b3c2f5233" id="r_aab40f4a0ea366d2755842c7b3c2f5233"><td class="memItemLeft">const std::string&#160;</td><td class="memItemRight"><a class="el" href="#aab40f4a0ea366d2755842c7b3c2f5233">m_module</a></td></tr>
+<tr class="memitem:a811f51e9e4606533b14e5d06a65301d2" id="r_a811f51e9e4606533b14e5d06a65301d2"><td class="memItemLeft">const std::string&#160;</td><td class="memItemRight"><a class="el" href="#a811f51e9e4606533b14e5d06a65301d2">m_optimizer</a></td></tr>
+<tr class="memitem:a94807be469096571c8ba2e7c84729748" id="r_a94807be469096571c8ba2e7c84729748"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a94807be469096571c8ba2e7c84729748">m_is_continuous_relaxation</a></td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a6b04405ac487c1efa2c6a3591381c1cc" name="a6b04405ac487c1efa2c6a3591381c1cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b04405ac487c1efa2c6a3591381c1cc">&#9670;&#160;</a></span>add()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::add </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel final">final</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00090">90</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="ac6d2ca51fccd54725b953b00648cd0cc" name="ac6d2ca51fccd54725b953b00648cd0cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6d2ca51fccd54725b953b00648cd0cc">&#9670;&#160;</a></span>build()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::build </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel final">final</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00084">84</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="ab4e10ddc08c02ed073b31a99205b4e71" name="ab4e10ddc08c02ed073b31a99205b4e71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4e10ddc08c02ed073b31a99205b4e71">&#9670;&#160;</a></span>has_lazy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::has_lazy </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00126">126</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a5929761e1262ffadef6b0401f922651f" name="a5929761e1262ffadef6b0401f922651f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5929761e1262ffadef6b0401f922651f">&#9670;&#160;</a></span>hook_add()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool idol::Optimizers::JuMP::hook_add </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>t_add_column</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates&lt; bool, bool, bool, bool &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a413daa9dc74ada6fee265a0aaae47f8a" name="a413daa9dc74ada6fee265a0aaae47f8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a413daa9dc74ada6fee265a0aaae47f8a">&#9670;&#160;</a></span>hook_build()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::JuMP::hook_build </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates&lt; bool, bool, bool, bool &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a9da2b9c0b03700a508b83bdf726adbde" name="a9da2b9c0b03700a508b83bdf726adbde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9da2b9c0b03700a508b83bdf726adbde">&#9670;&#160;</a></span>hook_remove()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::JuMP::hook_remove </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates&lt; bool, bool, bool, bool &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a1a62d2cf57280dc00fc6fe0bf683ae19" name="a1a62d2cf57280dc00fc6fe0bf683ae19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a62d2cf57280dc00fc6fe0bf683ae19">&#9670;&#160;</a></span>hook_update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::JuMP::hook_update </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates&lt; bool, bool, bool, bool &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a40f86dc7a9ca8de4f875442b3d3bed6b" name="a40f86dc7a9ca8de4f875442b3d3bed6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40f86dc7a9ca8de4f875442b3d3bed6b">&#9670;&#160;</a></span>hook_update_matrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::JuMP::hook_update_matrix </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_constant</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates&lt; bool, bool, bool, bool &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a8325dfad15f853d8aa30a5d5ecc8a4d8" name="a8325dfad15f853d8aa30a5d5ecc8a4d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8325dfad15f853d8aa30a5d5ecc8a4d8">&#9670;&#160;</a></span>hook_update_objective()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::JuMP::hook_update_objective </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates&lt; bool, bool, bool, bool &gt;</a>.</p>
+
+</div>
+</div>
+<a id="aed052e7a594cb137851afa2a98ce1080" name="aed052e7a594cb137851afa2a98ce1080"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed052e7a594cb137851afa2a98ce1080">&#9670;&#160;</a></span>hook_update_objective_sense()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::JuMP::hook_update_objective_sense </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates&lt; bool, bool, bool, bool &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a13ced47c5ce6eaa0112f1accdc534335" name="a13ced47c5ce6eaa0112f1accdc534335"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13ced47c5ce6eaa0112f1accdc534335">&#9670;&#160;</a></span>hook_update_rhs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::JuMP::hook_update_rhs </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates&lt; bool, bool, bool, bool &gt;</a>.</p>
+
+</div>
+</div>
+<a id="acc95a2d2db26a60a5119bbadcffa5e3f" name="acc95a2d2db26a60a5119bbadcffa5e3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc95a2d2db26a60a5119bbadcffa5e3f">&#9670;&#160;</a></span>hook_write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::JuMP::hook_write </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>t_name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates&lt; bool, bool, bool, bool &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a5d97af670cd90cbf79bd54a0f2087232" name="a5d97af670cd90cbf79bd54a0f2087232"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d97af670cd90cbf79bd54a0f2087232">&#9670;&#160;</a></span>is_objective_to_be_updated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::is_objective_to_be_updated </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00166">166</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="ab1e00bef62bdeda91857f07ffb5c51a7" name="ab1e00bef62bdeda91857f07ffb5c51a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1e00bef62bdeda91857f07ffb5c51a7">&#9670;&#160;</a></span>is_rhs_to_be_updated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::is_rhs_to_be_updated </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00170">170</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a53be7c5ac95ab81302f7c0bbe791f090" name="a53be7c5ac95ab81302f7c0bbe791f090"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53be7c5ac95ab81302f7c0bbe791f090">&#9670;&#160;</a></span>lazy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto &amp; <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::lazy </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00141">141</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a0b44e7ca85a5ff60a63c288966a850dd" name="a0b44e7ca85a5ff60a63c288966a850dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b44e7ca85a5ff60a63c288966a850dd">&#9670;&#160;</a></span>lazy_ctrs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto &amp; <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::lazy_ctrs </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00156">156</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="aa9bdfc4a6433c1553134f069caa20a5a" name="aa9bdfc4a6433c1553134f069caa20a5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9bdfc4a6433c1553134f069caa20a5a">&#9670;&#160;</a></span>lazy_qctrs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto &amp; <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::lazy_qctrs </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00159">159</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a6c792f670cf83d83256cf3c7a07dd8dd" name="a6c792f670cf83d83256cf3c7a07dd8dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c792f670cf83d83256cf3c7a07dd8dd">&#9670;&#160;</a></span>lazy_sosctrs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto &amp; <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::lazy_sosctrs </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00162">162</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="ab3e0dea568e9620a4a122428eaf8752a" name="ab3e0dea568e9620a4a122428eaf8752a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3e0dea568e9620a4a122428eaf8752a">&#9670;&#160;</a></span>lazy_vars()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto &amp; <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::lazy_vars </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00153">153</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="ae4c28fa0db1eda560ba00e64ff05c0f6" name="ae4c28fa0db1eda560ba00e64ff05c0f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4c28fa0db1eda560ba00e64ff05c0f6">&#9670;&#160;</a></span>operator[]()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool &amp; <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00185">185</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a2a2f242f99524cbe48ad5fcfac27d450" name="a2a2f242f99524cbe48ad5fcfac27d450"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a2f242f99524cbe48ad5fcfac27d450">&#9670;&#160;</a></span>remove()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::remove </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel final">final</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00114">114</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a412037595f2455772188b4f53b3b599f" name="a412037595f2455772188b4f53b3b599f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a412037595f2455772188b4f53b3b599f">&#9670;&#160;</a></span>set_objective_as_updated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::set_objective_as_updated </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00167">167</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a32185d2aacf63a72c9efdc1e7471081f" name="a32185d2aacf63a72c9efdc1e7471081f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32185d2aacf63a72c9efdc1e7471081f">&#9670;&#160;</a></span>set_objective_to_be_updated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::set_objective_to_be_updated </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00165">165</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a78446a40d25acd488ade53a8090e868d" name="a78446a40d25acd488ade53a8090e868d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78446a40d25acd488ade53a8090e868d">&#9670;&#160;</a></span>set_rhs_as_updated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::set_rhs_as_updated </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00171">171</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="aec626141fa369dbe95840f168e1d2fca" name="aec626141fa369dbe95840f168e1d2fca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec626141fa369dbe95840f168e1d2fca">&#9670;&#160;</a></span>set_rhs_to_be_updated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::set_rhs_to_be_updated </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00169">169</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="ad47d7ea59893bd1180d9355920489458" name="ad47d7ea59893bd1180d9355920489458"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad47d7ea59893bd1180d9355920489458">&#9670;&#160;</a></span>update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::update </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel final">final</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00105">105</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="adf46c5ada88ac610b74c9b0c42475a6d" name="adf46c5ada88ac610b74c9b0c42475a6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf46c5ada88ac610b74c9b0c42475a6d">&#9670;&#160;</a></span>update_ctr_rhs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::update_ctr_rhs </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00179">179</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a04d104e84c5e3abd5f23334c146b8219" name="a04d104e84c5e3abd5f23334c146b8219"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04d104e84c5e3abd5f23334c146b8219">&#9670;&#160;</a></span>update_ctr_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::update_ctr_type </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00178">178</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="ac784b860e68c0fdc00479fcc58e493ec" name="ac784b860e68c0fdc00479fcc58e493ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac784b860e68c0fdc00479fcc58e493ec">&#9670;&#160;</a></span>update_mat_coeff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::update_mat_coeff </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00177">177</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a379439d595fe61e4eafa50c04c6745a8" name="a379439d595fe61e4eafa50c04c6745a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a379439d595fe61e4eafa50c04c6745a8">&#9670;&#160;</a></span>update_obj()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::update_obj </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00174">174</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="aadada370164034f9cb7e303ae0bceec7" name="aadada370164034f9cb7e303ae0bceec7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadada370164034f9cb7e303ae0bceec7">&#9670;&#160;</a></span>update_obj_constant()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::update_obj_constant </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00176">176</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a9a0b7ab294656fc1b5885c4cd0195ec4" name="a9a0b7ab294656fc1b5885c4cd0195ec4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a0b7ab294656fc1b5885c4cd0195ec4">&#9670;&#160;</a></span>update_obj_sense()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::update_obj_sense </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00173">173</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a9946479443d34b183d31c8a92de0e80a" name="a9946479443d34b183d31c8a92de0e80a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9946479443d34b183d31c8a92de0e80a">&#9670;&#160;</a></span>update_rhs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::update_rhs </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00175">175</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a2a25e54be0be97c2de3072b7c89f1045" name="a2a25e54be0be97c2de3072b7c89f1045"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a25e54be0be97c2de3072b7c89f1045">&#9670;&#160;</a></span>update_var_lb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::update_var_lb </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00181">181</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="aae63066627a541a213f78ec46e539a42" name="aae63066627a541a213f78ec46e539a42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae63066627a541a213f78ec46e539a42">&#9670;&#160;</a></span>update_var_obj()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::update_var_obj </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00183">183</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a577b41037b1b6a0e6d7388c8593af95d" name="a577b41037b1b6a0e6d7388c8593af95d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a577b41037b1b6a0e6d7388c8593af95d">&#9670;&#160;</a></span>update_var_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::update_var_type </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00180">180</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="af80a9f62a386edae5113ed565ef4507a" name="af80a9f62a386edae5113ed565ef4507a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af80a9f62a386edae5113ed565ef4507a">&#9670;&#160;</a></span>update_var_ub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::update_var_ub </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00182">182</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a id="a6e7e481c584e219797f6f192513aba5a" name="a6e7e481c584e219797f6f192513aba5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e7e481c584e219797f6f192513aba5a">&#9670;&#160;</a></span>write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1OptimizerWithLazyUpdates.html">idol::OptimizerWithLazyUpdates</a>&lt; bool, bool, bool, bool &gt;::write </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>t_name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel final">final</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="OptimizerWithLazyUpdates_8h_source.html#l00087">87</a> of file <a class="el" href="OptimizerWithLazyUpdates_8h_source.html">OptimizerWithLazyUpdates.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="a94807be469096571c8ba2e7c84729748" name="a94807be469096571c8ba2e7c84729748"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94807be469096571c8ba2e7c84729748">&#9670;&#160;</a></span>m_is_continuous_relaxation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool idol::Optimizers::JuMP::m_is_continuous_relaxation</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00024">24</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="ab1c1c7e145be0cbf4a10e38e3727b4bd" name="ab1c1c7e145be0cbf4a10e38e3727b4bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1c1c7e145be0cbf4a10e38e3727b4bd">&#9670;&#160;</a></span>m_model_id</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;uint64_t&gt; idol::Optimizers::JuMP::m_model_id = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00021">21</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="aab40f4a0ea366d2755842c7b3c2f5233" name="aab40f4a0ea366d2755842c7b3c2f5233"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab40f4a0ea366d2755842c7b3c2f5233">&#9670;&#160;</a></span>m_module</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string idol::Optimizers::JuMP::m_module</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00022">22</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a811f51e9e4606533b14e5d06a65301d2" name="a811f51e9e4606533b14e5d06a65301d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a811f51e9e4606533b14e5d06a65301d2">&#9670;&#160;</a></span>m_optimizer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string idol::Optimizers::JuMP::m_optimizer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00023">23</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

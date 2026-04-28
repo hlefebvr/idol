@@ -1,0 +1,506 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Heuristics::LocalBranching::Strategy Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><b>Heuristics</b></li><li class="navelem"><a href="classidol_1_1Heuristics_1_1LocalBranching.html">LocalBranching</a></li><li class="navelem"><a href="classidol_1_1Heuristics_1_1LocalBranching_1_1Strategy.html">Strategy</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pro-methods">Protected Methods</a> &#124;
+<a href="classidol_1_1Heuristics_1_1LocalBranching_1_1Strategy-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Heuristics::LocalBranching::Strategy Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="LocalBranching_8h_source.html#l00025">25</a> of file <a class="el" href="LocalBranching_8h_source.html">LocalBranching.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a26bdebce21c6bd43cec343ce53621222" id="r_a26bdebce21c6bd43cec343ce53621222"><td class="memItemLeft"><a id="a26bdebce21c6bd43cec343ce53621222" name="a26bdebce21c6bd43cec343ce53621222"></a>
+&#160;</td><td class="memItemRight"><b>Strategy</b> (unsigned int t_neighbourhood_size, <a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a> *t_optimizer_factory)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Methods</h2></td></tr>
+<tr class="memitem:a6ad6e18fdb48f74436a70f44d272b632" id="r_a6ad6e18fdb48f74436a70f44d272b632"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6ad6e18fdb48f74436a70f44d272b632">operator()</a> (CallbackEvent t_event) override</td></tr>
+<tr class="memitem:ada7813fd7d0e5c081c47c00ae55b9caf" id="r_ada7813fd7d0e5c081c47c00ae55b9caf"><td class="memItemLeft">virtual const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Callback.html#ada7813fd7d0e5c081c47c00ae55b9caf">original_model</a> () const</td></tr>
+<tr class="memitem:aba8b5815a8701fadc611bea822bca68b" id="r_aba8b5815a8701fadc611bea822bca68b"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Callback.html#aba8b5815a8701fadc611bea822bca68b">submit_heuristic_solution</a> (const PrimalPoint &amp;t_solution)</td></tr>
+<tr class="memitem:acb1781b217b4d14b307ff8b74a535bdf" id="r_acb1781b217b4d14b307ff8b74a535bdf"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Callback.html#acb1781b217b4d14b307ff8b74a535bdf">add_user_cut</a> (const <a class="el" href="classidol_1_1TempCtr.html">TempCtr</a> &amp;t_cut)</td></tr>
+<tr class="memitem:a551ffb69f6115fad4f91974e2da45ed4" id="r_a551ffb69f6115fad4f91974e2da45ed4"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Callback.html#a551ffb69f6115fad4f91974e2da45ed4">add_lazy_cut</a> (const <a class="el" href="classidol_1_1TempCtr.html">TempCtr</a> &amp;t_cut)</td></tr>
+<tr class="memitem:ac1a19a08051cc57531e9c14422a026c0" id="r_ac1a19a08051cc57531e9c14422a026c0"><td class="memItemLeft">virtual PrimalPoint&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Callback.html#ac1a19a08051cc57531e9c14422a026c0">primal_solution</a> () const</td></tr>
+<tr class="memitem:a0242d3aa2598612b208579698987d6b8" id="r_a0242d3aa2598612b208579698987d6b8"><td class="memItemLeft">const <a class="el" href="classidol_1_1Timer.html">Timer</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Callback.html#a0242d3aa2598612b208579698987d6b8">time</a> () const</td></tr>
+<tr class="memitem:ab45dfb3e9f7155de67fceb474a0dd827" id="r_ab45dfb3e9f7155de67fceb474a0dd827"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Callback.html#ab45dfb3e9f7155de67fceb474a0dd827">best_obj</a> () const</td></tr>
+<tr class="memitem:aec34a610d1edb398e806774b2ead856e" id="r_aec34a610d1edb398e806774b2ead856e"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Callback.html#aec34a610d1edb398e806774b2ead856e">best_bound</a> () const</td></tr>
+<tr class="memitem:a7677b6fbabe697ffb24f43e68d23cadb" id="r_a7677b6fbabe697ffb24f43e68d23cadb"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Callback.html#a7677b6fbabe697ffb24f43e68d23cadb">terminate</a> ()</td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a551ffb69f6115fad4f91974e2da45ed4" name="a551ffb69f6115fad4f91974e2da45ed4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a551ffb69f6115fad4f91974e2da45ed4">&#9670;&#160;</a></span>add_lazy_cut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void idol::Callback::add_lazy_cut </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1TempCtr.html">TempCtr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_cut</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Adds a lazy cut to the relaxation </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_cut</td><td>the cut to be added </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acb1781b217b4d14b307ff8b74a535bdf" name="acb1781b217b4d14b307ff8b74a535bdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb1781b217b4d14b307ff8b74a535bdf">&#9670;&#160;</a></span>add_user_cut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void idol::Callback::add_user_cut </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1TempCtr.html">TempCtr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_cut</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Adds a user cut to the relaxation </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_cut</td><td>the cut to be added </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aec34a610d1edb398e806774b2ead856e" name="aec34a610d1edb398e806774b2ead856e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec34a610d1edb398e806774b2ead856e">&#9670;&#160;</a></span>best_bound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Callback::best_bound </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the best bound found so far </p><dl class="section return"><dt>Returns</dt><dd>the best bound </dd></dl>
+
+</div>
+</div>
+<a id="ab45dfb3e9f7155de67fceb474a0dd827" name="ab45dfb3e9f7155de67fceb474a0dd827"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab45dfb3e9f7155de67fceb474a0dd827">&#9670;&#160;</a></span>best_obj()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Callback::best_obj </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the best objective value found so far </p><dl class="section return"><dt>Returns</dt><dd>the best objective value </dd></dl>
+
+</div>
+</div>
+<a id="a6ad6e18fdb48f74436a70f44d272b632" name="a6ad6e18fdb48f74436a70f44d272b632"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ad6e18fdb48f74436a70f44d272b632">&#9670;&#160;</a></span>operator()()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Heuristics::LocalBranching::Strategy::operator() </td>
+          <td>(</td>
+          <td class="paramtype">CallbackEvent</td>          <td class="paramname"><span class="paramname"><em>t_event</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method is left for the user to write and consists in the main execution block of the callback.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t_event</td><td>the event which triggered the call </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classidol_1_1Callback.html#a99638ea9268591c53e844518e68f35e5">idol::Callback</a>.</p>
+
+</div>
+</div>
+<a id="ada7813fd7d0e5c081c47c00ae55b9caf" name="ada7813fd7d0e5c081c47c00ae55b9caf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada7813fd7d0e5c081c47c00ae55b9caf">&#9670;&#160;</a></span>original_model()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const <a class="el" href="classidol_1_1Model.html">Model</a> &amp; idol::Callback::original_model </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Accesses the original model given to the solver </p>
+
+</div>
+</div>
+<a id="ac1a19a08051cc57531e9c14422a026c0" name="ac1a19a08051cc57531e9c14422a026c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1a19a08051cc57531e9c14422a026c0">&#9670;&#160;</a></span>primal_solution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual PrimalPoint idol::Callback::primal_solution </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the solution of the node which is currently being explored (when available) </p><dl class="section return"><dt>Returns</dt><dd>the solution of the current node </dd></dl>
+
+</div>
+</div>
+<a id="aba8b5815a8701fadc611bea822bca68b" name="aba8b5815a8701fadc611bea822bca68b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba8b5815a8701fadc611bea822bca68b">&#9670;&#160;</a></span>submit_heuristic_solution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void idol::Callback::submit_heuristic_solution </td>
+          <td>(</td>
+          <td class="paramtype">const PrimalPoint &amp;</td>          <td class="paramname"><span class="paramname"><em>t_solution</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Submits a new heuristic solution </p>
+
+</div>
+</div>
+<a id="a7677b6fbabe697ffb24f43e68d23cadb" name="a7677b6fbabe697ffb24f43e68d23cadb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7677b6fbabe697ffb24f43e68d23cadb">&#9670;&#160;</a></span>terminate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Callback::terminate </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Asks the optimizer to terminate the optimization process as soon as possible </p>
+
+</div>
+</div>
+<a id="a0242d3aa2598612b208579698987d6b8" name="a0242d3aa2598612b208579698987d6b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0242d3aa2598612b208579698987d6b8">&#9670;&#160;</a></span>time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classidol_1_1Timer.html">Timer</a> &amp; idol::Callback::time </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the current time </p><dl class="section return"><dt>Returns</dt><dd>the optimizer's time </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

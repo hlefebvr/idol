@@ -1,0 +1,262 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: Models</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div id="doc-content">
+<div><div class="header">
+  <div class="headertitle"><div class="title">Models </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul>
+  <li class="level1">
+    <a href="#lib_milp_basics_advanced_models_what">What is a Model and What Can You Do with It? </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_basics_advanced_models_copy">Copying and Moving Models </a>
+  </li>
+</ul>
+</div>
+<div class="textblock"><p>Describes how models are represented in <span class="tt">idol</span>.</p>
+<h1 class="doxsection"><a class="anchor" id="lib_milp_basics_advanced_models_what"></a>
+What is a Model and What Can You Do with It?</h1>
+<p>Mathematical optimization problems are modeled using the <span class="tt">Model</span> class. A model consists of a collection of variables and constraints together with an objective function. It is created by invoking the constructor of <span class="tt">Model</span> and passing an environment as its first argument.</p>
+<div class="fragment"><div class="line">Env env;</div>
+<div class="line">Model model(env); <span class="comment">// Creates an empty model.</span></div>
+</div><!-- fragment --><p>Here, we first create a new optimization environment, then create an optimization model. Note that the newly created model does not yet contain any variable or constraint. All models are treated as minimization problems. This is not a real restriction, however, since \( \max_{x\in X} f(x) = - \min_{x\in X} -f(x) \) holds for any function \( f \) and any set \( X \).</p>
+<p>Another way to create a model is by importing it from an <span class="tt">.mps</span> or an <span class="tt">.lp</span> file. To do this, you will need to rely on an external solver. In what follows, we use <span class="tt">GLPK</span>, which is an open-source solver which can be easily installed on your computer.</p>
+<div class="fragment"><div class="line">Env env;</div>
+<div class="line"><span class="keyword">auto</span> model = GLPK::read_from_file(<span class="stringliteral">&quot;/path/to/some/file.mps&quot;</span>);</div>
+</div><!-- fragment --><p>The decision to rely on external solvers is justified by two main considerations. First, <span class="tt">idol</span> is typically used in combination with such solvers anyway to efficiently solve optimization problems. Second, it is generally safer to leverage well-established solver implementations, which have been extensively tested over many years, to handle any mistake or ambiguity.</p>
+<p>Now that we have a model imported, we can safely iterate over its variables and constraints. This can be done as follows.</p>
+<div class="fragment"><div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; var : model.vars()) {</div>
+<div class="line">    std::cout &lt;&lt; var.name() &lt;&lt; std::endl;</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>Here, we use the <span class="tt">Model::vars</span> method to get access to the variables of the model and write down their names. Note that you can also use the <span class="tt">operator&lt;&lt;(std::ostream\&amp;, const Model\&amp;)</span> function to print the model to the console, or to a file. This can be useful for debugging.</p>
+<p>Once we have iterated over the variables, we may want to iterate over constraints as well. To do so, we can use the <span class="tt">Model::ctrs</span> method for linear constraints, the <span class="tt">Model::qctrs</span> method for quadratic constraints, and the <span class="tt">Model::sosctrs()</span> method for SOS-type constraints. The next code snippet shows how to get the number of variables and constraints in the model.</p>
+<div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;N. of vars: &quot;</span>        &lt;&lt; model.vars().size()    &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;N. of linear ctrs: &quot;</span> &lt;&lt; model.ctrs().size()    &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;N. of quad. ctrs: &quot;</span>  &lt;&lt; model.qctrs().size()   &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;N. of SOS ctrs: &quot;</span>    &lt;&lt; model.sosctrs().size() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+</div><!-- fragment --><p>To obtain model-specific information about a variable, a constraint, or the objective function, <span class="tt">idol</span> provides methods of the form <span class="tt">Model::get_&lt;X&gt;_&lt;Y&gt;(const &lt;T&gt;&amp;)</span>, where <span class="tt">X</span> denotes the type of object—such as <span class="tt">var</span>, <span class="tt">ctr</span>, <span class="tt">qctr</span>, <span class="tt">sosctr</span>, or <span class="tt">obj</span>, and <span class="tt">Y</span> specifies the particular attribute to access, for example <span class="tt">lb</span>, <span class="tt">type</span>, or <span class="tt">column</span> for variables. To give a specific example, the following code snippet counts the number of binary variables in the model.</p>
+<div class="fragment"><div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_binary_vars = 0;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Iterate over all variables in the model.</span></div>
+<div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; var : model.vars()) {</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// Get the variable type in this model.</span></div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> type = model.get_var_type(var);</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// Check type is binary.</span></div>
+<div class="line">    <span class="keywordflow">if</span> (type == Binary) {</div>
+<div class="line">        ++n_binary_vars;</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">}</div>
+</div><!-- fragment --><p>The complete set of information that can be accessed through a model is described in detail in the respective page, i.e., that on variables, constraints or objective function.</p>
+<h1 class="doxsection"><a class="anchor" id="lib_milp_basics_advanced_models_copy"></a>
+Copying and Moving Models</h1>
+<p>In most practical situations, it is preferable to avoid copying a model. Instead, one should often pass a reference to it to auxiliary functions. For this reason, the copy constructor of the <span class="tt">Model</span> class is declared <span class="tt">private</span>. If copying a model is indeed required, the <span class="tt">Model::copy</span> method and the move constructor can be used. The following example illustrates this usage.</p>
+<div class="fragment"><div class="line">Model copy_and_relax_integrality(<span class="keyword">const</span> Model&amp; t_model) {</div>
+<div class="line">    </div>
+<div class="line">    <span class="keyword">auto</span> result = t_model.copy();</div>
+<div class="line">    </div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; var : result.vars()) {</div>
+<div class="line">        result.set_var_type(var, Continuous);</div>
+<div class="line">    }</div>
+<div class="line">    </div>
+<div class="line">    <span class="keywordflow">return</span> std::move(result);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> model = Gurobi::read_from_file(<span class="stringliteral">&quot;problem.lp&quot;</span>);</div>
+<div class="line"><span class="keyword">auto</span> continuous_relaxation = copy_and_relax_integrality(model);</div>
+</div><!-- fragment --><p>Here, <span class="tt">continuous_relaxation</span> is now an independent copy of the original model and is being modified without altering its source model. </p>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

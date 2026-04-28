@@ -1,0 +1,754 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Reformulators::KKT::BoundProviderMap Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><b>Reformulators</b></li><li class="navelem"><a href="classidol_1_1Reformulators_1_1KKT.html">KKT</a></li><li class="navelem"><a href="classidol_1_1Reformulators_1_1KKT_1_1BoundProviderMap.html">BoundProviderMap</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pub-static-methods">Public Static Methods</a> &#124;
+<a href="classidol_1_1Reformulators_1_1KKT_1_1BoundProviderMap-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Reformulators::KKT::BoundProviderMap Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html#l00144">144</a> of file <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html">KKT.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:aa63aec33de925a1899e9857de4dfe6f5" id="r_aa63aec33de925a1899e9857de4dfe6f5"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#aa63aec33de925a1899e9857de4dfe6f5">get_ctr_dual_lb</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a5abf76b2ef000919562aa118f79278c6" id="r_a5abf76b2ef000919562aa118f79278c6"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a5abf76b2ef000919562aa118f79278c6">get_ctr_dual_ub</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a4c3ef2a7e226d09e5e96756d31f488fe" id="r_a4c3ef2a7e226d09e5e96756d31f488fe"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a4c3ef2a7e226d09e5e96756d31f488fe">get_ctr_slack_lb</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a45951d09fe3ec0a0818219a909844f66" id="r_a45951d09fe3ec0a0818219a909844f66"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a45951d09fe3ec0a0818219a909844f66">get_ctr_slack_ub</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:ad5c73b0d622a981cb2f141ccb32f326b" id="r_ad5c73b0d622a981cb2f141ccb32f326b"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#ad5c73b0d622a981cb2f141ccb32f326b">get_var_lb_dual_ub</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a5a1b9d297fa0adc6028c6bbb44064a57" id="r_a5a1b9d297fa0adc6028c6bbb44064a57"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a5a1b9d297fa0adc6028c6bbb44064a57">get_var_ub_dual_lb</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a263fc0c2041ee4bfc3093f5c53752ff2" id="r_a263fc0c2041ee4bfc3093f5c53752ff2"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a263fc0c2041ee4bfc3093f5c53752ff2">get_var_lb</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a775730e68e8075529d33ad2d83ba2396" id="r_a775730e68e8075529d33ad2d83ba2396"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a775730e68e8075529d33ad2d83ba2396">get_var_ub</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:ae6dfefaf8f672f119fe933a055791ff4" id="r_ae6dfefaf8f672f119fe933a055791ff4"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ae6dfefaf8f672f119fe933a055791ff4">set_ctr_dual_lb</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr, double t_value)</td></tr>
+<tr class="memitem:a5644d98726141552710f3b8a0d602420" id="r_a5644d98726141552710f3b8a0d602420"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a5644d98726141552710f3b8a0d602420">set_ctr_dual_ub</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr, double t_value)</td></tr>
+<tr class="memitem:ac7839abd611a608af2a0667d1a9e31d1" id="r_ac7839abd611a608af2a0667d1a9e31d1"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ac7839abd611a608af2a0667d1a9e31d1">set_ctr_slack_lb</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr, double t_value)</td></tr>
+<tr class="memitem:a08e3bc12dc7bc2b3d039bf7f8c2e124f" id="r_a08e3bc12dc7bc2b3d039bf7f8c2e124f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a08e3bc12dc7bc2b3d039bf7f8c2e124f">set_ctr_slack_ub</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr, double t_value)</td></tr>
+<tr class="memitem:ad0b645bec302336760c7b7978e2b9b6d" id="r_ad0b645bec302336760c7b7978e2b9b6d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad0b645bec302336760c7b7978e2b9b6d">set_var_lb_dual_ub</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var, double t_value)</td></tr>
+<tr class="memitem:a263737cd6574aaebc69ece8b8cde152b" id="r_a263737cd6574aaebc69ece8b8cde152b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a263737cd6574aaebc69ece8b8cde152b">set_var_ub_dual_lb</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var, double t_value)</td></tr>
+<tr class="memitem:a606371a15b8b1f25c36efb36afe5dc40" id="r_a606371a15b8b1f25c36efb36afe5dc40"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a606371a15b8b1f25c36efb36afe5dc40">set_var_lb</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var, double t_value)</td></tr>
+<tr class="memitem:a1fa28c7b56b4ef16b2b7891275eed9b3" id="r_a1fa28c7b56b4ef16b2b7891275eed9b3"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a1fa28c7b56b4ef16b2b7891275eed9b3">set_var_ub</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var, double t_value)</td></tr>
+<tr class="memitem:a252a343bb4a1edd7feccf7b7ccb0d18c" id="r_a252a343bb4a1edd7feccf7b7ccb0d18c"><td class="memItemLeft"><a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider.html">BoundProvider</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a252a343bb4a1edd7feccf7b7ccb0d18c">clone</a> () const override</td></tr>
+<tr class="memitem:aeaded75a71b257260e9daad98c6d02cb" id="r_aeaded75a71b257260e9daad98c6d02cb"><td class="memItemLeft">const <a class="el" href="classidol_1_1Model.html">Model</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider.html#aeaded75a71b257260e9daad98c6d02cb">model</a> () const</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Public Static Methods</h2></td></tr>
+<tr class="memitem:a59fac2072eecc5e6d18075c7c8381c0d" id="r_a59fac2072eecc5e6d18075c7c8381c0d"><td class="memItemLeft"><a id="a59fac2072eecc5e6d18075c7c8381c0d" name="a59fac2072eecc5e6d18075c7c8381c0d"></a>
+static <a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProviderMap.html">BoundProviderMap</a>&#160;</td><td class="memItemRight"><b>from_file</b> (const std::string &amp;t_filename)</td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a252a343bb4a1edd7feccf7b7ccb0d18c" name="a252a343bb4a1edd7feccf7b7ccb0d18c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a252a343bb4a1edd7feccf7b7ccb0d18c">&#9670;&#160;</a></span>clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider.html">BoundProvider</a> * idol::Reformulators::KKT::BoundProviderMap::clone </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider.html">idol::Reformulators::KKT::BoundProvider</a>.</p>
+
+</div>
+</div>
+<a id="aa63aec33de925a1899e9857de4dfe6f5" name="aa63aec33de925a1899e9857de4dfe6f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa63aec33de925a1899e9857de4dfe6f5">&#9670;&#160;</a></span>get_ctr_dual_lb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Reformulators::KKT::BoundProviderMap::get_ctr_dual_lb </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider.html">idol::Reformulators::KKT::BoundProvider</a>.</p>
+
+</div>
+</div>
+<a id="a5abf76b2ef000919562aa118f79278c6" name="a5abf76b2ef000919562aa118f79278c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5abf76b2ef000919562aa118f79278c6">&#9670;&#160;</a></span>get_ctr_dual_ub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Reformulators::KKT::BoundProviderMap::get_ctr_dual_ub </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider.html">idol::Reformulators::KKT::BoundProvider</a>.</p>
+
+</div>
+</div>
+<a id="a4c3ef2a7e226d09e5e96756d31f488fe" name="a4c3ef2a7e226d09e5e96756d31f488fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c3ef2a7e226d09e5e96756d31f488fe">&#9670;&#160;</a></span>get_ctr_slack_lb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Reformulators::KKT::BoundProviderMap::get_ctr_slack_lb </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider.html">idol::Reformulators::KKT::BoundProvider</a>.</p>
+
+</div>
+</div>
+<a id="a45951d09fe3ec0a0818219a909844f66" name="a45951d09fe3ec0a0818219a909844f66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45951d09fe3ec0a0818219a909844f66">&#9670;&#160;</a></span>get_ctr_slack_ub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Reformulators::KKT::BoundProviderMap::get_ctr_slack_ub </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider.html">idol::Reformulators::KKT::BoundProvider</a>.</p>
+
+</div>
+</div>
+<a id="a263fc0c2041ee4bfc3093f5c53752ff2" name="a263fc0c2041ee4bfc3093f5c53752ff2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a263fc0c2041ee4bfc3093f5c53752ff2">&#9670;&#160;</a></span>get_var_lb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Reformulators::KKT::BoundProviderMap::get_var_lb </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider.html">idol::Reformulators::KKT::BoundProvider</a>.</p>
+
+</div>
+</div>
+<a id="ad5c73b0d622a981cb2f141ccb32f326b" name="ad5c73b0d622a981cb2f141ccb32f326b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5c73b0d622a981cb2f141ccb32f326b">&#9670;&#160;</a></span>get_var_lb_dual_ub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Reformulators::KKT::BoundProviderMap::get_var_lb_dual_ub </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider.html">idol::Reformulators::KKT::BoundProvider</a>.</p>
+
+</div>
+</div>
+<a id="a775730e68e8075529d33ad2d83ba2396" name="a775730e68e8075529d33ad2d83ba2396"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a775730e68e8075529d33ad2d83ba2396">&#9670;&#160;</a></span>get_var_ub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Reformulators::KKT::BoundProviderMap::get_var_ub </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider.html">idol::Reformulators::KKT::BoundProvider</a>.</p>
+
+</div>
+</div>
+<a id="a5a1b9d297fa0adc6028c6bbb44064a57" name="a5a1b9d297fa0adc6028c6bbb44064a57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a1b9d297fa0adc6028c6bbb44064a57">&#9670;&#160;</a></span>get_var_ub_dual_lb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double idol::Reformulators::KKT::BoundProviderMap::get_var_ub_dual_lb </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1Reformulators_1_1KKT_1_1BoundProvider.html">idol::Reformulators::KKT::BoundProvider</a>.</p>
+
+</div>
+</div>
+<a id="aeaded75a71b257260e9daad98c6d02cb" name="aeaded75a71b257260e9daad98c6d02cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeaded75a71b257260e9daad98c6d02cb">&#9670;&#160;</a></span>model()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classidol_1_1Model.html">Model</a> &amp; idol::Reformulators::KKT::BoundProvider::model </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html#l00128">128</a> of file <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html">KKT.h</a>.</p>
+
+</div>
+</div>
+<a id="ae6dfefaf8f672f119fe933a055791ff4" name="ae6dfefaf8f672f119fe933a055791ff4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6dfefaf8f672f119fe933a055791ff4">&#9670;&#160;</a></span>set_ctr_dual_lb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Reformulators::KKT::BoundProviderMap::set_ctr_dual_lb </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html#l00163">163</a> of file <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html">KKT.h</a>.</p>
+
+</div>
+</div>
+<a id="a5644d98726141552710f3b8a0d602420" name="a5644d98726141552710f3b8a0d602420"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5644d98726141552710f3b8a0d602420">&#9670;&#160;</a></span>set_ctr_dual_ub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Reformulators::KKT::BoundProviderMap::set_ctr_dual_ub </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html#l00164">164</a> of file <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html">KKT.h</a>.</p>
+
+</div>
+</div>
+<a id="ac7839abd611a608af2a0667d1a9e31d1" name="ac7839abd611a608af2a0667d1a9e31d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7839abd611a608af2a0667d1a9e31d1">&#9670;&#160;</a></span>set_ctr_slack_lb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Reformulators::KKT::BoundProviderMap::set_ctr_slack_lb </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html#l00165">165</a> of file <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html">KKT.h</a>.</p>
+
+</div>
+</div>
+<a id="a08e3bc12dc7bc2b3d039bf7f8c2e124f" name="a08e3bc12dc7bc2b3d039bf7f8c2e124f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08e3bc12dc7bc2b3d039bf7f8c2e124f">&#9670;&#160;</a></span>set_ctr_slack_ub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Reformulators::KKT::BoundProviderMap::set_ctr_slack_ub </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html#l00166">166</a> of file <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html">KKT.h</a>.</p>
+
+</div>
+</div>
+<a id="a606371a15b8b1f25c36efb36afe5dc40" name="a606371a15b8b1f25c36efb36afe5dc40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a606371a15b8b1f25c36efb36afe5dc40">&#9670;&#160;</a></span>set_var_lb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Reformulators::KKT::BoundProviderMap::set_var_lb </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html#l00169">169</a> of file <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html">KKT.h</a>.</p>
+
+</div>
+</div>
+<a id="ad0b645bec302336760c7b7978e2b9b6d" name="ad0b645bec302336760c7b7978e2b9b6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0b645bec302336760c7b7978e2b9b6d">&#9670;&#160;</a></span>set_var_lb_dual_ub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Reformulators::KKT::BoundProviderMap::set_var_lb_dual_ub </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html#l00167">167</a> of file <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html">KKT.h</a>.</p>
+
+</div>
+</div>
+<a id="a1fa28c7b56b4ef16b2b7891275eed9b3" name="a1fa28c7b56b4ef16b2b7891275eed9b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fa28c7b56b4ef16b2b7891275eed9b3">&#9670;&#160;</a></span>set_var_ub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Reformulators::KKT::BoundProviderMap::set_var_ub </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html#l00170">170</a> of file <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html">KKT.h</a>.</p>
+
+</div>
+</div>
+<a id="a263737cd6574aaebc69ece8b8cde152b" name="a263737cd6574aaebc69ece8b8cde152b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a263737cd6574aaebc69ece8b8cde152b">&#9670;&#160;</a></span>set_var_ub_dual_lb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Reformulators::KKT::BoundProviderMap::set_var_ub_dual_lb </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html#l00168">168</a> of file <a class="el" href="mixed-integer_2modeling_2models_2KKT_8h_source.html">KKT.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>
