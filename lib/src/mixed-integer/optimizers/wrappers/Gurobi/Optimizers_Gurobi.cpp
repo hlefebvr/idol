@@ -712,6 +712,10 @@ void idol::Optimizers::Gurobi::set_param_infeasible_or_unbounded_info(bool t_val
     auto& lib = get_dynamic_lib();
     GUROBI_CATCH(
         m_model,
+        GRBsetintparam(lib.GRBgetenv(m_model), "DualReductions", t_value)
+    )
+    GUROBI_CATCH(
+        m_model,
         GRBsetintparam(lib.GRBgetenv(m_model), "InfUnbdInfo", t_value)
     )
     Optimizer::set_param_infeasible_or_unbounded_info(t_value);
