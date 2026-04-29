@@ -249,7 +249,6 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
     } else if (method == "YASOL") {
         auto yasol = Robust::Yasol(robust_description, bilevel_description);
         model.use(yasol);
-        //model.use(HiGHS());
     }
 
     // Set Parameters

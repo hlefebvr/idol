@@ -3,19 +3,22 @@
 //
 #include "idol/robust/optimizers/wrappers/yasol/Optimizers_Yasol.h"
 
+#ifdef IDOL_USE_YASOL
 #include "QBPSolver.h"
 #include "Datastructures/qlp/Qlp.hpp"
 #include  "yInterface.h"
+#endif
 
 #define THROW_NOT_IMPLEMENTED throw std::runtime_error(std::string(__FUNCTION__) + " is not implemented.\n" + std::string(__FILE__) + ":" + std::to_string(__LINE__));
 
 struct YasolAttributes {
-
+#ifdef IDOL_USE_YASOL
     data::Qlp qlp_model;
     yInterface yasol;
 
     std::vector<data::QpVar*> model_variable_in_qlp_model;
     std::vector<data::QpVar*> uncertainty_set_variable_in_qlp_model;
+#endif
 };
 
 idol::Optimizers::Robust::Yasol::Yasol(const Model& t_parent, const idol::Robust::Description& t_robust_description, const idol::Bilevel::Description* t_bilevel_description) :
@@ -36,6 +39,7 @@ std::string idol::Optimizers::Robust::Yasol::name() const {
     return "yasol-robust";
 }
 
+#ifdef IDOL_USE_YASOL
 data::QpVar::NumberSystem to_yasol(idol::VarType t_var_type) {
 
     switch (t_var_type) {
@@ -55,9 +59,10 @@ data::QpRhs::RatioSign to_yasol(idol::CtrType t_ctr_type) {
         default: throw idol::Exception("Unexpected constraint type.");
     }
 }
+#endif
 
 void idol::Optimizers::Robust::Yasol::build() {
-
+#ifdef IDOL_USE_YASOL
     delete static_cast<YasolAttributes*>(m_impl);
 
     auto* impl = new YasolAttributes;
@@ -233,7 +238,7 @@ void idol::Optimizers::Robust::Yasol::build() {
         }
 
     }
-
+#endif
 }
 
 void idol::Optimizers::Robust::Yasol::add(const Var& t_var) {
@@ -249,7 +254,7 @@ void idol::Optimizers::Robust::Yasol::add(const QCtr& t_ctr) {
 }
 
 void idol::Optimizers::Robust::Yasol::hook_optimize() {
-
+#ifdef IDOL_USE_YASOL
     delete static_cast<YasolAttributes*>(m_impl);
     m_impl = nullptr;
 
@@ -275,10 +280,7 @@ void idol::Optimizers::Robust::Yasol::hook_optimize() {
 
     impl->yasol.solve();
 
-    std::cout << "Solution Status: " << impl->yasol.getStatus() << std::endl;
-    std::cout << "RESULT: " << impl->yasol.getResult() << std::endl;
-    std::cout << "GAP: " << impl->yasol.getGap() << std::endl;
-    std::cout << "DUAL: " << impl->yasol.getDual() << std::endl;
+#endif
 }
 
 void idol::Optimizers::Robust::Yasol::set_solution_index(unsigned t_index) {
@@ -350,7 +352,7 @@ void idol::Optimizers::Robust::Yasol::update_var_obj(const Var& t_var) {
 }
 
 idol::SolutionStatus idol::Optimizers::Robust::Yasol::get_status() const {
-
+#ifdef IDOL_USE_YASOL
     if (!m_impl) {
         return Loaded;
     }
@@ -371,11 +373,11 @@ idol::SolutionStatus idol::Optimizers::Robust::Yasol::get_status() const {
             return Loaded;
         default: throw Exception("Unexpected Yasol status " + std::to_string(status) + ".");
     }
-
+#endif
 }
 
 idol::SolutionReason idol::Optimizers::Robust::Yasol::get_reason() const {
-
+#ifdef IDOL_USE_YASOL
     if (!m_impl) {
         return NotSpecified;
     }
@@ -385,20 +387,25 @@ idol::SolutionReason idol::Optimizers::Robust::Yasol::get_reason() const {
         return Proved;
     }
     return NotSpecified;
+#endif
 }
 
 double idol::Optimizers::Robust::Yasol::get_best_obj() const {
+#ifdef IDOL_USE_YASOL
     if (!m_impl) {
         return Inf;
     }
     return static_cast<YasolAttributes*>(m_impl)->yasol.getResult();
+#endif
 }
 
 double idol::Optimizers::Robust::Yasol::get_best_bound() const {
+#ifdef IDOL_USE_YASOL
     if (!m_impl) {
         return -Inf;
     }
     return static_cast<YasolAttributes*>(m_impl)->yasol.getDual();
+#endif
 }
 
 double idol::Optimizers::Robust::Yasol::get_var_primal(const Var& t_var) const {
