@@ -100,11 +100,6 @@ jobs:
           /opt/homebrew/bin/bash coinbrew build https://github.com/hlefebvr/MibS@idol  --no-prompt --disable-cplex-libcheck --tests=none
           # /opt/homebrew/bin/bash coinbrew build MibS@1.2 --no-prompt --disable-cplex-libcheck --tests=none
 
-      - name: Install Cbc
-        run: |
-          cd coin-or
-          /opt/homebrew/bin/bash coinbrew build Cbc
-
       - name: Install Yasol
         run: |
           git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com:MichaelHartisch/Yasol.git
@@ -209,11 +204,6 @@ jobs:
           chmod +x coinbrew
           ./coinbrew fetch https://github.com/hlefebvr/MibS@idol
           ./coinbrew build https://github.com/hlefebvr/MibS@idol --no-prompt --disable-cplex-libcheck --tests=none
-
-      - name: Install Cbc
-        run: |
-          cd coin-or
-          /opt/homebrew/bin/bash coinbrew build Cbc
 
       - name: Install Yasol
         run: |
