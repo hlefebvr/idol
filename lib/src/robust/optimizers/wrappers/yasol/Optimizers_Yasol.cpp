@@ -26,6 +26,10 @@ idol::Optimizers::Robust::Yasol::Yasol(const Model& t_parent, const idol::Robust
     m_robust_description(t_robust_description),
     m_bilevel_description(t_bilevel_description) {
 
+#ifndef IDOL_USE_YASOL
+    throw Exception("idol was not linked to Yasol.");
+#endif
+
 }
 
 idol::Optimizers::Robust::Yasol::~Yasol() {
