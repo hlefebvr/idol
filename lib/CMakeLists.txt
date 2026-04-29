@@ -474,6 +474,19 @@ if (${USE_OSI_CLP})
 
 endif()
 
+set(USE_OSI_CBC OFF CACHE BOOL "Build idol with OsiCbc (https://projects.coin-or.org/OsiCbc)")
+if (${USE_OSI_CBC})
+
+    find_package(CBC REQUIRED)
+    set(USE_OSI ON)
+    target_link_libraries(idol PUBLIC cbc)
+    target_compile_definitions(idol PUBLIC IDOL_USE_OSI_CBC)
+    list(APPEND AVAILABLE_MILP_SOLVERS "OsiCbc")
+
+    set(SHIP_COIN_OR ON)
+
+endif()
+
 set(USE_OSI OFF CACHE BOOL "Build idol with Osi (https://projects.coin-or.org/Osi)")
 if (${USE_OSI})
 
