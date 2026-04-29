@@ -105,7 +105,7 @@ jobs:
           git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/MichaelHartisch/Yasol.git
           cd Yasol
           mkdir build && cd build
-          cmake -DUSE_CBC=ON -DCOIN_ROOT_DIR=${{github.workspace}}/coin-or ..
+          cmake -DUSE_COIN=ON -DCOIN_ROOT_DIR=${{github.workspace}}/coin-or ..
           make
 
       #- name: Install Local-MIP
@@ -190,7 +190,7 @@ jobs:
     if: github.ref != 'refs/heads/main' || needs.push-tag.outputs.tag_created == 'true'
     runs-on: ubuntu-latest
     env:
-      IDOL_VERSION: ${{ needs.push-tag.outputs.version }}
+      IDOL_VERSION: ${{ needs.push-tag.outputs.version || 'dev'  }}
 
     steps:
       - name: Checkout repo
@@ -210,7 +210,7 @@ jobs:
           git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/MichaelHartisch/Yasol.git
           cd Yasol
           mkdir build && cd build
-          cmake -DUSE_CBC=ON -DCOIN_ROOT_DIR=${{github.workspace}}/coin-or ..
+          cmake -DUSE_COIN=ON -DCOIN_ROOT_DIR=${{github.workspace}}/coin-or ..
           make
 
       #- name: Install Local-MIP

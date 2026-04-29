@@ -280,7 +280,10 @@ void idol::Optimizers::Robust::Yasol::hook_optimize() {
         impl->yasol.supressOutput();
     }
 
-    impl->yasol.setTimelimit(std::min<double>(get_param_time_limit(), (double) std::numeric_limits<time_t>::max() - std::time(nullptr) - 1));
+    const time_t time_limit = (time_t) std::min<double>(get_param_time_limit(), (double) (std::numeric_limits<time_t>::max() - std::time(nullptr) - 10000));
+    impl->yasol.setTimelimit(time_limit);
+
+    std::cout << time_limit << std::endl;
 
     impl->yasol.solve();
 
