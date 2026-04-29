@@ -3,8 +3,8 @@ name: Publish and Tag New Version.
 on:
   push:
     branches:
-      - 'main'
-      #- '*'
+      #- 'main'
+      - '*'
 
 env:
   BUILD_TYPE: Release
@@ -39,6 +39,7 @@ jobs:
 
       - name: Compare and create tag if needed
         id: create_tag
+        if: github.ref == 'refs/heads/main'
         run: |
           set -e
           VERSION="${PROJECT_VERSION}"
@@ -65,10 +66,10 @@ jobs:
 
   build-macos:
     needs: push-tag
-    if: needs.push-tag.outputs.tag_created == 'true'
+    if: github.ref != 'refs/heads/main' || needs.push-tag.outputs.tag_created == 'true'
     runs-on: macos-latest
     env:
-      IDOL_VERSION: ${{ needs.push-tag.outputs.version }}
+      IDOL_VERSION: ${{ needs.push-tag.outputs.version || 'dev'  }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -147,6 +148,7 @@ jobs:
           ls -l idol-${IDOL_VERSION}-macos-arm64.tar.gz
 
       - name: Upload Release Asset
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.push-tag.outputs.version }}
@@ -156,6 +158,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Homebrew Formula
+        if: github.ref == 'refs/heads/main'
         env:
           TAP_REPO: hlefebvr/homebrew-idol
           TAP_BRANCH: main
@@ -189,7 +192,7 @@ jobs:
 
   build-linux:
     needs: push-tag
-    if: needs.push-tag.outputs.tag_created == 'true'
+    if: github.ref != 'refs/heads/main' || needs.push-tag.outputs.tag_created == 'true'
     runs-on: ubuntu-latest
     env:
       IDOL_VERSION: ${{ needs.push-tag.outputs.version }}
@@ -270,6 +273,7 @@ jobs:
           echo "DEB_PACKAGE=$NEW_NAME" >> $GITHUB_ENV
 
       - name: Upload Release Asset
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.push-tag.outputs.version }}
@@ -279,6 +283,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to APT repository
+        if: github.ref == 'refs/heads/main'
         env:
           APT_REPO: hlefebvr/apt
           DEB_PACKAGE: ${{ env.DEB_PACKAGE }}
