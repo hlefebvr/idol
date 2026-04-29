@@ -102,7 +102,7 @@ jobs:
 
       - name: Install Yasol
         run: |
-          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com:MichaelHartisch/Yasol.git
+          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/MichaelHartisch/Yasol.git
           cd Yasol
           mkdir build && cd build
           cmake -DUSE_CBC=ON -DCOIN_ROOT_DIR=${{github.workspace}}/coin-or ..
@@ -207,7 +207,7 @@ jobs:
 
       - name: Install Yasol
         run: |
-          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com:MichaelHartisch/Yasol.git
+          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/MichaelHartisch/Yasol.git
           cd Yasol
           mkdir build && cd build
           cmake -DUSE_CBC=ON -DCOIN_ROOT_DIR=${{github.workspace}}/coin-or ..
