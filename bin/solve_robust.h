@@ -19,6 +19,7 @@
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
+#include "idol/robust/optimizers/wrappers/yasol/Yasol.h"
 
 class RobustMethodManager : public MethodManager {
 public:
@@ -186,8 +187,6 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
 
     const auto method = robust_method_manager.get_method(t_args);
 
-    std::cout << "-- Solving using " << method << std::endl;
-
     std::cout << "-- Solving problem using " << method << "." << std::endl;
 
     if (method.starts_with("CCG-")) {
@@ -247,6 +246,10 @@ inline void solve_adjustable_robust(const Arguments& t_args) {
 
         model.use(ccg);
 
+    } else if (method == "YASOL") {
+        auto yasol = Robust::Yasol(robust_description, bilevel_description);
+        model.use(yasol);
+        //model.use(HiGHS());
     }
 
     // Set Parameters

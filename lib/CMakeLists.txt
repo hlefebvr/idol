@@ -309,6 +309,10 @@ add_library(idol STATIC
         include/idol/bilevel/optimizers/PADM/Optimizers_PADM.h
         src/bilevel/optimizers/PADM/PADM.cpp
         src/bilevel/optimizers/PADM/Optimizers_PADM.cpp
+        include/idol/robust/optimizers/wrappers/yasol/Yasol.h
+        include/idol/robust/optimizers/wrappers/yasol/Optimizers_Yasol.h
+        src/robust/optimizers/wrappers/yasol/Yasol.cpp
+        src/robust/optimizers/wrappers/yasol/Optimizers_Yasol.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)
@@ -394,6 +398,16 @@ if (${USE_LOCAL_MIP})
     find_package(LocalMIP REQUIRED)
     target_link_libraries(idol PUBLIC local_mip)
     target_compile_definitions(idol PUBLIC IDOL_USE_LOCAL_MIP)
+
+endif ()
+
+set_DIR_variable(yasol)
+set(USE_YASOL OFF CACHE BOOL "Build idol with Yasol (https://github.com/MichaelHartisch/Yasol)")
+if (${USE_YASOL})
+
+    find_package(Yasol REQUIRED)
+    target_link_libraries(idol PUBLIC Yasol::Yasol)
+    target_compile_definitions(idol PUBLIC IDOL_USE_YASOL)
 
 endif ()
 

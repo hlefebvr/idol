@@ -5,6 +5,26 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${idol_SOURCE_DIR}/cmake")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${idol_SOURCE_DIR}/cmake/coin-or")
 
+option(ENABLE_ASAN "Enable AddressSanitizer" OFF)
+if(ENABLE_ASAN)
+    message(STATUS "AddressSanitizer enabled")
+
+    add_compile_options(
+            -fsanitize=address
+            -fno-omit-frame-pointer
+            -g
+    )
+
+    add_link_options(
+            -fsanitize=address
+    )
+
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+        add_compile_definitions(ASAN_ENABLED=1)
+    endif()
+
+endif()
+
 include(GNUInstallDirs)
 
 add_subdirectory(lib)

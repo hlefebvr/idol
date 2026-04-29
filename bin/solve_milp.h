@@ -25,7 +25,7 @@ inline void solve_milp(const Arguments& t_args) {
 
     const auto method = method_manager.get_method(t_args);
 
-    std::cout << "-- Solving using " << method << std::endl;
+    std::cout << "-- Solving problem using " << method << std::endl;
 
     Env env;
     auto model = GLPK::read_from_file(env, t_args.file);

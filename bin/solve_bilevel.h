@@ -140,7 +140,7 @@ inline void solve_bilevel(const Arguments& t_args) {
 
     const auto method = method_manager.get_method(t_args);
 
-    std::cout << "-- Solving using " << method << std::endl;
+    std::cout << "-- Solving problem using " << method << std::endl;
 
     std::unique_ptr<OptimizerFactory> optimizer_factory;
     if (method == "MIBS") {
