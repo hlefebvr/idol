@@ -3,10 +3,14 @@
 //
 #include "idol/robust/optimizers/wrappers/yasol/Optimizers_Yasol.h"
 
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/robust/optimizers/wrappers/yasol/QpIdolExternSolver.h"
+
 #ifdef IDOL_USE_YASOL
 #include "QBPSolver.h"
 #include "Datastructures/qlp/Qlp.hpp"
 #include  "yInterface.h"
+#include  "ExternSolvers/QpExtSolCBC.hpp"
 #endif
 
 #define THROW_NOT_IMPLEMENTED throw std::runtime_error(std::string(__FUNCTION__) + " is not implemented.\n" + std::string(__FILE__) + ":" + std::to_string(__LINE__));
@@ -26,7 +30,9 @@ idol::Optimizers::Robust::Yasol::Yasol(const Model& t_parent, const idol::Robust
     m_robust_description(t_robust_description),
     m_bilevel_description(t_bilevel_description) {
 
-#ifndef IDOL_USE_YASOL
+#ifdef IDOL_USE_YASOL
+
+#else
     throw Exception("idol was not linked to Yasol.");
 #endif
 
@@ -270,8 +276,6 @@ void idol::Optimizers::Robust::Yasol::hook_optimize() {
 
     impl->yasol.yInit(impl->qlp_model);
 
-    //std::cout << impl->qlp_model.toQlpFileString(false) << std::endl;
-
     if (get_param_logs()) {
         impl->yasol.setParam("showInfo", true);
         impl->yasol.setParam("showWarning", false);
@@ -282,8 +286,6 @@ void idol::Optimizers::Robust::Yasol::hook_optimize() {
 
     const time_t time_limit = (time_t) std::min<double>(get_param_time_limit(), (double) (std::numeric_limits<time_t>::max() - std::time(nullptr) - 10000));
     impl->yasol.setTimelimit(time_limit);
-
-    std::cout << time_limit << std::endl;
 
     impl->yasol.solve();
 
@@ -311,7 +313,20 @@ void idol::Optimizers::Robust::Yasol::update() {
 }
 
 void idol::Optimizers::Robust::Yasol::write(const std::string& t_name) {
-    THROW_NOT_IMPLEMENTED
+
+    if (!m_impl) {
+        build();
+    }
+
+    std::ofstream file(t_name);
+
+    if (!file.is_open()) {
+        throw Exception("Could not create file.");
+    }
+
+    file << static_cast<YasolAttributes*>(m_impl)->qlp_model.toQlpFileString(false);
+
+    file.close();
 }
 
 void idol::Optimizers::Robust::Yasol::update_obj_sense() {

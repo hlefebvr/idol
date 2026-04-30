@@ -313,6 +313,10 @@ add_library(idol STATIC
         include/idol/robust/optimizers/wrappers/yasol/Optimizers_Yasol.h
         src/robust/optimizers/wrappers/yasol/Yasol.cpp
         src/robust/optimizers/wrappers/yasol/Optimizers_Yasol.cpp
+        include/idol/robust/optimizers/wrappers/yasol/QpIdolExternSolver.h
+        src/robust/optimizers/wrappers/yasol/QpIdolExternSolver.cpp
+        include/idol/robust/optimizers/wrappers/yasol/QpExternSolverWithSnapshot.h
+        src/robust/optimizers/wrappers/yasol/QpExternSolverWithSnapshot.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)
