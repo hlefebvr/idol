@@ -103,7 +103,9 @@ extern "C" {
     int GRBreadmodel(GRBenv *env, const char *filename, GRBmodel **modelP);
     int GRBgetcharattrarray(GRBmodel *model, const char *attrname, int start, int len, char *values);
     int GRBgetstrattrarray(GRBmodel *model, const char *attrname, int start, int len, char **values);
+    int GRBsetintattrarray(GRBmodel *model, const char *attrname, int start, int len, int *values);
     int GRBgetconstrs(GRBmodel *model, int *numnzP, int *cbeg, int *cind, double *cval, int start, int len);
+    int GRBgetintattrarray(GRBmodel *model, const char *attrname, int start, int len, int *values);
     void GRBterminate(GRBmodel *model);
 
 }

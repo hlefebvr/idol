@@ -1,0 +1,8 @@
+//
+// Created by Henri on 30/04/2026.
+//
+
+#ifndef IDOL_QPIDOLEXTERNSOLVER_H
+#define IDOL_QPIDOLEXTERNSOLVER_H
+
+#endif //IDOL_QPIDOLEXTERNSOLVER_H

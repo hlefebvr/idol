@@ -166,6 +166,8 @@ idol::Optimizers::Gurobi::DynamicLib::DynamicLib() {
     GUROBI_SYM_LOAD(GRBgetcharattrarray);
     GUROBI_SYM_LOAD(GRBgetstrattrarray);
     GUROBI_SYM_LOAD(GRBgetconstrs);
+    GUROBI_SYM_LOAD(GRBsetintattrarray);
+    GUROBI_SYM_LOAD(GRBgetintattrarray);
     GUROBI_SYM_LOAD(GRBterminate);
 
 }
