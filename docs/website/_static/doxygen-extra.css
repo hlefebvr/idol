@@ -393,9 +393,11 @@ div.header .title {
     font-weight: 300;
 }
 
+/*
 #doc-content > div:first-of-type {
     min-height: calc(100vh - 160px);
 }
+*/
 
 .markdownTable tbody {
     background: white;
