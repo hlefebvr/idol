@@ -256,8 +256,26 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
         rhs += coeff * scenario.get(unc_param);
     }
 
-    const double penalty = (type == LessOrEqual ? -1. : 1.) * 1e4;
-    std::cerr << "Warning: Penalty parameter is arbitrary... " << penalty << std::endl;
+    double penalty = -rhs;
+    for (const auto& [var, coeff] : lhs) {
+        if (coeff > 0) {
+            const double ub = model.get_var_ub(var);
+            if (is_pos_inf(ub)) {
+                throw Exception("Found variable with infinite bound during big-M computation.");
+            }
+            penalty += coeff * ub;
+        } else {
+            const double lb = model.get_var_lb(var);
+            if (is_neg_inf(lb)) {
+                throw Exception("Found variable with infinite bound during big-M computation.");
+            }
+            penalty += coeff * lb;
+        }
+    }
+
+    if (type == LessOrEqual) {
+        penalty *= -1.;
+    }
 
     if (m_linking_constraints.empty() || m_use_indicator) { // add indicator
 

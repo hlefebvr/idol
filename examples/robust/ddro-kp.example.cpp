@@ -136,7 +136,7 @@ void solve_as_bilevel(Env& t_env, const Instance& t_instance) {
 
     // Set optimizer
     auto mibs = Bilevel::MibS(description);
-    mibs.with_cplex_for_feasibility(true);
+    mibs.with_feasibility_checker(Gurobi());
     mibs.with_logs(true);
     model.use(mibs);
 

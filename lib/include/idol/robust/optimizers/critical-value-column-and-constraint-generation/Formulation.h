@@ -49,7 +49,7 @@ class idol::CVCCG::Formulation {
     std::vector<Uncertainty> m_uncertainties;
     bool m_all_linking_variables_are_binary = true;
     bool m_all_data_in_linking_constraints_is_integer = true;
-    bool m_use_indicator = false;
+    const bool m_use_indicator = false;
 
     Model m_master;
     Model m_sub_problem;
