@@ -119,8 +119,8 @@ public:
 };
 
 #define GUROBI_SYM_PTR(name) \
-typedef decltype(::name)* name##_t; \
-name##_t name = nullptr
+typedef decltype(::idol_##name)* idol_##name##_t; \
+idol_##name##_t name = nullptr
 
 class idol::Optimizers::Gurobi::DynamicLib {
     void* m_handle = nullptr;
