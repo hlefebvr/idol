@@ -68,9 +68,9 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
     m_formulation->update_sub_problem_constraints(master_solution);
 
     std::list<PrimalPoint> scenarios;
-    for (unsigned int i = 0; i < n_uncertainties; ++i) {
+    for (const auto& uncertainty : m_formulation->uncertainties()) {
 
-        m_formulation->update_sub_problem_objective(master_solution, i);
+        m_formulation->update_sub_problem_objective(master_solution, uncertainty);
 
         auto& sub_problem = m_formulation->sub_problem();
         sub_problem.optimize();
