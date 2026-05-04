@@ -295,8 +295,7 @@ void idol::CVCCG::Formulation::create_critical_value_variable(const PrimalPoint&
         for (const auto& cut : uncertainty.currently_present_cuts()) {
             const double local_critical_value = compute_critical_value(t_linking.ctr_in_uncertainty_set, cut.scenario->scenario);
             if ((long int) critical_value <= (long int) local_critical_value) {
-                const double penalty = 1e4; // TODO store it in the cut?
-                column.set(cut.cut, -penalty);
+                column.set(cut.cut, cut.penalty);
             }
         }
     }
@@ -330,7 +329,6 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
     const auto& ctr = t_uncertainty.ctr();
     const auto& model = m_parent.parent();
     const auto& description = m_parent.description();
-    const auto& uncertainty_set = description.uncertainty_set();
     const auto& [scenario, master_solution] = *t_iterator_in_pool;
 
     const auto type = model.get_ctr_type(ctr);
@@ -360,7 +358,6 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
             penalty += coeff * lb;
         }
     }
-    penalty = 1e4;
 
     if (type == LessOrEqual) {
         penalty *= -1.;
@@ -390,7 +387,8 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
 
         }
 
-        m_master.add_ctr(std::move(lhs), type, rhs);
+        const auto cut = m_master.add_ctr(std::move(lhs), type, rhs);
+        t_uncertainty.add_currently_present_cut(cut, t_iterator_in_pool, penalty);
 
     }
 

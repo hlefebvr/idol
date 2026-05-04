@@ -36,7 +36,7 @@ class idol::CVCCG::Formulation {
     struct CurrentlyPresentCut {
         Ctr cut;
         std::list<GeneratedScenario>::iterator scenario;
-        std::list<std::pair<std::list<LinkingConstraint>::iterator, long int>> linking_constraints;
+        double penalty;
     };
 
     class Uncertainty {
@@ -47,6 +47,7 @@ class idol::CVCCG::Formulation {
         [[nodiscard]] const Ctr& ctr() const { return m_constraint_in_original_model.value(); }
         [[nodiscard]] auto currently_present_cuts() const { return ConstIteratorForward(m_currently_present_cuts); }
         auto currently_present_cuts() { return IteratorForward(m_currently_present_cuts); }
+        void add_currently_present_cut(const Ctr& t_ctr, std::list<GeneratedScenario>::iterator t_scenario, double t_penalty) { m_currently_present_cuts.emplace_back(t_ctr, t_scenario, t_penalty); }
 
         Uncertainty() = default;
         Uncertainty(const Ctr& t_ctr) : m_constraint_in_original_model(t_ctr) {}
