@@ -28,7 +28,7 @@ inline void solve_milp(const Arguments& t_args) {
     std::cout << "-- Solving using " << method << std::endl;
 
     Env env;
-    auto model = GLPK::read_from_file(env, t_args.file);
+    auto model = Model::read_from_file(env, t_args.file);
 
     if (method == "GUROBI") {
         model.use(Gurobi());

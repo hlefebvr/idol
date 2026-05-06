@@ -13,7 +13,6 @@
 #include "idol/bilevel/modeling/read_from_file.h"
 #include "idol/bilevel/optimizers/KKT/KKT.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
-#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/robust/modeling/read_from_file.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h"
@@ -233,20 +232,22 @@ inline void solve_robust(const Arguments& t_args) {
     robust_method_manager.print_available_methods(t_args);
 
     const auto method = robust_method_manager.get_method(t_args);
+    const auto sub_milp_optimizer = sub_milp_method_manager.get_sub_milp_optimizer(t_args);
 
     std::cout << "-- Solving problem using " << method << "." << std::endl;
+    std::cout << "-- Sub-MILP method is " << sub_milp_method_manager.get_sub_milp_method(t_args) << "." << std::endl;
 
     if (method.starts_with("CCG-")) {
 
         auto ccg = Robust::ColumnAndConstraintGeneration(robust_description, *bilevel_description);
-        ccg.with_initial_scenario_by_maximization(Gurobi());
-        ccg.with_master_optimizer(Gurobi());
+        ccg.with_initial_scenario_by_maximization(*sub_milp_optimizer);
+        ccg.with_master_optimizer(*sub_milp_optimizer);
         ccg.with_logs(!t_args.mute);
 
         if (method == "CCG-FARKAS") {
 
             auto farkas = Robust::CCG::BigMFreeSeparation();
-            farkas.with_single_level_optimizer(Gurobi());
+            farkas.with_single_level_optimizer(*sub_milp_optimizer);
             farkas.with_binary_uncertainty_set(!uncertainty_analysis.has_continuous || uncertainty_analysis.is_zero_one_polytope);
 
             ccg.add_separation(farkas);
@@ -255,7 +256,7 @@ inline void solve_robust(const Arguments& t_args) {
 
             auto kkt = Bilevel::KKT();
             kkt.with_sos1_constraints(true);
-            kkt.with_single_level_optimizer(Gurobi());
+            kkt.with_single_level_optimizer(*sub_milp_optimizer);
 
             if (!t_args.complete_recourse) {
                 auto feasibility_separation = Robust::CCG::FeasibilitySeparation();
@@ -270,8 +271,6 @@ inline void solve_robust(const Arguments& t_args) {
             ccg.add_separation(optimality_separation);
 
         } else if (method == "CCG-MIBS") {
-
-            auto sub_milp_optimizer = sub_milp_method_manager.get_sub_milp_optimizer(t_args);
 
             auto mibs = Bilevel::MibS();
             mibs.with_feasibility_checker(*sub_milp_optimizer);
@@ -294,17 +293,21 @@ inline void solve_robust(const Arguments& t_args) {
         model.use(ccg);
 
     } else if (method == "CVCCG") {
+
         const auto milp_solver = sub_milp_method_manager.get_sub_milp_optimizer(t_args);
+
         auto ccg = Robust::CriticalValueColumnAndConstraintGeneration(robust_description);
         ccg.with_master_optimizer(*milp_solver);
         ccg.with_deterministic_optimizer(*milp_solver);
+
         model.use(ccg);
+
     } else if (method == "GEN-IND") {
-        const auto milp_solver = sub_milp_method_manager.get_sub_milp_optimizer(t_args);
         auto ccg = Robust::CriticalValueColumnAndConstraintGeneration(robust_description);
-        ccg.with_master_optimizer(*milp_solver);
-        ccg.with_deterministic_optimizer(*milp_solver);
+        ccg.with_master_optimizer(*sub_milp_optimizer);
+        ccg.with_deterministic_optimizer(*sub_milp_optimizer);
         ccg.with_indicator(true);
+
         model.use(ccg);
     }
 

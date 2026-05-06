@@ -84,10 +84,10 @@ public:
         return std::move(result);
     }
 
-    std::unique_ptr<idol::OptimizerFactory> get_sub_milp_optimizer(const Arguments& t_args, bool t_continuous_relaxation = false) {
+    std::string get_sub_milp_method(const Arguments& t_args) {
 
         if (t_args.default_milp_method.empty()) {
-            return operator()(get_default_method(), t_continuous_relaxation);
+            return get_default_method();
         }
 
         const auto it = m_all_methods.find(t_args.default_milp_method);
@@ -100,7 +100,11 @@ public:
             throw idol::Exception("The requested sub-MILP method exists, but is not available in this context.");
         }
 
-        return operator()(t_args.default_milp_method, t_continuous_relaxation);
+        return t_args.default_milp_method;
+    }
+
+    std::unique_ptr<idol::OptimizerFactory> get_sub_milp_optimizer(const Arguments& t_args, bool t_continuous_relaxation = false) {
+        return operator()(get_sub_milp_method(t_args), t_continuous_relaxation);
     }
 };
 
