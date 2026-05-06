@@ -84,6 +84,10 @@ void solve_with_critical_value_ccg(Env& t_env, const Instance& t_instance) {
     std::cout << "Objective: " << model.get_best_obj() << std::endl;
     std::cout << "Time: " << model.optimizer().time().count() << std::endl;
 
+    for (const auto& var : description.uncertainty_set().vars()) {
+        std::cout << var << " = " << model.get_var_primal(var) << std::endl;
+    }
+
 }
 
 void solve_as_bilevel(Env& t_env, const Instance& t_instance) {

@@ -69,6 +69,7 @@ class idol::CVCCG::Formulation {
     std::list<GeneratedScenario> m_scenario_pool;
     std::list<LinkingConstraint> m_linking_constraints;
     std::list<Uncertainty> m_uncertainties;
+    unsigned int m_n_critical_values = 0;
 
     void check_assumptions();
     void initialize_master();
@@ -92,6 +93,10 @@ public:
     void update_sub_problem_objective(const PrimalPoint& t_master_solution, const Uncertainty& t_uncertainty);
     std::list<GeneratedScenario>::iterator add_scenario_to_pool(PrimalPoint&& t_scenario, PrimalPoint&& t_master_scenario);
     void add_scenario_to_master(const std::list<GeneratedScenario>::iterator& t_iterator_in_pool);
+
+    unsigned int n_critical_values() const { return m_n_critical_values; }
+    unsigned int n_scenarios_in_pool() const { return m_scenario_pool.size(); }
+    double get_scenario_var_primal(const Var& t_var) const;
 };
 
 #endif //IDOL_CVCCG_FORMULATION_H

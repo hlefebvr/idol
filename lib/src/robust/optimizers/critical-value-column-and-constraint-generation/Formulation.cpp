@@ -234,6 +234,20 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
 
 }
 
+double idol::CVCCG::Formulation::get_scenario_var_primal(const Var& t_var) const {
+
+    double value = 0.;
+    unsigned int n_scenarios = 0;
+    for (const auto& uncertainty : m_uncertainties) {
+        for (const auto& cut : uncertainty.currently_present_cuts()) {
+            value += cut.scenario->scenario.get(t_var);
+            n_scenarios++;
+        }
+    }
+
+    return value / n_scenarios;
+}
+
 std::list<idol::CVCCG::Formulation::GeneratedScenario>::iterator idol::CVCCG::Formulation::add_scenario_to_pool(PrimalPoint&& t_scenario, PrimalPoint&& t_master_scenario) {
 
     create_critical_value_variable_if_needed(t_scenario);
@@ -317,6 +331,8 @@ void idol::CVCCG::Formulation::create_critical_value_variable(const PrimalPoint&
 
     const auto [it, success] = t_linking.critical_values.emplace((long int)critical_value, std::make_pair(activation_var, activation_ctr));
     assert(success);
+
+    m_n_critical_values += 1;
 
 }
 
