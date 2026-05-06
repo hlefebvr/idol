@@ -5,11 +5,13 @@
 
 #include "idol/general/optimizers/logs.h"
 
-idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::CriticalValueColumnAndConstraintGeneration(const Model& t_model, const idol::Robust::Description& t_description, const OptimizerFactory& t_master_optimizer, const OptimizerFactory& t_deterministic_optimizer) :
+idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::CriticalValueColumnAndConstraintGeneration(const Model& t_model, const idol::Robust::Description& t_description, const OptimizerFactory& t_master_optimizer, const OptimizerFactory& t_deterministic_optimizer, bool t_use_indicator) :
     Algorithm(t_model),
     m_description(t_description),
     m_master_optimizer_factory(t_master_optimizer.clone()),
-    m_deterministic_optimizer_factory(t_deterministic_optimizer.clone()) {
+    m_deterministic_optimizer_factory(t_deterministic_optimizer.clone()),
+    m_use_indicator(t_use_indicator)
+{
 
 }
 
@@ -31,7 +33,9 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::hook_
 
         log_iteration();
 
-        if (check_stopping_criterion()) { break; }
+        check_termination_criterion();
+
+        if (is_terminated()) { break; }
 
     } while (true);
 }
@@ -59,8 +63,44 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::analy
 
 }
 
-bool idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::check_stopping_criterion() {
-    return is_terminated();
+void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::check_termination_criterion() {
+
+    if (is_terminated()) {
+        return;
+    }
+
+    if (get_best_bound() > get_best_obj() + get_tol_mip_absolute_gap()) {
+        std::cerr << "The current best bound is larger than current best obj. This should should not happen. Terminating..." << std::endl;
+        set_status(Fail);
+        set_reason(Numerical);
+        terminate();
+        return;
+    }
+
+    set_status(is_pos_inf(get_best_obj()) ? Infeasible : Feasible);
+
+    if (get_remaining_time() == 0) {
+        std::cout << "The time limit has been reached. Terminating..." << std::endl;
+        set_reason(TimeLimit);
+        terminate();
+        return;
+    }
+
+    if (m_n_iterations > get_param_iteration_limit()) {
+        std::cout << "The iteration limit has been reached. Terminating..." << std::endl;
+        set_reason(IterLimit);
+        terminate();
+        return;
+    }
+
+    if (Algorithm::get_relative_gap() <= get_tol_mip_relative_gap() || Algorithm::get_absolute_gap() <= get_tol_mip_absolute_gap()) {
+        std::cout << "The optimality gap has been closed. Terminating..." << std::endl;
+        set_status(Optimal);
+        set_reason(Proved);
+        terminate();
+        return;
+    }
+
 }
 
 void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve_sub_problems() {

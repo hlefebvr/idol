@@ -19,7 +19,7 @@ struct Instance {
     const unsigned int n_items = weights.size();
     const double knapsack_capacity = 50;
     const double defender_capacity = 2;
-    const double uncertainty_budget = 2; // std::round(std::sqrt(n_items));
+    const double uncertainty_budget = std::round(std::sqrt(n_items));
 };
 
 void solve_with_critical_value_ccg(Env& t_env, const Instance& t_instance);
@@ -65,6 +65,8 @@ void solve_with_critical_value_ccg(Env& t_env, const Instance& t_instance) {
     for (unsigned int j = 0 ; j < n_items ; ++j) {
         description.set_uncertain_mat_coeff(c, x[j], std::ceil(.5 * t_instance.weights[j]) * u[j]);
     }
+
+    std::cout << description << std::endl;
 
     // Print robust model
     // std::cout << Robust::Description::View(model, description) << std::endl;

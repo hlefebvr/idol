@@ -379,7 +379,7 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
         penalty *= -1.;
     }
 
-    if (m_linking_constraints.empty() || m_use_indicator) { // add indicator
+    if (m_linking_variables.empty() || m_parent.use_indicator()) { // Add indicator
 
         for (const auto& var : m_linking_variables) {
             const double val = master_solution.get(var);

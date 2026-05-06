@@ -25,21 +25,21 @@ public:
 
     Description(Description&&) = default;
 
-    const Model& uncertainty_set() const { return *m_uncertainty_set; }
+    [[nodiscard]] const Model& uncertainty_set() const { return *m_uncertainty_set; }
 
-    auto uncertain_mat_coeffs() const { return ConstIteratorForward(m_uncertain_mat_coeff); }
+    [[nodiscard]] auto uncertain_mat_coeffs() const { return ConstIteratorForward(m_uncertain_mat_coeff); }
 
-    auto uncertain_rhs() const { return m_uncertain_rhs; }
+    [[nodiscard]] auto uncertain_rhs() const { return m_uncertain_rhs; }
 
-    auto uncertain_obj() const { return m_uncertain_obj; }
+    [[nodiscard]] auto uncertain_obj() const { return m_uncertain_obj; }
 
-    const LinExpr<Var>& uncertain_mat_coeff(const Ctr& t_ctr, const Var& t_var) const;
+    [[nodiscard]] const LinExpr<Var>& uncertain_mat_coeff(const Ctr& t_ctr, const Var& t_var) const;
 
-    const LinExpr<Var, LinExpr<Var>>& uncertain_mat_coeffs(const Ctr& t_ctr) const;
+    [[nodiscard]] const LinExpr<Var, LinExpr<Var>>& uncertain_mat_coeffs(const Ctr& t_ctr) const;
 
-    const LinExpr<Var>& uncertain_rhs(const Ctr& t_ctr) const;
+    [[nodiscard]] const LinExpr<Var>& uncertain_rhs(const Ctr& t_ctr) const;
 
-    const LinExpr<Var>& uncertain_obj(const Var& t_var) const;
+    [[nodiscard]] const LinExpr<Var>& uncertain_obj(const Var& t_var) const;
 
     void set_uncertain_mat_coeff(const Ctr& t_ctr, const Var& t_var, const LinExpr<Var>& t_coeff) {
         m_uncertain_mat_coeff[t_ctr].set(t_var, t_coeff);
@@ -76,6 +76,7 @@ public:
 namespace idol {
 
     std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description::View &t_view);
+    std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description &t_description);
 
 }
 

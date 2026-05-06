@@ -18,13 +18,16 @@ class idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration : pub
     const idol::Robust::Description& m_description;
     std::unique_ptr<OptimizerFactory> m_master_optimizer_factory;
     std::unique_ptr<OptimizerFactory> m_deterministic_optimizer_factory;
+    const bool m_use_indicator;
+
     std::unique_ptr<CVCCG::Formulation> m_formulation;
     unsigned int m_n_iterations = 0;
 public:
     CriticalValueColumnAndConstraintGeneration(const Model& t_model,
                                                const idol::Robust::Description& t_description,
                                                const OptimizerFactory& t_master_optimizer,
-                                               const OptimizerFactory& t_deterministic_optimizer
+                                               const OptimizerFactory& t_deterministic_optimizer,
+                                               bool t_use_indicator
     );
 
     [[nodiscard]] std::string name() const override { return "CVCCG"; }
@@ -39,6 +42,7 @@ public:
     [[nodiscard]] const idol::Robust::Description& description() const { return m_description; }
     [[nodiscard]] const OptimizerFactory& get_master_optimizer_factory() const { return *m_master_optimizer_factory; }
     [[nodiscard]] const OptimizerFactory& get_deterministic_optimizer_factory() const { return *m_deterministic_optimizer_factory; }
+    [[nodiscard]] bool use_indicator() const { return m_use_indicator; }
 protected:
     void add(const Var& t_var) override { m_formulation.reset(); }
     void add(const Ctr& t_ctr) override { m_formulation.reset(); }
@@ -67,7 +71,7 @@ protected:
 
     void solve_master_problem();
     void analyze_master_problem();
-    bool check_stopping_criterion();
+    void check_termination_criterion();
     void solve_sub_problems();
     void log_banner();
     void log_iteration_separator();

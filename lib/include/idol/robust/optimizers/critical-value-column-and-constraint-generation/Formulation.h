@@ -59,7 +59,6 @@ class idol::CVCCG::Formulation {
     std::list<Var> m_linking_variables;
     bool m_all_linking_variables_are_binary = true;
     bool m_all_data_in_linking_constraints_is_integer = true;
-    const bool m_use_indicator = false;
     const bool m_use_cover_constraints = true;
 
     Model m_master;

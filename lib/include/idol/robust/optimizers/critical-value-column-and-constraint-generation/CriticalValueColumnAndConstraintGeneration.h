@@ -16,6 +16,7 @@ class idol::Robust::CriticalValueColumnAndConstraintGeneration : public Optimize
     const Description& m_description;
     std::unique_ptr<OptimizerFactory> m_master_optimizer_factory;
     std::unique_ptr<OptimizerFactory> m_deterministic_optimizer_factory;
+    std::optional<bool> m_use_indicator;
 protected:
     [[nodiscard]] Optimizer* create(const Model& t_model) const override;
     CriticalValueColumnAndConstraintGeneration(const CriticalValueColumnAndConstraintGeneration& t_src);
@@ -26,6 +27,7 @@ public:
 
     CriticalValueColumnAndConstraintGeneration& with_master_optimizer(const OptimizerFactory& t_optimizer);
     CriticalValueColumnAndConstraintGeneration& with_deterministic_optimizer(const OptimizerFactory& t_optimizer);
+    CriticalValueColumnAndConstraintGeneration& with_indicator(bool t_value);
 };
 
 #endif //IDOL_CRITICALVALUECOLUMNANDCONSTRAINTGENERATION_H
