@@ -25,6 +25,11 @@ idol::PrimalPoint idol::Callback::primal_solution() const {
     return m_interface->primal_solution();
 }
 
+unsigned int idol::Callback::node_count() const {
+    throw_if_no_interface();
+    return m_interface->node_count();
+}
+
 const idol::Timer &idol::Callback::time() const {
     throw_if_no_interface();
     return m_interface->time();

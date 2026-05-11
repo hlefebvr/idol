@@ -61,6 +61,8 @@ protected:
 
     [[nodiscard]] double best_obj() const;
 
+    [[nodiscard]] unsigned int node_count() const;
+
     void terminate();
 
     SideEffectRegistry operator()(
@@ -90,6 +92,11 @@ void idol::BranchAndBoundCallbackI<NodeInfoT>::terminate() {
 template<class NodeInfoT>
 double idol::BranchAndBoundCallbackI<NodeInfoT>::best_obj() const {
     return m_parent->get_best_obj();
+}
+
+template <class NodeInfoT>
+unsigned int idol::BranchAndBoundCallbackI<NodeInfoT>::node_count() const {
+    return m_parent->n_solved_nodes();
 }
 
 template<class NodeInfoT>
@@ -207,6 +214,8 @@ protected:
 
     [[nodiscard]] double best_obj() const;
 
+    [[nodiscard]] unsigned int node_count() const;
+
     void terminate();
 private:
     BranchAndBoundCallbackI<NodeInfoT>* m_interface = nullptr;
@@ -226,6 +235,12 @@ template<class NodeInfoT>
 double idol::BranchAndBoundCallback<NodeInfoT>::best_obj() const {
     throw_if_no_interface();
     return m_interface->best_obj();
+}
+
+template <class NodeInfoT>
+unsigned int idol::BranchAndBoundCallback<NodeInfoT>::node_count() const {
+    throw_if_no_interface();
+    return m_interface->node_count();
 }
 
 template<class NodeInfoT>

@@ -276,7 +276,7 @@ std::pair<Model, Bilevel::Description> Bilevel::read_from_file(Env& t_env, const
     AuxParser parser(t_env,
                      lower_level_description,
                        t_path_to_aux,
-                       [](Env& t_env, const std::string& t_file) { return GLPK::read_from_file(t_env, t_file); });
+                       [](Env& t_env, const std::string& t_file) { return Model::read_from_file(t_env, t_file); });
 
     return {
         std::move(parser.model()),
@@ -291,7 +291,7 @@ Bilevel::Description idol::Bilevel::read_bilevel_description(const Model& t_mode
     AuxParser parser(t_model,
                      result,
                        t_path_to_aux,
-                       [](Env& t_env, const std::string& t_file) { return GLPK::read_from_file(t_env, t_file); });
+                       [](Env& t_env, const std::string& t_file) { return Model::read_from_file(t_env, t_file); });
 
     return result;
 }

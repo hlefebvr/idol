@@ -196,3 +196,34 @@ idol::Robust::Description::View::View(const Model& t_deterministic_model, const 
     : m_description(t_description), m_deterministic_model(t_deterministic_model) {
 
 }
+
+std::ostream &idol::operator<<(std::ostream &t_os, const idol::Robust::Description &t_description) {
+
+    t_os << "@RHS\n";
+
+    for (const auto& [ctr, unc_expr] : t_description.uncertain_rhs()) {
+        for (const auto& [unc_var, coeff] : unc_expr) {
+            t_os << ctr.name() << " " << unc_var.name() << " " << coeff << '\n';
+        }
+    }
+
+    t_os << "@OBJ\n";
+
+    for (const auto& [var, unc_expr] : t_description.uncertain_obj()) {
+        for (const auto& [unc_var, coeff] : unc_expr) {
+            t_os << var.name() << " " << unc_var.name() << " " << coeff << '\n';
+        }
+    }
+
+    t_os << "@MAT\n";
+
+    for (const auto& [ctr, unc_ctr_expr] : t_description.uncertain_mat_coeffs()) {
+        for (const auto& [var, unc_expr] : unc_ctr_expr) {
+            for (const auto& [unc_var, coeff] : unc_expr) {
+                t_os << ctr.name() << " " << var.name() << " " << unc_var.name() << " " << coeff << '\n';
+            }
+        }
+    }
+
+    return t_os;
+}

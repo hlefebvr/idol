@@ -14,7 +14,9 @@ idol::Robust::CriticalValueColumnAndConstraintGeneration::CriticalValueColumnAnd
     : OptimizerFactoryWithDefaultParameters(*this),
       m_description(t_src.m_description),
       m_master_optimizer_factory(t_src.m_master_optimizer_factory ? t_src.m_master_optimizer_factory->clone() : nullptr),
-      m_deterministic_optimizer_factory(t_src.m_deterministic_optimizer_factory ? t_src.m_deterministic_optimizer_factory->clone() : nullptr) {
+      m_deterministic_optimizer_factory(t_src.m_deterministic_optimizer_factory ? t_src.m_deterministic_optimizer_factory->clone() : nullptr),
+      m_use_indicator(t_src.m_use_indicator)
+{
 
 }
 
@@ -36,7 +38,8 @@ idol::Optimizer* idol::Robust::CriticalValueColumnAndConstraintGeneration::creat
         t_model,
         m_description,
         *m_master_optimizer_factory,
-        *m_deterministic_optimizer_factory
+        *m_deterministic_optimizer_factory,
+        m_use_indicator.value_or(false)
     );
 
     return result;
@@ -60,6 +63,17 @@ idol::Robust::CriticalValueColumnAndConstraintGeneration& idol::Robust::Critical
     }
 
     m_deterministic_optimizer_factory.reset(t_optimizer.clone());
+
+    return *this;
+}
+
+idol::Robust::CriticalValueColumnAndConstraintGeneration& idol::Robust::CriticalValueColumnAndConstraintGeneration::with_indicator(bool t_value) {
+
+    if (m_use_indicator.has_value()) {
+        throw Exception("The use of indicator functions has already been configured.");
+    }
+
+    m_use_indicator = t_value;
 
     return *this;
 }

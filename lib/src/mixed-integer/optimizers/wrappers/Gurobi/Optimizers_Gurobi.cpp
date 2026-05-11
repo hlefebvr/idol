@@ -20,7 +20,7 @@
 }
 
 #define GUROBI_SYM_LOAD(name) {   \
-name = (name##_t) dlsym(m_handle, #name);          \
+name = (idol_##name##_t) dlsym(m_handle, #name);          \
 const char* err = dlerror();                             \
 if (err)                                                 \
 throw std::runtime_error(std::string("Missing Gurobi symbol ") + #name + ": " + err); \
@@ -223,20 +223,20 @@ char idol::Optimizers::Gurobi::gurobi_obj_sense(int t_sense) {
 std::pair<idol::SolutionStatus, idol::SolutionReason> idol::Optimizers::Gurobi::gurobi_status(int t_status) const {
     auto& lib = get_dynamic_lib();
     switch (t_status) {
-        case GRB_SUBOPTIMAL: return { SubOptimal, Proved };
-        case GRB_OPTIMAL: return { Optimal, Proved };
-        case GRB_INFEASIBLE: return { Infeasible, Proved };
-        case GRB_INF_OR_UNBD: return {InfOrUnbnd, Proved };
-        case GRB_UNBOUNDED: return { Unbounded, Proved };
-        case GRB_CUTOFF: [[fallthrough]];
-        case GRB_USER_OBJ_LIMIT: return {Feasible, ObjLimit };
-        case GRB_TIME_LIMIT: {
+        case idol_GRB_SUBOPTIMAL: return { SubOptimal, Proved };
+        case idol_GRB_OPTIMAL: return { Optimal, Proved };
+        case idol_GRB_INFEASIBLE: return { Infeasible, Proved };
+        case idol_GRB_INF_OR_UNBD: return {InfOrUnbnd, Proved };
+        case idol_GRB_UNBOUNDED: return { Unbounded, Proved };
+        case idol_GRB_CUTOFF: [[fallthrough]];
+        case idol_GRB_USER_OBJ_LIMIT: return {Feasible, ObjLimit };
+        case idol_GRB_TIME_LIMIT: {
             int n_solutions;
             GUROBI_CATCH(m_model, GRBgetintattr(m_model, "SolCount", &n_solutions));
             return { n_solutions > 0 ? Feasible : Infeasible, TimeLimit };
         }
-        case GRB_NUMERIC: return {Fail, NotSpecified };
-        case GRB_SOLUTION_LIMIT: return {Feasible, SolutionLimit };
+        case idol_GRB_NUMERIC: return {Fail, NotSpecified };
+        case idol_GRB_SOLUTION_LIMIT: return {Feasible, SolutionLimit };
         default:;
     }
     throw Exception("Unsupported Gurobi status: " + std::to_string(t_status));
@@ -244,10 +244,10 @@ std::pair<idol::SolutionStatus, idol::SolutionReason> idol::Optimizers::Gurobi::
 
 double idol::Optimizers::Gurobi::gurobi_numeric(double t_value) {
     if (is_pos_inf(t_value)) {
-        return GRB_INFINITY;
+        return idol_GRB_INFINITY;
     }
     if (is_neg_inf(t_value)) {
-        return -GRB_INFINITY;
+        return -idol_GRB_INFINITY;
     }
     return t_value;
 }

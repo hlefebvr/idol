@@ -18,16 +18,16 @@ void idol::GurobiCallbackI::call() {
     CallbackEvent event;
 
     switch (m_where) {
-        case GRB_CB_MIPSOL: event = IncumbentSolution; break;
-        case GRB_CB_MIPNODE: event = InvalidSolution; break;
-        case GRB_CB_MIP: {
+        case idol_GRB_CB_MIPSOL: event = IncumbentSolution; break;
+        case idol_GRB_CB_MIPNODE: event = InvalidSolution; break;
+        case idol_GRB_CB_MIP: {
                 auto& lib = idol::Optimizers::Gurobi::get_dynamic_lib();
                 int error = 0;
 
-                error = lib.GRBcbget(m_cbdata, m_where, GRB_CB_MIP_OBJBND, &m_best_bound);
+                error = lib.GRBcbget(m_cbdata, m_where, idol_GRB_CB_MIP_OBJBND, &m_best_bound);
                 if (error) { std::cerr << "Error getting callback info." << std::endl; }
 
-                error = lib.GRBcbget(m_cbdata, m_where, GRB_CB_MIP_OBJBST, &m_best_bound);
+                error = lib.GRBcbget(m_cbdata, m_where, idol_GRB_CB_MIP_OBJBST, &m_best_bound);
                 if (error) { std::cerr << "Error getting callback info." << std::endl; }
 
         } [[fallthrough]];
@@ -104,12 +104,12 @@ idol::PrimalPoint idol::GurobiCallbackI::primal_solution() const {
     lib.GRBgetintattr(m_parent.m_model, "NumVars", &n_vars);
     std::vector<double> solution(n_vars);
 
-    if (m_where == GRB_CB_MIPSOL) {
+    if (m_where == idol_GRB_CB_MIPSOL) {
 
         // Get primal values
         int error = lib.GRBcbget(m_cbdata,
                              m_where,
-                             GRB_CB_MIPSOL_SOL,
+                             idol_GRB_CB_MIPSOL_SOL,
                              solution.data());
         if (error) {
             throw Exception("Error when getting solution.");
@@ -119,7 +119,7 @@ idol::PrimalPoint idol::GurobiCallbackI::primal_solution() const {
         double objective_value;
         error = lib.GRBcbget(m_cbdata,
                          m_where,
-                         GRB_CB_MIPSOL_OBJ,
+                         idol_GRB_CB_MIPSOL_OBJ,
                          &objective_value);
 
         if (error) {
@@ -128,13 +128,13 @@ idol::PrimalPoint idol::GurobiCallbackI::primal_solution() const {
 
         result.set_objective_value(objective_value);
 
-    } else if (m_where == GRB_CB_MIPNODE) {
+    } else if (m_where == idol_GRB_CB_MIPNODE) {
 
         // Get node status
         int node_status;
         int error = lib.GRBcbget(m_cbdata,
                          m_where,
-                         GRB_CB_MIPNODE_STATUS,
+                         idol_GRB_CB_MIPNODE_STATUS,
                          &node_status);
 
         if (error) {
@@ -152,7 +152,7 @@ idol::PrimalPoint idol::GurobiCallbackI::primal_solution() const {
         // Get primal values
         error = lib.GRBcbget(m_cbdata,
                          m_where,
-                         GRB_CB_MIPNODE_REL,
+                         idol_GRB_CB_MIPNODE_REL,
                          solution.data());
 
         if (error) {
@@ -217,6 +217,21 @@ double idol::GurobiCallbackI::best_obj() const {
 
 double idol::GurobiCallbackI::best_bound() const {
     return m_best_bound;
+}
+
+unsigned idol::GurobiCallbackI::node_count() const {
+    auto& lib = idol::Optimizers::Gurobi::get_dynamic_lib();
+    int error = 0;
+    double result = 0.;
+    if (m_where == idol_GRB_CB_MIPSOL) {
+        error = lib.GRBcbget(m_cbdata, idol_GRB_CB_MIPSOL, idol_GRB_CB_MIPSOL_NODCNT, &result);
+    } else if (m_where == idol_GRB_CB_MIP) {
+        error = lib.GRBcbget(m_cbdata, idol_GRB_CB_MIP, idol_GRB_CB_MIP_NODCNT, &result);
+    }
+    if (error) {
+        throw Exception("Failed to retrieve node count.");
+    }
+    return (unsigned int) result;
 }
 
 void idol::GurobiCallbackI::terminate() {

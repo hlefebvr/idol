@@ -19,7 +19,7 @@ struct Instance {
     const unsigned int n_items = weights.size();
     const double knapsack_capacity = 50;
     const double defender_capacity = 2;
-    const double uncertainty_budget = 2; // std::round(std::sqrt(n_items));
+    const double uncertainty_budget = std::round(std::sqrt(n_items));
 };
 
 void solve_with_critical_value_ccg(Env& t_env, const Instance& t_instance);
@@ -84,6 +84,10 @@ void solve_with_critical_value_ccg(Env& t_env, const Instance& t_instance) {
     std::cout << "Objective: " << model.get_best_obj() << std::endl;
     std::cout << "Time: " << model.optimizer().time().count() << std::endl;
 
+    for (const auto& var : description.uncertainty_set().vars()) {
+        std::cout << var << " = " << model.get_var_primal(var) << std::endl;
+    }
+
 }
 
 void solve_as_bilevel(Env& t_env, const Instance& t_instance) {
@@ -136,7 +140,7 @@ void solve_as_bilevel(Env& t_env, const Instance& t_instance) {
 
     // Set optimizer
     auto mibs = Bilevel::MibS(description);
-    mibs.with_cplex_for_feasibility(true);
+    mibs.with_feasibility_checker(Gurobi());
     mibs.with_logs(true);
     model.use(mibs);
 

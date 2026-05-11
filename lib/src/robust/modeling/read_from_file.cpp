@@ -16,7 +16,6 @@ idol::Robust::Description
 idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, const std::string& t_path_to_unc) {
 
     auto& env = t_model.env();
-    bool is_decision_dependent = false;
 
     // Store variable names
     Map<std::string, Var> variables;
@@ -31,13 +30,34 @@ idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, c
     }
 
     // Read uncertainty set
-    auto uncertainty_set = GLPK::read_from_file(env, t_path_to_unc);
+    auto uncertainty_set = Model::read_from_file(env, t_path_to_unc);
+
+    // Replace variables that belong to the model but that parameterize the uncertainty set
+    std::list<std::pair<Var, Var>> columns_to_be_replaced;
     for (const auto& var : uncertainty_set.vars()) {
         const auto it = variables.find(var.name());
         if (it == variables.end()) {
-            variables.emplace_hint(it, var.name(), var);
-        } else {
-            is_decision_dependent = true;
+            continue;
+        }
+        columns_to_be_replaced.emplace_back(var, it->second);
+    }
+
+    for (const auto& [var_to_delete, var_to_add] : columns_to_be_replaced) {
+        if (!uncertainty_set.has(var_to_delete)) {
+            continue;
+        }
+        const auto& lb = uncertainty_set.get_var_lb(var_to_delete);
+        const auto& ub = uncertainty_set.get_var_ub(var_to_delete);
+        const auto& type = uncertainty_set.get_var_type(var_to_delete);
+        const auto& column = uncertainty_set.get_var_column(var_to_delete);
+        const auto& obj = uncertainty_set.get_var_obj(var_to_delete);
+        uncertainty_set.add(var_to_add, TempVar(lb, ub, type, obj, LinExpr<Ctr>(column)));
+        uncertainty_set.remove(var_to_delete);
+    }
+
+    for (const auto& var : uncertainty_set.vars()) {
+        if (!t_model.has(var)) {
+            variables.emplace(var.name(), var);
         }
     }
 
@@ -87,8 +107,8 @@ idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, c
         }
 
         if (section == RHS) {
-            const auto ctr = constraints.at(cols[0]);
-            const auto unc_par = variables.at(cols[1]);
+            const auto& ctr = constraints.at(cols[0]);
+            const auto& unc_par = variables.at(cols[1]);
             const auto val = std::stod(cols[2]);
             auto current_expr = result.uncertain_rhs(ctr) + val * unc_par;
             result.set_uncertain_rhs(ctr, current_expr);
@@ -99,18 +119,14 @@ idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, c
         }
 
         if (section == MAT) {
-            const auto ctr = constraints.at(cols[0]);
-            const auto var = variables.at(cols[1]);
-            const auto unc_par = variables.at(cols[2]);
+            const auto& ctr = constraints.at(cols[0]);
+            const auto& var = variables.at(cols[1]);
+            const auto& unc_par = variables.at(cols[2]);
             const auto val = std::stod(cols[3]);
             auto current_expr = result.uncertain_mat_coeff(ctr, var) + val * unc_par;
             result.set_uncertain_mat_coeff(ctr, var, current_expr);
         }
 
-    }
-
-    if (is_decision_dependent) {
-        throw Exception("Decision-dependent problems are not implemented.");
     }
 
     return std::move(result);

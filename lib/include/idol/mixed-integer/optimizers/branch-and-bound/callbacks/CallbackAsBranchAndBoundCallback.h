@@ -60,11 +60,11 @@ public:
                 return m_parent.time();
             }
 
-            double best_obj() const override {
+            [[nodiscard]] double best_obj() const override {
                 return m_parent.best_obj();
             }
 
-            double best_bound() const override {
+            [[nodiscard]] double best_bound() const override {
                 return m_parent.best_bound();
             }
 
@@ -72,6 +72,9 @@ public:
                 m_parent.terminate();
             }
 
+            [[nodiscard]] unsigned node_count() const override {
+                return m_parent.node_count();
+            }
         };
 
         Interface m_interface;

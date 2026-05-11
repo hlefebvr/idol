@@ -59,6 +59,8 @@ protected:
 
     [[nodiscard]] virtual double best_bound() const = 0;
 
+    [[nodiscard]] virtual unsigned int node_count() const = 0;
+
     virtual void terminate() = 0;
 
     void execute(Callback& t_cb, CallbackEvent t_event);
@@ -98,6 +100,8 @@ protected:
      * @return the solution of the current node
      */
     [[nodiscard]] virtual PrimalPoint primal_solution() const;
+
+    [[nodiscard]] virtual unsigned int node_count() const;
 
     /**
      * Returns the current time

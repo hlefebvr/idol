@@ -50,7 +50,7 @@
   <!-- Layout definition for a class page -->
   <class>
     <briefdescription visible="yes"/>
-    <includes visible="$SHOW_HEADERFILE"/>
+    <includes visible="yes"/>
     <inheritancegraph visible="$CLASS_GRAPH"/>
     <collaborationgraph visible="yes"/>
     <detaileddescription title="Description"/>
@@ -150,7 +150,7 @@
   <!-- Layout definition for a file page -->
   <file>
     <briefdescription visible="yes"/>
-    <includes visible="$SHOW_INCLUDE_FILES"/>
+    <includes visible="yes"/>
     <includegraph visible="yes"/>
     <includedbygraph visible="yes"/>
     <sourcelink visible="yes"/>
