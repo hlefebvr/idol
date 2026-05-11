@@ -66,8 +66,6 @@ void solve_with_critical_value_ccg(Env& t_env, const Instance& t_instance) {
         description.set_uncertain_mat_coeff(c, x[j], std::ceil(.5 * t_instance.weights[j]) * u[j]);
     }
 
-    std::cout << description << std::endl;
-
     // Print robust model
     // std::cout << Robust::Description::View(model, description) << std::endl;
 

@@ -212,9 +212,12 @@ update_sub_problem_objective(const PrimalPoint& t_master_solution, const Uncerta
     for (const auto& [var, unc_coeff] : description.uncertain_mat_coeffs(ctr)) {
         fixed_row += t_master_solution.get(var) * unc_coeff;
     }
+    std::cout << description.uncertain_rhs(ctr) << std::endl;
     for (const auto& [unc_param, coeff] : description.uncertain_rhs(ctr)) {
-        fixed_row += coeff * unc_param;
+        fixed_row += -coeff * unc_param;
     }
+
+    std::cout << fixed_row << std::endl;
 
     if (type == LessOrEqual) {
         m_sub_problem.set_obj_expr(fixed_rhs - fixed_row);
@@ -264,6 +267,7 @@ double idol::CVCCG::Formulation::compute_critical_value(const Ctr& t_ctr, const 
 
     const auto& row = uncertainty_set.get_ctr_row(t_ctr);
     const auto type = uncertainty_set.get_ctr_type(t_ctr);
+    std::cout << type << std::endl;
     assert(type == LessOrEqual);
 
     double result = uncertainty_set.get_ctr_rhs(t_ctr) + 1;

@@ -107,7 +107,6 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
 
     const auto& master = m_formulation->master();
     const auto& master_solution = save_primal(master);
-    const unsigned int n_uncertainties = m_formulation->n_uncertainties();
 
     m_formulation->update_sub_problem_constraints(master_solution);
 

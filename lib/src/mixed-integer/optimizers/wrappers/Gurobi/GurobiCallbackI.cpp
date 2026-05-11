@@ -219,6 +219,21 @@ double idol::GurobiCallbackI::best_bound() const {
     return m_best_bound;
 }
 
+unsigned idol::GurobiCallbackI::node_count() const {
+    auto& lib = idol::Optimizers::Gurobi::get_dynamic_lib();
+    int error = 0;
+    double result = 0.;
+    if (m_where == idol_GRB_CB_MIPSOL) {
+        error = lib.GRBcbget(m_cbdata, idol_GRB_CB_MIPSOL, idol_GRB_CB_MIPSOL_NODCNT, &result);
+    } else if (m_where == idol_GRB_CB_MIP) {
+        error = lib.GRBcbget(m_cbdata, idol_GRB_CB_MIP, idol_GRB_CB_MIP_NODCNT, &result);
+    }
+    if (error) {
+        throw Exception("Failed to retrieve node count.");
+    }
+    return (unsigned int) result;
+}
+
 void idol::GurobiCallbackI::terminate() {
     auto& lib = idol::Optimizers::Gurobi::get_dynamic_lib();
     lib.GRBterminate(m_parent.m_model);

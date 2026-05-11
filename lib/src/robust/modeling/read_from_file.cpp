@@ -107,8 +107,8 @@ idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, c
         }
 
         if (section == RHS) {
-            const auto ctr = constraints.at(cols[0]);
-            const auto unc_par = variables.at(cols[1]);
+            const auto& ctr = constraints.at(cols[0]);
+            const auto& unc_par = variables.at(cols[1]);
             const auto val = std::stod(cols[2]);
             auto current_expr = result.uncertain_rhs(ctr) + val * unc_par;
             result.set_uncertain_rhs(ctr, current_expr);

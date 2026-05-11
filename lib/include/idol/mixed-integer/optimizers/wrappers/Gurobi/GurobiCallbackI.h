@@ -56,6 +56,7 @@ protected:
     [[nodiscard]] const Timer &time() const override;
     [[nodiscard]] double best_obj() const override;
     [[nodiscard]] double best_bound() const override;
+    [[nodiscard]] unsigned node_count() const override;
     void terminate() override;
 };
 

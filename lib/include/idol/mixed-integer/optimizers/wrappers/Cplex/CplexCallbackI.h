@@ -109,12 +109,15 @@ public:
 
     [[nodiscard]] double best_bound() const override;
 
-    double get_var_primal(const Var& t_var) const;
-    double get_var_local_lb(const Var& t_var) const;
-    double get_var_local_ub(const Var& t_var) const;
+    [[nodiscard]] unsigned node_count() const override;
+
+    [[nodiscard]] double get_var_primal(const Var& t_var) const;
+    [[nodiscard]] double get_var_local_lb(const Var& t_var) const;
+    [[nodiscard]] double get_var_local_ub(const Var& t_var) const;
     void set_var_local_lb(const Var& t_var, double t_bound);
     void set_var_local_ub(const Var& t_var, double t_bound);
 
+public:
     void terminate() override;
 
     friend class idol::Optimizers::Cplex;

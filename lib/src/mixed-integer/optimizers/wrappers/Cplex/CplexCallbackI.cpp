@@ -80,6 +80,10 @@ double idol::CplexCallbackI::best_bound() const {
     throw Exception("Not implemented");
 }
 
+unsigned idol::CplexCallbackI::node_count() const {
+    throw Exception("Not implemented (node count)");
+}
+
 void idol::CplexCallbackI::terminate() {
     std::cerr << "terminate()" << std::endl;
     m_caller->abort();
