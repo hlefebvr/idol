@@ -5,7 +5,7 @@
 
 #include "Arguments.h"
 #include "solve_milp.h"
-#include "solve_adjustable_robust.h"
+#include "solve_robust.h"
 #include "solve_bilevel.h"
 
 int main(int t_argc, const char** t_argv) {
