@@ -18,6 +18,7 @@
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
+#include "idol/robust/optimizers/wrappers/ROCPP_KAdaptability.h"
 #include "idol/robust/optimizers/critical-value-column-and-constraint-generation/CriticalValueColumnAndConstraintGeneration.h"
 
 class AdjustableRobustMethodManager : public MethodManager {
@@ -31,6 +32,7 @@ public:
         { "CCG-FARKAS", { 50, "Column-and-constraint generation with Farkas-based separation; see Ayoub and Poss (2016) [https://doi.org/10.1007/s10287-016-0249-2]." } },
         { "CCG-MIBS", { 25, "Column-and-constraint generation with separation by the mixed-integer bilevel solver MibS." } },
         { "CCG-KKT-SOS1", { 20, "Column-and-constraint generation with KKT-based separation using SOS1." } },
+        { "ROCPP-KADAPT", { 10, "K-Adaptability from ROC++ (dev)." } },
         //{ "YASOL", { 15, "Quantified programming formulation solved with Yasol; see Goerigk and Hartisch (2021) [https://doi.org/10.1016/j.cor.2021.105434]." } },
         //{ "BBBB-MIBS", { 5, "Bilevel-based branch-and-bound with MibS; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } },
         //{ "BBBB-KKT-SOS1", { 0, "Bilevel-based branch-and-bound with KKT using SOS1; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } }
@@ -137,6 +139,7 @@ inline void solve_robust(const Arguments& t_args) {
             std::cout << "-- Detected: continuous second-stage decisions." << std::endl;
 
             robust_method_manager.add("CCG-KKT-SOS1");
+            robust_method_manager.add("ROCPP-KADAPT");
 
             if (!uncertainty_analysis.has_continuous) {
 
@@ -309,6 +312,10 @@ inline void solve_robust(const Arguments& t_args) {
         ccg.with_indicator(true);
 
         model.use(ccg);
+    } else if (method == "ROCPP-KADAPT") {
+        auto rocpp = Robust::ROCPP::KAdaptability(robust_description, *bilevel_description);
+
+        model.use(rocpp);
     }
 
     // Set Parameters

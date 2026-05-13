@@ -309,6 +309,10 @@ add_library(idol STATIC
         include/idol/bilevel/optimizers/PADM/Optimizers_PADM.h
         src/bilevel/optimizers/PADM/PADM.cpp
         src/bilevel/optimizers/PADM/Optimizers_PADM.cpp
+        include/idol/robust/optimizers/wrappers/ROCPP_KAdaptability.h
+        src/robust/optimizers/wrappers/ROCPP_KAdaptability.cpp
+        include/idol/robust/optimizers/wrappers/Optimizers_ROCPP_KAdaptability.h
+        src/robust/optimizers/wrappers/Optimizers_ROCPP_KAdaptability.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)
@@ -385,7 +389,11 @@ if (${USE_CPLEX})
 
 endif()
 
-set_DIR_variable(coin_or)
+#######################
+## LOCAL-MIP LIBRARY ##
+#######################
+
+set_DIR_variable(local_mip)
 set(SHIP_LOCAL_MIP OFF)
 
 set(USE_LOCAL_MIP OFF CACHE BOOL "Build idol with Local-MIP (https://local-mip.github.io/)")
@@ -394,6 +402,22 @@ if (${USE_LOCAL_MIP})
     find_package(LocalMIP REQUIRED)
     target_link_libraries(idol PUBLIC local_mip)
     target_compile_definitions(idol PUBLIC IDOL_USE_LOCAL_MIP)
+
+endif ()
+
+###################
+## ROCPP LIBRARY ##
+###################
+
+set_DIR_variable(rocpp)
+set(SHIP_ROCPP OFF)
+
+set(USE_ROCPP OFF CACHE BOOL "Build idol with ROC++ (https://github.com/robust-opt-cpp/ROCPP)")
+if (${USE_ROCPP})
+
+    find_package(ROCPP REQUIRED)
+    target_link_libraries(idol PUBLIC rocpp)
+    target_compile_definitions(idol PUBLIC IDOL_USE_ROCPP)
 
 endif ()
 
