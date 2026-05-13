@@ -1,0 +1,420 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt; Class Template Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><b>Heuristics</b></li><li class="navelem"><a href="classidol_1_1Heuristics_1_1IntegerMaster.html">IntegerMaster</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="classidol_1_1Heuristics_1_1IntegerMaster-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt; Class Template Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class NodeInfoT = idol::DefaultNodeInfo&gt;<br />
+class idol::Heuristics::IntegerMaster&lt; NodeInfoT &gt;</div>
+<p class="definition">Definition at line <a class="el" href="IntegerMaster_8h_source.html#l00018">18</a> of file <a class="el" href="IntegerMaster_8h_source.html">IntegerMaster.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:Strategy" id="r_Strategy"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster_1_1Strategy.html">Strategy</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a34eaddc01fc0cb8f10f11b835b7e7909" id="r_a34eaddc01fc0cb8f10f11b835b7e7909"><td class="memItemLeft"><a id="a34eaddc01fc0cb8f10f11b835b7e7909" name="a34eaddc01fc0cb8f10f11b835b7e7909"></a>
+&#160;</td><td class="memItemRight"><b>IntegerMaster</b> (IntegerMaster &amp;&amp;) noexcept=default</td></tr>
+<tr class="memitem:ac523ef833677e14c30e99041ed7fd057" id="r_ac523ef833677e14c30e99041ed7fd057"><td class="memItemLeft"><a id="ac523ef833677e14c30e99041ed7fd057" name="ac523ef833677e14c30e99041ed7fd057"></a>
+IntegerMaster &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (const IntegerMaster &amp;)=delete</td></tr>
+<tr class="memitem:a629d3aba23bee36a0cc06494923f4d99" id="r_a629d3aba23bee36a0cc06494923f4d99"><td class="memItemLeft"><a id="a629d3aba23bee36a0cc06494923f4d99" name="a629d3aba23bee36a0cc06494923f4d99"></a>
+IntegerMaster &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (IntegerMaster &amp;&amp;) noexcept=default</td></tr>
+<tr class="memitem:a011efb50a751dee1fac7e8a03180ee35" id="r_a011efb50a751dee1fac7e8a03180ee35"><td class="memItemLeft"><a class="el" href="classidol_1_1BranchAndBoundCallback.html">BranchAndBoundCallback</a>&lt; NodeInfoT &gt; *&#160;</td><td class="memItemRight"><a class="el" href="#a011efb50a751dee1fac7e8a03180ee35">operator()</a> () override</td></tr>
+<tr class="memitem:a600ab683dd0bab32fb0a945715dd4068" id="r_a600ab683dd0bab32fb0a945715dd4068"><td class="memItemLeft"><a class="el" href="classidol_1_1BranchAndBoundCallbackFactory.html">BranchAndBoundCallbackFactory</a>&lt; NodeInfoT &gt; *&#160;</td><td class="memItemRight"><a class="el" href="#a600ab683dd0bab32fb0a945715dd4068">clone</a> () const override</td></tr>
+<tr class="memitem:ade51e6ccfe9258e7855ed1794384bb40" id="r_ade51e6ccfe9258e7855ed1794384bb40"><td class="memItemLeft">IntegerMaster &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ade51e6ccfe9258e7855ed1794384bb40">with_optimizer</a> (const <a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a> &amp;t_optimizer)</td></tr>
+<tr class="memitem:a5a2e62167bb6834e452555ef490e773c" id="r_a5a2e62167bb6834e452555ef490e773c"><td class="memItemLeft">IntegerMaster &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a5a2e62167bb6834e452555ef490e773c">with_integer_columns</a> (bool t_value)</td></tr>
+<tr class="memitem:a2c0b67f3b1cc9416290d1007de63d07f" id="r_a2c0b67f3b1cc9416290d1007de63d07f"><td class="memItemLeft">IntegerMaster &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a2c0b67f3b1cc9416290d1007de63d07f">with_time_limit</a> (double t_time_limit)</td></tr>
+<tr class="memitem:a07b9d13545bb4a5c2b555f0be70870e1" id="r_a07b9d13545bb4a5c2b555f0be70870e1"><td class="memItemLeft">IntegerMaster &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a07b9d13545bb4a5c2b555f0be70870e1">with_iteration_limit</a> (unsigned int t_iteration_limit)</td></tr>
+<tr class="memitem:a842abf3946b244482cb729bde64d0a4e" id="r_a842abf3946b244482cb729bde64d0a4e"><td class="memItemLeft">IntegerMaster &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a842abf3946b244482cb729bde64d0a4e">with_max_depth</a> (unsigned int t_max_depth)</td></tr>
+<tr class="memitem:aa91c82c4531b8e0798c1faed18965c1b" id="r_aa91c82c4531b8e0798c1faed18965c1b"><td class="memItemLeft">IntegerMaster &amp;&#160;</td><td class="memItemRight"><a class="el" href="#aa91c82c4531b8e0798c1faed18965c1b">with_frequency</a> (unsigned int t_frequency)</td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a600ab683dd0bab32fb0a945715dd4068" name="a600ab683dd0bab32fb0a945715dd4068"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a600ab683dd0bab32fb0a945715dd4068">&#9670;&#160;</a></span>clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBoundCallbackFactory.html">idol::BranchAndBoundCallbackFactory</a>&lt; NodeInfoT &gt; * <a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt;::clone </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1BranchAndBoundCallbackFactory.html">idol::BranchAndBoundCallbackFactory&lt; idol::DefaultNodeInfo &gt;</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="IntegerMaster_8h_source.html#l00135">135</a> of file <a class="el" href="IntegerMaster_8h_source.html">IntegerMaster.h</a>.</p>
+
+</div>
+</div>
+<a id="a011efb50a751dee1fac7e8a03180ee35" name="a011efb50a751dee1fac7e8a03180ee35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a011efb50a751dee1fac7e8a03180ee35">&#9670;&#160;</a></span>operator()()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1BranchAndBoundCallback.html">idol::BranchAndBoundCallback</a>&lt; NodeInfoT &gt; * <a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classidol_1_1BranchAndBoundCallbackFactory.html">idol::BranchAndBoundCallbackFactory&lt; idol::DefaultNodeInfo &gt;</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="IntegerMaster_8h_source.html#l00091">91</a> of file <a class="el" href="IntegerMaster_8h_source.html">IntegerMaster.h</a>.</p>
+
+</div>
+</div>
+<a id="aa91c82c4531b8e0798c1faed18965c1b" name="aa91c82c4531b8e0798c1faed18965c1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa91c82c4531b8e0798c1faed18965c1b">&#9670;&#160;</a></span>with_frequency()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt; &amp; <a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt;::with_frequency </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_frequency</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="IntegerMaster_8h_source.html#l00164">164</a> of file <a class="el" href="IntegerMaster_8h_source.html">IntegerMaster.h</a>.</p>
+
+</div>
+</div>
+<a id="a5a2e62167bb6834e452555ef490e773c" name="a5a2e62167bb6834e452555ef490e773c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a2e62167bb6834e452555ef490e773c">&#9670;&#160;</a></span>with_integer_columns()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt; &amp; <a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt;::with_integer_columns </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="IntegerMaster_8h_source.html#l00140">140</a> of file <a class="el" href="IntegerMaster_8h_source.html">IntegerMaster.h</a>.</p>
+
+</div>
+</div>
+<a id="a07b9d13545bb4a5c2b555f0be70870e1" name="a07b9d13545bb4a5c2b555f0be70870e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07b9d13545bb4a5c2b555f0be70870e1">&#9670;&#160;</a></span>with_iteration_limit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt; &amp; <a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt;::with_iteration_limit </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_iteration_limit</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="IntegerMaster_8h_source.html#l00152">152</a> of file <a class="el" href="IntegerMaster_8h_source.html">IntegerMaster.h</a>.</p>
+
+</div>
+</div>
+<a id="a842abf3946b244482cb729bde64d0a4e" name="a842abf3946b244482cb729bde64d0a4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a842abf3946b244482cb729bde64d0a4e">&#9670;&#160;</a></span>with_max_depth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt; &amp; <a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt;::with_max_depth </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>t_max_depth</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="IntegerMaster_8h_source.html#l00158">158</a> of file <a class="el" href="IntegerMaster_8h_source.html">IntegerMaster.h</a>.</p>
+
+</div>
+</div>
+<a id="ade51e6ccfe9258e7855ed1794384bb40" name="ade51e6ccfe9258e7855ed1794384bb40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade51e6ccfe9258e7855ed1794384bb40">&#9670;&#160;</a></span>with_optimizer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt; &amp; <a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt;::with_optimizer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_optimizer</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="IntegerMaster_8h_source.html#l00123">123</a> of file <a class="el" href="IntegerMaster_8h_source.html">IntegerMaster.h</a>.</p>
+
+</div>
+</div>
+<a id="a2c0b67f3b1cc9416290d1007de63d07f" name="a2c0b67f3b1cc9416290d1007de63d07f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c0b67f3b1cc9416290d1007de63d07f">&#9670;&#160;</a></span>with_time_limit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class NodeInfoT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt; &amp; <a class="el" href="classidol_1_1Heuristics_1_1IntegerMaster.html">idol::Heuristics::IntegerMaster</a>&lt; NodeInfoT &gt;::with_time_limit </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_time_limit</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="IntegerMaster_8h_source.html#l00146">146</a> of file <a class="el" href="IntegerMaster_8h_source.html">IntegerMaster.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: Basics of the Command Line Interface for Robust Problems</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div id="doc-content">
+<div><div class="header">
+  <div class="headertitle"><div class="title">Basics of the Command Line Interface for Robust Problems </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul>
+  <li class="level1">
+    <a href="#cli_robust_basics_static">Static Robust Optimization </a>
+    <ul>
+      <li class="level2">
+        <a href="#cli_robust_basics_intro">Introduction </a>
+      </li>
+      <li class="level2">
+        <a href="#cli_robust_basics_input">Input File Format </a>
+        <ul>
+          <li class="level3">
+            <a href="#cli_robust_basics_input_example">A First Example </a>
+          </li>
+          <li class="level3">
+            <a href="#cli_robust_basics_input_detailed">Detailed Description </a>
+            <ul>
+              <li class="level4">
+                <a href="#cli_robust_rhs_file">Right-hand Side Uncertainty </a>
+              </li>
+              <li class="level4">
+                <a href="#cli_robust_obj_file">Objective Uncertainty </a>
+              </li>
+              <li class="level4">
+                <a href="#cli_robust_mat_file">Constraint Matrix Uncertainty </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li class="level1">
+    <a href="#cli_robust_basics_aro">Two-Stage Robust Optimization </a>
+    <ul>
+      <li class="level2">
+        <a href="#cli_robust_basics_aro_introduction">Introduction </a>
+      </li>
+      <li class="level2">
+        <a href="#cli_robust_basics_aro_input">Input File Format </a>
+        <ul>
+          <li class="level3">
+            <a href="#cli_robust_basics_aro_input_example">A First Example </a>
+          </li>
+          <li class="level3">
+            <a href="#cli_robust_basics_aro_input_detailed">Detailed Description </a>
+          </li>
+        </ul>
+      </li>
+      <li class="level2">
+        <a href="#cli_robust_basics_aro_solving">Solving a Two-Stage Robust Problem </a>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div>
+<div class="textblock"><p>Describes the input file format for robust problems.</p>
+<h1 class="doxsection"><a class="anchor" id="cli_robust_basics_static"></a>
+Static Robust Optimization</h1>
+<h2 class="doxsection"><a class="anchor" id="cli_robust_basics_intro"></a>
+Introduction</h2>
+<p>A (classic) static robust optimization considers problems of the form</p>
+<p class="formulaDsp">
+\[\begin{align*}
+    \min_{x\in X} \quad &amp; c^\top x \\
+    \text{s.t.} \quad &amp; \sum_{j=1}^n (\bar{a}_j + \hat{a}_ju_j)x_j \ge b, \quad\text{for all } u\in U.
+\end{align*}
+\]
+</p>
+<p>Here \(U\) models the uncertainty set which contains a (possibly infinite) set of possible scenarios for the parameters \(u\).</p>
+<dl class="section warning"><dt>Warning</dt><dd>TODO, add decision-dependent problems</dd></dl>
+<h2 class="doxsection"><a class="anchor" id="cli_robust_basics_input"></a>
+Input File Format</h2>
+<h3 class="doxsection"><a class="anchor" id="cli_robust_basics_input_example"></a>
+A First Example</h3>
+<p>We consider the robust problem</p>
+<p class="formulaDsp">
+\[\begin{align*}
+\min_{x,y} \quad &amp; -x - 2y \\
+\text{s.t.} \quad &amp; (1 + u_1) x + (1 + u_2) y \le 2, \quad\text{for all } u\in U, \\
+&amp; x,y \in\{ 0,1 \},
+\end{align*}
+\]
+</p>
+<p> where \(U := \left\{ u\in\{0;1\}^2 : u_1 + u_2 \le 1 \right\}\).</p>
+<p>The <span class="tt">.mps</span> file for the deterministic problem is given by</p>
+<div class="fragment"><div class="line">NAME instance</div>
+<div class="line">ROWS</div>
+<div class="line"> N  OBJ</div>
+<div class="line"> L  c</div>
+<div class="line">COLUMNS</div>
+<div class="line">    __constant OBJ        1</div>
+<div class="line">    MARKER    &#39;MARKER&#39;                 &#39;INTORG&#39;</div>
+<div class="line">    x          OBJ        -1</div>
+<div class="line">    x          c          1</div>
+<div class="line">    y          OBJ        -2</div>
+<div class="line">    y          c          1</div>
+<div class="line">    MARKER    &#39;MARKER&#39;                 &#39;INTEND&#39;</div>
+<div class="line">RHS</div>
+<div class="line">    RHS       c          2</div>
+<div class="line">BOUNDS</div>
+<div class="line"> FX BND       __constant 0</div>
+<div class="line"> LI BND       x          0</div>
+<div class="line"> UI BND       x          1</div>
+<div class="line"> LI BND       y          0</div>
+<div class="line"> UI BND       y          1</div>
+<div class="line">ENDATA</div>
+</div><!-- fragment --><p>The <span class="tt">.mps</span> file for the uncertainty set is given by</p>
+<div class="fragment"><div class="line">NAME instance-unc</div>
+<div class="line">ROWS</div>
+<div class="line"> N  OBJ</div>
+<div class="line"> L  budget</div>
+<div class="line">COLUMNS</div>
+<div class="line">    __constant OBJ        1</div>
+<div class="line">    MARKER    &#39;MARKER&#39;                 &#39;INTORG&#39;</div>
+<div class="line">    u_1        OBJ        0</div>
+<div class="line">    u_1        budget     1</div>
+<div class="line">    u_2        OBJ        0</div>
+<div class="line">    u_2        budget     1</div>
+<div class="line">    MARKER    &#39;MARKER&#39;                 &#39;INTEND&#39;</div>
+<div class="line">RHS</div>
+<div class="line">    RHS       budget     2</div>
+<div class="line">BOUNDS</div>
+<div class="line"> FX BND       __constant 0</div>
+<div class="line"> LI BND       u_1        0</div>
+<div class="line"> UI BND       u_1        1</div>
+<div class="line"> LI BND       u_2        0</div>
+<div class="line"> UI BND       u_2        1</div>
+<div class="line">ENDATA</div>
+</div><!-- fragment --><p>Finally, an additional file, with extension <span class="tt">.par</span>, is used to indicate the uncertainty parameterization in the deterministic model</p>
+<div class="fragment"><div class="line">@RHS</div>
+<div class="line">@OBJ</div>
+<div class="line">@MAT</div>
+<div class="line">c   y   u_2 1</div>
+<div class="line">c   x   u_1 1</div>
+</div><!-- fragment --><p>Here, the uncertain parameters enter the constraint matrix. For instance, in the constraint with name "c", the variable with name "x" has an uncertain coefficient of one associated to the parameter "u_1".</p>
+<h3 class="doxsection"><a class="anchor" id="cli_robust_basics_input_detailed"></a>
+Detailed Description</h3>
+<p>In <span class="tt">idol</span> a static robust instance is made of three files:</p><ul>
+<li>A first <span class="tt">.mps</span>/<span class="tt">.lp</span> stores the model for the deterministic problem, i.e., here,      <p class="formulaDsp">
+\[  \begin{align*}
+  \min_{x\in X} \quad &amp; c^\top x \\
+  \text{s.t.} \quad &amp; \sum_{j=1}^n \bar{a}_jx_j \ge b.
+  \end{align*}
+\]
+</p>
+</li>
+<li>A second <span class="tt">.mps</span>/<span class="tt">.lp</span> stores the uncertainty set \( U \).</li>
+<li>A <span class="tt">.par</span> file indicates where the uncertain parameters enter in the deterministic problem. Here, it should indicate that each variable \(x_j\) has an uncertain coefficient \( \hat{a}_ju_j \) in the respective constraint.</li>
+</ul>
+<p>In case multiple uncertainty sets must be used, they are all represented in a single <span class="tt">.mps</span>/<span class="tt">.lp</span>.</p>
+<p>For more details on the <span class="tt">.mps</span> and <span class="tt">.lp</span> file formats, see the page cli_input_format_milp.</p>
+<p>The <span class="tt">.par</span> file is composed of tagged sections, each identified by a keyword starting with <span class="tt">@</span>. The following table lists all supported tags and their meaning.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Tag  </th><th class="markdownTableHeadNone">Meaning  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">@RHS</span>  </td><td class="markdownTableBodyNone">This section contains the uncertain parameterization of the constraints right-hand side  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">@OBJ</span>  </td><td class="markdownTableBodyNone">This section contains the uncertain parameterization of the objective function coefficients  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">@MAT</span>  </td><td class="markdownTableBodyNone">This section contains the uncertain parameterization of the constraint matrix  </td></tr>
+</table>
+<p>Sections may be empty if no uncertainty of that type exists in the problem.</p>
+<h4 class="doxsection"><a class="anchor" id="cli_robust_rhs_file"></a>
+Right-hand Side Uncertainty</h4>
+<p>The <span class="tt">@RHS</span> section is composed by a list of entries with the format <span class="tt">&lt;CTR&gt; &lt;UNC_VAR&gt; &lt;COEFF&gt;</span>, where <span class="tt">&lt;CTR&gt;</span> is a constraint name, <span class="tt">&lt;UNC_VAR&gt;</span> is an uncertainty parameter name (which must be defined in the uncertainty set), and <span class="tt">&lt;COEFF&gt;</span> is a number. Each entry specifies that the right-hand side of the constraint <span class="tt">&lt;CTR&gt;</span> has an uncertain contribution equal to <span class="tt">&lt;COEFF&gt;</span> times <span class="tt">&lt;UNC_VAR&gt;</span>.</p>
+<h4 class="doxsection"><a class="anchor" id="cli_robust_obj_file"></a>
+Objective Uncertainty</h4>
+<p>The <span class="tt">@OBJ</span> section is composed of a list of entries with the format <span class="tt">&lt;VAR&gt; &lt;UNC_VAR&gt; &lt;COEFF&gt;</span>, where <span class="tt">&lt;VAR&gt;</span> is a variable name, <span class="tt">&lt;UNC_VAR&gt;</span> is an uncertainty parameter name (which must be defined in the uncertainty set), and <span class="tt">&lt;COEFF&gt;</span> is a number. Each entry specifies that the objective coefficient of the variable <span class="tt">&lt;VAR&gt;</span> has an uncertain contribution equal to <span class="tt">&lt;COEFF&gt;</span> times <span class="tt">&lt;UNC_VAR&gt;</span>.</p>
+<h4 class="doxsection"><a class="anchor" id="cli_robust_mat_file"></a>
+Constraint Matrix Uncertainty</h4>
+<p>The <span class="tt">@MAT</span> section is composed of a list of entries with the format <span class="tt">&lt;CTR&gt; &lt;VAR&gt; &lt;UNC_VAR&gt; &lt;COEFF&gt;</span>, where <span class="tt">&lt;CTR&gt;</span> is a constraint name, <span class="tt">&lt;VAR&gt;</span> is a variable name, <span class="tt">&lt;UNC_VAR&gt;</span> is an uncertainty parameter name (which must be defined in the uncertainty set), and <span class="tt">&lt;COEFF&gt;</span> is a number. Each entry specifies that the coefficient of the variable <span class="tt">&lt;VAR&gt;</span> in the constraint <span class="tt">&lt;CTR&gt;</span> has an uncertain contribution equal to <span class="tt">&lt;COEFF&gt;</span> times <span class="tt">&lt;UNC_VAR&gt;</span>.</p>
+<dl class="section warning"><dt>Warning</dt><dd>TODO, add decision-dependent problems</dd></dl>
+<h1 class="doxsection"><a class="anchor" id="cli_robust_basics_aro"></a>
+Two-Stage Robust Optimization</h1>
+<h2 class="doxsection"><a class="anchor" id="cli_robust_basics_aro_introduction"></a>
+Introduction</h2>
+<p>Two-stage robust optimization problems are problems of the form</p>
+<p class="formulaDsp">
+\[    \begin{align*}
+        \min_{x\in X} \ c_x^\top x + \max_{u\in U} \ \min_{y\in Y(x,u) } \ c_y^\top y,
+    \end{align*}
+\]
+</p>
+<p> where \( U \) denotes the uncertainty set, \( X \) denotes the first-stage decision feasible region and \( Y(x,u) \) denotes the second-stage decision feasible region.</p>
+<h2 class="doxsection"><a class="anchor" id="cli_robust_basics_aro_input"></a>
+Input File Format</h2>
+<h3 class="doxsection"><a class="anchor" id="cli_robust_basics_aro_input_example"></a>
+A First Example</h3>
+<p>We consider the two-stage robust problem</p>
+<p class="formulaDsp">
+\[    \begin{align*}
+    \min_{x\in \mathbb{Z}\cap[0,5]} \ 3x + \max_{u\in [0,3]} \ \min_{y} \ 10y \quad \text{s.t.} \quad x + y \ge 5 + u, \ y\ge 0.
+    \end{align*}
+\]
+</p>
+<p>The <span class="tt">.mps</span> file for the deterministic model reads</p>
+<div class="fragment"><div class="line">NAME instance</div>
+<div class="line">ROWS</div>
+<div class="line"> N  OBJ</div>
+<div class="line"> G  demand</div>
+<div class="line">COLUMNS</div>
+<div class="line">    __constant OBJ        1</div>
+<div class="line">    x          OBJ        3</div>
+<div class="line">    x          demand     1</div>
+<div class="line">    y          OBJ        10</div>
+<div class="line">    y          demand     1</div>
+<div class="line">RHS</div>
+<div class="line">    RHS       demand     5</div>
+<div class="line">BOUNDS</div>
+<div class="line"> FX BND       __constant 0</div>
+<div class="line"> LI BND       x          0</div>
+<div class="line"> UI BND       x          5</div>
+<div class="line"> LO BND       y          0</div>
+<div class="line">ENDATA</div>
+</div><!-- fragment --><p>The <span class="tt">.mps</span> file for the uncertainty set reads</p>
+<div class="fragment"><div class="line">NAME instance-unc</div>
+<div class="line">ROWS</div>
+<div class="line"> N  OBJ</div>
+<div class="line">COLUMNS</div>
+<div class="line">    __constant OBJ        1</div>
+<div class="line">    u          OBJ        0</div>
+<div class="line">RHS</div>
+<div class="line">BOUNDS</div>
+<div class="line"> FX BND       __constant 0</div>
+<div class="line"> LO BND       u          0</div>
+<div class="line"> UP BND       u          3</div>
+<div class="line">ENDATA</div>
+</div><!-- fragment --><p>The <span class="tt">.par</span> file for the uncertainty parameterization reads</p>
+<div class="fragment"><div class="line">@RHS</div>
+<div class="line">demand u 1</div>
+<div class="line">@OBJ</div>
+<div class="line">@MAT</div>
+</div><!-- fragment --><p>The <span class="tt">aux</span> file for indicating the second-stage variables and constraints reads</p>
+<div class="fragment"><div class="line">@NUMVARS</div>
+<div class="line">1</div>
+<div class="line">@NUMCONSTRS</div>
+<div class="line">1</div>
+<div class="line">@VARSBEGIN</div>
+<div class="line">y    0</div>
+<div class="line">@VARSEND</div>
+<div class="line">@CONSTRSBEGIN</div>
+<div class="line">demand</div>
+<div class="line">@CONSTRSEND</div>
+<div class="line">@NAME</div>
+<div class="line">instance</div>
+<div class="line">@MPS</div>
+<div class="line">instance.mps</div>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="cli_robust_basics_aro_input_detailed"></a>
+Detailed Description</h3>
+<p>The format used to describe two-stage robust problems is based on how static robust problems are described but with an additional file indicating which variable and constraint belong to the second stage.</p>
+<p>Thus, four files are necessary to define a two-stage robust problem.</p>
+<ul>
+<li>A first <span class="tt">.mps</span>/<span class="tt">.lp</span> stores the model for the deterministic problem, i.e., here,   <p class="formulaDsp">
+\[    \min_{x\in X, y\in Y(x,0) } \quad c^\top x
+\]
+</p>
+</li>
+<li>A second <span class="tt">.mps</span>/<span class="tt">.lp</span> stores the uncertainty set \( U \).</li>
+<li>A <span class="tt">.par</span> file indicates where the uncertain parameters enter in the deterministic problem.</li>
+<li>A <span class="tt">.aux</span> file indicates which variable and constraint belong to the second-stage problem.</li>
+</ul>
+<p>For more details on the <span class="tt">.mps</span> and <span class="tt">.lp</span> file formats, see the page cli_input_format_milp.</p>
+<p>For more details on the <span class="tt">.par</span> file format, see the section on cli_robust_static.</p>
+<p>For more details on the <span class="tt">.aux</span> file format, see the page cli_input_format_bilevel.</p>
+<div class="info"> <span> Note that <b>second-stage objective coefficients should be defined in the respective deterministic model.</b> More specifically, they must be set to zero in the <span class="tt">.aux</span> file. <br  />
+ <br  />
+ If lower-level coefficients are given in the <span class="tt">.aux</span> file, say \(d\), then the problem will be considered as a robust bilevel optimization problem with a wait-and-see follower, i.e., problems of the form     <p class="formulaDsp">
+\[            \begin{align*}
+                \min_{x\in X} \ c_x^\top x + \max_{u\in U} \ \min_{y\in S(x,u) } \ c_y^\top y,
+            \end{align*}
+\]
+</p>
+ where \( S(x,u) \) denotes the set of solutions to the \((x,u)\)-parameterized problem   <p class="formulaDsp">
+\[            \min_{y&#39;} \ d^\top y \quad\text{s.t.}\quad y&#39;\in Y(x,u).
+\]
+</p>
+ </span> </div><h2 class="doxsection"><a class="anchor" id="cli_robust_basics_aro_solving"></a>
+Solving a Two-Stage Robust Problem</h2>
+<p>Given a two-stage robust problem, you can solve it by running</p>
+<div class="fragment"><div class="line">idol_cl solve robust model.lp --aux stages.aux --par parameters.par --unc uncertainty-set.mps</div>
+</div><!-- fragment --><p>Here, <span class="tt">model.lp</span> is the deterministic model, <span class="tt">stages.aux</span> is the auxiliary file indicating which variable and constraints belong to the second-stage and <span class="tt">uncertainty-set.mps</span> denotes the uncertainty set.</p>
+<p>Here again, to list the available methods for your problem class, you may use</p>
+<div class="fragment"><div class="line">idol_cl list robust model.lp --aux stages.aux --par parameters.par --unc uncertainty-set.mps</div>
+</div><!-- fragment --> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

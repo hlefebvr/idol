@@ -1,0 +1,470 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::GeneratorPool&lt; KeyT, ValueT &gt; Class Template Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><a href="classidol_1_1GeneratorPool.html">GeneratorPool</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="classidol_1_1GeneratorPool-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::GeneratorPool&lt; KeyT, ValueT &gt; Class Template Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class KeyT, class ValueT = idol::PrimalPoint&gt;<br />
+class idol::GeneratorPool&lt; KeyT, ValueT &gt;</div>
+<p class="definition">Definition at line <a class="el" href="GeneratorPool_8h_source.html#l00016">16</a> of file <a class="el" href="GeneratorPool_8h_source.html">GeneratorPool.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a1506821702a87efff1ee6f5b2da2daa4" id="r_a1506821702a87efff1ee6f5b2da2daa4"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#a1506821702a87efff1ee6f5b2da2daa4">Values</a> = <a class="el" href="classidol_1_1IteratorForward.html">IteratorForward</a>&lt;std::list&lt;std::pair&lt;KeyT, ValueT&gt;&gt;&gt;</td></tr>
+<tr class="memitem:ac091e44208e7f2ca9f1f512e94141951" id="r_ac091e44208e7f2ca9f1f512e94141951"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#ac091e44208e7f2ca9f1f512e94141951">ConstValues</a> = <a class="el" href="classidol_1_1ConstIteratorForward.html">ConstIteratorForward</a>&lt;std::list&lt;std::pair&lt;KeyT, ValueT&gt;&gt;&gt;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a03bf4b6d88cdd2ca339fd456e6bc21e3" id="r_a03bf4b6d88cdd2ca339fd456e6bc21e3"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a03bf4b6d88cdd2ca339fd456e6bc21e3">add</a> (KeyT t_key, ValueT t_value)</td></tr>
+<tr class="memitem:ab2e0f1bbb6125f90efcb24cfd324e333" id="r_ab2e0f1bbb6125f90efcb24cfd324e333"><td class="memItemLeft">std::list&lt; std::pair&lt; KeyT, ValueT &gt; &gt;::iterator&#160;</td><td class="memItemRight"><a class="el" href="#ab2e0f1bbb6125f90efcb24cfd324e333">erase</a> (const typename std::list&lt; std::pair&lt; KeyT, ValueT &gt; &gt;::iterator &amp;t_it)</td></tr>
+<tr class="memitem:ac575d65dff6cbcef830cda156643db24" id="r_ac575d65dff6cbcef830cda156643db24"><td class="memItemLeft">const ValueT &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ac575d65dff6cbcef830cda156643db24">last_inserted</a> () const</td></tr>
+<tr class="memitem:a759785825d414e52bee33779c39ec1b0" id="r_a759785825d414e52bee33779c39ec1b0"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a759785825d414e52bee33779c39ec1b0">clear</a> ()</td></tr>
+<tr class="memitem:a9158d6e91402eefb568330fbee3eb9a7" id="r_a9158d6e91402eefb568330fbee3eb9a7"><td class="memItemLeft">unsigned int&#160;</td><td class="memItemRight"><a class="el" href="#a9158d6e91402eefb568330fbee3eb9a7">size</a> () const</td></tr>
+<tr class="memitem:a44d264f88c1b1e2af1acfa2b24b955eb" id="r_a44d264f88c1b1e2af1acfa2b24b955eb"><td class="memItemLeft">Values&#160;</td><td class="memItemRight"><a class="el" href="#a44d264f88c1b1e2af1acfa2b24b955eb">values</a> ()</td></tr>
+<tr class="memitem:a539340f3fd830f8a8cc1336a05280505" id="r_a539340f3fd830f8a8cc1336a05280505"><td class="memItemLeft">ConstValues&#160;</td><td class="memItemRight"><a class="el" href="#a539340f3fd830f8a8cc1336a05280505">values</a> () const</td></tr>
+</table>
+<a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
+<a id="ac091e44208e7f2ca9f1f512e94141951" name="ac091e44208e7f2ca9f1f512e94141951"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac091e44208e7f2ca9f1f512e94141951">&#9670;&#160;</a></span>ConstValues</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT, class ValueT = idol::PrimalPoint&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classidol_1_1GeneratorPool.html">idol::GeneratorPool</a>&lt; KeyT, ValueT &gt;::ConstValues = <a class="el" href="classidol_1_1ConstIteratorForward.html">ConstIteratorForward</a>&lt;std::list&lt;std::pair&lt;KeyT, ValueT&gt;&gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GeneratorPool_8h_source.html#l00034">34</a> of file <a class="el" href="GeneratorPool_8h_source.html">GeneratorPool.h</a>.</p>
+
+</div>
+</div>
+<a id="a1506821702a87efff1ee6f5b2da2daa4" name="a1506821702a87efff1ee6f5b2da2daa4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1506821702a87efff1ee6f5b2da2daa4">&#9670;&#160;</a></span>Values</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT, class ValueT = idol::PrimalPoint&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classidol_1_1GeneratorPool.html">idol::GeneratorPool</a>&lt; KeyT, ValueT &gt;::Values = <a class="el" href="classidol_1_1IteratorForward.html">IteratorForward</a>&lt;std::list&lt;std::pair&lt;KeyT, ValueT&gt;&gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GeneratorPool_8h_source.html#l00033">33</a> of file <a class="el" href="GeneratorPool_8h_source.html">GeneratorPool.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a03bf4b6d88cdd2ca339fd456e6bc21e3" name="a03bf4b6d88cdd2ca339fd456e6bc21e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03bf4b6d88cdd2ca339fd456e6bc21e3">&#9670;&#160;</a></span>add()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT, class ValueT = idol::PrimalPoint&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1GeneratorPool.html">idol::GeneratorPool</a>&lt; KeyT, ValueT &gt;::add </td>
+          <td>(</td>
+          <td class="paramtype">KeyT</td>          <td class="paramname"><span class="paramname"><em>t_key</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ValueT</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GeneratorPool_8h_source.html#l00019">19</a> of file <a class="el" href="GeneratorPool_8h_source.html">GeneratorPool.h</a>.</p>
+
+</div>
+</div>
+<a id="a759785825d414e52bee33779c39ec1b0" name="a759785825d414e52bee33779c39ec1b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a759785825d414e52bee33779c39ec1b0">&#9670;&#160;</a></span>clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT, class ValueT = idol::PrimalPoint&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classidol_1_1GeneratorPool.html">idol::GeneratorPool</a>&lt; KeyT, ValueT &gt;::clear </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GeneratorPool_8h_source.html#l00029">29</a> of file <a class="el" href="GeneratorPool_8h_source.html">GeneratorPool.h</a>.</p>
+
+</div>
+</div>
+<a id="ab2e0f1bbb6125f90efcb24cfd324e333" name="ab2e0f1bbb6125f90efcb24cfd324e333"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2e0f1bbb6125f90efcb24cfd324e333">&#9670;&#160;</a></span>erase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT, class ValueT = idol::PrimalPoint&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt; std::pair&lt; KeyT, ValueT &gt; &gt;::iterator <a class="el" href="classidol_1_1GeneratorPool.html">idol::GeneratorPool</a>&lt; KeyT, ValueT &gt;::erase </td>
+          <td>(</td>
+          <td class="paramtype">const typename std::list&lt; std::pair&lt; KeyT, ValueT &gt; &gt;::iterator &amp;</td>          <td class="paramname"><span class="paramname"><em>t_it</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GeneratorPool_8h_source.html#l00023">23</a> of file <a class="el" href="GeneratorPool_8h_source.html">GeneratorPool.h</a>.</p>
+
+</div>
+</div>
+<a id="ac575d65dff6cbcef830cda156643db24" name="ac575d65dff6cbcef830cda156643db24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac575d65dff6cbcef830cda156643db24">&#9670;&#160;</a></span>last_inserted()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT, class ValueT = idol::PrimalPoint&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const ValueT &amp; <a class="el" href="classidol_1_1GeneratorPool.html">idol::GeneratorPool</a>&lt; KeyT, ValueT &gt;::last_inserted </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GeneratorPool_8h_source.html#l00027">27</a> of file <a class="el" href="GeneratorPool_8h_source.html">GeneratorPool.h</a>.</p>
+
+</div>
+</div>
+<a id="a9158d6e91402eefb568330fbee3eb9a7" name="a9158d6e91402eefb568330fbee3eb9a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9158d6e91402eefb568330fbee3eb9a7">&#9670;&#160;</a></span>size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT, class ValueT = idol::PrimalPoint&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classidol_1_1GeneratorPool.html">idol::GeneratorPool</a>&lt; KeyT, ValueT &gt;::size </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GeneratorPool_8h_source.html#l00031">31</a> of file <a class="el" href="GeneratorPool_8h_source.html">GeneratorPool.h</a>.</p>
+
+</div>
+</div>
+<a id="a44d264f88c1b1e2af1acfa2b24b955eb" name="a44d264f88c1b1e2af1acfa2b24b955eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44d264f88c1b1e2af1acfa2b24b955eb">&#9670;&#160;</a></span>values() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT, class ValueT = idol::PrimalPoint&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Values <a class="el" href="classidol_1_1GeneratorPool.html">idol::GeneratorPool</a>&lt; KeyT, ValueT &gt;::values </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GeneratorPool_8h_source.html#l00036">36</a> of file <a class="el" href="GeneratorPool_8h_source.html">GeneratorPool.h</a>.</p>
+
+</div>
+</div>
+<a id="a539340f3fd830f8a8cc1336a05280505" name="a539340f3fd830f8a8cc1336a05280505"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a539340f3fd830f8a8cc1336a05280505">&#9670;&#160;</a></span>values() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class KeyT, class ValueT = idol::PrimalPoint&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ConstValues <a class="el" href="classidol_1_1GeneratorPool.html">idol::GeneratorPool</a>&lt; KeyT, ValueT &gt;::values </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="GeneratorPool_8h_source.html#l00037">37</a> of file <a class="el" href="GeneratorPool_8h_source.html">GeneratorPool.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

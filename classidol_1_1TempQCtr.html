@@ -1,0 +1,393 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::TempQCtr Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><a href="classidol_1_1TempQCtr.html">TempQCtr</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="classidol_1_1TempQCtr-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::TempQCtr Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="TempQCtr_8h_source.html#l00014">14</a> of file <a class="el" href="TempQCtr_8h_source.html">TempQCtr.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a7a3111e8d8faf50bb03ddc8f456ec967" id="r_a7a3111e8d8faf50bb03ddc8f456ec967"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a7a3111e8d8faf50bb03ddc8f456ec967">TempQCtr</a> (<a class="el" href="classidol_1_1QuadExpr.html">QuadExpr</a>&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt; &amp;&amp;t_expr, CtrType t_type)</td></tr>
+<tr class="memitem:a3bb559a6fa856e88d48698913271b32b" id="r_a3bb559a6fa856e88d48698913271b32b"><td class="memItemLeft"><a id="a3bb559a6fa856e88d48698913271b32b" name="a3bb559a6fa856e88d48698913271b32b"></a>
+&#160;</td><td class="memItemRight"><b>TempQCtr</b> (const TempQCtr &amp;t_src)=default</td></tr>
+<tr class="memitem:aeecfa270826979838da857e6f43db0c0" id="r_aeecfa270826979838da857e6f43db0c0"><td class="memItemLeft"><a id="aeecfa270826979838da857e6f43db0c0" name="aeecfa270826979838da857e6f43db0c0"></a>
+&#160;</td><td class="memItemRight"><b>TempQCtr</b> (TempQCtr &amp;&amp;) noexcept=default</td></tr>
+<tr class="memitem:ab8d59306f91e6dc0aab99b4e749a31ac" id="r_ab8d59306f91e6dc0aab99b4e749a31ac"><td class="memItemLeft"><a id="ab8d59306f91e6dc0aab99b4e749a31ac" name="ab8d59306f91e6dc0aab99b4e749a31ac"></a>
+TempQCtr &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (const TempQCtr &amp;t_rhs)=default</td></tr>
+<tr class="memitem:adaf0ca8c428c1145c952dc25375d191c" id="r_adaf0ca8c428c1145c952dc25375d191c"><td class="memItemLeft"><a id="adaf0ca8c428c1145c952dc25375d191c" name="adaf0ca8c428c1145c952dc25375d191c"></a>
+TempQCtr &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (TempQCtr &amp;&amp;) noexcept=default</td></tr>
+<tr class="memitem:a653abc2b85c06b9a3de2c92fb4cae5bb" id="r_a653abc2b85c06b9a3de2c92fb4cae5bb"><td class="memItemLeft"><a class="el" href="classidol_1_1QuadExpr.html">QuadExpr</a>&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a653abc2b85c06b9a3de2c92fb4cae5bb">expr</a> ()</td></tr>
+<tr class="memitem:ad41a54b5672a01e499cce7f13a564dc0" id="r_ad41a54b5672a01e499cce7f13a564dc0"><td class="memItemLeft">const <a class="el" href="classidol_1_1QuadExpr.html">QuadExpr</a>&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ad41a54b5672a01e499cce7f13a564dc0">expr</a> () const</td></tr>
+<tr class="memitem:afff8244b120c2640caab8af94e9dbf90" id="r_afff8244b120c2640caab8af94e9dbf90"><td class="memItemLeft">CtrType&#160;</td><td class="memItemRight"><a class="el" href="#afff8244b120c2640caab8af94e9dbf90">type</a> () const</td></tr>
+<tr class="memitem:a4d45a488f8e5c2d13b560e033ef79566" id="r_a4d45a488f8e5c2d13b560e033ef79566"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a4d45a488f8e5c2d13b560e033ef79566">set_expr</a> (<a class="el" href="classidol_1_1QuadExpr.html">QuadExpr</a>&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt; &amp;&amp;t_expr)</td></tr>
+<tr class="memitem:ac1b194673e4cd754cf4165025cf43949" id="r_ac1b194673e4cd754cf4165025cf43949"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ac1b194673e4cd754cf4165025cf43949">set_type</a> (CtrType t_type)</td></tr>
+</table>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7a3111e8d8faf50bb03ddc8f456ec967" name="a7a3111e8d8faf50bb03ddc8f456ec967"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a3111e8d8faf50bb03ddc8f456ec967">&#9670;&#160;</a></span>TempQCtr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol::TempQCtr::TempQCtr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classidol_1_1QuadExpr.html">QuadExpr</a>&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>t_expr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CtrType</td>          <td class="paramname"><span class="paramname"><em>t_type</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="TempQCtr_8h_source.html#l00020">20</a> of file <a class="el" href="TempQCtr_8h_source.html">TempQCtr.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a653abc2b85c06b9a3de2c92fb4cae5bb" name="a653abc2b85c06b9a3de2c92fb4cae5bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a653abc2b85c06b9a3de2c92fb4cae5bb">&#9670;&#160;</a></span>expr() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classidol_1_1QuadExpr.html">QuadExpr</a>&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt; &amp; idol::TempQCtr::expr </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="TempQCtr_8h_source.html#l00030">30</a> of file <a class="el" href="TempQCtr_8h_source.html">TempQCtr.h</a>.</p>
+
+</div>
+</div>
+<a id="ad41a54b5672a01e499cce7f13a564dc0" name="ad41a54b5672a01e499cce7f13a564dc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad41a54b5672a01e499cce7f13a564dc0">&#9670;&#160;</a></span>expr() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classidol_1_1QuadExpr.html">QuadExpr</a>&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt; &amp; idol::TempQCtr::expr </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="TempQCtr_8h_source.html#l00032">32</a> of file <a class="el" href="TempQCtr_8h_source.html">TempQCtr.h</a>.</p>
+
+</div>
+</div>
+<a id="a4d45a488f8e5c2d13b560e033ef79566" name="a4d45a488f8e5c2d13b560e033ef79566"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d45a488f8e5c2d13b560e033ef79566">&#9670;&#160;</a></span>set_expr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::TempQCtr::set_expr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classidol_1_1QuadExpr.html">QuadExpr</a>&lt; <a class="el" href="classidol_1_1Var.html">Var</a> &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>t_expr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="TempQCtr_8h_source.html#l00036">36</a> of file <a class="el" href="TempQCtr_8h_source.html">TempQCtr.h</a>.</p>
+
+</div>
+</div>
+<a id="ac1b194673e4cd754cf4165025cf43949" name="ac1b194673e4cd754cf4165025cf43949"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1b194673e4cd754cf4165025cf43949">&#9670;&#160;</a></span>set_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::TempQCtr::set_type </td>
+          <td>(</td>
+          <td class="paramtype">CtrType</td>          <td class="paramname"><span class="paramname"><em>t_type</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="TempQCtr_8h_source.html#l00038">38</a> of file <a class="el" href="TempQCtr_8h_source.html">TempQCtr.h</a>.</p>
+
+</div>
+</div>
+<a id="afff8244b120c2640caab8af94e9dbf90" name="afff8244b120c2640caab8af94e9dbf90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afff8244b120c2640caab8af94e9dbf90">&#9670;&#160;</a></span>type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CtrType idol::TempQCtr::type </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="TempQCtr_8h_source.html#l00034">34</a> of file <a class="el" href="TempQCtr_8h_source.html">TempQCtr.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

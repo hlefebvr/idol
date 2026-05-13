@@ -1,0 +1,431 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Pair&lt; T1, T2 &gt; Struct Template Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><a href="structidol_1_1Pair.html">Pair</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="structidol_1_1Pair-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Pair&lt; T1, T2 &gt; Struct Template Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class T1, class T2&gt;<br />
+struct idol::Pair&lt; T1, T2 &gt;</div>
+<p class="definition">Definition at line <a class="el" href="Pair_8h_source.html#l00016">16</a> of file <a class="el" href="Pair_8h_source.html">Pair.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a340bf5e242eb7ab1289d8488d5cb9d4e" id="r_a340bf5e242eb7ab1289d8488d5cb9d4e"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a340bf5e242eb7ab1289d8488d5cb9d4e">Pair</a> (const T1 &amp;t_1, const T2 &amp;t_2)</td></tr>
+<tr class="memitem:a3070d60869131c217a2db617b464e73d" id="r_a3070d60869131c217a2db617b464e73d"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a3070d60869131c217a2db617b464e73d">Pair</a> (T1 &amp;&amp;t_1, T2 &amp;&amp;t_2)</td></tr>
+<tr class="memitem:a50f7a34d7d796ccaf3efa4269fa0fbf7" id="r_a50f7a34d7d796ccaf3efa4269fa0fbf7"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a50f7a34d7d796ccaf3efa4269fa0fbf7">Pair</a> (const T1 &amp;t_1, T2 &amp;&amp;t_2)</td></tr>
+<tr class="memitem:aafd564016d10d5dbd05f55241d11fbee" id="r_aafd564016d10d5dbd05f55241d11fbee"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#aafd564016d10d5dbd05f55241d11fbee">Pair</a> (T1 &amp;&amp;t_1, const T2 &amp;t_2)</td></tr>
+<tr class="memitem:af23a3159d3fc173728578b67c9f4fcb9" id="r_af23a3159d3fc173728578b67c9f4fcb9"><td class="memItemLeft"><a id="af23a3159d3fc173728578b67c9f4fcb9" name="af23a3159d3fc173728578b67c9f4fcb9"></a>
+&#160;</td><td class="memItemRight"><b>Pair</b> (const Pair &amp;)=default</td></tr>
+<tr class="memitem:ab9700c6ac7086d376064ec694c7dbd0b" id="r_ab9700c6ac7086d376064ec694c7dbd0b"><td class="memItemLeft"><a id="ab9700c6ac7086d376064ec694c7dbd0b" name="ab9700c6ac7086d376064ec694c7dbd0b"></a>
+&#160;</td><td class="memItemRight"><b>Pair</b> (Pair &amp;&amp;)=default</td></tr>
+<tr class="memitem:a68c41f1a13ad6c47f68e8d01e3ac4208" id="r_a68c41f1a13ad6c47f68e8d01e3ac4208"><td class="memItemLeft"><a id="a68c41f1a13ad6c47f68e8d01e3ac4208" name="a68c41f1a13ad6c47f68e8d01e3ac4208"></a>
+Pair &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (const Pair &amp;)=default</td></tr>
+<tr class="memitem:aacadda11aba06aa24375ef4ac901b66c" id="r_aacadda11aba06aa24375ef4ac901b66c"><td class="memItemLeft"><a id="aacadda11aba06aa24375ef4ac901b66c" name="aacadda11aba06aa24375ef4ac901b66c"></a>
+Pair &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (Pair &amp;&amp;)=default</td></tr>
+<tr class="memitem:a3e120417b6a76184e3b0d492fe8b7256" id="r_a3e120417b6a76184e3b0d492fe8b7256"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a3e120417b6a76184e3b0d492fe8b7256">operator==</a> (const Pair &amp;t_rhs) const</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:ace9eb670f2f99ee1b4b727187ed07c48" id="r_ace9eb670f2f99ee1b4b727187ed07c48"><td class="memItemLeft">T1&#160;</td><td class="memItemRight"><a class="el" href="#ace9eb670f2f99ee1b4b727187ed07c48">first</a></td></tr>
+<tr class="memitem:ae0b4417cce65db7e5211c5517f703e8d" id="r_ae0b4417cce65db7e5211c5517f703e8d"><td class="memItemLeft">T2&#160;</td><td class="memItemRight"><a class="el" href="#ae0b4417cce65db7e5211c5517f703e8d">second</a></td></tr>
+</table>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a340bf5e242eb7ab1289d8488d5cb9d4e" name="a340bf5e242eb7ab1289d8488d5cb9d4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a340bf5e242eb7ab1289d8488d5cb9d4e">&#9670;&#160;</a></span>Pair() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1, class T2&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structidol_1_1Pair.html">idol::Pair</a>&lt; T1, T2 &gt;::Pair </td>
+          <td>(</td>
+          <td class="paramtype">const T1 &amp;</td>          <td class="paramname"><span class="paramname"><em>t_1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T2 &amp;</td>          <td class="paramname"><span class="paramname"><em>t_2</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Pair_8h_source.html#l00020">20</a> of file <a class="el" href="Pair_8h_source.html">Pair.h</a>.</p>
+
+</div>
+</div>
+<a id="a3070d60869131c217a2db617b464e73d" name="a3070d60869131c217a2db617b464e73d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3070d60869131c217a2db617b464e73d">&#9670;&#160;</a></span>Pair() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1, class T2&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structidol_1_1Pair.html">idol::Pair</a>&lt; T1, T2 &gt;::Pair </td>
+          <td>(</td>
+          <td class="paramtype">T1 &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>t_1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T2 &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>t_2</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Pair_8h_source.html#l00021">21</a> of file <a class="el" href="Pair_8h_source.html">Pair.h</a>.</p>
+
+</div>
+</div>
+<a id="a50f7a34d7d796ccaf3efa4269fa0fbf7" name="a50f7a34d7d796ccaf3efa4269fa0fbf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50f7a34d7d796ccaf3efa4269fa0fbf7">&#9670;&#160;</a></span>Pair() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1, class T2&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structidol_1_1Pair.html">idol::Pair</a>&lt; T1, T2 &gt;::Pair </td>
+          <td>(</td>
+          <td class="paramtype">const T1 &amp;</td>          <td class="paramname"><span class="paramname"><em>t_1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T2 &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>t_2</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Pair_8h_source.html#l00022">22</a> of file <a class="el" href="Pair_8h_source.html">Pair.h</a>.</p>
+
+</div>
+</div>
+<a id="aafd564016d10d5dbd05f55241d11fbee" name="aafd564016d10d5dbd05f55241d11fbee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafd564016d10d5dbd05f55241d11fbee">&#9670;&#160;</a></span>Pair() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1, class T2&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structidol_1_1Pair.html">idol::Pair</a>&lt; T1, T2 &gt;::Pair </td>
+          <td>(</td>
+          <td class="paramtype">T1 &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>t_1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T2 &amp;</td>          <td class="paramname"><span class="paramname"><em>t_2</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Pair_8h_source.html#l00023">23</a> of file <a class="el" href="Pair_8h_source.html">Pair.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a3e120417b6a76184e3b0d492fe8b7256" name="a3e120417b6a76184e3b0d492fe8b7256"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e120417b6a76184e3b0d492fe8b7256">&#9670;&#160;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1, class T2&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structidol_1_1Pair.html">idol::Pair</a>&lt; T1, T2 &gt;::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const Pair&lt; T1, T2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>t_rhs</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Pair_8h_source.html#l00031">31</a> of file <a class="el" href="Pair_8h_source.html">Pair.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="ace9eb670f2f99ee1b4b727187ed07c48" name="ace9eb670f2f99ee1b4b727187ed07c48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace9eb670f2f99ee1b4b727187ed07c48">&#9670;&#160;</a></span>first</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1, class T2&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">T1 <a class="el" href="structidol_1_1Pair.html">idol::Pair</a>&lt; T1, T2 &gt;::first</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Pair_8h_source.html#l00017">17</a> of file <a class="el" href="Pair_8h_source.html">Pair.h</a>.</p>
+
+</div>
+</div>
+<a id="ae0b4417cce65db7e5211c5517f703e8d" name="ae0b4417cce65db7e5211c5517f703e8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0b4417cce65db7e5211c5517f703e8d">&#9670;&#160;</a></span>second</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1, class T2&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">T2 <a class="el" href="structidol_1_1Pair.html">idol::Pair</a>&lt; T1, T2 &gt;::second</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Pair_8h_source.html#l00018">18</a> of file <a class="el" href="Pair_8h_source.html">Pair.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

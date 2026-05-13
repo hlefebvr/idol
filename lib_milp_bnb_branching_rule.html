@@ -1,0 +1,384 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: Branching Rules</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method MIBS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl solve bilevel model.mps \\ \n   --aux follower.aux \\ \n   --method KKT-BIGM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method GUROBI \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-FARKAS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve robust model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG-KKT-SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl solve milp model.mps \\ \n   --method HIGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div id="doc-content">
+<div><div class="header">
+  <div class="headertitle"><div class="title">Branching Rules </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul>
+  <li class="level1">
+    <a href="#lib_milp_bnb_branching_rule_FirstInfeasibleFound">First Infeasible Found </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_branching_rule_LeastInfeasible">Least Infeasible </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_branching_rule_MostInfeasible">Most Infeasible </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_branching_rule_PseudoCost">Pseudo Cost Branching </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_branching_rule_StrongBranching">Strong Branching </a>
+    <ul>
+      <li class="level2">
+        <a href="#lib_milp_bnb_branching_rule_StrongBranching_full">Full Strong Branching </a>
+      </li>
+      <li class="level2">
+        <a href="#lib_milp_bnb_branching_rule_StrongBranching_restricted">Restricted Strong Branching </a>
+      </li>
+      <li class="level2">
+        <a href="#lib_milp_bnb_branching_rule_StrongBranching_phases">Strong Branching with Phases </a>
+      </li>
+      <li class="level2">
+        <a href="#lib_milp_bnb_branching_rule_StrongBranching_look_ahead">Strong Branching with Look Ahead </a>
+      </li>
+      <li class="level2">
+        <a href="#lib_milp_bnb_branching_rule_scoring">Changing the Scoring Function </a>
+      </li>
+    </ul>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_branching_rule_UniformlyRandom">Uniformly Random Branching </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_branching_rule_BranchingWithPriority">Branching with Priorities </a>
+  </li>
+  <li class="level1">
+    <a href="#lib_milp_bnb_branching_rule_writing">Writing Your Own Branching Rule </a>
+  </li>
+</ul>
+</div>
+<div class="textblock"><p>Given a node selected for exploration, the next step is to decide how to split the node into new nodes. Here again, several strategies are at hand.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Branching Rule  </th><th class="markdownTableHeadNone">Purpose / Guideline  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>First Infeasible Found</b>  </td><td class="markdownTableBodyNone">Branch on the first infeasible variable found; simple and fast.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>Least Infeasible</b>  </td><td class="markdownTableBodyNone">Branch on variable closest to feasibility.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>Most Infeasible</b>  </td><td class="markdownTableBodyNone">Branch on variable farthest from feasibility; may reduce infeasibilities faster.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>Pseudo Cost</b>  </td><td class="markdownTableBodyNone">Branch on variable with highest historical impact on objective; balances efficiency and effectiveness.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>Strong Branching</b>  </td><td class="markdownTableBodyNone">Test candidate branches before choosing; often gives best node reduction but more expensive.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>Uniformly Random</b>  </td><td class="markdownTableBodyNone">Pick a variable randomly; mainly for testing.  </td></tr>
+</table>
+<h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_FirstInfeasibleFound"></a>
+First Infeasible Found</h1>
+<p>The first infeasible found strategy selects the first variable that violates its integrality constraint.</p>
+<p>Here is how to use it.</p>
+<div class="fragment"><div class="line">branch_and_bound.with_branching_rule(FirstInfeasibleFound());</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_LeastInfeasible"></a>
+Least Infeasible</h1>
+<p>The least infeasible strategy selects the variable whose value is closest to an integer.</p>
+<p>Here is how to use it.</p>
+<div class="fragment"><div class="line">branch_and_bound.with_branching_rule(LeastInfeasibleFound());</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_MostInfeasible"></a>
+Most Infeasible</h1>
+<p>The most infeasible strategy selects the variable whose value is farthest from an integer.</p>
+<p>Here is how to use it.</p>
+<div class="fragment"><div class="line">branch_and_bound.with_branching_rule(MostInfeasibleFound());</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_PseudoCost"></a>
+Pseudo Cost Branching</h1>
+<p>The pseudo cost strategy selects the variable with the highest estimated impact on the objective value, based on past branching decisions. To do so, for each branching candidate \( x_j \), two scores are first computed:</p>
+<ul>
+<li>an upper bounding score (for the branch \( x_j \le \lfloor x_j^* \rfloor \))   <p class="formulaDsp">
+\[    \text{score}^+_j = (x_j^* - \lfloor x_j^* \rfloor) \cdot \frac{ \sum_{k} \Delta\text{obj}_{kj}^+ }{ n_j }
+\]
+</p>
+</li>
+<li>a lower bounding score (for the branch \( x_j \ge \lceil x_j^* \rceil \))   <p class="formulaDsp">
+\[    \text{score}^-_j = (\lceil x_j^* \rceil - x_j^*) \cdot \frac{ \sum_{k} \Delta\text{obj}_{kj}^- }{ n_j }
+\]
+</p>
+</li>
+</ul>
+<p>Here,</p><ul>
+<li>\( x^* \) denotes the current node solution,</li>
+<li>\( n_j \) denote the number of times \( x_j \) has previously been selected for branching,</li>
+<li>\( \Delta\text{obj}_{kj}^+ \) (resp., \( \Delta\text{obj}_{kj}^- \)) denotes the objective change that occurred at node \( k \) after having branched on \( x_j \) in the left (resp., right) child node w.r.t. the parent node.</li>
+</ul>
+<p>Then, the two scores are combined using one of the two following formulas:</p>
+<ul>
+<li>a linear one using (with default value \( \alpha = 1/16 \))   <p class="formulaDsp">
+\[    \text{score}_j = (1 - \alpha) \times \min\{ \text{score}^+_j, \text{score}^-_j \} + \alpha\times \max\{ \text{score}^+_j, \text{score}^-_j \}.
+\]
+</p>
+ This slightly favors the larger score while keeping a base weight on the smaller one. It is the default setting.</li>
+<li>a quadratic one using (with default value \( \varepsilon = 10^{-6} \))   <p class="formulaDsp">
+\[  \text{score}_j = \min\{ \varepsilon, \text{score}^+_j \} \times \min\{ \varepsilon, \text{score}^-_j \}
+\]
+</p>
+ This method heavily penalizes variables where one score is very small, favoring variables that are strong in both directions.</li>
+</ul>
+<p>The branching candidate with the highest score is selected for branching.</p>
+<p>Here is how to use it.</p>
+<div class="fragment"><div class="line">branch_and_bound.with_branching_rule(PseudoCost());</div>
+</div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd>TODO add how to change node scoring function and their parameters</dd></dl>
+<h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_StrongBranching"></a>
+Strong Branching</h1>
+<p>Strong branching is a sophisticated variable selection strategy that estimates the impact of branching by temporarily solving child nodes before making the final branching decision.</p>
+<p>More specifically, for each branching candidate, strong branching requires to solves, before branching happens, the left and right child node. Thus, two scores are computed:</p>
+<ul>
+<li>an upper bounding score (for the branch \( x_j \le \lfloor x_j^* \rfloor \))   <p class="formulaDsp">
+\[  \text{score}^+_j = \text{objective\_value}^+ - \text{parent\_objective\_value}
+\]
+</p>
+</li>
+<li>a lower bounding score (for the branch \( x_j \ge \lceil x_j^* \rceil \))   <p class="formulaDsp">
+\[  \text{score}^-_j = \text{objective\_value}^- - \text{parent\_objective\_value}
+\]
+</p>
+</li>
+</ul>
+<p>Here,</p><ul>
+<li>\( \text{parent\_objective\_value} \) denotes the optimal objective function value of the parent node,</li>
+<li>\( \text{objective\_value}^+ \) (resp., \( \text{objective\_value}^- \)) denotes the objective value of the left (resp., right) node.</li>
+</ul>
+<p>Then, the two scores are combined using one of the two formulas that are detailed in the pseudo cost section.</p>
+<p>The branching candidate with the highest score is selected for branching.</p>
+<p>Several variants of strong branching exists, and are detailed next along with their implementation in <span class="tt">idol</span>.</p>
+<h2 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_StrongBranching_full"></a>
+Full Strong Branching</h2>
+<p>Full strong branching denotes the standard strong branching rule which solves twice as many nodes as there are branching candidates at each node selected for branching. Thus, a clear drawback is that it may take a lot of time to solve all these sub-problems.</p>
+<p>Here is how to use it.</p>
+<div class="fragment"><div class="line">branch_and_bound.with_branching_rule(StrongBranching());</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_StrongBranching_restricted"></a>
+Restricted Strong Branching</h2>
+<p>Restricted strong branching is an attempt to reduce the computational burden of full strong branching. The idea is to consider only a maximum of \(K\) branching candidates at each branching decision instead of the whole set of branching candidates. At each node, we therefore build a "restricted branching candidate set" obtained by taking the \( K \) first variables selected by another branching rule. Then, strong branching is applied on these \( K \) variables.</p>
+<p>Here is how to use it, here with \( K = 10 \).</p>
+<div class="fragment"><div class="line">branch_and_bound.with_branching_rule(StrongBranching().with_max_n_variables(10));</div>
+</div><!-- fragment --><p>By default, the branching rule used to select the \( K \) candidates is the most infeasible branching rule.</p>
+<h2 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_StrongBranching_phases"></a>
+Strong Branching with Phases</h2>
+<p>Strong branching with phases is a combination of the above approaches which applies different schemes depending on the level of the current node in the branch-and-bound tree. Additionally, it allows to solve each node only approximately by, e.g., imposing a maximum number of iterations for the underlying optimizer.</p>
+<p>Here is an example of strong branching with phases which, for nodes whose level is below or equal to 3, applies full strong branching, then switches to restricted strong branching with \( K = 30 \) and solves nodes with an iteration limit of 20.</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> strong_branching = StrongBranching();</div>
+<div class="line">strong_branching.add_phase(StrongBranchingPhases::WithNodeOptimizer(), std::numeric_limits&lt;unsigned int&gt;::max(), 3)</div>
+<div class="line">strong_branching.add_phase(StrongBranchingPhases::WithIterationLimit(20), 30, std::numeric_limits&lt;unsigned int&gt;::max());</div>
+<div class="line"> </div>
+<div class="line">branch_and_bound.with_branching_rule(strong_branching);</div>
+</div><!-- fragment --><p>Observe how we used :code:<span class="tt">std::numeric_limits&lt;unsigned int&gt;::max()</span> to remove restrictions on the number of considered variables and on the maximum depth for the final phase. Note that, by default, if no phase is triggered for a given depth, e.g., because it was not specified, full strong branching is applied. Here, however, we make sure that the second phase is always triggered.</p>
+<h2 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_StrongBranching_look_ahead"></a>
+Strong Branching with Look Ahead</h2>
+<p>Strong branchign with look ahead is similar to restricted strong branching yet differs from it by not specifying a fixed size for the "restricted branching candidate set". Instead, it considers a look ahead parameter, noted \( L \), and applies the full strong branching rule until the branching candidate does not change after \( L \) iterations. Then, the algorithm stops and the current branching candidate is returned.</p>
+<p>Unfortunately, this approach is not yet implemented in <span class="tt">idol</span>.</p>
+<h2 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_scoring"></a>
+Changing the Scoring Function</h2>
+<p>The scoring function can be changed using the <span class="tt">.with_scoring_function</span> method. For instance, here is how to use the quadratic scoring function.</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> strong_branching = StrongBranching();</div>
+<div class="line">strong_branching.with_scoring_function(NodeScoreFunctions::Product()); </div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_UniformlyRandom"></a>
+Uniformly Random Branching</h1>
+<p>The uniformly random strategy selects a branching variable randomly among all candidates.</p>
+<p>Here is how to use it.</p>
+<div class="fragment"><div class="line">branch_and_bound.with_branching_rule(UniformlyRandom());</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_BranchingWithPriority"></a>
+Branching with Priorities</h1>
+<p>Branching with priorities groups variables into batches according to user-defined priorities. Within each batch, a standard branching rule (e.g., most infeasible) is applied to select the next variable. Higher-priority batches are always considered before lower-priority ones, allowing you to control the order in which variables are branched on.</p>
+<p>Here is an example.</p>
+<div class="fragment"><div class="line">std::vector&lt;Var&gt; high_priority = { x[0], x[1], x[3] };</div>
+<div class="line">std::vector&lt;Var&gt; low_priority = { x[4], x[5], x[6] };</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">auto</span> branching_with_priority = BranchingWithPriority();</div>
+<div class="line">branching_with_priority.add_branching_rule(StrongBranching(high_priority.begin(), high_priority.end()));</div>
+<div class="line">branching_with_priority.add_branching_rule(MostInfeasible(low_priority.begin(), low_priority.end()));</div>
+</div><!-- fragment --><p>Here, the branching strategy is as follows. First, it considers variables in the high-priority batch and uses (full) strong branching. Once all the variables in this batch have integer values, it considers the low-priority batch and uses the most infeasible rule.</p>
+<h1 class="doxsection"><a class="anchor" id="lib_milp_bnb_branching_rule_writing"></a>
+Writing Your Own Branching Rule</h1>
+<dl class="section warning"><dt>Warning</dt><dd>TODO write this section </dd></dl>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>
