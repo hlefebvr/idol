@@ -23,17 +23,17 @@
 class AdjustableRobustMethodManager : public MethodManager {
 public:
     AdjustableRobustMethodManager() : MethodManager({
+        /*** Static robust problems ***/
+        { "CVCCG", { 140, "Critical-value column-and-constraint generation; see Lozano and Borrero (2025) [https://link.springer.com/article/10.1007/s10107-025-02249-6]." } },
+        { "GEN-IND", { 130, "Scenario generation (indicator functions in case of decision-dependent uncertainty sets)." } },
+
         /*** Adjustable robust problems ***/
         { "CCG-FARKAS", { 50, "Column-and-constraint generation with Farkas-based separation; see Ayoub and Poss (2016) [https://doi.org/10.1007/s10287-016-0249-2]." } },
-        { "CCG-MIBS", { 25, "Column-and-constraint generation with separation by MibS." } },
+        { "CCG-MIBS", { 25, "Column-and-constraint generation with separation by the mixed-integer bilevel solver MibS." } },
         { "CCG-KKT-SOS1", { 20, "Column-and-constraint generation with KKT-based separation using SOS1." } },
         //{ "YASOL", { 15, "Quantified programming formulation solved with Yasol; see Goerigk and Hartisch (2021) [https://doi.org/10.1016/j.cor.2021.105434]." } },
         //{ "BBBB-MIBS", { 5, "Bilevel-based branch-and-bound with MibS; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } },
         //{ "BBBB-KKT-SOS1", { 0, "Bilevel-based branch-and-bound with KKT using SOS1; see Lefebvre et al. (2023) [https://doi.org/10.1287/ijoc.2022.0086]." } }
-
-        /*** Static robust problems ***/
-        { "CVCCG", { 140, "Critical-value column-and-constraint generation; see Lozano and Borrero (2025) [https://link.springer.com/article/10.1007/s10107-025-02249-6]." } },
-        { "GEN-IND", { 130, "Scenario generation (indicator functions in case of decision-dependent uncertainty sets)." } }
     }) {}
 };
 
