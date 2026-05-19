@@ -8,7 +8,7 @@
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
-#include "../MILPMethodManager.h"
+#include "../milp/MILPMethodManager.h"
 
 std::string RobustMethods::CCG_KKT_SOS1::description() const {
     return "Column-and-constraint generation with KKT-based separation using SOS1.";
@@ -38,8 +38,10 @@ void RobustMethods::CCG_KKT_SOS1::set_optimizer(idol::Model& t_model, const Robu
     const auto& stage_analysis = t_manager.stage_analysis();
     const auto& args = t_manager.args();
 
-    MILPMethodManager sub_milp_method_manager;
-    const auto sub_milp_optimizer = sub_milp_method_manager.get_sub_milp_optimizer(args);
+    MILPAnalysisResult milp_analysis;
+    milp_analysis.has_sos_constraints = true;
+
+    const auto sub_milp_optimizer = MILPMethodManager::get_sub_milp_optimizer(args, false, milp_analysis);
 
     auto ccg = idol::Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
     ccg.with_initial_scenario_by_maximization(*sub_milp_optimizer);

@@ -7,7 +7,7 @@
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h"
-#include "../MILPMethodManager.h"
+#include "../milp/MILPMethodManager.h"
 
 std::string RobustMethods::CCG_Farkas::description() const {
     return "Column-and-constraint generation with Farkas-based separation; see Ayoub and Poss (2016) [https://doi.org/10.1007/s10287-016-0249-2].";
@@ -47,8 +47,7 @@ void RobustMethods::CCG_Farkas::set_optimizer(idol::Model& t_model, const Robust
     const auto& uncertainty_analysis = t_manager.uncertainty_analysis();
     const auto& args = t_manager.args();
 
-    MILPMethodManager sub_milp_method_manager;
-    const auto sub_milp_optimizer = sub_milp_method_manager.get_sub_milp_optimizer(args);
+    const auto sub_milp_optimizer = MILPMethodManager::get_sub_milp_optimizer(args);
 
     auto ccg = idol::Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
     ccg.with_initial_scenario_by_maximization(*sub_milp_optimizer);

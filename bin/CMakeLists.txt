@@ -1,6 +1,6 @@
 add_executable(idol_cl
         idol_cl.cpp
-        solve_milp.h
+        milp.h
         solve_bilevel.h
         robust.h
         output.h
@@ -9,8 +9,6 @@ add_executable(idol_cl
         VariableAnalysis.h
         Arguments.h
         Arguments.cpp
-        method-managers/MILPMethodManager.cpp
-        method-managers/MILPMethodManager.h
         method-managers/robust/RobustMethodManager.cpp
         method-managers/robust/RobustMethodManager.h
         method-managers/AbstractMethodManager.h
@@ -24,6 +22,18 @@ add_executable(idol_cl
         method-managers/robust/CCG_CV.h
         method-managers/robust/CG_Indicator.cpp
         method-managers/robust/CG_Indicator.h
+        method-managers/milp/MILPMethodManager.cpp
+        method-managers/milp/MILPMethodManager.h
+        method-managers/milp/Gurobi.cpp
+        method-managers/milp/Gurobi.h
+        method-managers/milp/GLPK.cpp
+        method-managers/milp/GLPK.h
+        method-managers/milp/HiGHS.cpp
+        method-managers/milp/HiGHS.h
+        method-managers/milp/Cplex.cpp
+        method-managers/milp/Cplex.h
+        method-managers/milp/JuMP.cpp
+        method-managers/milp/JuMP.h
 )
 target_link_libraries(idol_cl PRIVATE idol)
 

@@ -3,7 +3,7 @@
 //
 
 #include "CCG_MibS.h"
-#include "../MILPMethodManager.h"
+#include "../milp/MILPMethodManager.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h"
@@ -49,8 +49,7 @@ void RobustMethods::CCG_MibS::set_optimizer(idol::Model& t_model, const RobustMe
     const auto& stage_analysis = t_manager.stage_analysis();
     const auto& args = t_manager.args();
 
-    MILPMethodManager sub_milp_method_manager;
-    const auto sub_milp_optimizer = sub_milp_method_manager.get_sub_milp_optimizer(args);
+    const auto sub_milp_optimizer = MILPMethodManager::get_sub_milp_optimizer(args);
 
     auto ccg = idol::Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
     ccg.with_initial_scenario_by_maximization(*sub_milp_optimizer);

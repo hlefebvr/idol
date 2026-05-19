@@ -3,7 +3,7 @@
 //
 
 #include "CCG_CV.h"
-#include "../MILPMethodManager.h"
+#include "../milp/MILPMethodManager.h"
 #include "idol/robust/optimizers/critical-value-column-and-constraint-generation/CriticalValueColumnAndConstraintGeneration.h"
 
 std::string RobustMethods::CCG_CV::description() const {
@@ -32,14 +32,11 @@ void RobustMethods::CCG_CV::set_optimizer(idol::Model& t_model, const RobustMeth
     const auto& robust_description = t_manager.robust_description();
     const auto& args = t_manager.args();
 
-    MILPMethodManager sub_milp_method_manager;
-    const auto sub_milp_optimizer = sub_milp_method_manager.get_sub_milp_optimizer(args);
-
-    const auto milp_solver = sub_milp_method_manager.get_sub_milp_optimizer(args);
+    const auto sub_milp_optimizer = MILPMethodManager::get_sub_milp_optimizer(args);
 
     auto ccg = idol::Robust::CriticalValueColumnAndConstraintGeneration(robust_description);
-    ccg.with_master_optimizer(*milp_solver);
-    ccg.with_deterministic_optimizer(*milp_solver);
+    ccg.with_master_optimizer(*sub_milp_optimizer);
+    ccg.with_deterministic_optimizer(*sub_milp_optimizer);
 
     t_model.use(ccg);
 

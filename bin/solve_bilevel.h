@@ -117,8 +117,7 @@ inline void solve_bilevel(const Arguments& t_args) {
     const auto analysis = get_bilevel_analysis(model, *bilevel_description);
 
     BilevelMethodManager method_manager;
-    MILPMethodManager submilp_method_manager;
-    auto submilp_optimizer = submilp_method_manager.get_sub_milp_optimizer(t_args, false);
+    auto submilp_optimizer = MILPMethodManager::get_sub_milp_optimizer(t_args, false);
 
     if (analysis.has_general_integer_linking_variables || analysis.has_binary_linking_variables) {
         std::cout << "-- Detected: binary or integer linking variables only" << std::endl;

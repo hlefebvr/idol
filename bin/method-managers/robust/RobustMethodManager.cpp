@@ -15,20 +15,6 @@
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.h"
 
-#define CHECK(CONDITION, TEXT) \
-{ \
-    if (!m_problem_has_been_set) { \
-        std::cout << " \033[90m• "; \
-    } \
-    else { \
-        const bool __condition_value = (CONDITION); \
-        std::cout << ((__condition_value) ? " \033[32m✓ " : " \033[31m✗ "); \
-        if (!__condition_value) { condition_is_met = false; } \
-    } \
-    std::cout << TEXT << std::endl; \
-    std::cout << "\033[0m"; \
-}
-
 RobustMethodManager::RobustMethodManager(const Arguments& t_args) : AbstractMethodManager(t_args) {
 
     add<RobustMethods::CCG_Farkas>();
@@ -68,7 +54,7 @@ void RobustMethodManager::set_optimizer(idol::Model& t_model) const {
         std::cout << method->name();
     }
     std::cout << "]\n";
-    const auto& method = get_method();
+    const auto& method = get_method(m_arguments.method);
     std::cout << "-- Using method " << method.name() << '.' << std::endl;
     method.set_optimizer(t_model, *this);
 }

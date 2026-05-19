@@ -12,6 +12,20 @@
 #include "../Arguments.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
 
+#define CHECK(CONDITION, TEXT) \
+{ \
+if (!m_problem_has_been_set) { \
+std::cout << " \033[90m• "; \
+} \
+else { \
+const bool __condition_value = (CONDITION); \
+std::cout << ((__condition_value) ? " \033[32m✓ " : " \033[31m✗ "); \
+if (!__condition_value) { condition_is_met = false; } \
+} \
+std::cout << TEXT << std::endl; \
+std::cout << "\033[0m"; \
+}
+
 class Arguments;
 class AbstractMethod;
 
@@ -30,7 +44,7 @@ public:
     std::vector<MethodT*> other_methods() const;
 
     const MethodT& get_default_method() const;
-    const MethodT& get_method() const;
+    const MethodT& get_method(const std::string& t_name) const;
 
     void print_details() const;
 private:
@@ -74,24 +88,29 @@ template <class MethodT>
 const MethodT& AbstractMethodManager<MethodT>::get_default_method() const {
     auto applicable_methods = this->applicable_methods();
     std::sort(applicable_methods.begin(), applicable_methods.end(), [](const MethodT* a, const MethodT* b) { return a->score() > b->score(); });
+    if (applicable_methods.empty()) {
+        std::cerr << "There are no applicable methods." << std::endl;
+        exit(1);
+    }
     return *applicable_methods.front();
 }
 
 template <class MethodT>
-const MethodT& AbstractMethodManager<MethodT>::get_method() const {
-    if (m_arguments.method.empty()) {
+const MethodT& AbstractMethodManager<MethodT>::get_method(const std::string& t_name) const {
+    if (t_name.empty()) {
         return get_default_method();
     }
     for (const auto& method : m_all_methods) {
-        if (method->name() == m_arguments.method) {
+        if (method->name() == t_name) {
             if (!method->is_applicable()) {
-                std::cerr << "The requested method exists but is not applicable to this problem." << std::endl;
+                std::cerr << "The requested method exists but is not applicable to this problem.\nHere is the description of the method.\n\n" << std::endl;
+                print_methods(std::vector<MethodT*> { method.get() }),
                 exit(1);
             }
             return *method;
         }
     }
-    std::cout << "The requested method does not exists." << std::endl;
+    std::cout << "The requested method does not exists or none is applicable." << std::endl;
     exit(1);
 }
 
