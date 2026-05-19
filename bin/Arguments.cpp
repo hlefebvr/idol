@@ -166,7 +166,6 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
             "file",
             result.file,
             ".mps or .lp file")
-            ->required()
             ->check(CLI::ExistingFile);
 
         t_target->add_option(
@@ -203,7 +202,6 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
             "file",
             result.file,
             ".mps or .lp file containing the single-level relaxation")
-            ->required()
             ->check(CLI::ExistingFile);
 
         auto* aux = t_target->add_option(
@@ -274,7 +272,6 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
             "file",
             result.file,
             ".mps or .lp file containing the deterministic problem")
-            ->required()
             ->check(CLI::ExistingFile);
 
         t_target->add_option(
@@ -349,6 +346,10 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
         result.sub_command = List;
     } else if (*solve_bilevel || *solve_robust || *solve_milp) {
         result.sub_command = Solve;
+        if (result.file.empty()) {
+            std::cerr << "The solve sub-command was called without specifying file." << std::endl;
+            exit(1);
+        }
     }
 
     if (*config) {
@@ -366,7 +367,6 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
         result.problem_type = BilevelProblem;
     }
 
-    std::cout << "-- The main input file is " << result.file << '.' << std::endl;
     std::cout << "-- Poblem type is " << result.problem_type << '.' << std::endl;
 
     return result;

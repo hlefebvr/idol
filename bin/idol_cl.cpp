@@ -5,7 +5,7 @@
 
 #include "Arguments.h"
 #include "solve_milp.h"
-#include "solve_robust.h"
+#include "robust.h"
 #include "solve_bilevel.h"
 
 int main(int t_argc, const char** t_argv) {
@@ -16,8 +16,8 @@ int main(int t_argc, const char** t_argv) {
         case MILP: solve_milp(args); break;
         case BilevelProblem: solve_bilevel(args); break;
         case RobustProblem: [[fallthrough]];
-        case AdjustableRobustProblem: solve_robust(args); break;
-        default: throw std::runtime_error("Sorry, an error occurred... Undefined problem type.");
+        case AdjustableRobustProblem: robust(args); break;
+        default: throw std::runtime_error("Undefined problem type.");
     }
 
     return 0;

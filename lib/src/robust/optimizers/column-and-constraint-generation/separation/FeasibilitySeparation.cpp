@@ -10,7 +10,8 @@
 idol::Robust::CCG::FeasibilitySeparation::FeasibilitySeparation(const FeasibilitySeparation& t_src)
     : Separation(t_src),
       m_bilevel_optimizer(t_src.m_bilevel_optimizer ? t_src.m_bilevel_optimizer->clone() : nullptr),
-      m_with_integer_slack_variables(t_src.m_with_integer_slack_variables) {
+      m_with_integer_slack_variables(t_src.m_with_integer_slack_variables),
+      m_with_slack_variable_bounding(t_src.m_with_slack_variable_bounding) {
 
 }
 
@@ -39,6 +40,17 @@ idol::Robust::CCG::FeasibilitySeparation& idol::Robust::CCG::FeasibilitySeparati
     }
 
     m_with_integer_slack_variables = t_value;
+
+    return *this;
+}
+
+idol::Robust::CCG::FeasibilitySeparation& idol::Robust::CCG::FeasibilitySeparation::with_bounds_on_slack_variables(bool t_value) {
+
+    if (m_with_slack_variable_bounding) {
+        throw Exception("Slack variable bounding setting has already been configured.");
+    }
+
+    m_with_slack_variable_bounding = t_value;
 
     return *this;
 }
@@ -85,24 +97,26 @@ std::pair<idol::Model, idol::Bilevel::Description> idol::Robust::CCG::Feasibilit
 
         const double rhs = result_model.get_ctr_rhs(t_ctr);
         const auto& row = result_model.get_ctr_row(t_ctr);
+        double slack_ub = Inf;
         double L = 0.;
         double U = 0.;
-        for (const auto& [var, coeff] : row) {
-            const double lb = result_model.get_var_lb(var);
-            const double ub = result_model.get_var_ub(var);
-            if (is_pos_inf(ub) || is_neg_inf(lb)) {
-                throw Exception("Variable " + var.name() + " has infinite bounds." );
+        if (m_with_slack_variable_bounding.value_or(true)) {
+            for (const auto& [var, coeff] : row) {
+                const double lb = result_model.get_var_lb(var);
+                const double ub = result_model.get_var_ub(var);
+                if (is_pos_inf(ub) || is_neg_inf(lb)) {
+                    throw Exception("Variable " + var.name() + " has infinite bounds." );
+                }
+                if (coeff > 0) {
+                    U += coeff * ub;
+                    L += coeff * lb;
+                } else {
+                    U += coeff * lb;
+                    L += coeff * ub;
+                }
             }
-            if (coeff > 0) {
-                U += coeff * ub;
-                L += coeff * lb;
-            } else {
-                U += coeff * lb;
-                L += coeff * ub;
-            }
+            slack_ub = t_coeff < 0 ? std::max(0., U - rhs) : std::max(0., rhs - L);
         }
-
-        double slack_ub = t_coeff < 0 ? std::max(0., U - rhs) : std::max(0., rhs - L);
 
         LinExpr<Ctr> column = t_coeff * t_ctr;
         auto name = "__slack_" + t_ctr.name() + (t_coeff < 0 ? "_le" : "_ge");

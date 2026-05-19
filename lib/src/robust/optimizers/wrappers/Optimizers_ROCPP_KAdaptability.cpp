@@ -3,8 +3,10 @@
 //
 #include "idol/robust/optimizers/wrappers/Optimizers_ROCPP_KAdaptability.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
-#include "ROCPP.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+
+#ifdef IDOL_USE_ROCPP
+#include "ROCPP.h"
 
 idol::VarType to_idol(decVariableType t_type) {
     switch (t_type) {
@@ -14,6 +16,7 @@ idol::VarType to_idol(decVariableType t_type) {
     default: throw idol::Exception("Variable type out of bounds.");
     }
 }
+#endif
 
 idol::Optimizers::Robust::ROCPP::KAdaptability::KAdaptability(const Model& t_parent, const idol::Robust::Description& t_robust_description, const Bilevel::Description& t_bilevel_description)  :
     Optimizer(t_parent),
@@ -23,7 +26,7 @@ idol::Optimizers::Robust::ROCPP::KAdaptability::KAdaptability(const Model& t_par
 }
 
 void idol::Optimizers::Robust::ROCPP::KAdaptability::hook_optimize() {
-
+#ifdef IDOL_USE_ROCPP
     const auto& model = parent();
     const auto& uncertainty_set = m_robust_description.uncertainty_set();
 
@@ -336,5 +339,7 @@ void idol::Optimizers::Robust::ROCPP::KAdaptability::hook_optimize() {
     std::cout << result.get_status() << std::endl;
     std::cout << result.get_best_obj() << std::endl;
     std::cout << result.get_best_bound() << std::endl;
-
+#else
+    throw Exception("ROC++ was not linked with idol.");
+#endif
 }
