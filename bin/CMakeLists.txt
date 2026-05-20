@@ -34,6 +34,20 @@ add_executable(idol_cl
         method-managers/milp/Cplex.h
         method-managers/milp/JuMP.cpp
         method-managers/milp/JuMP.h
+        method-managers/bilevel/BilevelMethodManager.cpp
+        method-managers/bilevel/BilevelMethodManager.h
+        method-managers/bilevel/MibS.cpp
+        method-managers/bilevel/MibS.h
+        method-managers/bilevel/KKT_NLP.cpp
+        method-managers/bilevel/KKT_NLP.h
+        method-managers/bilevel/KKT_SOS1.cpp
+        method-managers/bilevel/KKT_SOS1.h
+        method-managers/bilevel/KKT_BigM.cpp
+        method-managers/bilevel/KKT_BigM.h
+        method-managers/bilevel/StrongDuality.cpp
+        method-managers/bilevel/StrongDuality.h
+        method-managers/bilevel/PADM.cpp
+        method-managers/bilevel/PADM.h
 )
 target_link_libraries(idol_cl PRIVATE idol)
 

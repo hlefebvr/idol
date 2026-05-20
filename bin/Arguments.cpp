@@ -251,8 +251,6 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
         aux->excludes(ce);
         ce->excludes(aux);
 
-        t_target->require_option(2, 0);
-
         return t_target;
     };
 
@@ -353,9 +351,9 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
     }
 
     if (*config) {
-        std::cout << "-- The configuration file is " << config->as<std::string>() << std::endl;
+        std::cout << "-- The configuration file is " << config->as<std::string>() << '.' << std::endl;
     } else {
-        std::cout << "-- No configuration file loaded" << std::endl;
+        std::cout << "-- No configuration file loaded." << std::endl;
     }
 
     if (*robust) {
@@ -367,7 +365,7 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
         result.problem_type = BilevelProblem;
     }
 
-    std::cout << "-- Poblem type is " << result.problem_type << '.' << std::endl;
+    std::cout << "-- Problem type is " << result.problem_type << '.' << std::endl;
 
     return result;
 }
