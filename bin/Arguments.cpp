@@ -3,14 +3,12 @@
 //
 #include "Arguments.h"
 #include "idol/general/optimizers/logs.h"
-#include "idol/general/utils/exceptions/Exception.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"
+#include "idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h"
 
 #include <CLI/CLI.hpp>
-
-#include "idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h"
 
 void Arguments::print_splash() {
 
@@ -166,7 +164,6 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
             "file",
             result.file,
             ".mps or .lp file")
-            ->required()
             ->check(CLI::ExistingFile);
 
         t_target->add_option(
@@ -203,7 +200,6 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
             "file",
             result.file,
             ".mps or .lp file containing the single-level relaxation")
-            ->required()
             ->check(CLI::ExistingFile);
 
         auto* aux = t_target->add_option(
@@ -253,8 +249,6 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
         aux->excludes(ce);
         ce->excludes(aux);
 
-        t_target->require_option(2, 0);
-
         return t_target;
     };
 
@@ -274,7 +268,6 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
             "file",
             result.file,
             ".mps or .lp file containing the deterministic problem")
-            ->required()
             ->check(CLI::ExistingFile);
 
         t_target->add_option(
@@ -349,12 +342,16 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
         result.sub_command = List;
     } else if (*solve_bilevel || *solve_robust || *solve_milp) {
         result.sub_command = Solve;
+        if (result.file.empty()) {
+            std::cerr << "The solve sub-command was called without specifying file." << std::endl;
+            exit(1);
+        }
     }
 
     if (*config) {
-        std::cout << "-- The configuration file is " << config->as<std::string>() << std::endl;
+        std::cout << "-- The configuration file is " << config->as<std::string>() << '.' << std::endl;
     } else {
-        std::cout << "-- No configuration file loaded" << std::endl;
+        std::cout << "-- No configuration file loaded." << std::endl;
     }
 
     if (*robust) {
@@ -366,8 +363,7 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
         result.problem_type = BilevelProblem;
     }
 
-    std::cout << "-- The main input file is " << result.file << '.' << std::endl;
-    std::cout << "-- Poblem type is " << result.problem_type << '.' << std::endl;
+    std::cout << "-- Problem type is " << result.problem_type << '.' << std::endl;
 
     return result;
 }

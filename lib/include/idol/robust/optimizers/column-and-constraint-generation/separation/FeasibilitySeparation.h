@@ -14,6 +14,7 @@ namespace idol::Robust::CCG {
 class idol::Robust::CCG::FeasibilitySeparation : public idol::Robust::CCG::Separation {
     std::unique_ptr<OptimizerFactory> m_bilevel_optimizer;
     std::optional<bool> m_with_integer_slack_variables;
+    std::optional<bool> m_with_slack_variable_bounding;
 
     FeasibilitySeparation(const FeasibilitySeparation& t_src);
 public:
@@ -25,6 +26,8 @@ public:
     FeasibilitySeparation& with_bilevel_optimizer(const OptimizerFactory& t_optimizer);
 
     FeasibilitySeparation& with_integer_slack_variables(bool t_value);
+
+    FeasibilitySeparation& with_bounds_on_slack_variables(bool t_value);
 
     std::pair<idol::Model, idol::Bilevel::Description> build_separation_problem() override;
 };

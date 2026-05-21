@@ -78,12 +78,14 @@ const std::string& MethodManager::get_method(const Arguments& t_args) const {
 
     const auto it = m_all_methods.find(t_args.method);
     if (it == m_all_methods.end()) {
-        throw idol::Exception("The requested method does not exist for this problem type.");
+        std::cout << "The requested method does not exist for this problem type." << std::endl;
+        exit(1);
     }
 
     const auto method = m_available_methods.find(it->second.first);
     if (method == m_available_methods.end()) {
-        throw idol::Exception("The requested method exists, but cannot be used in this context (assumptions).");
+        std::cerr << "The requested method exists, but cannot be used in this context (assumptions)." << std::endl;
+        exit(1);
     }
 
     return t_args.method;

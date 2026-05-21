@@ -126,7 +126,7 @@ idol::BranchingRules::StrongBranching<NodeInfoT>::make_nodes(const std::list<Nod
 template<class NodeInfoT>
 void idol::BranchingRules::StrongBranching<NodeInfoT>::solve_nodes(StrongBranchingPhase& t_phase, std::list<Node<NodeInfoT>>& t_nodes) {
 
-    auto& branch_and_bound = this->parent();
+    auto& branch_and_bound = const_cast<Optimizers::BranchAndBound<NodeInfoT>&>(this->parent());
     auto& optimizer = const_cast<Optimizer&>(branch_and_bound.relaxation().optimizer());
 
     for (auto& node : t_nodes) {

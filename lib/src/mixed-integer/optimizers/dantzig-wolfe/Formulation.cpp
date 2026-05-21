@@ -510,24 +510,27 @@ void idol::DantzigWolfe::Formulation::update_var_obj(const idol::Var &t_var, dou
 }
 
 
-void idol::DantzigWolfe::Formulation::clean_up(unsigned int t_sub_problem_id, double t_ratio) {
+void idol::DantzigWolfe::Formulation::clean_up(unsigned int t_sub_problem_id, double t_ratio, const PrimalPoint& t_master_solution) {
 
     auto& pool = m_pools[t_sub_problem_id];
     auto& present_generators = m_present_generators[t_sub_problem_id];
-    const auto n_to_remove = (unsigned int) (pool.size() * (1 - t_ratio));
+    const auto n_to_remove = (unsigned int) (pool.size() * (1. - t_ratio));
     unsigned int n_removed = 0;
 
     present_generators.clear();
 
+    std::list<Var> to_remove;
+
     for (auto it = pool.values().begin(), end = pool.values().end() ; it != end ; ) {
 
-        const bool is_already_in_master = m_master.has(it->first);
+        const auto& var = it->first;
+        const bool is_already_in_master = m_master.has(var);
         const bool done_removing = n_removed >= n_to_remove;
 
         if (done_removing) {
 
             if (is_already_in_master) {
-                present_generators.emplace_back(it->first, it->second);
+                present_generators.emplace_back(var, it->second);
             }
 
             ++it;
@@ -537,21 +540,25 @@ void idol::DantzigWolfe::Formulation::clean_up(unsigned int t_sub_problem_id, do
 
         if (is_already_in_master) {
 
-            if (m_master.get_var_primal(it->first) > 0) {
+            if (t_master_solution.get(var) > 0) {
 
-                present_generators.emplace_back(it->first, it->second);
+                present_generators.emplace_back(var, it->second);
                 ++it;
                 continue;
 
             }
 
-            m_master.remove(it->first);
+            to_remove.push_back(var);
 
         }
 
         it = pool.erase(it);
         ++n_removed;
 
+    }
+
+    for (const auto& var : to_remove) {
+        m_master.remove(var);
     }
 
 }
