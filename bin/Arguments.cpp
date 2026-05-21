@@ -177,9 +177,15 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
             ->check(CLI::ExistingFile);
 
         t_target->add_option(
+            "--julia-using",
+            result.julia_using,
+            "A comma-separated list of Julia modules to load at the beginning of the Julia session (relevant only if --method JuMP is used).")
+            ->configurable();
+
+        t_target->add_option(
             "--jump-optimizer",
             result.jump_optimizer,
-            "JuMP optimizer to be used (required if --method JUMP)")
+            "JuMP optimizer to be used (required if --method JuMP is used).")
             ->configurable();
 
         t_target->add_option(

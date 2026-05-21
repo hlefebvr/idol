@@ -31,6 +31,7 @@ public:
     std::string file;
     double time_limit = idol::Inf;
     double tol_feasibility = -1.;
+    std::string julia_using;
     std::string jump_optimizer;
     std::string default_milp_method;
 

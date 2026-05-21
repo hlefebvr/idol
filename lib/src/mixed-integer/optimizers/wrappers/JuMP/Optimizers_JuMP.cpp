@@ -8,6 +8,7 @@
 
 #include <regex>
 #include <dlfcn.h>
+#include <sstream>
 
 jl_module_t* jl_main_module = nullptr;
 jl_module_t* jl_base_module = nullptr;
@@ -241,6 +242,7 @@ void idol::impl::JuliaSessionManager::load_module(const std::string &t_module) {
 
     if (julia_session_manager.m_loaded_modules.find(t_module) == julia_session_manager.m_loaded_modules.end()) {
         lib.jl_eval_string((std::string("using ") + t_module).c_str());
+        throw_if_julia_error();
         julia_session_manager.m_loaded_modules.emplace(t_module);
         std::cout << "-- Julia package " + t_module + " successfully loaded." << std::endl;
     }
@@ -248,15 +250,18 @@ void idol::impl::JuliaSessionManager::load_module(const std::string &t_module) {
 }
 
 idol::Optimizers::JuMP::JuMP(const idol::Model &t_parent,
-                             std::string t_module,
                              std::string t_optimizer,
+                             const std::list<std::string>& t_modules,
                              bool t_is_continuous_relaxation) : OptimizerWithLazyUpdates(t_parent),
-                                                                m_module(std::move(t_module)),
                                                                 m_optimizer(std::move(t_optimizer)),
+                                                                m_modules(t_modules),
                                                                 m_is_continuous_relaxation(t_is_continuous_relaxation) {
 
     impl::JuliaSessionManager::load_idol_jump_module();
-    impl::JuliaSessionManager::load_module(m_module);
+    impl::JuliaSessionManager::load_module("JuMP");
+    for (const auto& module : m_modules) {
+        impl::JuliaSessionManager::load_module(module);
+    }
 
 }
 
@@ -418,6 +423,7 @@ void idol::Optimizers::JuMP::hook_build() {
     
     auto& lib = idol::Optimizers::JuMP::get_dynamic_lib();
 
+    std::cout << "-- Loading optimizer " << m_optimizer << std::endl;
     jl_value_t* optimizer_val = lib.jl_eval_string(m_optimizer.c_str());
     impl::JuliaSessionManager::throw_if_julia_error();
 
@@ -628,33 +634,30 @@ void idol::impl::JuliaSessionManager::throw_if_julia_error() {
     
     auto& lib = idol::Optimizers::JuMP::get_dynamic_lib();
 
-    if (lib.jl_exception_occurred()) {
+    jl_value_t* exception = lib.jl_exception_occurred();
 
-        jl_value_t* exception = lib.jl_exception_occurred();
-
-        try {
-            // Print the exception message
-            auto *showerror = (jl_function_t*) lib.jl_get_function(jl_base_module, "showerror");
-            lib.jl_call1(showerror, exception);
-
-            // Print the stack trace (from Base.show_backtrace)
-            auto *showbt = (jl_function_t*) lib.jl_get_function(jl_base_module, "show_backtrace");
-            if (showbt != nullptr) {
-                lib.jl_call0(showbt);
-            }
-        } catch (...) {
-            // ignore any C++ exceptions from Julia API calls
-        }
-
-        // Get exception type name
-        //auto *typ = (jl_datatype_t*)lib.jl_typeof(exception);
-
-        lib.jl_exception_clear();
-
-        throw Exception("There was a Julia Error.");
-        //throw Exception("Julia Error] " + std::string(lib.jl_symbol_name(typ->name->name)));
+    if (!exception) {
+        return;
     }
 
+    try {
+        jl_value_t* stderr_val = lib.jl_eval_string("stderr");
+
+        auto* showerror = (jl_function_t*) lib.jl_get_function(jl_base_module, "showerror");
+        if (showerror) {
+            lib.jl_call2(showerror, stderr_val, exception);
+        }
+
+    } catch (...) {
+        // ignore
+    }
+
+    lib.jl_exception_clear();
+
+    fflush(stdout);
+    fflush(stderr);
+
+    throw std::runtime_error("Julia exception occurred.");
 }
 
 idol::impl::JuliaSessionManager &idol::impl::JuliaSessionManager::get() {

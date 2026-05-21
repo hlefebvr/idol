@@ -80,16 +80,16 @@ extern "C" {
 class idol::Optimizers::JuMP : public OptimizerWithLazyUpdates<bool, bool, bool, bool> {
 protected:
     std::optional<uint64_t> m_model_id = 0;
-    const std::string m_module;
     const std::string m_optimizer;
+    const std::list<std::string> m_modules;
     bool m_is_continuous_relaxation;
 
     class DynamicLib;
     static std::unique_ptr<DynamicLib> m_dynamic_lib;
 public:
     JuMP(const Model& t_parent,
-         std::string t_module,
          std::string t_optimizer,
+         const std::list<std::string>& t_modules,
          bool t_is_continuous_relaxation);
 
     ~JuMP() override;

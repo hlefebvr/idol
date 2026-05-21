@@ -5,21 +5,35 @@
 #include "idol/mixed-integer/optimizers/wrappers/JuMP/JuMP.h"
 #include "idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h"
 
-idol::JuMP::JuMP(std::string t_module, bool t_is_continuous_relaxation)
+idol::JuMP::JuMP(const std::string& t_optimizer_name, bool t_is_continuous_relaxation)
         : OptimizerFactoryWithDefaultParameters(),
-          m_module(std::move(t_module)),
+          m_optimizer_name(t_optimizer_name),
           m_is_continuous_relaxation(t_is_continuous_relaxation) {
 
 }
 
-idol::JuMP::JuMP(std::string t_module) : JuMP(std::move(t_module), false) {
+idol::JuMP::JuMP(const std::string& t_optimizer_name) : JuMP(t_optimizer_name, false) {
 
 }
 
+idol::JuMP& idol::JuMP::with_julia_module(const std::string& t_module) {
+    m_modules.emplace_back(t_module);
+    return *this;
+}
+
 idol::Optimizer *idol::JuMP::create(const idol::Model &t_model) const {
+
+    if (!m_optimizer_name) {
+        throw Exception("A JuMP optimizer is required.");
+    }
+
+    if (m_modules.empty()) {
+        std::cerr << "Warning: You are asking for a JuMP optimizer without loading any module, most likely this will lead to an error." << std::endl;
+    }
+
     auto* result = new Optimizers::JuMP(t_model,
-                                        m_module,
-                                        m_optimizer_name.value_or(m_module + ".Optimizer"),
+                                        *m_optimizer_name,
+                                        m_modules,
                                         m_is_continuous_relaxation
                                         );
 
@@ -30,6 +44,6 @@ idol::OptimizerFactory *idol::JuMP::clone() const {
     return new JuMP(*this);
 }
 
-idol::JuMP idol::JuMP::ContinuousRelaxation(std::string t_module) {
-    return {std::move(t_module), true};
+idol::JuMP idol::JuMP::ContinuousRelaxation(const std::string& t_optimizer) {
+    return {t_optimizer, true};
 }

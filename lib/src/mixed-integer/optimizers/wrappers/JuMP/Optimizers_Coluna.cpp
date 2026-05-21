@@ -6,7 +6,7 @@
 #include "idol/mixed-integer/modeling/objects/Versions.h"
 
 idol::Optimizers::Coluna::Coluna(const idol::Model &t_parent, const idol::Annotation<unsigned int> &t_annotation)
-    : Optimizers::JuMP(t_parent, "HiGHS", "HiGHS.Optimizer", false),
+    : Optimizers::JuMP(t_parent, "HiGHS.Optimizer", {"HiGHS"}, false),
       m_annotation(t_annotation) {
 
     impl::JuliaSessionManager::load_idol_coluna_module();
