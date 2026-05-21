@@ -309,10 +309,10 @@ add_library(idol STATIC
         include/idol/bilevel/optimizers/PADM/Optimizers_PADM.h
         src/bilevel/optimizers/PADM/PADM.cpp
         src/bilevel/optimizers/PADM/Optimizers_PADM.cpp
-        include/idol/robust/optimizers/wrappers/ROCPP_KAdaptability.h
-        src/robust/optimizers/wrappers/ROCPP_KAdaptability.cpp
-        include/idol/robust/optimizers/wrappers/Optimizers_ROCPP_KAdaptability.h
-        src/robust/optimizers/wrappers/Optimizers_ROCPP_KAdaptability.cpp
+        include/idol/robust/optimizers/wrappers/ROCPP.h
+        src/robust/optimizers/wrappers/ROCPP.cpp
+        include/idol/robust/optimizers/wrappers/Optimizers_ROCPP.h
+        src/robust/optimizers/wrappers/Optimizers_ROCPP.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)

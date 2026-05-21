@@ -3,14 +3,12 @@
 //
 #include "Arguments.h"
 #include "idol/general/optimizers/logs.h"
-#include "idol/general/utils/exceptions/Exception.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"
+#include "idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h"
 
 #include <CLI/CLI.hpp>
-
-#include "idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h"
 
 void Arguments::print_splash() {
 

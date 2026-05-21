@@ -48,6 +48,10 @@ add_executable(idol_cl
         method-managers/bilevel/StrongDuality.h
         method-managers/bilevel/PADM.cpp
         method-managers/bilevel/PADM.h
+        method-managers/robust/ROCPP_LinearDR.cpp
+        method-managers/robust/ROCPP_LinearDR.h
+        method-managers/robust/ROCPP_KAdaptability.cpp
+        method-managers/robust/ROCPP_KAdaptability.h
 )
 target_link_libraries(idol_cl PRIVATE idol)
 

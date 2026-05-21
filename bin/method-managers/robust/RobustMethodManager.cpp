@@ -11,9 +11,12 @@
 #include "CCG_KKT_SOS1.h"
 #include "CCG_MibS.h"
 #include "CG_Indicator.h"
+#include "ROCPP_KAdaptability.h"
+#include "ROCPP_LinearDR.h"
 #include "idol/general/utils/SilentMode.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.h"
+#include "idol/robust/optimizers/wrappers/Optimizers_ROCPP.h"
 
 RobustMethodManager::RobustMethodManager(const Arguments& t_args) : AbstractMethodManager(t_args) {
 
@@ -22,6 +25,8 @@ RobustMethodManager::RobustMethodManager(const Arguments& t_args) : AbstractMeth
     add<RobustMethods::CCG_MibS>();
     add<RobustMethods::CCG_CV>();
     add<RobustMethods::CG_Indicator>();
+    add<RobustMethods::ROCPP_LinearDR>();
+    add<RobustMethods::ROCPP_KAdaptability>();
 
 }
 
@@ -166,7 +171,7 @@ void RobustMethodManager::do_method_analysis(const std::vector<RobustMethod*>& m
             if (condition.requires_mibs) {
                 CHECK(
                     idol::Optimizers::Bilevel::MibS::is_available(),
-                    "Requires the mixed-integer bilevel solver MibS"
+                    "Requires the mixed-integer bilevel solver MibS."
                 )
             }
             if (condition.requires_general_integer_uncertainty_set) {
@@ -215,6 +220,24 @@ void RobustMethodManager::do_method_analysis(const std::vector<RobustMethod*>& m
                 CHECK(
                     m_stage_analysis.second_stage.all_bounded,
                     "Requires bounded second stage."
+                )
+            }
+            if (condition.requires_rocpp) {
+                CHECK(
+                    idol::Optimizers::Robust::ROCPP::is_available(),
+                    "Requires ROC++."
+                )
+            }
+            if (condition.requires_binary_second_stage) {
+                CHECK(
+                    !m_stage_analysis.second_stage.has_continuous && !m_stage_analysis.second_stage.has_general_integer,
+                    "Requires only binary second-stage decisions."
+                )
+            }
+            if (condition.requires_continuous_uncertainty_set) {
+                CHECK(
+                    !m_uncertainty_set_analysis.has_binary_linking_variables && !m_uncertainty_set_analysis.has_general_integer,
+                    "Requires a continuous uncertainy set."
                 )
             }
             is_applicable |= condition_is_met;

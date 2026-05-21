@@ -8,16 +8,21 @@
 #include "idol/general/optimizers/Optimizer.h"
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/robust/modeling/Description.h"
+#include "idol/robust/optimizers/wrappers/ROCPP.h"
 
-namespace idol::Optimizers::Robust::ROCPP {
-    class KAdaptability;
+namespace idol::Optimizers::Robust {
+    class ROCPP;
 }
 
 #define THROW_NOT_IMPLEMENTED { throw std::runtime_error("Not implemented " + std::string(__FUNCTION__) + ".\n" + std::string(__FILE__) + ":" + std::to_string(__LINE__) + "\n"); }
 
-class idol::Optimizers::Robust::ROCPP::KAdaptability : public Optimizer {
+class idol::Optimizers::Robust::ROCPP : public Optimizer {
     const idol::Bilevel::Description& m_bilevel_description;
     const idol::Robust::Description& m_robust_description;
+    idol::Robust::ROCPP::Approximation m_approximation;
+    std::unique_ptr<OptimizerFactory> m_optimizer_factory;
+
+    std::unique_ptr<Model> m_model;
 protected:
     void build() override {}
     void add(const Var& t_var) override THROW_NOT_IMPLEMENTED
@@ -42,22 +47,30 @@ protected:
     void update_var_ub(const Var& t_var) override THROW_NOT_IMPLEMENTED
     void update_var_obj(const Var& t_var) override THROW_NOT_IMPLEMENTED
 
+    void throw_if_no_deterministic_model() const;
 public:
-    KAdaptability(const Model& t_parent, const idol::Robust::Description& t_robust_description, const Bilevel::Description& t_bilevel_description);
-    [[nodiscard]] std::string name() const override { return "ROC++/KAdaptability"; }
-    [[nodiscard]] SolutionStatus get_status() const override THROW_NOT_IMPLEMENTED
-    [[nodiscard]] SolutionReason get_reason() const override THROW_NOT_IMPLEMENTED
-    [[nodiscard]] double get_best_obj() const override THROW_NOT_IMPLEMENTED
-    [[nodiscard]] double get_best_bound() const override THROW_NOT_IMPLEMENTED
-    [[nodiscard]] double get_var_primal(const Var& t_var) const override THROW_NOT_IMPLEMENTED
-    [[nodiscard]] double get_var_reduced_cost(const Var& t_var) const override THROW_NOT_IMPLEMENTED
-    [[nodiscard]] double get_var_ray(const Var& t_var) const override THROW_NOT_IMPLEMENTED
-    [[nodiscard]] double get_ctr_dual(const Ctr& t_ctr) const override THROW_NOT_IMPLEMENTED
-    [[nodiscard]] double get_ctr_farkas(const Ctr& t_ctr) const override THROW_NOT_IMPLEMENTED
-    [[nodiscard]] double get_relative_gap() const override THROW_NOT_IMPLEMENTED
-    [[nodiscard]] double get_absolute_gap() const override THROW_NOT_IMPLEMENTED
-    [[nodiscard]] unsigned get_n_solutions() const override THROW_NOT_IMPLEMENTED
-    [[nodiscard]] unsigned get_solution_index() const override THROW_NOT_IMPLEMENTED
+    ROCPP(const Model& t_parent,
+          const idol::Robust::Description& t_robust_description,
+          const idol::Bilevel::Description& t_bilevel_description,
+          idol::Robust::ROCPP::Approximation t_approximation,
+          const OptimizerFactory& t_optimizer);
+
+    [[nodiscard]] std::string name() const override { return "ROC++"; }
+    [[nodiscard]] SolutionStatus get_status() const override;
+    [[nodiscard]] SolutionReason get_reason() const override;
+    [[nodiscard]] double get_best_obj() const override;
+    [[nodiscard]] double get_best_bound() const override;
+    [[nodiscard]] double get_var_primal(const Var& t_var) const override;
+    [[nodiscard]] double get_var_reduced_cost(const Var& t_var) const override;
+    [[nodiscard]] double get_var_ray(const Var& t_var) const override;
+    [[nodiscard]] double get_ctr_dual(const Ctr& t_ctr) const override;
+    [[nodiscard]] double get_ctr_farkas(const Ctr& t_ctr) const override;
+    [[nodiscard]] double get_relative_gap() const override;
+    [[nodiscard]] double get_absolute_gap() const override;
+    [[nodiscard]] unsigned get_n_solutions() const override;
+    [[nodiscard]] unsigned get_solution_index() const override;
+
+    static bool is_available();
 };
 
 #endif //IDOL_OPTIMIZERS_ROCPP_KADAPTABILITY_H

@@ -7,6 +7,7 @@
 
 #include "Point.h"
 #include <list>
+#include <idol/general/utils/IteratorForward.h>
 
 namespace idol {
     template<class KeyT, class ValueT> class GeneratorPool;

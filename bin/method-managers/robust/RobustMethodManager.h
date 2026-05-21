@@ -43,6 +43,7 @@ public:
         // Uncertainty set conditions
         bool requires_binary_uncertainty = false;
         bool requires_general_integer_uncertainty_set = false;
+        bool requires_continuous_uncertainty_set = false;
         bool requires_a_0_1_uncertainty_set = false;
         bool requires_decision_independent_uncertainty_set = false;
         bool requires_decision_dependent_uncertainty_set = false;
@@ -54,12 +55,14 @@ public:
 
         // Second-stage conditions
         bool requires_continuous_second_stage = false;
+        bool requires_binary_second_stage = false;
         bool requires_complete_recourse = false;
         bool requires_bounded_second_stage = false;
 
         // Solver capabilities
         bool requires_a_solver_with_sos1 = false;
         bool requires_mibs = false;
+        bool requires_rocpp = false;
     };
 
     virtual std::vector<Conditions> conditions() = 0;
