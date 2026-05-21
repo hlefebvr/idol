@@ -98,12 +98,20 @@ jobs:
           /opt/homebrew/bin/bash coinbrew build https://github.com/hlefebvr/MibS@idol  --no-prompt --disable-cplex-libcheck --tests=none
           # /opt/homebrew/bin/bash coinbrew build MibS@1.2 --no-prompt --disable-cplex-libcheck --tests=none
 
-      - name: Install Local-MIP
+      - name: Install ROC++
         run: |
-          # get latest release
-          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/shaowei-cai-group/Local-MIP.git local-mip
-          cd local-mip
-          ./build.sh
+          # Install ROC++
+          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/robust-opt-cpp/ROCPP.git
+          cd ROCPP
+          cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DEXAMPLE=main -DSOLVER=none -DBUILD_PYTHON=OFF ..
+          make
+
+      #- name: Install Local-MIP
+      #  run: |
+      #    # get latest release
+      #    git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/shaowei-cai-group/Local-MIP.git local-mip
+      #    cd local-mip
+      #    ./build.sh
 
       - name: Configure & Build
         run: |
@@ -113,10 +121,12 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=$PWD/install \
             -DCOIN_OR_DIR=${{github.workspace}}/coin-or/dist \
             -DUSE_MIBS=YES \
-            -DUSE_LOCAL_MIP=YES \
-            -DLOCAL_MIP_DIR=${{github.workspace}}/local-mip \
             -DCMAKE_C_COMPILER=/Library/Developer/CommandLineTools/usr/bin/cc \
-            -DCMAKE_CXX_COMPILER=/Library/Developer/CommandLineTools/usr/bin/c++
+            -DCMAKE_CXX_COMPILER=/Library/Developer/CommandLineTools/usr/bin/c++ \
+            -DUSE_ROCPP=ON \
+            -DROCPP_DIR=${{github.workspace}}/ROCPP
+        #    -DUSE_LOCAL_MIP=YES \
+        #    -DLOCAL_MIP_DIR=${{github.workspace}}/local-mip
           make -j$(sysctl -n hw.ncpu)
 
       - name: Install
@@ -190,12 +200,20 @@ jobs:
           ./coinbrew fetch https://github.com/hlefebvr/MibS@idol
           ./coinbrew build https://github.com/hlefebvr/MibS@idol --no-prompt --disable-cplex-libcheck --tests=none
 
-      - name: Install Local-MIP
+      - name: Install ROC++
         run: |
-          # get latest release
-          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/shaowei-cai-group/Local-MIP.git local-mip
-          cd local-mip
-          ./build.sh
+          # Install ROC++
+          git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/robust-opt-cpp/ROCPP.git
+          cd ROCPP
+          cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DEXAMPLE=main -DSOLVER=none -DBUILD_PYTHON=OFF ..
+          make
+
+      #- name: Install Local-MIP
+      #  run: |
+      #    # get latest release
+      #    git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/shaowei-cai-group/Local-MIP.git local-mip
+      #    cd local-mip
+      #    ./build.sh
 
       - name: Install build dependencies
         run: |
@@ -214,9 +232,11 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=$PWD/install \
             -DCOIN_OR_DIR=${{github.workspace}}/coin-or/dist \
             -DUSE_MIBS=YES \
-            -DUSE_LOCAL_MIP=YES \
-            -DLOCAL_MIP_DIR=${{github.workspace}}/local-mip \
+            -DUSE_ROCPP=ON \
+            -DROCPP_DIR=${{github.workspace}}/ROCPP \
             -DCMAKE_INSTALL_RPATH='$ORIGIN/../lib'
+        #    -DUSE_LOCAL_MIP=YES \
+        #    -DLOCAL_MIP_DIR=${{github.workspace}}/local-mip \
           cmake --build . --target help
           cmake --build . -- -j$(nproc)
           ls **
