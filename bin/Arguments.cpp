@@ -93,6 +93,15 @@ void Arguments::print_versions() {
 #endif
     std::cout << "\n";
 
+    std::cout << "--\tROC++: ";
+#ifdef IDOL_USE_ROCPP
+    std::cout << "shipped with idol";
+#else
+    std::cout << "not found";
+#endif
+    std::cout << "\n";
+
+    /*
     std::cout << "--\tLocal-MIP: ";
 #ifdef IDOL_USE_LOCAL_MIP
     std::cout << "shipped with idol";
@@ -100,6 +109,7 @@ void Arguments::print_versions() {
     std::cout << "not found";
 #endif
     std::cout << "\n";
+    */
 }
 
 Arguments::Arguments() {
