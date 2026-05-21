@@ -241,7 +241,12 @@ void idol::impl::JuliaSessionManager::load_module(const std::string &t_module) {
     auto& lib = idol::Optimizers::JuMP::get_dynamic_lib();
 
     if (julia_session_manager.m_loaded_modules.find(t_module) == julia_session_manager.m_loaded_modules.end()) {
-        lib.jl_eval_string((std::string("using ") + t_module).c_str());
+        const bool is_file = (t_module.size() >= 3 && t_module.substr(t_module.size() - 3) == ".jl");
+        if (is_file) {
+            lib.jl_eval_string((std::string("include(\"") + t_module + "\")").c_str());
+        } else {
+            lib.jl_eval_string((std::string("using ") + t_module).c_str());
+        }
         throw_if_julia_error();
         julia_session_manager.m_loaded_modules.emplace(t_module);
         std::cout << "-- Julia package " + t_module + " successfully loaded." << std::endl;
