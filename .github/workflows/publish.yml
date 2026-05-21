@@ -103,6 +103,8 @@ jobs:
           # Install ROC++
           git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/robust-opt-cpp/ROCPP.git
           cd ROCPP
+          mkdir build
+          cd build
           cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DEXAMPLE=main -DSOLVER=none -DBUILD_PYTHON=OFF ..
           make
 
@@ -196,6 +198,8 @@ jobs:
           # Install ROC++
           git clone https://x-access-token:${{ secrets.HOMEBREW_PAT }}@github.com/robust-opt-cpp/ROCPP.git
           cd ROCPP
+          mkdir build
+          cd build
           cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DEXAMPLE=main -DSOLVER=none -DBUILD_PYTHON=OFF ..
           make
 
