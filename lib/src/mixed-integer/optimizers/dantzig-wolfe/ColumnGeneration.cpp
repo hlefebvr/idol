@@ -54,9 +54,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
 
         if (check_stopping_criterion()) { break; }
 
-        enrich_master();
-
         pool_clean_up();
+
+        enrich_master();
 
     }
 
@@ -298,7 +298,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
     }
 
     m_solve_dual_master = at_least_one_column_have_been_generated;
-
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::initialize_sub_problem_phases() {
@@ -322,14 +321,58 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::initialize_s
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_up() {
 
     auto& formulation = m_parent.m_formulation;
-    unsigned int n_sub_problems = formulation.n_sub_problems();
+    const auto n_sub_problems = formulation.n_sub_problems();
+
+    std::optional<PrimalPoint> primal_solution;
+    const auto& get_master_primal = [&]() {
+        if (primal_solution) {
+            return *primal_solution;
+        }
+        const auto& master = formulation.master();
+        if (const auto status = master.get_status() ; status == Optimal || status == Feasible) {
+            primal_solution = save_primal(master);
+        } else {
+            primal_solution = PrimalPoint();
+        }
+        return *primal_solution;
+    };
+
+    // Check for cg being stuck
+    bool is_stuck = false;
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-        const auto& sub_problem_specifications = m_parent.m_sub_problem_specifications[i];
-        const auto& column_pool = formulation.column_pool(i);
-        const unsigned int threshold = sub_problem_specifications.column_pool_clean_up_threshold();
-        if (column_pool.size() >= threshold) {
-            const double ratio = sub_problem_specifications.column_pool_clean_up_ratio();
-            formulation.clean_up(i, ratio);
+        const Point<Var>* last_generator = nullptr;
+        unsigned int n_times_the_same = 0;
+        for (const auto& [var, generator] : formulation.present_generators(i)) {
+            if (last_generator) {
+                if (equals(generator.objective_value(), last_generator->objective_value(), m_parent.get_tol_optimality())) {
+                    if ((*last_generator - generator).is_zero(m_parent.get_tol_feasibility())) {
+                        ++n_times_the_same;
+                    }
+                } else {
+                    n_times_the_same = 0;
+                }
+            }
+            last_generator = &generator;
+        }
+        if (n_times_the_same > 10) {
+            is_stuck = true;
+            break;
+        }
+    }
+    if (is_stuck) {
+        std::cout << "Warning: Column generation got stuck due to numerical trouble, cleaning column pool and restarting..." << std::endl;
+        for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+            formulation.clean_up(i, .0, get_master_primal());
+        }
+    } else {
+        for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+            const auto& sub_problem_specifications = m_parent.m_sub_problem_specifications[i];
+            const auto& column_pool = formulation.column_pool(i);
+            const unsigned int threshold = sub_problem_specifications.column_pool_clean_up_threshold();
+            if (column_pool.size() >= threshold) {
+                const double ratio = sub_problem_specifications.column_pool_clean_up_ratio();
+                formulation.clean_up(i, ratio, get_master_primal());
+            }
         }
     }
 

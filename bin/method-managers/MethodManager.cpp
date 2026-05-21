@@ -20,6 +20,8 @@ void MethodManager::add(const std::string& t_tag) {
 
 void MethodManager::print_available_methods(const Arguments& t_args) {
 
+    std::vector<storage::const_iterator> descriptions_of_available_methods;
+
     std::cout << "-- Detected: applicable methods are [";
 
     bool first = true;
@@ -28,16 +30,30 @@ void MethodManager::print_available_methods(const Arguments& t_args) {
             std::cout << ", ";
         }
         std::cout << it->first;
+        descriptions_of_available_methods.emplace_back(it);
         first = false;
     }
 
-    std::cout << "]\n";
+    std::cout << "].\n";
 
-    if (!t_args.solve) {
+    if (t_args.sub_command == List) {
 
-        std::cout << "\nDetails (all methods):\n" << std::endl;
+        std::cout << "\nDetails on applicable methods:" << std::endl;
+        for (const auto& it : descriptions_of_available_methods) {
+            std::cout << " - " << it->first << " : " << it->second.second << std::endl;
+        }
+
+        std::cout << "\nOther methods:" << std::endl;
         for (auto & [key, pair] : m_all_methods) {
-            std::cout << " - " << key << ": " << pair.second << "\n";
+            bool skip = false;
+            for (const auto& it : descriptions_of_available_methods) {
+                if (it->first == key) {
+                    skip = true;
+                }
+            }
+            if (!skip) {
+                std::cout << " - " << key << ": " << pair.second << "\n";
+            }
         }
 
         exit(0);
@@ -62,12 +78,14 @@ const std::string& MethodManager::get_method(const Arguments& t_args) const {
 
     const auto it = m_all_methods.find(t_args.method);
     if (it == m_all_methods.end()) {
-        throw idol::Exception("The requested method does not exist for this problem type.");
+        std::cout << "The requested method does not exist for this problem type." << std::endl;
+        exit(1);
     }
 
     const auto method = m_available_methods.find(it->second.first);
     if (method == m_available_methods.end()) {
-        throw idol::Exception("The requested method exists, but cannot be used in this context (assumptions).");
+        std::cerr << "The requested method exists, but cannot be used in this context (assumptions)." << std::endl;
+        exit(1);
     }
 
     return t_args.method;

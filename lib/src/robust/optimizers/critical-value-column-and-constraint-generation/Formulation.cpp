@@ -212,12 +212,10 @@ update_sub_problem_objective(const PrimalPoint& t_master_solution, const Uncerta
     for (const auto& [var, unc_coeff] : description.uncertain_mat_coeffs(ctr)) {
         fixed_row += t_master_solution.get(var) * unc_coeff;
     }
-    std::cout << description.uncertain_rhs(ctr) << std::endl;
+
     for (const auto& [unc_param, coeff] : description.uncertain_rhs(ctr)) {
         fixed_row += -coeff * unc_param;
     }
-
-    std::cout << fixed_row << std::endl;
 
     if (type == LessOrEqual) {
         m_sub_problem.set_obj_expr(fixed_rhs - fixed_row);
@@ -267,18 +265,20 @@ double idol::CVCCG::Formulation::compute_critical_value(const Ctr& t_ctr, const 
 
     const auto& row = uncertainty_set.get_ctr_row(t_ctr);
     const auto type = uncertainty_set.get_ctr_type(t_ctr);
-    std::cout << type << std::endl;
-    assert(type == LessOrEqual);
+    assert(type != Equal);
 
-    double result = uncertainty_set.get_ctr_rhs(t_ctr) + 1;
+    double result = uncertainty_set.get_ctr_rhs(t_ctr);
     for (const auto& [var, coeff] : row) {
         if (!model.has(var)) {
             result -= coeff * t_scenario.get(var);
         }
     }
+    if (type == GreaterOrEqual) {
+        result *= -1.;
+    }
     assert(is_integer(result, m_parent.get_tol_integer()));
 
-    return result;
+    return result + 1;
 }
 
 void idol::CVCCG::Formulation::create_critical_value_variable_if_needed(const PrimalPoint& t_scenario) {
@@ -306,13 +306,15 @@ void idol::CVCCG::Formulation::create_critical_value_variable(const PrimalPoint&
     const auto& row = uncertainty_set.get_ctr_row(t_linking.ctr_in_uncertainty_set);
     const auto type = uncertainty_set.get_ctr_type(t_linking.ctr_in_uncertainty_set);
 
-    assert(type == LessOrEqual);
+    assert(type != Equal);
 
     LinExpr<Ctr> column;
     for (const auto& uncertainty : m_uncertainties) {
         for (const auto& cut : uncertainty.currently_present_cuts()) {
             const double local_critical_value = compute_critical_value(t_linking.ctr_in_uncertainty_set, cut.scenario->scenario);
-            if ((long int) critical_value <= (long int) local_critical_value) {
+            if ( (type == LessOrEqual && (long int) critical_value <= (long int) local_critical_value)
+                || (type == GreaterOrEqual && (long int) critical_value >= (long int) local_critical_value)
+            ) {
                 column.set(cut.cut, cut.penalty);
             }
         }
@@ -329,6 +331,10 @@ void idol::CVCCG::Formulation::create_critical_value_variable(const PrimalPoint&
         if (model.has(var)) {
             parameterized_part += coeff * var;
         }
+    }
+
+    if (type == GreaterOrEqual) {
+        parameterized_part *= -1.;
     }
 
     const auto& activation_ctr = m_master.add_ctr(critical_value * activation_var <= parameterized_part);

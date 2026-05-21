@@ -141,7 +141,9 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
         return;
     }
 
-    assert(scenarios.size() == 1); // TODO: should apply unique() to avoid adding twice the same scenario
+    if (scenarios.size() != 1) {
+        throw Exception("Not implemented. The current implementation only allows for a single uncertain constraint");
+    }
 
     for (auto&& scenario : scenarios) {
         const auto it = m_formulation->add_scenario_to_pool(std::move(scenario), PrimalPoint(master_solution));

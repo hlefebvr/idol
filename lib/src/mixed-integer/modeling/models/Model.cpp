@@ -4,6 +4,8 @@
 #include <utility>
 
 #include "idol/mixed-integer/modeling/models/Model.h"
+
+#include "idol/general/utils/SilentMode.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
@@ -1029,6 +1031,7 @@ void idol::Model::reset_minor_representation() {
 }
 
 idol::Model idol::Model::read_from_file(Env& t_env, const std::string& t_filename) {
+    SilentMode silent_mode;
     if (Optimizers::Gurobi::is_available()) {
         return Optimizers::Gurobi::read_from_file(t_env, t_filename);
     }

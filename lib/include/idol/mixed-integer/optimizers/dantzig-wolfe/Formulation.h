@@ -66,6 +66,8 @@ public:
 
     const Annotation<unsigned int>& decomposition() const { return m_decomposition; }
 
+    GeneratorPool<Var>& column_pool(unsigned int t_sub_problem_id) { return m_pools[t_sub_problem_id]; }
+
     const GeneratorPool<Var>& column_pool(unsigned int t_sub_problem_id) const { return m_pools[t_sub_problem_id]; }
 
     unsigned int n_sub_problems() const { return m_sub_problems.size(); }
@@ -94,7 +96,7 @@ public:
 
     void update_var_obj(const Var& t_var, double t_obj);
 
-    void clean_up(unsigned int t_sub_problem_id, double t_ratio);
+    void clean_up(unsigned int t_sub_problem_id, double t_ratio, const PrimalPoint& t_master_solution);
 
     void add(const Var& t_var, double t_lb, double t_ub, VarType t_type, const LinExpr<Ctr>& t_column);
 

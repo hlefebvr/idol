@@ -95,7 +95,7 @@ void idol::Optimizers::Bilevel::StrongDuality::hook_optimize() {
 
     // Parameters
     m_deterministic_model->optimizer().set_param_logs(get_param_logs());
-    m_deterministic_model->optimizer().set_param_time_limit(get_param_time_limit());
+    m_deterministic_model->optimizer().set_param_time_limit(get_remaining_time());
     m_deterministic_model->optimizer().set_param_threads(get_param_thread_limit());
     m_deterministic_model->optimizer().set_param_best_bound_stop(get_param_best_bound_stop());
     m_deterministic_model->optimizer().set_param_best_obj_stop(get_param_best_obj_stop());

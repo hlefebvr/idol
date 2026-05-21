@@ -11,6 +11,7 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h"
 
 enum ProblemType { MILP, RobustProblem, AdjustableRobustProblem, BilevelProblem };
+enum SubCommand { Solve, List, Convert, None };
 
 std::ostream& operator<<(std::ostream& t_os, ProblemType t_problem_type);
 
@@ -21,8 +22,8 @@ public:
     Arguments();
 
     ProblemType problem_type = MILP;
+    SubCommand sub_command = None;
     bool mute = false;
-    bool solve = true;
     bool csv_report = false;
     std::string method;
 
