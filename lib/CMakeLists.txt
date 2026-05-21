@@ -418,6 +418,7 @@ if (${USE_ROCPP})
     find_package(ROCPP REQUIRED)
     target_link_libraries(idol PUBLIC rocpp)
     target_compile_definitions(idol PUBLIC IDOL_USE_ROCPP)
+    set(SHIP_ROCPP ON)
 
 endif ()
 
@@ -574,6 +575,17 @@ endif ()
 if (${SHIP_COIN_OR})
     install(
             DIRECTORY ${COIN_OR_DIR}/lib/
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            FILES_MATCHING
+            PATTERN *.so*
+            PATTERN *.a*
+            PATTERN *.dylib*
+    )
+endif ()
+
+if (${SHIP_ROCPP})
+    install(
+            DIRECTORY ${ROCPP_DIR}/lib/
             DESTINATION ${CMAKE_INSTALL_LIBDIR}
             FILES_MATCHING
             PATTERN *.so*

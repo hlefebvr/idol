@@ -6,23 +6,26 @@
 #define IDOL_JUMP_H
 
 #include "idol/general/optimizers/OptimizerFactory.h"
+#include <list>
 
 namespace idol {
     class JuMP;
 }
 
 class idol::JuMP : public idol::OptimizerFactoryWithDefaultParameters<JuMP> {
-    const std::string m_module;
+    std::list<std::string> m_modules;
     std::optional<std::string> m_optimizer_name;
     bool m_is_continuous_relaxation = false;
 
-    JuMP(std::string t_module, bool t_is_continuous_relaxation);
+    JuMP(const std::string& t_optimizer_name, bool t_is_continuous_relaxation);
 protected:
     [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
-    explicit JuMP(std::string t_module = "HiGHS");
+    explicit JuMP(const std::string& t_optimizer_name);
 
-    static JuMP ContinuousRelaxation(std::string t_module = "HiGHS");
+    JuMP& with_julia_module(const std::string& t_module);
+
+    static JuMP ContinuousRelaxation(const std::string& t_optimizer);
 
     [[nodiscard]] OptimizerFactory *clone() const override;
 };

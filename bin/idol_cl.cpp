@@ -6,7 +6,7 @@
 #include "Arguments.h"
 #include "milp.h"
 #include "robust.h"
-#include "solve_bilevel.h"
+#include "bilevel.h"
 
 int main(int t_argc, const char** t_argv) {
 

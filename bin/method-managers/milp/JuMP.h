@@ -12,6 +12,7 @@ namespace MILPMethods {
 }
 
 class MILPMethods::JuMP : public MILPMethod {
+    static std::vector<std::string> split_modules(const std::string& t_input);
 public:
     [[nodiscard]] unsigned score() const override { return 100; }
     [[nodiscard]] std::string name() const override { return "JuMP"; }

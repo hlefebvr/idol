@@ -76,6 +76,8 @@ inline void milp(const Arguments& t_args) {
         model->optimize();
 
         report_standard_output(*model, t_args);
+
+        exit(0);
     }
 
     std::cerr << "Nothing to do with sub-command " << t_args.sub_command << "." << std::endl;

@@ -7,8 +7,6 @@
 
 #include "Optimizers_JuMP.h"
 
-#ifdef IDOL_USE_JULIA
-
 namespace idol::Optimizers {
     class Coluna;
 }
@@ -23,7 +21,5 @@ protected:
 
     void hook_optimize() override;
 };
-
-#endif // IDOL_USE_JULIA
 
 #endif //IDOL_OPTIMIZERS_COLUNA_H

@@ -17,9 +17,9 @@ module IdolJuMP
         return current_id
     end
 
-    function idol_create_model(t_optimizer_str::Type{<:MOI.AbstractOptimizer})
+    function idol_create_model(t_optimizer)
         id = _get_next_id()
-        model = Model(t_optimizer_str)
+        model = Model(t_optimizer)
         @objective(model, Min, 0)
         _registry[id] = Objects(model, [], [])
         return id
