@@ -183,7 +183,7 @@ jobs:
   build-linux:
     needs: push-tag
     if: needs.push-tag.outputs.tag_created == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       IDOL_VERSION: ${{ needs.push-tag.outputs.version }}
 
