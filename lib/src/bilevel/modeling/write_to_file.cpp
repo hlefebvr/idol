@@ -152,7 +152,7 @@ void MpsWriter::write() {
         }
     };
 
-    const bool has_obj_const = is_zero(m_model.get_obj_expr().affine().constant(),  Tolerance::Sparsity);
+    const bool has_obj_const = !is_zero(m_model.get_obj_expr().affine().constant(),  Tolerance::Sparsity);
     if (has_obj_const) {
         add_entry("__constant", "OBJ", 1);
     }
