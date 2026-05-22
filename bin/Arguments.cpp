@@ -325,6 +325,12 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
             "complete recourse.")
             ->configurable();
 
+        t_target->add_option(
+            "--n-policies",
+            result.n_policies,
+            "The number of policies for K-adaptability approaches.")
+            ->configurable();
+
         uncertainty_set->needs(uncertainty_param);
         uncertainty_param->needs(uncertainty_set);
 

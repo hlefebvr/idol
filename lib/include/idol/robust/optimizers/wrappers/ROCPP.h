@@ -23,12 +23,15 @@ public:
 
     ROCPP& with_deterministic_optimizer(const OptimizerFactory& t_optimizer_factory);
 
+    ROCPP& with_n_policies(unsigned int t_n_policies);
+
     [[nodiscard]] OptimizerFactory* clone() const override;
 
     static Model make_model(const Model& t_model,
                             const Robust::Description& t_robust_description,
                             const Bilevel::Description& t_bilevel_description,
-                            Approximation t_approximation
+                            Approximation t_approximation,
+                            unsigned int t_k = 1
     );
 protected:
     [[nodiscard]] Optimizer* create(const Model& t_model) const override;
@@ -36,6 +39,7 @@ private:
     const Bilevel::Description& m_bilevel_description;
     const Robust::Description& m_robust_description;
     std::optional<Approximation> m_approximation;
+    std::optional<unsigned int> m_n_policies;
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
 };
 

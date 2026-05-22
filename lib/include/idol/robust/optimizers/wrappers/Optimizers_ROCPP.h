@@ -21,6 +21,7 @@ class idol::Optimizers::Robust::ROCPP : public Optimizer {
     const idol::Robust::Description& m_robust_description;
     idol::Robust::ROCPP::Approximation m_approximation;
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
+    const unsigned int m_n_policies;
 
     std::unique_ptr<Model> m_model;
 protected:
@@ -53,7 +54,8 @@ public:
           const idol::Robust::Description& t_robust_description,
           const idol::Bilevel::Description& t_bilevel_description,
           idol::Robust::ROCPP::Approximation t_approximation,
-          const OptimizerFactory& t_optimizer);
+          const OptimizerFactory& t_optimizer,
+          unsigned int t_n_policies);
 
     [[nodiscard]] std::string name() const override { return "ROC++"; }
     [[nodiscard]] SolutionStatus get_status() const override;

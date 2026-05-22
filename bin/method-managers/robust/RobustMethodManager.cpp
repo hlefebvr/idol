@@ -236,7 +236,7 @@ void RobustMethodManager::do_method_analysis(const std::vector<RobustMethod*>& m
             }
             if (condition.requires_continuous_uncertainty_set) {
                 CHECK(
-                    !m_uncertainty_set_analysis.has_binary_linking_variables && !m_uncertainty_set_analysis.has_general_integer,
+                    !m_uncertainty_set_analysis.has_binary && !m_uncertainty_set_analysis.has_general_integer,
                     "Requires a continuous uncertainy set."
                 )
             }

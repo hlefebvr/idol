@@ -37,6 +37,9 @@ void RobustMethods::ROCPP_KAdaptability::set_optimizer(idol::Model& t_model, con
     const auto sub_milp_optimizer = MILPMethodManager::get_sub_milp_optimizer(args);
 
     auto rocpp = idol::Robust::ROCPP(robust_description, bilevel_description, idol::Robust::ROCPP::KAdaptability);
+    if (args.n_policies != -1) {
+        rocpp.with_n_policies(args.n_policies);
+    }
     rocpp.with_deterministic_optimizer(*sub_milp_optimizer);
 
     t_model.use(rocpp);

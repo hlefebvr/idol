@@ -36,7 +36,8 @@ idol::Robust::ROCPP::ROCPP(const ROCPP& t_src) :
     m_robust_description(t_src.m_robust_description),
     m_bilevel_description(t_src.m_bilevel_description),
     m_approximation(t_src.m_approximation),
-    m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr) {
+    m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr),
+    m_n_policies(t_src.m_n_policies) {
 
 }
 
@@ -51,6 +52,21 @@ idol::Robust::ROCPP& idol::Robust::ROCPP::with_deterministic_optimizer(const Opt
     return *this;
 }
 
+idol::Robust::ROCPP& idol::Robust::ROCPP::with_n_policies(unsigned int t_n_policies) {
+
+    if (m_n_policies) {
+        throw Exception("The number of policies has already been configured");
+    }
+
+    if (m_approximation != KAdaptability) {
+        throw Exception("The number of policies only make sense when using K-adaptability.");
+    }
+
+    m_n_policies = t_n_policies;
+
+    return *this;
+}
+
 idol::OptimizerFactory* idol::Robust::ROCPP::clone() const {
     return new ROCPP(*this);
 }
@@ -61,12 +77,17 @@ idol::Optimizer* idol::Robust::ROCPP::create(const Model& t_model) const {
         throw Exception("An optimizer factory has to be configured");
     }
 
+    if (!m_n_policies && m_approximation == KAdaptability) {
+        std::cout << "Warning: no number of policies was configured for K-adaptability, using a default value of K = 2." << std::endl;
+    }
+
     auto* result = new Optimizers::Robust::ROCPP(
         t_model,
         m_robust_description,
         m_bilevel_description,
         *m_approximation,
-        *m_optimizer_factory
+        *m_optimizer_factory,
+        m_n_policies.value_or(2)
     );
 
     return result;
@@ -75,7 +96,8 @@ idol::Optimizer* idol::Robust::ROCPP::create(const Model& t_model) const {
 idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
     const Robust::Description& t_robust_description,
     const Bilevel::Description& t_bilevel_description,
-    Approximation t_approximation) {
+    Approximation t_approximation,
+    unsigned int t_k) {
 
 #ifdef IDOL_USE_ROCPP
     auto& env = t_model.env();
@@ -150,7 +172,8 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
         }
 
         for (const auto& [unc_var, coeff] : t_robust_description.uncertain_rhs(ctr)) {
-            std::cerr << "RHS uncertainty skipped" << std::endl;
+            const auto& rocpp_unc_var = rocpp_vars[t_model.get_var_index(unc_var)];
+            *expr += -coeff * rocpp_unc_var;
         }
 
         for (const auto& [var, coeffs] : t_robust_description.uncertain_mat_coeffs(ctr)) {
@@ -201,8 +224,6 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
         }
     }
 
-    assert(t_robust_description.uncertain_obj().size() == 0);
-
     // Set objective function
     const auto& obj = t_model.get_obj_expr().affine();
     ROCPPExpr_Ptr rocpp_obj;
@@ -212,6 +233,17 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
             rocpp_obj = coeff * rocpp_var;
         } else {
             *rocpp_obj += coeff * rocpp_var;
+        }
+    }
+    for (const auto& [var, unc_coeff] : t_robust_description.uncertain_obj()) {
+        const auto& rocpp_var = rocpp_vars[t_model.get_var_index(var)];
+        for (const auto& [unc_var, coeff] : unc_coeff) {
+            const auto& rocpp_unc_var = rocpp_unc_vars[uncertainty_set.get_var_index(unc_var)];
+            if (!rocpp_obj) {
+                rocpp_obj = coeff * rocpp_unc_var * rocpp_var;
+            } else {
+                *rocpp_obj += coeff * rocpp_unc_var * rocpp_var;
+            }
         }
     }
 
@@ -246,7 +278,7 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
         strategies = { pPWApprox, pRE };
 
     } else if (t_approximation == KAdaptability) {
-        std::map<unsigned int, unsigned int> n_policies_per_stage { { 2, 2 } };
+        std::map<unsigned int, unsigned int> n_policies_per_stage { { 2, t_k } };
 
         ROCPPStrategy_Ptr pKadaptStrategy(new ROCPPKAdapt(n_policies_per_stage));
 
@@ -286,25 +318,17 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
 
             if (pClassic->isLinear()) {
 
-                uint useNAC(0);
-
-                //With a value of 1, the constraint can be used to cut off a feasible solution, but it won't necessarily be pulled in if another lazy constraint also cuts off the solution. With a value of 2, all lazy constraints that are violated by a feasible solution will be pulled into the model. With a value of 3, lazy constraints that cut off the relaxation solution at the root node are also pulled in.
-                if(pClassic->isNAC() /* && m_pSParams.useLazyNACs() */) {
-                    useNAC = 2;
-                    assert(false);
-                }
-
                 AffExpr lhs_expr;
 
                 for (const auto & term : *pClassic) {
 
                     if (!term->isProductTerm() ) {
-                        throw MyException("cplexmisocp cannot have non-prod terms");
+                        throw MyException("idol model cannot have non-prod terms");
                     }
 
                     ROCPPProdTerm_Ptr product_term = static_pointer_cast<ProductTerm>(term);
                     if (product_term->getNumUncertainties() != 0) {
-                        throw MyException("cplexmisocp should not involve uncertainties");
+                        throw MyException("idol model should not involve uncertainties");
                     }
 
 
@@ -327,10 +351,8 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
 
                 if (pClassic->isEqConstraint()) {
                     result.add_ctr(lhs_expr == rhs);
-                    //Model.addConstr(lhs_expr, GRB_EQUAL, rhs).set(GRB_IntAttr_Lazy, useNAC);
                 } else {
                     result.add_ctr(lhs_expr <= rhs);
-                    //Model.addConstr(lhs_expr, GRB_LESS_EQUAL, rhs).set(GRB_IntAttr_Lazy, useNAC);
                 }
             } else {
                 assert(false);
