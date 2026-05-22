@@ -152,7 +152,10 @@ void MpsWriter::write() {
         }
     };
 
-    add_entry("__constant", "OBJ", 1);
+    const bool has_obj_const = is_zero(m_model.get_obj_expr().affine().constant(),  Tolerance::Sparsity);
+    if (has_obj_const) {
+        add_entry("__constant", "OBJ", 1);
+    }
 
     for (const auto& var : continuous_vars) {
         add_row_entries(var);
@@ -174,7 +177,9 @@ void MpsWriter::write() {
 
     file << "BOUNDS\n";
 
-    file << " FX" << " BND       " << std::setw(10) << "__constant" << ' ' << m_model.get_obj_expr().affine().constant() << '\n';
+    if (has_obj_const) {
+        file << " FX" << " BND       " << std::setw(10) << "__constant" << ' ' << m_model.get_obj_expr().affine().constant() << '\n';
+    }
 
     for (const auto& var : m_model.vars()) {
         const auto lb = m_model.get_var_lb(var);

@@ -45,6 +45,8 @@ inline void robust(const Arguments& t_args) {
         robust_method_manager.set_problem(*model, *robust_description, bilevel_description);
     }
 
+    std::cout << robust_description->uncertainty_set() << std::endl;
+
     if (t_args.sub_command == List) {
         robust_method_manager.print_details();
         exit(0);
