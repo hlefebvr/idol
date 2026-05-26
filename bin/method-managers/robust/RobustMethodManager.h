@@ -18,8 +18,8 @@ struct UncertaintySetAnalysisResult : VariableAnalysisResult{
     bool has_binary_linking_variables = true;
     bool has_integer_coefficients = true;
     bool has_decision_dependence = false;
-    //bool has_rhs_uncertainty = false;
-    //bool has_ctr_uncertainty = false;
+    bool has_rhs_uncertainty = false;
+    bool has_matrix_uncertainty = false;
 };
 
 
@@ -50,6 +50,7 @@ public:
         bool requires_uncertainty_set_with_integer_coefficients = false;
         bool requires_binary_linking_variables_in_uncertainty_set = false;
         bool requires_integer_linking_variables_in_uncertainty_set = false;
+        bool requires_objective_uncertainty_only = false;
 
         // First-stage conditions
 

@@ -20,7 +20,7 @@ idol::Optimizers::Bilevel::KKT::KKT(const Model& t_parent,
 }
 
 std::string idol::Optimizers::Bilevel::KKT::name() const {
-    return "kkt";
+    return "KKT reformulation";
 }
 
 double idol::Optimizers::Bilevel::KKT::get_var_primal(const idol::Var &t_var) const {
@@ -180,7 +180,7 @@ void idol::Optimizers::Bilevel::KKT::update_var_obj(const idol::Var &t_var) {
 }
 
 void idol::Optimizers::Bilevel::KKT::throw_if_no_deterministic_model() const {
-    if (!m_deterministic_optimizer) {
+    if (!m_deterministic_model) {
         throw Exception("Not available.");
     }
 }

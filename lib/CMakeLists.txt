@@ -313,6 +313,10 @@ add_library(idol STATIC
         src/robust/optimizers/wrappers/ROCPP.cpp
         include/idol/robust/optimizers/wrappers/Optimizers_ROCPP.h
         src/robust/optimizers/wrappers/Optimizers_ROCPP.cpp
+        include/idol/robust/optimizers/convexification/Convexification.h
+        include/idol/robust/optimizers/convexification/Optimizers_Convexification.h
+        src/robust/optimizers/convexification/Convexification.cpp
+        src/robust/optimizers/convexification/Optimizers_Convexification.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)

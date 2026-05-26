@@ -97,13 +97,13 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
     const Robust::Description& t_robust_description,
     const Bilevel::Description& t_bilevel_description,
     Approximation t_approximation,
-    unsigned int t_k) {
+    unsigned int t_n_policies) {
 
 #ifdef IDOL_USE_ROCPP
     auto& env = t_model.env();
     const auto& uncertainty_set = t_robust_description.uncertainty_set();
 
-    ROCPPOptModelIF_Ptr rocpp_model(new ROCPPUncOptModel(2));
+    ROCPPOptModelIF_Ptr rocpp_model(new ROCPPUncMSOptModel(2));
 
     // Create decision variables
     std::vector<ROCPPVarIF_Ptr> rocpp_vars;
@@ -140,7 +140,7 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
             throw Exception("Decision-dependent uncertainty is not implemented yet.");
         }
 
-        ROCPPUnc_Ptr rocpp_var(new ROCPPUnc(var.name(), 1));
+        ROCPPUnc_Ptr rocpp_var(new ROCPPUnc(var.name(), 2));
         rocpp_unc_vars.emplace_back(rocpp_var);
 
         const double lb = uncertainty_set.get_var_lb(var);
@@ -161,18 +161,14 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
         const double rhs = t_model.get_ctr_rhs(ctr);
         const auto type = t_model.get_ctr_type(ctr);
 
-        ROCPPExpr_Ptr expr;
+        ROCPPExpr_Ptr expr(new ROCPPExpr());
         for (const auto& [var, coeff] : row) {
             const auto& rocpp_var = rocpp_vars[t_model.get_var_index(var)];
-            if (!expr) {
-                expr = coeff * rocpp_var;
-            } else {
-                *expr += coeff * rocpp_var;
-            }
+            *expr += coeff * rocpp_var;
         }
 
         for (const auto& [unc_var, coeff] : t_robust_description.uncertain_rhs(ctr)) {
-            const auto& rocpp_unc_var = rocpp_vars[t_model.get_var_index(unc_var)];
+            const auto& rocpp_unc_var = rocpp_unc_vars[uncertainty_set.get_var_index(unc_var)];
             *expr += -coeff * rocpp_unc_var;
         }
 
@@ -202,14 +198,10 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
         const double rhs = uncertainty_set.get_ctr_rhs(ctr);
         const auto type = uncertainty_set.get_ctr_type(ctr);
 
-        ROCPPExpr_Ptr expr;
-        for (const auto& [var, coeff] : row) {
-            const auto& rocpp_unc = rocpp_unc_vars[uncertainty_set.get_var_index(var)];
-            if (!expr) {
-                expr = coeff * rocpp_unc;
-            } else {
-                *expr += coeff * rocpp_unc;
-            }
+        ROCPPExpr_Ptr expr(new ROCPPExpr());
+        for (const auto& [unc_var, coeff] : row) {
+            const auto& rocpp_unc_var = rocpp_unc_vars[uncertainty_set.get_var_index(unc_var)];
+            *expr += coeff * rocpp_unc_var;
         }
 
         switch (type) {
@@ -226,30 +218,22 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
 
     // Set objective function
     const auto& obj = t_model.get_obj_expr().affine();
-    ROCPPExpr_Ptr rocpp_obj;
+    ROCPPExpr_Ptr rocpp_obj(new ROCPPExpr());
     for (const auto& [var, coeff] : obj.linear()) {
         const auto& rocpp_var = rocpp_vars[t_model.get_var_index(var)];
-        if (!rocpp_obj) {
-            rocpp_obj = coeff * rocpp_var;
-        } else {
-            *rocpp_obj += coeff * rocpp_var;
-        }
+        *rocpp_obj += coeff * rocpp_var;
     }
     for (const auto& [var, unc_coeff] : t_robust_description.uncertain_obj()) {
         const auto& rocpp_var = rocpp_vars[t_model.get_var_index(var)];
         for (const auto& [unc_var, coeff] : unc_coeff) {
             const auto& rocpp_unc_var = rocpp_unc_vars[uncertainty_set.get_var_index(unc_var)];
-            if (!rocpp_obj) {
-                rocpp_obj = coeff * rocpp_unc_var * rocpp_var;
-            } else {
-                *rocpp_obj += coeff * rocpp_unc_var * rocpp_var;
-            }
+            *rocpp_obj += coeff * rocpp_unc_var * rocpp_var;
         }
     }
 
-    if (rocpp_obj) {
-        rocpp_model->set_objective(rocpp_obj);
-    }
+    rocpp_model->set_objective(rocpp_obj);
+
+    //rocpp_model->WriteToFile(".", "test");
 
     // Construct the reformulation orchestrator
     auto orchestrator = std::make_shared<ROCPPOrchestrator>();
@@ -278,7 +262,7 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
         strategies = { pPWApprox, pRE };
 
     } else if (t_approximation == KAdaptability) {
-        std::map<unsigned int, unsigned int> n_policies_per_stage { { 2, t_k } };
+        std::map<unsigned int, unsigned int> n_policies_per_stage { { 2, t_n_policies } };
 
         ROCPPStrategy_Ptr pKadaptStrategy(new ROCPPKAdapt(n_policies_per_stage));
 
@@ -286,13 +270,15 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
         ROCPPStrategy_Ptr pRE (new ROCPPRobustifyEngine());
 
         //Copnstruct the linearization reformulation strategy with big M approach
-        ROCPPStrategy_Ptr pBTR (new ROCPPBTR_bigM());
+        ROCPPStrategy_Ptr pBTR (new ROCPPBTR_bigM("bl", "", 0, 1));
 
         // Approximate the adaptive decisions using the linear/constant decision rule approximator and robustify
         strategies = {pKadaptStrategy, pRE, pBTR};
     }
 
     ROCPPOptModelIF_Ptr rocpp_reformulation = orchestrator->Reformulate(rocpp_model, strategies);
+
+    //rocpp_reformulation->WriteToFile(".", "test");
 
     // Convert back to idol
 
@@ -323,12 +309,12 @@ idol::Model idol::Robust::ROCPP::make_model(const Model& t_model,
                 for (const auto & term : *pClassic) {
 
                     if (!term->isProductTerm() ) {
-                        throw MyException("idol model cannot have non-prod terms");
+                        throw Exception("idol model cannot have non-prod terms");
                     }
 
                     ROCPPProdTerm_Ptr product_term = static_pointer_cast<ProductTerm>(term);
                     if (product_term->getNumUncertainties() != 0) {
-                        throw MyException("idol model should not involve uncertainties");
+                        throw Exception("idol model should not involve uncertainties");
                     }
 
 

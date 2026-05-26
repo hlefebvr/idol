@@ -58,6 +58,12 @@ std::ostream &idol::operator<<(std::ostream &t_os, const idol::Robust::Descripti
         stream << " " << var;
 
     }
+    for (const auto& [var, unc_coefficient] : description.uncertain_obj()) {
+        if (obj.affine().linear().has_index(var)) {
+            continue;
+        }
+        stream << " + [" << unc_coefficient << "] " << var;
+    }
     for (const auto& [pair, constant] : obj) {
         stream << " + " << constant << " " << pair.first << " " << pair.second;
     }

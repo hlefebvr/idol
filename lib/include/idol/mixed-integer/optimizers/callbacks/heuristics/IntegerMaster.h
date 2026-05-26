@@ -40,8 +40,7 @@ public:
         double m_time_limit = std::numeric_limits<double>::max();
         unsigned int m_iteration_limit = std::numeric_limits<unsigned int>::max();
         unsigned int m_max_depth = 1000;
-        unsigned int m_frequency = 1;
-        unsigned int m_n_relevant_calls = 0; // Counts the number of calls to the callback which can trigger the heuristic, except for frequency reasons
+        unsigned int m_frequency = 20;
     protected:
         void operator()(CallbackEvent t_event) override;
     public:
@@ -183,9 +182,7 @@ void idol::Heuristics::IntegerMaster<NodeInfoT>::Strategy::operator()(CallbackEv
         return;
     }
 
-    unsigned int n_relevant_calls = m_n_relevant_calls++;
-
-    if ( n_relevant_calls % m_frequency != 0) {
+    if ( this->node_count() % m_frequency != 0) {
         return;
     }
 

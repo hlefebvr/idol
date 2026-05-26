@@ -6,6 +6,7 @@
 
 #include <fstream>
 
+#include "Convexification.h"
 #include "CCG_CV.h"
 #include "CCG_Farkas.h"
 #include "CCG_KKT_SOS1.h"
@@ -27,6 +28,7 @@ RobustMethodManager::RobustMethodManager(const Arguments& t_args) : AbstractMeth
     add<RobustMethods::CG_Indicator>();
     add<RobustMethods::ROCPP_LinearDR>();
     add<RobustMethods::ROCPP_KAdaptability>();
+    add<RobustMethods::Convexification>();
 
 }
 
@@ -112,6 +114,9 @@ void RobustMethodManager::do_uncertainty_set_analysis() {
             m_uncertainty_set_analysis.has_integer_linking_variables = false;
         }
     }
+
+    m_uncertainty_set_analysis.has_rhs_uncertainty = !m_robust_description->uncertain_rhs().empty();
+    m_uncertainty_set_analysis.has_matrix_uncertainty = m_robust_description->uncertain_mat_coeffs().size() > 0;
 }
 
 void RobustMethodManager::print_methods(const std::vector<RobustMethod*>& methods) const {
@@ -238,6 +243,12 @@ void RobustMethodManager::do_method_analysis(const std::vector<RobustMethod*>& m
                 CHECK(
                     !m_uncertainty_set_analysis.has_binary && !m_uncertainty_set_analysis.has_general_integer,
                     "Requires a continuous uncertainy set."
+                )
+            }
+            if (condition.requires_objective_uncertainty_only) {
+                CHECK(
+                    !m_uncertainty_set_analysis.has_rhs_uncertainty && !m_uncertainty_set_analysis.has_matrix_uncertainty,
+                    "Requires objective uncertainty."
                 )
             }
             is_applicable |= condition_is_met;

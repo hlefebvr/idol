@@ -31,7 +31,7 @@ public:
                             const Robust::Description& t_robust_description,
                             const Bilevel::Description& t_bilevel_description,
                             Approximation t_approximation,
-                            unsigned int t_k = 1
+                            unsigned int t_n_policies = 1
     );
 protected:
     [[nodiscard]] Optimizer* create(const Model& t_model) const override;
