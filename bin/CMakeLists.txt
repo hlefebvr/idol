@@ -54,6 +54,8 @@ add_executable(idol_cl
         method-managers/robust/ROCPP_KAdaptability.h
         method-managers/robust/Convexification.cpp
         method-managers/robust/Convexification.h
+        method-managers/robust/BBBB.cpp
+        method-managers/robust/BBBB.h
 )
 target_link_libraries(idol_cl PRIVATE idol)
 

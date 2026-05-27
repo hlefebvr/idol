@@ -11,6 +11,10 @@
 #include "idol/robust/modeling/read_from_file.h"
 #include "method-managers/robust/RobustMethodManager.h"
 
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
+#include "idol/robust/optimizers/convexification/Optimizers_Convexification.h"
+
 inline void robust(const Arguments& t_args) {
 
     using namespace idol;

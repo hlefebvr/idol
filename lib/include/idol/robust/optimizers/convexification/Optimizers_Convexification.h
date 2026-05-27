@@ -63,6 +63,8 @@ public:
 
     [[nodiscard]] unsigned int get_solution_index() const override;
 
+    [[nodiscard]] const Model& deterministic_model() const;
+
 protected:
     void add(const Var &t_var) override;
 

@@ -2,9 +2,6 @@
 // Created by Henri on 17/04/2026.
 //
 #include "idol/robust/optimizers/critical-value-column-and-constraint-generation/Formulation.h"
-
-#include <unistd.h>
-
 #include "idol/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.h"
 #include "idol/mixed-integer/modeling/variables/TempVar.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
@@ -104,7 +101,6 @@ void idol::CVCCG::Formulation::initialize_master() {
 
     if (!description.uncertain_obj().empty()) {
         m_uncertainties.emplace_back();
-        std::cerr << "Objective uncertainty is an experimental feature" << std::endl;
     } else {
         m_master.set_obj_expr(model.get_obj_expr());
     }
@@ -158,7 +154,7 @@ void idol::CVCCG::Formulation::initialize_sub_problem() {
 
 }
 
-void idol::CVCCG::Formulation::update_sub_problem_constraints(const PrimalPoint& t_master_solution) {
+void idol::CVCCG::Formulation::update_sub_problem_rhs(const PrimalPoint& t_master_solution) {
 
     if (m_linking_variables.empty()) {
         return;
@@ -189,38 +185,50 @@ void idol::CVCCG::Formulation::update_sub_problem_constraints(const PrimalPoint&
 void idol::CVCCG::Formulation::
 update_sub_problem_objective(const PrimalPoint& t_master_solution, const Uncertainty& t_uncertainty) {
 
-    if (!t_uncertainty.is_constraint()) {
-        throw Exception("Not implemented.");
-    }
-
     const auto& model = m_parent.parent();
     const auto& description = m_parent.description();
-    const auto& ctr = t_uncertainty.ctr();
-    const auto type = model.get_ctr_type(ctr);
-    const auto& row = model.get_ctr_row(ctr);
 
-    double fixed_rhs = model.get_ctr_rhs(ctr);
+    const LinExpr<Var>* row = nullptr;
+    const LinExpr<Var, LinExpr<Var>>* unc_coeffs = nullptr;
+    const LinExpr<Var>* unc_constant = nullptr;
+    CtrType type = LessOrEqual;
+
+    double fixed_constant = 0.;
     LinExpr fixed_row;
 
-    for (const auto& [var, coeff] : row) {
-        if (model.has(var)) {
-            fixed_rhs -= coeff * t_master_solution.get(var);
-        } else {
-            fixed_row += coeff * var;
+    if (t_uncertainty.is_constraint()) {
+        const auto& ctr = t_uncertainty.ctr();
+
+        row = &model.get_ctr_row(ctr);
+        type = model.get_ctr_type(ctr);
+        fixed_constant = model.get_ctr_rhs(ctr);
+
+        unc_coeffs = &description.uncertain_mat_coeffs(ctr);
+        unc_constant = &description.uncertain_rhs(ctr);
+    } else {
+        row = &model.get_obj_expr().affine().linear();
+        unc_coeffs = &description.uncertain_objs();
+        fixed_constant = -model.get_obj_expr().affine().constant();
+        if (m_epigraph_variable) {
+            fixed_constant += t_master_solution.get(*m_epigraph_variable);
         }
     }
-    for (const auto& [var, unc_coeff] : description.uncertain_mat_coeffs(ctr)) {
+
+    for (const auto& [var, coeff] : *row) {
+        fixed_constant -= coeff * t_master_solution.get(var);
+    }
+    // Can we use evaluate(*unc_coeffs, t_master_solution); instead ?
+    for (const auto& [var, unc_coeff] : *unc_coeffs) {
         fixed_row += t_master_solution.get(var) * unc_coeff;
     }
-
-    for (const auto& [unc_param, coeff] : description.uncertain_rhs(ctr)) {
-        fixed_row += -coeff * unc_param;
+    if (unc_constant) {
+        fixed_row -= *unc_constant;
     }
 
     if (type == LessOrEqual) {
-        m_sub_problem.set_obj_expr(fixed_rhs - fixed_row);
+        m_sub_problem.set_obj_expr(fixed_constant - fixed_row);
     } else if (type == GreaterOrEqual) {
-        m_sub_problem.set_obj_expr(fixed_row - fixed_rhs);
+        m_sub_problem.set_obj_expr(fixed_row - fixed_constant);
     } else {
         throw Exception("Uncertain equality constraints are not supported.");
     }
@@ -247,6 +255,10 @@ double idol::CVCCG::Formulation::get_scenario_var_primal(const Var& t_var) const
     }
 
     return value / n_scenarios;
+}
+
+bool idol::CVCCG::Formulation::master_provides_a_valid_bound() const {
+    return m_parent.description().uncertain_obj().empty() || m_epigraph_variable;
 }
 
 std::list<idol::CVCCG::Formulation::GeneratedScenario>::iterator idol::CVCCG::Formulation::add_scenario_to_pool(PrimalPoint&& t_scenario, PrimalPoint&& t_master_scenario) {
@@ -327,17 +339,34 @@ void idol::CVCCG::Formulation::create_critical_value_variable(const PrimalPoint&
     const auto& activation_var = m_master.add_var(0, 1, Binary, 0, std::move(column), "__" + t_linking.ctr_in_uncertainty_set.name() + "_cv_" + std::to_string((long int)critical_value));
 
     LinExpr<Var> parameterized_part;
+    double min_activity = 0.;
+    double max_activity = 0.;
     for (const auto& [var, coeff] : row) {
         if (model.has(var)) {
             parameterized_part += coeff * var;
+
+            const double ub = model.get_var_ub(var);
+            const double lb = model.get_var_lb(var);
+            assert(!is_pos_inf(ub));
+            assert(!is_neg_inf(lb));
+            if (coeff < 0) {
+                min_activity += coeff * ub;
+                max_activity += coeff * lb;
+            } else {
+                assert(!is_neg_inf(lb));
+                min_activity += coeff * lb;
+                max_activity += coeff * ub;
+            }
         }
     }
 
+    double M = min_activity;
     if (type == GreaterOrEqual) {
         parameterized_part *= -1.;
+        M = max_activity;
     }
 
-    const auto& activation_ctr = m_master.add_ctr(critical_value * activation_var <= parameterized_part);
+    const auto& activation_ctr = m_master.add_ctr(critical_value * activation_var + M * (1 - activation_var) <= parameterized_part, "__cv_" + std::to_string((long int)critical_value) + "_" + t_linking.ctr_in_uncertainty_set.name());
 
     const auto [it, success] = t_linking.critical_values.emplace((long int)critical_value, std::make_pair(activation_var, activation_ctr));
     assert(success);
@@ -348,28 +377,48 @@ void idol::CVCCG::Formulation::create_critical_value_variable(const PrimalPoint&
 
 void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedScenario>::iterator& t_iterator_in_pool, Uncertainty& t_uncertainty) {
 
-    if (!t_uncertainty.is_constraint()) {
-        throw Exception("Not implemented.");
-    }
-
-    const auto& ctr = t_uncertainty.ctr();
     const auto& model = m_parent.parent();
     const auto& description = m_parent.description();
     const auto& [scenario, master_solution] = *t_iterator_in_pool;
 
-    const auto type = model.get_ctr_type(ctr);
-    auto lhs = model.get_ctr_row(ctr);
-    double rhs = model.get_ctr_rhs(ctr);
+    const LinExpr<Var, LinExpr<Var>>* unc_coeffs = nullptr;
+    const LinExpr<Var>* unc_constant = nullptr;
+    CtrType type = LessOrEqual;
 
-    for (const auto& [var, unc_coeff] : description.uncertain_mat_coeffs(ctr)) {
-        lhs += evaluate(unc_coeff, scenario) * var;
-    }
-    for (const auto& [unc_param, coeff] : description.uncertain_rhs(ctr)) {
-        rhs += coeff * scenario.get(unc_param);
+    LinExpr<Var> row;
+    double constant = 0.;
+
+    if (t_uncertainty.is_constraint()) {
+        const auto& ctr = t_uncertainty.ctr();
+
+        row = model.get_ctr_row(ctr);
+        type = model.get_ctr_type(ctr);
+        constant = model.get_ctr_rhs(ctr);
+
+        unc_coeffs = &description.uncertain_mat_coeffs(ctr);
+        unc_constant = &description.uncertain_rhs(ctr);
+    } else {
+        row = model.get_obj_expr().affine().linear();
+        unc_coeffs = &description.uncertain_objs();
+        constant = model.get_obj_expr().affine().constant();
+
+        if (!m_epigraph_variable) {
+            m_epigraph_variable = m_master.add_var(-Inf, Inf, Continuous, 1, "__epigraph");
+        }
+
     }
 
-    double penalty = -rhs;
-    for (const auto& [var, coeff] : lhs) {
+    for (const auto& [var, unc_coeff] : *unc_coeffs) {
+        row += evaluate(unc_coeff, scenario) * var;
+    }
+    if (unc_constant) {
+        for (const auto& [unc_param, coeff] : *unc_constant) {
+            constant += coeff * scenario.get(unc_param);
+        }
+    }
+
+    double penalty = -constant;
+    for (const auto& [var, coeff] : row) {
         if (coeff > 0) {
             const double ub = model.get_var_ub(var);
             if (is_pos_inf(ub)) {
@@ -389,15 +438,19 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
         penalty *= -1.;
     }
 
+    if (!t_uncertainty.is_constraint()) {
+        row -= *m_epigraph_variable;
+    }
+
     if (m_linking_variables.empty() || m_parent.use_indicator()) { // Add indicator
 
         for (const auto& var : m_linking_variables) {
             const double val = master_solution.get(var);
-            lhs += penalty * ( var - 2 * val * var );
-            rhs -= penalty * val;
+            row += penalty * ( var - 2 * val * var );
+            constant -= penalty * val;
         }
 
-        m_master.add_ctr(std::move(lhs), type, rhs);
+        m_master.add_ctr(std::move(row), type, constant);
 
     } else { // Add critical value
 
@@ -407,13 +460,13 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
 
             for (const auto& [local_critical_value, pair] : linking.critical_values) {
                 if ((long int) critical_value <= (long int) local_critical_value) {
-                    lhs += penalty * pair.first;
+                    row += penalty * pair.first;
                 }
             }
 
         }
 
-        const auto cut = m_master.add_ctr(std::move(lhs), type, rhs);
+        const auto cut = m_master.add_ctr(std::move(row), type, constant );
         t_uncertainty.add_currently_present_cut(cut, t_iterator_in_pool, penalty);
 
     }

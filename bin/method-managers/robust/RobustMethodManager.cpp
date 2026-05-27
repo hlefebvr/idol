@@ -6,6 +6,7 @@
 
 #include <fstream>
 
+#include "BBBB.h"
 #include "Convexification.h"
 #include "CCG_CV.h"
 #include "CCG_Farkas.h"
@@ -29,6 +30,7 @@ RobustMethodManager::RobustMethodManager(const Arguments& t_args) : AbstractMeth
     add<RobustMethods::ROCPP_LinearDR>();
     add<RobustMethods::ROCPP_KAdaptability>();
     add<RobustMethods::Convexification>();
+    add<RobustMethods::BBBB>();
 
 }
 

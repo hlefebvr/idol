@@ -70,6 +70,11 @@ unsigned int idol::Optimizers::Robust::Convexification::get_solution_index() con
     return m_deterministic_model->get_solution_index();
 }
 
+const idol::Model& idol::Optimizers::Robust::Convexification::deterministic_model() const {
+    throw_if_no_deterministic_model();
+    return *m_deterministic_model;
+}
+
 void idol::Optimizers::Robust::Convexification::add(const idol::Var &t_var) {
     m_deterministic_model.reset();
 }

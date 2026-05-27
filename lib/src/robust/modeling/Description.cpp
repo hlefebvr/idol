@@ -31,7 +31,13 @@ const idol::LinExpr<idol::Var> &idol::Robust::Description::uncertain_obj(const i
     return m_uncertain_obj.get(t_var);
 }
 
-std::ostream &idol::operator<<(std::ostream &t_os, const idol::Robust::Description::View &t_view) {
+const idol::LinExpr<idol::Var, idol::LinExpr<>>& idol::Robust::Description::uncertain_objs() const {
+    return m_uncertain_obj;
+}
+
+std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description::View &t_view) {
+
+    using namespace idol;
 
     LimitedWidthStream stream(t_os, 120);
     
@@ -203,7 +209,7 @@ idol::Robust::Description::View::View(const Model& t_deterministic_model, const 
 
 }
 
-std::ostream &idol::operator<<(std::ostream &t_os, const idol::Robust::Description &t_description) {
+std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description &t_description) {
 
     t_os << "@RHS\n";
 
