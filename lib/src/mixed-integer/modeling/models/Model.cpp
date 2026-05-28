@@ -112,12 +112,15 @@ void idol::Model::add(const Var &t_var) {
 
     double lb = default_version.lb();
     double ub = default_version.ub();
-    const auto type = default_version.type();
+    auto type = default_version.type();
 
     if (type != Continuous) {
         const double tol_integer = m_env.get_tol_integer();
         lb = std::ceil(lb - tol_integer);
         ub = std::floor(ub + tol_integer);
+        if (lb >= -1 + tol_integer && ub <= 2 - tol_integer) {
+            type = Binary;
+        }
         if (type == Binary) {
             lb = std::max(0., lb);
             ub = std::min(1., ub);

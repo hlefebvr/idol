@@ -96,7 +96,7 @@ public:
 
     void update_var_obj(const Var& t_var, double t_obj);
 
-    void clean_up(unsigned int t_sub_problem_id, double t_ratio, const PrimalPoint& t_master_solution);
+    void clean_up(unsigned int t_sub_problem_id, double t_ratio, const PrimalPoint& t_master_solution, bool t_keep_active_columns);
 
     void add(const Var& t_var, double t_lb, double t_ub, VarType t_type, const LinExpr<Ctr>& t_column);
 

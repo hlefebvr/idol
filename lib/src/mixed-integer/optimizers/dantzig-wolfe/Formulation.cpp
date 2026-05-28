@@ -510,7 +510,7 @@ void idol::DantzigWolfe::Formulation::update_var_obj(const idol::Var &t_var, dou
 }
 
 
-void idol::DantzigWolfe::Formulation::clean_up(unsigned int t_sub_problem_id, double t_ratio, const PrimalPoint& t_master_solution) {
+void idol::DantzigWolfe::Formulation::clean_up(unsigned int t_sub_problem_id, double t_ratio, const PrimalPoint& t_master_solution, bool t_keep_active_columns) {
 
     auto& pool = m_pools[t_sub_problem_id];
     auto& present_generators = m_present_generators[t_sub_problem_id];
@@ -540,7 +540,7 @@ void idol::DantzigWolfe::Formulation::clean_up(unsigned int t_sub_problem_id, do
 
         if (is_already_in_master) {
 
-            if (t_master_solution.get(var) > 0) {
+            if (t_keep_active_columns && t_master_solution.get(var) > 0) {
 
                 present_generators.emplace_back(var, it->second);
                 ++it;

@@ -17,7 +17,7 @@ template<class NodeT>
 class idol::NodeSet {
     using by_objective_value_t = std::multimap<double, NodeT>;
     using by_level_t = std::multimap<unsigned int, NodeT>;
-    by_objective_value_t m_by_objective_value;
+    by_objective_value_t m_by_bound;
     by_level_t m_by_level;
 public:
     class const_iterator;
@@ -25,7 +25,7 @@ public:
     using ByObjectiveValueNodes = ConstIteratorForward<by_objective_value_t, const_iterator>;
     using ByLevelNodes = ConstIteratorForward<by_level_t, const_iterator>;
 
-    [[nodiscard]] ByObjectiveValueNodes by_objective_value() const { return ByObjectiveValueNodes(m_by_objective_value); }
+    [[nodiscard]] ByObjectiveValueNodes by_objective_value() const { return ByObjectiveValueNodes(m_by_bound); }
     [[nodiscard]] ByLevelNodes by_level() const { return ByLevelNodes(m_by_level); }
 
     const_iterator emplace(NodeT t_node);
@@ -34,7 +34,7 @@ public:
 
     [[nodiscard]] bool empty() const;
 
-    [[nodiscard]] unsigned int size() const { return m_by_objective_value.size(); }
+    [[nodiscard]] unsigned int size() const { return m_by_bound.size(); }
 
     const_iterator erase(const const_iterator& t_it);
 
@@ -116,8 +116,8 @@ public:
 template<class NodeT>
 void idol::NodeSet<NodeT>::merge(NodeSet<NodeT> &&t_node_set) {
 
-    for (auto pair : t_node_set.m_by_objective_value) {
-        m_by_objective_value.emplace(std::move(pair));
+    for (auto pair : t_node_set.m_by_bound) {
+        m_by_bound.emplace(std::move(pair));
     }
 
     for (auto pair : t_node_set.m_by_level) {
@@ -130,20 +130,20 @@ void idol::NodeSet<NodeT>::merge(NodeSet<NodeT> &&t_node_set) {
 
 template<class NodeT>
 typename idol::NodeSet<NodeT>::const_iterator idol::NodeSet<NodeT>::emplace(NodeT t_node) {
-    auto it = m_by_objective_value.emplace(t_node.info().objective_value(), t_node);
+    auto it = m_by_bound.emplace(t_node.info().best_bound(), t_node);
     m_by_level.emplace(t_node.level(), t_node);
     return const_iterator(std::move(it));
 }
 
 template<class NodeT>
 void idol::NodeSet<NodeT>::clear()  {
-    m_by_objective_value.clear();
+    m_by_bound.clear();
     m_by_level.clear();
 }
 
 template<class NodeT>
 bool idol::NodeSet<NodeT>::empty() const {
-    return m_by_objective_value.empty();
+    return m_by_bound.empty();
 }
 
 template<class NodeT>
@@ -151,10 +151,10 @@ typename idol::NodeSet<NodeT>::const_iterator idol::NodeSet<NodeT>::erase(const 
     const unsigned int id = t_it->id();
 
     if (t_it.is_by_level()) {
-        const double objective_value = t_it->info().objective_value();
-        auto it = m_by_objective_value.lower_bound(objective_value);
+        const double objective_value = t_it->info().best_bound();
+        auto it = m_by_bound.lower_bound(objective_value);
         for (; it->second.id() != id ; ++it);
-        m_by_objective_value.erase(it);
+        m_by_bound.erase(it);
         return const_iterator(m_by_level.erase(t_it.m_by_level_it));
     }
 
@@ -162,7 +162,7 @@ typename idol::NodeSet<NodeT>::const_iterator idol::NodeSet<NodeT>::erase(const 
     auto it = m_by_level.lower_bound(level);
     for (; it->second.id() != id ; ++it);
     m_by_level.erase(it);
-    return const_iterator(m_by_objective_value.erase(t_it.m_by_objective_value_it));
+    return const_iterator(m_by_bound.erase(t_it.m_by_objective_value_it));
 }
 
 

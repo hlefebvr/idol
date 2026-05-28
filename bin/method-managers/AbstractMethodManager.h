@@ -70,6 +70,9 @@ std::vector<MethodT*> AbstractMethodManager<MethodT>::applicable_methods() const
             result.push_back(method.get());
         }
     }
+    std::sort(result.begin(), result.end(), [](MethodT* a, const MethodT* b) {
+        return a->score() > b->score();
+    });
     return result;
 }
 

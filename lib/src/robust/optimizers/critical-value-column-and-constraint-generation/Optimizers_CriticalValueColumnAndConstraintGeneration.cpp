@@ -10,8 +10,7 @@ idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::CriticalVa
     m_description(t_description),
     m_master_optimizer_factory(t_master_optimizer.clone()),
     m_deterministic_optimizer_factory(t_deterministic_optimizer.clone()),
-    m_use_indicator(t_use_indicator)
-{
+    m_use_indicator(t_use_indicator) {
 
 }
 
@@ -59,7 +58,9 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::analy
 
     const double objective_value = master.get_best_obj();
 
-    set_best_bound(objective_value);
+    if (m_formulation->master_provides_a_valid_bound()) {
+        set_best_bound(objective_value);
+    }
 
 }
 
@@ -108,9 +109,10 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
     const auto& master = m_formulation->master();
     const auto& master_solution = save_primal(master);
 
-    m_formulation->update_sub_problem_constraints(master_solution);
+    m_formulation->update_sub_problem_rhs(master_solution);
 
     std::list<PrimalPoint> scenarios;
+    bool is_feasible = true;
     for (const auto& uncertainty : m_formulation->uncertainties()) {
 
         m_formulation->update_sub_problem_objective(master_solution, uncertainty);
@@ -127,8 +129,9 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
             return;
         }
 
-        if (-scenario.objective_value() > get_tol_feasibility()) {
+        if (!m_formulation->master_provides_a_valid_bound() || -scenario.objective_value() > get_tol_feasibility()) {
             scenarios.emplace_back(std::move(scenario));
+            is_feasible = false;
         }
 
     }
@@ -139,6 +142,11 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
         set_best_obj(get_best_bound());
         terminate();
         return;
+    }
+
+    if (is_feasible && m_formulation->master_provides_a_valid_bound()) {
+        assert(scenarios.size() == 1);
+        set_best_obj(master_solution.get(m_formulation->epigraph_variable()) - scenarios.front().objective_value());
     }
 
     if (scenarios.size() != 1) {

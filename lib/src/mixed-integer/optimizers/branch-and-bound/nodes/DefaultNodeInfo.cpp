@@ -42,7 +42,7 @@ void idol::DefaultNodeInfo::save(const idol::Model &t_original_formulation,
     }
 
     if (status == Fail || status == SubOptimal) {
-        m_primal_solution.set_objective_value(t_original_formulation.get_best_bound());
+        m_primal_solution.set_objective_value(t_model.get_best_bound());
         m_sum_of_infeasibilities = Inf;
         return;
     }
@@ -52,6 +52,7 @@ void idol::DefaultNodeInfo::save(const idol::Model &t_original_formulation,
     }
 
     m_primal_solution = save_primal(t_original_formulation, t_model);
+    m_best_bound = t_model.get_best_bound();
 
     compute_sum_of_infeasibilities();
 

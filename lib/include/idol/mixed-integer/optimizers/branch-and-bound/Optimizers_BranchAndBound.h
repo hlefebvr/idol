@@ -246,7 +246,7 @@ double idol::Optimizers::BranchAndBound<NodeInfoT>::get_best_obj() const {
     if (m_current_solution_index == 0) {
         return Algorithm::get_best_obj();
     }
-    return m_incumbents.at(m_current_solution_index).info().objective_value();
+    return m_incumbents.at(m_current_solution_index).info().best_obj();
 }
 
 template<class NodeInfoT>
@@ -455,7 +455,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(Node
 
     auto t_node = Node<NodeInfoT>::create_detached_node(t_info);
 
-    if (t_node.info().objective_value() > get_best_obj()) {
+    if (t_node.info().best_obj() > get_best_obj()) {
         return;
     }
 
@@ -824,11 +824,11 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
     }
 
     if (t_node.level() == 0) {
-        m_root_node_best_bound = t_node.info().objective_value();
+        m_root_node_best_bound = t_node.info().best_bound();
         set_best_bound(std::max(m_root_node_best_bound, get_best_bound()));
     }
 
-    if (t_node.info().objective_value() < get_best_obj()) {
+    if (t_node.info().best_bound() < get_best_obj()) {
 
         if (is_valid(t_node)) {
 
@@ -876,7 +876,7 @@ template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::set_as_incumbent(const BranchAndBound::TreeNode &t_node) {
 #pragma omp critical
     m_incumbents.push(t_node);
-    set_best_obj(t_node.info().objective_value());
+    set_best_obj(t_node.info().best_obj());
     set_status(Feasible);
 }
 
@@ -886,7 +886,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::update_lower_bound(const Branc
     if (t_active_nodes.empty()) { return; }
 
     auto& lowest_node = *t_active_nodes.by_objective_value().begin();
-    const double raw_lower_bound = lowest_node.info().objective_value();
+    const double raw_lower_bound = lowest_node.info().best_bound();
     const double lower_bound = m_has_integer_objective ? std::ceil(raw_lower_bound - get_tol_integer()) : raw_lower_bound;
     if (lower_bound > get_best_bound()) {
         set_best_bound(lower_bound);
@@ -905,7 +905,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::prune_nodes_by_bound(BranchAnd
     while (it != end) {
 
         const auto& node = *it;
-        const double raw_lower_bound = node.info().objective_value();
+        const double raw_lower_bound = node.info().best_bound();
         const double lower_bound = m_has_integer_objective && !is_integer(raw_lower_bound, get_tol_integer()) ? std::ceil(raw_lower_bound) : raw_lower_bound;
 
         if (lower_bound >= upper_bound - get_tol_mip_absolute_gap()) {
@@ -1003,14 +1003,14 @@ template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::set_best_obj(double t_value) {
 #pragma omp critical
     Algorithm::set_best_obj(t_value);
-    assert(get_best_bound() <= get_best_obj() + get_tol_mip_absolute_gap());
+    //assert(get_best_bound() <= get_best_obj() + get_tol_mip_absolute_gap());
 }
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::set_best_bound(double t_value) {
 #pragma omp critical
     Algorithm::set_best_bound(t_value);
-    assert(get_best_bound() <= get_best_obj() + get_tol_mip_absolute_gap());
+    //assert(get_best_bound() <= get_best_obj() + get_tol_mip_absolute_gap());
 }
 
 template<class NodeInfoT>

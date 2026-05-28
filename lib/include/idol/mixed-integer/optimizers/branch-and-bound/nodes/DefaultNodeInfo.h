@@ -27,9 +27,11 @@ public:
 
     [[nodiscard]] SolutionReason reason() const { return m_primal_solution.reason(); }
 
-    [[nodiscard]] bool has_objective_value() const { return m_primal_solution.has_objective_value(); }
+    [[nodiscard]] bool has_best_obj() const { return m_primal_solution.has_objective_value(); }
 
-    [[nodiscard]] double objective_value() const { return m_primal_solution.objective_value(); }
+    [[nodiscard]] double best_obj() const { return m_primal_solution.objective_value(); }
+
+    [[nodiscard]] double best_bound() const { return m_best_bound; }
 
     [[nodiscard]] double sum_of_infeasibilities() const { return m_sum_of_infeasibilities.value(); }
 
@@ -58,6 +60,7 @@ protected:
     virtual void compute_sum_of_infeasibilities();
 private:
     PrimalPoint m_primal_solution;
+    double m_best_bound = -Inf;
     std::optional<double> m_sum_of_infeasibilities;
     std::list<VarBranchingDecision> m_variable_branching_decisions;
     std::list<CtrBranchingDecision> m_constraint_branching_decisions;

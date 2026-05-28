@@ -11,7 +11,7 @@ idol::Robust::CriticalValueColumnAndConstraintGeneration::CriticalValueColumnAnd
 }
 
 idol::Robust::CriticalValueColumnAndConstraintGeneration::CriticalValueColumnAndConstraintGeneration(const CriticalValueColumnAndConstraintGeneration& t_src)
-    : OptimizerFactoryWithDefaultParameters(*this),
+    : OptimizerFactoryWithDefaultParameters(t_src),
       m_description(t_src.m_description),
       m_master_optimizer_factory(t_src.m_master_optimizer_factory ? t_src.m_master_optimizer_factory->clone() : nullptr),
       m_deterministic_optimizer_factory(t_src.m_deterministic_optimizer_factory ? t_src.m_deterministic_optimizer_factory->clone() : nullptr),

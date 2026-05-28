@@ -173,6 +173,7 @@ void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_node_after_solve
     std::cout << std::setw(log_width_problem_abs_gap) << pretty_double(parent.get_absolute_gap(), double_precision);
 
     // Current Node
+    const auto value = t_node.id() == -1 ? t_node.info().best_obj() : t_node.info().best_bound();
     std::cout << " | ";
     std::cout << std::setw(log_width_current_node_depth) << t_node.level();
     std::cout << std::setw(log_width_current_node_status) << t_node.info().status();
@@ -182,7 +183,7 @@ void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_node_after_solve
     } else {
         std::cout << t_node.info().reason();
     }
-    std::cout << std::setw(log_width_current_node_obj) << pretty_double(t_node.info().objective_value(), double_precision);
+    std::cout << std::setw(log_width_current_node_obj) << pretty_double(value, double_precision);
     std::cout << " | ";
 
     std::cout << std::endl;
@@ -200,7 +201,7 @@ void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_root_node(const 
     const double total_time = branch_and_bound.time().count();
 
     std::cout
-            << "Root relaxation: objective " << t_node.info().objective_value()
+            << "Root relaxation: objective " << t_node.info().best_bound()
             << ", " << total_time << " seconds\n"
             << std::endl;
 

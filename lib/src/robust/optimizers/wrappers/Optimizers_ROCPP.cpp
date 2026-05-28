@@ -13,12 +13,14 @@ idol::Optimizers::Robust::ROCPP::ROCPP(const Model& t_parent,
                                        const idol::Robust::Description& t_robust_description,
                                        const Bilevel::Description& t_bilevel_description,
                                        idol::Robust::ROCPP::Approximation t_approximation,
-                                       const OptimizerFactory& t_optimizer)  :
+                                       const OptimizerFactory& t_optimizer,
+                                       unsigned int t_n_policies)  :
     Optimizer(t_parent),
     m_robust_description(t_robust_description),
     m_bilevel_description(t_bilevel_description),
     m_approximation(t_approximation),
-    m_optimizer_factory(t_optimizer.clone()) {
+    m_optimizer_factory(t_optimizer.clone()),
+    m_n_policies(t_n_policies) {
 
 }
 
@@ -97,7 +99,7 @@ bool idol::Optimizers::Robust::ROCPP::is_available() {
 
 void idol::Optimizers::Robust::ROCPP::hook_optimize() {
 
-    m_model = std::make_unique<Model>(idol::Robust::ROCPP::make_model(parent(), m_robust_description, m_bilevel_description, m_approximation));
+    m_model = std::make_unique<Model>(idol::Robust::ROCPP::make_model(parent(), m_robust_description, m_bilevel_description, m_approximation, m_n_policies));
     m_model->use(*m_optimizer_factory);
     
     // Parameters

@@ -63,6 +63,7 @@ class idol::CVCCG::Formulation {
 
     Model m_master;
     Model m_sub_problem;
+    std::optional<Var> m_epigraph_variable;
 
     // Scenarios
     std::list<GeneratedScenario> m_scenario_pool;
@@ -87,7 +88,7 @@ public:
     auto uncertainties() { return IteratorForward(m_uncertainties); }
     auto uncertainties() const { return ConstIteratorForward(m_uncertainties); }
 
-    void update_sub_problem_constraints(const PrimalPoint& t_master_solution);
+    void update_sub_problem_rhs(const PrimalPoint& t_master_solution);
     unsigned int n_uncertainties() const { return m_uncertainties.size(); }
     void update_sub_problem_objective(const PrimalPoint& t_master_solution, const Uncertainty& t_uncertainty);
     std::list<GeneratedScenario>::iterator add_scenario_to_pool(PrimalPoint&& t_scenario, PrimalPoint&& t_master_scenario);
@@ -96,6 +97,9 @@ public:
     unsigned int n_critical_values() const { return m_n_critical_values; }
     unsigned int n_scenarios_in_pool() const { return m_scenario_pool.size(); }
     double get_scenario_var_primal(const Var& t_var) const;
+
+    bool master_provides_a_valid_bound() const;
+    const Var& epigraph_variable() const { return *m_epigraph_variable; }
 };
 
 #endif //IDOL_CVCCG_FORMULATION_H

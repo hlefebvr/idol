@@ -46,6 +46,7 @@ public:
     std::string uncertainty_set_file;
     std::string uncertainty_param_file;
     bool complete_recourse = false;
+    unsigned int n_policies = -1;
 
     static Arguments parse(int t_argc, const char** t_argv);
 };

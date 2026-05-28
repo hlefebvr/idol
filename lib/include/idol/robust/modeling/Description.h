@@ -19,13 +19,13 @@ class idol::Robust::Description {
     Map<Ctr, LinExpr<Var, LinExpr<Var>>> m_uncertain_mat_coeff;
     LinExpr<Ctr, LinExpr<Var>> m_uncertain_rhs;
     LinExpr<Var, LinExpr<Var>> m_uncertain_obj;
-    std::unique_ptr<Model> m_uncertainty_set;
+    Model m_uncertainty_set;
 public:
-    explicit Description(const Model& t_uncertainty_set) : m_uncertainty_set(t_uncertainty_set.clone()) {}
+    explicit Description(const Model& t_uncertainty_set) : m_uncertainty_set(t_uncertainty_set.copy()) {}
 
     Description(Description&&) = default;
 
-    [[nodiscard]] const Model& uncertainty_set() const { return *m_uncertainty_set; }
+    [[nodiscard]] const Model& uncertainty_set() const { return m_uncertainty_set; }
 
     [[nodiscard]] auto uncertain_mat_coeffs() const { return ConstIteratorForward(m_uncertain_mat_coeff); }
 
@@ -40,6 +40,8 @@ public:
     [[nodiscard]] const LinExpr<Var>& uncertain_rhs(const Ctr& t_ctr) const;
 
     [[nodiscard]] const LinExpr<Var>& uncertain_obj(const Var& t_var) const;
+
+    [[nodiscard]] const LinExpr<Var, LinExpr<Var>>& uncertain_objs() const;
 
     void set_uncertain_mat_coeff(const Ctr& t_ctr, const Var& t_var, const LinExpr<Var>& t_coeff) {
         m_uncertain_mat_coeff[t_ctr].set(t_var, t_coeff);
@@ -73,11 +75,7 @@ public:
     };
 };
 
-namespace idol {
-
-    std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description::View &t_view);
-    std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description &t_description);
-
-}
+std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description::View &t_view);
+std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description &t_description);
 
 #endif //IDOL_DESCRIPTION_H
