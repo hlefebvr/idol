@@ -28,7 +28,7 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
 
     void initialize_sub_problem_phases();
     void solve_dual_master();
-    bool gap_is_closed() const;
+    [[nodiscard]] bool gap_is_closed() const;
     bool check_stopping_criterion();
     void update_sub_problems();
     void solve_sub_problems_in_parallel();
@@ -43,19 +43,19 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
 public:
     ColumnGeneration(DantzigWolfeDecomposition& t_parent, bool t_use_farkas_for_infeasibility, double t_best_bound_stop);
 
-    const DantzigWolfeDecomposition& parent() const { return m_parent; }
+    [[nodiscard]] const DantzigWolfeDecomposition& parent() const { return m_parent; }
 
     DantzigWolfeDecomposition& parent() { return m_parent; }
 
-    SolutionStatus status() const { return m_status; }
+    [[nodiscard]] SolutionStatus status() const { return m_status; }
 
-    SolutionReason reason() const { return m_reason; }
+    [[nodiscard]] SolutionReason reason() const { return m_reason; }
 
-    double best_obj() const { return m_best_obj; }
+    [[nodiscard]] double best_obj() const { return m_best_obj; }
 
-    double best_bound() const { return m_best_bound; }
+    [[nodiscard]] double best_bound() const { return m_best_bound; }
 
-    const PrimalPoint& primal_solution() const { return m_master_primal_solution.value(); }
+    [[nodiscard]] const PrimalPoint& primal_solution() const { return m_master_primal_solution.value(); }
 
     void set_best_bound_stop(double t_best_bound_stop) { m_best_bound_stop = t_best_bound_stop; }
 

@@ -26,6 +26,9 @@ class idol::DantzigWolfe::Formulation {
     std::vector<GeneratorPool<Var>> m_pools;
     std::vector<PresentGeneratorsList> m_present_generators;
 
+    std::optional<std::vector<AffExpr<Var, AffExpr<Ctr>>>> m_generation_patterns_transposed;
+    bool m_generation_patterns_transposed_is_farkas = false;
+
     Map<Var, Ctr> m_soft_branching_lower_bound_constraints;
     Map<Var, Ctr> m_soft_branching_upper_bound_constraints;
 
@@ -96,7 +99,7 @@ public:
 
     void update_var_obj(const Var& t_var, double t_obj);
 
-    void clean_up(unsigned int t_sub_problem_id, double t_ratio, const PrimalPoint& t_master_solution);
+    void clean_up(unsigned int t_sub_problem_id, double t_ratio, const PrimalPoint& t_master_solution, bool t_keep_active_columns);
 
     void add(const Var& t_var, double t_lb, double t_ub, VarType t_type, const LinExpr<Ctr>& t_column);
 
@@ -111,6 +114,8 @@ public:
     void load_columns_from_pool();
 
     void add_sub_problem();
+
+    void prepare_sub_problem_update(bool t_use_farkas);
 };
 
 #endif //IDOL_FORMULATION_H

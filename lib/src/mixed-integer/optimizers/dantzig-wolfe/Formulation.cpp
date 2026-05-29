@@ -7,6 +7,7 @@
 #include "idol/mixed-integer/modeling/objects/Env.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 
 idol::DantzigWolfe::Formulation::Formulation(const idol::Model &t_original_formulation,
                                              const idol::Annotation<unsigned int>& t_decomposition)
@@ -189,6 +190,7 @@ void idol::DantzigWolfe::Formulation::dispatch_linking_constraint(const idol::Ct
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
         m_generation_patterns[i].linear().set(t_original_ctr, std::move(sub_problem_parts[i]));
+        m_generation_patterns_transposed.reset();
     }
 
 }
@@ -233,6 +235,7 @@ void idol::DantzigWolfe::Formulation::dispatch_objective_function(const idol::Mo
 
     for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
         m_generation_patterns[i].constant() += std::move(sub_problem_parts[i]);
+        m_generation_patterns_transposed.reset();
     }
 
 }
@@ -269,6 +272,7 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
         Ctr lower(env, GreaterOrEqual, t_lower_multiplicity);
         m_master.add(lower);
         m_generation_patterns[t_sub_problem_id].linear().set(lower, 1);
+        m_generation_patterns_transposed.reset();
 
     }
 
@@ -277,6 +281,7 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
         Ctr upper(env, LessOrEqual, t_upper_multiplicity);
         m_master.add(upper);
         m_generation_patterns[t_sub_problem_id].linear().set(upper, 1);
+        m_generation_patterns_transposed.reset();
 
     }
 
@@ -324,12 +329,29 @@ idol::AffExpr<idol::Var>
 idol::DantzigWolfe::Formulation::compute_sub_problem_objective(unsigned int t_sub_problem_id,
                                                                const idol::DualPoint &t_master_dual,
                                                                bool t_use_farkas) const {
+
+    const auto& pattern = m_generation_patterns_transposed->at(t_sub_problem_id);
+
+    auto& timer_const = m_original_formulation.optimizer().as<idol::Optimizers::DantzigWolfeDecomposition>().other_timers()[0];
+    auto& timer = const_cast<Timer&>(timer_const);
+    timer.start();
+    AffExpr result;
+    result += pattern.constant().constant();
+    for (const auto& [ctr, coeff] : pattern.constant().linear()) {
+        result -= coeff * t_master_dual.get(ctr);
+    }
+    for (const auto& [var, coeff] : pattern.linear()) {
+        result -= evaluate(coeff, t_master_dual) * var;
+    }
+    timer.stop();
+
+     return result;
+
+    /*
     AffExpr<Var> objective;
 
-    const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
-
     for (const auto &[ctr, constant] : generation_pattern.linear()) {
-        objective += constant * -t_master_dual.get(ctr);
+        objective += -t_master_dual.get(ctr) * constant;
     }
 
     if (!t_use_farkas) {
@@ -337,13 +359,14 @@ idol::DantzigWolfe::Formulation::compute_sub_problem_objective(unsigned int t_su
     }
 
     return objective;
+    */
 }
 
 void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int t_sub_problem_id,
                                                                    const idol::DualPoint &t_master_dual,
                                                                    bool t_use_farkas) {
 
-    auto objective = compute_sub_problem_objective(t_sub_problem_id, t_master_dual, t_use_farkas);
+    auto&& objective = compute_sub_problem_objective(t_sub_problem_id, t_master_dual, t_use_farkas);
 
     m_sub_problems[t_sub_problem_id].set_obj_expr(std::move(objective));
 }
@@ -435,8 +458,9 @@ void idol::DantzigWolfe::Formulation::apply_sub_problem_bound_on_master(bool t_i
 
         Ctr bound_constraint(m_master.env(), Equal, 0);
 
-        m_master.add(bound_constraint, TempCtr(LinExpr(expanded), type, t_value));
+        m_master.add(bound_constraint, TempCtr(LinExpr(std::move(expanded)), type, t_value));
         m_generation_patterns[t_sub_problem_id].linear().set(bound_constraint, t_var);
+        m_generation_patterns_transposed.reset();
 
         applied_bounds.emplace(t_var, bound_constraint);
 
@@ -492,6 +516,7 @@ void idol::DantzigWolfe::Formulation::update_obj(const idol::QuadExpr<idol::Var>
         }
 
         m_generation_patterns[i].constant() = std::move(sub_problem_parts[i]);
+        m_generation_patterns_transposed.reset();
 
     }
 }
@@ -510,7 +535,7 @@ void idol::DantzigWolfe::Formulation::update_var_obj(const idol::Var &t_var, dou
 }
 
 
-void idol::DantzigWolfe::Formulation::clean_up(unsigned int t_sub_problem_id, double t_ratio, const PrimalPoint& t_master_solution) {
+void idol::DantzigWolfe::Formulation::clean_up(unsigned int t_sub_problem_id, double t_ratio, const PrimalPoint& t_master_solution, bool t_keep_active_columns) {
 
     auto& pool = m_pools[t_sub_problem_id];
     auto& present_generators = m_present_generators[t_sub_problem_id];
@@ -540,7 +565,7 @@ void idol::DantzigWolfe::Formulation::clean_up(unsigned int t_sub_problem_id, do
 
         if (is_already_in_master) {
 
-            if (t_master_solution.get(var) > 0) {
+            if (t_keep_active_columns && t_master_solution.get(var) > 0) {
 
                 present_generators.emplace_back(var, it->second);
                 ++it;
@@ -610,6 +635,7 @@ void idol::DantzigWolfe::Formulation::add(const idol::Ctr &t_ctr, idol::CtrType 
             master_part += evaluate(sub_problem_parts[i], generator) * var; // Adds exising generator to constraint
         }
         m_generation_patterns[i].linear().set(t_ctr, std::move(sub_problem_parts[i]));
+        m_generation_patterns_transposed.reset();
     }
 
     m_master.add(t_ctr, TempCtr(std::move(master_part), t_type, t_rhs));
@@ -622,6 +648,7 @@ void idol::DantzigWolfe::Formulation::remove(const idol::Var &t_var) {
 
     if (sub_problem_id != MasterId) {
         m_generation_patterns[sub_problem_id].constant().linear().remove(t_var);
+        m_generation_patterns_transposed.reset();
         m_sub_problems[sub_problem_id].remove(t_var);
         return;
     }
@@ -639,12 +666,14 @@ void idol::DantzigWolfe::Formulation::remove(const idol::Ctr &t_ctr) {
         const unsigned int n_sub_problems = m_sub_problems.size();
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
             m_generation_patterns[i].linear().remove(t_ctr);
+            m_generation_patterns_transposed.reset();
         }
         return;
     }
 
     m_sub_problems[sub_problem_id].remove(t_ctr);
     m_generation_patterns[sub_problem_id].linear().remove(t_ctr);
+    m_generation_patterns_transposed.reset();
 
 }
 
@@ -724,6 +753,43 @@ idol::DantzigWolfe::Formulation::is_feasible(const idol::PrimalPoint &t_primal, 
     }
 
     return true;
+}
+
+void idol::DantzigWolfe::Formulation::prepare_sub_problem_update(bool t_use_farkas) {
+
+    if (m_generation_patterns_transposed_is_farkas != t_use_farkas) {
+        m_generation_patterns_transposed_is_farkas = t_use_farkas;
+        m_generation_patterns_transposed.reset();
+    }
+
+    if (m_generation_patterns_transposed.has_value()) {
+        return;
+    }
+
+    const auto n_sub_problems = this->n_sub_problems();
+    m_generation_patterns_transposed->resize(n_sub_problems);
+
+    AffExpr<Var, AffExpr<Ctr>> pattern;
+    for (unsigned int sub_problem_id = 0 ; sub_problem_id < n_sub_problems ; ++sub_problem_id) {
+
+        const auto& generation_pattern = m_generation_patterns[sub_problem_id];
+
+        for (const auto &[ctr, constant] : generation_pattern.linear()) {
+            pattern.constant() += constant.constant() * ctr;
+            for (const auto& [var, coeff] : constant.linear()) {
+                pattern.linear().set(var, pattern.linear().get(var) + coeff * ctr);
+            }
+        }
+        if (!t_use_farkas) {
+            pattern.constant().constant() += generation_pattern.constant().constant();
+            for (const auto& [var, coeff] : generation_pattern.constant().linear()) {
+                pattern.linear().set(var, pattern.linear().get(var) + coeff);
+            }
+        }
+
+        m_generation_patterns_transposed->at(sub_problem_id) = std::move(pattern);
+        pattern.clear();
+    }
 }
 
 void idol::DantzigWolfe::Formulation::add_sub_problem() {

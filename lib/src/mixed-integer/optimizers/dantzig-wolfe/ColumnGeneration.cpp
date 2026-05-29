@@ -8,8 +8,7 @@ idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::ColumnGeneration(
                                                                                 double t_best_bound_stop)
         : m_parent(t_parent),
           m_use_farkas_for_infeasibility(t_use_farkas_for_infeasibility),
-          m_best_bound_stop(t_best_bound_stop)
-{
+          m_best_bound_stop(t_best_bound_stop) {
 
 }
 
@@ -44,7 +43,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
 
         if (check_stopping_criterion()) { break; }
 
+        //m_parent.m_other_timers[0].start();
         update_sub_problems();
+        //m_parent.m_other_timers[0].stop();
 
         solve_sub_problems_in_parallel();
 
@@ -54,9 +55,13 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
 
         if (check_stopping_criterion()) { break; }
 
+        m_parent.m_other_timers[1].start();
         pool_clean_up();
+        m_parent.m_other_timers[1].stop();
 
+        m_parent.m_other_timers[2].start();
         enrich_master();
+        m_parent.m_other_timers[2].stop();
 
     }
 
@@ -67,14 +72,15 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     log_master();
 
     log_end();
-
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_master() {
 
     auto& master = m_parent.m_formulation.master();
 
+    m_parent.m_master_timer.start();
     master.optimize();
+    m_parent.m_master_timer.stop();
 
     const bool save_dual_solution = m_iteration_count < parent().get_param_iteration_limit();
 
@@ -120,8 +126,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::update_sub_problems() {
 
     auto& formulation = m_parent.m_formulation;
-    auto dual_values = m_current_iteration_is_using_farkas ? m_last_master_solution.value() : m_parent.m_stabilization->compute_smoothed_dual_solution(m_last_master_solution.value());
+    const auto& dual_values = m_current_iteration_is_using_farkas ? m_last_master_solution.value() : m_parent.m_stabilization->compute_smoothed_dual_solution(m_last_master_solution.value());
 
+    formulation.prepare_sub_problem_update(m_current_iteration_is_using_farkas);
     for (unsigned int i = 0, n = formulation.n_sub_problems() ; i < n ; ++i) {
         formulation.update_sub_problem_objective(i, dual_values, m_current_iteration_is_using_farkas);
     }
@@ -132,11 +139,13 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_sub_pr
 
     const unsigned int n_threads = std::min(m_parent.get_param_thread_limit(), m_parent.m_max_parallel_pricing);
 
+    m_parent.m_pricing_timer.start();
     #pragma omp parallel for num_threads(n_threads) default(none)
     for (auto& sub_problem : m_parent.m_formulation.sub_problems()) {
         sub_problem.optimizer().set_param_time_limit(m_parent.get_remaining_time());
         sub_problem.optimize();
     }
+    m_parent.m_pricing_timer.stop();
 
 }
 
@@ -345,7 +354,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_u
         for (const auto& [var, generator] : formulation.present_generators(i)) {
             if (last_generator) {
                 if (equals(generator.objective_value(), last_generator->objective_value(), m_parent.get_tol_optimality())) {
-                    if ((*last_generator - generator).is_zero(m_parent.get_tol_feasibility())) {
+                    if (((const SparseVector<Var, double>&) *last_generator - (const SparseVector<Var, double>&) generator).is_zero(m_parent.get_tol_feasibility())) {
                         ++n_times_the_same;
                     }
                 } else {
@@ -362,7 +371,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_u
     if (is_stuck) {
         std::cout << "Warning: Column generation got stuck due to numerical trouble, cleaning column pool and restarting..." << std::endl;
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-            formulation.clean_up(i, .0, get_master_primal());
+            formulation.clean_up(i, .0, get_master_primal(), false);
         }
     } else {
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
@@ -371,7 +380,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_u
             const unsigned int threshold = sub_problem_specifications.column_pool_clean_up_threshold();
             if (column_pool.size() >= threshold) {
                 const double ratio = sub_problem_specifications.column_pool_clean_up_ratio();
-                formulation.clean_up(i, ratio, get_master_primal());
+                formulation.clean_up(i, ratio, get_master_primal(), true);
             }
         }
     }

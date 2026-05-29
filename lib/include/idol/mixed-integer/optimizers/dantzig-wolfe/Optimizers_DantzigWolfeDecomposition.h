@@ -28,6 +28,10 @@ class idol::Optimizers::DantzigWolfeDecomposition : public Algorithm {
     unsigned int m_max_parallel_pricing;
     bool m_use_hard_branching;
     bool m_remove_infeasible_columns;
+
+    Timer m_master_timer;
+    Timer m_pricing_timer;
+    std::array<Timer, 3> m_other_timers;
 public:
     DantzigWolfeDecomposition(const Model& t_model,
                               idol::DantzigWolfe::Formulation&& t_formulation,
@@ -48,6 +52,12 @@ public:
     DantzigWolfe::Formulation& formulation() { return m_formulation; }
 
     void set_master_optimizer_factory(const OptimizerFactory& t_factory);
+
+    const Timer& master_timer() const { return m_master_timer; }
+
+    const Timer& pricing_timer() const { return m_pricing_timer; }
+
+    const auto& other_timers() const { return m_other_timers; }
 
     class ColumnGeneration;
 protected:
