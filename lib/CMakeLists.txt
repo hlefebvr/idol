@@ -320,6 +320,7 @@ add_library(idol STATIC
 )
 
 target_link_libraries(idol PRIVATE dl)
+target_compile_options(idol PRIVATE -O3)
 
 if (APPLE)
     message("Apple detected, OpenMP will not be used.")
