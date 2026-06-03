@@ -13,7 +13,7 @@
 
 using namespace idol;
 
-int main(int t_argc, const char** t_argv) {
+void create_rspp_small_model(Env& env, Model& model){
 
     const unsigned int nb_arcs = 6;
     const std::vector<std::string> vertices{"s", "A", "B", "t"};
@@ -21,9 +21,6 @@ int main(int t_argc, const char** t_argv) {
     const std::vector<double> costs{2., 3., 2., 2., 1., 1.};
     const std::vector<double> resources{4., 2., 3., 2., 2., 2.};
     const double capacity = 6.;
-
-    Env env;
-    Model model(env);
 
     const auto& x = model.add_vars(Dim<1>(nb_arcs), 0, 1, idol::VarType::Binary, 0., "x");
 
@@ -52,19 +49,101 @@ int main(int t_argc, const char** t_argv) {
 
     model.set_obj_expr(idol_Sum(k, Range(nb_arcs), costs[k] * x[k]));
 
-    std::cout <<  "Direct MILP example" << std::endl;
+    model.dump();
+}
 
-    Model direct_model(model.copy());
+void create_rspp_big_model(Env& env, Model& model){
 
-    direct_model.dump();
+    const std::vector<std::string> vertices = {
+        "s",
+        "A1","A2","A3",
+        "B1","B2","B3",
+        "C1","C2","C3",
+        "t"
+    };
 
-    direct_model.use(GLPK());
+    std::vector<std::pair<std::string,std::string>> arcs {
+        {"s", "A1"}, {"s", "A2"}, {"s", "A3"},
+        {"s", "B1"}, {"s", "B2"}, {"s", "B3"},
 
-    direct_model.optimize();
-    
+        {"A1", "B1"}, {"A1", "B2"}, {"A1", "B3"},
+        {"A2", "B1"}, {"A2", "B2"}, {"A2", "B3"},
+        {"A3", "B1"}, {"A3", "B2"}, {"A2", "B3"},
+
+        {"B1", "C1"}, {"B1", "C2"}, {"B1", "C3"},
+        {"B2", "C1"}, {"B2", "C2"}, {"B2", "C3"},
+        {"B3", "C1"}, {"B3", "C2"}, {"B2", "C3"},
+
+        {"C1", "t"}, {"C2", "t"}, {"C3", "t"}
+    };
+
+    std::vector<double> costs {
+        2, 3, 1, 
+        2, 3, 1,
+
+        2, 1, 2, 
+        1, 2, 1, 
+        2, 1, 2,
+
+        2, 1, 2, 
+        1, 2, 1, 
+        2, 1, 2,
+
+        2, 3, 1
+    };
+
+    std::vector<double> resources {
+        3, 4, 5, 
+        2, 3, 4,
+
+        1, 2, 3, 
+        2, 3, 1, 
+        3, 1, 2,
+
+        1, 2, 3, 
+        2, 3, 1, 
+        3, 1, 2,
+
+        5, 2, 3
+    };
+
+    const double capacity = 10.;
+
+    const auto& x = model.add_vars(Dim<1>(arcs.size()), 0, 1, idol::VarType::Binary, 0., "x");
+
+    for(const auto& i : vertices){
+        LinExpr expr;
+        for(unsigned int k = 0; k < arcs.size() ; ++k){
+            if(arcs[k].first == i){
+                expr += x[k];
+            }
+            else if(arcs[k].second == i){
+                expr -= x[k];
+            }
+        }
+        if(i == "s"){
+            model.add_ctr(expr == 1, "flow_out_" + i);
+        }
+        else if(i == "t"){
+            model.add_ctr(expr == -1, "flow_in_" + i);
+        }
+        else{
+            model.add_ctr(expr == 0, "flow_null_" + i);
+        }
+    }
+
+    model.add_ctr(idol_Sum(k, Range(arcs.size()), resources[k] * x[k]) <= capacity, "resource");
+
+    model.set_obj_expr(idol_Sum(k, Range(arcs.size()), costs[k] * x[k]));
+
+    model.dump();
+}
+
+void print_solution_status(Model& model){
+
     // Analyze the solution status
-    const auto status = direct_model.get_status();
-    const auto reason = direct_model.get_reason();
+    const auto status = model.get_status();
+    const auto reason = model.get_reason();
  
     std::cout << "Solution status: " << status << std::endl;
     std::cout << "Reason: " << reason << std::endl;
@@ -72,18 +151,32 @@ int main(int t_argc, const char** t_argv) {
     if (status == Optimal || status == Feasible) {
  
         // Get the number of solutions in the solution pool
-        const auto n_solutions = direct_model.get_n_solutions();
+        const auto n_solutions = model.get_n_solutions();
  
         std::cout << "Number of solutions: " << n_solutions << std::endl;
  
         // Print all solutions in the pool
         for (unsigned int i = 0 ; i < n_solutions ; ++i) {
-            direct_model.set_solution_index(i);
+            model.set_solution_index(i);
             std::cout << "Solution " << i << std::endl;
-            std::cout << save_primal(direct_model) << std::endl;
+            std::cout << save_primal(model) << std::endl;
         }
- 
     }
+}
+
+void direct_solve(Model& model){
+
+    std::cout <<  "Direct MILP example" << std::endl;
+
+    Model direct_model(model.copy());
+
+    direct_model.use(GLPK());
+    direct_model.optimize();
+    
+    print_solution_status(direct_model);
+}
+
+void branch_and_price_solve(Env& env, Model& model){
 
     std::cout <<  "Branch-and-Price reformulation" << std::endl;
 
@@ -122,30 +215,36 @@ int main(int t_argc, const char** t_argv) {
     bap_model.use(branch_and_price);
 
     bap_model.optimize();
-    
-    // Analyze the solution status
-    const auto bap_status = bap_model.get_status();
-    const auto bap_reason = bap_model.get_reason();
- 
-    std::cout << "Solution status: " << bap_status << std::endl;
-    std::cout << "Reason: " << bap_reason << std::endl;
- 
-    if (bap_status == Optimal || bap_status == Feasible) {
- 
-        // Get the number of solutions in the solution pool
-        const auto n_solutions = bap_model.get_n_solutions();
- 
-        std::cout << "Number of solutions: " << n_solutions << std::endl;
- 
-        // Print all solutions in the pool
-        for (unsigned int i = 0 ; i < n_solutions ; ++i) {
-            bap_model.set_solution_index(i);
-            std::cout << "Solution " << i << std::endl;
-            std::cout << save_primal(bap_model) << std::endl;
-        }
- 
+
+    print_solution_status(bap_model); 
+}
+
+int main(int t_argc, const char** t_argv) {
+
+    if (t_argc != 3) {
+        std::cerr << "Usage: " << t_argv[0] << " [direct/bap]\n";
+        return 1;
+    }
+
+    std::string model_size = t_argv[1];
+    Env env;
+    auto model = Model(env);
+
+    if (model_size == "small"){
+        create_rspp_small_model(env, model);
+    }
+    else if (model_size == "big"){
+        create_rspp_big_model(env, model);
     }
 
 
+    std::string mode = t_argv[2];
+    if (mode == "direct"){
+        direct_solve(model);
+    }
+    else if (mode == "bap"){
+        branch_and_price_solve(env, model);
+    }
+    
     return 0;
 }
