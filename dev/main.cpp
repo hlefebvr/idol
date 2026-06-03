@@ -5,11 +5,15 @@
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 
 using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
-    std::cout <<  "CMA" << std::endl;
 
     const unsigned int nb_arcs = 6;
     const std::vector<std::string> vertices{"s", "A", "B", "t"};
@@ -34,28 +38,33 @@ int main(int t_argc, const char** t_argv) {
             }
         }
         if(i == "s"){
-            model.add_ctr(expr == 1);
+            model.add_ctr(expr == 1, "flow_out_" + i);
         }
         else if(i == "t"){
-            model.add_ctr(expr == -1);
+            model.add_ctr(expr == -1, "flow_in_" + i);
         }
         else{
-            model.add_ctr(expr == 0);
+            model.add_ctr(expr == 0, "flow_null_" + i);
         }
     }
-    model.add_ctr(idol_Sum(k, Range(nb_arcs), resources[k] * x[k]) <= capacity);
+
+    model.add_ctr(idol_Sum(k, Range(nb_arcs), resources[k] * x[k]) <= capacity, "resource");
 
     model.set_obj_expr(idol_Sum(k, Range(nb_arcs), costs[k] * x[k]));
 
-    model.dump();
+    std::cout <<  "Direct MILP example" << std::endl;
 
-    model.use(GLPK());
+    Model direct_model(model.copy());
 
-    model.optimize();
+    direct_model.dump();
+
+    direct_model.use(GLPK());
+
+    direct_model.optimize();
     
     // Analyze the solution status
-    const auto status = model.get_status();
-    const auto reason = model.get_reason();
+    const auto status = direct_model.get_status();
+    const auto reason = direct_model.get_reason();
  
     std::cout << "Solution status: " << status << std::endl;
     std::cout << "Reason: " << reason << std::endl;
@@ -63,18 +72,80 @@ int main(int t_argc, const char** t_argv) {
     if (status == Optimal || status == Feasible) {
  
         // Get the number of solutions in the solution pool
-        const auto n_solutions = model.get_n_solutions();
+        const auto n_solutions = direct_model.get_n_solutions();
  
         std::cout << "Number of solutions: " << n_solutions << std::endl;
  
         // Print all solutions in the pool
         for (unsigned int i = 0 ; i < n_solutions ; ++i) {
-            model.set_solution_index(i);
+            direct_model.set_solution_index(i);
             std::cout << "Solution " << i << std::endl;
-            std::cout << save_primal(model) << std::endl;
+            std::cout << save_primal(direct_model) << std::endl;
         }
  
     }
+
+    std::cout <<  "Branch-and-Price reformulation" << std::endl;
+
+    Model bap_model(model.copy());
+
+    std::cout << MasterId << std::endl;
+    Annotation decomposition(env, "decomposition", MasterId);
+
+    for(const auto& ctr : bap_model.ctrs()){
+        if(ctr.name().rfind("flow_", 0) == 0){
+            ctr.set(decomposition, 0);
+        }
+    }
+    for(const auto& ctr : bap_model.ctrs()) {
+        std::cout
+            << ctr.name()
+            << " -> "
+            << ctr.get(decomposition)
+            << std::endl;
+    }
+    auto column_generation = DantzigWolfeDecomposition(decomposition);
+    column_generation.with_master_optimizer(GLPK::ContinuousRelaxation());
+    const auto subproblem_specifications = DantzigWolfe::SubProblem().add_optimizer(GLPK());
+    column_generation.with_default_sub_problem_spec(subproblem_specifications);
+    column_generation.with_infeasibility_strategy(DantzigWolfe::FarkasPricing());
+    column_generation.with_hard_branching(false);
+    column_generation.with_logs(true);
+
+    auto branch_and_bound = BranchAndBound();
+    branch_and_bound.with_branching_rule(MostInfeasible());
+    branch_and_bound.with_node_selection_rule(BestBound());
+    branch_and_bound.with_logs(true);
+
+    const auto branch_and_price = branch_and_bound + column_generation;
+
+    bap_model.use(branch_and_price);
+
+    bap_model.optimize();
+    
+    // Analyze the solution status
+    const auto bap_status = bap_model.get_status();
+    const auto bap_reason = bap_model.get_reason();
+ 
+    std::cout << "Solution status: " << bap_status << std::endl;
+    std::cout << "Reason: " << bap_reason << std::endl;
+ 
+    if (bap_status == Optimal || bap_status == Feasible) {
+ 
+        // Get the number of solutions in the solution pool
+        const auto n_solutions = bap_model.get_n_solutions();
+ 
+        std::cout << "Number of solutions: " << n_solutions << std::endl;
+ 
+        // Print all solutions in the pool
+        for (unsigned int i = 0 ; i < n_solutions ; ++i) {
+            bap_model.set_solution_index(i);
+            std::cout << "Solution " << i << std::endl;
+            std::cout << save_primal(bap_model) << std::endl;
+        }
+ 
+    }
+
 
     return 0;
 }
