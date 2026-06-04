@@ -19,7 +19,13 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::hook_
     if (!m_formulation) {
         m_formulation = std::make_unique<CVCCG::Formulation>(*this);
     } else {
-        m_formulation->load_column_from_pool();
+        m_formulation->load_cut_from_pool();
+    }
+
+    if (get_param_logs()) {
+        if (m_formulation->uses_indicator()) {
+            std::cout << "Using indicator functions." << std::endl;
+        }
     }
 
     log_banner();
@@ -133,7 +139,14 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
             return;
         }
 
-        if (!m_formulation->master_provides_a_valid_bound() || -scenario.objective_value() > get_tol_feasibility()) {
+        if (!uncertainty.is_constraint()) {
+            const double LB = get_best_bound();
+            const double UB = LB - scenario.objective_value();
+            if (relative_gap(LB, UB) > get_tol_mip_absolute_gap() && absolute_gap(LB, UB) > get_tol_mip_absolute_gap()) {
+                scenarios.emplace_back(std::move(scenario));
+                is_feasible = false;
+            }
+        } else if (!m_formulation->master_provides_a_valid_bound() || -scenario.objective_value() > get_tol_feasibility()) {
             scenarios.emplace_back(std::move(scenario));
             is_feasible = false;
         }

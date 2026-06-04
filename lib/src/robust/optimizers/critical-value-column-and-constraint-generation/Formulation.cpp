@@ -26,7 +26,7 @@ void idol::CVCCG::Formulation::check_assumptions() {
     const auto& uncertainty_set = description.uncertainty_set();
 
     // Check that all linking variables are binary
-    // and checks if has linking variabes
+    // and checks if has linking variables
     for (const auto& var : uncertainty_set.vars()) {
 
         const bool is_linking = model.has(var);
@@ -328,7 +328,7 @@ void idol::CVCCG::Formulation::set_unc_var_ub(const Var& t_var, double t_ub) {
     }
 }
 
-void idol::CVCCG::Formulation::load_column_from_pool() {
+void idol::CVCCG::Formulation::load_cut_from_pool() {
 
     const auto tol_feasibility = m_parent.get_tol_feasibility();
     for (auto it = m_scenario_pool.begin(), end = m_scenario_pool.end(); it != end; ++it) {
@@ -541,7 +541,7 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
         row -= *m_epigraph_variable;
     }
 
-    if (m_linking_variables.empty() || m_parent.use_indicator()) { // Add indicator
+    if (uses_indicator()) { // Add indicator
 
         for (const auto& var : m_linking_variables) {
             const double val = master_solution.get(var);
@@ -571,4 +571,9 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
 
     }
 
+}
+
+
+bool idol::CVCCG::Formulation::uses_indicator() const {
+    return m_linking_variables.empty() || m_parent.use_indicator() || !m_all_data_in_linking_constraints_is_integer;
 }

@@ -92,16 +92,38 @@ void idol::Optimizers::Robust::MaxMinRelaxation::update_var_ub(const Var& t_var)
 void idol::Optimizers::Robust::MaxMinRelaxation::build_model() {
 
     assert(m_description.uncertain_mat_coeffs().size() == 0);
-    assert(m_description.uncertain_rhs().empty());
 
     const auto& original_model = parent();
+    const auto& original_uncertainty_set = m_description.uncertainty_set();
 
     Model hpr = m_description.uncertainty_set().copy();
+    hpr.unuse();
     hpr.set_obj_sense(Minimize);
 
     Model uncertainty_set = original_model.copy();
+    uncertainty_set.unuse();
     uncertainty_set.set_obj_expr(0.);
     uncertainty_set.set_obj_sense(Minimize);
+
+    // Add all original uncertain parameters (in case of constraint uncertainty)
+    for (const auto& unc_var : original_uncertainty_set.vars()) {
+        const double lb = original_uncertainty_set.get_var_lb(unc_var);
+        const double ub = original_uncertainty_set.get_var_ub(unc_var);
+        const auto type = original_uncertainty_set.get_var_type(unc_var);
+        uncertainty_set.add(unc_var, TempVar(lb, ub, type, 0, LinExpr<Ctr>()));
+    }
+
+    // Add decision-dependent uncertainty set
+    for (const auto& [ctr, unc_coeff] : m_description.uncertain_rhs()) {
+        uncertainty_set.set_ctr_row(ctr, uncertainty_set.get_ctr_row(ctr) - unc_coeff);
+    }
+
+    // Remove original uncertain parameters if not used
+    for (const auto& unc_var : original_uncertainty_set.vars()) {
+        if (uncertainty_set.get_var_column(unc_var).empty()) {
+            uncertainty_set.remove(unc_var);
+        }
+    }
 
     idol::Robust::Description description(uncertainty_set);
     const auto one = hpr.add_var(1, 1, Continuous, -original_model.get_obj_expr().affine().constant(), "__one");
@@ -113,7 +135,6 @@ void idol::Optimizers::Robust::MaxMinRelaxation::build_model() {
             description.set_uncertain_obj(unc_var, description.uncertain_obj(unc_var) - coeff * var);
         }
     }
-
     //std::cout << idol::Robust::Description::View(original_model, m_description) << std::endl;
     //std::cout << idol::Robust::Description::View(hpr, description) << std::endl;
 

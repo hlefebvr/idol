@@ -107,7 +107,9 @@ public:
     void remove_cut_if(Uncertainty& t_uncertainty, const std::function<bool(const Ctr&, const PrimalPoint&)>& t_indicator);
     void set_unc_var_lb(const Var& t_var, double t_lb);
     void set_unc_var_ub(const Var& t_var, double t_ub);
-    void load_column_from_pool();
+    void load_cut_from_pool();
+
+    bool uses_indicator() const;
 };
 
 #endif //IDOL_CVCCG_FORMULATION_H
