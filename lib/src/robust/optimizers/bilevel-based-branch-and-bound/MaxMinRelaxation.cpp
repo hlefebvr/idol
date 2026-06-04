@@ -3,6 +3,8 @@
 //
 #include <idol/robust/optimizers/bilevel-based-branch-and-bound/MaxMinRelaxation.h>
 
+#include "idol/robust/optimizers/bilevel-based-branch-and-bound/Optimizers_MaxMinRelaxation.h"
+
 idol::Robust::MaxMinRelaxation::MaxMinRelaxation(const Robust::Description& t_description, const Bilevel::Description& t_bilevel_description) :
     m_description(t_description),
     m_bilevel_description(t_bilevel_description) {
@@ -11,8 +13,24 @@ idol::Robust::MaxMinRelaxation::MaxMinRelaxation(const Robust::Description& t_de
 
 idol::Optimizer* idol::Robust::MaxMinRelaxation::create(const Model& t_model) const {
 
-    throw Exception("Not implemented yet!");
+    if (!m_master_optimizer_factory) {
+        throw Exception("No optimizer for solving the master problem was configured.");
+    }
 
+    if (!m_deterministic_optimizer_factory) {
+        throw Exception("No optimizer for solving the deterministic problem was configured.");
+    }
+
+    auto* result = new Optimizers::Robust::MaxMinRelaxation(
+        t_model,
+        m_description,
+        m_bilevel_description,
+        *m_master_optimizer_factory,
+        *m_deterministic_optimizer_factory,
+        m_use_indicator.value_or(false)
+    );
+
+    return result;
 }
 
 idol::Robust::MaxMinRelaxation::MaxMinRelaxation(const MaxMinRelaxation& t_src) :

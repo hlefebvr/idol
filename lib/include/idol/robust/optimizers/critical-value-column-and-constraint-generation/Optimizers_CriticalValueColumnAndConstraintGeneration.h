@@ -21,6 +21,7 @@ class idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration : pub
     const bool m_use_indicator;
 
     std::unique_ptr<CVCCG::Formulation> m_formulation;
+    std::list<Var> m_branching_candidates;
     unsigned int m_n_iterations = 0;
 public:
     CriticalValueColumnAndConstraintGeneration(const Model& t_model,
@@ -43,6 +44,11 @@ public:
     [[nodiscard]] const OptimizerFactory& get_master_optimizer_factory() const { return *m_master_optimizer_factory; }
     [[nodiscard]] const OptimizerFactory& get_deterministic_optimizer_factory() const { return *m_deterministic_optimizer_factory; }
     [[nodiscard]] bool use_indicator() const { return m_use_indicator; }
+
+    void declare_branching_on_unc_vars(std::list<Var> t_branching_candidates) { m_branching_candidates = std::move(t_branching_candidates); }
+    [[nodiscard]] auto branching_candidates() const { return ConstIteratorForward(m_branching_candidates); }
+    void set_unc_var_lb(const Var& t_var, double t_lb);
+    void set_unc_var_ub(const Var& t_var, double t_ub);
 protected:
     void add(const Var& t_var) override { m_formulation.reset(); }
     void add(const Ctr& t_ctr) override { m_formulation.reset(); }
@@ -52,7 +58,7 @@ protected:
     void remove(const Ctr& t_ctr) override { m_formulation.reset(); }
     void remove(const QCtr& t_ctr) override { m_formulation.reset(); }
     void remove(const SOSCtr& t_ctr) override { m_formulation.reset(); }
-    void update() override { m_formulation.reset(); }
+    void update() override { }
     void write(const std::string& t_name) override;
     void hook_before_optimize() override;
     void hook_optimize() override;

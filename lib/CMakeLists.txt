@@ -319,6 +319,8 @@ add_library(idol STATIC
         src/robust/optimizers/convexification/Optimizers_Convexification.cpp
         include/idol/robust/optimizers/bilevel-based-branch-and-bound/MaxMinRelaxation.h
         src/robust/optimizers/bilevel-based-branch-and-bound/MaxMinRelaxation.cpp
+        include/idol/robust/optimizers/bilevel-based-branch-and-bound/Optimizers_MaxMinRelaxation.h
+        src/robust/optimizers/bilevel-based-branch-and-bound/Optimizers_MaxMinRelaxation.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)

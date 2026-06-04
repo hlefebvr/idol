@@ -16,7 +16,11 @@ idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::CriticalVa
 
 void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::hook_optimize() {
 
-    m_formulation = std::make_unique<CVCCG::Formulation>(*this);
+    if (!m_formulation) {
+        m_formulation = std::make_unique<CVCCG::Formulation>(*this);
+    } else {
+        m_formulation->load_column_from_pool();
+    }
 
     log_banner();
 
@@ -265,4 +269,12 @@ unsigned idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::g
 
 unsigned idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::get_solution_index() const {
     return 0;
+}
+
+void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::set_unc_var_lb(const Var& t_var, double t_lb) {
+    m_formulation->set_unc_var_lb(t_var, t_lb);
+}
+
+void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::set_unc_var_ub(const Var& t_var, double t_ub) {
+    m_formulation->set_unc_var_ub(t_var, t_ub);
 }

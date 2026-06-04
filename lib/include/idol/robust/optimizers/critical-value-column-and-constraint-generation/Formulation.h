@@ -42,12 +42,14 @@ class idol::CVCCG::Formulation {
     class Uncertainty {
         std::optional<Ctr> m_constraint_in_original_model;
         std::list<CurrentlyPresentCut> m_currently_present_cuts;
+        std::list<CurrentlyPresentCut> m_not_currently_present_cuts;
     public:
         [[nodiscard]] bool is_constraint() const { return m_constraint_in_original_model.has_value(); }
         [[nodiscard]] const Ctr& ctr() const { return m_constraint_in_original_model.value(); }
         [[nodiscard]] auto currently_present_cuts() const { return ConstIteratorForward(m_currently_present_cuts); }
         auto currently_present_cuts() { return IteratorForward(m_currently_present_cuts); }
         void add_currently_present_cut(const Ctr& t_ctr, std::list<GeneratedScenario>::iterator t_scenario, double t_penalty) { m_currently_present_cuts.emplace_back(t_ctr, t_scenario, t_penalty); }
+        auto remove_from_currently_present_cuts(const std::list<CurrentlyPresentCut>::const_iterator& t_it) { return m_currently_present_cuts.erase(t_it); }
 
         Uncertainty() = default;
         Uncertainty(const Ctr& t_ctr) : m_constraint_in_original_model(t_ctr) {}
@@ -57,6 +59,7 @@ class idol::CVCCG::Formulation {
 
     // Analysis of the model
     std::list<Var> m_linking_variables;
+    bool m_master_is_continuous = true;
     bool m_all_linking_variables_are_binary = true;
     bool m_all_data_in_linking_constraints_is_integer = true;
     const bool m_use_cover_constraints = true;
@@ -100,6 +103,11 @@ public:
 
     bool master_provides_a_valid_bound() const;
     const Var& epigraph_variable() const { return *m_epigraph_variable; }
+
+    void remove_cut_if(Uncertainty& t_uncertainty, const std::function<bool(const Ctr&, const PrimalPoint&)>& t_indicator);
+    void set_unc_var_lb(const Var& t_var, double t_lb);
+    void set_unc_var_ub(const Var& t_var, double t_ub);
+    void load_column_from_pool();
 };
 
 #endif //IDOL_CVCCG_FORMULATION_H
