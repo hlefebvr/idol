@@ -15,14 +15,13 @@ namespace idol {
 }
 
 class idol::LambdaOptimizer : public OptimizerFactoryWithDefaultParameters<LambdaOptimizer> {
-    std::function<void(LambdaContext&, const Model&)> m_lambda;
-    std::unique_ptr<LambdaContext> m_lambda_context;
+    std::function<void(LambdaContext&)> m_lambda;
 protected:
     Optimizer *create(const Model &t_model) const override;
 public:
     LambdaOptimizer() = default;
 
-    explicit LambdaOptimizer(const std::function<void(LambdaContext&, const Model&)>& t_lambda);
+    explicit LambdaOptimizer(const std::function<void(LambdaContext&)>& t_lambda);
 
     explicit LambdaOptimizer(const LambdaOptimizer& t_src);
 

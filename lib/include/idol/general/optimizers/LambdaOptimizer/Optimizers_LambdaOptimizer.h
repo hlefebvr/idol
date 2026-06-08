@@ -7,22 +7,23 @@
 
 #include "idol/general/optimizers/Algorithm.h"
 #include "idol/general/optimizers/LambdaOptimizer/LambdaOptimizer.h"
-#include "idol/general/optimizers/LambdaOptimizer/LambdaContext.h"
 
-namespace idol::Optimizers {
-    class LambdaOptimizer;
+namespace idol {
+    namespace Optimizers {
+        class LambdaOptimizer;
+    }
+
+    class LambdaContext;
 }
 
 class idol::Optimizers::LambdaOptimizer : public Algorithm {
-    const std::function<void(LambdaContext&, const Model&)>& m_lambda;
-    LambdaContext& m_lambda_context;
+    const std::function<void(LambdaContext&)>& m_lambda;
     std::unique_ptr<Model> m_deterministic_model;
 
     void throw_if_no_deterministic_model() const;
 public:
     LambdaOptimizer(const Model& t_model,
-        LambdaContext& t_lambda_context,
-        const std::function<void(LambdaContext&, const Model&)>& t_lambda);
+        const std::function<void(LambdaContext&)>& t_lambda);
 
     [[nodiscard]] std::string name() const override;
 
@@ -67,6 +68,8 @@ protected:
 
     void hook_optimize() override;
 
+    void set_status(SolutionStatus t_status) override;
+
     void set_solution_index(unsigned int t_index) override;
 
     void update_obj_sense() override;
@@ -90,6 +93,10 @@ protected:
     void update_var_ub(const Var &t_var) override;
 
     void update_var_obj(const Var &t_var) override;
+
+    Model& get_model() const;
+
+    friend class idol::LambdaContext;
 };
 
 #endif //IDOL_OPTIMIZERS_LAMBDA_OPTIMIZER_H

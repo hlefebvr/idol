@@ -227,21 +227,17 @@ void direct_solve_using_lambda_function(Model& model){
 
     Model direct_model(model.copy());
 
-    const auto lambda = [](LambdaContext& t_ctx, const Model& t_model){
+    const auto lambda = [](LambdaContext& t_ctx){
         std::cout << "Begin lambda" << std::endl; 
-        
-        std::cout << t_model.get_obj_expr() << std::endl;
 
-        auto copy = t_model.copy();
+        auto copy = t_ctx.get_model().copy();
         copy.use(GLPK());
         copy.optimize();
+        print_solution_status(copy); 
 
         t_ctx.set_status(Optimal);
 
-        for(const auto& var : t_model.vars()){
-            t_ctx.set_var_primal(var, copy.get_var_primal(var));
-        }
-    std::cout <<  "End lambda" << std::endl; 
+        std::cout <<  "End lambda" << std::endl; 
     };
 
     std::cout << __FILE__ << " " << "BEGIN " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl; 

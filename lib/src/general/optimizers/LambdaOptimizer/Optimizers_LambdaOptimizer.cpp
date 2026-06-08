@@ -3,13 +3,12 @@
 //
 #include "idol/general/optimizers/LambdaOptimizer/Optimizers_LambdaOptimizer.h"
 #include "idol/general/optimizers/LambdaOptimizer/LambdaOptimizer.h"
+#include "idol/general/optimizers/LambdaOptimizer/LambdaContext.h"
 
 idol::Optimizers::LambdaOptimizer::LambdaOptimizer(const Model& t_parent,
-                                    LambdaContext& t_lambda_context,
-                                   const std::function<void(LambdaContext&, const Model&)>& t_lambda)
+                                   const std::function<void(LambdaContext&)>& t_lambda)
         : Algorithm(t_parent),
         m_deterministic_model(t_parent.clone()),
-        m_lambda_context(t_lambda_context),
         m_lambda(t_lambda){
     std::cout << __FILE__ << " " << "BEGIN " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl;
     std::cout << m_deterministic_model->get_obj_expr() << std::endl;
@@ -128,18 +127,25 @@ void idol::Optimizers::LambdaOptimizer::hook_optimize() {
     if (!m_lambda) {
         throw Exception("No lambda function has been set.");
     }
-
-    m_lambda(m_lambda_context, *m_deterministic_model);
+    LambdaContext ctx(*this);
+    m_lambda(ctx);
 
     std::cout << __FILE__ << " " << "END " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl; 
 
 }
 
-void idol::Optimizers::LambdaOptimizer::set_solution_index(unsigned int t_index) {
+void idol::Optimizers::LambdaOptimizer::set_status(SolutionStatus t_status)
+{
+    std::cout << __FILE__ << " " << "BEGIN " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl; 
+    Algorithm::set_status(t_status);
+}
+
+void idol::Optimizers::LambdaOptimizer::set_solution_index(unsigned int t_index)
+{
     std::cout << __FILE__ << " " << "BEGIN " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl; 
     throw_if_no_deterministic_model();
     m_deterministic_model->set_solution_index(t_index);
-    std::cout << __FILE__ << " " << "END " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl; 
+    std::cout << __FILE__ << " " << "END " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl;
 }
 
 void idol::Optimizers::LambdaOptimizer::update_obj_sense() {
@@ -258,4 +264,8 @@ double idol::Optimizers::LambdaOptimizer::get_best_bound() const {
     }
     std::cout << __FILE__ << " " << "END " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl; 
     return m_deterministic_model->get_best_bound();
+}
+
+idol::Model& idol::Optimizers::LambdaOptimizer::get_model() const {
+    return *m_deterministic_model;
 }
