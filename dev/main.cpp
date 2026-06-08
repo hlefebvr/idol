@@ -10,6 +10,8 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
+#include "idol/general/optimizers/LambdaOptimizer/LambdaOptimizer.h"
+#include "idol/general/optimizers/LambdaOptimizer/LambdaContext.h"
 
 using namespace idol;
 
@@ -166,7 +168,7 @@ void print_solution_status(Model& model){
 
 void direct_solve(Model& model){
 
-    std::cout <<  "Direct MILP example" << std::endl;
+    std::cout <<  "Direct GLPK solving" << std::endl;
 
     Model direct_model(model.copy());
 
@@ -178,7 +180,7 @@ void direct_solve(Model& model){
 
 void branch_and_price_solve(Env& env, Model& model){
 
-    std::cout <<  "Branch-and-Price reformulation" << std::endl;
+    std::cout <<  "Branch-and-Price GLPK + GLPK solving" << std::endl;
 
     Model bap_model(model.copy());
 
@@ -219,6 +221,37 @@ void branch_and_price_solve(Env& env, Model& model){
     print_solution_status(bap_model); 
 }
 
+void direct_solve_using_lambda_function(Model& model){
+
+    std::cout <<  "Direct lambda function solving" << std::endl;
+
+    Model direct_model(model.copy());
+
+    const auto lambda = [](LambdaContext& t_ctx, const Model& t_model){
+        std::cout << "Begin lambda" << std::endl; 
+        
+        std::cout << t_model.get_obj_expr() << std::endl;
+
+        auto copy = t_model.copy();
+        copy.use(GLPK());
+        copy.optimize();
+
+        t_ctx.set_status(Optimal);
+
+        for(const auto& var : t_model.vars()){
+            t_ctx.set_var_primal(var, copy.get_var_primal(var));
+        }
+    std::cout <<  "End lambda" << std::endl; 
+    };
+
+    std::cout << __FILE__ << " " << "BEGIN " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl; 
+    direct_model.use(LambdaOptimizer(lambda));
+    std::cout << __FILE__ << " " << "BEGIN " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl; 
+    direct_model.optimize();
+    std::cout << __FILE__ << " " << "BEGIN " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl; 
+    
+}
+
 int main(int t_argc, const char** t_argv) {
 
     if (t_argc != 3) {
@@ -244,6 +277,9 @@ int main(int t_argc, const char** t_argv) {
     }
     else if (mode == "bap"){
         branch_and_price_solve(env, model);
+    }
+    else if (mode == "lambda"){
+        direct_solve_using_lambda_function(model);
     }
     
     return 0;
