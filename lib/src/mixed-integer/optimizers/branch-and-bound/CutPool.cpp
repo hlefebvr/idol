@@ -78,13 +78,14 @@ unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t
         }
         norm = std::sqrt(norm);
 
-        double effectiveness = (activity - version.rhs()) / norm;
-        if (version.type() == GreaterOrEqual) {
-            effectiveness *= -1.;
-        }
-
-        if (effectiveness < .3) {
-            continue;
+        if (version.type() == LessOrEqual) {
+            if (activity - version.rhs() < .3 * norm) {
+                continue;
+            }
+        } else {
+            if (version.rhs() - activity < .3 * norm) {
+                continue;
+            }
         }
 
         result += add_existing_cut_to_relaxation(ctr, t_relaxation);
