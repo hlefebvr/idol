@@ -4,6 +4,9 @@
 #include <utility>
 
 #include "idol/mixed-integer/optimizers/branch-and-bound/CutPool.h"
+
+#include <complex>
+
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
@@ -67,21 +70,20 @@ unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t
         // Check effectiveness of the cut
         const auto& version = env[ctr];
         double activity = 0.;
-        double norm_squared = 0.;
+        double norm = 0.;
 
         for (const auto& [var, coefficient] : version.lhs()) {
-            norm_squared += coefficient * coefficient;
+            norm += coefficient * coefficient;
             activity += coefficient * t_current_point.get(var);
         }
+        norm = std::sqrt(norm);
 
-        double violation = 0.;
-        if (version.type() == LessOrEqual) {
-            violation = activity - version.rhs();
-        } else {
-            violation = version.rhs() - activity;
+        double violation = activity - version.rhs();
+        if (version.type() == GreaterOrEqual) {
+            violation *= -1.;
         }
 
-        if (violation * violation < std::pow(0.03, 2.) * norm_squared) {
+        if (violation < .3 * norm) {
             continue;
         }
 
