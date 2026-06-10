@@ -10,15 +10,19 @@
 
 bool idol::CutPool::add_existing_cut_to_relaxation(const Ctr& t_cut, Model& t_relaxation) {
 
+    auto& env = t_relaxation.env();
+    const double norm_squared = this->norm_squared(env, t_cut);
+
     // We only add the cut if it is sufficiently different from the others already in the relaxation
     for (const auto& history : m_cuts_in_relaxation) {
-        if (std::abs(cosine(t_relaxation.env(), history.cut, t_cut)) > .95) {
+        // the following is equivalent to cosine(hstory.cut, t_cut) > m_max_cosine but faster
+        if (std::pow(dot(t_relaxation.env(), history.cut, t_cut), 2.) > std::pow(m_max_cosine, 2.) * history.norm_squared * norm_squared) {
             return false;
         }
     }
 
     t_relaxation.add(t_cut);
-    m_cuts_in_relaxation.emplace_back(t_cut);
+    m_cuts_in_relaxation.emplace_back(t_cut, norm_squared);
 
     return true;
 }
@@ -148,6 +152,38 @@ double idol::CutPool::cosine(const Env& t_env, const Ctr& t_cut1, const Ctr& t_c
     return result;
 }
 
-idol::CutPool::CutHistory::CutHistory(Ctr  t_cut) : cut(std::move(t_cut)) {
+double idol::CutPool::dot(const Env& t_env, const Ctr& t_cut1, const Ctr& t_cut2) {
+
+    double result = 0;
+
+    const auto& expr1 = t_env[t_cut1].lhs();
+    const auto& expr2 = t_env[t_cut2].lhs();
+
+    const auto* small = &expr1;
+    const auto* large = &expr2;
+
+    // iterate over the smaller map
+    if (expr1.size() > expr2.size()) {
+        small = &expr2;
+        large = &expr1;
+    }
+
+    for (const auto& [var, coeff] : *small) {
+        result += coeff * large->get(var);
+    }
+
+    return result;
+}
+
+double idol::CutPool::norm_squared(const Env& t_env, const Ctr& t_cut) {
+    double result = 0;
+    const auto& expr = t_env[t_cut].lhs();
+    for (const auto& [var, coeff] : expr) {
+        result += coeff * coeff;
+    }
+    return result;
+}
+
+idol::CutPool::CutHistory::CutHistory(Ctr t_cut, double t_norm_squared) : cut(std::move(t_cut)), norm_squared(t_norm_squared) {
 
 }
