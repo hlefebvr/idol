@@ -49,7 +49,8 @@ unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t
     for (auto& history : m_cuts_in_relaxation) {
         const auto& version = env[history.cut];
         history.age++;
-        history.n_active += equals(evaluate(version.lhs(), t_current_point), version.rhs(), t_tol_feasibility);
+        //history.n_active += equals(evaluate(version.lhs(), t_current_point), version.rhs(), t_tol_feasibility);
+        history.n_active += !is_zero(t_relaxation.get_ctr_dual(history.cut), Tolerance::Sparsity);
     }
 
     // Check if the current point violates a previously generated cut
