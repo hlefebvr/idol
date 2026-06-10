@@ -78,12 +78,12 @@ unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t
         }
         norm = std::sqrt(norm);
 
-        double violation = activity - version.rhs();
+        double effectiveness = (activity - version.rhs()) / norm;
         if (version.type() == GreaterOrEqual) {
-            violation *= -1.;
+            effectiveness *= -1.;
         }
 
-        if (violation < .3 * norm) {
+        if (effectiveness < .3) {
             continue;
         }
 
