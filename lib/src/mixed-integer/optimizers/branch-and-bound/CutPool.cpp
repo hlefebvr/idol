@@ -51,7 +51,7 @@ unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t
     const auto& env = t_relaxation.env();
 
     for (auto& history : m_cuts_in_relaxation) {
-        const auto& version = env[history.cut];
+        //const auto& version = env[history.cut];
         history.age++;
         //history.n_active += equals(evaluate(version.lhs(), t_current_point), version.rhs(), t_tol_feasibility);
         history.n_active += !is_zero(t_relaxation.get_ctr_dual(history.cut), Tolerance::Sparsity);
@@ -67,20 +67,21 @@ unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t
         // Check effectiveness of the cut
         const auto& version = env[ctr];
         double activity = 0.;
-        double norm = 0.;
+        double norm_squared = 0.;
 
         for (const auto& [var, coefficient] : version.lhs()) {
-            norm += coefficient * coefficient;
+            norm_squared += coefficient * coefficient;
             activity += coefficient * t_current_point.get(var);
         }
-        norm = std::sqrt(norm);
 
-        double effectiveness = (activity - version.rhs()) / norm;
-        if (version.type() == GreaterOrEqual) {
-            effectiveness *= -1.;
+        double violation = 0.;
+        if (version.type() == LessOrEqual) {
+            violation = activity - version.rhs();
+        } else {
+            violation = version.rhs() - activity;
         }
 
-        if (effectiveness < .3) {
+        if (violation * violation < std::pow(0.1, 2.) * norm_squared) {
             continue;
         }
 
