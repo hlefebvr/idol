@@ -81,7 +81,7 @@ unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t
             violation = version.rhs() - activity;
         }
 
-        if (violation * violation < std::pow(0.1, 2.) * norm_squared) {
+        if (violation * violation < std::pow(0.03, 2.) * norm_squared) {
             continue;
         }
 
