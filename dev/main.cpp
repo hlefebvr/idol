@@ -166,7 +166,7 @@ void print_solution_status(Model& model){
     }
 }
 
-void direct_solve(Model& model){
+void direct_solve(const Model& model){
 
     std::cout <<  "Direct GLPK solving" << std::endl;
 
@@ -178,13 +178,12 @@ void direct_solve(Model& model){
     print_solution_status(direct_model);
 }
 
-void branch_and_price_solve(Env& env, Model& model){
+void branch_and_price_solve(Env& env, const Model& model){
 
     std::cout <<  "Branch-and-Price GLPK + GLPK solving" << std::endl;
 
     Model bap_model(model.copy());
 
-    std::cout << MasterId << std::endl;
     Annotation decomposition(env, "decomposition", MasterId);
 
     for(const auto& ctr : bap_model.ctrs()){
@@ -221,7 +220,7 @@ void branch_and_price_solve(Env& env, Model& model){
     print_solution_status(bap_model); 
 }
 
-void direct_solve_using_lambda_function(Model& model){
+void direct_solve_using_lambda_function(const Model& model){
 
     std::cout <<  "Direct lambda function solving" << std::endl;
 
@@ -236,7 +235,12 @@ void direct_solve_using_lambda_function(Model& model){
         print_solution_status(copy); 
 
         t_ctx.set_status(Optimal);
+        t_ctx.set_best_obj(copy.get_best_obj());
+        t_ctx.set_best_bound(copy.get_best_bound());
 
+        for (const auto& var : copy.vars()) {
+            t_ctx.set_var_primal(var, copy.get_var_primal(var));
+        }
         std::cout <<  "End lambda" << std::endl; 
     };
 
@@ -246,6 +250,72 @@ void direct_solve_using_lambda_function(Model& model){
     direct_model.optimize();
     std::cout << __FILE__ << " " << "BEGIN " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl; 
     
+}
+
+void branch_and_price_solve_using_lambda_function(Env& env, const Model& model){
+
+    std::cout <<  "Branch-and-Price GLPK + Lambda solving" << std::endl;
+
+    Model bap_model(model.copy());
+
+    const Annotation decomposition(env, "decomposition", MasterId);
+
+    for(const auto& ctr : bap_model.ctrs()){
+        if(ctr.name().rfind("flow_", 0) == 0){
+            ctr.set(decomposition, 0);
+        }
+    }
+    for(const auto& ctr : bap_model.ctrs()) {
+        std::cout
+            << ctr.name()
+            << " -> "
+            << ctr.get(decomposition)
+            << std::endl;
+    }
+
+    auto column_generation = DantzigWolfeDecomposition(decomposition);
+    column_generation.with_master_optimizer(GLPK::ContinuousRelaxation());
+
+    const auto lambda = [](LambdaContext& t_ctx){
+        std::cout << "Begin lambda" << std::endl; 
+
+        auto copy = t_ctx.get_model().copy();
+        std::cout << "vars = " << copy.vars().size() << std::endl;
+        std::cout << "cons = " << copy.ctrs().size() << std::endl;
+
+        copy.use(GLPK());
+        copy.optimize();
+        print_solution_status(copy); 
+
+        t_ctx.set_status(Optimal);
+        t_ctx.set_best_obj(copy.get_best_obj());
+        t_ctx.set_best_bound(copy.get_best_bound());
+
+        for (const auto& var : copy.vars()) {
+            t_ctx.set_var_primal(var, copy.get_var_primal(var));
+        }
+
+        std::cout <<  "End lambda" << std::endl; 
+    };
+
+    const auto subproblem_specifications = DantzigWolfe::SubProblem().add_optimizer(LambdaOptimizer(lambda));
+    column_generation.with_default_sub_problem_spec(subproblem_specifications);
+    column_generation.with_infeasibility_strategy(DantzigWolfe::FarkasPricing());
+    column_generation.with_hard_branching(false);
+    column_generation.with_logs(true);
+
+    auto branch_and_bound = BranchAndBound();
+    branch_and_bound.with_branching_rule(MostInfeasible());
+    branch_and_bound.with_node_selection_rule(BestBound());
+    branch_and_bound.with_logs(true);
+
+    const auto branch_and_price = branch_and_bound + column_generation;
+
+    bap_model.use(branch_and_price);
+
+    bap_model.optimize();
+
+    print_solution_status(bap_model); 
 }
 
 int main(int t_argc, const char** t_argv) {
@@ -277,6 +347,10 @@ int main(int t_argc, const char** t_argv) {
     else if (mode == "lambda"){
         direct_solve_using_lambda_function(model);
     }
+    else if (mode == "bap_lambda"){
+        branch_and_price_solve_using_lambda_function(env, model);
+    }
+    
     
     return 0;
 }

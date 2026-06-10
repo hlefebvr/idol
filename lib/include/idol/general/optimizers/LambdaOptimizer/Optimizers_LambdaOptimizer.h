@@ -18,22 +18,15 @@ namespace idol {
 
 class idol::Optimizers::LambdaOptimizer : public Algorithm {
     const std::function<void(LambdaContext&)>& m_lambda;
-    std::unique_ptr<Model> m_deterministic_model;
+    std::vector<double> m_solution;
 
-    void throw_if_no_deterministic_model() const;
 public:
     LambdaOptimizer(const Model& t_model,
         const std::function<void(LambdaContext&)>& t_lambda);
 
     [[nodiscard]] std::string name() const override;
 
-    [[nodiscard]] SolutionStatus get_status() const override;
-
-    [[nodiscard]] SolutionReason get_reason() const override;
-
-    [[nodiscard]] double get_best_obj() const override;
-
-    [[nodiscard]] double get_best_bound() const override;
+    void set_var_primal(const Var &t_var, double t_value);
 
     [[nodiscard]] double get_var_primal(const Var &t_var) const override;
 
@@ -68,8 +61,6 @@ protected:
 
     void hook_optimize() override;
 
-    void set_status(SolutionStatus t_status) override;
-
     void set_solution_index(unsigned int t_index) override;
 
     void update_obj_sense() override;
@@ -94,7 +85,7 @@ protected:
 
     void update_var_obj(const Var &t_var) override;
 
-    Model& get_model() const;
+    void clear_solution();
 
     friend class idol::LambdaContext;
 };

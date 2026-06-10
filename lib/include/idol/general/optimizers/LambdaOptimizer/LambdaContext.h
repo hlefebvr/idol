@@ -11,26 +11,41 @@
 
 namespace idol {
     class LambdaContext {
-        idol::Optimizers::LambdaOptimizer& m_optimizer;
+        Optimizers::LambdaOptimizer& m_optimizer;
     public:
         explicit LambdaContext(idol::Optimizers::LambdaOptimizer& t_optimizer)
         : m_optimizer(t_optimizer){
             
         }
 
-        void set_status(idol::SolutionStatus t_status){
-            std::cout << __FILE__ << " " << "BEGIN " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl; 
+        Model get_model() const {
+            return m_optimizer.parent().copy();
+        }
+
+        void set_status(const SolutionStatus& t_status){
             m_optimizer.set_status(t_status);
         }
 
-        idol::SolutionStatus get_status() const{
-            std::cout << __FILE__ << " " << "BEGIN " << __FUNCTION__ << " (" << __LINE__ << ")" << std::endl; 
-            return m_optimizer.get_status();
+        void set_status(const SolutionStatus& t_status) const {
+            m_optimizer.set_status(t_status);
         }
 
-        idol::Model& get_model(){
-            return m_optimizer.get_model();
+        void set_best_obj(double t_best_obj) const {
+            m_optimizer.set_best_obj(t_best_obj);
         }
+
+        double get_best_obj() const {
+            return m_optimizer.get_best_obj();
+        }
+
+        void set_best_bound(double t_best_bound) const {
+            m_optimizer.set_best_bound(t_best_bound);
+        }
+
+        void set_var_primal(const Var& t_var, double t_value) const {
+            m_optimizer.set_var_primal(t_var, t_value);
+        }
+
     };
 }
 
