@@ -20,6 +20,7 @@ class idol::CutPool {
         double norm_squared = 0.;
         unsigned int age = 0;
         unsigned int n_active = 0;
+        double score = 1.;
         CutHistory(Ctr t_cut, double t_norm_squared);
     };
 
@@ -30,7 +31,7 @@ class idol::CutPool {
     std::list<CutHistory> m_cuts_in_relaxation;
     std::list<Ctr> m_all_cuts;
 
-    bool add_existing_cut_to_relaxation(const Ctr& t_cut, Model& t_relaxation);
+    bool add_existing_cut_to_relaxation(const Ctr& t_cut, Model& t_relaxation, bool t_force = false);
 public:
     bool add_cut(const TempCtr& t_cut, Model& t_relaxation);
     unsigned int recycle(const PrimalPoint& t_current_point, Model& t_relaxation, double t_tol_feasibility);

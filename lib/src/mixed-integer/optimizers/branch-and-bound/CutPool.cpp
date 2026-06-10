@@ -11,16 +11,18 @@
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
 
-bool idol::CutPool::add_existing_cut_to_relaxation(const Ctr& t_cut, Model& t_relaxation) {
+bool idol::CutPool::add_existing_cut_to_relaxation(const Ctr& t_cut, Model& t_relaxation, bool t_force) {
 
     auto& env = t_relaxation.env();
     const double norm_squared = this->norm_squared(env, t_cut);
 
-    // We only add the cut if it is sufficiently different from the others already in the relaxation
-    for (const auto& history : m_cuts_in_relaxation) {
-        // the following is equivalent to cosine(hstory.cut, t_cut) > m_max_cosine but faster
-        if (std::pow(dot(t_relaxation.env(), history.cut, t_cut), 2.) > std::pow(m_max_cosine, 2.) * history.norm_squared * norm_squared) {
-            return false;
+    if (!t_force) {
+        // We only add the cut if it is sufficiently different from the others already in the relaxation
+        for (const auto& history : m_cuts_in_relaxation) {
+            // the following is equivalent to cosine(hstory.cut, t_cut) > m_max_cosine but faster
+            if (std::pow(dot(t_relaxation.env(), history.cut, t_cut), 2.) > std::pow(m_max_cosine, 2.) * history.norm_squared * norm_squared) {
+                return false;
+            }
         }
     }
 
@@ -88,7 +90,7 @@ unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t
             }
         }
 
-        result += add_existing_cut_to_relaxation(ctr, t_relaxation);
+        result += add_existing_cut_to_relaxation(ctr, t_relaxation, true);
 
     }
 
