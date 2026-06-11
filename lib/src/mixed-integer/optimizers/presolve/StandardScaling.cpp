@@ -7,7 +7,7 @@
 
 bool idol::Presolvers::StandardScaling::execute(Model& t_model) {
 
-    m_rescaled = false;
+    m_n_rescaled = false;
 
     for (const auto& ctr : t_model.ctrs()) {
         const auto& row = t_model.get_ctr_row(ctr);
@@ -26,6 +26,7 @@ bool idol::Presolvers::StandardScaling::execute(Model& t_model) {
         if (closest_power_of_2 != 1.) {
             t_model.set_ctr_row(ctr, row / closest_power_of_2);
             t_model.set_ctr_rhs(ctr, rhs / closest_power_of_2);
+            m_n_rescaled++;
         }
     }
 
@@ -35,5 +36,5 @@ bool idol::Presolvers::StandardScaling::execute(Model& t_model) {
 void idol::Presolvers::StandardScaling::log_after_termination() const {
     AbstractPresolver::log_after_termination();
 
-    std::cout << "Standard scaling: " << m_rescaled;
+    std::cout << "Standard scaling: " << m_n_rescaled;
 }

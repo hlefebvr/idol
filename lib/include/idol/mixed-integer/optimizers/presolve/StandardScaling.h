@@ -16,7 +16,7 @@ namespace idol::Presolvers {
  * For now, it is only performed row-wise since there is no post-processing implemented yet.
  */
 class idol::Presolvers::StandardScaling : public AbstractPresolver {
-    bool m_rescaled = false;
+    unsigned int m_n_rescaled = 0;
 public:
     bool execute(Model& t_model) override;
 
