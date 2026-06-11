@@ -7,8 +7,6 @@
 
 bool idol::Presolvers::StandardScaling::execute(Model& t_model) {
 
-    m_n_rescaled = false;
-
     for (const auto& ctr : t_model.ctrs()) {
         const auto& row = t_model.get_ctr_row(ctr);
         const double rhs = t_model.get_ctr_rhs(ctr);
