@@ -16,8 +16,11 @@ namespace idol::Presolvers {
  * For now, it is only performed row-wise since there is no post-processing implemented yet.
  */
 class idol::Presolvers::StandardScaling : public AbstractPresolver {
+    bool m_rescaled = false;
 public:
     bool execute(Model& t_model) override;
+
+    void log_after_termination() const override;
 
     [[nodiscard]] AbstractPresolver* clone() const override { return new StandardScaling(*this); }
 };
