@@ -401,6 +401,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::next_numeric
     m_n_iterations_without_generating_column = 0;
     m_solve_dual_master = true;
 
+    std::cerr << "Warning: Column generation seems to face numerical instability. \n"
+                 "Switching to numerical policy \"" << m_numerical_policy << "\"." << std::endl;
+
     if (m_numerical_policy == ColumnPoolCleanUp) {
         const unsigned int n_sub_problems = m_parent.m_formulation.n_sub_problems();
         const auto& primals = save_primal(m_parent.m_formulation.master());
