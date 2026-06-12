@@ -64,6 +64,7 @@
 #define idol_CPX_PARAM_EPRHS     1016
 #define idol_CPX_PARAM_OBJULIM   1148
 #define idol_CPX_PARAM_OBJLLIM   1149
+#define idol_CPX_PARAM_LPMETHOD  1006
 #define idol_CPX_PARAM_PREIND    1030
 #define idol_CPX_PARAM_SCRIND    1035
 #define idol_CPX_PARAM_TILIM     1039
@@ -142,10 +143,35 @@ extern "C" {
 
     int idol_CPXgeterrorstring (CPXCENVptr env, int errcode, char *buffer_str);
 
+    int idol_CPXversionnumber (CPXCENVptr env, int *version_p);
+
     int idol_CPXgetsolnpoolnumsolns (CPXCENVptr env, CPXCLPptr lp);
     int idol_CPXgetsolnpoolobjval (CPXCENVptr env, CPXCLPptr lp, int soln, double *objval_p);
     int idol_CPXgetsolnpoolx (CPXCENVptr env, CPXCLPptr lp, int soln, double *x, int begin, int end);
     int idol_CPXpopulate (CPXCENVptr env, CPXLPptr lp);
+
+    // SOS constraints  (sostype contains characters '1' or '2', i.e. CPX_TYPE_SOS1/2)
+    int idol_CPXaddsos (CPXCENVptr env, CPXLPptr lp, int numsos, int numsosnz,
+                        char const *sostype, int const *sosbeg, int const *sosind,
+                        double const *soswt, char **sosname);
+    int idol_CPXdelsos (CPXCENVptr env, CPXLPptr lp, int begin, int end);
+    int idol_CPXgetnumsos (CPXCENVptr env, CPXCLPptr lp);
+
+    // Quadratic constraints
+    int idol_CPXaddqconstr (CPXCENVptr env, CPXLPptr lp, int linnzcnt, int quadnzcnt,
+                            double rhs, char sense,
+                            int const *linind, double const *linval,
+                            int const *quadrow, int const *quadcol, double const *quadval,
+                            char const *lname_str);
+    int idol_CPXdelqconstrs (CPXCENVptr env, CPXLPptr lp, int begin, int end);
+    int idol_CPXgetnumqconstrs (CPXCENVptr env, CPXCLPptr lp);
+
+    // Quadratic objective
+    int idol_CPXcopyquad (CPXCENVptr env, CPXLPptr lp, int const *qmatbeg, int const *qmatcnt,
+                          int const *qmatind, double const *qmatval);
+
+    // QP solver
+    int idol_CPXqpopt (CPXCENVptr env, CPXLPptr lp);
 
 }
 

@@ -9,6 +9,7 @@
 #include "HiGHS.h"
 #include "JuMP.h"
 #include "idol/general/utils/SilentMode.h"
+#include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"
@@ -19,6 +20,7 @@ MILPMethodManager::MILPMethodManager(const Arguments& t_args)
     : AbstractMethodManager<MILPMethod>(t_args) {
 
     add<MILPMethods::Gurobi>();
+    add<MILPMethods::Cplex>();
     add<MILPMethods::GLPK>();
     add<MILPMethods::HiGHS>();
     add<MILPMethods::Cplex>();
@@ -127,7 +129,7 @@ void MILPMethodManager::do_method_analysis(const std::vector<MILPMethod*>& metho
             }
             if (condition.requires_cplex) {
                 CHECK(
-                    false /* idol::Optimizers::Cplex::is_available(), */,
+                    idol::Optimizers::Cplex::is_available(),
                     "Requires Cplex to be installed."
                 );
             }

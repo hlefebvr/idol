@@ -104,7 +104,6 @@ idol::Optimizers::Cplex::DynamicLib::DynamicLib() {
         return;
     }
 
-    std::cout << "Load cplex from " << cplex_path << std::endl;
     dlerror();
     m_handle = dlopen(cplex_path.c_str(), RTLD_LAZY | RTLD_GLOBAL);
     if (!m_handle) {
@@ -146,10 +145,19 @@ idol::Optimizers::Cplex::DynamicLib::DynamicLib() {
     CPLEX_SYM_LOAD(CPXsetdblparam);
     CPLEX_SYM_LOAD(CPXwriteprob);
     CPLEX_SYM_LOAD(CPXgeterrorstring);
+    CPLEX_SYM_LOAD(CPXversionnumber);
     CPLEX_SYM_LOAD(CPXgetsolnpoolnumsolns);
     CPLEX_SYM_LOAD(CPXgetsolnpoolobjval);
     CPLEX_SYM_LOAD(CPXgetsolnpoolx);
     CPLEX_SYM_LOAD(CPXpopulate);
+    CPLEX_SYM_LOAD(CPXaddsos);
+    CPLEX_SYM_LOAD(CPXdelsos);
+    CPLEX_SYM_LOAD(CPXgetnumsos);
+    CPLEX_SYM_LOAD(CPXaddqconstr);
+    CPLEX_SYM_LOAD(CPXdelqconstrs);
+    CPLEX_SYM_LOAD(CPXgetnumqconstrs);
+    CPLEX_SYM_LOAD(CPXcopyquad);
+    CPLEX_SYM_LOAD(CPXqpopt);
 }
 
 idol::Optimizers::Cplex::DynamicLib::~DynamicLib() {
@@ -289,8 +297,13 @@ idol::Optimizers::Cplex::~Cplex() {
 // ---------------------------------------------------------------------------
 
 void idol::Optimizers::Cplex::hook_build() {
-    hook_update_objective_sense();
-    set_objective_as_updated();
+    // Linear objective coefficients are passed via hook_add(Var), so we only need
+    // hook_update_objective for quadratic objectives. Leave the flag set so the
+    // update mechanism calls hook_update_objective before the first optimization.
+    if (!parent().get_obj_expr().has_quadratic()) {
+        hook_update_objective_sense();
+        set_objective_as_updated();
+    }
     set_rhs_as_updated();
 }
 
@@ -312,10 +325,37 @@ void idol::Optimizers::Cplex::hook_optimize() {
         }
     }
 
-    if (has_integers) {
+    const bool has_sos   = !m_continuous_relaxation && lib.CPXgetnumsos(m_env, m_model) > 0;
+    const bool has_qobj  = parent().get_obj_expr().has_quadratic();
+    const bool has_qctrs = lib.CPXgetnumqconstrs(m_env, m_model) > 0;
+
+    if (has_integers || has_sos) {
         CPLEX_CATCH(m_env, CPXmipopt(m_env, m_model));
+    } else if (has_qobj || has_qctrs) {
+        CPLEX_CATCH(m_env, CPXqpopt(m_env, m_model));
     } else {
         CPLEX_CATCH(m_env, CPXlpopt(m_env, m_model));
+
+        if (get_param_infeasible_or_unbounded_info()) {
+            const int stat = lib.CPXgetstat(m_env, m_model);
+
+            // Presolve can return InfOrUnbnd without distinguishing — re-solve without it
+            if (stat == idol_CPX_STAT_INForUNBD) {
+                lib.CPXsetintparam(m_env, idol_CPX_PARAM_PREIND, 0);
+                CPLEX_CATCH(m_env, CPXlpopt(m_env, m_model));
+                lib.CPXsetintparam(m_env, idol_CPX_PARAM_PREIND, 1);
+            }
+
+            // CPXdualfarkas requires the dual simplex to have proven infeasibility
+            const int stat2 = lib.CPXgetstat(m_env, m_model);
+            if (stat2 == idol_CPX_STAT_INFEASIBLE) {
+                lib.CPXsetintparam(m_env, idol_CPX_PARAM_PREIND, 0);
+                lib.CPXsetintparam(m_env, idol_CPX_PARAM_LPMETHOD, 2);
+                CPLEX_CATCH(m_env, CPXlpopt(m_env, m_model));
+                lib.CPXsetintparam(m_env, idol_CPX_PARAM_PREIND, 1);
+                lib.CPXsetintparam(m_env, idol_CPX_PARAM_LPMETHOD, 0);
+            }
+        }
     }
 }
 
@@ -401,12 +441,71 @@ int idol::Optimizers::Cplex::hook_add(const Ctr& t_ctr) {
     return row_index;
 }
 
-int idol::Optimizers::Cplex::hook_add(const QCtr& /*t_ctr*/) {
-    throw Exception("CPLEX wrapper: quadratic constraints are not supported.");
+int idol::Optimizers::Cplex::hook_add(const QCtr& t_ctr) {
+
+    auto& lib = get_dynamic_lib();
+    const auto& model = parent();
+    const auto& expr  = model.get_qctr_expr(t_ctr);
+    const char  sense = cplex_ctr_type(model.get_qctr_type(t_ctr));
+    const double rhs  = cplex_numeric(expr.affine().constant());
+    const auto& name  = t_ctr.name();
+
+    std::vector<int>    linind;
+    std::vector<double> linval;
+    for (const auto& [var, coeff] : expr.affine().linear()) {
+        linind.push_back(lazy(var).impl());
+        linval.push_back(cplex_numeric(coeff));
+    }
+
+    // CPXaddqconstr has no 1/2 factor: each triplet contributes coeff * x[i] * x[j] directly
+    std::vector<int>    quadrow, quadcol;
+    std::vector<double> quadval;
+    for (const auto& [pair, coeff] : expr) {
+        quadrow.push_back(lazy(pair.first).impl());
+        quadcol.push_back(lazy(pair.second).impl());
+        quadval.push_back(cplex_numeric(coeff));
+    }
+
+    const int qc_index = lib.CPXgetnumqconstrs(m_env, m_model);
+
+    CPLEX_CATCH(m_env, CPXaddqconstr(m_env, m_model,
+        (int) linind.size(), (int) quadrow.size(),
+        rhs, sense,
+        linind.empty()  ? nullptr : linind.data(),
+        linval.empty()  ? nullptr : linval.data(),
+        quadrow.empty() ? nullptr : quadrow.data(),
+        quadcol.empty() ? nullptr : quadcol.data(),
+        quadval.empty() ? nullptr : quadval.data(),
+        name.c_str()));
+
+    return qc_index;
 }
 
-int idol::Optimizers::Cplex::hook_add(const SOSCtr& /*t_ctr*/) {
-    throw Exception("CPLEX wrapper: SOS constraints are not yet supported.");
+int idol::Optimizers::Cplex::hook_add(const SOSCtr& t_ctr) {
+
+    auto& lib = get_dynamic_lib();
+    const auto& model   = parent();
+    const auto& vars    = model.get_sosctr_vars(t_ctr);
+    const auto& weights = model.get_sosctr_weights(t_ctr);
+    const int n = (int) vars.size();
+
+    std::vector<int> indices(n);
+    for (int i = 0; i < n; ++i) {
+        indices[i] = lazy(vars[i]).impl();
+    }
+
+    const char type     = model.is_sos1(t_ctr) ? '1' : '2'; // CPX_TYPE_SOS1/2
+    int        beginning = 0;
+    const int  sos_index = lib.CPXgetnumsos(m_env, m_model);
+
+    CPLEX_CATCH(m_env, CPXaddsos(m_env, m_model,
+        1, n,
+        &type, &beginning,
+        indices.data(),
+        const_cast<double*>(weights.data()),
+        nullptr));
+
+    return sos_index;
 }
 
 // ---------------------------------------------------------------------------
@@ -431,7 +530,7 @@ void idol::Optimizers::Cplex::hook_update(const Var& t_var) {
     CPLEX_CATCH(m_env, CPXchgbds(m_env, m_model, 1, &index, &ub_flag, &ub));
     CPLEX_CATCH(m_env, CPXchgobj(m_env, m_model, 1, &index, &obj));
 
-    if (!m_continuous_relaxation) {
+    if (!m_continuous_relaxation && type != idol_CPX_CONTINUOUS) {
         CPLEX_CATCH(m_env, CPXchgctype(m_env, m_model, 1, &index, &type));
     }
 }
@@ -464,27 +563,74 @@ void idol::Optimizers::Cplex::hook_update_objective() {
     const auto& model = parent();
     const auto& objective = model.get_obj_expr();
 
-    if (objective.has_quadratic()) {
-        throw Exception("CPLEX wrapper: quadratic objectives are not supported.");
-    }
-
-    const auto& linear_terms = objective.affine().linear();
     const int n = lib.CPXgetnumcols(m_env, m_model);
 
-    // Zero out all existing objective coefficients then set new ones
-    std::vector<int>    indices(n);
-    std::vector<double> zeros(n, 0.0);
-    for (int j = 0; j < n; ++j) indices[j] = j;
-    CPLEX_CATCH(m_env, CPXchgobj(m_env, m_model, n, indices.data(), zeros.data()));
+    // Zero out all existing linear coefficients, then set new ones
+    if (n > 0) {
+        std::vector<int>    indices(n);
+        std::vector<double> zeros(n, 0.0);
+        for (int j = 0; j < n; ++j) indices[j] = j;
+        CPLEX_CATCH(m_env, CPXchgobj(m_env, m_model, n, indices.data(), zeros.data()));
+    }
 
-    for (const auto& [var, coeff] : linear_terms) {
-        const int j = lazy(var).impl();
+    for (const auto& [var, coeff] : objective.affine().linear()) {
+        const int    j = lazy(var).impl();
         const double v = cplex_numeric(coeff);
         CPLEX_CATCH(m_env, CPXchgobj(m_env, m_model, 1, &j, &v));
     }
 
     const double constant = cplex_numeric(objective.affine().constant());
     CPLEX_CATCH(m_env, CPXchgobjoffset(m_env, m_model, constant));
+
+    // Handle quadratic objective via CPXcopyquad (fully replaces Q matrix).
+    // Only called when the new or previous objective has quadratic terms, because
+    // CPXcopyquad silently promotes the problem type to QP, which breaks CPXlpopt.
+    // CPLEX stores (1/2) x^T Q x, so:
+    //   off-diagonal (i != j): Q[i][j] = coeff
+    //   diagonal     (i == j): Q[i][i] = 2 * coeff
+    if (n > 0 && (objective.has_quadratic() || m_has_quad_obj)) {
+        std::vector<int> qmatbeg(n, 0), qmatcnt(n, 0);
+        std::vector<int>    qmatind;
+        std::vector<double> qmatval;
+
+        if (objective.has_quadratic()) {
+            std::map<int, std::vector<std::pair<int, double>>> col_data;
+
+            for (const auto& [pair, coeff] : objective) {
+                int i = lazy(pair.first).impl();
+                int j = lazy(pair.second).impl();
+                if (i < j) std::swap(i, j);          // lower triangular: i >= j
+                const double v = (i == j) ? 2.0 * cplex_numeric(coeff) : cplex_numeric(coeff);
+                col_data[j].emplace_back(i, v);
+            }
+
+            int offset = 0;
+            for (int j = 0; j < n; ++j) {
+                qmatbeg[j] = offset;
+                auto it = col_data.find(j);
+                if (it != col_data.end()) {
+                    auto& terms = it->second;
+                    std::sort(terms.begin(), terms.end());
+                    for (const auto& [row, val] : terms) {
+                        qmatind.push_back(row);
+                        qmatval.push_back(val);
+                    }
+                    qmatcnt[j] = (int) terms.size();
+                    offset += (int) terms.size();
+                }
+            }
+        }
+
+        // A dummy non-null pointer is needed when no non-zeros are present
+        int    dummy_ind = 0;
+        double dummy_val = 0.0;
+        CPLEX_CATCH(m_env, CPXcopyquad(m_env, m_model,
+            qmatbeg.data(), qmatcnt.data(),
+            qmatind.empty() ? &dummy_ind : qmatind.data(),
+            qmatval.empty() ? &dummy_val : qmatval.data()));
+
+        m_has_quad_obj = objective.has_quadratic();
+    }
 
     hook_update_objective_sense();
 }
@@ -540,12 +686,28 @@ void idol::Optimizers::Cplex::hook_remove(const Ctr& t_ctr) {
     }
 }
 
-void idol::Optimizers::Cplex::hook_remove(const QCtr& /*t_ctr*/) {
-    throw Exception("CPLEX wrapper: quadratic constraints are not supported.");
+void idol::Optimizers::Cplex::hook_remove(const QCtr& t_ctr) {
+
+    auto& lib = get_dynamic_lib();
+    const int index = lazy(t_ctr).impl();
+    CPLEX_CATCH(m_env, CPXdelqconstrs(m_env, m_model, index, index));
+
+    for (auto& lz : lazy_qctrs()) {
+        if (!lz.has_impl()) continue;
+        if (lz.impl() > index) lz.impl()--;
+    }
 }
 
-void idol::Optimizers::Cplex::hook_remove(const SOSCtr& /*t_ctr*/) {
-    throw Exception("CPLEX wrapper: SOS constraints are not yet supported.");
+void idol::Optimizers::Cplex::hook_remove(const SOSCtr& t_ctr) {
+
+    auto& lib = get_dynamic_lib();
+    const int index = lazy(t_ctr).impl();
+    CPLEX_CATCH(m_env, CPXdelsos(m_env, m_model, index, index));
+
+    for (auto& lz : lazy_sosctrs()) {
+        if (!lz.has_impl()) continue;
+        if (lz.impl() > index) lz.impl()--;
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -810,6 +972,17 @@ bool idol::Optimizers::Cplex::is_available() {
 }
 
 std::string idol::Optimizers::Cplex::get_version() {
-    // Version information would require CPXversionnumber or similar; return placeholder.
-    return "CPLEX (version unknown)";
+    auto& lib = get_dynamic_lib();
+    int status = 0;
+    CPXENVptr env = lib.CPXopenCPLEX(&status);
+    if (!env) return "CPLEX (version unknown)";
+    int version = 0;
+    lib.CPXversionnumber(env, &version);
+    lib.CPXcloseCPLEX(&env);
+    const int major = version / 1000000;
+    const int minor = (version % 1000000) / 10000;
+    const int micro = (version % 10000) / 100;
+    const int patch = version % 100;
+    return std::to_string(major) + "." + std::to_string(minor) + "."
+         + std::to_string(micro) + "." + std::to_string(patch);
 }

@@ -6,6 +6,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"
+#include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/JuMP/Optimizers_JuMP.h"
 
 #include <CLI/CLI.hpp>
@@ -46,8 +47,8 @@ void Arguments::print_versions() {
     std::cout << "-- Dependencies\n";
 
     std::cout << "--\tCplex: ";
-    if (false /* || idol::Optimizers::Cplex::is_available() */) {
-        //std::cout << "available (version " << idol::Optimizers::Cplex::get_version() << ")";
+    if (idol::Optimizers::Cplex::is_available()) {
+        std::cout << "available (version " << idol::Optimizers::Cplex::get_version() << ")";
     } else {
         std::cout << "not found";
     }

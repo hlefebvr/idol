@@ -23,6 +23,7 @@ class idol::Optimizers::Cplex : public OptimizerWithLazyUpdates<int, int, int, i
     CPXLPptr  m_model = nullptr;
     bool m_continuous_relaxation;
     unsigned int m_solution_index = 0;
+    bool m_has_quad_obj = false;
 
     [[nodiscard]] char cplex_var_type(int t_type) const;
     static char cplex_ctr_type(int t_type);
@@ -145,10 +146,19 @@ public:
     CPLEX_SYM_PTR(CPXsetdblparam);
     CPLEX_SYM_PTR(CPXwriteprob);
     CPLEX_SYM_PTR(CPXgeterrorstring);
+    CPLEX_SYM_PTR(CPXversionnumber);
     CPLEX_SYM_PTR(CPXgetsolnpoolnumsolns);
     CPLEX_SYM_PTR(CPXgetsolnpoolobjval);
     CPLEX_SYM_PTR(CPXgetsolnpoolx);
     CPLEX_SYM_PTR(CPXpopulate);
+    CPLEX_SYM_PTR(CPXaddsos);
+    CPLEX_SYM_PTR(CPXdelsos);
+    CPLEX_SYM_PTR(CPXgetnumsos);
+    CPLEX_SYM_PTR(CPXaddqconstr);
+    CPLEX_SYM_PTR(CPXdelqconstrs);
+    CPLEX_SYM_PTR(CPXgetnumqconstrs);
+    CPLEX_SYM_PTR(CPXcopyquad);
+    CPLEX_SYM_PTR(CPXqpopt);
 
     [[nodiscard]] bool is_available() const { return m_handle != nullptr; }
 

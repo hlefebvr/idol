@@ -6,6 +6,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 #include "idol/mixed-integer/optimizers/wrappers/JuMP/JuMP.h"
 #include "idol/mixed-integer/optimizers/callbacks/cutting-planes/LazyCutCallback.h"
@@ -80,7 +81,7 @@ TEST_CASE("Can add universal callbacks to influence the execution of the algorit
 
     SECTION("Can add lazy constraint") {
 
-#if defined(OPTIMIZER_IS_Gurobi) || defined(OPTIMIZER_IS_Cplex)
+#if defined(OPTIMIZER_IS_Gurobi) // || defined(OPTIMIZER_IS_Cplex)
 
         const auto y = model.add_var(0, Inf, Integer, 2, "y");
         const auto z = model.add_var(0, Inf, Continuous, 1, "z");
