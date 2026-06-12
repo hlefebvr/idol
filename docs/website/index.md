@@ -28,9 +28,9 @@
         <span style="display: block; padding-right: 20px;margin-top:15%;" class="fragment" id="cli">
 <!--
 ```shell 
-idol_cl solve bilevel model.mps \ 
+idol_cl bilevel solve model.mps \ 
     --aux follower.aux \
-    --method KKT-SOS1 \
+    --method KKT_SOS1 \
     --time-limit 300
 ```
 -->

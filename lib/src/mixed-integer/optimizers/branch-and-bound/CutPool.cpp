@@ -4,21 +4,30 @@
 #include <utility>
 
 #include "idol/mixed-integer/optimizers/branch-and-bound/CutPool.h"
+
+#include <complex>
+
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
 
-bool idol::CutPool::add_existing_cut_to_relaxation(const Ctr& t_cut, Model& t_relaxation) {
+bool idol::CutPool::add_existing_cut_to_relaxation(const Ctr& t_cut, Model& t_relaxation, bool t_force) {
 
-    // We only add the cut if it is sufficiently different from the others already in the relaxation
-    for (const auto& history : m_cuts_in_relaxation) {
-        if (std::abs(cosine(t_relaxation.env(), history.cut, t_cut)) > .95) {
-            return false;
+    auto& env = t_relaxation.env();
+    const double norm_squared = this->norm_squared(env, t_cut);
+
+    if (!t_force) {
+        // We only add the cut if it is sufficiently different from the others already in the relaxation
+        for (const auto& history : m_cuts_in_relaxation) {
+            // the following is equivalent to cosine(hstory.cut, t_cut) > m_max_cosine but faster
+            if (std::pow(dot(t_relaxation.env(), history.cut, t_cut), 2.) > std::pow(m_max_cosine, 2.) * history.norm_squared * norm_squared) {
+                return false;
+            }
         }
     }
 
     t_relaxation.add(t_cut);
-    m_cuts_in_relaxation.emplace_back(t_cut);
+    m_cuts_in_relaxation.emplace_back(t_cut, norm_squared);
 
     return true;
 }
@@ -47,9 +56,10 @@ unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t
     const auto& env = t_relaxation.env();
 
     for (auto& history : m_cuts_in_relaxation) {
-        const auto& version = env[history.cut];
+        //const auto& version = env[history.cut];
         history.age++;
-        history.n_active += equals(evaluate(version.lhs(), t_current_point), version.rhs(), t_tol_feasibility);
+        //history.n_active += equals(evaluate(version.lhs(), t_current_point), version.rhs(), t_tol_feasibility);
+        history.n_active += !is_zero(t_relaxation.get_ctr_dual(history.cut), Tolerance::Sparsity);
     }
 
     // Check if the current point violates a previously generated cut
@@ -70,16 +80,17 @@ unsigned int idol::CutPool::recycle(const PrimalPoint& t_current_point, Model& t
         }
         norm = std::sqrt(norm);
 
-        double effectiveness = (activity - version.rhs()) / norm;
-        if (version.type() == GreaterOrEqual) {
-            effectiveness *= -1.;
+        if (version.type() == LessOrEqual) {
+            if (activity - version.rhs() < .3 * norm) {
+                continue;
+            }
+        } else {
+            if (version.rhs() - activity < .3 * norm) {
+                continue;
+            }
         }
 
-        if (effectiveness < .3) {
-            continue;
-        }
-
-        result += add_existing_cut_to_relaxation(ctr, t_relaxation);
+        result += add_existing_cut_to_relaxation(ctr, t_relaxation, true);
 
     }
 
@@ -147,6 +158,38 @@ double idol::CutPool::cosine(const Env& t_env, const Ctr& t_cut1, const Ctr& t_c
     return result;
 }
 
-idol::CutPool::CutHistory::CutHistory(Ctr  t_cut) : cut(std::move(t_cut)) {
+double idol::CutPool::dot(const Env& t_env, const Ctr& t_cut1, const Ctr& t_cut2) {
+
+    double result = 0;
+
+    const auto& expr1 = t_env[t_cut1].lhs();
+    const auto& expr2 = t_env[t_cut2].lhs();
+
+    const auto* small = &expr1;
+    const auto* large = &expr2;
+
+    // iterate over the smaller map
+    if (expr1.size() > expr2.size()) {
+        small = &expr2;
+        large = &expr1;
+    }
+
+    for (const auto& [var, coeff] : *small) {
+        result += coeff * large->get(var);
+    }
+
+    return result;
+}
+
+double idol::CutPool::norm_squared(const Env& t_env, const Ctr& t_cut) {
+    double result = 0;
+    const auto& expr = t_env[t_cut].lhs();
+    for (const auto& [var, coeff] : expr) {
+        result += coeff * coeff;
+    }
+    return result;
+}
+
+idol::CutPool::CutHistory::CutHistory(Ctr t_cut, double t_norm_squared) : cut(std::move(t_cut)), norm_squared(t_norm_squared) {
 
 }

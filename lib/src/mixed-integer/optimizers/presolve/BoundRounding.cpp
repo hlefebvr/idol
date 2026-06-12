@@ -50,7 +50,7 @@ bool idol::Presolvers::BoundRounding::execute(Model& t_model) {
 void idol::Presolvers::BoundRounding::log_after_termination() const {
     AbstractPresolver::log_after_termination();
 
-    std::cout << "BoundRounding: " << m_n_total_changes;
+    std::cout << "Bound rounding: " << m_n_total_changes;
 }
 
 idol::Presolvers::AbstractPresolver* idol::Presolvers::BoundRounding::clone() const {

@@ -21,11 +21,15 @@ idol::Optimizer *idol::Gurobi::create(const Model &t_model) const {
         result->set_max_n_solution_in_pool(m_max_n_solution_in_pool.value());
     }
 
-    for (const auto [param, value] : m_int_params) {
+    if (!m_logs.value_or(false)) {
+        result->set_param("OutputFlag", 0);
+    }
+
+    for (const auto& [param, value] : m_int_params) {
         result->set_param(param, value);
     }
 
-    for (const auto [param, value] : m_double_params) {
+    for (const auto& [param, value] : m_double_params) {
         result->set_param(param, value);
     }
 

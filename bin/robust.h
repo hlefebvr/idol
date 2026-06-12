@@ -55,7 +55,7 @@ inline void robust(const Arguments& t_args) {
     }
 
     if (!model || !robust_description) {
-        std::cerr << "No robust model was given (please, provide at least: .lp/.mps, --aux and --unc)." << std::endl;
+        std::cerr << "No robust model was given (please, provide at least: .lp/.mps, --par and --unc)." << std::endl;
         exit(1);
     }
 

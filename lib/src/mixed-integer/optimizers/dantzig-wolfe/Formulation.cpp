@@ -308,10 +308,14 @@ double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_
 
     double result = 0.;
 
-    const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
+    const auto& generation_pattern = m_generation_patterns[t_sub_problem_id];
 
     for (const auto &[ctr, constant] : generation_pattern.linear()) {
-        result += evaluate(constant, t_generator) * -t_master_dual.get(ctr);
+        const double dual_val = t_master_dual.get(ctr);
+        if (is_zero(dual_val, Tolerance::Sparsity)) {
+            continue;
+        }
+        result += evaluate(constant, t_generator) * -dual_val;
     }
 
     result += evaluate(generation_pattern.constant(), t_generator);
@@ -326,10 +330,14 @@ idol::DantzigWolfe::Formulation::compute_sub_problem_objective(unsigned int t_su
                                                                bool t_use_farkas) const {
     AffExpr<Var> objective;
 
-    const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
+    const auto& generation_pattern = m_generation_patterns[t_sub_problem_id];
 
     for (const auto &[ctr, constant] : generation_pattern.linear()) {
-        objective += constant * -t_master_dual.get(ctr);
+        const double dual_val = t_master_dual.get(ctr);
+        if (is_zero(dual_val, Tolerance::Sparsity)) {
+            continue;
+        }
+        objective += constant * -dual_val;
     }
 
     if (!t_use_farkas) {
@@ -367,6 +375,22 @@ double idol::DantzigWolfe::Formulation::get_original_space_var_primal(const idol
 
     return result;
 
+}
+
+idol::PrimalPoint idol::DantzigWolfe::Formulation::build_original_space_solution(const PrimalPoint& t_master_primal) const {
+
+    PrimalPoint result = t_master_primal;
+
+    for (unsigned int sub_problem_id = 0 ; sub_problem_id < m_sub_problems.size(); ++sub_problem_id) {
+        for (const auto& [alpha, generator] : m_present_generators[sub_problem_id]) {
+            const double alpha_val = t_master_primal.get(alpha);
+            if (alpha_val > Tolerance::Sparsity) {
+                result += alpha_val * generator;
+            }
+        }
+    }
+
+    return result;
 }
 
 void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, double t_lb, bool t_hard, bool t_remove_infeasible_columns) {

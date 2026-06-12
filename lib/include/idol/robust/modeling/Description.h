@@ -75,7 +75,9 @@ public:
     };
 };
 
-std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description::View &t_view);
-std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description &t_description);
+namespace idol::Robust {
+    std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description::View &t_view);
+    std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description &t_description);
+}
 
 #endif //IDOL_DESCRIPTION_H

@@ -78,35 +78,66 @@ ENDATA
 To solve a given MILP stored in an `.lp` file, all you need to do is
 
 ```shell
-idol_cl solve milp model.lp
+idol_cl milp solve model.lp
 ```
 
 If you want to set a time limit and use a specific method, run
 
 ```shell
-idol_cl solve milp model.lp --time-limit 3600 --method GLPK
+idol_cl milp solve model.lp --time-limit 3600 --method GLPK
 ```
 
 To see which solution methods are available for a given problem, use the `list-methods` subcommand.
 
 ```shell
-idol_cl list milp model.lp
+idol_cl milp list model.lp
 ```
 
 **Sampled Output**:
 ```text 
--- No configuration file loaded
--- The main input file is model.lp
--- Detected: problem type is MILP
--- Detected: applicable methods are [GUROBI, CPLEX, HIGHS, GLPK, JUMP]
+╔════════════════════════════════════════╗
+║               idol 0.10.3              ║
+║    A C++ Framework for Optimization    ║
+║         by Henri Lefebvre, 2026        ║
+║     https://henrilefebvre.com/idol     ║
+╚════════════════════════════════════════╝
+-- No configuration file loaded.
+-- Problem type is MILP.
+-- Read main model from 10teams.mps.gz
 
-Details (all methods):
+Applicable Methods
+Gurobi
+Description: Gurobi Optimizer [https://www.gurobi.com/]
+Required Assumptions:
+ ✓ Requires Gurobi to be installed.
 
- - HIGHS: High Performance Software for Linear Optimization [https://highs.dev/]
- - JUMP: Calls the Julia package JuMP [https://jump.dev/]
- - GLPK: GLPK (GNU Linear Programming Kit) [https://www.gnu.org/software/glpk/]
- - CPLEX: IBM ILOG CPLEX Optimization Studio [https://www.ibm.com/fr-fr/products/ilog-cplex-optimization-studio]
- - GUROBI: Gurobi Optimizer [https://www.gurobi.com/]
+GLPK
+Description: GLPK (GNU Linear Programming Kit) [https://www.gnu.org/software/glpk/]
+Required Assumptions:
+ ✓ Requires GLPK to be installed.
+ ✓ Requires no SOS-type constraints.
+ ✓ Requires no quadratic constraints.
+ ✓ Requires a linear objective function.
+
+HiGHS
+Description: High Performance Software for Linear Optimization [https://highs.dev/]
+Required Assumptions:
+ ✓ Requires HiGHS to be installed.
+ ✓ Requires no SOS-type constraints.
+ ✓ Requires no quadratic constraints.
+ ✓ Requires a linear objective function.
+
+Other Methods
+Cplex
+Description: IBM ILOG CPLEX Optimization Studio [https://www.ibm.com/fr-fr/products/ilog-cplex-optimization-studio]
+Required Assumptions:
+ ✗ Requires Cplex to be installed.
+
+JuMP
+Description: Calls the Julia package JuMP [https://jump.dev/].
+Required Assumptions:
+ ✓ Requires JuMP to be installed.
+ ✗ Requires a JuMP Optimizer to be specified with --jump-optimizer.
 ```
 
 If no method is specified, `idol_cl` automatically selects a suitable solver
