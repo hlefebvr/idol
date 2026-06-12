@@ -25,6 +25,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     m_best_obj = +Inf;
     m_is_terminated = false;
     m_current_iteration_is_using_farkas = false;
+    m_numerical_policy = Default;
+    m_n_iterations_without_generating_column = 0;
     initialize_sub_problem_phases();
     m_parent.m_stabilization->initialize();
 
@@ -120,7 +122,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::update_sub_problems() {
 
     auto& formulation = m_parent.m_formulation;
-    auto dual_values = m_current_iteration_is_using_farkas ? m_last_master_solution.value() : m_parent.m_stabilization->compute_smoothed_dual_solution(m_last_master_solution.value());
+    auto dual_values = m_current_iteration_is_using_farkas || m_numerical_policy >= NoDualSmoothing ?
+        m_last_master_solution.value() :
+        m_parent.m_stabilization->compute_smoothed_dual_solution(m_last_master_solution.value());
 
     for (unsigned int i = 0, n = formulation.n_sub_problems() ; i < n ; ++i) {
         formulation.update_sub_problem_objective(i, dual_values, m_current_iteration_is_using_farkas);
@@ -297,7 +301,13 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
         return;
     }
 
-    m_solve_dual_master = at_least_one_column_have_been_generated;
+    if (at_least_one_column_have_been_generated) {
+        m_n_iterations_without_generating_column = 0;
+        m_solve_dual_master = true;
+    } else {
+        m_n_iterations_without_generating_column++;
+        m_solve_dual_master = false;
+    }
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::initialize_sub_problem_phases() {
@@ -337,6 +347,11 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_u
         return *primal_solution;
     };
 
+    // Check max iteration without generating column
+    if (m_n_iterations_without_generating_column >= m_max_n_iterations_without_generating_column) {
+        next_numerical_policy();
+    }
+
     // Check for cg being stuck
     bool is_stuck = false;
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
@@ -359,21 +374,47 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_u
             break;
         }
     }
+
     if (is_stuck) {
-        std::cout << "Warning: Column generation got stuck due to numerical trouble, cleaning column pool and restarting..." << std::endl;
-        for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-            formulation.clean_up(i, .0, get_master_primal(), false);
+        next_numerical_policy();
+    }
+
+    for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+        const auto& sub_problem_specifications = m_parent.m_sub_problem_specifications[i];
+        const auto& column_pool = formulation.column_pool(i);
+        const unsigned int threshold = sub_problem_specifications.column_pool_clean_up_threshold();
+        if (column_pool.size() >= threshold) {
+            const double ratio = sub_problem_specifications.column_pool_clean_up_ratio();
+            formulation.clean_up(i, ratio, get_master_primal(), true);
         }
-    } else {
+    }
+
+}
+
+void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::next_numerical_policy() {
+
+    if (m_numerical_policy == Failure) {
+        return;
+    }
+
+    m_numerical_policy = static_cast<NumericalPolicy>(m_numerical_policy + 1);
+    m_n_iterations_without_generating_column = 0;
+    m_solve_dual_master = true;
+
+    if (m_numerical_policy == ColumnPoolCleanUp) {
+        const unsigned int n_sub_problems = m_parent.m_formulation.n_sub_problems();
+        const auto& primals = save_primal(m_parent.m_formulation.master());
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-            const auto& sub_problem_specifications = m_parent.m_sub_problem_specifications[i];
-            const auto& column_pool = formulation.column_pool(i);
-            const unsigned int threshold = sub_problem_specifications.column_pool_clean_up_threshold();
-            if (column_pool.size() >= threshold) {
-                const double ratio = sub_problem_specifications.column_pool_clean_up_ratio();
-                formulation.clean_up(i, ratio, get_master_primal(), true);
-            }
+            m_parent.m_formulation.clean_up(i, .0, primals, false);
         }
+        return;
+    }
+
+    if (m_numerical_policy == Failure) {
+        m_status = Fail;
+        m_reason = Numerical;
+        m_is_terminated = true;
+        return;
     }
 
 }
