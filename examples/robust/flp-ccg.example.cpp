@@ -131,7 +131,7 @@ int main(int t_argc, const char** t_argv) {
     /**************************************************************/
 
     const auto mibs = Bilevel::MibS()
-            .with_cplex_for_feasibility(true)
+            .with_feasibility_checker(Gurobi())
             .with_logs(false)
             ;
 

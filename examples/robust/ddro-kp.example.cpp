@@ -6,7 +6,6 @@
 
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
-#include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/robust/modeling/Description.h"
 #include "idol/robust/optimizers/critical-value-column-and-constraint-generation/CriticalValueColumnAndConstraintGeneration.h"

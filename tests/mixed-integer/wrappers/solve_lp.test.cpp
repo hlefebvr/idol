@@ -7,7 +7,6 @@
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
-#include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/JuMP/JuMP.h"
 
 using namespace Catch::literals;
@@ -103,8 +102,7 @@ TEST_CASE("Can solve a feasible LP", "[LP]") {
     SECTION("Can write a model to a file and read it back") {
 
         if (!std::is_same_v<OPTIMIZER, Gurobi>
-            && !std::is_same_v<OPTIMIZER, GLPK>
-            && !std::is_same_v<OPTIMIZER, Cplex>) {
+            && !std::is_same_v<OPTIMIZER, GLPK>) {
 
             CHECK(false);
 

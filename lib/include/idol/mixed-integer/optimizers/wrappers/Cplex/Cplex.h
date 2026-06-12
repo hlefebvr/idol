@@ -1,5 +1,5 @@
 //
-// Created by henri on 07.04.25.
+// Created by Henri on 12/06/2026.
 //
 
 #ifndef IDOL_CPLEX_H
@@ -8,16 +8,8 @@
 #include "idol/general/optimizers/OptimizerFactory.h"
 #include <list>
 #include <memory>
-#include "idol/mixed-integer/optimizers/callbacks/CallbackFactory.h"
 #include "idol/general/utils/Map.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
-
-#ifdef IDOL_USE_CPLEX
-#include <ilcplex/ilocplex.h>
-#else
-// enum GRB_IntParam {};
-// enum GRB_DoubleParam {};
-#endif
 
 namespace idol {
     class Callback;
@@ -26,9 +18,10 @@ namespace idol {
 
 class idol::Cplex : public OptimizerFactoryWithDefaultParameters<Cplex> {
     std::optional<bool> m_continuous_relaxation;
-    std::optional<bool> m_lazy_cuts;
     std::optional<unsigned int> m_max_n_solution_in_pool;
-    std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
+
+    Map<int, int>    m_int_params;
+    Map<int, double> m_double_params;
 protected:
     [[nodiscard]] Optimizer *create(const Model &t_model) const override;
 public:
@@ -42,15 +35,10 @@ public:
 
     static Cplex ContinuousRelaxation();
 
-    Cplex& add_callback(const CallbackFactory& t_cb);
-
     Cplex& with_max_n_solution_in_pool(unsigned int t_value);
-
-    Cplex& with_lazy_cut(bool t_value);
-
     Cplex& with_continuous_relaxation_only(bool t_value);
-
-    static Model read_from_file(Env& t_env, const std::string& t_filename);
+    Cplex& with_external_param(int t_param, int t_value);
+    Cplex& with_external_param(int t_param, double t_value);
 
     [[nodiscard]] Cplex *clone() const override;
 };

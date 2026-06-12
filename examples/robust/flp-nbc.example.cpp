@@ -3,7 +3,6 @@
 //
 #include <iostream>
 #include "idol/modeling.h"
-#include "idol/bilevel/optimizers/BranchAndCut/BranchAndCut.h"
 #include "idol/bilevel/optimizers/KKT/KKT.h"
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
@@ -16,7 +15,7 @@
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/BigMFreeSeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/FeasibilitySeparation.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
-#include "idol/robust/optimizers/nested-branch-and-cut/BilevelBasedBranchAndBound.h"
+#include "idol/robust/optimizers/bilevel-based-branch-and-bound/MaxMinRelaxation.h"
 
 using namespace idol;
 
@@ -84,14 +83,13 @@ int main(int t_argc, const char** t_argv) {
         bilevel_description.make_lower_level(ctr);
     }
 
-    auto bilevel_bnc = Bilevel::BranchAndCut();
-    bilevel_bnc.with_sub_problem_optimizer(Gurobi());
-    bilevel_bnc.with_logs(true);
-
     auto mibs = Bilevel::MibS();
-    mibs.with_cplex_for_feasibility(true);
+    mibs.with_feasibility_checker(Gurobi());
 
-    auto nested_branch_and_cut = Robust::BilevelBasedBranchAndBound(robust_description, bilevel_description);
+    // TODO: define branch-and-bound algorithm
+
+    /*
+    auto nested_branch_and_cut = Robust::BBBB(robust_description, bilevel_description);
     nested_branch_and_cut.with_optimality_bilevel_optimizer(mibs);
     nested_branch_and_cut.with_logs(true);
 
@@ -121,7 +119,7 @@ int main(int t_argc, const char** t_argv) {
 
     std::cout << "Status: " << model.get_status() << std::endl;
     std::cout << "Objective: " << model.get_best_obj() << std::endl;
-
+    */
 
     return 0;
 }

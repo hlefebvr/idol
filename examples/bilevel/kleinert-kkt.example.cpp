@@ -10,7 +10,6 @@
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/modeling/models/KKT.h"
 #include "idol/bilevel/optimizers/KKT/KKT.h"
-#include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 
 using namespace idol;
 
@@ -74,7 +73,7 @@ int main(int t_argc, const char** t_argv) {
     MyBoundProvider bound_provider;
     auto single_level = Bilevel::KKT::make_model(high_point_relaxation, description, true);
     // auto single_level = Bilevel::KKT::make_model(high_point_relaxation, description, bound_provider);
-    single_level.use(Cplex());
+    single_level.use(Gurobi());
     single_level.optimize();
 
     /**

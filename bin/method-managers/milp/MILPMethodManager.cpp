@@ -9,7 +9,6 @@
 #include "HiGHS.h"
 #include "JuMP.h"
 #include "idol/general/utils/SilentMode.h"
-#include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"

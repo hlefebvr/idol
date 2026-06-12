@@ -235,16 +235,6 @@ add_library(idol STATIC
         include/idol/bilevel/optimizers/BilevelOptimizerInterface.h
         src/bilevel/optimizers/PessimisticAsOptimistic/Optimizers_PessimisticAsOptimistic.cpp
         include/idol/bilevel/optimizers/PessimisticAsOptimistic/Optimizers_PessimisticAsOptimistic.h
-        include/idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h
-        src/mixed-integer/optimizers/wrappers/Cplex/Cplex.cpp
-        include/idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h
-        src/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.cpp
-        include/idol/mixed-integer/optimizers/wrappers/Cplex/CplexCallbackI.h
-        src/mixed-integer/optimizers/wrappers/Cplex/CplexCallbackI.cpp
-        include/idol/bilevel/optimizers/BranchAndCut/BranchAndCut.h
-        include/idol/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.h
-        src/bilevel/optimizers/BranchAndCut/BranchAndCut.cpp
-        src/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.cpp
         include/idol/mixed-integer/modeling/constraints/SOSCtr.h
         include/idol/mixed-integer/modeling/constraints/SOSCtrVersion.h
         src/mixed-integer/modeling/constraints/SOSCtr.cpp
@@ -323,6 +313,11 @@ add_library(idol STATIC
         src/robust/optimizers/bilevel-based-branch-and-bound/Optimizers_MaxMinRelaxation.cpp
         include/idol/mixed-integer/optimizers/presolve/StandardScaling.h
         src/mixed-integer/optimizers/presolve/StandardScaling.cpp
+        include/idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h
+        include/idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h
+        include/idol/mixed-integer/optimizers/wrappers/Cplex/headers/header_cplex.h
+        src/mixed-integer/optimizers/wrappers/Cplex/Cplex.cpp
+        src/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)
@@ -378,24 +373,6 @@ if (${USE_ROBINHOOD})
     find_package(ROBINHOOD REQUIRED)
     target_link_libraries(idol PUBLIC robin_hood)
     target_compile_definitions(idol PUBLIC IDOL_USE_ROBINHOOD)
-
-endif()
-
-set(USE_CPLEX OFF CACHE BOOL "Build idol with CPLEX (https://www.ibm.com/analytics/cplex-optimizer)")
-set_DIR_variable(CPLEX)
-if ("${CPLEX_DIR}" STREQUAL "")
-    file(GLOB CPLEX_IN_OPT "/opt/ibm/ILOG/CPLEX_Studio*")
-    if(CPLEX_IN_OPT_LEN GREATER 0)
-        list(GET CPLEX_IN_OPT 0 CPLEX_IN_OPT)
-    endif ()
-    set(CPLEX_DIR "${CPLEX_IN_OPT}" CACHE STRING "Path to CPLEX" FORCE)
-endif()
-if (${USE_CPLEX})
-
-    find_package(CPLEX REQUIRED)
-    target_link_libraries(idol PUBLIC cplex)
-    target_compile_definitions(idol PUBLIC IDOL_USE_CPLEX)
-    list(APPEND AVAILABLE_MILP_SOLVERS "Cplex")
 
 endif()
 

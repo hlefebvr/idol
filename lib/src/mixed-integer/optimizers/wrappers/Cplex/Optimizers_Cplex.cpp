@@ -1,496 +1,700 @@
 //
-// Created by henri on 07.04.25.
+// Created by Henri on 12/06/2026.
 //
-#ifdef IDOL_USE_CPLEX
 
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
-#include "idol/mixed-integer/modeling/constraints/TempQCtr.h"
+#include "idol/general/utils/exceptions/Exception.h"
 
-#define CATCH_CPLEX(cmd) \
-try { \
-    cmd \
-} catch (IloException& error) { \
-    throw Exception("Cplex exception: " + std::string(error.getMessage()) ); \
+#include <dlfcn.h>
+#include <filesystem>
+#include <regex>
+
+#define CPLEX_ERR_BUF_SIZE 512
+
+#define CPLEX_CATCH(env, cmd)                                           \
+{                                                                       \
+    int _err = (lib.cmd);                                               \
+    if (_err) {                                                         \
+        char _buf[CPLEX_ERR_BUF_SIZE];                                  \
+        lib.CPXgeterrorstring(env, _err, _buf);                         \
+        throw Exception(std::string("CPLEX error [") + std::to_string(_err) + "]: " + _buf); \
+    }                                                                   \
 }
 
-IloNumVar::Type idol::Optimizers::Cplex::cplex_var_type(int t_type) {
+#define CPLEX_SYM_LOAD(name) {                                          \
+    name = (idol_##name##_t) dlsym(m_handle, #name);                    \
+    const char* _err = dlerror();                                        \
+    if (_err)                                                            \
+        throw std::runtime_error(std::string("Missing CPLEX symbol ") + #name + ": " + _err); \
+}
 
-    if (m_continuous_relaxation) {
-        return IloNumVar::Type::Float;
+std::unique_ptr<idol::Optimizers::Cplex::DynamicLib> idol::Optimizers::Cplex::m_dynamic_lib;
+
+// ---------------------------------------------------------------------------
+// DynamicLib
+// ---------------------------------------------------------------------------
+
+std::string idol::Optimizers::Cplex::DynamicLib::find_library() {
+
+    namespace fs = std::filesystem;
+
+    if (const char* env = std::getenv("IDOL_CPLEX_PATH")) {
+        std::string path(env);
+        if (fs::exists(path)) {
+            return path;
+        }
+        std::cerr << "WARNING: IDOL_CPLEX_PATH is set, but the file does not exist: " << path << std::endl;
     }
 
+    std::vector<fs::path> candidates;
+    if (const char* env = std::getenv("CPLEX_STUDIO_DIR")) {
+        const fs::path home(env);
+        std::vector<fs::path> subdirs = {
+            home / "cplex" / "bin" / "arm64_osx",
+            home / "cplex" / "bin" / "x86-64_linux",
+            home / "cplex" / "bin" / "x86-64_osx",
+            home / "cplex" / "lib" / "arm64_osx" / "static_pic",
+            home / "cplex" / "lib" / "x86-64_linux" / "static_pic",
+        };
+
+        for (const auto& lib_dir : subdirs) {
+            if (!fs::exists(lib_dir) || !fs::is_directory(lib_dir)) {
+                continue;
+            }
+
+#if defined(_WIN32)
+            std::regex pattern(R"(cplex\d+\.dll)", std::regex::icase);
+#elif defined(__APPLE__)
+            std::regex pattern(R"(libcplex\d+\.dylib)", std::regex::icase);
+#else
+            std::regex pattern(R"(libcplex\d+\.so(\.\d+)*)", std::regex::icase);
+#endif
+
+            for (const auto& entry : fs::directory_iterator(lib_dir)) {
+                if (!entry.is_regular_file()) continue;
+                const auto fname = entry.path().filename().string();
+                if (std::regex_match(fname, pattern)) {
+                    candidates.push_back(entry.path());
+                }
+            }
+        }
+    }
+
+    if (candidates.empty()) {
+        return "";
+    }
+
+    return *std::max_element(candidates.begin(), candidates.end(),
+        [](const fs::path& a, const fs::path& b) {
+            std::regex re(R"(\d+)");
+            std::smatch ma, mb;
+            std::string sa = a.filename().string();
+            std::string sb = b.filename().string();
+            std::regex_search(sa, ma, re);
+            std::regex_search(sb, mb, re);
+            return std::stoi(ma.str()) < std::stoi(mb.str());
+        });
+}
+
+idol::Optimizers::Cplex::DynamicLib::DynamicLib() {
+
+    const auto cplex_path = find_library();
+    if (cplex_path.empty()) {
+        return;
+    }
+
+    std::cout << "Load cplex from " << cplex_path << std::endl;
+    dlerror();
+    m_handle = dlopen(cplex_path.c_str(), RTLD_LAZY | RTLD_GLOBAL);
+    if (!m_handle) {
+        std::cerr << "WARNING: dlopen failed for CPLEX: " << dlerror() << std::endl;
+        return;
+    }
+
+    CPLEX_SYM_LOAD(CPXopenCPLEX);
+    CPLEX_SYM_LOAD(CPXcloseCPLEX);
+    CPLEX_SYM_LOAD(CPXcreateprob);
+    CPLEX_SYM_LOAD(CPXfreeprob);
+    CPLEX_SYM_LOAD(CPXaddcols);
+    CPLEX_SYM_LOAD(CPXaddrows);
+    CPLEX_SYM_LOAD(CPXchgbds);
+    CPLEX_SYM_LOAD(CPXchgctype);
+    CPLEX_SYM_LOAD(CPXchgobj);
+    CPLEX_SYM_LOAD(CPXchgobjoffset);
+    CPLEX_SYM_LOAD(CPXchgobjsen);
+    CPLEX_SYM_LOAD(CPXchgrhs);
+    CPLEX_SYM_LOAD(CPXchgsense);
+    CPLEX_SYM_LOAD(CPXchgcoef);
+    CPLEX_SYM_LOAD(CPXdelcols);
+    CPLEX_SYM_LOAD(CPXdelrows);
+    CPLEX_SYM_LOAD(CPXlpopt);
+    CPLEX_SYM_LOAD(CPXmipopt);
+    CPLEX_SYM_LOAD(CPXgetstat);
+    CPLEX_SYM_LOAD(CPXgetobjsen);
+    CPLEX_SYM_LOAD(CPXgetobjval);
+    CPLEX_SYM_LOAD(CPXgetbestobjval);
+    CPLEX_SYM_LOAD(CPXgetmiprelgap);
+    CPLEX_SYM_LOAD(CPXgetx);
+    CPLEX_SYM_LOAD(CPXgetpi);
+    CPLEX_SYM_LOAD(CPXgetdj);
+    CPLEX_SYM_LOAD(CPXgetray);
+    CPLEX_SYM_LOAD(CPXdualfarkas);
+    CPLEX_SYM_LOAD(CPXgetnumcols);
+    CPLEX_SYM_LOAD(CPXgetnumrows);
+    CPLEX_SYM_LOAD(CPXsetintparam);
+    CPLEX_SYM_LOAD(CPXsetdblparam);
+    CPLEX_SYM_LOAD(CPXwriteprob);
+    CPLEX_SYM_LOAD(CPXgeterrorstring);
+    CPLEX_SYM_LOAD(CPXgetsolnpoolnumsolns);
+    CPLEX_SYM_LOAD(CPXgetsolnpoolobjval);
+    CPLEX_SYM_LOAD(CPXgetsolnpoolx);
+    CPLEX_SYM_LOAD(CPXpopulate);
+}
+
+idol::Optimizers::Cplex::DynamicLib::~DynamicLib() {
+    if (m_handle) {
+        dlclose(m_handle);
+    }
+}
+
+idol::Optimizers::Cplex::DynamicLib& idol::Optimizers::Cplex::get_dynamic_lib(bool t_load_library) {
+    if (!m_dynamic_lib) {
+        m_dynamic_lib = std::make_unique<DynamicLib>();
+    }
+    if (t_load_library && !m_dynamic_lib->is_available()) {
+        throw Exception("CPLEX library is not available");
+    }
+    return *m_dynamic_lib;
+}
+
+// ---------------------------------------------------------------------------
+// Conversion helpers
+// ---------------------------------------------------------------------------
+
+char idol::Optimizers::Cplex::cplex_var_type(int t_type) const {
+    if (m_continuous_relaxation) return idol_CPX_CONTINUOUS;
     switch (t_type) {
-        case Continuous: return IloNumVar::Type::Float;
-        case Integer: return IloNumVar::Type::Int;
-        case Binary: return IloNumVar::Type::Bool;
+        case Continuous: return idol_CPX_CONTINUOUS;
+        case Integer:    return idol_CPX_INTEGER;
+        case Binary:     return idol_CPX_BINARY;
         default:;
     }
     throw Exception("Unsupported variable type: " + std::to_string(t_type));
 }
 
+char idol::Optimizers::Cplex::cplex_ctr_type(int t_type) {
+    switch (t_type) {
+        case Equal:          return 'E';
+        case LessOrEqual:    return 'L';
+        case GreaterOrEqual: return 'G';
+        default:;
+    }
+    throw Exception("Unsupported constraint type: " + std::to_string(t_type));
+}
+
+int idol::Optimizers::Cplex::cplex_obj_sense(int t_sense) {
+    switch (t_sense) {
+        case Minimize: return idol_CPX_MIN;
+        case Maximize: return idol_CPX_MAX;
+        default:;
+    }
+    throw Exception("Unsupported objective sense: " + std::to_string(t_sense));
+}
+
 double idol::Optimizers::Cplex::cplex_numeric(double t_value) {
-    if (is_pos_inf(t_value)) { return IloGetInfinity(); }
-    if (is_neg_inf(t_value)) { return -IloGetInfinity(); }
+    if (is_pos_inf(t_value)) return  idol_CPX_INFBOUND;
+    if (is_neg_inf(t_value)) return -idol_CPX_INFBOUND;
     return t_value;
 }
 
-idol::Optimizers::Cplex::Cplex(const Model &t_model, bool t_continuous_relaxation)
-        : OptimizerWithLazyUpdates(t_model),
-          m_continuous_relaxation(t_continuous_relaxation),
-          m_model(m_env),
-          m_objective(m_env),
-          m_cplex(m_model) {
-
-    /*
-    // Parameters
-    m_cplex.setParam(IloCplex::Param::MIP::Display, ((int) get_param_logs()) * 4);
-    m_cplex.setParam(IloCplex::Param::MIP::Limits::LowerObjStop, get_param_best_obj_stop());
-    m_cplex.setParam(IloCplex::Param::MIP::Limits::UpperObjStop, get_param_best_bound_stop());
-    m_cplex.setParam(IloCplex::Param::TimeLimit, std::min(1e+75, get_param_time_limit()));
-    m_cplex.setParam(IloCplex::Param::Preprocessing::Presolve, get_param_presolve());
-    m_cplex.setParam(IloCplex::Param::Threads, (int) get_param_thread_limit());
-    m_cplex.setParam(IloCplex::Param::MIP::Limits::RepairTries, get_param_infeasible_or_unbounded_info());
-
-    // Tolerances
-    m_cplex.setParam(IloCplex::Param::MIP::Tolerances::MIPGap, get_tol_mip_relative_gap());
-    m_cplex.setParam(IloCplex::Param::MIP::Tolerances::AbsMIPGap, get_tol_mip_absolute_gap());
-    m_cplex.setParam(IloCplex::Param::MIP::Tolerances::Integrality, get_tol_integer());
-    m_cplex.setParam(IloCplex::Param::Simplex::Tolerances::Feasibility, get_tol_feasibility());
-    m_cplex.setParam(IloCplex::Param::Simplex::Tolerances::Optimality, get_tol_optimality());
-    */
-
-    m_model.add(m_objective);
-
+std::pair<idol::SolutionStatus, idol::SolutionReason>
+idol::Optimizers::Cplex::cplex_status(int t_status) const {
+    switch (t_status) {
+        // LP
+        case idol_CPX_STAT_OPTIMAL:        return { Optimal,    Proved };
+        case idol_CPX_STAT_OPTIMAL_INFEAS: return { SubOptimal, Proved };
+        case idol_CPX_STAT_INFEASIBLE:     return { Infeasible, Proved };
+        case idol_CPX_STAT_UNBOUNDED:      return { Unbounded,  Proved };
+        case idol_CPX_STAT_INForUNBD:      return { InfOrUnbnd, Proved };
+        case idol_CPX_STAT_FEASIBLE:       return { Feasible,   NotSpecified };
+        case idol_CPX_STAT_NUM_BEST:       return { Fail,       NotSpecified };
+        case idol_CPX_STAT_ABORT_TIME_LIM: return { Infeasible, TimeLimit };
+        case idol_CPX_STAT_ABORT_OBJ_LIM:
+        case idol_CPX_STAT_ABORT_DUAL_OBJ_LIM:
+        case idol_CPX_STAT_ABORT_PRIM_OBJ_LIM: return { Feasible, ObjLimit };
+        // MIP
+        case idol_CPXMIP_OPTIMAL:          return { Optimal,    Proved };
+        case idol_CPXMIP_OPTIMAL_TOL:      return { Optimal,    Proved };
+        case idol_CPXMIP_OPTIMAL_INFEAS:   return { SubOptimal, Proved };
+        case idol_CPXMIP_INFEASIBLE:       return { Infeasible, Proved };
+        case idol_CPXMIP_UNBOUNDED:        return { Unbounded,  Proved };
+        case idol_CPXMIP_INForUNBD:        return { InfOrUnbnd, Proved };
+        case idol_CPXMIP_SOL_LIM:          return { Feasible,   SolutionLimit };
+        case idol_CPXMIP_TIME_LIM_FEAS:    return { Feasible,   TimeLimit };
+        case idol_CPXMIP_TIME_LIM_INFEAS:  return { Infeasible, TimeLimit };
+        case idol_CPXMIP_NODE_LIM_FEAS:    return { Feasible,   NotSpecified };
+        case idol_CPXMIP_NODE_LIM_INFEAS:  return { Infeasible, NotSpecified };
+        case idol_CPXMIP_FEASIBLE:         return { Feasible,   NotSpecified };
+        case idol_CPXMIP_FAIL_FEAS:
+        case idol_CPXMIP_FAIL_FEAS_NO_TREE:
+        case idol_CPXMIP_MEM_LIM_FEAS:
+        case idol_CPXMIP_ABORT_FEAS:       return { Feasible,   NotSpecified };
+        case idol_CPXMIP_FAIL_INFEAS:
+        case idol_CPXMIP_FAIL_INFEAS_NO_TREE:
+        case idol_CPXMIP_MEM_LIM_INFEAS:
+        case idol_CPXMIP_ABORT_INFEAS:     return { Infeasible, NotSpecified };
+        default:;
+    }
+    throw Exception("Unsupported CPLEX status: " + std::to_string(t_status));
 }
+
+// ---------------------------------------------------------------------------
+// Constructor / Destructor
+// ---------------------------------------------------------------------------
+
+idol::Optimizers::Cplex::Cplex(const Model& t_model, bool t_continuous_relaxation)
+    : OptimizerWithLazyUpdates(t_model),
+      m_continuous_relaxation(t_continuous_relaxation) {
+
+    auto& lib = get_dynamic_lib();
+
+    int status = 0;
+    m_env = lib.CPXopenCPLEX(&status);
+    if (!m_env || status) {
+        throw Exception("Could not open CPLEX environment.");
+    }
+
+    m_model = lib.CPXcreateprob(m_env, &status, "idol-model");
+    if (!m_model || status) {
+        lib.CPXcloseCPLEX(&m_env);
+        throw Exception("Could not create CPLEX problem.");
+    }
+}
+
+idol::Optimizers::Cplex::~Cplex() {
+    auto& lib = get_dynamic_lib();
+    if (m_model) {
+        lib.CPXfreeprob(m_env, &m_model);
+        m_model = nullptr;
+    }
+    if (m_env) {
+        lib.CPXcloseCPLEX(&m_env);
+        m_env = nullptr;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Build / Optimize / Write
+// ---------------------------------------------------------------------------
 
 void idol::Optimizers::Cplex::hook_build() {
-
-    const auto& model = parent();
-    const auto& objective = model.get_obj_expr();
-
-    if (!objective.has_quadratic()) {
-        hook_update_objective_sense();
-        update_objective_constant();
-        set_objective_as_updated();
-    }
-
+    hook_update_objective_sense();
+    set_objective_as_updated();
     set_rhs_as_updated();
-
 }
 
-IloNumVar idol::Optimizers::Cplex::hook_add(const Var& t_var, bool t_add_column) {
+void idol::Optimizers::Cplex::hook_optimize() {
+    set_solution_index(0);
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
-    const auto& column = model.get_var_column(t_var);
-    const auto lb = cplex_numeric(model.get_var_lb(t_var));
-    const auto ub = cplex_numeric(model.get_var_ub(t_var));
-    const auto objective = cplex_numeric(model.get_var_obj(t_var));
+
+    // Determine if the problem has any integer/binary variables
+    bool has_integers = false;
+    if (!m_continuous_relaxation) {
+        for (const auto& var : model.vars()) {
+            const auto type = model.get_var_type(var);
+            if (type == Integer || type == Binary) {
+                has_integers = true;
+                break;
+            }
+        }
+    }
+
+    if (has_integers) {
+        CPLEX_CATCH(m_env, CPXmipopt(m_env, m_model));
+    } else {
+        CPLEX_CATCH(m_env, CPXlpopt(m_env, m_model));
+    }
+}
+
+void idol::Optimizers::Cplex::hook_write(const std::string& t_name) {
+    auto& lib = get_dynamic_lib();
+    CPLEX_CATCH(m_env, CPXwriteprob(m_env, m_model, t_name.c_str(), nullptr));
+}
+
+// ---------------------------------------------------------------------------
+// hook_add
+// ---------------------------------------------------------------------------
+
+int idol::Optimizers::Cplex::hook_add(const Var& t_var, bool t_add_column) {
+
+    auto& lib = get_dynamic_lib();
+    const auto& model = parent();
+    const auto lb  = cplex_numeric(model.get_var_lb(t_var));
+    const auto ub  = cplex_numeric(model.get_var_ub(t_var));
+    const auto obj = model.get_var_obj(t_var);
     const auto type = cplex_var_type(model.get_var_type(t_var));
     const auto& name = t_var.name();
+    char* cname = const_cast<char*>(name.c_str());
 
-    IloNumColumn col(m_env);
+    // Column is appended at position n_cols
+    const int col_index = lib.CPXgetnumcols(m_env, m_model);
+
+    double zero_obj = obj;
+    int    empty_beg = 0;
+
+    CPLEX_CATCH(m_env, CPXaddcols(m_env, m_model, 1, 0,
+        &zero_obj, &empty_beg, nullptr, nullptr,
+        &lb, &ub, &cname));
+
+    // Set variable type for MIP
+    if (type != idol_CPX_CONTINUOUS) {
+        CPLEX_CATCH(m_env, CPXchgctype(m_env, m_model, 1, &col_index, &type));
+    }
+
+    // Fill in column coefficients for existing constraints
     if (t_add_column) {
-
-        for (const auto& [ctr, constant] : column) {
-
-            if (!has_lazy(ctr)) { // if the constraint has no lazy, it will be created right after
-                continue;
-            }
-
-            auto& impl = lazy(ctr).impl();
-
-            col += impl(constant);
-
+        const auto& column = model.get_var_column(t_var);
+        for (const auto& [ctr, coeff] : column) {
+            if (!has_lazy(ctr)) continue;
+            const int row_idx = lazy(ctr).impl();
+            CPLEX_CATCH(m_env, CPXchgcoef(m_env, m_model, row_idx, col_index, cplex_numeric(coeff)));
         }
-
     }
 
-    IloNumVar var(col,lb, ub, type, name.c_str());
-    m_model.add(var);
-    m_objective.setLinearCoef(var, cplex_numeric(objective));
-    return var;
+    return col_index;
 }
 
-IloRange idol::Optimizers::Cplex::hook_add(const Ctr& t_ctr) {
+int idol::Optimizers::Cplex::hook_add(const Ctr& t_ctr) {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
-    const auto& row = model.get_ctr_row(t_ctr);
-    const auto type = model.get_ctr_type(t_ctr);
-    const auto rhs = cplex_numeric(model.get_ctr_rhs(t_ctr));
-    const auto& name = t_ctr.name();
+    const auto& row  = model.get_ctr_row(t_ctr);
+    const char  sense = cplex_ctr_type(model.get_ctr_type(t_ctr));
+    const double rhs  = cplex_numeric(model.get_ctr_rhs(t_ctr));
+    const auto& name  = t_ctr.name();
+    char* rname = const_cast<char*>(name.c_str());
 
-    double lb = -IloInfinity, ub = IloInfinity;
-    switch (type) {
-        case Equal:
-            lb = rhs;
-            ub = rhs;
-            break;
-        case LessOrEqual:
-            lb = -IloInfinity;
-            ub = rhs;
-            break;
-        case GreaterOrEqual:
-            lb = rhs;
-            ub = IloInfinity;
-            break;
-        default:
-            throw Exception("Unsupported constraint type: " + std::to_string(type));
+    const int row_index = lib.CPXgetnumrows(m_env, m_model);
+
+    std::vector<int>    cols;
+    std::vector<double> vals;
+    cols.reserve(row.size());
+    vals.reserve(row.size());
+
+    for (const auto& [var, coeff] : row) {
+        cols.push_back(lazy(var).impl());
+        vals.push_back(cplex_numeric(coeff));
     }
 
-    IloNumExpr expr(m_env);
-    const unsigned int n = row.size();
-    for (const auto &[var, constant]: row) {
-        expr += cplex_numeric(constant) * lazy(var).impl();
-    }
+    int beg = 0;
+    int nz  = (int) cols.size();
 
-    IloRange ctr(m_env, lb, expr, ub, name.c_str());
-    m_model.add(ctr);
-    return ctr;
+    CPLEX_CATCH(m_env, CPXaddrows(m_env, m_model,
+        0, 1, nz,
+        &rhs, &sense,
+        &beg, cols.data(), vals.data(),
+        nullptr, &rname));
+
+    return row_index;
 }
 
-IloRange idol::Optimizers::Cplex::hook_add(const idol::QCtr &t_ctr) {
-
-    const auto& model = parent();
-    const auto& expr = model.get_qctr_expr(t_ctr);
-    const auto type = model.get_qctr_type(t_ctr);
-    const auto& name = t_ctr.name();
-
-    double lb = -IloInfinity, ub = IloInfinity;
-    switch (type) {
-        case Equal:
-            lb = 0;
-            ub = 0;
-            break;
-        case LessOrEqual:
-            lb = -IloInfinity;
-            ub = 0;
-            break;
-        case GreaterOrEqual:
-            lb = 0;
-            ub = IloInfinity;
-            break;
-        default:
-            throw Exception("Unsupported constraint type: " + std::to_string(type));
-    }
-
-    IloNumExpr quad_expr(m_env);
-    quad_expr += cplex_numeric(expr.affine().constant());
-
-    for (const auto& [var, constant]: expr.affine().linear()) {
-        quad_expr += cplex_numeric(constant) * lazy(var).impl();
-    }
-
-    for (const auto& [pair, constant]: expr) {
-        quad_expr += cplex_numeric(constant) * lazy(pair.first).impl() * lazy(pair.second).impl();
-    }
-
-    IloRange ctr(m_env, lb, quad_expr, ub, name.c_str());
-    m_model.add(ctr);
-    return ctr;
+int idol::Optimizers::Cplex::hook_add(const QCtr& /*t_ctr*/) {
+    throw Exception("CPLEX wrapper: quadratic constraints are not supported.");
 }
+
+int idol::Optimizers::Cplex::hook_add(const SOSCtr& /*t_ctr*/) {
+    throw Exception("CPLEX wrapper: SOS constraints are not yet supported.");
+}
+
+// ---------------------------------------------------------------------------
+// hook_update (individual objects)
+// ---------------------------------------------------------------------------
 
 void idol::Optimizers::Cplex::hook_update(const Var& t_var) {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
-    auto& impl = lazy(t_var).impl();
-    const double lb = cplex_numeric(model.get_var_lb(t_var));
-    const double ub = cplex_numeric(model.get_var_ub(t_var));
-    const int type = model.get_var_type(t_var);
+    const int index = lazy(t_var).impl();
+
+    const double lb  = cplex_numeric(model.get_var_lb(t_var));
+    const double ub  = cplex_numeric(model.get_var_ub(t_var));
     const double obj = cplex_numeric(model.get_var_obj(t_var));
+    const char   type = cplex_var_type(model.get_var_type(t_var));
 
-    impl.setBounds(lb, ub);
-    // m_model.add(IloConversion(env, impl, cplex_var_type(type)));
-    std::cerr << "WARNING: conversion is not implemented" << std::endl;
-    m_objective.setLinearCoef(impl, cplex_numeric(obj));
+    const char lb_flag = idol_CPX_LOWER;
+    const char ub_flag = idol_CPX_UPPER;
 
+    CPLEX_CATCH(m_env, CPXchgbds(m_env, m_model, 1, &index, &lb_flag, &lb));
+    CPLEX_CATCH(m_env, CPXchgbds(m_env, m_model, 1, &index, &ub_flag, &ub));
+    CPLEX_CATCH(m_env, CPXchgobj(m_env, m_model, 1, &index, &obj));
+
+    if (!m_continuous_relaxation) {
+        CPLEX_CATCH(m_env, CPXchgctype(m_env, m_model, 1, &index, &type));
+    }
 }
 
 void idol::Optimizers::Cplex::hook_update(const Ctr& t_ctr) {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
-    auto& impl = lazy(t_ctr).impl();
+    const int   index = lazy(t_ctr).impl();
+    const double rhs  = cplex_numeric(model.get_ctr_rhs(t_ctr));
+    const char   sense = cplex_ctr_type(model.get_ctr_type(t_ctr));
 
-    const auto& rhs = model.get_ctr_rhs(t_ctr);
-    const auto type = model.get_ctr_type(t_ctr);
+    CPLEX_CATCH(m_env, CPXchgrhs   (m_env, m_model, 1, &index, &rhs));
+    CPLEX_CATCH(m_env, CPXchgsense (m_env, m_model, 1, &index, &sense));
+}
 
-    double lb = -IloInfinity, ub = IloInfinity;
-    switch (type) {
-        case Equal:
-            lb = rhs;
-            ub = rhs;
-            break;
-        case LessOrEqual:
-            lb = -IloInfinity;
-            ub = rhs;
-            break;
-        case GreaterOrEqual:
-            lb = rhs;
-            ub = IloInfinity;
-            break;
-        default:
-            throw Exception("Unsupported constraint type: " + std::to_string(type));
-    }
+// ---------------------------------------------------------------------------
+// hook_update (bulk)
+// ---------------------------------------------------------------------------
 
-    impl.setBounds(lb, ub);
-
+void idol::Optimizers::Cplex::hook_update_objective_sense() {
+    auto& lib = get_dynamic_lib();
+    const int sense = cplex_obj_sense(parent().get_obj_sense());
+    CPLEX_CATCH(m_env, CPXchgobjsen(m_env, m_model, sense));
 }
 
 void idol::Optimizers::Cplex::hook_update_objective() {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
     const auto& objective = model.get_obj_expr();
-    const auto sense = model.get_obj_sense();
 
-    IloNumExpr expr(m_env);
-    expr += cplex_numeric(objective.affine().constant());
-
-    for (const auto& [var, constant] : objective.affine().linear()) {
-        expr += cplex_numeric(constant) * lazy(var).impl();
+    if (objective.has_quadratic()) {
+        throw Exception("CPLEX wrapper: quadratic objectives are not supported.");
     }
 
-    for (const auto& [pair, constant] : objective) {
-        expr += cplex_numeric(constant) * lazy(pair.first).impl() * lazy(pair.second).impl();
+    const auto& linear_terms = objective.affine().linear();
+    const int n = lib.CPXgetnumcols(m_env, m_model);
+
+    // Zero out all existing objective coefficients then set new ones
+    std::vector<int>    indices(n);
+    std::vector<double> zeros(n, 0.0);
+    for (int j = 0; j < n; ++j) indices[j] = j;
+    CPLEX_CATCH(m_env, CPXchgobj(m_env, m_model, n, indices.data(), zeros.data()));
+
+    for (const auto& [var, coeff] : linear_terms) {
+        const int j = lazy(var).impl();
+        const double v = cplex_numeric(coeff);
+        CPLEX_CATCH(m_env, CPXchgobj(m_env, m_model, 1, &j, &v));
     }
 
-    auto cplex_objective = m_objective;
-    cplex_objective.setExpr(expr);
-    cplex_objective.setSense(sense == Minimize ? IloObjective::Minimize : IloObjective::Maximize);
+    const double constant = cplex_numeric(objective.affine().constant());
+    CPLEX_CATCH(m_env, CPXchgobjoffset(m_env, m_model, constant));
+
+    hook_update_objective_sense();
 }
 
 void idol::Optimizers::Cplex::hook_update_rhs() {
 
+    auto& lib = get_dynamic_lib();
     const auto& model = parent();
 
     for (const auto& ctr : model.ctrs()) {
-        hook_update(ctr);
+        const int   index = lazy(ctr).impl();
+        const double rhs  = cplex_numeric(model.get_ctr_rhs(ctr));
+        CPLEX_CATCH(m_env, CPXchgrhs(m_env, m_model, 1, &index, &rhs));
     }
-
 }
+
+void idol::Optimizers::Cplex::hook_update_matrix(const Ctr& t_ctr, const Var& t_var, double t_constant) {
+    auto& lib = get_dynamic_lib();
+    const int row = lazy(t_ctr).impl();
+    const int col = lazy(t_var).impl();
+    CPLEX_CATCH(m_env, CPXchgcoef(m_env, m_model, row, col, cplex_numeric(t_constant)));
+}
+
+void idol::Optimizers::Cplex::hook_update() {
+    // CPLEX C API applies changes immediately; no explicit flush needed.
+}
+
+// ---------------------------------------------------------------------------
+// hook_remove
+// ---------------------------------------------------------------------------
 
 void idol::Optimizers::Cplex::hook_remove(const Var& t_var) {
 
-    auto impl = lazy(t_var).impl();
-    m_model.remove(impl);
-    impl.end();
+    auto& lib = get_dynamic_lib();
+    const int index = lazy(t_var).impl();
+    CPLEX_CATCH(m_env, CPXdelcols(m_env, m_model, index, index));
 
+    for (auto& lz : lazy_vars()) {
+        if (!lz.has_impl()) continue;
+        if (lz.impl() > index) lz.impl()--;
+    }
 }
 
 void idol::Optimizers::Cplex::hook_remove(const Ctr& t_ctr) {
 
-    auto impl = lazy(t_ctr).impl();
-    m_model.remove(impl);
-    impl.end();
+    auto& lib = get_dynamic_lib();
+    const int index = lazy(t_ctr).impl();
+    CPLEX_CATCH(m_env, CPXdelrows(m_env, m_model, index, index));
 
-}
-
-void idol::Optimizers::Cplex::hook_optimize() {
-
-    set_solution_index(0);
-    CATCH_CPLEX(m_cplex.solve();)
-
-    if (get_param_infeasible_or_unbounded_info()) {
-        auto status = get_status();
-
-        if (status == InfOrUnbnd) {
-            const auto presolve = m_cplex.getParam(IloCplex::Param::Preprocessing::Presolve);
-            if (presolve == true) {
-                m_cplex.setParam(IloCplex::Param::Preprocessing::Presolve, false);
-                m_cplex.solve();
-                m_cplex.setParam(IloCplex::Param::Preprocessing::Presolve, true);
-                status = get_status();
-            }
-        }
-
-        if (status == Infeasible) {
-            //save_farkas();
-            std::cerr << "WARNING: infeasibility certificate is not implemented" << std::endl;
-        } else if (status == Unbounded) {
-            //save_ray();
-            std::cerr << "WARNING: unbounded ray is not implemented" << std::endl;
-        }
-    }
-
-}
-
-void idol::Optimizers::Cplex::hook_write(const std::string &t_name) {
-    m_cplex.exportModel(t_name.c_str());
-}
-
-void idol::Optimizers::Cplex::hook_update_objective_sense() {
-    const auto sense = parent().get_obj_sense();
-    m_objective.setSense(sense == Minimize ? IloObjective::Minimize : IloObjective::Maximize);
-}
-
-void idol::Optimizers::Cplex::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
-
-    const auto& var_impl = lazy(t_var).impl();
-    const auto& ctr_impl = lazy(t_ctr).impl();
-
-    throw Exception("Not implemented");
-
-}
-
-void idol::Optimizers::Cplex::hook_update() {
-
-}
-
-void idol::Optimizers::Cplex::set_param_time_limit(double t_time_limit) {
-    m_cplex.setParam(IloCplex::Param::TimeLimit, std::min(t_time_limit, 1e+75));
-    Optimizer::set_param_time_limit(t_time_limit);
-}
-
-void idol::Optimizers::Cplex::set_param_threads(unsigned int t_thread_limit) {
-    m_cplex.setParam(IloCplex::Param::Threads, (int) t_thread_limit);
-    Optimizer::set_param_threads(t_thread_limit);
-}
-
-void idol::Optimizers::Cplex::set_param_best_obj_stop(double t_best_obj_stop) {
-    m_cplex.setParam(IloCplex::Param::MIP::Limits::LowerObjStop, t_best_obj_stop);
-    Optimizer::set_param_best_obj_stop(t_best_obj_stop);
-}
-
-void idol::Optimizers::Cplex::set_param_best_bound_stop(double t_best_bound_stop) {
-    m_cplex.setParam(IloCplex::Param::MIP::Limits::UpperObjStop, t_best_bound_stop);
-    Optimizer::set_param_best_bound_stop(t_best_bound_stop);
-}
-
-void idol::Optimizers::Cplex::set_param_presolve(bool t_value) {
-    m_cplex.setParam(IloCplex::Param::Preprocessing::Presolve, t_value);
-    Optimizer::set_param_presolve(t_value);
-}
-
-void idol::Optimizers::Cplex::set_param_infeasible_or_unbounded_info(bool t_value) {
-    Optimizer::set_param_infeasible_or_unbounded_info(t_value);
-}
-
-void idol::Optimizers::Cplex::add_callback(Callback *t_ptr_to_callback) {
-    create_callback_if_not_exists();
-    m_cplex_callback->add_callback(t_ptr_to_callback);
-}
-
-void idol::Optimizers::Cplex::set_lazy_cuts(bool t_lazy_cut) {
-    m_lazy_cut = t_lazy_cut;
-    if (m_lazy_cut) {
-        create_callback_if_not_exists();
-        m_cplex.use(m_cplex_callback->create_lazy_constraint_callback());
+    for (auto& lz : lazy_ctrs()) {
+        if (!lz.has_impl()) continue;
+        if (lz.impl() > index) lz.impl()--;
     }
 }
+
+void idol::Optimizers::Cplex::hook_remove(const QCtr& /*t_ctr*/) {
+    throw Exception("CPLEX wrapper: quadratic constraints are not supported.");
+}
+
+void idol::Optimizers::Cplex::hook_remove(const SOSCtr& /*t_ctr*/) {
+    throw Exception("CPLEX wrapper: SOS constraints are not yet supported.");
+}
+
+// ---------------------------------------------------------------------------
+// Solution query
+// ---------------------------------------------------------------------------
 
 idol::SolutionStatus idol::Optimizers::Cplex::get_status() const {
-    const auto status = m_cplex.getStatus();
-    switch (status) {
-        case IloAlgorithm::Unknown: return SolutionStatus::Fail;
-        case IloAlgorithm::Feasible: return SolutionStatus::Feasible;
-        case IloAlgorithm::Optimal: return SolutionStatus::Optimal;
-        case IloAlgorithm::Infeasible: return SolutionStatus::Infeasible;
-        case IloAlgorithm::Unbounded: return SolutionStatus::Unbounded;
-        case IloAlgorithm::InfeasibleOrUnbounded: return SolutionStatus::InfOrUnbnd;
-        case IloAlgorithm::Error: return SolutionStatus::Fail;
-        // case IloAlgorithm::Bounded: return SolutionStatus::SubOptimal;
-        default: throw Exception("Unknown status: " + std::to_string(status));
-    }
+    auto& lib = get_dynamic_lib();
+    const int status = lib.CPXgetstat(m_env, m_model);
+    return cplex_status(status).first;
 }
 
 idol::SolutionReason idol::Optimizers::Cplex::get_reason() const {
-    const auto status = m_cplex.getCplexStatus();
-    switch (status) {
-        case IloCplex::Optimal: [[fallthrough]];
-        case IloCplex::Unbounded: [[fallthrough]];
-        case IloCplex::Infeasible: [[fallthrough]];
-        case IloCplex::InfOrUnbd: return SolutionReason::Proved;
-        case IloCplex::AbortObjLim: [[fallthrough]];
-        case IloCplex::AbortPrimObjLim: [[fallthrough]];
-        case IloCplex::AbortDualObjLim: return SolutionReason::ObjLimit;
-        case IloCplex::AbortItLim: return SolutionReason::IterLimit;
-        case IloCplex::AbortTimeLim: return SolutionReason::TimeLimit;
-        default:
-            std::cerr << "CPLEX terminated with unknown reason: " << status << std::endl;
-            return SolutionReason::NotSpecified;
-    }
+    auto& lib = get_dynamic_lib();
+    const int status = lib.CPXgetstat(m_env, m_model);
+    return cplex_status(status).second;
 }
 
 double idol::Optimizers::Cplex::get_best_obj() const {
+
     const auto status = get_status();
 
-    if (status == Unbounded) {
-        return -Inf;
+    if (status == Unbounded)               return -Inf;
+    if (status == Infeasible || status == InfOrUnbnd) return +Inf;
+
+    auto& lib = get_dynamic_lib();
+
+    if (m_solution_index > 0) {
+        double val = 0.0;
+        lib.CPXgetsolnpoolobjval(m_env, m_model, (int) m_solution_index - 1, &val);
+        return val;
     }
 
-    if (status == Infeasible || status == InfOrUnbnd) {
-        return +Inf;
-    }
-
-    return m_cplex.getObjValue();
+    double val = 0.0;
+    CPLEX_CATCH(m_env, CPXgetobjval(m_env, m_model, &val));
+    return val;
 }
 
 double idol::Optimizers::Cplex::get_best_bound() const {
+
     const auto status = get_status();
 
-    if (status == Unbounded || status == InfOrUnbnd) {
-        return -Inf;
-    }
+    if (status == Unbounded)   return -Inf;
+    if (status == Infeasible)  return +Inf;
 
-    if (status == Infeasible) {
-        return +Inf;
-    }
+    auto& lib = get_dynamic_lib();
 
-    if (!m_cplex.isMIP() && status == Optimal) {
-        return get_best_obj();
+    double val = 0.0;
+    if (lib.CPXgetbestobjval(m_env, m_model, &val) != 0) {
+        // LP: bound equals obj value
+        lib.CPXgetobjval(m_env, m_model, &val);
     }
-
-    return m_cplex.getBestObjValue();
+    return val;
 }
 
-double idol::Optimizers::Cplex::get_var_primal(const Var &t_var) const {
+double idol::Optimizers::Cplex::get_var_primal(const Var& t_var) const {
 
-    if (const auto status = get_status() ; status != Optimal && status != Feasible && status != SubOptimal) {
+    if (const auto status = get_status(); status != Optimal && status != Feasible && status != SubOptimal) {
         throw Exception("Primal solution not available.");
     }
 
-    if (m_cplex.isMIP()) {
-        CATCH_CPLEX(return m_cplex.getValue(lazy(t_var).impl(), m_solution_index);)
+    auto& lib = get_dynamic_lib();
+    const int index = lazy(t_var).impl();
+    double val = 0.0;
+
+    if (m_solution_index > 0) {
+        lib.CPXgetsolnpoolx(m_env, m_model, (int) m_solution_index - 1, &val, index, index);
+        return val;
     }
 
-    CATCH_CPLEX(return m_cplex.getValue(lazy(t_var).impl());)
+    CPLEX_CATCH(m_env, CPXgetx(m_env, m_model, &val, index, index));
+    return val;
 }
 
-double idol::Optimizers::Cplex::get_var_ray(const Var &t_var) const {
-    throw Exception("Not implemented");
+double idol::Optimizers::Cplex::get_var_reduced_cost(const Var& t_var) const {
+
+    if (const auto status = get_status(); status != Optimal && status != Feasible && status != SubOptimal) {
+        throw Exception("Reduced cost not available.");
+    }
+
+    auto& lib = get_dynamic_lib();
+    const int index = lazy(t_var).impl();
+    double val = 0.0;
+    CPLEX_CATCH(m_env, CPXgetdj(m_env, m_model, &val, index, index));
+    return val;
 }
 
-double idol::Optimizers::Cplex::get_ctr_dual(const Ctr &t_ctr) const {
+double idol::Optimizers::Cplex::get_var_ray(const Var& t_var) const {
 
-    if (const auto status = get_status() ; status != Optimal && status != Feasible && status != SubOptimal) {
+    if (get_status() != Unbounded) {
+        throw Exception("Ray not available.");
+    }
+
+    auto& lib = get_dynamic_lib();
+    const int n = lib.CPXgetnumcols(m_env, m_model);
+    std::vector<double> ray(n);
+    CPLEX_CATCH(m_env, CPXgetray(m_env, m_model, ray.data()));
+    return ray[lazy(t_var).impl()];
+}
+
+double idol::Optimizers::Cplex::get_ctr_dual(const Ctr& t_ctr) const {
+
+    if (const auto status = get_status(); status != Optimal && status != Feasible && status != SubOptimal) {
         throw Exception("Dual solution not available.");
     }
 
-    CATCH_CPLEX(return m_cplex.getDual(lazy(t_ctr).impl());)
+    auto& lib = get_dynamic_lib();
+    const int index = lazy(t_ctr).impl();
+    double val = 0.0;
+    CPLEX_CATCH(m_env, CPXgetpi(m_env, m_model, &val, index, index));
+    return val;
 }
 
-double idol::Optimizers::Cplex::get_ctr_farkas(const Ctr &t_ctr) const {
-    throw Exception("Not implemented");
+double idol::Optimizers::Cplex::get_ctr_farkas(const Ctr& t_ctr) const {
+
+    if (get_status() != Infeasible) {
+        throw Exception("Farkas certificate not available.");
+    }
+
+    auto& lib = get_dynamic_lib();
+    const int n_rows = lib.CPXgetnumrows(m_env, m_model);
+    std::vector<double> y(n_rows);
+    double proof = 0.0;
+    CPLEX_CATCH(m_env, CPXdualfarkas(m_env, m_model, y.data(), &proof));
+    return y[lazy(t_ctr).impl()];
 }
 
 double idol::Optimizers::Cplex::get_relative_gap() const {
-    throw Exception("Not implemented");
+    auto& lib = get_dynamic_lib();
+    double gap = 0.0;
+    if (lib.CPXgetmiprelgap(m_env, m_model, &gap) != 0) {
+        throw Exception("Relative gap not available.");
+    }
+    return gap;
 }
 
 double idol::Optimizers::Cplex::get_absolute_gap() const {
-    throw Exception("Not implemented");
+    throw Exception("CPLEX: absolute gap not directly available.");
 }
 
 unsigned int idol::Optimizers::Cplex::get_n_solutions() const {
 
-    if (const auto status = get_status() ; status == Unbounded || status == Infeasible || status == InfOrUnbnd) {
-        return 0;
-    }
+    const auto status = get_status();
+    if (status == Unbounded || status == Infeasible || status == InfOrUnbnd) return 0;
 
-    if (!m_cplex.isMIP()) {
-        return 1;
-    }
-
-    return m_cplex.getSolnPoolNsolns();
+    auto& lib = get_dynamic_lib();
+    const int pool = lib.CPXgetsolnpoolnumsolns(m_env, m_model);
+    // Primary solution is always index 0, pool solutions start at 1
+    return 1 + (pool > 0 ? pool : 0);
 }
 
 unsigned int idol::Optimizers::Cplex::get_solution_index() const {
@@ -501,226 +705,111 @@ void idol::Optimizers::Cplex::set_solution_index(unsigned int t_index) {
     m_solution_index = t_index;
 }
 
-void idol::Optimizers::Cplex::set_max_n_solution_in_pool(unsigned int t_value) {
-    m_cplex.setParam(IloCplex::Param::MIP::Pool::Capacity, (CPXINT) t_value);
-}
+// ---------------------------------------------------------------------------
+// Parameter setters
+// ---------------------------------------------------------------------------
 
 void idol::Optimizers::Cplex::set_param_logs(bool t_value) {
-    m_cplex.setParam(IloCplex::Param::MIP::Display, ((int) t_value) * 4);
+    auto& lib = get_dynamic_lib();
+    lib.CPXsetintparam(m_env, idol_CPX_PARAM_SCRIND, t_value ? 1 : 0);
     Optimizer::set_param_logs(t_value);
+}
+
+void idol::Optimizers::Cplex::set_param_presolve(bool t_value) {
+    auto& lib = get_dynamic_lib();
+    lib.CPXsetintparam(m_env, idol_CPX_PARAM_PREIND, t_value ? 1 : 0);
+    Optimizer::set_param_presolve(t_value);
+}
+
+void idol::Optimizers::Cplex::set_param_time_limit(double t_time_limit) {
+    auto& lib = get_dynamic_lib();
+    lib.CPXsetdblparam(m_env, idol_CPX_PARAM_TILIM, t_time_limit);
+    Optimizer::set_param_time_limit(t_time_limit);
+}
+
+void idol::Optimizers::Cplex::set_param_threads(unsigned int t_thread_limit) {
+    auto& lib = get_dynamic_lib();
+    lib.CPXsetintparam(m_env, idol_CPX_PARAM_THREADS, (CPXINT) t_thread_limit);
+    Optimizer::set_param_threads(t_thread_limit);
+}
+
+void idol::Optimizers::Cplex::set_param_best_obj_stop(double t_best_obj_stop) {
+    auto& lib = get_dynamic_lib();
+    // For minimization: stop when incumbent ≤ t_best_obj_stop → CPX_PARAM_OBJLLIM
+    // For maximization: stop when incumbent ≥ t_best_obj_stop → CPX_PARAM_OBJULIM
+    if (parent().get_obj_sense() == Minimize) {
+        lib.CPXsetdblparam(m_env, idol_CPX_PARAM_OBJLLIM, cplex_numeric(t_best_obj_stop));
+    } else {
+        lib.CPXsetdblparam(m_env, idol_CPX_PARAM_OBJULIM, cplex_numeric(t_best_obj_stop));
+    }
+    Optimizer::set_param_best_obj_stop(t_best_obj_stop);
+}
+
+void idol::Optimizers::Cplex::set_param_best_bound_stop(double t_best_bound_stop) {
+    // CPLEX C API has no native parameter for stopping based on the dual bound.
+    Optimizer::set_param_best_bound_stop(t_best_bound_stop);
+}
+
+void idol::Optimizers::Cplex::set_param_infeasible_or_unbounded_info(bool /*t_value*/) {
+    // CPLEX detects infeasibility/unboundedness automatically; nothing to toggle here.
+    Optimizer::set_param_infeasible_or_unbounded_info(true);
 }
 
 void idol::Optimizers::Cplex::set_tol_mip_relative_gap(double t_relative_gap_tolerance) {
     Optimizer::set_tol_mip_relative_gap(t_relative_gap_tolerance);
-    m_cplex.setParam(IloCplex::Param::MIP::Tolerances::MIPGap, t_relative_gap_tolerance);
+    auto& lib = get_dynamic_lib();
+    lib.CPXsetdblparam(m_env, idol_CPX_PARAM_EPGAP, t_relative_gap_tolerance);
 }
 
 void idol::Optimizers::Cplex::set_tol_mip_absolute_gap(double t_absolute_gap_tolerance) {
     Optimizer::set_tol_mip_absolute_gap(t_absolute_gap_tolerance);
-    m_cplex.setParam(IloCplex::Param::MIP::Tolerances::AbsMIPGap, t_absolute_gap_tolerance);
+    auto& lib = get_dynamic_lib();
+    lib.CPXsetdblparam(m_env, idol_CPX_PARAM_EPAGAP, t_absolute_gap_tolerance);
 }
 
 void idol::Optimizers::Cplex::set_tol_feasibility(double t_tol_feasibility) {
     Optimizer::set_tol_feasibility(t_tol_feasibility);
-    m_cplex.setParam(IloCplex::Param::Simplex::Tolerances::Feasibility, t_tol_feasibility);
+    auto& lib = get_dynamic_lib();
+    lib.CPXsetdblparam(m_env, idol_CPX_PARAM_EPRHS, t_tol_feasibility);
 }
 
 void idol::Optimizers::Cplex::set_tol_optimality(double t_tol_optimality) {
     Optimizer::set_tol_optimality(t_tol_optimality);
-    m_cplex.setParam(IloCplex::Param::Simplex::Tolerances::Optimality, t_tol_optimality);
+    auto& lib = get_dynamic_lib();
+    lib.CPXsetdblparam(m_env, idol_CPX_PARAM_EPOPT, t_tol_optimality);
 }
 
 void idol::Optimizers::Cplex::set_tol_integer(double t_tol_integer) {
     Optimizer::set_tol_integer(t_tol_integer);
-    m_cplex.setParam(IloCplex::Param::MIP::Tolerances::Integrality, t_tol_integer);
+    auto& lib = get_dynamic_lib();
+    lib.CPXsetdblparam(m_env, idol_CPX_PARAM_EPINT, t_tol_integer);
 }
 
-idol::Model idol::Optimizers::Cplex::read_from_file(idol::Env &t_env, const std::string &t_filename) {
-
-    Model result(t_env);
-
-    IloEnv env;
-    IloModel model(env);
-    IloCplex cplex(env);
-    IloObjective objective(env);
-    IloNumVarArray vars(env);
-    IloRangeArray ranges(env);
-    IloRangeArray lazy(env);
-    IloRangeArray cuts(env);
-    cplex.importModel(model, t_filename.c_str(), objective, vars, ranges, lazy, cuts);
-
-    const unsigned int n_vars = vars.getSize();
-    const unsigned int n_ctrs = ranges.getSize();
-
-    Map<IloInt, Var> vars_map;
-
-    // Variables
-    result.reserve_vars(n_vars);
-    for (unsigned int i = 0 ; i < n_vars ; ++i) {
-        const auto& var = vars[i];
-        const auto cplex_type = var.getType();
-        const auto lb = var.getLB();
-        const auto ub = var.getUB();
-        const auto name = var.getName();
-
-        VarType type = Continuous;
-        switch (cplex_type) {
-            case IloNumVar::Int:
-                type = Integer;
-                break;
-            case IloNumVar::Bool:
-                type = Binary;
-                break;
-            default:;
-        }
-
-        const auto idol_var = result.add_var(lb, ub, type, 0, std::string(name));
-
-        const auto [it, success] = vars_map.emplace(var.getId(), idol_var);
-        assert(success);
-
-    }
-
-    const auto parse_expr = [&](const IloExpr& t_expr) {
-        QuadExpr result;
-
-        for (auto it = t_expr.getLinearIterator() ; it.ok() ; ++it) {
-            const auto& var = it.getVar();
-            const double constant = it.getCoef();
-            result += constant * vars_map.at(var.getId());
-        }
-
-        for (auto it = t_expr.getQuadIterator() ; it.ok() ; ++it) {
-            const auto& var1 = it.getVar1();
-            const auto& var2 = it.getVar2();
-            const double constant = it.getCoef();
-            result += constant * vars_map.at(var1.getId()) * vars_map.at(var2.getId());
-        }
-
-        result += t_expr.getConstant();
-
-        return result;
-    };
-
-    // Constraints
-    result.reserve_ctrs(n_ctrs);
-    for (unsigned int i = 0 ; i < n_ctrs ; ++i) {
-        const auto& ctr = ranges[i];
-        const auto& cplex_expr = ctr.getExpr();
-        const auto lb = ctr.getLB();
-        const double ub = ctr.getUB();
-        const auto name = ctr.getName();
-
-        auto expr = parse_expr(cplex_expr);
-        CtrType type;
-        double rhs;
-        if (lb <= -IloInfinity) {
-            type = LessOrEqual;
-            rhs = ub;
-        } else if (ub >= IloInfinity) {
-            type = GreaterOrEqual;
-            rhs = lb;
-        } else {
-            type = Equal;
-            rhs = ub;
-        }
-
-        if (!expr.has_quadratic()) {
-            result.add_ctr(TempCtr(std::move(expr.affine().linear()), type, rhs), std::string(name));
-        } else {
-            result.add_qctr(TempQCtr(std::move(expr - rhs), type), std::string(name));
-        }
-    }
-
-    // Objective
-    result.set_obj_expr(parse_expr(objective.getExpr()));
-
-    env.end();
-
-    return std::move(result);
+void idol::Optimizers::Cplex::set_param(const std::string& /*t_param*/, int /*t_value*/) {
+    throw Exception("CPLEX: setting parameters by name is not supported. Use numeric parameter IDs.");
 }
 
-void idol::Optimizers::Cplex::update_objective_constant() {
-    const double constant = parent().get_obj_expr().affine().constant();
-    m_objective.setConstant(constant);
+void idol::Optimizers::Cplex::set_param(const std::string& /*t_param*/, double /*t_value*/) {
+    throw Exception("CPLEX: setting parameters by name is not supported. Use numeric parameter IDs.");
 }
 
-double idol::Optimizers::Cplex::get_var_reduced_cost(const idol::Var &t_var) const {
-
-    if (const auto status = get_status() ; status != Optimal && status != Feasible && status != SubOptimal) {
-        throw Exception("Reduced cost not available.");
-    }
-
-    return m_cplex.getReducedCost(lazy(t_var).impl());
+void idol::Optimizers::Cplex::set_max_n_solution_in_pool(unsigned int t_value) {
+    auto& lib = get_dynamic_lib();
+    // CPX_PARAM_POPULATELIM controls the number of pool solutions gathered by CPXpopulate
+    const int CPX_PARAM_POPULATELIM = 2029;
+    lib.CPXsetintparam(m_env, CPX_PARAM_POPULATELIM, (CPXINT) t_value);
 }
 
-void idol::Optimizers::Cplex::hook_remove(const idol::QCtr &t_ctr) {
-    m_model.remove(lazy(t_ctr).impl());
+// ---------------------------------------------------------------------------
+// Availability / version
+// ---------------------------------------------------------------------------
+
+bool idol::Optimizers::Cplex::is_available() {
+    auto& lib = get_dynamic_lib(false);
+    return lib.is_available();
 }
 
-idol::Optimizers::Cplex::~Cplex() {
-    m_model.end();
-    m_cplex.end();
-    m_objective.end();
+std::string idol::Optimizers::Cplex::get_version() {
+    // Version information would require CPXversionnumber or similar; return placeholder.
+    return "CPLEX (version unknown)";
 }
-
-void idol::Optimizers::Cplex::create_callback_if_not_exists() {
-
-    if (m_cplex_callback) {
-        return;
-    }
-
-    m_cplex_callback = std::make_unique<CplexCallbackI>(*this);
-    m_cplex.use(m_cplex_callback->create_user_cut_callback());
-    m_cplex.use(m_cplex_callback->create_branch_callback());
-
-}
-
-idol::CplexCallbackI &idol::Optimizers::Cplex::get_cplex_callback_interface() {
-    if (!m_cplex_callback) {
-        throw Exception("Cplex callback is not created");
-    }
-    return *m_cplex_callback;
-}
-
-std::variant<IloSOS1, IloSOS2> idol::Optimizers::Cplex::hook_add(const idol::SOSCtr &t_ctr) {
-
-    const auto& model = parent();
-
-    const auto& src_vars = model.get_sosctr_vars(t_ctr);
-    const auto n = src_vars.size();
-    IloNumVarArray vars(m_env, (int) n);
-    for (unsigned int i = 0 ; i < n ; ++i) {
-        vars[i] = lazy(src_vars[i]).impl();
-    }
-
-    const auto& src_weights = model.get_sosctr_weights(t_ctr);
-    IloNumArray weights(m_env, (int) n);
-    for (unsigned int i = 0 ; i < n ; ++i) {
-        weights[i] = cplex_numeric(src_weights[i]);
-    }
-
-    if (model.is_sos1(t_ctr)) {
-        auto c = IloSOS1(m_env, vars, weights, t_ctr.name().c_str());
-        m_model.add(c);
-        return c;
-    }
-
-    auto c = IloSOS2(m_env, vars, weights, t_ctr.name().c_str());
-    m_model.add(c);
-    return c;
-
-}
-
-void idol::Optimizers::Cplex::hook_remove(const idol::SOSCtr &t_ctr) {
-    const auto& impl = lazy(t_ctr).impl();
-
-    if (std::holds_alternative<IloSOS1>(impl)) {
-        m_model.remove(std::get<IloSOS1>(impl));
-    } else {
-        m_model.remove(std::get<IloSOS2>(impl));
-    }
-
-}
-
-#endif
