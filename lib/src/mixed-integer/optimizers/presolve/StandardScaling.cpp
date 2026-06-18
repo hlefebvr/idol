@@ -20,7 +20,9 @@ bool idol::Presolvers::StandardScaling::execute(Model& t_model) {
             continue;
         }
 
-        const double closest_power_of_2 = std::exp2(std::round(std::log2(infinity_norm)));
+        int e = 0;
+        std::frexp(infinity_norm, &e);
+        double closest_power_of_2 = std::ldexp(1.0, e - 1); // scale = 2^(e-1) or 2^e depending on your normalization choice
         if (closest_power_of_2 != 1.) {
             t_model.set_ctr_row(ctr, row / closest_power_of_2);
             t_model.set_ctr_rhs(ctr, rhs / closest_power_of_2);

@@ -585,6 +585,10 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
 
+    if (get_param_logs()) {
+        parent().print_statistics(std::cout);
+    }
+
     if (!m_presolve.empty()) {
         m_presolved_model.reset(working_model().clone());
         m_presolve.execute(*m_presolved_model);

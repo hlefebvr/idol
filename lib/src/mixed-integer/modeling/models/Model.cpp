@@ -1047,6 +1047,61 @@ idol::Model idol::Model::read_from_file(Env& t_env, const std::string& t_filenam
     throw Exception("Reading .mps or .lp files is only possible if Gurobi, GLPK or HiGHS is available.\nPlease install one of these solvers.");
 }
 
+void idol::Model::print_statistics(std::ostream& t_os) const {
+
+    unsigned int n_integer_vars = 0;
+    unsigned int n_binary_vars = 0;
+    unsigned int n_non_zeroes = 0;
+    double min_mat_val = Inf, min_bound_val = Inf;
+    double max_mat_val = -Inf, max_bound_val = -Inf;
+    const auto [min_obj_val, max_obj_val] = get_obj_expr().affine().linear().range();
+    const auto [min_rhs_val, max_rhs_val] = get_rhs_expr().range();
+
+    for (const auto& var : vars()) {
+        const auto type = get_var_type(var);
+        const auto& column = get_var_column(var);
+        const double lb = get_var_lb(var);
+        const double ub = get_var_ub(var);
+
+        if (type != Continuous) {
+            n_integer_vars++;
+            if (type == Binary) {
+                n_binary_vars++;
+            }
+        }
+
+        if (!is_neg_inf(lb) && !is_zero(lb, Tolerance::Sparsity)) {
+            const double abs_lb = std::abs(lb);
+            max_bound_val = std::max(max_bound_val, abs_lb);
+            min_bound_val = std::min(min_bound_val, abs_lb);
+        }
+
+        if (!is_pos_inf(ub) && !is_zero(ub, Tolerance::Sparsity)) {
+            const double abs_ub = std::abs(ub);
+            max_bound_val = std::max(max_bound_val, abs_ub);
+            min_bound_val = std::min(min_bound_val, abs_ub);
+        }
+
+        n_non_zeroes += column.size();
+
+        for (const auto& [ctr, coeff] : column) {
+            const double abs_coeff = std::abs(coeff);
+            min_mat_val = std::min(min_mat_val, abs_coeff);
+            max_mat_val = std::max(max_mat_val, abs_coeff);
+        }
+
+    }
+
+    t_os << "Model with " << m_constraints.size() << " row, " << m_variables.size() << " columns and " << n_non_zeroes << " nonzeroes" << std::endl;
+    t_os << "Variable types: " << m_variables.size() - n_integer_vars << " continuous, " << n_integer_vars << " integer (" << n_binary_vars << " binary)" << std::endl;
+    t_os << "Coefficient statistcs:\n"
+            "\tMatrix range\t[" << min_mat_val << ", " << max_mat_val << "]\n"
+            "\tObjective range\t[" << min_obj_val << ", " << max_obj_val << "]\n"
+            "\tBounds range\t[" << min_bound_val << ", " << max_bound_val << "]\n"
+            "\tRHS range\t\t[" << min_rhs_val << ", " << max_rhs_val << "]\n";
+
+}
+
 void idol::Model::build_rows() {
     for (const auto& ctr : m_constraints) {
         if (!m_env.version(*this, ctr).has_row()) {

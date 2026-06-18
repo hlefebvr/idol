@@ -8,18 +8,20 @@
 #include "Optimizers_DantzigWolfeDecomposition.h"
 
 class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
+
+    enum NumericalPolicy { Default, ColumnPoolCleanUp, NoDualSmoothing, Failure };
+
     DantzigWolfeDecomposition& m_parent;
     double m_best_bound_stop;
 
-    enum NumericalPolicy { Default, ColumnPoolCleanUp, NoDualSmoothing, Failure };
-    const unsigned int m_max_n_iterations_without_generating_column = 1000;
+    const unsigned int m_max_n_iterations_without_generating_column = 200;
     unsigned int m_n_iterations_without_generating_column = 0;
     NumericalPolicy m_numerical_policy = Default;
 
     SolutionStatus m_status = Loaded;
     SolutionReason m_reason = NotSpecified;
     std::optional<PrimalPoint> m_master_primal_solution;
-    std::optional<DualPoint> m_last_master_solution;
+    std::optional<DualPoint> m_master_dual_solution;
     std::vector<DantzigWolfe::SubProblem::PhaseId> m_sub_problems_phases;
     double m_best_obj = -Inf;
     double m_best_bound = +Inf;
@@ -39,6 +41,7 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     void solve_sub_problems_in_parallel();
     void analyze_sub_problems();
     void enrich_master();
+    bool check_numerical_stability();
     void pool_clean_up();
 
     void next_numerical_policy();
@@ -47,6 +50,8 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     void log_master();
     void log_sub_problems();
     void log_end();
+
+    friend std::ostream& operator<<(std::ostream& t_os, idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::NumericalPolicy t_numerical_policy);
 public:
     ColumnGeneration(DantzigWolfeDecomposition& t_parent, bool t_use_farkas_for_infeasibility, double t_best_bound_stop);
 
@@ -68,5 +73,6 @@ public:
 
     void execute();
 };
+
 
 #endif //IDOL_COLUMNGENERATION_H
