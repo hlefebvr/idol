@@ -11,12 +11,14 @@ idol::Optimizers::Robust::MaxMinRelaxation::MaxMinRelaxation(const Model& t_mode
                                                              const idol::Bilevel::Description& t_bilevel_description,
                                                              const OptimizerFactory& t_master_optimizer,
                                                              const OptimizerFactory& t_deterministic_optimizer,
-                                                             bool t_use_indicator) : Algorithm(t_model),
+                                                             bool t_use_indicator,
+                                                             const std::list<PrimalPoint>& t_initial_scenarios) : Algorithm(t_model),
                                                                                      m_description(t_description),
                                                                                      m_bilevel_description(t_bilevel_description),
                                                                                      m_master_optimizer_factory(t_master_optimizer.clone()),
                                                                                      m_deterministic_optimizer_factory(t_deterministic_optimizer.clone()),
-                                                                                     m_use_indicator(t_use_indicator)
+                                                                                     m_use_indicator(t_use_indicator),
+                                                                                     m_initial_scenarios(t_initial_scenarios)
 {}
 
 double idol::Optimizers::Robust::MaxMinRelaxation::get_var_primal(const Var& t_var) const {
@@ -33,7 +35,7 @@ void idol::Optimizers::Robust::MaxMinRelaxation::hook_optimize() {
     if (!m_formulation) {
         build_model();
     }
-    
+
     auto& reformulation = m_formulation->model;
     
     // Parameters
@@ -58,15 +60,6 @@ void idol::Optimizers::Robust::MaxMinRelaxation::hook_optimize() {
     set_reason(m_formulation->model.get_reason());
     set_best_bound(-m_formulation->model.get_best_bound());
     set_best_obj(-m_formulation->model.get_best_obj());
-
-    /*
-    for (const auto& var : parent().vars()) {
-        if (var.name()[0] == 'x') {
-            std::cout << var.name() << " = " << get_var_primal(var) << std::endl;
-        }
-    }
-    std::cout << "****************" << std::endl;
-    */
 
 }
 
@@ -123,6 +116,55 @@ void idol::Optimizers::Robust::MaxMinRelaxation::build_model() {
         if (uncertainty_set.get_var_column(unc_var).empty()) {
             uncertainty_set.remove(unc_var);
         }
+    }
+
+    if (!m_initial_scenarios.empty()) {
+
+        if (get_param_logs()) {
+            std::cout << "Adding " << m_initial_scenarios.size() << " initial scenarios..." << std::endl;
+        }
+
+        unsigned int k = 0;
+        for (const auto& scenario : m_initial_scenarios) {
+
+            std::vector<std::optional<Var>> vars;
+            vars.resize(original_model.vars().size());
+
+            for (const auto& var : original_model.vars()) {
+                if (m_bilevel_description.is_upper(var)) {
+                    continue;
+                }
+                const double lb = original_model.get_var_lb(var);
+                const double ub = original_model.get_var_ub(var);
+                const auto type = original_model.get_var_type(var);
+                const auto copy = uncertainty_set.add_var(lb, ub, type, 0, var.name() + "_" + std::to_string(k));
+                vars[original_model.get_var_index(var)] = copy;
+            }
+
+            for (const auto& ctr : original_model.ctrs()) {
+                const auto& row = original_model.get_ctr_row(ctr);
+                const auto rhs = original_model.get_ctr_rhs(ctr);
+                const auto type = original_model.get_ctr_type(ctr);
+
+                LinExpr copied_row;
+                for (const auto& [var, coeff] : row) {
+                    const auto index = original_model.get_var_index(var);
+                    copied_row += coeff * vars.at(index).value_or(var);
+                }
+
+                uncertainty_set.add_ctr(TempCtr(std::move(copied_row), type, rhs - evaluate(m_description.uncertain_rhs(ctr), scenario)), ctr.name() + "_" + std::to_string(k));
+            }
+
+            LinExpr copied_obj;
+            for (const auto& [var, coeff] : original_model.get_obj_expr().affine().linear()) {
+                const auto index = original_model.get_var_index(var);
+                copied_obj += coeff * vars.at(index).value_or(var);
+            }
+            uncertainty_set.add_ctr(original_model.get_obj_expr().affine().linear() >= copied_obj, "obj_" + std::to_string(k));
+
+            ++k;
+        }
+
     }
 
     idol::Robust::Description description(uncertainty_set);

@@ -23,6 +23,7 @@ class idol::Optimizers::Robust::MaxMinRelaxation : public Algorithm {
     std::unique_ptr<OptimizerFactory> m_master_optimizer_factory;
     std::unique_ptr<OptimizerFactory> m_deterministic_optimizer_factory;
     const bool m_use_indicator;
+    const std::list<PrimalPoint> m_initial_scenarios;
 
     struct Formulation {
         Model model;
@@ -38,7 +39,8 @@ public:
                      const idol::Bilevel::Description& t_bilevel_description,
                      const OptimizerFactory& t_master_optimizer,
                      const OptimizerFactory& t_deterministic_optimizer,
-                     bool t_use_indicator
+                     bool t_use_indicator,
+                     const std::list<PrimalPoint>& t_initial_scenarios
     );
 
     [[nodiscard]] std::string name() const override { return "max-min relaxation"; }
@@ -54,6 +56,9 @@ public:
     [[nodiscard]] const OptimizerFactory& get_master_optimizer_factory() const { return *m_master_optimizer_factory; }
     [[nodiscard]] const OptimizerFactory& get_deterministic_optimizer_factory() const { return *m_deterministic_optimizer_factory; }
     [[nodiscard]] bool use_indicator() const { return m_use_indicator; }
+    [[nodiscard]] const Formulation& get_formulation() const { return *m_formulation; }
+
+    void build_model();
 protected:
     void add(const Var& t_var) override THROW_NOT_IMPLEMENTED
     void add(const Ctr& t_ctr) override THROW_NOT_IMPLEMENTED
@@ -80,7 +85,6 @@ protected:
     void update_var_ub(const Var& t_var) override;
     void update_var_obj(const Var& t_var) override THROW_NOT_IMPLEMENTED
 
-    void build_model();
     void throw_if_no_formulation() const;
 };
 

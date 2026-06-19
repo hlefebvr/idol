@@ -19,6 +19,7 @@ class idol::Robust::MaxMinRelaxation : public OptimizerFactoryWithDefaultParamet
     std::unique_ptr<OptimizerFactory> m_master_optimizer_factory;
     std::unique_ptr<OptimizerFactory> m_deterministic_optimizer_factory;
     std::optional<bool> m_use_indicator;
+    std::list<PrimalPoint> m_initial_scenarios;
 protected:
     [[nodiscard]] Optimizer* create(const Model& t_model) const override;
     MaxMinRelaxation(const MaxMinRelaxation& t_src);
@@ -30,6 +31,7 @@ public:
     MaxMinRelaxation& with_master_optimizer(const OptimizerFactory& t_optimizer);
     MaxMinRelaxation& with_deterministic_optimizer(const OptimizerFactory& t_optimizer);
     MaxMinRelaxation& with_indicator(bool t_value);
+    MaxMinRelaxation& add_initial_scenario(PrimalPoint t_scenario);
 };
 
 #endif //IDOL_ROBUST_BBBB_H

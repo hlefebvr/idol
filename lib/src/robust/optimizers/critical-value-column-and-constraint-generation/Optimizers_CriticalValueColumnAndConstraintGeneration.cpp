@@ -4,6 +4,7 @@
 #include "idol/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.h"
 
 #include "idol/general/optimizers/logs.h"
+#include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 
 idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::CriticalValueColumnAndConstraintGeneration(const Model& t_model, const idol::Robust::Description& t_description, const OptimizerFactory& t_master_optimizer, const OptimizerFactory& t_deterministic_optimizer, bool t_use_indicator) :
     Algorithm(t_model),
@@ -47,6 +48,17 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::hook_
         if (is_terminated()) { break; }
 
     } while (true);
+
+    if (get_param_logs()) {
+        if (!m_branching_candidates.empty()) {
+            unsigned int n_fractional = 0;
+            for (const auto& var : m_branching_candidates) {
+                const double val = get_var_primal(var);
+                n_fractional += !is_integer(val, get_tol_integer());
+            }
+            std::cout << "Solution diversity: " << (100.0 * n_fractional / static_cast<double>(m_branching_candidates.size())) << " %." << std::endl;
+        }
+    }
 }
 
 void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve_master_problem() {
@@ -81,7 +93,9 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::check
     }
 
     if (get_best_bound() > get_best_obj() + get_tol_mip_absolute_gap()) {
-        std::cerr << "The current best bound is larger than current best obj. This should should not happen. Terminating..." << std::endl;
+        if (get_param_logs()) {
+            std::cerr << "The current best bound is larger than current best obj. This should should not happen. Terminating..." << std::endl;
+        }
         set_status(Fail);
         set_reason(Numerical);
         terminate();
@@ -91,21 +105,27 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::check
     set_status(is_pos_inf(get_best_obj()) ? Infeasible : Feasible);
 
     if (get_remaining_time() == 0) {
-        std::cout << "The time limit has been reached. Terminating..." << std::endl;
+        if (get_param_logs()) {
+            std::cout << "The time limit has been reached. Terminating..." << std::endl;
+        }
         set_reason(TimeLimit);
         terminate();
         return;
     }
 
     if (m_n_iterations > get_param_iteration_limit()) {
-        std::cout << "The iteration limit has been reached. Terminating..." << std::endl;
+        if (get_param_logs()) {
+            std::cout << "The iteration limit has been reached. Terminating..." << std::endl;
+        }
         set_reason(IterLimit);
         terminate();
         return;
     }
 
     if (Algorithm::get_relative_gap() <= get_tol_mip_relative_gap() || Algorithm::get_absolute_gap() <= get_tol_mip_absolute_gap()) {
-        std::cout << "The optimality gap has been closed. Terminating..." << std::endl;
+        if (get_param_logs()) {
+            std::cout << "The optimality gap has been closed. Terminating..." << std::endl;
+        }
         set_status(Optimal);
         set_reason(Proved);
         terminate();
@@ -130,25 +150,32 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
         auto& sub_problem = m_formulation->sub_problem();
         sub_problem.optimize();
 
-        auto scenario = save_primal(sub_problem);
+        const auto status = sub_problem.get_status();
 
-        if (scenario.status() != Optimal) {
-            set_status(scenario.status());
-            set_reason(scenario.reason());
+        if (status != Optimal) {
+            set_status(status);
+            set_reason(sub_problem.get_reason());
             terminate();
             return;
         }
 
+        auto scenario = save_primal(sub_problem);
+
         if (!uncertainty.is_constraint()) {
+
             const double LB = get_best_bound();
             const double UB = LB - scenario.objective_value();
             if (relative_gap(LB, UB) > get_tol_mip_absolute_gap() && absolute_gap(LB, UB) > get_tol_mip_absolute_gap()) {
                 scenarios.emplace_back(std::move(scenario));
-                is_feasible = false;
             }
-        } else if (!m_formulation->master_provides_a_valid_bound() || -scenario.objective_value() > get_tol_feasibility()) {
+
+            continue;
+        }
+
+        if (!m_formulation->master_provides_a_valid_bound() || -scenario.objective_value() > get_tol_feasibility()) {
             scenarios.emplace_back(std::move(scenario));
             is_feasible = false;
+            continue;
         }
 
     }
@@ -163,7 +190,7 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
 
     if (is_feasible && m_formulation->master_provides_a_valid_bound()) {
         assert(scenarios.size() == 1);
-        set_best_obj(master_solution.get(m_formulation->epigraph_variable()) - scenarios.front().objective_value());
+        set_best_obj(std::min(get_best_obj(), master_solution.get(m_formulation->epigraph_variable()) - scenarios.front().objective_value()));
     }
 
     if (scenarios.size() != 1) {
@@ -238,6 +265,7 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::hook_
     Algorithm::hook_before_optimize();
 
     m_n_iterations = 0;
+    m_is_diving = false;
     set_best_obj(Inf);
     set_best_bound(-Inf);
 

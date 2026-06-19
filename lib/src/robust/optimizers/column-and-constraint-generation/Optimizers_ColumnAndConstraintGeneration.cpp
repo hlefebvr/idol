@@ -145,6 +145,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
         solve_adversarial_problem();
 
+        if (m_n_iterations >= get_param_iteration_limit()) { terminate(); }
+
         if (is_terminated()) { break; }
 
         ++m_n_iterations;
@@ -295,7 +297,9 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_
     }
 
     if (get_best_bound() > get_best_obj() + get_tol_mip_absolute_gap()) {
-        std::cerr << "The current best bound is larger than current best obj. This should should not happen. Terminating..." << std::endl;
+        if (get_param_logs()) {
+            std::cerr << "The current best bound is larger than current best obj. This should should not happen. Terminating..." << std::endl;
+        }
         set_status(Fail);
         set_reason(Numerical);
         terminate();
@@ -305,21 +309,27 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_
     set_status(is_pos_inf(get_best_obj()) ? Infeasible : Feasible);
 
     if (get_remaining_time() == 0) {
-        std::cout << "The time limit has been reached. Terminating..." << std::endl;
+        if (get_param_logs()) {
+            std::cout << "The time limit has been reached. Terminating..." << std::endl;
+        }
         set_reason(TimeLimit);
         terminate();
         return;
     }
 
     if (m_n_iterations > get_param_iteration_limit()) {
-        std::cout << "The iteration limit has been reached. Terminating..." << std::endl;
+        if (get_param_logs()) {
+            std::cout << "The iteration limit has been reached. Terminating..." << std::endl;
+        }
         set_reason(IterLimit);
         terminate();
         return;
     }
 
     if (Algorithm::get_relative_gap() <= get_tol_mip_relative_gap() || Algorithm::get_absolute_gap() <= get_tol_mip_absolute_gap()) {
-        std::cout << "The optimality gap has been closed. Terminating..." << std::endl;
+        if (get_param_logs()) {
+            std::cout << "The optimality gap has been closed. Terminating..." << std::endl;
+        }
         set_status(Optimal);
         set_reason(Proved);
         terminate();

@@ -466,7 +466,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(Node
     }
 
     set_as_incumbent(t_node);
-    log_node_after_solve(t_node);
+    //log_node_after_solve(t_node);
 
     //if (m_branching_rule->is_valid(t_node)) {
         // New incumbent by submission

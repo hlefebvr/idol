@@ -324,21 +324,27 @@ idol::BranchAndBoundCallbackI<NodeInfoT>::operator()(Optimizers::BranchAndBound<
                                                      Model *t_relaxation) {
     SideEffectRegistry result;
 
-    m_parent = t_parent;
-    m_node = t_current_node;
-    m_relaxation = t_relaxation;
-    m_registry = &result;
+    const bool is_nested = m_parent != nullptr;
 
-    for (auto &cb: m_callbacks) {
-        cb->m_interface = this;
-        cb->operator()(t_event);
-        cb->m_interface = nullptr;
+    if (!is_nested) {
+        m_parent = t_parent;
+        m_node = t_current_node;
+        m_relaxation = t_relaxation;
+        m_registry = &result;
     }
 
-    m_parent = nullptr;
-    m_node.reset();
-    m_relaxation = nullptr;
-    m_registry = nullptr;
+    for (auto &cb: m_callbacks) {
+        if (!is_nested) { cb->m_interface = this; }
+        cb->operator()(t_event);
+        if (!is_nested) { cb->m_interface = nullptr; }
+    }
+
+    if (!is_nested) {
+        m_parent = nullptr;
+        m_node.reset();
+        m_relaxation = nullptr;
+        m_registry = nullptr;
+    }
 
     return result;
 }

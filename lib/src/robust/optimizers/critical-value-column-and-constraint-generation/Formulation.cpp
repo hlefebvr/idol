@@ -16,6 +16,7 @@ idol::CVCCG::Formulation::Formulation(const idol::Optimizers::Robust::CriticalVa
     check_assumptions();
     initialize_master();
     initialize_sub_problem();
+    m_global_lower_bound = compute_trivial_lower_bound();
 
 }
 
@@ -111,7 +112,7 @@ void idol::CVCCG::Formulation::initialize_master() {
     }
 
     // Create cover constraints
-    if (m_use_cover_constraints) {
+    if (!m_parent.use_indicator() && m_use_cover_constraints) {
         for (auto& linking : m_linking_constraints) {
             linking.cover_constraint = m_master.add_ctr(LinExpr(), LessOrEqual, 1, "__cover_" + linking.ctr_in_uncertainty_set.name());
         }
@@ -392,7 +393,106 @@ double idol::CVCCG::Formulation::compute_critical_value(const Ctr& t_ctr, const 
     return result + 1;
 }
 
+double idol::CVCCG::Formulation::compute_trivial_lower_bound() const {
+
+    const auto& model = m_parent.parent();
+    const auto& uncertainty_set = m_parent.description().uncertainty_set();
+    const auto& objective = m_parent.parent().get_obj_expr();
+
+    assert(!objective.has_quadratic());
+
+    double result = objective.affine().constant();
+
+    for (const auto& [var, coeff] : objective.affine().linear()) {
+        if (coeff > 0) {
+            const double lb = model.get_var_lb(var);
+            assert(!is_neg_inf(lb));
+            result += coeff * lb;
+        } else {
+            const double ub = model.get_var_ub(var);
+            assert(!is_pos_inf(ub));
+            result += coeff * ub;
+        }
+    }
+
+    for (const auto& [var, unc_coefff] : m_parent.description().uncertain_objs()) {
+        for (const auto& [unc_var, coeff] : unc_coefff) {
+
+            // Underestimate the following
+            const double lb_var = model.get_var_lb(var);
+            const double ub_var = model.get_var_ub(var);
+            const double lb_unc_var = uncertainty_set.get_var_lb(unc_var);
+            const double ub_unc_var = uncertainty_set.get_var_ub(unc_var);
+
+            const double v1 = lb_var * lb_unc_var;
+            const double v2 = lb_var * ub_unc_var;
+            const double v3 = ub_var * lb_unc_var;
+            const double v4 = ub_var * ub_unc_var;
+
+            const double min_prod = std::min({v1, v2, v3, v4});
+            const double max_prod = std::max({v1, v2, v3, v4});
+
+            if (coeff >= 0) {
+                result += coeff * min_prod;
+            } else {
+                result += coeff * max_prod;
+            }
+
+        }
+    }
+
+    return result;
+}
+
+double idol::CVCCG::Formulation::compute_penalty(const LinExpr<Var, double>& t_row, CtrType t_type, double t_rhs) const {
+
+    // a^\top x \le b => M = max(0, (max_{x\in [l,u]} a^\top x ) - b) ==> a^\top x \le b + Mz
+    // a^T x >= b => M = max(0, b - (min_{x in [l,u]} a^T x)) ==> a^\top x >= b -Mz
+
+    const auto& model = m_parent.parent();
+
+    if (t_type == LessOrEqual) {
+
+        double max_activity = 0;
+
+        for (const auto& [var, coeff] : t_row) {
+            if (coeff > 0) {
+                const double ub = model.get_var_ub(var);
+                assert(!is_pos_inf(ub));
+                max_activity += coeff * ub;
+            } else {
+                const double lb = m_epigraph_variable && m_epigraph_variable->id() == var.id() ? m_master.get_var_lb(var) : model.get_var_lb(var);
+                assert(!is_neg_inf(lb));
+                max_activity += coeff * lb;
+            }
+        }
+
+        return std::max(0., max_activity - t_rhs);
+    }
+
+    double min_activity = 0;
+
+    for (const auto& [var, coeff] : t_row) {
+        if (coeff > 0) {
+            const double lb = model.get_var_lb(var);
+            assert(!is_neg_inf(lb));
+            min_activity += coeff * lb;
+        } else {
+            const double ub = model.get_var_ub(var);
+            assert(!is_pos_inf(ub));
+            min_activity += coeff * ub;
+        }
+    }
+
+    return std::max(0., t_rhs - min_activity);
+
+}
+
 void idol::CVCCG::Formulation::create_critical_value_variable_if_needed(const PrimalPoint& t_scenario) {
+
+    if (m_parent.use_indicator()) {
+        return;
+    }
 
     for (auto& linking : m_linking_constraints) {
 
@@ -480,66 +580,55 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
     const auto& description = m_parent.description();
     const auto& [scenario, master_solution] = *t_iterator_in_pool;
 
-    const LinExpr<Var, LinExpr<Var>>* unc_coeffs = nullptr;
+    const LinExpr<Var, LinExpr<Var>>* unc_row_coeffs = nullptr;
     const LinExpr<Var>* unc_constant = nullptr;
-    CtrType type = LessOrEqual;
+    CtrType type;
 
     LinExpr<Var> row;
     double constant = 0.;
 
     if (t_uncertainty.is_constraint()) {
-        const auto& ctr = t_uncertainty.ctr();
 
+        // We have an uncertain constraint : a^\top x \le b or a^T x >= b
+
+        const auto& ctr = t_uncertainty.ctr();
         row = model.get_ctr_row(ctr);
         type = model.get_ctr_type(ctr);
         constant = model.get_ctr_rhs(ctr);
-
-        unc_coeffs = &description.uncertain_mat_coeffs(ctr);
+        unc_row_coeffs = &description.uncertain_mat_coeffs(ctr);
         unc_constant = &description.uncertain_rhs(ctr);
+
     } else {
-        row = model.get_obj_expr().affine().linear();
-        unc_coeffs = &description.uncertain_objs();
-        constant = model.get_obj_expr().affine().constant();
+
+        // We rewrite the "objective" in epigraph as c^\top x - theta \le -c_0
 
         if (!m_epigraph_variable) {
-            m_epigraph_variable = m_master.add_var(-Inf, Inf, Continuous, 1, "__epigraph");
+            m_epigraph_variable = m_master.add_var(m_global_lower_bound, Inf, Continuous, 1, "__epigraph");
         }
 
+        row = model.get_obj_expr().affine().linear() - *m_epigraph_variable;
+        type = LessOrEqual;
+        constant = -model.get_obj_expr().affine().constant();
+        unc_row_coeffs = &description.uncertain_objs();
+        unc_constant = nullptr;
+
     }
 
-    for (const auto& [var, unc_coeff] : *unc_coeffs) {
-        row += evaluate(unc_coeff, scenario) * var;
+    // Add uncertain coefficients terms
+    if (unc_row_coeffs) {
+        for (const auto& [var, unc_coeff] : *unc_row_coeffs) {
+            row += evaluate(unc_coeff, scenario) * var;
+        }
     }
+
+    // Add uncertain constant terms
     if (unc_constant) {
         for (const auto& [unc_param, coeff] : *unc_constant) {
             constant += coeff * scenario.get(unc_param);
         }
     }
 
-    double penalty = -constant;
-    for (const auto& [var, coeff] : row) {
-        if (coeff > 0) {
-            const double ub = model.get_var_ub(var);
-            if (is_pos_inf(ub)) {
-                throw Exception("Found variable with infinite bound during big-M computation.");
-            }
-            penalty += coeff * ub;
-        } else {
-            const double lb = model.get_var_lb(var);
-            if (is_neg_inf(lb)) {
-                throw Exception("Found variable with infinite bound during big-M computation.");
-            }
-            penalty += coeff * lb;
-        }
-    }
-
-    if (type == LessOrEqual) {
-        penalty *= -1.;
-    }
-
-    if (!t_uncertainty.is_constraint()) {
-        row -= *m_epigraph_variable;
-    }
+    const double penalty = (type == LessOrEqual ? -1. : 1.) * compute_penalty(row, type, constant);
 
     if (uses_indicator()) { // Add indicator
 

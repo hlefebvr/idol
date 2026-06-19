@@ -27,7 +27,8 @@ idol::Optimizer* idol::Robust::MaxMinRelaxation::create(const Model& t_model) co
         m_bilevel_description,
         *m_master_optimizer_factory,
         *m_deterministic_optimizer_factory,
-        m_use_indicator.value_or(false)
+        m_use_indicator.value_or(false),
+        m_initial_scenarios
     );
 
     return result;
@@ -39,7 +40,8 @@ idol::Robust::MaxMinRelaxation::MaxMinRelaxation(const MaxMinRelaxation& t_src) 
     m_bilevel_description(t_src.m_bilevel_description),
     m_use_indicator(t_src.m_use_indicator),
     m_master_optimizer_factory(t_src.m_master_optimizer_factory ? t_src.m_master_optimizer_factory->clone() : nullptr),
-    m_deterministic_optimizer_factory(t_src.m_deterministic_optimizer_factory ? t_src.m_deterministic_optimizer_factory->clone() : nullptr) {
+    m_deterministic_optimizer_factory(t_src.m_deterministic_optimizer_factory ? t_src.m_deterministic_optimizer_factory->clone() : nullptr),
+    m_initial_scenarios(t_src.m_initial_scenarios) {
 
 }
 
@@ -76,6 +78,13 @@ idol::Robust::MaxMinRelaxation& idol::Robust::MaxMinRelaxation::with_indicator(b
     }
 
     m_use_indicator = t_value;
+
+    return *this;
+}
+
+idol::Robust::MaxMinRelaxation& idol::Robust::MaxMinRelaxation::add_initial_scenario(PrimalPoint t_scenario) {
+
+    m_initial_scenarios.push_back(std::move(t_scenario));
 
     return *this;
 }

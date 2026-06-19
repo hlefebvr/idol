@@ -23,6 +23,7 @@ class idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration : pub
     std::unique_ptr<CVCCG::Formulation> m_formulation;
     std::list<Var> m_branching_candidates;
     unsigned int m_n_iterations = 0;
+    bool m_is_diving = false;
 public:
     CriticalValueColumnAndConstraintGeneration(const Model& t_model,
                                                const idol::Robust::Description& t_description,
@@ -44,6 +45,8 @@ public:
     [[nodiscard]] const OptimizerFactory& get_master_optimizer_factory() const { return *m_master_optimizer_factory; }
     [[nodiscard]] const OptimizerFactory& get_deterministic_optimizer_factory() const { return *m_deterministic_optimizer_factory; }
     [[nodiscard]] bool use_indicator() const { return m_use_indicator; }
+
+    [[nodiscard]] const CVCCG::Formulation& get_formulation() const { return *m_formulation; }
 
     void declare_branching_on_unc_vars(std::list<Var> t_branching_candidates) { m_branching_candidates = std::move(t_branching_candidates); }
     [[nodiscard]] auto branching_candidates() const { return ConstIteratorForward(m_branching_candidates); }
