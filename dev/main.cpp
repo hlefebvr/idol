@@ -397,7 +397,7 @@ void branch_and_price_solve_using_lambda_function_using_boost(){
     model.add_ctr(idol_Sum(k, Range(boost::num_edges(g)), resources[k] * x[k]) <= capacity, "resource");
 
     auto weight_map = get(boost::edge_weight, g);
-    QuadExpr obj_expr;
+    LinExpr obj_expr;
     for (const auto& e : boost::make_iterator_range(edges(g))) {
         obj_expr += weight_map[e] * edge_to_var.at(EdgeKey{boost::source(e, g), boost::target(e, g)});
     }
@@ -424,10 +424,11 @@ void branch_and_price_solve_using_lambda_function_using_boost(){
         std::vector<Vertex> pred(num_vertices(g));
 
         const auto& obj_func = t_ctx.get_model().get_obj_expr().affine().linear();
-
         auto weight_map = get(boost::edge_weight, g);
         for (const auto& edge : boost::make_iterator_range(boost::edges(g))) {
+            std::cout << "edge " << boost::source(edge, g) << " " << boost::target(edge, g) << std::endl;
             const auto& var = edge_to_var.at(EdgeKey{boost::source(edge, g), boost::target(edge, g)});
+            std::cout << "var : " << var << std::endl;
             boost::put(boost::edge_weight, g, edge, obj_func.get(var));
         }
 

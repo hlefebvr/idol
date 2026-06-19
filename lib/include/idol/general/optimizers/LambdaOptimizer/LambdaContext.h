@@ -18,8 +18,8 @@ namespace idol {
             
         }
 
-        Model get_model() const {
-            return m_optimizer.parent().copy();
+        const Model& get_model() const {
+            return m_optimizer.parent();
         }
 
         void set_status(const SolutionStatus& t_status){
