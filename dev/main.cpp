@@ -4,7 +4,6 @@
 #include "idol/mixed-integer/modeling/objects/Env.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
-#include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
@@ -12,6 +11,8 @@
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/general/optimizers/LambdaOptimizer/LambdaOptimizer.h"
 #include "idol/general/optimizers/LambdaOptimizer/LambdaContext.h"
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/dijkstra_shortest_paths.hpp>
 
 using namespace idol;
 
@@ -318,6 +319,114 @@ void branch_and_price_solve_using_lambda_function(Env& env, const Model& model){
     print_solution_status(bap_model); 
 }
 
+void branch_and_price_solve_using_lambda_function_using_boost(Env& env, const Model& model){
+
+    std::cout <<  "Branch-and-Price GLPK + Lambda solving" << std::endl;
+
+    using Graph = boost::adjacency_list<
+            boost::vecS,
+            boost::vecS,
+            boost::directedS,
+            boost::no_property,
+            boost::property<boost::edge_weight_t, double>
+        >;
+
+    using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+    using Edge   = boost::graph_traits<Graph>::edge_descriptor;
+
+    Graph g;
+
+    //
+    // Sommets
+    //
+    Vertex s = add_vertex(g);
+    Vertex A = add_vertex(g);
+    Vertex B = add_vertex(g);
+    Vertex t = add_vertex(g);
+
+    add_edge(s, A, 2.0, g);
+    add_edge(s, B, 3.0, g);
+    add_edge(A, t, 2.0, g);
+    add_edge(B, t, 2.0, g);
+    add_edge(A, B, 1.0, g);
+    add_edge(B, A, 1.0, g);
+
+    Model bap_model(model.copy());
+
+    const Annotation decomposition(env, "decomposition", MasterId);
+
+    for(const auto& ctr : bap_model.ctrs()){
+        if(ctr.name().rfind("flow_", 0) == 0){
+            ctr.set(decomposition, 0);
+        }
+    }
+    for(const auto& ctr : bap_model.ctrs()) {
+        std::cout
+            << ctr.name()
+            << " -> "
+            << ctr.get(decomposition)
+            << std::endl;
+    }
+
+    auto column_generation = DantzigWolfeDecomposition(decomposition);
+    column_generation.with_master_optimizer(GLPK::ContinuousRelaxation());
+
+    const auto lambda = [&g, &s, &t](LambdaContext& t_ctx){
+        std::cout << "Begin lambda" << std::endl;
+
+        std::vector<double> dist(num_vertices(g));
+        std::vector<Vertex> pred(num_vertices(g));
+
+        dijkstra_shortest_paths(
+            g,
+            s,
+            boost::predecessor_map(&pred[0])
+            .distance_map(&dist[0])
+        );
+
+        std::cout << "Distance s -> t = " << dist[t] << std::endl;
+
+        std::vector<Vertex> path;
+        for (Vertex v = t; v != s; v = pred[v]) {
+            path.push_back(v);
+        }
+        path.push_back(s);
+        std::ranges::reverse(path);
+
+        std::cout << "Path : ";
+
+        for (const auto& p : path) {
+            std::cout << p << " ";
+        }
+        std::cout << std::endl;
+
+        t_ctx.set_status(Optimal);
+        t_ctx.set_best_obj(dist[t]);
+        t_ctx.set_best_bound(t_ctx.get_best_obj());
+
+        std::cout <<  "End lambda" << std::endl;
+    };
+
+    const auto subproblem_specifications = DantzigWolfe::SubProblem().add_optimizer(LambdaOptimizer(lambda));
+    column_generation.with_default_sub_problem_spec(subproblem_specifications);
+    column_generation.with_infeasibility_strategy(DantzigWolfe::FarkasPricing());
+    column_generation.with_hard_branching(false);
+    column_generation.with_logs(true);
+
+    auto branch_and_bound = BranchAndBound();
+    branch_and_bound.with_branching_rule(MostInfeasible());
+    branch_and_bound.with_node_selection_rule(BestBound());
+    branch_and_bound.with_logs(true);
+
+    const auto branch_and_price = branch_and_bound + column_generation;
+
+    bap_model.use(branch_and_price);
+
+    bap_model.optimize();
+
+    print_solution_status(bap_model);
+}
+
 int main(int t_argc, const char** t_argv) {
 
     if (t_argc != 3) {
@@ -349,6 +458,9 @@ int main(int t_argc, const char** t_argv) {
     }
     else if (mode == "bap_lambda"){
         branch_and_price_solve_using_lambda_function(env, model);
+    }
+    else if (mode == "bap_lambda_boost"){
+        branch_and_price_solve_using_lambda_function_using_boost(env, model);
     }
     
     
