@@ -16,6 +16,7 @@ std::string idol::Optimizers::LambdaOptimizer::name() const {
 
 double idol::Optimizers::LambdaOptimizer::get_var_primal(const idol::Var &t_var) const {
     if (m_solution.size() != parent().vars().size()) {
+    if (m_solution.empty()) {
         throw Exception(std::string(__FUNCTION__) + " solution is empty.");
     }
     const auto& index = parent().get_var_index(t_var);
@@ -152,7 +153,7 @@ void idol::Optimizers::LambdaOptimizer::clear_solution() {
 void idol::Optimizers::LambdaOptimizer::set_var_primal(const Var& t_var, double t_value) {
     const auto& n_vars = parent().vars().size();
     if (m_solution.size() != n_vars ) {
-        m_solution.resize(n_vars);
+        m_solution = std::vector(n_vars, 0.);
     }
 
     const auto &index = parent().get_var_index(t_var);

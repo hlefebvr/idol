@@ -52,7 +52,7 @@ void create_rspp_small_model(Env& env, Model& model){
 
     model.set_obj_expr(idol_Sum(k, Range(nb_arcs), costs[k] * x[k]));
 
-    model.dump();
+    std::cout << model << std::endl;
 }
 
 void create_rspp_big_model(Env& env, Model& model){
@@ -319,9 +319,11 @@ void branch_and_price_solve_using_lambda_function(Env& env, const Model& model){
     print_solution_status(bap_model); 
 }
 
-void branch_and_price_solve_using_lambda_function_using_boost(Env& env, const Model& model){
+void branch_and_price_solve_using_lambda_function_using_boost(){
 
     std::cout <<  "Branch-and-Price GLPK + Lambda solving" << std::endl;
+
+    // Create boost graph
 
     using Graph = boost::adjacency_list<
             boost::vecS,
@@ -332,17 +334,14 @@ void branch_and_price_solve_using_lambda_function_using_boost(Env& env, const Mo
         >;
 
     using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
-    using Edge   = boost::graph_traits<Graph>::edge_descriptor;
+    using Edge = boost::graph_traits<Graph>::edge_descriptor;
 
     Graph g;
 
-    //
-    // Sommets
-    //
-    Vertex s = add_vertex(g);
-    Vertex A = add_vertex(g);
-    Vertex B = add_vertex(g);
-    Vertex t = add_vertex(g);
+    const auto& s = add_vertex(g);
+    const auto& A = add_vertex(g);
+    const auto& B = add_vertex(g);
+    const auto& t = add_vertex(g);
 
     add_edge(s, A, 2.0, g);
     add_edge(s, B, 3.0, g);
@@ -351,36 +350,108 @@ void branch_and_price_solve_using_lambda_function_using_boost(Env& env, const Mo
     add_edge(A, B, 1.0, g);
     add_edge(B, A, 1.0, g);
 
-    Model bap_model(model.copy());
+    // Create IDOL model
+
+    Env env;
+    Model model(env);
+
+    const auto& x = model.add_vars(Dim<1>(boost::num_edges(g)), 0, 1, idol::VarType::Binary, 0., "x");
+
+    using EdgeKey = std::pair<Vertex, Vertex>;
+    std::map<EdgeKey, Var> edge_to_var;
+    auto [it_edges, it_edges_end] = boost::edges(g);
+    for (unsigned int i = 0; it_edges != it_edges_end; ++it_edges, ++i) {
+        edge_to_var.emplace(EdgeKey{boost::source(*it_edges, g), boost::target(*it_edges, g)}, x[i]);
+    }
+
+    std::map<Var, EdgeKey> var_to_edge;
+    for (const auto& [edge, var] : edge_to_var) {
+        var_to_edge.emplace(var, edge);
+    }
+
+
+    for(const auto& v: boost::make_iterator_range(boost::vertices(g))){
+        LinExpr expr;
+        for (auto e : boost::make_iterator_range(boost::edges(g))) {
+            if (boost::target(e,g) == v) {
+                expr -= edge_to_var.at({boost::source(e,g), boost::target(e,g)});
+            }
+            if (boost::source(e,g) == v) {
+                expr += edge_to_var.at({boost::source(e,g), boost::target(e,g)});
+            }
+        }
+        if(v == s){
+            model.add_ctr(expr == 1, "flow_out_" + std::to_string(v));
+        }
+        else if(v == t){
+            model.add_ctr(expr == -1, "flow_in_" + std::to_string(v));
+        }
+        else{
+            model.add_ctr(expr == 0, "flow_null_" + std::to_string(v));
+        }
+    }
+
+    const std::vector<double> resources{4., 2., 3., 2., 2., 2.};
+    const double capacity = 6.;
+
+    model.add_ctr(idol_Sum(k, Range(boost::num_edges(g)), resources[k] * x[k]) <= capacity, "resource");
+
+    auto weight_map = get(boost::edge_weight, g);
+    QuadExpr obj_expr;
+    for (const auto& e : boost::make_iterator_range(edges(g))) {
+        obj_expr += weight_map[e] * edge_to_var.at(EdgeKey{boost::source(e, g), boost::target(e, g)});
+    }
+
+    model.set_obj_expr(obj_expr);
+
+    std::cout << model << std::endl;
 
     const Annotation decomposition(env, "decomposition", MasterId);
 
-    for(const auto& ctr : bap_model.ctrs()){
+    for(const auto& ctr : model.ctrs()){
         if(ctr.name().rfind("flow_", 0) == 0){
             ctr.set(decomposition, 0);
         }
-    }
-    for(const auto& ctr : bap_model.ctrs()) {
-        std::cout
-            << ctr.name()
-            << " -> "
-            << ctr.get(decomposition)
-            << std::endl;
     }
 
     auto column_generation = DantzigWolfeDecomposition(decomposition);
     column_generation.with_master_optimizer(GLPK::ContinuousRelaxation());
 
-    const auto lambda = [&g, &s, &t](LambdaContext& t_ctx){
+    const auto lambda = [&g, &s, &t, &edge_to_var, &var_to_edge](LambdaContext& t_ctx){
         std::cout << "Begin lambda" << std::endl;
 
         std::vector<double> dist(num_vertices(g));
         std::vector<Vertex> pred(num_vertices(g));
 
+        const auto& obj_func = t_ctx.get_model().get_obj_expr().affine().linear();
+
+        auto weight_map = get(boost::edge_weight, g);
+        for (const auto& edge : boost::make_iterator_range(boost::edges(g))) {
+            const auto& var = edge_to_var.at(EdgeKey{boost::source(edge, g), boost::target(edge, g)});
+            boost::put(boost::edge_weight, g, edge, obj_func.get(var));
+        }
+
+        //dump
+        for (auto e : boost::make_iterator_range(boost::edges(g))) {
+
+            auto u = boost::source(e, g);
+            auto v = boost::target(e, g);
+
+            auto var = edge_to_var.at(EdgeKey{boost::source(e, g), boost::target(e, g)});
+            auto w = boost::get(boost::edge_weight, g, e);
+
+            std::cout
+                << u << " -> " << v
+                << " | var=" << var
+                << " | cost=" << w
+                << "\n";
+        }
+
         dijkstra_shortest_paths(
             g,
             s,
-            boost::predecessor_map(&pred[0])
+            boost::weight_map(weight_map)
+            .predecessor_map(&pred[0])
             .distance_map(&dist[0])
         );
 
@@ -393,16 +464,22 @@ void branch_and_price_solve_using_lambda_function_using_boost(Env& env, const Mo
         path.push_back(s);
         std::ranges::reverse(path);
 
-        std::cout << "Path : ";
+        std::cout << "Path : " << std::endl;
 
-        for (const auto& p : path) {
-            std::cout << p << " ";
+        for (unsigned int i = 0; i+1 < path.size(); ++i) {
+            auto [e, found] = boost::edge(path[i], path[i+1], g);
+            if (found) {
+                auto const& var = edge_to_var.at(EdgeKey{boost::source(e, g), boost::target(e, g)});
+                t_ctx.set_var_primal(var, 1.);
+                std::cout << var << std::endl;
+            }
         }
         std::cout << std::endl;
 
         t_ctx.set_status(Optimal);
-        t_ctx.set_best_obj(dist[t]);
-        t_ctx.set_best_bound(t_ctx.get_best_obj());
+        const auto best_obj = dist[t] + t_ctx.get_model().get_obj_expr().affine().constant();
+        t_ctx.set_best_obj(best_obj);
+        t_ctx.set_best_bound(best_obj);
 
         std::cout <<  "End lambda" << std::endl;
     };
@@ -420,11 +497,11 @@ void branch_and_price_solve_using_lambda_function_using_boost(Env& env, const Mo
 
     const auto branch_and_price = branch_and_bound + column_generation;
 
-    bap_model.use(branch_and_price);
+    model.use(branch_and_price);
 
-    bap_model.optimize();
+    model.optimize();
 
-    print_solution_status(bap_model);
+    print_solution_status(model);
 }
 
 int main(int t_argc, const char** t_argv) {
@@ -460,7 +537,7 @@ int main(int t_argc, const char** t_argv) {
         branch_and_price_solve_using_lambda_function(env, model);
     }
     else if (mode == "bap_lambda_boost"){
-        branch_and_price_solve_using_lambda_function_using_boost(env, model);
+        branch_and_price_solve_using_lambda_function_using_boost();
     }
     
     

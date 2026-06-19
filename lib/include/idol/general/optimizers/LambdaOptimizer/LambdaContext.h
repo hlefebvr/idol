@@ -34,10 +34,6 @@ namespace idol {
             m_optimizer.set_best_obj(t_best_obj);
         }
 
-        double get_best_obj() const {
-            return m_optimizer.get_best_obj();
-        }
-
         void set_best_bound(double t_best_bound) const {
             m_optimizer.set_best_bound(t_best_bound);
         }
