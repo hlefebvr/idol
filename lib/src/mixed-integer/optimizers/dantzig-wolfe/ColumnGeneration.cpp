@@ -17,7 +17,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
 
     m_status = Loaded;
     m_reason = NotSpecified;
-    m_last_master_solution.reset();
+    m_master_dual_solution.reset();
     m_iteration_count = 0;
     m_n_generated_columns = 0;
     m_solve_dual_master = true;
@@ -53,6 +53,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
         analyze_sub_problems();
 
         log_sub_problems();
+
+        if (check_numerical_stability()) { continue; }
 
         if (check_stopping_criterion()) { break; }
 
@@ -93,7 +95,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
         m_best_obj = std::min(m_best_obj, iter_upper_bound);
 
         if (save_dual_solution) {
-            m_last_master_solution = save_dual(master);
+            m_master_dual_solution = save_dual(master);
         }
 
         return;
@@ -107,13 +109,13 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
         m_current_iteration_is_using_farkas = true;
 
         if (save_dual_solution) {
-            m_last_master_solution = save_farkas(master);
+            m_master_dual_solution = save_farkas(master);
         }
 
         return;
     }
 
-    m_last_master_solution.reset();
+    m_master_dual_solution.reset();
 
     m_is_terminated = true;
 
@@ -122,9 +124,10 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::update_sub_problems() {
 
     auto& formulation = m_parent.m_formulation;
+    assert(m_master_dual_solution.has_value());
     auto dual_values = m_current_iteration_is_using_farkas || m_numerical_policy >= NoDualSmoothing ?
-        m_last_master_solution.value() :
-        m_parent.m_stabilization->compute_smoothed_dual_solution(m_last_master_solution.value());
+        m_master_dual_solution.value() :
+        m_parent.m_stabilization->compute_smoothed_dual_solution(m_master_dual_solution.value());
 
     for (unsigned int i = 0, n = formulation.n_sub_problems() ; i < n ; ++i) {
         formulation.update_sub_problem_objective(i, dual_values, m_current_iteration_is_using_farkas);
@@ -185,11 +188,12 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
         return;
     }
 
-    const double iter_lower_bound = m_last_master_solution->objective_value() + sum_reduced_costs;
+    assert(m_master_dual_solution.has_value());
+    const double iter_lower_bound = m_master_dual_solution->objective_value() + sum_reduced_costs;
 
     if (m_best_bound <= iter_lower_bound) {
 
-        m_parent.m_stabilization->update_stability_center(m_last_master_solution.value());
+        m_parent.m_stabilization->update_stability_center(m_master_dual_solution.value());
         m_best_bound = std::min(m_best_obj, iter_lower_bound);
 
     }
@@ -282,7 +286,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
             auto generator =  save_primal(model);
 
-            const double reduced_cost = formulation.compute_reduced_cost(i, m_last_master_solution.value(), generator);
+            assert(m_master_dual_solution.has_value());
+            const double reduced_cost = formulation.compute_reduced_cost(i, m_master_dual_solution.value(), generator);
 
             if (reduced_cost < -tol_red_cost) {
                 formulation.generate_column(i, std::move(generator));
@@ -308,6 +313,55 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
         m_n_iterations_without_generating_column++;
         m_solve_dual_master = false;
     }
+}
+
+bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::check_numerical_stability() {
+
+    auto& formulation = m_parent.m_formulation;
+    const auto n_sub_problems = formulation.n_sub_problems();
+
+    if (m_best_bound > m_best_obj + 1e-4) {
+        m_status = Fail;
+        m_reason = Numerical;
+        m_is_terminated = true;
+        return false;
+    }
+
+    // Check max iteration without generating column
+    if (m_n_iterations_without_generating_column >= m_max_n_iterations_without_generating_column) {
+        next_numerical_policy();
+        return true;
+    }
+
+    // Check for cg being stuck
+    bool is_stuck = false;
+    for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+        const Point<Var>* last_generator = nullptr;
+        unsigned int n_times_the_same = 0;
+        for (const auto& [var, generator] : formulation.present_generators(i)) {
+            if (last_generator) {
+                if (equals(generator.objective_value(), last_generator->objective_value(), m_parent.get_tol_optimality())) {
+                    if (((const SparseVector<Var, double>&) *last_generator - (const SparseVector<Var, double>&) generator).is_zero(m_parent.get_tol_feasibility())) {
+                        ++n_times_the_same;
+                    }
+                } else {
+                    n_times_the_same = 0;
+                }
+            }
+            last_generator = &generator;
+        }
+        if (n_times_the_same > 10) {
+            is_stuck = true;
+            break;
+        }
+    }
+
+    if (is_stuck) {
+        next_numerical_policy();
+        return true;
+    }
+
+    return false;
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::initialize_sub_problem_phases() {
@@ -347,38 +401,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_u
         return *primal_solution;
     };
 
-    // Check max iteration without generating column
-    if (m_n_iterations_without_generating_column >= m_max_n_iterations_without_generating_column) {
-        next_numerical_policy();
-    }
-
-    // Check for cg being stuck
-    bool is_stuck = false;
-    for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-        const Point<Var>* last_generator = nullptr;
-        unsigned int n_times_the_same = 0;
-        for (const auto& [var, generator] : formulation.present_generators(i)) {
-            if (last_generator) {
-                if (equals(generator.objective_value(), last_generator->objective_value(), m_parent.get_tol_optimality())) {
-                    if (((const SparseVector<Var, double>&) *last_generator - (const SparseVector<Var, double>&) generator).is_zero(m_parent.get_tol_feasibility())) {
-                        ++n_times_the_same;
-                    }
-                } else {
-                    n_times_the_same = 0;
-                }
-            }
-            last_generator = &generator;
-        }
-        if (n_times_the_same > 10) {
-            is_stuck = true;
-            break;
-        }
-    }
-
-    if (is_stuck) {
-        next_numerical_policy();
-    }
-
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
         const auto& sub_problem_specifications = m_parent.m_sub_problem_specifications[i];
         const auto& column_pool = formulation.column_pool(i);
@@ -410,6 +432,11 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::next_numeric
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
             m_parent.m_formulation.clean_up(i, .0, primals, false);
         }
+
+        m_status = Infeasible;
+        m_best_bound = -Inf;
+        m_best_obj = Inf;
+
         return;
     }
 
@@ -435,7 +462,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_init() {
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_master() {
 
-    if (!m_parent.get_param_logs() || !m_parent.m_logger || !m_last_master_solution.has_value()) {
+    if (!m_parent.get_param_logs() || !m_parent.m_logger || !m_master_dual_solution.has_value()) {
         return;
     }
 
@@ -445,9 +472,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_master()
                 m_iteration_count,
                 m_parent.time().count(),
                 m_status,
-                m_last_master_solution->status(),
-                m_last_master_solution->reason(),
-                m_last_master_solution->objective_value(),
+                m_master_dual_solution->status(),
+                m_master_dual_solution->reason(),
+                m_master_dual_solution->objective_value(),
                 formulation.master().optimizer().time().count(),
                 m_best_bound,
                 m_best_obj,
@@ -492,4 +519,14 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_end() {
     }
 
     m_parent.m_logger->log_end();
+}
+
+std::ostream& idol::Optimizers::operator<<(std::ostream& t_os, DantzigWolfeDecomposition::ColumnGeneration::NumericalPolicy t_numerical_policy) {
+    switch (t_numerical_policy) {
+    case idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::Default: return t_os << "default";
+    case idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::ColumnPoolCleanUp: return t_os << "clean up";
+    case idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::NoDualSmoothing: return t_os << "no dual smoothing";
+    case idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::Failure: return t_os << "failure";
+    }
+    throw idol::Exception("Enum out of bounds.");
 }

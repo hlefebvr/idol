@@ -226,8 +226,9 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
             }
         }
 
-        m_generated_scenarios.emplace_back(t_scenario);
     }
+
+    m_generated_scenarios.emplace_back(t_scenario);
 }
 
 void idol::CCG::Formulation::copy_bilevel_description(const ::idol::Bilevel::Description& t_src, const ::idol::Bilevel::Description& t_dest) const {

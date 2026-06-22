@@ -33,6 +33,7 @@ bool idol::CutPool::add_existing_cut_to_relaxation(const Ctr& t_cut, Model& t_re
 }
 
 bool idol::CutPool::add_cut(const TempCtr& t_cut, Model& t_relaxation) {
+
     Ctr cut(t_relaxation.env(), t_cut);
     m_all_cuts.emplace_back(cut);
 

@@ -120,6 +120,8 @@ public:
 
     void clear() { m_map.clear(); }
 
+    std::pair<double, double> range() const;
+
     void reserve(unsigned int t_capacity) {
 #ifdef IDOL_USE_TSL
         m_map.reserve(t_capacity);
@@ -232,6 +234,17 @@ bool idol::SparseVector<IndexT, ValueT>::is_zero(double t_tolerance) const {
         }
     }
     return true;
+}
+
+template <class IndexT, class ValueT>
+std::pair<double, double> idol::SparseVector<IndexT, ValueT>::range() const {
+    double min = Inf, max = -Inf;
+    for (const auto& [var, val] : m_map) {
+        const double abs_val = std::abs(val);
+        min = std::min(min, abs_val);
+        max = std::max(max, abs_val);
+    }
+    return std::make_pair(min, max);
 }
 
 template<class IndexT, class ValueT>
