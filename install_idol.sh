@@ -3,7 +3,13 @@
 set -euo pipefail
 
 ROOT_DIR="$(pwd)"
-NPROC="$(sysctl -n hw.ncpu)"
+if command -v nproc >/dev/null 2>&1; then
+    NPROC=$(nproc)
+elif sysctl -n hw.ncpu >/dev/null 2>&1; then
+    NPROC=$(sysctl -n hw.ncpu)
+else
+    NPROC=1
+fi
 
 echo "============================================================"
 echo " Building MibS (idol custom version)"
@@ -21,7 +27,7 @@ mkdir -p coin-or
     # Replace deprecated std::unary_function usage.
     sed -i '' \
         's/std::unary_function/std::__unary_function/g' \
-        Alps/Alps/src/AlpsHelperFunctions.h
+        Alps/Alps/src/AlpsHelperFunctions.h || echo "Skipping replacing std::__unary_function."
 
     ./coinbrew build \
         https://github.com/hlefebvr/MibS@idol \
@@ -34,7 +40,7 @@ echo "============================================================"
 echo " Cloning idol"
 echo "============================================================"
 
-git clone git@github.com:hlefebvr/idol.git
+git clone https://github.com/hlefebvr/idol.git
 
 echo "============================================================"
 echo " Building idol"

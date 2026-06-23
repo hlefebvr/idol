@@ -6,6 +6,7 @@
 #define IDOL_CONVEXIFICATION_H
 
 #include "idol/general/optimizers/OptimizerFactory.h"
+#include <memory>
 
 namespace idol::Bilevel {
     class Description;
