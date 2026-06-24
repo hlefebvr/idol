@@ -8,7 +8,6 @@
 [![codecov](https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)](https://app.codecov.io/gh/hlefebvr/idol)
 [![GitHub sponsors](https://img.shields.io/github/sponsors/hlefebvr)](https://github.com/sponsors/hlefebvr)
 
-**Website:** https://henrilefebvre.com/idol/ &nbsp;|&nbsp;
 **Documentation:** https://hlefebvr.github.io/idol/ &nbsp;|&nbsp;
 **Contact:** henri.lefebvre@cnrs.fr
 
@@ -73,7 +72,7 @@ chmod +x install_idol.sh
 
 idol is installed in `./idol/dist` after completion.
 
-### From Source — using CMake
+### From Source — using CMake (expert users)
 
 For full control over build options and install prefix:
 
@@ -84,7 +83,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release
 make -j$(nproc) && sudo make install
 ```
 
-Key CMake options: `-DUSE_MIBS=YES`, `-DBUILD_EXAMPLES=YES`, `-DCOIN_OR_DIR=<path>`.
+See the documentation for more details.
 
 ---
 
@@ -188,12 +187,11 @@ model.use(Bilevel::KKT() + Gurobi());
 // Robust: column-and-constraint generation with a Gurobi adversary
 
 auto ccg = idol::Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description);
-ccg.with_initial_scenario_by_maximization(*sub_milp_optimizer);
-ccg.with_master_optimizer(*sub_milp_optimizer);
+ccg.with_initial_scenario_by_maximization(GLPK());
+ccg.with_master_optimizer(HiGHS());
 
-auto kkt = idol::Bilevel::KKT();
+auto kkt = idol::Bilevel::KKT() + Gurobi();
 kkt.with_sos1_constraints(true);
-kkt.with_single_level_optimizer(*sub_milp_optimizer);
 
 auto optimality_separation = idol::Robust::CCG::OptimalitySeparation();
 optimality_separation.with_bilevel_optimizer(kkt);
@@ -234,6 +232,3 @@ Run `idol_cl --version` to see which solvers are available in your installation.
 
 If you use idol in a research project or publication, feel free to reach out:
 **henri.lefebvre@cnrs.fr**
-
-Sponsoring the project is also very welcome:
-[![GitHub sponsors](https://img.shields.io/github/sponsors/hlefebvr)](https://github.com/sponsors/hlefebvr)
