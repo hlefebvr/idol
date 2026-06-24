@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['parallel_20pricing_0',['Parallel Pricing',['../lib_milp_branch_and_price_cg_options.html#lib_milp_branch_and_price_cg_options_parallel',1,'']]],
+  ['parameters_1',['Handling of Default Tolerances and Parameters',['../lib_milp_basics_advanced_environment.html#lib_milp_basics_advanced_environment_tolerances',1,'']]],
+  ['party_20tools_2',['Third Party Tools',['../about.html#autotoc_md16',1,'']]],
+  ['pess_3',['zeng-pess',['../example_bilevel_zeng_pess.html',1,'examples_bilevel']]],
+  ['pessimistic_20bilevel_20optimization_4',['Pessimistic bilevel optimization',['../examples_bilevel.html#examples_bilevel_mixed_integer_pessimistic',1,'']]],
+  ['pessimistic_20bilevel_20problem_5',['Solving A Pessimistic Bilevel Problem',['../cli_bilevel_basics.html#cli_bilevel_basics_pessimistic',1,'']]],
+  ['phase_20i_6',['Making the Master Problem Feasible (Phase I)',['../lib_milp_branch_and_price_cg_phaseI.html',1,'lib_milp_branch_and_price']]],
+  ['phases_7',['Strong Branching with Phases',['../lib_milp_bnb_branching_rule.html#lib_milp_bnb_branching_rule_StrongBranching_phases',1,'']]],
+  ['planes_8',['Cutting Planes',['../lib_milp_bnb_cutting_planes.html',1,'lib_milp_branch_and_bound']]],
+  ['pool_9',['The Cut Pool',['../lib_milp_bnb_cutting_planes.html#lib_milp_bnb_cutting_planes_cut_pool',1,'']]],
+  ['pool_20clean_20up_10',['Column Pool Clean Up',['../lib_milp_branch_and_price_cg_options.html#lib_milp_branch_and_price_cg_options_clean_up',1,'']]],
+  ['pool_20size_11',['Solution Pool Size',['../lib_milp_bnb_options.html#lib_milp_bnb_options_solution_pool',1,'']]],
+  ['presolve_12',['Presolve',['../lib_milp_bnb_presolve.html',1,'lib_milp_branch_and_bound']]],
+  ['price_13',['Price',['../lib_milp_branch_and_price.html#lib_milp_branch_and_price_advanced_bap',1,'About Branch-and-Cut-and-Price'],['../lib_milp_branch_and_price.html',1,'Branch-and-Cut-and-Price']]],
+  ['price_20algorithm_14',['Branch-and-price algorithm',['../examples_mixed_integer.html#examples_mixed_integer_branch_and_price',1,'']]],
+  ['pricing_15',['Pricing',['../lib_milp_branch_and_price_cg_options.html#lib_milp_branch_and_price_cg_options_parallel',1,'Parallel Pricing'],['../lib_milp_branch_and_price_cg_HeuristicPricing.html',1,'Using Heuristics for Pricing']]],
+  ['pricing_20callback_16',['Using Your Own Pricing Callback',['../lib_milp_branch_and_price_cg_callback.html',1,'lib_milp_branch_and_price']]],
+  ['pricing_20problem_17',['Deriving the Pricing Problem',['../example_mixed_integer_gap_bap.html#autotoc_md5',1,'']]],
+  ['priorities_18',['Branching with Priorities',['../lib_milp_bnb_branching_rule.html#lib_milp_bnb_branching_rule_BranchingWithPriority',1,'']]],
+  ['problem_19',['Problem',['../example_mixed_integer_gap_bap.html#autotoc_md5',1,'Deriving the Pricing Problem'],['../cli_bilevel_basics.html#cli_bilevel_basics_pessimistic',1,'Solving A Pessimistic Bilevel Problem'],['../cli_robust_basics.html#cli_robust_basics_aro_solving',1,'Solving a Two-Stage Robust Problem'],['../cli_bilevel_basics.html#cli_bilevel_basics_optimistic',1,'Solving An Optimistic Bilevel Problem']]],
+  ['problem_20feasible_20phase_20i_20',['Making the Master Problem Feasible (Phase I)',['../lib_milp_branch_and_price_cg_phaseI.html',1,'lib_milp_branch_and_price']]],
+  ['problems_21',['Basics of the Command Line Interface for Robust Problems',['../cli_robust_basics.html',1,'']]],
+  ['problems_20via_20its_20kkt_20based_20single_20level_20reformulation_22',['Solving Bilevel Problems via its KKT-Based Single-Level Reformulation',['../cli_bilevel_kkt.html',1,'']]],
+  ['providing_20bounds_20on_20the_20dual_20variables_23',['The File Format for Providing Bounds on the Dual Variables',['../cli_bilevel_kkt.html#kkt_big_m_file',1,'']]],
+  ['pseudo_20cost_20branching_24',['Pseudo Cost Branching',['../lib_milp_bnb_branching_rule.html#lib_milp_bnb_branching_rule_PseudoCost',1,'']]]
+];

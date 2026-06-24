@@ -1,0 +1,1201 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Optimizers::JuMP::DynamicLib Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl bilevel solve model.mps \\ \n   --aux follower.aux \\ \n   --method KKT_SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl bilevel solve model.mps \\ \n   --aux follower.aux \\ \n   --method MibS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl bilevel solve model.mps \\ \n   --aux follower.aux \\ \n   --method KKT_BigM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl milp solve model.mps \\ \n   --method Gurobi \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl robust solve model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG_Farkas \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl robust solve model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG_KKT_SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl robust solve model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG_MibS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl milp solve model.mps \\ \n   --method HiGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><b>Optimizers</b></li><li class="navelem"><a href="classidol_1_1Optimizers_1_1JuMP.html">JuMP</a></li><li class="navelem"><a href="classidol_1_1Optimizers_1_1JuMP_1_1DynamicLib.html">DynamicLib</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="classidol_1_1Optimizers_1_1JuMP_1_1DynamicLib-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Optimizers::JuMP::DynamicLib Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00150">150</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a7fbad402421f92893a6f35f5f2474e34" id="r_a7fbad402421f92893a6f35f5f2474e34"><td class="memItemLeft">typedef decltype(::jl_init) *&#160;</td><td class="memItemRight"><a class="el" href="#a7fbad402421f92893a6f35f5f2474e34">jl_init_t</a></td></tr>
+<tr class="memitem:a8fde9f22105e560139d94eeb8ddb2626" id="r_a8fde9f22105e560139d94eeb8ddb2626"><td class="memItemLeft">typedef decltype(::jl_atexit_hook) *&#160;</td><td class="memItemRight"><a class="el" href="#a8fde9f22105e560139d94eeb8ddb2626">jl_atexit_hook_t</a></td></tr>
+<tr class="memitem:ab74eee3ec4d746107e4f97332c839f00" id="r_ab74eee3ec4d746107e4f97332c839f00"><td class="memItemLeft">typedef decltype(::jl_eval_string) *&#160;</td><td class="memItemRight"><a class="el" href="#ab74eee3ec4d746107e4f97332c839f00">jl_eval_string_t</a></td></tr>
+<tr class="memitem:a8c007848b379702c067af50c7bd5ef2d" id="r_a8c007848b379702c067af50c7bd5ef2d"><td class="memItemLeft">typedef decltype(::jl_apply_array_type) *&#160;</td><td class="memItemRight"><a class="el" href="#a8c007848b379702c067af50c7bd5ef2d">jl_apply_array_type_t</a></td></tr>
+<tr class="memitem:a568deae7a95e90007eb09c1dfe286196" id="r_a568deae7a95e90007eb09c1dfe286196"><td class="memItemLeft">typedef decltype(::jl_ptr_to_array_1d) *&#160;</td><td class="memItemRight"><a class="el" href="#a568deae7a95e90007eb09c1dfe286196">jl_ptr_to_array_1d_t</a></td></tr>
+<tr class="memitem:aee430fd7e387388dafff33221fc5c1b0" id="r_aee430fd7e387388dafff33221fc5c1b0"><td class="memItemLeft">typedef decltype(::jl_symbol) *&#160;</td><td class="memItemRight"><a class="el" href="#aee430fd7e387388dafff33221fc5c1b0">jl_symbol_t</a></td></tr>
+<tr class="memitem:ace4eadcffc386f9c9f91c8a86ab20bba" id="r_ace4eadcffc386f9c9f91c8a86ab20bba"><td class="memItemLeft">typedef decltype(::jl_get_global) *&#160;</td><td class="memItemRight"><a class="el" href="#ace4eadcffc386f9c9f91c8a86ab20bba">jl_get_global_t</a></td></tr>
+<tr class="memitem:ae581dd3b00bc72f22ed572d2e53cb1fe" id="r_ae581dd3b00bc72f22ed572d2e53cb1fe"><td class="memItemLeft">typedef decltype(::jl_call) *&#160;</td><td class="memItemRight"><a class="el" href="#ae581dd3b00bc72f22ed572d2e53cb1fe">jl_call_t</a></td></tr>
+<tr class="memitem:a565d4d252e11975574a07db3a14cecfd" id="r_a565d4d252e11975574a07db3a14cecfd"><td class="memItemLeft">typedef decltype(::jl_call0) *&#160;</td><td class="memItemRight"><a class="el" href="#a565d4d252e11975574a07db3a14cecfd">jl_call0_t</a></td></tr>
+<tr class="memitem:a6610c017e33fbc0c8bb444cdeaefcc33" id="r_a6610c017e33fbc0c8bb444cdeaefcc33"><td class="memItemLeft">typedef decltype(::jl_call1) *&#160;</td><td class="memItemRight"><a class="el" href="#a6610c017e33fbc0c8bb444cdeaefcc33">jl_call1_t</a></td></tr>
+<tr class="memitem:a2baa057d563a1e4fc858c8e495b5e281" id="r_a2baa057d563a1e4fc858c8e495b5e281"><td class="memItemLeft">typedef decltype(::jl_call2) *&#160;</td><td class="memItemRight"><a class="el" href="#a2baa057d563a1e4fc858c8e495b5e281">jl_call2_t</a></td></tr>
+<tr class="memitem:a20414a69e3e41daa177745eca5a979cb" id="r_a20414a69e3e41daa177745eca5a979cb"><td class="memItemLeft">typedef decltype(::jl_call3) *&#160;</td><td class="memItemRight"><a class="el" href="#a20414a69e3e41daa177745eca5a979cb">jl_call3_t</a></td></tr>
+<tr class="memitem:a6e6127a389042f51748b8169ed8fdcee" id="r_a6e6127a389042f51748b8169ed8fdcee"><td class="memItemLeft">typedef decltype(::jl_box_float64) *&#160;</td><td class="memItemRight"><a class="el" href="#a6e6127a389042f51748b8169ed8fdcee">jl_box_float64_t</a></td></tr>
+<tr class="memitem:aeb3e8605c91fe84e38b0a9650729471b" id="r_aeb3e8605c91fe84e38b0a9650729471b"><td class="memItemLeft">typedef decltype(::jl_box_uint64) *&#160;</td><td class="memItemRight"><a class="el" href="#aeb3e8605c91fe84e38b0a9650729471b">jl_box_uint64_t</a></td></tr>
+<tr class="memitem:af6279c0a55e33c70cc1092df7a61ff7c" id="r_af6279c0a55e33c70cc1092df7a61ff7c"><td class="memItemLeft">typedef decltype(::jl_box_uint16) *&#160;</td><td class="memItemRight"><a class="el" href="#af6279c0a55e33c70cc1092df7a61ff7c">jl_box_uint16_t</a></td></tr>
+<tr class="memitem:a64ec629279ad77370d79c9bac3aacab1" id="r_a64ec629279ad77370d79c9bac3aacab1"><td class="memItemLeft">typedef decltype(::jl_box_int64) *&#160;</td><td class="memItemRight"><a class="el" href="#a64ec629279ad77370d79c9bac3aacab1">jl_box_int64_t</a></td></tr>
+<tr class="memitem:ad1466193584c671c2c2c8355edc41c59" id="r_ad1466193584c671c2c2c8355edc41c59"><td class="memItemLeft">typedef decltype(::jl_cstr_to_string) *&#160;</td><td class="memItemRight"><a class="el" href="#ad1466193584c671c2c2c8355edc41c59">jl_cstr_to_string_t</a></td></tr>
+<tr class="memitem:a5af7b7505e3c93ce07542c37f432f4e7" id="r_a5af7b7505e3c93ce07542c37f432f4e7"><td class="memItemLeft">typedef decltype(::jl_unbox_float64) *&#160;</td><td class="memItemRight"><a class="el" href="#a5af7b7505e3c93ce07542c37f432f4e7">jl_unbox_float64_t</a></td></tr>
+<tr class="memitem:a29f9cd03f8f3a0bc0f6773fa161cfe85" id="r_a29f9cd03f8f3a0bc0f6773fa161cfe85"><td class="memItemLeft">typedef decltype(::jl_unbox_uint64) *&#160;</td><td class="memItemRight"><a class="el" href="#a29f9cd03f8f3a0bc0f6773fa161cfe85">jl_unbox_uint64_t</a></td></tr>
+<tr class="memitem:af04f8037d0dc19892f926b079db29ffb" id="r_af04f8037d0dc19892f926b079db29ffb"><td class="memItemLeft">typedef decltype(::jl_unbox_uint16) *&#160;</td><td class="memItemRight"><a class="el" href="#af04f8037d0dc19892f926b079db29ffb">jl_unbox_uint16_t</a></td></tr>
+<tr class="memitem:acd12381bb2b9429f1250c281930b6eef" id="r_acd12381bb2b9429f1250c281930b6eef"><td class="memItemLeft">typedef decltype(::jl_unbox_int64) *&#160;</td><td class="memItemRight"><a class="el" href="#acd12381bb2b9429f1250c281930b6eef">jl_unbox_int64_t</a></td></tr>
+<tr class="memitem:a68f2de6c792942c80c1612e06db7920a" id="r_a68f2de6c792942c80c1612e06db7920a"><td class="memItemLeft">typedef decltype(::jl_typeof) *&#160;</td><td class="memItemRight"><a class="el" href="#a68f2de6c792942c80c1612e06db7920a">jl_typeof_t</a></td></tr>
+<tr class="memitem:a836cc8943ac8a44105e6e7ef1ad9a814" id="r_a836cc8943ac8a44105e6e7ef1ad9a814"><td class="memItemLeft">typedef decltype(::jl_exception_occurred) *&#160;</td><td class="memItemRight"><a class="el" href="#a836cc8943ac8a44105e6e7ef1ad9a814">jl_exception_occurred_t</a></td></tr>
+<tr class="memitem:a9f4b72df2015b2618534c246ba209f12" id="r_a9f4b72df2015b2618534c246ba209f12"><td class="memItemLeft">typedef decltype(::jl_exception_clear) *&#160;</td><td class="memItemRight"><a class="el" href="#a9f4b72df2015b2618534c246ba209f12">jl_exception_clear_t</a></td></tr>
+<tr class="memitem:adbf28cbb128195482bfa4a761dbf1a32" id="r_adbf28cbb128195482bfa4a761dbf1a32"><td class="memItemLeft">typedef decltype(::jl_gc_collect) *&#160;</td><td class="memItemRight"><a class="el" href="#adbf28cbb128195482bfa4a761dbf1a32">jl_gc_collect_t</a></td></tr>
+<tr class="memitem:a747631853c1e5aff888f9aeb9aa95217" id="r_a747631853c1e5aff888f9aeb9aa95217"><td class="memItemLeft">typedef decltype(::jl_gc_enable) *&#160;</td><td class="memItemRight"><a class="el" href="#a747631853c1e5aff888f9aeb9aa95217">jl_gc_enable_t</a></td></tr>
+<tr class="memitem:ab2eee4105e549b0adae40aebfdcf910f" id="r_ab2eee4105e549b0adae40aebfdcf910f"><td class="memItemLeft">typedef decltype(::jl_main_module) *&#160;</td><td class="memItemRight"><a class="el" href="#ab2eee4105e549b0adae40aebfdcf910f">jl_main_module_t</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a110748f6db02c30b0580f6ab0f8ca82a" id="r_a110748f6db02c30b0580f6ab0f8ca82a"><td class="memItemLeft">jl_value_t *&#160;</td><td class="memItemRight"><a class="el" href="#a110748f6db02c30b0580f6ab0f8ca82a">jl_get_function</a> (jl_module_t *m, const char *name)</td></tr>
+<tr class="memitem:a07c24cd4eb0e3c840f230de7d4138d6d" id="r_a07c24cd4eb0e3c840f230de7d4138d6d"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a07c24cd4eb0e3c840f230de7d4138d6d">is_available</a> () const</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:aa45927aba7187947c94e812ff3f1e318" id="r_aa45927aba7187947c94e812ff3f1e318"><td class="memItemLeft">jl_init_t&#160;</td><td class="memItemRight"><a class="el" href="#aa45927aba7187947c94e812ff3f1e318">jl_init</a> = nullptr</td></tr>
+<tr class="memitem:a4e34e72f53f227d4acfe7418d45edecb" id="r_a4e34e72f53f227d4acfe7418d45edecb"><td class="memItemLeft">jl_atexit_hook_t&#160;</td><td class="memItemRight"><a class="el" href="#a4e34e72f53f227d4acfe7418d45edecb">jl_atexit_hook</a> = nullptr</td></tr>
+<tr class="memitem:a43473214a1adbe58a823c7581e55e560" id="r_a43473214a1adbe58a823c7581e55e560"><td class="memItemLeft">jl_eval_string_t&#160;</td><td class="memItemRight"><a class="el" href="#a43473214a1adbe58a823c7581e55e560">jl_eval_string</a> = nullptr</td></tr>
+<tr class="memitem:a10c42123ffaf77d2ad53aaac38b62d8a" id="r_a10c42123ffaf77d2ad53aaac38b62d8a"><td class="memItemLeft">jl_apply_array_type_t&#160;</td><td class="memItemRight"><a class="el" href="#a10c42123ffaf77d2ad53aaac38b62d8a">jl_apply_array_type</a> = nullptr</td></tr>
+<tr class="memitem:a8293cc6d591df00e8062044a2d87d2eb" id="r_a8293cc6d591df00e8062044a2d87d2eb"><td class="memItemLeft">jl_ptr_to_array_1d_t&#160;</td><td class="memItemRight"><a class="el" href="#a8293cc6d591df00e8062044a2d87d2eb">jl_ptr_to_array_1d</a> = nullptr</td></tr>
+<tr class="memitem:ae4c5a71a84cc623c1960d5c2eaf7b641" id="r_ae4c5a71a84cc623c1960d5c2eaf7b641"><td class="memItemLeft">jl_symbol_t&#160;</td><td class="memItemRight"><a class="el" href="#ae4c5a71a84cc623c1960d5c2eaf7b641">jl_symbol</a> = nullptr</td></tr>
+<tr class="memitem:aafe1107ec72bbbd19a2bdbe582c2f323" id="r_aafe1107ec72bbbd19a2bdbe582c2f323"><td class="memItemLeft">jl_get_global_t&#160;</td><td class="memItemRight"><a class="el" href="#aafe1107ec72bbbd19a2bdbe582c2f323">jl_get_global</a> = nullptr</td></tr>
+<tr class="memitem:aeb6f54d9f6d4ca9d23a8f2f5fd5407a8" id="r_aeb6f54d9f6d4ca9d23a8f2f5fd5407a8"><td class="memItemLeft">jl_call_t&#160;</td><td class="memItemRight"><a class="el" href="#aeb6f54d9f6d4ca9d23a8f2f5fd5407a8">jl_call</a> = nullptr</td></tr>
+<tr class="memitem:a8d31a9afdb5100ccfdce248cc1be3dce" id="r_a8d31a9afdb5100ccfdce248cc1be3dce"><td class="memItemLeft">jl_call0_t&#160;</td><td class="memItemRight"><a class="el" href="#a8d31a9afdb5100ccfdce248cc1be3dce">jl_call0</a> = nullptr</td></tr>
+<tr class="memitem:af873cd78f0b7acaf89008c1a171af2c9" id="r_af873cd78f0b7acaf89008c1a171af2c9"><td class="memItemLeft">jl_call1_t&#160;</td><td class="memItemRight"><a class="el" href="#af873cd78f0b7acaf89008c1a171af2c9">jl_call1</a> = nullptr</td></tr>
+<tr class="memitem:ac2dbb46bbfadceea33e6202b035b8d02" id="r_ac2dbb46bbfadceea33e6202b035b8d02"><td class="memItemLeft">jl_call2_t&#160;</td><td class="memItemRight"><a class="el" href="#ac2dbb46bbfadceea33e6202b035b8d02">jl_call2</a> = nullptr</td></tr>
+<tr class="memitem:aa9e4af5c3885148424e82cf54c966b3d" id="r_aa9e4af5c3885148424e82cf54c966b3d"><td class="memItemLeft">jl_call3_t&#160;</td><td class="memItemRight"><a class="el" href="#aa9e4af5c3885148424e82cf54c966b3d">jl_call3</a> = nullptr</td></tr>
+<tr class="memitem:a84885a0f4f5b1af1145b4b0993a990cc" id="r_a84885a0f4f5b1af1145b4b0993a990cc"><td class="memItemLeft">jl_box_float64_t&#160;</td><td class="memItemRight"><a class="el" href="#a84885a0f4f5b1af1145b4b0993a990cc">jl_box_float64</a> = nullptr</td></tr>
+<tr class="memitem:a9a47d73a2289182d48b73663df3509e6" id="r_a9a47d73a2289182d48b73663df3509e6"><td class="memItemLeft">jl_box_uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#a9a47d73a2289182d48b73663df3509e6">jl_box_uint64</a> = nullptr</td></tr>
+<tr class="memitem:a4c486e6e18f6b6a4136d9e5ecc950a27" id="r_a4c486e6e18f6b6a4136d9e5ecc950a27"><td class="memItemLeft">jl_box_uint16_t&#160;</td><td class="memItemRight"><a class="el" href="#a4c486e6e18f6b6a4136d9e5ecc950a27">jl_box_uint16</a> = nullptr</td></tr>
+<tr class="memitem:afbf4d644016005396ad4a20c3c1499ec" id="r_afbf4d644016005396ad4a20c3c1499ec"><td class="memItemLeft">jl_box_int64_t&#160;</td><td class="memItemRight"><a class="el" href="#afbf4d644016005396ad4a20c3c1499ec">jl_box_int64</a> = nullptr</td></tr>
+<tr class="memitem:a9b7f9b5fb07a7c3673ff8ab6ccdeee76" id="r_a9b7f9b5fb07a7c3673ff8ab6ccdeee76"><td class="memItemLeft">jl_cstr_to_string_t&#160;</td><td class="memItemRight"><a class="el" href="#a9b7f9b5fb07a7c3673ff8ab6ccdeee76">jl_cstr_to_string</a> = nullptr</td></tr>
+<tr class="memitem:ad9ed657760678aa7b4a2bae0d75d5437" id="r_ad9ed657760678aa7b4a2bae0d75d5437"><td class="memItemLeft">jl_unbox_float64_t&#160;</td><td class="memItemRight"><a class="el" href="#ad9ed657760678aa7b4a2bae0d75d5437">jl_unbox_float64</a> = nullptr</td></tr>
+<tr class="memitem:a87403db1618470b24991751212fda105" id="r_a87403db1618470b24991751212fda105"><td class="memItemLeft">jl_unbox_uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#a87403db1618470b24991751212fda105">jl_unbox_uint64</a> = nullptr</td></tr>
+<tr class="memitem:a1bee656e283b70c8e2e577f8460a20e9" id="r_a1bee656e283b70c8e2e577f8460a20e9"><td class="memItemLeft">jl_unbox_uint16_t&#160;</td><td class="memItemRight"><a class="el" href="#a1bee656e283b70c8e2e577f8460a20e9">jl_unbox_uint16</a> = nullptr</td></tr>
+<tr class="memitem:aa818e04a2e0a16076a0ce84eca1fd3c9" id="r_aa818e04a2e0a16076a0ce84eca1fd3c9"><td class="memItemLeft">jl_unbox_int64_t&#160;</td><td class="memItemRight"><a class="el" href="#aa818e04a2e0a16076a0ce84eca1fd3c9">jl_unbox_int64</a> = nullptr</td></tr>
+<tr class="memitem:afa2f7a2d4fe55c13436dd82d9da78c94" id="r_afa2f7a2d4fe55c13436dd82d9da78c94"><td class="memItemLeft">jl_typeof_t&#160;</td><td class="memItemRight"><a class="el" href="#afa2f7a2d4fe55c13436dd82d9da78c94">jl_typeof</a> = nullptr</td></tr>
+<tr class="memitem:a0d856a1561facbf211614c45d009bf7f" id="r_a0d856a1561facbf211614c45d009bf7f"><td class="memItemLeft">jl_exception_occurred_t&#160;</td><td class="memItemRight"><a class="el" href="#a0d856a1561facbf211614c45d009bf7f">jl_exception_occurred</a> = nullptr</td></tr>
+<tr class="memitem:a0303868031ae25e99972bb818265675f" id="r_a0303868031ae25e99972bb818265675f"><td class="memItemLeft">jl_exception_clear_t&#160;</td><td class="memItemRight"><a class="el" href="#a0303868031ae25e99972bb818265675f">jl_exception_clear</a> = nullptr</td></tr>
+<tr class="memitem:aac3f5b932d2d924359d9524321e64ba1" id="r_aac3f5b932d2d924359d9524321e64ba1"><td class="memItemLeft">jl_gc_collect_t&#160;</td><td class="memItemRight"><a class="el" href="#aac3f5b932d2d924359d9524321e64ba1">jl_gc_collect</a> = nullptr</td></tr>
+<tr class="memitem:afe7b283af2f9b48f6fab462d98e5c675" id="r_afe7b283af2f9b48f6fab462d98e5c675"><td class="memItemLeft">jl_gc_enable_t&#160;</td><td class="memItemRight"><a class="el" href="#afe7b283af2f9b48f6fab462d98e5c675">jl_gc_enable</a> = nullptr</td></tr>
+<tr class="memitem:a8a8712b0a81d7a049df509e0157449ad" id="r_a8a8712b0a81d7a049df509e0157449ad"><td class="memItemLeft">jl_main_module_t&#160;</td><td class="memItemRight"><a class="el" href="#a8a8712b0a81d7a049df509e0157449ad">jl_main_module</a> = nullptr</td></tr>
+</table>
+<a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
+<a id="a8c007848b379702c067af50c7bd5ef2d" name="a8c007848b379702c067af50c7bd5ef2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c007848b379702c067af50c7bd5ef2d">&#9670;&#160;</a></span>jl_apply_array_type_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_apply_array_type) * idol::Optimizers::JuMP::DynamicLib::jl_apply_array_type_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00158">158</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a8fde9f22105e560139d94eeb8ddb2626" name="a8fde9f22105e560139d94eeb8ddb2626"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fde9f22105e560139d94eeb8ddb2626">&#9670;&#160;</a></span>jl_atexit_hook_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_atexit_hook) * idol::Optimizers::JuMP::DynamicLib::jl_atexit_hook_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00156">156</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a6e6127a389042f51748b8169ed8fdcee" name="a6e6127a389042f51748b8169ed8fdcee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e6127a389042f51748b8169ed8fdcee">&#9670;&#160;</a></span>jl_box_float64_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_box_float64) * idol::Optimizers::JuMP::DynamicLib::jl_box_float64_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00169">169</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a64ec629279ad77370d79c9bac3aacab1" name="a64ec629279ad77370d79c9bac3aacab1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64ec629279ad77370d79c9bac3aacab1">&#9670;&#160;</a></span>jl_box_int64_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_box_int64) * idol::Optimizers::JuMP::DynamicLib::jl_box_int64_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00172">172</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="af6279c0a55e33c70cc1092df7a61ff7c" name="af6279c0a55e33c70cc1092df7a61ff7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6279c0a55e33c70cc1092df7a61ff7c">&#9670;&#160;</a></span>jl_box_uint16_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_box_uint16) * idol::Optimizers::JuMP::DynamicLib::jl_box_uint16_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00171">171</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="aeb3e8605c91fe84e38b0a9650729471b" name="aeb3e8605c91fe84e38b0a9650729471b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb3e8605c91fe84e38b0a9650729471b">&#9670;&#160;</a></span>jl_box_uint64_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_box_uint64) * idol::Optimizers::JuMP::DynamicLib::jl_box_uint64_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00170">170</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a565d4d252e11975574a07db3a14cecfd" name="a565d4d252e11975574a07db3a14cecfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a565d4d252e11975574a07db3a14cecfd">&#9670;&#160;</a></span>jl_call0_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_call0) * idol::Optimizers::JuMP::DynamicLib::jl_call0_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00164">164</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a6610c017e33fbc0c8bb444cdeaefcc33" name="a6610c017e33fbc0c8bb444cdeaefcc33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6610c017e33fbc0c8bb444cdeaefcc33">&#9670;&#160;</a></span>jl_call1_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_call1) * idol::Optimizers::JuMP::DynamicLib::jl_call1_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00165">165</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a2baa057d563a1e4fc858c8e495b5e281" name="a2baa057d563a1e4fc858c8e495b5e281"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2baa057d563a1e4fc858c8e495b5e281">&#9670;&#160;</a></span>jl_call2_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_call2) * idol::Optimizers::JuMP::DynamicLib::jl_call2_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00166">166</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a20414a69e3e41daa177745eca5a979cb" name="a20414a69e3e41daa177745eca5a979cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20414a69e3e41daa177745eca5a979cb">&#9670;&#160;</a></span>jl_call3_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_call3) * idol::Optimizers::JuMP::DynamicLib::jl_call3_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00167">167</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="ae581dd3b00bc72f22ed572d2e53cb1fe" name="ae581dd3b00bc72f22ed572d2e53cb1fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae581dd3b00bc72f22ed572d2e53cb1fe">&#9670;&#160;</a></span>jl_call_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_call) * idol::Optimizers::JuMP::DynamicLib::jl_call_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00163">163</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="ad1466193584c671c2c2c8355edc41c59" name="ad1466193584c671c2c2c8355edc41c59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1466193584c671c2c2c8355edc41c59">&#9670;&#160;</a></span>jl_cstr_to_string_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_cstr_to_string) * idol::Optimizers::JuMP::DynamicLib::jl_cstr_to_string_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00173">173</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="ab74eee3ec4d746107e4f97332c839f00" name="ab74eee3ec4d746107e4f97332c839f00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab74eee3ec4d746107e4f97332c839f00">&#9670;&#160;</a></span>jl_eval_string_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_eval_string) * idol::Optimizers::JuMP::DynamicLib::jl_eval_string_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00157">157</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a9f4b72df2015b2618534c246ba209f12" name="a9f4b72df2015b2618534c246ba209f12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f4b72df2015b2618534c246ba209f12">&#9670;&#160;</a></span>jl_exception_clear_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_exception_clear) * idol::Optimizers::JuMP::DynamicLib::jl_exception_clear_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00184">184</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a836cc8943ac8a44105e6e7ef1ad9a814" name="a836cc8943ac8a44105e6e7ef1ad9a814"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a836cc8943ac8a44105e6e7ef1ad9a814">&#9670;&#160;</a></span>jl_exception_occurred_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_exception_occurred) * idol::Optimizers::JuMP::DynamicLib::jl_exception_occurred_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00183">183</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="adbf28cbb128195482bfa4a761dbf1a32" name="adbf28cbb128195482bfa4a761dbf1a32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbf28cbb128195482bfa4a761dbf1a32">&#9670;&#160;</a></span>jl_gc_collect_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_gc_collect) * idol::Optimizers::JuMP::DynamicLib::jl_gc_collect_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00186">186</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a747631853c1e5aff888f9aeb9aa95217" name="a747631853c1e5aff888f9aeb9aa95217"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a747631853c1e5aff888f9aeb9aa95217">&#9670;&#160;</a></span>jl_gc_enable_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_gc_enable) * idol::Optimizers::JuMP::DynamicLib::jl_gc_enable_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00187">187</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="ace4eadcffc386f9c9f91c8a86ab20bba" name="ace4eadcffc386f9c9f91c8a86ab20bba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace4eadcffc386f9c9f91c8a86ab20bba">&#9670;&#160;</a></span>jl_get_global_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_get_global) * idol::Optimizers::JuMP::DynamicLib::jl_get_global_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00161">161</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a7fbad402421f92893a6f35f5f2474e34" name="a7fbad402421f92893a6f35f5f2474e34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fbad402421f92893a6f35f5f2474e34">&#9670;&#160;</a></span>jl_init_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_init) * idol::Optimizers::JuMP::DynamicLib::jl_init_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00155">155</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="ab2eee4105e549b0adae40aebfdcf910f" name="ab2eee4105e549b0adae40aebfdcf910f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2eee4105e549b0adae40aebfdcf910f">&#9670;&#160;</a></span>jl_main_module_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_main_module) * idol::Optimizers::JuMP::DynamicLib::jl_main_module_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00189">189</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a568deae7a95e90007eb09c1dfe286196" name="a568deae7a95e90007eb09c1dfe286196"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a568deae7a95e90007eb09c1dfe286196">&#9670;&#160;</a></span>jl_ptr_to_array_1d_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_ptr_to_array_1d) * idol::Optimizers::JuMP::DynamicLib::jl_ptr_to_array_1d_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00159">159</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="aee430fd7e387388dafff33221fc5c1b0" name="aee430fd7e387388dafff33221fc5c1b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee430fd7e387388dafff33221fc5c1b0">&#9670;&#160;</a></span>jl_symbol_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_symbol) * idol::Optimizers::JuMP::DynamicLib::jl_symbol_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00160">160</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a68f2de6c792942c80c1612e06db7920a" name="a68f2de6c792942c80c1612e06db7920a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68f2de6c792942c80c1612e06db7920a">&#9670;&#160;</a></span>jl_typeof_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_typeof) * idol::Optimizers::JuMP::DynamicLib::jl_typeof_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00180">180</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a5af7b7505e3c93ce07542c37f432f4e7" name="a5af7b7505e3c93ce07542c37f432f4e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5af7b7505e3c93ce07542c37f432f4e7">&#9670;&#160;</a></span>jl_unbox_float64_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_unbox_float64) * idol::Optimizers::JuMP::DynamicLib::jl_unbox_float64_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00175">175</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="acd12381bb2b9429f1250c281930b6eef" name="acd12381bb2b9429f1250c281930b6eef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd12381bb2b9429f1250c281930b6eef">&#9670;&#160;</a></span>jl_unbox_int64_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_unbox_int64) * idol::Optimizers::JuMP::DynamicLib::jl_unbox_int64_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00178">178</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="af04f8037d0dc19892f926b079db29ffb" name="af04f8037d0dc19892f926b079db29ffb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af04f8037d0dc19892f926b079db29ffb">&#9670;&#160;</a></span>jl_unbox_uint16_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_unbox_uint16) * idol::Optimizers::JuMP::DynamicLib::jl_unbox_uint16_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00177">177</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a29f9cd03f8f3a0bc0f6773fa161cfe85" name="a29f9cd03f8f3a0bc0f6773fa161cfe85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29f9cd03f8f3a0bc0f6773fa161cfe85">&#9670;&#160;</a></span>jl_unbox_uint64_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::jl_unbox_uint64) * idol::Optimizers::JuMP::DynamicLib::jl_unbox_uint64_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00176">176</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a07c24cd4eb0e3c840f230de7d4138d6d" name="a07c24cd4eb0e3c840f230de7d4138d6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07c24cd4eb0e3c840f230de7d4138d6d">&#9670;&#160;</a></span>is_available()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool idol::Optimizers::JuMP::DynamicLib::is_available </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00201">201</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a110748f6db02c30b0580f6ab0f8ca82a" name="a110748f6db02c30b0580f6ab0f8ca82a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a110748f6db02c30b0580f6ab0f8ca82a">&#9670;&#160;</a></span>jl_get_function()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_value_t * idol::Optimizers::JuMP::DynamicLib::jl_get_function </td>
+          <td>(</td>
+          <td class="paramtype">jl_module_t *</td>          <td class="paramname"><span class="paramname"><em>m</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00195">195</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="a10c42123ffaf77d2ad53aaac38b62d8a" name="a10c42123ffaf77d2ad53aaac38b62d8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10c42123ffaf77d2ad53aaac38b62d8a">&#9670;&#160;</a></span>jl_apply_array_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_apply_array_type_t idol::Optimizers::JuMP::DynamicLib::jl_apply_array_type = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00158">158</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a4e34e72f53f227d4acfe7418d45edecb" name="a4e34e72f53f227d4acfe7418d45edecb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e34e72f53f227d4acfe7418d45edecb">&#9670;&#160;</a></span>jl_atexit_hook</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_atexit_hook_t idol::Optimizers::JuMP::DynamicLib::jl_atexit_hook = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00156">156</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a84885a0f4f5b1af1145b4b0993a990cc" name="a84885a0f4f5b1af1145b4b0993a990cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84885a0f4f5b1af1145b4b0993a990cc">&#9670;&#160;</a></span>jl_box_float64</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_box_float64_t idol::Optimizers::JuMP::DynamicLib::jl_box_float64 = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00169">169</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="afbf4d644016005396ad4a20c3c1499ec" name="afbf4d644016005396ad4a20c3c1499ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbf4d644016005396ad4a20c3c1499ec">&#9670;&#160;</a></span>jl_box_int64</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_box_int64_t idol::Optimizers::JuMP::DynamicLib::jl_box_int64 = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00172">172</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a4c486e6e18f6b6a4136d9e5ecc950a27" name="a4c486e6e18f6b6a4136d9e5ecc950a27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c486e6e18f6b6a4136d9e5ecc950a27">&#9670;&#160;</a></span>jl_box_uint16</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_box_uint16_t idol::Optimizers::JuMP::DynamicLib::jl_box_uint16 = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00171">171</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a9a47d73a2289182d48b73663df3509e6" name="a9a47d73a2289182d48b73663df3509e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a47d73a2289182d48b73663df3509e6">&#9670;&#160;</a></span>jl_box_uint64</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_box_uint64_t idol::Optimizers::JuMP::DynamicLib::jl_box_uint64 = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00170">170</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="aeb6f54d9f6d4ca9d23a8f2f5fd5407a8" name="aeb6f54d9f6d4ca9d23a8f2f5fd5407a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb6f54d9f6d4ca9d23a8f2f5fd5407a8">&#9670;&#160;</a></span>jl_call</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_call_t idol::Optimizers::JuMP::DynamicLib::jl_call = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00163">163</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a8d31a9afdb5100ccfdce248cc1be3dce" name="a8d31a9afdb5100ccfdce248cc1be3dce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d31a9afdb5100ccfdce248cc1be3dce">&#9670;&#160;</a></span>jl_call0</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_call0_t idol::Optimizers::JuMP::DynamicLib::jl_call0 = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00164">164</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="af873cd78f0b7acaf89008c1a171af2c9" name="af873cd78f0b7acaf89008c1a171af2c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af873cd78f0b7acaf89008c1a171af2c9">&#9670;&#160;</a></span>jl_call1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_call1_t idol::Optimizers::JuMP::DynamicLib::jl_call1 = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00165">165</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="ac2dbb46bbfadceea33e6202b035b8d02" name="ac2dbb46bbfadceea33e6202b035b8d02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2dbb46bbfadceea33e6202b035b8d02">&#9670;&#160;</a></span>jl_call2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_call2_t idol::Optimizers::JuMP::DynamicLib::jl_call2 = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00166">166</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="aa9e4af5c3885148424e82cf54c966b3d" name="aa9e4af5c3885148424e82cf54c966b3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9e4af5c3885148424e82cf54c966b3d">&#9670;&#160;</a></span>jl_call3</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_call3_t idol::Optimizers::JuMP::DynamicLib::jl_call3 = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00167">167</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a9b7f9b5fb07a7c3673ff8ab6ccdeee76" name="a9b7f9b5fb07a7c3673ff8ab6ccdeee76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b7f9b5fb07a7c3673ff8ab6ccdeee76">&#9670;&#160;</a></span>jl_cstr_to_string</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_cstr_to_string_t idol::Optimizers::JuMP::DynamicLib::jl_cstr_to_string = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00173">173</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a43473214a1adbe58a823c7581e55e560" name="a43473214a1adbe58a823c7581e55e560"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43473214a1adbe58a823c7581e55e560">&#9670;&#160;</a></span>jl_eval_string</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_eval_string_t idol::Optimizers::JuMP::DynamicLib::jl_eval_string = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00157">157</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a0303868031ae25e99972bb818265675f" name="a0303868031ae25e99972bb818265675f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0303868031ae25e99972bb818265675f">&#9670;&#160;</a></span>jl_exception_clear</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_exception_clear_t idol::Optimizers::JuMP::DynamicLib::jl_exception_clear = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00184">184</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a0d856a1561facbf211614c45d009bf7f" name="a0d856a1561facbf211614c45d009bf7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d856a1561facbf211614c45d009bf7f">&#9670;&#160;</a></span>jl_exception_occurred</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_exception_occurred_t idol::Optimizers::JuMP::DynamicLib::jl_exception_occurred = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00183">183</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="aac3f5b932d2d924359d9524321e64ba1" name="aac3f5b932d2d924359d9524321e64ba1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac3f5b932d2d924359d9524321e64ba1">&#9670;&#160;</a></span>jl_gc_collect</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_gc_collect_t idol::Optimizers::JuMP::DynamicLib::jl_gc_collect = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00186">186</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="afe7b283af2f9b48f6fab462d98e5c675" name="afe7b283af2f9b48f6fab462d98e5c675"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe7b283af2f9b48f6fab462d98e5c675">&#9670;&#160;</a></span>jl_gc_enable</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_gc_enable_t idol::Optimizers::JuMP::DynamicLib::jl_gc_enable = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00187">187</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="aafe1107ec72bbbd19a2bdbe582c2f323" name="aafe1107ec72bbbd19a2bdbe582c2f323"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafe1107ec72bbbd19a2bdbe582c2f323">&#9670;&#160;</a></span>jl_get_global</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_get_global_t idol::Optimizers::JuMP::DynamicLib::jl_get_global = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00161">161</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="aa45927aba7187947c94e812ff3f1e318" name="aa45927aba7187947c94e812ff3f1e318"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa45927aba7187947c94e812ff3f1e318">&#9670;&#160;</a></span>jl_init</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_init_t idol::Optimizers::JuMP::DynamicLib::jl_init = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00155">155</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a8a8712b0a81d7a049df509e0157449ad" name="a8a8712b0a81d7a049df509e0157449ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a8712b0a81d7a049df509e0157449ad">&#9670;&#160;</a></span>jl_main_module</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_main_module_t idol::Optimizers::JuMP::DynamicLib::jl_main_module = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00189">189</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a8293cc6d591df00e8062044a2d87d2eb" name="a8293cc6d591df00e8062044a2d87d2eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8293cc6d591df00e8062044a2d87d2eb">&#9670;&#160;</a></span>jl_ptr_to_array_1d</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_ptr_to_array_1d_t idol::Optimizers::JuMP::DynamicLib::jl_ptr_to_array_1d = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00159">159</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="ae4c5a71a84cc623c1960d5c2eaf7b641" name="ae4c5a71a84cc623c1960d5c2eaf7b641"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4c5a71a84cc623c1960d5c2eaf7b641">&#9670;&#160;</a></span>jl_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_symbol_t idol::Optimizers::JuMP::DynamicLib::jl_symbol = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00160">160</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="afa2f7a2d4fe55c13436dd82d9da78c94" name="afa2f7a2d4fe55c13436dd82d9da78c94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa2f7a2d4fe55c13436dd82d9da78c94">&#9670;&#160;</a></span>jl_typeof</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_typeof_t idol::Optimizers::JuMP::DynamicLib::jl_typeof = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00180">180</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="ad9ed657760678aa7b4a2bae0d75d5437" name="ad9ed657760678aa7b4a2bae0d75d5437"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9ed657760678aa7b4a2bae0d75d5437">&#9670;&#160;</a></span>jl_unbox_float64</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_unbox_float64_t idol::Optimizers::JuMP::DynamicLib::jl_unbox_float64 = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00175">175</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="aa818e04a2e0a16076a0ce84eca1fd3c9" name="aa818e04a2e0a16076a0ce84eca1fd3c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa818e04a2e0a16076a0ce84eca1fd3c9">&#9670;&#160;</a></span>jl_unbox_int64</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_unbox_int64_t idol::Optimizers::JuMP::DynamicLib::jl_unbox_int64 = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00178">178</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a1bee656e283b70c8e2e577f8460a20e9" name="a1bee656e283b70c8e2e577f8460a20e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bee656e283b70c8e2e577f8460a20e9">&#9670;&#160;</a></span>jl_unbox_uint16</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_unbox_uint16_t idol::Optimizers::JuMP::DynamicLib::jl_unbox_uint16 = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00177">177</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+<a id="a87403db1618470b24991751212fda105" name="a87403db1618470b24991751212fda105"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87403db1618470b24991751212fda105">&#9670;&#160;</a></span>jl_unbox_uint64</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">jl_unbox_uint64_t idol::Optimizers::JuMP::DynamicLib::jl_unbox_uint64 = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__JuMP_8h_source.html#l00176">176</a> of file <a class="el" href="Optimizers__JuMP_8h_source.html">Optimizers_JuMP.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

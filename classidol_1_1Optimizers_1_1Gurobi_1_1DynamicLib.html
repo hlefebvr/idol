@@ -1,0 +1,1781 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Optimizers::Gurobi::DynamicLib Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl bilevel solve model.mps \\ \n   --aux follower.aux \\ \n   --method KKT_SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl bilevel solve model.mps \\ \n   --aux follower.aux \\ \n   --method MibS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl bilevel solve model.mps \\ \n   --aux follower.aux \\ \n   --method KKT_BigM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl milp solve model.mps \\ \n   --method Gurobi \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl robust solve model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG_Farkas \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl robust solve model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG_KKT_SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl robust solve model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG_MibS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl milp solve model.mps \\ \n   --method HiGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><b>Optimizers</b></li><li class="navelem"><a href="classidol_1_1Optimizers_1_1Gurobi.html">Gurobi</a></li><li class="navelem"><a href="classidol_1_1Optimizers_1_1Gurobi_1_1DynamicLib.html">DynamicLib</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="classidol_1_1Optimizers_1_1Gurobi_1_1DynamicLib-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Optimizers::Gurobi::DynamicLib Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00125">125</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:af3c14bc2ed8fb9a23364eb2b1d4f8271" id="r_af3c14bc2ed8fb9a23364eb2b1d4f8271"><td class="memItemLeft">typedef decltype(::idol_GRBversion) *&#160;</td><td class="memItemRight"><a class="el" href="#af3c14bc2ed8fb9a23364eb2b1d4f8271">idol_GRBversion_t</a></td></tr>
+<tr class="memitem:a014488a024acd53b4efaeab5a993ead8" id="r_a014488a024acd53b4efaeab5a993ead8"><td class="memItemLeft">typedef decltype(::idol_GRBloadenvinternal) *&#160;</td><td class="memItemRight"><a class="el" href="#a014488a024acd53b4efaeab5a993ead8">idol_GRBloadenvinternal_t</a></td></tr>
+<tr class="memitem:a41a4e898c2279ee31706073ad2bb98b4" id="r_a41a4e898c2279ee31706073ad2bb98b4"><td class="memItemLeft">typedef decltype(::idol_GRBloadenv) *&#160;</td><td class="memItemRight"><a class="el" href="#a41a4e898c2279ee31706073ad2bb98b4">idol_GRBloadenv_t</a></td></tr>
+<tr class="memitem:a5a7418899807de4ac391cceaefb8b99f" id="r_a5a7418899807de4ac391cceaefb8b99f"><td class="memItemLeft">typedef decltype(::idol_GRBgetintattr) *&#160;</td><td class="memItemRight"><a class="el" href="#a5a7418899807de4ac391cceaefb8b99f">idol_GRBgetintattr_t</a></td></tr>
+<tr class="memitem:a12017b163c1be8e5b86adfb7703596ed" id="r_a12017b163c1be8e5b86adfb7703596ed"><td class="memItemLeft">typedef decltype(::idol_GRBgeterrormsg) *&#160;</td><td class="memItemRight"><a class="el" href="#a12017b163c1be8e5b86adfb7703596ed">idol_GRBgeterrormsg_t</a></td></tr>
+<tr class="memitem:a9c9723751bc2f57853ffa6102d668755" id="r_a9c9723751bc2f57853ffa6102d668755"><td class="memItemLeft">typedef decltype(::idol_GRBfreeenv) *&#160;</td><td class="memItemRight"><a class="el" href="#a9c9723751bc2f57853ffa6102d668755">idol_GRBfreeenv_t</a></td></tr>
+<tr class="memitem:af7a3b3d0e68e4b9cd8f185593dabb0b5" id="r_af7a3b3d0e68e4b9cd8f185593dabb0b5"><td class="memItemLeft">typedef decltype(::idol_GRBgetenv) *&#160;</td><td class="memItemRight"><a class="el" href="#af7a3b3d0e68e4b9cd8f185593dabb0b5">idol_GRBgetenv_t</a></td></tr>
+<tr class="memitem:a6523932b5941a3f43ac24278d42361e2" id="r_a6523932b5941a3f43ac24278d42361e2"><td class="memItemLeft">typedef decltype(::idol_GRBnewmodel) *&#160;</td><td class="memItemRight"><a class="el" href="#a6523932b5941a3f43ac24278d42361e2">idol_GRBnewmodel_t</a></td></tr>
+<tr class="memitem:a3b02f514d5009c1e52300cd8e71f9baa" id="r_a3b02f514d5009c1e52300cd8e71f9baa"><td class="memItemLeft">typedef decltype(::idol_GRBfreemodel) *&#160;</td><td class="memItemRight"><a class="el" href="#a3b02f514d5009c1e52300cd8e71f9baa">idol_GRBfreemodel_t</a></td></tr>
+<tr class="memitem:a6f65229e9de1ecefd8d86b749f2b5d2e" id="r_a6f65229e9de1ecefd8d86b749f2b5d2e"><td class="memItemLeft">typedef decltype(::idol_GRBaddvar) *&#160;</td><td class="memItemRight"><a class="el" href="#a6f65229e9de1ecefd8d86b749f2b5d2e">idol_GRBaddvar_t</a></td></tr>
+<tr class="memitem:a313c47d911966452919848fa0f5e9a2f" id="r_a313c47d911966452919848fa0f5e9a2f"><td class="memItemLeft">typedef decltype(::idol_GRBaddconstr) *&#160;</td><td class="memItemRight"><a class="el" href="#a313c47d911966452919848fa0f5e9a2f">idol_GRBaddconstr_t</a></td></tr>
+<tr class="memitem:af07cd21c075b27b4789d7b3187fb96db" id="r_af07cd21c075b27b4789d7b3187fb96db"><td class="memItemLeft">typedef decltype(::idol_GRBaddqconstr) *&#160;</td><td class="memItemRight"><a class="el" href="#af07cd21c075b27b4789d7b3187fb96db">idol_GRBaddqconstr_t</a></td></tr>
+<tr class="memitem:a7d98699e8eb10539feea7c68859043df" id="r_a7d98699e8eb10539feea7c68859043df"><td class="memItemLeft">typedef decltype(::idol_GRBsetdblattrelement) *&#160;</td><td class="memItemRight"><a class="el" href="#a7d98699e8eb10539feea7c68859043df">idol_GRBsetdblattrelement_t</a></td></tr>
+<tr class="memitem:a50017d0028c2e426533a072e4d68d684" id="r_a50017d0028c2e426533a072e4d68d684"><td class="memItemLeft">typedef decltype(::idol_GRBsetcharattrelement) *&#160;</td><td class="memItemRight"><a class="el" href="#a50017d0028c2e426533a072e4d68d684">idol_GRBsetcharattrelement_t</a></td></tr>
+<tr class="memitem:a65ca66e9f3c73cf10a00c98cb98857fb" id="r_a65ca66e9f3c73cf10a00c98cb98857fb"><td class="memItemLeft">typedef decltype(::idol_GRBsetobjective) *&#160;</td><td class="memItemRight"><a class="el" href="#a65ca66e9f3c73cf10a00c98cb98857fb">idol_GRBsetobjective_t</a></td></tr>
+<tr class="memitem:ac6033908d63b55788adb0550c605f65a" id="r_ac6033908d63b55788adb0550c605f65a"><td class="memItemLeft">typedef decltype(::idol_GRBdelvars) *&#160;</td><td class="memItemRight"><a class="el" href="#ac6033908d63b55788adb0550c605f65a">idol_GRBdelvars_t</a></td></tr>
+<tr class="memitem:a10e388686d7d33152fad9ed3607e857c" id="r_a10e388686d7d33152fad9ed3607e857c"><td class="memItemLeft">typedef decltype(::idol_GRBdelconstrs) *&#160;</td><td class="memItemRight"><a class="el" href="#a10e388686d7d33152fad9ed3607e857c">idol_GRBdelconstrs_t</a></td></tr>
+<tr class="memitem:a3a0ec15e8c67cc73d267874c248d78ab" id="r_a3a0ec15e8c67cc73d267874c248d78ab"><td class="memItemLeft">typedef decltype(::idol_GRBdelsos) *&#160;</td><td class="memItemRight"><a class="el" href="#a3a0ec15e8c67cc73d267874c248d78ab">idol_GRBdelsos_t</a></td></tr>
+<tr class="memitem:ab3888e0b19388598b71375870b71a9fe" id="r_ab3888e0b19388598b71375870b71a9fe"><td class="memItemLeft">typedef decltype(::idol_GRBoptimize) *&#160;</td><td class="memItemRight"><a class="el" href="#ab3888e0b19388598b71375870b71a9fe">idol_GRBoptimize_t</a></td></tr>
+<tr class="memitem:afceb3a0a2c864ab8d33324d2aae8f14b" id="r_afceb3a0a2c864ab8d33324d2aae8f14b"><td class="memItemLeft">typedef decltype(::idol_GRBwrite) *&#160;</td><td class="memItemRight"><a class="el" href="#afceb3a0a2c864ab8d33324d2aae8f14b">idol_GRBwrite_t</a></td></tr>
+<tr class="memitem:a0bdc97128cb4045ac3b760770392a976" id="r_a0bdc97128cb4045ac3b760770392a976"><td class="memItemLeft">typedef decltype(::idol_GRBsetintattr) *&#160;</td><td class="memItemRight"><a class="el" href="#a0bdc97128cb4045ac3b760770392a976">idol_GRBsetintattr_t</a></td></tr>
+<tr class="memitem:a1835ac224467cb247bbf8b01fabfa434" id="r_a1835ac224467cb247bbf8b01fabfa434"><td class="memItemLeft">typedef decltype(::idol_GRBchgcoeffs) *&#160;</td><td class="memItemRight"><a class="el" href="#a1835ac224467cb247bbf8b01fabfa434">idol_GRBchgcoeffs_t</a></td></tr>
+<tr class="memitem:a5cfa7fee72fd0805370fc68a970bc996" id="r_a5cfa7fee72fd0805370fc68a970bc996"><td class="memItemLeft">typedef decltype(::idol_GRBupdatemodel) *&#160;</td><td class="memItemRight"><a class="el" href="#a5cfa7fee72fd0805370fc68a970bc996">idol_GRBupdatemodel_t</a></td></tr>
+<tr class="memitem:a789d7083274fb07810ed200a48c2ed47" id="r_a789d7083274fb07810ed200a48c2ed47"><td class="memItemLeft">typedef decltype(::idol_GRBsetintparam) *&#160;</td><td class="memItemRight"><a class="el" href="#a789d7083274fb07810ed200a48c2ed47">idol_GRBsetintparam_t</a></td></tr>
+<tr class="memitem:ab78bd7e115d3f5b37a39913d52cc5b52" id="r_ab78bd7e115d3f5b37a39913d52cc5b52"><td class="memItemLeft">typedef decltype(::idol_GRBsetdblparam) *&#160;</td><td class="memItemRight"><a class="el" href="#ab78bd7e115d3f5b37a39913d52cc5b52">idol_GRBsetdblparam_t</a></td></tr>
+<tr class="memitem:a2823c8987dfa4ae2c28abf203421e0ba" id="r_a2823c8987dfa4ae2c28abf203421e0ba"><td class="memItemLeft">typedef decltype(::idol_GRBsetstrparam) *&#160;</td><td class="memItemRight"><a class="el" href="#a2823c8987dfa4ae2c28abf203421e0ba">idol_GRBsetstrparam_t</a></td></tr>
+<tr class="memitem:a0a2bf35b33ad0f80240e58de0d8ca29f" id="r_a0a2bf35b33ad0f80240e58de0d8ca29f"><td class="memItemLeft">typedef decltype(::idol_GRBsetcallbackfunc) *&#160;</td><td class="memItemRight"><a class="el" href="#a0a2bf35b33ad0f80240e58de0d8ca29f">idol_GRBsetcallbackfunc_t</a></td></tr>
+<tr class="memitem:a7b9fab69640250c1b7660408dbffed01" id="r_a7b9fab69640250c1b7660408dbffed01"><td class="memItemLeft">typedef decltype(::idol_GRBgetintparam) *&#160;</td><td class="memItemRight"><a class="el" href="#a7b9fab69640250c1b7660408dbffed01">idol_GRBgetintparam_t</a></td></tr>
+<tr class="memitem:a661fc36bfe6b355193d8f00e9d480f02" id="r_a661fc36bfe6b355193d8f00e9d480f02"><td class="memItemLeft">typedef decltype(::idol_GRBgetdblparam) *&#160;</td><td class="memItemRight"><a class="el" href="#a661fc36bfe6b355193d8f00e9d480f02">idol_GRBgetdblparam_t</a></td></tr>
+<tr class="memitem:a06bb5be7d4071a55b8d297b6befc6505" id="r_a06bb5be7d4071a55b8d297b6befc6505"><td class="memItemLeft">typedef decltype(::idol_GRBgetstrparam) *&#160;</td><td class="memItemRight"><a class="el" href="#a06bb5be7d4071a55b8d297b6befc6505">idol_GRBgetstrparam_t</a></td></tr>
+<tr class="memitem:aed7fb8f23b431facb0c038a5a7ea57a0" id="r_aed7fb8f23b431facb0c038a5a7ea57a0"><td class="memItemLeft">typedef decltype(::idol_GRBgetdblattr) *&#160;</td><td class="memItemRight"><a class="el" href="#aed7fb8f23b431facb0c038a5a7ea57a0">idol_GRBgetdblattr_t</a></td></tr>
+<tr class="memitem:a0d06e43120a9a87aeea925be97f46057" id="r_a0d06e43120a9a87aeea925be97f46057"><td class="memItemLeft">typedef decltype(::idol_GRBgetdblattrarray) *&#160;</td><td class="memItemRight"><a class="el" href="#a0d06e43120a9a87aeea925be97f46057">idol_GRBgetdblattrarray_t</a></td></tr>
+<tr class="memitem:aba3426dbccc4be0d0c9d17358b684b44" id="r_aba3426dbccc4be0d0c9d17358b684b44"><td class="memItemLeft">typedef decltype(::idol_GRBgetdblattrelement) *&#160;</td><td class="memItemRight"><a class="el" href="#aba3426dbccc4be0d0c9d17358b684b44">idol_GRBgetdblattrelement_t</a></td></tr>
+<tr class="memitem:a396c83ed4c5d78aab878e7f3e65492f5" id="r_a396c83ed4c5d78aab878e7f3e65492f5"><td class="memItemLeft">typedef decltype(::idol_GRBsetdblattr) *&#160;</td><td class="memItemRight"><a class="el" href="#a396c83ed4c5d78aab878e7f3e65492f5">idol_GRBsetdblattr_t</a></td></tr>
+<tr class="memitem:a8c7ea2bd45036ed588745f5cfc669a13" id="r_a8c7ea2bd45036ed588745f5cfc669a13"><td class="memItemLeft">typedef decltype(::idol_GRBdelqconstrs) *&#160;</td><td class="memItemRight"><a class="el" href="#a8c7ea2bd45036ed588745f5cfc669a13">idol_GRBdelqconstrs_t</a></td></tr>
+<tr class="memitem:a02f49fb25872d8b2c08e8b519fd10b18" id="r_a02f49fb25872d8b2c08e8b519fd10b18"><td class="memItemLeft">typedef decltype(::idol_GRBaddsos) *&#160;</td><td class="memItemRight"><a class="el" href="#a02f49fb25872d8b2c08e8b519fd10b18">idol_GRBaddsos_t</a></td></tr>
+<tr class="memitem:a3ca239c95f05f4b2372dbfdedc6c25e2" id="r_a3ca239c95f05f4b2372dbfdedc6c25e2"><td class="memItemLeft">typedef decltype(::idol_GRBcbget) *&#160;</td><td class="memItemRight"><a class="el" href="#a3ca239c95f05f4b2372dbfdedc6c25e2">idol_GRBcbget_t</a></td></tr>
+<tr class="memitem:ab06e657b8b807e39b95b7f3e02dacb38" id="r_ab06e657b8b807e39b95b7f3e02dacb38"><td class="memItemLeft">typedef decltype(::idol_GRBcbsolution) *&#160;</td><td class="memItemRight"><a class="el" href="#ab06e657b8b807e39b95b7f3e02dacb38">idol_GRBcbsolution_t</a></td></tr>
+<tr class="memitem:affa55ca28264ab55c8c115a74e55946d" id="r_affa55ca28264ab55c8c115a74e55946d"><td class="memItemLeft">typedef decltype(::idol_GRBcbcut) *&#160;</td><td class="memItemRight"><a class="el" href="#affa55ca28264ab55c8c115a74e55946d">idol_GRBcbcut_t</a></td></tr>
+<tr class="memitem:a8dca2e9dfc62de40c0b4565f4d73f5ed" id="r_a8dca2e9dfc62de40c0b4565f4d73f5ed"><td class="memItemLeft">typedef decltype(::idol_GRBcblazy) *&#160;</td><td class="memItemRight"><a class="el" href="#a8dca2e9dfc62de40c0b4565f4d73f5ed">idol_GRBcblazy_t</a></td></tr>
+<tr class="memitem:a6db6bec4404524b446318b13755779c4" id="r_a6db6bec4404524b446318b13755779c4"><td class="memItemLeft">typedef decltype(::idol_GRBreadmodel) *&#160;</td><td class="memItemRight"><a class="el" href="#a6db6bec4404524b446318b13755779c4">idol_GRBreadmodel_t</a></td></tr>
+<tr class="memitem:a2dd9cc62c4cddfabada4f93e6dcc9ffd" id="r_a2dd9cc62c4cddfabada4f93e6dcc9ffd"><td class="memItemLeft">typedef decltype(::idol_GRBgetcharattrarray) *&#160;</td><td class="memItemRight"><a class="el" href="#a2dd9cc62c4cddfabada4f93e6dcc9ffd">idol_GRBgetcharattrarray_t</a></td></tr>
+<tr class="memitem:a7c8ea3fe35068184a1da07afbf7b7f87" id="r_a7c8ea3fe35068184a1da07afbf7b7f87"><td class="memItemLeft">typedef decltype(::idol_GRBgetstrattrarray) *&#160;</td><td class="memItemRight"><a class="el" href="#a7c8ea3fe35068184a1da07afbf7b7f87">idol_GRBgetstrattrarray_t</a></td></tr>
+<tr class="memitem:a76d90ace23fb8e020275622d6cc5341c" id="r_a76d90ace23fb8e020275622d6cc5341c"><td class="memItemLeft">typedef decltype(::idol_GRBgetconstrs) *&#160;</td><td class="memItemRight"><a class="el" href="#a76d90ace23fb8e020275622d6cc5341c">idol_GRBgetconstrs_t</a></td></tr>
+<tr class="memitem:adc138df1d63333dd068ada631251e963" id="r_adc138df1d63333dd068ada631251e963"><td class="memItemLeft">typedef decltype(::idol_GRBterminate) *&#160;</td><td class="memItemRight"><a class="el" href="#adc138df1d63333dd068ada631251e963">idol_GRBterminate_t</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a8b58665678c3f3ea388c34e39cbc8485" id="r_a8b58665678c3f3ea388c34e39cbc8485"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a8b58665678c3f3ea388c34e39cbc8485">is_available</a> () const</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a3c53dd4b013c873eaa7ecd0726f275ec" id="r_a3c53dd4b013c873eaa7ecd0726f275ec"><td class="memItemLeft">idol_GRBversion_t&#160;</td><td class="memItemRight"><a class="el" href="#a3c53dd4b013c873eaa7ecd0726f275ec">GRBversion</a> = nullptr</td></tr>
+<tr class="memitem:ac600b04d4617db9d800d03d7a6cc4656" id="r_ac600b04d4617db9d800d03d7a6cc4656"><td class="memItemLeft">idol_GRBloadenvinternal_t&#160;</td><td class="memItemRight"><a class="el" href="#ac600b04d4617db9d800d03d7a6cc4656">GRBloadenvinternal</a> = nullptr</td></tr>
+<tr class="memitem:a22403ca16a1775ae04e42400dc4b2311" id="r_a22403ca16a1775ae04e42400dc4b2311"><td class="memItemLeft">idol_GRBloadenv_t&#160;</td><td class="memItemRight"><a class="el" href="#a22403ca16a1775ae04e42400dc4b2311">GRBloadenv</a> = nullptr</td></tr>
+<tr class="memitem:a0b468697eff0e9f5cf6ce0a188859648" id="r_a0b468697eff0e9f5cf6ce0a188859648"><td class="memItemLeft">idol_GRBgetintattr_t&#160;</td><td class="memItemRight"><a class="el" href="#a0b468697eff0e9f5cf6ce0a188859648">GRBgetintattr</a> = nullptr</td></tr>
+<tr class="memitem:ab0088ca93f6bf13c7f65c8481ba398ca" id="r_ab0088ca93f6bf13c7f65c8481ba398ca"><td class="memItemLeft">idol_GRBgeterrormsg_t&#160;</td><td class="memItemRight"><a class="el" href="#ab0088ca93f6bf13c7f65c8481ba398ca">GRBgeterrormsg</a> = nullptr</td></tr>
+<tr class="memitem:a458314fa16320830a23626a4fc2902fb" id="r_a458314fa16320830a23626a4fc2902fb"><td class="memItemLeft">idol_GRBfreeenv_t&#160;</td><td class="memItemRight"><a class="el" href="#a458314fa16320830a23626a4fc2902fb">GRBfreeenv</a> = nullptr</td></tr>
+<tr class="memitem:a514f93e343bf9d2b74569b2c4008dcc4" id="r_a514f93e343bf9d2b74569b2c4008dcc4"><td class="memItemLeft">idol_GRBgetenv_t&#160;</td><td class="memItemRight"><a class="el" href="#a514f93e343bf9d2b74569b2c4008dcc4">GRBgetenv</a> = nullptr</td></tr>
+<tr class="memitem:a4da71061d632fbb5743d75c59bbdceca" id="r_a4da71061d632fbb5743d75c59bbdceca"><td class="memItemLeft">idol_GRBnewmodel_t&#160;</td><td class="memItemRight"><a class="el" href="#a4da71061d632fbb5743d75c59bbdceca">GRBnewmodel</a> = nullptr</td></tr>
+<tr class="memitem:ac01adb6df1b96826b9b24d5a246efa5f" id="r_ac01adb6df1b96826b9b24d5a246efa5f"><td class="memItemLeft">idol_GRBfreemodel_t&#160;</td><td class="memItemRight"><a class="el" href="#ac01adb6df1b96826b9b24d5a246efa5f">GRBfreemodel</a> = nullptr</td></tr>
+<tr class="memitem:a18742f5a628359e0f768e448752fb070" id="r_a18742f5a628359e0f768e448752fb070"><td class="memItemLeft">idol_GRBaddvar_t&#160;</td><td class="memItemRight"><a class="el" href="#a18742f5a628359e0f768e448752fb070">GRBaddvar</a> = nullptr</td></tr>
+<tr class="memitem:af52da60da3b1e1ab52c3f0c8f800085a" id="r_af52da60da3b1e1ab52c3f0c8f800085a"><td class="memItemLeft">idol_GRBaddconstr_t&#160;</td><td class="memItemRight"><a class="el" href="#af52da60da3b1e1ab52c3f0c8f800085a">GRBaddconstr</a> = nullptr</td></tr>
+<tr class="memitem:aca10b0f7adc534333a20aa9d5896cae3" id="r_aca10b0f7adc534333a20aa9d5896cae3"><td class="memItemLeft">idol_GRBaddqconstr_t&#160;</td><td class="memItemRight"><a class="el" href="#aca10b0f7adc534333a20aa9d5896cae3">GRBaddqconstr</a> = nullptr</td></tr>
+<tr class="memitem:abc1a62770c9f6fcb6ca51610d51399be" id="r_abc1a62770c9f6fcb6ca51610d51399be"><td class="memItemLeft">idol_GRBsetdblattrelement_t&#160;</td><td class="memItemRight"><a class="el" href="#abc1a62770c9f6fcb6ca51610d51399be">GRBsetdblattrelement</a> = nullptr</td></tr>
+<tr class="memitem:a34ebbcc8191a7f920f8b66f7dce6953e" id="r_a34ebbcc8191a7f920f8b66f7dce6953e"><td class="memItemLeft">idol_GRBsetcharattrelement_t&#160;</td><td class="memItemRight"><a class="el" href="#a34ebbcc8191a7f920f8b66f7dce6953e">GRBsetcharattrelement</a> = nullptr</td></tr>
+<tr class="memitem:abbe88feda2f25a39d0f35a26f2145e9c" id="r_abbe88feda2f25a39d0f35a26f2145e9c"><td class="memItemLeft">idol_GRBsetobjective_t&#160;</td><td class="memItemRight"><a class="el" href="#abbe88feda2f25a39d0f35a26f2145e9c">GRBsetobjective</a> = nullptr</td></tr>
+<tr class="memitem:a08c8faea8bbba82c254962a483b565c2" id="r_a08c8faea8bbba82c254962a483b565c2"><td class="memItemLeft">idol_GRBdelvars_t&#160;</td><td class="memItemRight"><a class="el" href="#a08c8faea8bbba82c254962a483b565c2">GRBdelvars</a> = nullptr</td></tr>
+<tr class="memitem:a73b80bb86d852b740bb45243e4bb4d43" id="r_a73b80bb86d852b740bb45243e4bb4d43"><td class="memItemLeft">idol_GRBdelconstrs_t&#160;</td><td class="memItemRight"><a class="el" href="#a73b80bb86d852b740bb45243e4bb4d43">GRBdelconstrs</a> = nullptr</td></tr>
+<tr class="memitem:ad1a4d9bb87962bc0981c3f7c88820f0b" id="r_ad1a4d9bb87962bc0981c3f7c88820f0b"><td class="memItemLeft">idol_GRBdelsos_t&#160;</td><td class="memItemRight"><a class="el" href="#ad1a4d9bb87962bc0981c3f7c88820f0b">GRBdelsos</a> = nullptr</td></tr>
+<tr class="memitem:a0988023bb244dbdfa18a5692192bfd3f" id="r_a0988023bb244dbdfa18a5692192bfd3f"><td class="memItemLeft">idol_GRBoptimize_t&#160;</td><td class="memItemRight"><a class="el" href="#a0988023bb244dbdfa18a5692192bfd3f">GRBoptimize</a> = nullptr</td></tr>
+<tr class="memitem:a6340e20d3802c10096d1291df8af1c1f" id="r_a6340e20d3802c10096d1291df8af1c1f"><td class="memItemLeft">idol_GRBwrite_t&#160;</td><td class="memItemRight"><a class="el" href="#a6340e20d3802c10096d1291df8af1c1f">GRBwrite</a> = nullptr</td></tr>
+<tr class="memitem:ad183b843a5019dc0a8b15f9dfab556d6" id="r_ad183b843a5019dc0a8b15f9dfab556d6"><td class="memItemLeft">idol_GRBsetintattr_t&#160;</td><td class="memItemRight"><a class="el" href="#ad183b843a5019dc0a8b15f9dfab556d6">GRBsetintattr</a> = nullptr</td></tr>
+<tr class="memitem:a46d41d0377eaf470ffb766551004c08c" id="r_a46d41d0377eaf470ffb766551004c08c"><td class="memItemLeft">idol_GRBchgcoeffs_t&#160;</td><td class="memItemRight"><a class="el" href="#a46d41d0377eaf470ffb766551004c08c">GRBchgcoeffs</a> = nullptr</td></tr>
+<tr class="memitem:a9b252255b8afbfdd93e58aa684944227" id="r_a9b252255b8afbfdd93e58aa684944227"><td class="memItemLeft">idol_GRBupdatemodel_t&#160;</td><td class="memItemRight"><a class="el" href="#a9b252255b8afbfdd93e58aa684944227">GRBupdatemodel</a> = nullptr</td></tr>
+<tr class="memitem:a447d77481e257e9bba529e3dda5bf483" id="r_a447d77481e257e9bba529e3dda5bf483"><td class="memItemLeft">idol_GRBsetintparam_t&#160;</td><td class="memItemRight"><a class="el" href="#a447d77481e257e9bba529e3dda5bf483">GRBsetintparam</a> = nullptr</td></tr>
+<tr class="memitem:a2210d6a9f733ba3e9bff923eabe094d2" id="r_a2210d6a9f733ba3e9bff923eabe094d2"><td class="memItemLeft">idol_GRBsetdblparam_t&#160;</td><td class="memItemRight"><a class="el" href="#a2210d6a9f733ba3e9bff923eabe094d2">GRBsetdblparam</a> = nullptr</td></tr>
+<tr class="memitem:a710dc763be639396d907e8c40f3c9d4f" id="r_a710dc763be639396d907e8c40f3c9d4f"><td class="memItemLeft">idol_GRBsetstrparam_t&#160;</td><td class="memItemRight"><a class="el" href="#a710dc763be639396d907e8c40f3c9d4f">GRBsetstrparam</a> = nullptr</td></tr>
+<tr class="memitem:af9e466a60784a35ded486ed635f98029" id="r_af9e466a60784a35ded486ed635f98029"><td class="memItemLeft">idol_GRBsetcallbackfunc_t&#160;</td><td class="memItemRight"><a class="el" href="#af9e466a60784a35ded486ed635f98029">GRBsetcallbackfunc</a> = nullptr</td></tr>
+<tr class="memitem:a52d275f1da68a906f08369bae2de6339" id="r_a52d275f1da68a906f08369bae2de6339"><td class="memItemLeft">idol_GRBgetintparam_t&#160;</td><td class="memItemRight"><a class="el" href="#a52d275f1da68a906f08369bae2de6339">GRBgetintparam</a> = nullptr</td></tr>
+<tr class="memitem:ab6dc09d28b162a57ba205c7a93fab9d2" id="r_ab6dc09d28b162a57ba205c7a93fab9d2"><td class="memItemLeft">idol_GRBgetdblparam_t&#160;</td><td class="memItemRight"><a class="el" href="#ab6dc09d28b162a57ba205c7a93fab9d2">GRBgetdblparam</a> = nullptr</td></tr>
+<tr class="memitem:a49ee6f2683d8cb7ec9389244a2a60a44" id="r_a49ee6f2683d8cb7ec9389244a2a60a44"><td class="memItemLeft">idol_GRBgetstrparam_t&#160;</td><td class="memItemRight"><a class="el" href="#a49ee6f2683d8cb7ec9389244a2a60a44">GRBgetstrparam</a> = nullptr</td></tr>
+<tr class="memitem:a7a29d5c867e9a72a66298c2877b45c17" id="r_a7a29d5c867e9a72a66298c2877b45c17"><td class="memItemLeft">idol_GRBgetdblattr_t&#160;</td><td class="memItemRight"><a class="el" href="#a7a29d5c867e9a72a66298c2877b45c17">GRBgetdblattr</a> = nullptr</td></tr>
+<tr class="memitem:a7ed2ce3a30a5d6996b3ff3c491781d8d" id="r_a7ed2ce3a30a5d6996b3ff3c491781d8d"><td class="memItemLeft">idol_GRBgetdblattrarray_t&#160;</td><td class="memItemRight"><a class="el" href="#a7ed2ce3a30a5d6996b3ff3c491781d8d">GRBgetdblattrarray</a> = nullptr</td></tr>
+<tr class="memitem:a4dec7502708bd3d5966c29bec097631d" id="r_a4dec7502708bd3d5966c29bec097631d"><td class="memItemLeft">idol_GRBgetdblattrelement_t&#160;</td><td class="memItemRight"><a class="el" href="#a4dec7502708bd3d5966c29bec097631d">GRBgetdblattrelement</a> = nullptr</td></tr>
+<tr class="memitem:a88acf73ea1bb8a4ae470a95f27b1df29" id="r_a88acf73ea1bb8a4ae470a95f27b1df29"><td class="memItemLeft">idol_GRBsetdblattr_t&#160;</td><td class="memItemRight"><a class="el" href="#a88acf73ea1bb8a4ae470a95f27b1df29">GRBsetdblattr</a> = nullptr</td></tr>
+<tr class="memitem:adf4f0309e09bb102bae7b0960331c2a1" id="r_adf4f0309e09bb102bae7b0960331c2a1"><td class="memItemLeft">idol_GRBdelqconstrs_t&#160;</td><td class="memItemRight"><a class="el" href="#adf4f0309e09bb102bae7b0960331c2a1">GRBdelqconstrs</a> = nullptr</td></tr>
+<tr class="memitem:a480a43ed19e891c3661c47decb164c94" id="r_a480a43ed19e891c3661c47decb164c94"><td class="memItemLeft">idol_GRBaddsos_t&#160;</td><td class="memItemRight"><a class="el" href="#a480a43ed19e891c3661c47decb164c94">GRBaddsos</a> = nullptr</td></tr>
+<tr class="memitem:add2b835f25dba29bb654755923f75105" id="r_add2b835f25dba29bb654755923f75105"><td class="memItemLeft">idol_GRBcbget_t&#160;</td><td class="memItemRight"><a class="el" href="#add2b835f25dba29bb654755923f75105">GRBcbget</a> = nullptr</td></tr>
+<tr class="memitem:aa7740704ed9740a3c4428759a6689b93" id="r_aa7740704ed9740a3c4428759a6689b93"><td class="memItemLeft">idol_GRBcbsolution_t&#160;</td><td class="memItemRight"><a class="el" href="#aa7740704ed9740a3c4428759a6689b93">GRBcbsolution</a> = nullptr</td></tr>
+<tr class="memitem:a2ee9c7f700f5ccf638d26ef9a456f51c" id="r_a2ee9c7f700f5ccf638d26ef9a456f51c"><td class="memItemLeft">idol_GRBcbcut_t&#160;</td><td class="memItemRight"><a class="el" href="#a2ee9c7f700f5ccf638d26ef9a456f51c">GRBcbcut</a> = nullptr</td></tr>
+<tr class="memitem:accadffa29895bb1469de6226c1e5bb40" id="r_accadffa29895bb1469de6226c1e5bb40"><td class="memItemLeft">idol_GRBcblazy_t&#160;</td><td class="memItemRight"><a class="el" href="#accadffa29895bb1469de6226c1e5bb40">GRBcblazy</a> = nullptr</td></tr>
+<tr class="memitem:af31fcdfd2da667f71b965a299bc49843" id="r_af31fcdfd2da667f71b965a299bc49843"><td class="memItemLeft">idol_GRBreadmodel_t&#160;</td><td class="memItemRight"><a class="el" href="#af31fcdfd2da667f71b965a299bc49843">GRBreadmodel</a> = nullptr</td></tr>
+<tr class="memitem:a41542e2fa5674f16e259fd7cf3a07f04" id="r_a41542e2fa5674f16e259fd7cf3a07f04"><td class="memItemLeft">idol_GRBgetcharattrarray_t&#160;</td><td class="memItemRight"><a class="el" href="#a41542e2fa5674f16e259fd7cf3a07f04">GRBgetcharattrarray</a> = nullptr</td></tr>
+<tr class="memitem:ab98406323f5d23c939d77fbfece39de9" id="r_ab98406323f5d23c939d77fbfece39de9"><td class="memItemLeft">idol_GRBgetstrattrarray_t&#160;</td><td class="memItemRight"><a class="el" href="#ab98406323f5d23c939d77fbfece39de9">GRBgetstrattrarray</a> = nullptr</td></tr>
+<tr class="memitem:a18879f6bd4117cc57c19e5a1c91254c9" id="r_a18879f6bd4117cc57c19e5a1c91254c9"><td class="memItemLeft">idol_GRBgetconstrs_t&#160;</td><td class="memItemRight"><a class="el" href="#a18879f6bd4117cc57c19e5a1c91254c9">GRBgetconstrs</a> = nullptr</td></tr>
+<tr class="memitem:aef27d5f8721083fba3fdeb89047da435" id="r_aef27d5f8721083fba3fdeb89047da435"><td class="memItemLeft">idol_GRBterminate_t&#160;</td><td class="memItemRight"><a class="el" href="#aef27d5f8721083fba3fdeb89047da435">GRBterminate</a> = nullptr</td></tr>
+</table>
+<a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
+<a id="a313c47d911966452919848fa0f5e9a2f" name="a313c47d911966452919848fa0f5e9a2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a313c47d911966452919848fa0f5e9a2f">&#9670;&#160;</a></span>idol_GRBaddconstr_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBaddconstr) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBaddconstr_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00140">140</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="af07cd21c075b27b4789d7b3187fb96db" name="af07cd21c075b27b4789d7b3187fb96db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af07cd21c075b27b4789d7b3187fb96db">&#9670;&#160;</a></span>idol_GRBaddqconstr_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBaddqconstr) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBaddqconstr_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00141">141</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a02f49fb25872d8b2c08e8b519fd10b18" name="a02f49fb25872d8b2c08e8b519fd10b18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02f49fb25872d8b2c08e8b519fd10b18">&#9670;&#160;</a></span>idol_GRBaddsos_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBaddsos) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBaddsos_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00165">165</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a6f65229e9de1ecefd8d86b749f2b5d2e" name="a6f65229e9de1ecefd8d86b749f2b5d2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f65229e9de1ecefd8d86b749f2b5d2e">&#9670;&#160;</a></span>idol_GRBaddvar_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBaddvar) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBaddvar_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00139">139</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="affa55ca28264ab55c8c115a74e55946d" name="affa55ca28264ab55c8c115a74e55946d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affa55ca28264ab55c8c115a74e55946d">&#9670;&#160;</a></span>idol_GRBcbcut_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBcbcut) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBcbcut_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00168">168</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a3ca239c95f05f4b2372dbfdedc6c25e2" name="a3ca239c95f05f4b2372dbfdedc6c25e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ca239c95f05f4b2372dbfdedc6c25e2">&#9670;&#160;</a></span>idol_GRBcbget_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBcbget) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBcbget_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00166">166</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a8dca2e9dfc62de40c0b4565f4d73f5ed" name="a8dca2e9dfc62de40c0b4565f4d73f5ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dca2e9dfc62de40c0b4565f4d73f5ed">&#9670;&#160;</a></span>idol_GRBcblazy_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBcblazy) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBcblazy_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00169">169</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="ab06e657b8b807e39b95b7f3e02dacb38" name="ab06e657b8b807e39b95b7f3e02dacb38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab06e657b8b807e39b95b7f3e02dacb38">&#9670;&#160;</a></span>idol_GRBcbsolution_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBcbsolution) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBcbsolution_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00167">167</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a1835ac224467cb247bbf8b01fabfa434" name="a1835ac224467cb247bbf8b01fabfa434"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1835ac224467cb247bbf8b01fabfa434">&#9670;&#160;</a></span>idol_GRBchgcoeffs_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBchgcoeffs) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBchgcoeffs_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00151">151</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a10e388686d7d33152fad9ed3607e857c" name="a10e388686d7d33152fad9ed3607e857c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10e388686d7d33152fad9ed3607e857c">&#9670;&#160;</a></span>idol_GRBdelconstrs_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBdelconstrs) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBdelconstrs_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00146">146</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a8c7ea2bd45036ed588745f5cfc669a13" name="a8c7ea2bd45036ed588745f5cfc669a13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c7ea2bd45036ed588745f5cfc669a13">&#9670;&#160;</a></span>idol_GRBdelqconstrs_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBdelqconstrs) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBdelqconstrs_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00164">164</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a3a0ec15e8c67cc73d267874c248d78ab" name="a3a0ec15e8c67cc73d267874c248d78ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a0ec15e8c67cc73d267874c248d78ab">&#9670;&#160;</a></span>idol_GRBdelsos_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBdelsos) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBdelsos_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00147">147</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="ac6033908d63b55788adb0550c605f65a" name="ac6033908d63b55788adb0550c605f65a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6033908d63b55788adb0550c605f65a">&#9670;&#160;</a></span>idol_GRBdelvars_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBdelvars) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBdelvars_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00145">145</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a9c9723751bc2f57853ffa6102d668755" name="a9c9723751bc2f57853ffa6102d668755"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c9723751bc2f57853ffa6102d668755">&#9670;&#160;</a></span>idol_GRBfreeenv_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBfreeenv) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBfreeenv_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00135">135</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a3b02f514d5009c1e52300cd8e71f9baa" name="a3b02f514d5009c1e52300cd8e71f9baa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b02f514d5009c1e52300cd8e71f9baa">&#9670;&#160;</a></span>idol_GRBfreemodel_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBfreemodel) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBfreemodel_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00138">138</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a2dd9cc62c4cddfabada4f93e6dcc9ffd" name="a2dd9cc62c4cddfabada4f93e6dcc9ffd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dd9cc62c4cddfabada4f93e6dcc9ffd">&#9670;&#160;</a></span>idol_GRBgetcharattrarray_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBgetcharattrarray) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBgetcharattrarray_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00171">171</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a76d90ace23fb8e020275622d6cc5341c" name="a76d90ace23fb8e020275622d6cc5341c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76d90ace23fb8e020275622d6cc5341c">&#9670;&#160;</a></span>idol_GRBgetconstrs_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBgetconstrs) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBgetconstrs_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00173">173</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="aed7fb8f23b431facb0c038a5a7ea57a0" name="aed7fb8f23b431facb0c038a5a7ea57a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed7fb8f23b431facb0c038a5a7ea57a0">&#9670;&#160;</a></span>idol_GRBgetdblattr_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBgetdblattr) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBgetdblattr_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00160">160</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a0d06e43120a9a87aeea925be97f46057" name="a0d06e43120a9a87aeea925be97f46057"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d06e43120a9a87aeea925be97f46057">&#9670;&#160;</a></span>idol_GRBgetdblattrarray_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBgetdblattrarray) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBgetdblattrarray_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00161">161</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="aba3426dbccc4be0d0c9d17358b684b44" name="aba3426dbccc4be0d0c9d17358b684b44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba3426dbccc4be0d0c9d17358b684b44">&#9670;&#160;</a></span>idol_GRBgetdblattrelement_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBgetdblattrelement) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBgetdblattrelement_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00162">162</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a661fc36bfe6b355193d8f00e9d480f02" name="a661fc36bfe6b355193d8f00e9d480f02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a661fc36bfe6b355193d8f00e9d480f02">&#9670;&#160;</a></span>idol_GRBgetdblparam_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBgetdblparam) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBgetdblparam_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00158">158</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="af7a3b3d0e68e4b9cd8f185593dabb0b5" name="af7a3b3d0e68e4b9cd8f185593dabb0b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7a3b3d0e68e4b9cd8f185593dabb0b5">&#9670;&#160;</a></span>idol_GRBgetenv_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBgetenv) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBgetenv_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00136">136</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a12017b163c1be8e5b86adfb7703596ed" name="a12017b163c1be8e5b86adfb7703596ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12017b163c1be8e5b86adfb7703596ed">&#9670;&#160;</a></span>idol_GRBgeterrormsg_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBgeterrormsg) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBgeterrormsg_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00134">134</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a5a7418899807de4ac391cceaefb8b99f" name="a5a7418899807de4ac391cceaefb8b99f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a7418899807de4ac391cceaefb8b99f">&#9670;&#160;</a></span>idol_GRBgetintattr_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBgetintattr) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBgetintattr_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00133">133</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a7b9fab69640250c1b7660408dbffed01" name="a7b9fab69640250c1b7660408dbffed01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b9fab69640250c1b7660408dbffed01">&#9670;&#160;</a></span>idol_GRBgetintparam_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBgetintparam) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBgetintparam_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00157">157</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a7c8ea3fe35068184a1da07afbf7b7f87" name="a7c8ea3fe35068184a1da07afbf7b7f87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c8ea3fe35068184a1da07afbf7b7f87">&#9670;&#160;</a></span>idol_GRBgetstrattrarray_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBgetstrattrarray) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBgetstrattrarray_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00172">172</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a06bb5be7d4071a55b8d297b6befc6505" name="a06bb5be7d4071a55b8d297b6befc6505"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06bb5be7d4071a55b8d297b6befc6505">&#9670;&#160;</a></span>idol_GRBgetstrparam_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBgetstrparam) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBgetstrparam_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00159">159</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a41a4e898c2279ee31706073ad2bb98b4" name="a41a4e898c2279ee31706073ad2bb98b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41a4e898c2279ee31706073ad2bb98b4">&#9670;&#160;</a></span>idol_GRBloadenv_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBloadenv) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBloadenv_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00132">132</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a014488a024acd53b4efaeab5a993ead8" name="a014488a024acd53b4efaeab5a993ead8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a014488a024acd53b4efaeab5a993ead8">&#9670;&#160;</a></span>idol_GRBloadenvinternal_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBloadenvinternal) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBloadenvinternal_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00131">131</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a6523932b5941a3f43ac24278d42361e2" name="a6523932b5941a3f43ac24278d42361e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6523932b5941a3f43ac24278d42361e2">&#9670;&#160;</a></span>idol_GRBnewmodel_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBnewmodel) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBnewmodel_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00137">137</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="ab3888e0b19388598b71375870b71a9fe" name="ab3888e0b19388598b71375870b71a9fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3888e0b19388598b71375870b71a9fe">&#9670;&#160;</a></span>idol_GRBoptimize_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBoptimize) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBoptimize_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00148">148</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a6db6bec4404524b446318b13755779c4" name="a6db6bec4404524b446318b13755779c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6db6bec4404524b446318b13755779c4">&#9670;&#160;</a></span>idol_GRBreadmodel_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBreadmodel) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBreadmodel_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00170">170</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a0a2bf35b33ad0f80240e58de0d8ca29f" name="a0a2bf35b33ad0f80240e58de0d8ca29f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a2bf35b33ad0f80240e58de0d8ca29f">&#9670;&#160;</a></span>idol_GRBsetcallbackfunc_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBsetcallbackfunc) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBsetcallbackfunc_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00156">156</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a50017d0028c2e426533a072e4d68d684" name="a50017d0028c2e426533a072e4d68d684"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50017d0028c2e426533a072e4d68d684">&#9670;&#160;</a></span>idol_GRBsetcharattrelement_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBsetcharattrelement) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBsetcharattrelement_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00143">143</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a396c83ed4c5d78aab878e7f3e65492f5" name="a396c83ed4c5d78aab878e7f3e65492f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a396c83ed4c5d78aab878e7f3e65492f5">&#9670;&#160;</a></span>idol_GRBsetdblattr_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBsetdblattr) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBsetdblattr_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00163">163</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a7d98699e8eb10539feea7c68859043df" name="a7d98699e8eb10539feea7c68859043df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d98699e8eb10539feea7c68859043df">&#9670;&#160;</a></span>idol_GRBsetdblattrelement_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBsetdblattrelement) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBsetdblattrelement_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00142">142</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="ab78bd7e115d3f5b37a39913d52cc5b52" name="ab78bd7e115d3f5b37a39913d52cc5b52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab78bd7e115d3f5b37a39913d52cc5b52">&#9670;&#160;</a></span>idol_GRBsetdblparam_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBsetdblparam) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBsetdblparam_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00154">154</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a0bdc97128cb4045ac3b760770392a976" name="a0bdc97128cb4045ac3b760770392a976"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0bdc97128cb4045ac3b760770392a976">&#9670;&#160;</a></span>idol_GRBsetintattr_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBsetintattr) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBsetintattr_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00150">150</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a789d7083274fb07810ed200a48c2ed47" name="a789d7083274fb07810ed200a48c2ed47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a789d7083274fb07810ed200a48c2ed47">&#9670;&#160;</a></span>idol_GRBsetintparam_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBsetintparam) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBsetintparam_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00153">153</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a65ca66e9f3c73cf10a00c98cb98857fb" name="a65ca66e9f3c73cf10a00c98cb98857fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65ca66e9f3c73cf10a00c98cb98857fb">&#9670;&#160;</a></span>idol_GRBsetobjective_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBsetobjective) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBsetobjective_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00144">144</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a2823c8987dfa4ae2c28abf203421e0ba" name="a2823c8987dfa4ae2c28abf203421e0ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2823c8987dfa4ae2c28abf203421e0ba">&#9670;&#160;</a></span>idol_GRBsetstrparam_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBsetstrparam) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBsetstrparam_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00155">155</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="adc138df1d63333dd068ada631251e963" name="adc138df1d63333dd068ada631251e963"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc138df1d63333dd068ada631251e963">&#9670;&#160;</a></span>idol_GRBterminate_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBterminate) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBterminate_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00174">174</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a5cfa7fee72fd0805370fc68a970bc996" name="a5cfa7fee72fd0805370fc68a970bc996"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cfa7fee72fd0805370fc68a970bc996">&#9670;&#160;</a></span>idol_GRBupdatemodel_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBupdatemodel) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBupdatemodel_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00152">152</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="af3c14bc2ed8fb9a23364eb2b1d4f8271" name="af3c14bc2ed8fb9a23364eb2b1d4f8271"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3c14bc2ed8fb9a23364eb2b1d4f8271">&#9670;&#160;</a></span>idol_GRBversion_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBversion) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBversion_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00130">130</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="afceb3a0a2c864ab8d33324d2aae8f14b" name="afceb3a0a2c864ab8d33324d2aae8f14b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afceb3a0a2c864ab8d33324d2aae8f14b">&#9670;&#160;</a></span>idol_GRBwrite_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef decltype(::idol_GRBwrite) * idol::Optimizers::Gurobi::DynamicLib::idol_GRBwrite_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00149">149</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a8b58665678c3f3ea388c34e39cbc8485" name="a8b58665678c3f3ea388c34e39cbc8485"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b58665678c3f3ea388c34e39cbc8485">&#9670;&#160;</a></span>is_available()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool idol::Optimizers::Gurobi::DynamicLib::is_available </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00176">176</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="af52da60da3b1e1ab52c3f0c8f800085a" name="af52da60da3b1e1ab52c3f0c8f800085a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af52da60da3b1e1ab52c3f0c8f800085a">&#9670;&#160;</a></span>GRBaddconstr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBaddconstr_t idol::Optimizers::Gurobi::DynamicLib::GRBaddconstr = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00140">140</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="aca10b0f7adc534333a20aa9d5896cae3" name="aca10b0f7adc534333a20aa9d5896cae3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca10b0f7adc534333a20aa9d5896cae3">&#9670;&#160;</a></span>GRBaddqconstr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBaddqconstr_t idol::Optimizers::Gurobi::DynamicLib::GRBaddqconstr = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00141">141</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a480a43ed19e891c3661c47decb164c94" name="a480a43ed19e891c3661c47decb164c94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a480a43ed19e891c3661c47decb164c94">&#9670;&#160;</a></span>GRBaddsos</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBaddsos_t idol::Optimizers::Gurobi::DynamicLib::GRBaddsos = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00165">165</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a18742f5a628359e0f768e448752fb070" name="a18742f5a628359e0f768e448752fb070"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18742f5a628359e0f768e448752fb070">&#9670;&#160;</a></span>GRBaddvar</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBaddvar_t idol::Optimizers::Gurobi::DynamicLib::GRBaddvar = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00139">139</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a2ee9c7f700f5ccf638d26ef9a456f51c" name="a2ee9c7f700f5ccf638d26ef9a456f51c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ee9c7f700f5ccf638d26ef9a456f51c">&#9670;&#160;</a></span>GRBcbcut</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBcbcut_t idol::Optimizers::Gurobi::DynamicLib::GRBcbcut = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00168">168</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="add2b835f25dba29bb654755923f75105" name="add2b835f25dba29bb654755923f75105"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add2b835f25dba29bb654755923f75105">&#9670;&#160;</a></span>GRBcbget</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBcbget_t idol::Optimizers::Gurobi::DynamicLib::GRBcbget = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00166">166</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="accadffa29895bb1469de6226c1e5bb40" name="accadffa29895bb1469de6226c1e5bb40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accadffa29895bb1469de6226c1e5bb40">&#9670;&#160;</a></span>GRBcblazy</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBcblazy_t idol::Optimizers::Gurobi::DynamicLib::GRBcblazy = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00169">169</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="aa7740704ed9740a3c4428759a6689b93" name="aa7740704ed9740a3c4428759a6689b93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7740704ed9740a3c4428759a6689b93">&#9670;&#160;</a></span>GRBcbsolution</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBcbsolution_t idol::Optimizers::Gurobi::DynamicLib::GRBcbsolution = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00167">167</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a46d41d0377eaf470ffb766551004c08c" name="a46d41d0377eaf470ffb766551004c08c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46d41d0377eaf470ffb766551004c08c">&#9670;&#160;</a></span>GRBchgcoeffs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBchgcoeffs_t idol::Optimizers::Gurobi::DynamicLib::GRBchgcoeffs = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00151">151</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a73b80bb86d852b740bb45243e4bb4d43" name="a73b80bb86d852b740bb45243e4bb4d43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73b80bb86d852b740bb45243e4bb4d43">&#9670;&#160;</a></span>GRBdelconstrs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBdelconstrs_t idol::Optimizers::Gurobi::DynamicLib::GRBdelconstrs = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00146">146</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="adf4f0309e09bb102bae7b0960331c2a1" name="adf4f0309e09bb102bae7b0960331c2a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf4f0309e09bb102bae7b0960331c2a1">&#9670;&#160;</a></span>GRBdelqconstrs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBdelqconstrs_t idol::Optimizers::Gurobi::DynamicLib::GRBdelqconstrs = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00164">164</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="ad1a4d9bb87962bc0981c3f7c88820f0b" name="ad1a4d9bb87962bc0981c3f7c88820f0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1a4d9bb87962bc0981c3f7c88820f0b">&#9670;&#160;</a></span>GRBdelsos</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBdelsos_t idol::Optimizers::Gurobi::DynamicLib::GRBdelsos = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00147">147</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a08c8faea8bbba82c254962a483b565c2" name="a08c8faea8bbba82c254962a483b565c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08c8faea8bbba82c254962a483b565c2">&#9670;&#160;</a></span>GRBdelvars</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBdelvars_t idol::Optimizers::Gurobi::DynamicLib::GRBdelvars = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00145">145</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a458314fa16320830a23626a4fc2902fb" name="a458314fa16320830a23626a4fc2902fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a458314fa16320830a23626a4fc2902fb">&#9670;&#160;</a></span>GRBfreeenv</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBfreeenv_t idol::Optimizers::Gurobi::DynamicLib::GRBfreeenv = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00135">135</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="ac01adb6df1b96826b9b24d5a246efa5f" name="ac01adb6df1b96826b9b24d5a246efa5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac01adb6df1b96826b9b24d5a246efa5f">&#9670;&#160;</a></span>GRBfreemodel</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBfreemodel_t idol::Optimizers::Gurobi::DynamicLib::GRBfreemodel = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00138">138</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a41542e2fa5674f16e259fd7cf3a07f04" name="a41542e2fa5674f16e259fd7cf3a07f04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41542e2fa5674f16e259fd7cf3a07f04">&#9670;&#160;</a></span>GRBgetcharattrarray</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBgetcharattrarray_t idol::Optimizers::Gurobi::DynamicLib::GRBgetcharattrarray = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00171">171</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a18879f6bd4117cc57c19e5a1c91254c9" name="a18879f6bd4117cc57c19e5a1c91254c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18879f6bd4117cc57c19e5a1c91254c9">&#9670;&#160;</a></span>GRBgetconstrs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBgetconstrs_t idol::Optimizers::Gurobi::DynamicLib::GRBgetconstrs = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00173">173</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a7a29d5c867e9a72a66298c2877b45c17" name="a7a29d5c867e9a72a66298c2877b45c17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a29d5c867e9a72a66298c2877b45c17">&#9670;&#160;</a></span>GRBgetdblattr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBgetdblattr_t idol::Optimizers::Gurobi::DynamicLib::GRBgetdblattr = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00160">160</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a7ed2ce3a30a5d6996b3ff3c491781d8d" name="a7ed2ce3a30a5d6996b3ff3c491781d8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ed2ce3a30a5d6996b3ff3c491781d8d">&#9670;&#160;</a></span>GRBgetdblattrarray</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBgetdblattrarray_t idol::Optimizers::Gurobi::DynamicLib::GRBgetdblattrarray = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00161">161</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a4dec7502708bd3d5966c29bec097631d" name="a4dec7502708bd3d5966c29bec097631d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dec7502708bd3d5966c29bec097631d">&#9670;&#160;</a></span>GRBgetdblattrelement</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBgetdblattrelement_t idol::Optimizers::Gurobi::DynamicLib::GRBgetdblattrelement = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00162">162</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="ab6dc09d28b162a57ba205c7a93fab9d2" name="ab6dc09d28b162a57ba205c7a93fab9d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6dc09d28b162a57ba205c7a93fab9d2">&#9670;&#160;</a></span>GRBgetdblparam</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBgetdblparam_t idol::Optimizers::Gurobi::DynamicLib::GRBgetdblparam = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00158">158</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a514f93e343bf9d2b74569b2c4008dcc4" name="a514f93e343bf9d2b74569b2c4008dcc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a514f93e343bf9d2b74569b2c4008dcc4">&#9670;&#160;</a></span>GRBgetenv</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBgetenv_t idol::Optimizers::Gurobi::DynamicLib::GRBgetenv = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00136">136</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="ab0088ca93f6bf13c7f65c8481ba398ca" name="ab0088ca93f6bf13c7f65c8481ba398ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0088ca93f6bf13c7f65c8481ba398ca">&#9670;&#160;</a></span>GRBgeterrormsg</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBgeterrormsg_t idol::Optimizers::Gurobi::DynamicLib::GRBgeterrormsg = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00134">134</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a0b468697eff0e9f5cf6ce0a188859648" name="a0b468697eff0e9f5cf6ce0a188859648"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b468697eff0e9f5cf6ce0a188859648">&#9670;&#160;</a></span>GRBgetintattr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBgetintattr_t idol::Optimizers::Gurobi::DynamicLib::GRBgetintattr = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00133">133</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a52d275f1da68a906f08369bae2de6339" name="a52d275f1da68a906f08369bae2de6339"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52d275f1da68a906f08369bae2de6339">&#9670;&#160;</a></span>GRBgetintparam</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBgetintparam_t idol::Optimizers::Gurobi::DynamicLib::GRBgetintparam = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00157">157</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="ab98406323f5d23c939d77fbfece39de9" name="ab98406323f5d23c939d77fbfece39de9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab98406323f5d23c939d77fbfece39de9">&#9670;&#160;</a></span>GRBgetstrattrarray</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBgetstrattrarray_t idol::Optimizers::Gurobi::DynamicLib::GRBgetstrattrarray = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00172">172</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a49ee6f2683d8cb7ec9389244a2a60a44" name="a49ee6f2683d8cb7ec9389244a2a60a44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49ee6f2683d8cb7ec9389244a2a60a44">&#9670;&#160;</a></span>GRBgetstrparam</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBgetstrparam_t idol::Optimizers::Gurobi::DynamicLib::GRBgetstrparam = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00159">159</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a22403ca16a1775ae04e42400dc4b2311" name="a22403ca16a1775ae04e42400dc4b2311"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22403ca16a1775ae04e42400dc4b2311">&#9670;&#160;</a></span>GRBloadenv</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBloadenv_t idol::Optimizers::Gurobi::DynamicLib::GRBloadenv = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00132">132</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="ac600b04d4617db9d800d03d7a6cc4656" name="ac600b04d4617db9d800d03d7a6cc4656"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac600b04d4617db9d800d03d7a6cc4656">&#9670;&#160;</a></span>GRBloadenvinternal</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBloadenvinternal_t idol::Optimizers::Gurobi::DynamicLib::GRBloadenvinternal = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00131">131</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a4da71061d632fbb5743d75c59bbdceca" name="a4da71061d632fbb5743d75c59bbdceca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4da71061d632fbb5743d75c59bbdceca">&#9670;&#160;</a></span>GRBnewmodel</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBnewmodel_t idol::Optimizers::Gurobi::DynamicLib::GRBnewmodel = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00137">137</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a0988023bb244dbdfa18a5692192bfd3f" name="a0988023bb244dbdfa18a5692192bfd3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0988023bb244dbdfa18a5692192bfd3f">&#9670;&#160;</a></span>GRBoptimize</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBoptimize_t idol::Optimizers::Gurobi::DynamicLib::GRBoptimize = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00148">148</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="af31fcdfd2da667f71b965a299bc49843" name="af31fcdfd2da667f71b965a299bc49843"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af31fcdfd2da667f71b965a299bc49843">&#9670;&#160;</a></span>GRBreadmodel</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBreadmodel_t idol::Optimizers::Gurobi::DynamicLib::GRBreadmodel = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00170">170</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="af9e466a60784a35ded486ed635f98029" name="af9e466a60784a35ded486ed635f98029"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9e466a60784a35ded486ed635f98029">&#9670;&#160;</a></span>GRBsetcallbackfunc</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBsetcallbackfunc_t idol::Optimizers::Gurobi::DynamicLib::GRBsetcallbackfunc = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00156">156</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a34ebbcc8191a7f920f8b66f7dce6953e" name="a34ebbcc8191a7f920f8b66f7dce6953e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34ebbcc8191a7f920f8b66f7dce6953e">&#9670;&#160;</a></span>GRBsetcharattrelement</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBsetcharattrelement_t idol::Optimizers::Gurobi::DynamicLib::GRBsetcharattrelement = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00143">143</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a88acf73ea1bb8a4ae470a95f27b1df29" name="a88acf73ea1bb8a4ae470a95f27b1df29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88acf73ea1bb8a4ae470a95f27b1df29">&#9670;&#160;</a></span>GRBsetdblattr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBsetdblattr_t idol::Optimizers::Gurobi::DynamicLib::GRBsetdblattr = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00163">163</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="abc1a62770c9f6fcb6ca51610d51399be" name="abc1a62770c9f6fcb6ca51610d51399be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc1a62770c9f6fcb6ca51610d51399be">&#9670;&#160;</a></span>GRBsetdblattrelement</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBsetdblattrelement_t idol::Optimizers::Gurobi::DynamicLib::GRBsetdblattrelement = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00142">142</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a2210d6a9f733ba3e9bff923eabe094d2" name="a2210d6a9f733ba3e9bff923eabe094d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2210d6a9f733ba3e9bff923eabe094d2">&#9670;&#160;</a></span>GRBsetdblparam</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBsetdblparam_t idol::Optimizers::Gurobi::DynamicLib::GRBsetdblparam = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00154">154</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="ad183b843a5019dc0a8b15f9dfab556d6" name="ad183b843a5019dc0a8b15f9dfab556d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad183b843a5019dc0a8b15f9dfab556d6">&#9670;&#160;</a></span>GRBsetintattr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBsetintattr_t idol::Optimizers::Gurobi::DynamicLib::GRBsetintattr = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00150">150</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a447d77481e257e9bba529e3dda5bf483" name="a447d77481e257e9bba529e3dda5bf483"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a447d77481e257e9bba529e3dda5bf483">&#9670;&#160;</a></span>GRBsetintparam</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBsetintparam_t idol::Optimizers::Gurobi::DynamicLib::GRBsetintparam = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00153">153</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="abbe88feda2f25a39d0f35a26f2145e9c" name="abbe88feda2f25a39d0f35a26f2145e9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbe88feda2f25a39d0f35a26f2145e9c">&#9670;&#160;</a></span>GRBsetobjective</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBsetobjective_t idol::Optimizers::Gurobi::DynamicLib::GRBsetobjective = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00144">144</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a710dc763be639396d907e8c40f3c9d4f" name="a710dc763be639396d907e8c40f3c9d4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a710dc763be639396d907e8c40f3c9d4f">&#9670;&#160;</a></span>GRBsetstrparam</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBsetstrparam_t idol::Optimizers::Gurobi::DynamicLib::GRBsetstrparam = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00155">155</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="aef27d5f8721083fba3fdeb89047da435" name="aef27d5f8721083fba3fdeb89047da435"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef27d5f8721083fba3fdeb89047da435">&#9670;&#160;</a></span>GRBterminate</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBterminate_t idol::Optimizers::Gurobi::DynamicLib::GRBterminate = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00174">174</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a9b252255b8afbfdd93e58aa684944227" name="a9b252255b8afbfdd93e58aa684944227"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b252255b8afbfdd93e58aa684944227">&#9670;&#160;</a></span>GRBupdatemodel</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBupdatemodel_t idol::Optimizers::Gurobi::DynamicLib::GRBupdatemodel = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00152">152</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a3c53dd4b013c873eaa7ecd0726f275ec" name="a3c53dd4b013c873eaa7ecd0726f275ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c53dd4b013c873eaa7ecd0726f275ec">&#9670;&#160;</a></span>GRBversion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBversion_t idol::Optimizers::Gurobi::DynamicLib::GRBversion = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00130">130</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+<a id="a6340e20d3802c10096d1291df8af1c1f" name="a6340e20d3802c10096d1291df8af1c1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6340e20d3802c10096d1291df8af1c1f">&#9670;&#160;</a></span>GRBwrite</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">idol_GRBwrite_t idol::Optimizers::Gurobi::DynamicLib::GRBwrite = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__Gurobi_8h_source.html#l00149">149</a> of file <a class="el" href="Optimizers__Gurobi_8h_source.html">Optimizers_Gurobi.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

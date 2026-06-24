@@ -1,0 +1,875 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Optimizers::Robust::ROCPP Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl bilevel solve model.mps \\ \n   --aux follower.aux \\ \n   --method KKT_SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl bilevel solve model.mps \\ \n   --aux follower.aux \\ \n   --method MibS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl bilevel solve model.mps \\ \n   --aux follower.aux \\ \n   --method KKT_BigM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl milp solve model.mps \\ \n   --method Gurobi \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl robust solve model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG_Farkas \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl robust solve model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG_KKT_SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl robust solve model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG_MibS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl milp solve model.mps \\ \n   --method HiGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><b>Optimizers</b></li><li class="navelem"><b>Robust</b></li><li class="navelem"><a href="classidol_1_1Optimizers_1_1Robust_1_1ROCPP.html">ROCPP</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pub-static-methods">Public Static Methods</a> &#124;
+<a href="#pro-methods">Protected Methods</a> &#124;
+<a href="classidol_1_1Optimizers_1_1Robust_1_1ROCPP-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Optimizers::Robust::ROCPP Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00019">19</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a7fd3432c8d8e784bd84bc72fab214fa4" id="r_a7fd3432c8d8e784bd84bc72fab214fa4"><td class="memItemLeft"><a id="a7fd3432c8d8e784bd84bc72fab214fa4" name="a7fd3432c8d8e784bd84bc72fab214fa4"></a>
+&#160;</td><td class="memItemRight"><b>ROCPP</b> (const Model &amp;t_parent, const <a class="el" href="classidol_1_1Robust_1_1Description.html">idol::Robust::Description</a> &amp;t_robust_description, const <a class="el" href="classidol_1_1Bilevel_1_1Description.html">idol::Bilevel::Description</a> &amp;t_bilevel_description, idol::Robust::ROCPP::Approximation t_approximation, const <a class="el" href="classidol_1_1OptimizerFactory.html">OptimizerFactory</a> &amp;t_optimizer, unsigned int t_n_policies)</td></tr>
+<tr class="memitem:a6113e6f0366883c5876779a27710ded1" id="r_a6113e6f0366883c5876779a27710ded1"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a6113e6f0366883c5876779a27710ded1">name</a> () const override</td></tr>
+<tr class="memitem:af7b3b56f6a1bf6bb2dff98261bf1d83a" id="r_af7b3b56f6a1bf6bb2dff98261bf1d83a"><td class="memItemLeft"><a id="af7b3b56f6a1bf6bb2dff98261bf1d83a" name="af7b3b56f6a1bf6bb2dff98261bf1d83a"></a>
+SolutionStatus&#160;</td><td class="memItemRight"><b>get_status</b> () const override</td></tr>
+<tr class="memitem:a0c99877a19d23b93c6a6a944065f0824" id="r_a0c99877a19d23b93c6a6a944065f0824"><td class="memItemLeft"><a id="a0c99877a19d23b93c6a6a944065f0824" name="a0c99877a19d23b93c6a6a944065f0824"></a>
+SolutionReason&#160;</td><td class="memItemRight"><b>get_reason</b> () const override</td></tr>
+<tr class="memitem:a24bd072a27b0ce612d1cf9d0789ecd8c" id="r_a24bd072a27b0ce612d1cf9d0789ecd8c"><td class="memItemLeft"><a id="a24bd072a27b0ce612d1cf9d0789ecd8c" name="a24bd072a27b0ce612d1cf9d0789ecd8c"></a>
+double&#160;</td><td class="memItemRight"><b>get_best_obj</b> () const override</td></tr>
+<tr class="memitem:a723376e98c92afe5a37c9e5f17552aa3" id="r_a723376e98c92afe5a37c9e5f17552aa3"><td class="memItemLeft"><a id="a723376e98c92afe5a37c9e5f17552aa3" name="a723376e98c92afe5a37c9e5f17552aa3"></a>
+double&#160;</td><td class="memItemRight"><b>get_best_bound</b> () const override</td></tr>
+<tr class="memitem:a52eede72bea3c5dd8f705f5f2ae8a178" id="r_a52eede72bea3c5dd8f705f5f2ae8a178"><td class="memItemLeft"><a id="a52eede72bea3c5dd8f705f5f2ae8a178" name="a52eede72bea3c5dd8f705f5f2ae8a178"></a>
+double&#160;</td><td class="memItemRight"><b>get_var_primal</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) const override</td></tr>
+<tr class="memitem:a628f71f39bd6078b75c5c86883018111" id="r_a628f71f39bd6078b75c5c86883018111"><td class="memItemLeft"><a id="a628f71f39bd6078b75c5c86883018111" name="a628f71f39bd6078b75c5c86883018111"></a>
+double&#160;</td><td class="memItemRight"><b>get_var_reduced_cost</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) const override</td></tr>
+<tr class="memitem:ab4c1155681399fc2044a76d44ac615ef" id="r_ab4c1155681399fc2044a76d44ac615ef"><td class="memItemLeft"><a id="ab4c1155681399fc2044a76d44ac615ef" name="ab4c1155681399fc2044a76d44ac615ef"></a>
+double&#160;</td><td class="memItemRight"><b>get_var_ray</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) const override</td></tr>
+<tr class="memitem:a9a4be71a6b8ce225c6c14a999cb2698a" id="r_a9a4be71a6b8ce225c6c14a999cb2698a"><td class="memItemLeft"><a id="a9a4be71a6b8ce225c6c14a999cb2698a" name="a9a4be71a6b8ce225c6c14a999cb2698a"></a>
+double&#160;</td><td class="memItemRight"><b>get_ctr_dual</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) const override</td></tr>
+<tr class="memitem:a3fa6f6c60afd3aec9101995c18a09da3" id="r_a3fa6f6c60afd3aec9101995c18a09da3"><td class="memItemLeft"><a id="a3fa6f6c60afd3aec9101995c18a09da3" name="a3fa6f6c60afd3aec9101995c18a09da3"></a>
+double&#160;</td><td class="memItemRight"><b>get_ctr_farkas</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) const override</td></tr>
+<tr class="memitem:a5b0e9a2305d11c1e9b718c56d3c8ead8" id="r_a5b0e9a2305d11c1e9b718c56d3c8ead8"><td class="memItemLeft"><a id="a5b0e9a2305d11c1e9b718c56d3c8ead8" name="a5b0e9a2305d11c1e9b718c56d3c8ead8"></a>
+double&#160;</td><td class="memItemRight"><b>get_relative_gap</b> () const override</td></tr>
+<tr class="memitem:a56d72c58e5e5aef178652b630fbbce1a" id="r_a56d72c58e5e5aef178652b630fbbce1a"><td class="memItemLeft"><a id="a56d72c58e5e5aef178652b630fbbce1a" name="a56d72c58e5e5aef178652b630fbbce1a"></a>
+double&#160;</td><td class="memItemRight"><b>get_absolute_gap</b> () const override</td></tr>
+<tr class="memitem:afee8a7530287ffce4217247e203b2bdd" id="r_afee8a7530287ffce4217247e203b2bdd"><td class="memItemLeft"><a id="afee8a7530287ffce4217247e203b2bdd" name="afee8a7530287ffce4217247e203b2bdd"></a>
+unsigned&#160;</td><td class="memItemRight"><b>get_n_solutions</b> () const override</td></tr>
+<tr class="memitem:aff58f60a4ac8dbcd5bec598525d1779a" id="r_aff58f60a4ac8dbcd5bec598525d1779a"><td class="memItemLeft"><a id="aff58f60a4ac8dbcd5bec598525d1779a" name="aff58f60a4ac8dbcd5bec598525d1779a"></a>
+unsigned&#160;</td><td class="memItemRight"><b>get_solution_index</b> () const override</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Public Static Methods</h2></td></tr>
+<tr class="memitem:a46bbe1c22164dbcd92a354db80f703b7" id="r_a46bbe1c22164dbcd92a354db80f703b7"><td class="memItemLeft"><a id="a46bbe1c22164dbcd92a354db80f703b7" name="a46bbe1c22164dbcd92a354db80f703b7"></a>
+static bool&#160;</td><td class="memItemRight"><b>is_available</b> ()</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Methods</h2></td></tr>
+<tr class="memitem:a1b57d4cb598968865391e505a0a2b0f7" id="r_a1b57d4cb598968865391e505a0a2b0f7"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a1b57d4cb598968865391e505a0a2b0f7">build</a> () override</td></tr>
+<tr class="memitem:a14ce232427198a49dafa9dfd822b962d" id="r_a14ce232427198a49dafa9dfd822b962d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a14ce232427198a49dafa9dfd822b962d">add</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a6eb789c1d8735c93605bf15fef739951" id="r_a6eb789c1d8735c93605bf15fef739951"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6eb789c1d8735c93605bf15fef739951">add</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a2c46810433578360e7227903c4780e34" id="r_a2c46810433578360e7227903c4780e34"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a2c46810433578360e7227903c4780e34">add</a> (const <a class="el" href="classidol_1_1QCtr.html">QCtr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a66ba3f6a4531e24116e3b7333573fe89" id="r_a66ba3f6a4531e24116e3b7333573fe89"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a66ba3f6a4531e24116e3b7333573fe89">remove</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a1f3b3929fd9e88fe8760f00718c3dd17" id="r_a1f3b3929fd9e88fe8760f00718c3dd17"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a1f3b3929fd9e88fe8760f00718c3dd17">remove</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a2dc015a7ee545fdee69d7d32936c64d1" id="r_a2dc015a7ee545fdee69d7d32936c64d1"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a2dc015a7ee545fdee69d7d32936c64d1">remove</a> (const <a class="el" href="classidol_1_1QCtr.html">QCtr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:afd115ac03dccb2b9aa5570b3c9e9cf1f" id="r_afd115ac03dccb2b9aa5570b3c9e9cf1f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#afd115ac03dccb2b9aa5570b3c9e9cf1f">update</a> () override</td></tr>
+<tr class="memitem:ad2be9b6922ffbba6105c168d5859bf9a" id="r_ad2be9b6922ffbba6105c168d5859bf9a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad2be9b6922ffbba6105c168d5859bf9a">write</a> (const std::string &amp;t_name) override</td></tr>
+<tr class="memitem:a51c60c2f667b901b5890c8c76d1e2755" id="r_a51c60c2f667b901b5890c8c76d1e2755"><td class="memItemLeft"><a id="a51c60c2f667b901b5890c8c76d1e2755" name="a51c60c2f667b901b5890c8c76d1e2755"></a>
+void&#160;</td><td class="memItemRight"><b>hook_optimize</b> () override</td></tr>
+<tr class="memitem:aad8fa73835a3093c37a2265798a205f0" id="r_aad8fa73835a3093c37a2265798a205f0"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aad8fa73835a3093c37a2265798a205f0">set_solution_index</a> (unsigned t_index) override</td></tr>
+<tr class="memitem:a3414b20ce40d655418625ab601af623b" id="r_a3414b20ce40d655418625ab601af623b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a3414b20ce40d655418625ab601af623b">update_obj_sense</a> () override</td></tr>
+<tr class="memitem:ad4b334240bf7b4a9f0229d1148798a0e" id="r_ad4b334240bf7b4a9f0229d1148798a0e"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad4b334240bf7b4a9f0229d1148798a0e">update_obj</a> () override</td></tr>
+<tr class="memitem:a73799e51e021beb7e66b91f995f596d9" id="r_a73799e51e021beb7e66b91f995f596d9"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a73799e51e021beb7e66b91f995f596d9">update_rhs</a> () override</td></tr>
+<tr class="memitem:a08b89207b705a5afc32753b78787cdb9" id="r_a08b89207b705a5afc32753b78787cdb9"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a08b89207b705a5afc32753b78787cdb9">update_obj_constant</a> () override</td></tr>
+<tr class="memitem:a548c4ea7a4c41b107015b6b716553296" id="r_a548c4ea7a4c41b107015b6b716553296"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a548c4ea7a4c41b107015b6b716553296">update_mat_coeff</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr, const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a1c1300d60f994c7ae72e42eef69b918b" id="r_a1c1300d60f994c7ae72e42eef69b918b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a1c1300d60f994c7ae72e42eef69b918b">update_ctr_type</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a1ae302393bbce0b34c4453da392f914d" id="r_a1ae302393bbce0b34c4453da392f914d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a1ae302393bbce0b34c4453da392f914d">update_ctr_rhs</a> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:aeb3ee3f4a1e630ab8d5d36bfdb235a06" id="r_aeb3ee3f4a1e630ab8d5d36bfdb235a06"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aeb3ee3f4a1e630ab8d5d36bfdb235a06">update_var_type</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:ad40aaf2026666abaa858d04925b59263" id="r_ad40aaf2026666abaa858d04925b59263"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad40aaf2026666abaa858d04925b59263">update_var_lb</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a1f803eb158af4a6646cf189139e785cc" id="r_a1f803eb158af4a6646cf189139e785cc"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a1f803eb158af4a6646cf189139e785cc">update_var_ub</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a715e9d8f16acde739d324a262eaaf71b" id="r_a715e9d8f16acde739d324a262eaaf71b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a715e9d8f16acde739d324a262eaaf71b">update_var_obj</a> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a4faf0803a17a5458c528cf8d79719980" id="r_a4faf0803a17a5458c528cf8d79719980"><td class="memItemLeft"><a id="a4faf0803a17a5458c528cf8d79719980" name="a4faf0803a17a5458c528cf8d79719980"></a>
+void&#160;</td><td class="memItemRight"><b>throw_if_no_deterministic_model</b> () const</td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a6eb789c1d8735c93605bf15fef739951" name="a6eb789c1d8735c93605bf15fef739951"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6eb789c1d8735c93605bf15fef739951">&#9670;&#160;</a></span>add() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::add </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00030">30</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a2c46810433578360e7227903c4780e34" name="a2c46810433578360e7227903c4780e34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c46810433578360e7227903c4780e34">&#9670;&#160;</a></span>add() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::add </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1QCtr.html">QCtr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00031">31</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a14ce232427198a49dafa9dfd822b962d" name="a14ce232427198a49dafa9dfd822b962d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14ce232427198a49dafa9dfd822b962d">&#9670;&#160;</a></span>add() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::add </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00029">29</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a1b57d4cb598968865391e505a0a2b0f7" name="a1b57d4cb598968865391e505a0a2b0f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b57d4cb598968865391e505a0a2b0f7">&#9670;&#160;</a></span>build()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::build </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00028">28</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a6113e6f0366883c5876779a27710ded1" name="a6113e6f0366883c5876779a27710ded1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6113e6f0366883c5876779a27710ded1">&#9670;&#160;</a></span>name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string idol::Optimizers::Robust::ROCPP::name </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00060">60</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a1f3b3929fd9e88fe8760f00718c3dd17" name="a1f3b3929fd9e88fe8760f00718c3dd17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f3b3929fd9e88fe8760f00718c3dd17">&#9670;&#160;</a></span>remove() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::remove </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00033">33</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a2dc015a7ee545fdee69d7d32936c64d1" name="a2dc015a7ee545fdee69d7d32936c64d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dc015a7ee545fdee69d7d32936c64d1">&#9670;&#160;</a></span>remove() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::remove </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1QCtr.html">QCtr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00034">34</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a66ba3f6a4531e24116e3b7333573fe89" name="a66ba3f6a4531e24116e3b7333573fe89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66ba3f6a4531e24116e3b7333573fe89">&#9670;&#160;</a></span>remove() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::remove </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00032">32</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="aad8fa73835a3093c37a2265798a205f0" name="aad8fa73835a3093c37a2265798a205f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad8fa73835a3093c37a2265798a205f0">&#9670;&#160;</a></span>set_solution_index()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::set_solution_index </td>
+          <td>(</td>
+          <td class="paramtype">unsigned</td>          <td class="paramname"><span class="paramname"><em>t_index</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00038">38</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="afd115ac03dccb2b9aa5570b3c9e9cf1f" name="afd115ac03dccb2b9aa5570b3c9e9cf1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd115ac03dccb2b9aa5570b3c9e9cf1f">&#9670;&#160;</a></span>update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::update </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00035">35</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a1ae302393bbce0b34c4453da392f914d" name="a1ae302393bbce0b34c4453da392f914d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ae302393bbce0b34c4453da392f914d">&#9670;&#160;</a></span>update_ctr_rhs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::update_ctr_rhs </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00045">45</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a1c1300d60f994c7ae72e42eef69b918b" name="a1c1300d60f994c7ae72e42eef69b918b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c1300d60f994c7ae72e42eef69b918b">&#9670;&#160;</a></span>update_ctr_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::update_ctr_type </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00044">44</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a548c4ea7a4c41b107015b6b716553296" name="a548c4ea7a4c41b107015b6b716553296"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a548c4ea7a4c41b107015b6b716553296">&#9670;&#160;</a></span>update_mat_coeff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::update_mat_coeff </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_ctr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00043">43</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="ad4b334240bf7b4a9f0229d1148798a0e" name="ad4b334240bf7b4a9f0229d1148798a0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4b334240bf7b4a9f0229d1148798a0e">&#9670;&#160;</a></span>update_obj()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::update_obj </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00040">40</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a08b89207b705a5afc32753b78787cdb9" name="a08b89207b705a5afc32753b78787cdb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08b89207b705a5afc32753b78787cdb9">&#9670;&#160;</a></span>update_obj_constant()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::update_obj_constant </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00042">42</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a3414b20ce40d655418625ab601af623b" name="a3414b20ce40d655418625ab601af623b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3414b20ce40d655418625ab601af623b">&#9670;&#160;</a></span>update_obj_sense()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::update_obj_sense </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00039">39</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a73799e51e021beb7e66b91f995f596d9" name="a73799e51e021beb7e66b91f995f596d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73799e51e021beb7e66b91f995f596d9">&#9670;&#160;</a></span>update_rhs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::update_rhs </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00041">41</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="ad40aaf2026666abaa858d04925b59263" name="ad40aaf2026666abaa858d04925b59263"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad40aaf2026666abaa858d04925b59263">&#9670;&#160;</a></span>update_var_lb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::update_var_lb </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00047">47</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a715e9d8f16acde739d324a262eaaf71b" name="a715e9d8f16acde739d324a262eaaf71b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a715e9d8f16acde739d324a262eaaf71b">&#9670;&#160;</a></span>update_var_obj()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::update_var_obj </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00049">49</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="aeb3ee3f4a1e630ab8d5d36bfdb235a06" name="aeb3ee3f4a1e630ab8d5d36bfdb235a06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb3ee3f4a1e630ab8d5d36bfdb235a06">&#9670;&#160;</a></span>update_var_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::update_var_type </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00046">46</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="a1f803eb158af4a6646cf189139e785cc" name="a1f803eb158af4a6646cf189139e785cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f803eb158af4a6646cf189139e785cc">&#9670;&#160;</a></span>update_var_ub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::update_var_ub </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>t_var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00048">48</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+<a id="ad2be9b6922ffbba6105c168d5859bf9a" name="ad2be9b6922ffbba6105c168d5859bf9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2be9b6922ffbba6105c168d5859bf9a">&#9670;&#160;</a></span>write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Optimizers::Robust::ROCPP::write </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>t_name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__ROCPP_8h_source.html#l00036">36</a> of file <a class="el" href="Optimizers__ROCPP_8h_source.html">Optimizers_ROCPP.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>
