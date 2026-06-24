@@ -20,6 +20,7 @@ inline void robust(const Arguments& t_args) {
     using namespace idol;
 
     Env env;
+    env.set_param_thread_limit(t_args.n_threads);
 
     // Read model
     std::optional<Model> model;
