@@ -14,6 +14,14 @@ add_example(flp-bab)
 # Branch-and-price algorithm
 add_example(gap-bap)
 add_example(bin-bap)
+
+find_package(Boost 1.80 QUIET COMPONENTS graph)
+
+if(NOT Boost_FOUND)
+    message(STATUS "Boost not found on system. Downloading by FetchContent.")
+    FetchContent_Declare(Boost URL ...)
+    FetchContent_MakeAvailable(Boost)
+endif()
 add_example(lambda-optimizer)
 
 # Legacy examples

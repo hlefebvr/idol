@@ -1,6 +1,7 @@
 //
 // Created by Charlotte on 08/07/2026.
 //
+
 #include <iostream>
 #include "idol/mixed-integer/modeling/variables/Var.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
@@ -19,31 +20,6 @@
 
 using namespace idol;
 
-void print_solution_status(Model& model){
-
-    // Analyze the solution status
-    const auto status = model.get_status();
-    const auto reason = model.get_reason();
-
-    std::cout << "Solution status: " << status << std::endl;
-    std::cout << "Reason: " << reason << std::endl;
-
-    if (status == Optimal || status == Feasible) {
-
-        // Get the number of solutions in the solution pool
-        const auto n_solutions = model.get_n_solutions();
-
-        std::cout << "Number of solutions: " << n_solutions << std::endl;
-
-        // Print all solutions in the pool
-        for (unsigned int i = 0 ; i < n_solutions ; ++i) {
-            model.set_solution_index(i);
-            std::cout << "Solution " << i << std::endl;
-            std::cout << save_primal(model) << std::endl;
-        }
-    }
-}
-
 int main() {
 
     /**********************/
@@ -59,6 +35,7 @@ int main() {
         >;
 
     using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+    using EdgeKey = std::pair<Vertex, Vertex>;
 
     Graph g;
 
@@ -66,6 +43,8 @@ int main() {
     const auto& A = add_vertex(g);
     const auto& B = add_vertex(g);
     const auto& t = add_vertex(g);
+
+    const std::vector<char> vertex_names = {'s', 'A', 'B', 't'};
 
     add_edge(s, A, 2.0, g);
     add_edge(s, B, 3.0, g);
@@ -75,7 +54,7 @@ int main() {
     add_edge(B, A, 1.0, g);
 
     /**********************/
-    /* Create IDOL model  */
+    /* Create idol model  */
     /**********************/
 
     Env env;
@@ -86,15 +65,14 @@ int main() {
     // Add variables
     const auto& x = model.add_vars(Dim<1>(boost::num_edges(g)), 0, 1, idol::VarType::Binary, 0., "x");
 
-    // Create map from boost edges to IDOL var
-    using EdgeKey = std::pair<Vertex, Vertex>;
+    // Create map from boost edges to idol var
     std::map<EdgeKey, Var> edge_to_var;
     auto [it_edges, it_edges_end] = boost::edges(g);
     for (unsigned int i = 0; it_edges != it_edges_end; ++it_edges, ++i) {
         edge_to_var.emplace(EdgeKey{boost::source(*it_edges, g), boost::target(*it_edges, g)}, x[i]);
     }
 
-    // Create map from IDOL var to boost edges
+    // Create map from idol var to boost edges
     std::map<Var, EdgeKey> var_to_edge;
     for (const auto& [edge, var] : edge_to_var) {
         var_to_edge.emplace(var, edge);
@@ -136,8 +114,6 @@ int main() {
     }
     model.set_obj_expr(obj_expr);
 
-    std::cout << model << std::endl;
-
     /*****************************************************************/
     /* Annotate the model to perform the Dantzig-Wolfe decomposition */
     /*****************************************************************/
@@ -145,25 +121,18 @@ int main() {
     // Create decomposition annotation
     const Annotation decomposition(env, "decomposition", MasterId); // By default, everything remains in the master problem
 
-    // Annotate constraints to be moved to the subproblems
+    // Annotate constraints to be moved to the subproblem
     for(const auto& ctr : model.ctrs()){
         if(ctr.name().rfind("flow_", 0) == 0){
             ctr.set(decomposition, 0);
         }
     }
 
-    /*****************************************/
-    /* Build the column generation algorithm */
-    /*****************************************/
+    /**************************************************/
+    /* Define lambda function for solving subproblems */
+    /**************************************************/
 
-    // Create the Dantzig-Wolfe decomposition algorithm
-    auto column_generation = DantzigWolfeDecomposition(decomposition);
-
-    // Use GLPK to solve the master problem
-    column_generation.with_master_optimizer(GLPK::ContinuousRelaxation());
-
-    // Define lambda function for solving subproblems
-    const auto lambda = [&g, &s, &t, &edge_to_var, &var_to_edge](LambdaContext& t_ctx){
+    const auto lambda = [&g, &s, &t, &edge_to_var](LambdaContext& t_ctx){
 
         // get objective function from model
         const auto& obj_func = t_ctx.get_model().get_obj_expr().affine().linear();
@@ -196,11 +165,10 @@ int main() {
 
         // set solution to model
         for (unsigned int i = 0; i+1 < path.size(); ++i) {
-            auto [e, found] = boost::edge(path[i], path[i+1], g);
-            if (found) {
-                auto const& var = edge_to_var.at(EdgeKey{boost::source(e, g), boost::target(e, g)});
-                t_ctx.set_var_primal(var, 1.);
-            }
+            const auto& [e, found] = boost::edge(path[i], path[i+1], g);
+            assert(found);
+            auto const& var = edge_to_var.at(EdgeKey{boost::source(e, g), boost::target(e, g)});
+            t_ctx.set_var_primal(var, 1.);
         }
 
         t_ctx.set_status(Optimal);
@@ -209,7 +177,17 @@ int main() {
         t_ctx.set_best_bound(best_obj);
     };
 
-    // All subproblems will be solved using the lambda function
+    /*****************************************/
+    /* Build the column generation algorithm */
+    /*****************************************/
+
+    // Create the Dantzig-Wolfe decomposition algorithm
+    auto column_generation = DantzigWolfeDecomposition(decomposition);
+
+    // Use GLPK to solve the master problem
+    column_generation.with_master_optimizer(GLPK::ContinuousRelaxation());
+
+    // The subproblem will be solved using the lambda function
     const auto subproblem_specifications = DantzigWolfe::SubProblem().add_optimizer(LambdaOptimizer(lambda));
     column_generation.with_default_sub_problem_spec(subproblem_specifications);
 
@@ -248,8 +226,37 @@ int main() {
     model.use(branch_and_price);
     model.optimize();
 
-    // Print solution
-    print_solution_status(model);
+    /************************************/
+    /* Print solution */
+    /************************************/
 
+    // Analyze the solution status
+    const auto status = model.get_status();
+    const auto reason = model.get_reason();
+
+    std::cout << "Solution status: " << status << std::endl;
+    std::cout << "Reason: " << reason << std::endl;
+
+    if (status == Optimal || status == Feasible) {
+
+        // Get the number of solutions in the solution pool
+        const auto n_solutions = model.get_n_solutions();
+
+        std::cout << "Number of solutions: " << n_solutions << std::endl;
+
+        // Print all solutions in the pool
+        for (unsigned int i = 0 ; i < n_solutions ; ++i) {
+            model.set_solution_index(i);
+            std::cout << "Solution " << i << std::endl;
+            const auto& primals = save_primal(model) ;
+
+            for (const auto& [var, value] : primals) {
+                const auto& edgeKey = var_to_edge[var];
+                std::cout << vertex_names[edgeKey.first] << " -> " << vertex_names[edgeKey.second] << std::endl;
+            }
+        }
+
+
+    }
     return 0;
 }

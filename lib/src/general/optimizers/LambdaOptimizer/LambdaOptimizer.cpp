@@ -1,5 +1,5 @@
 //
-// Created by henri on 29.11.24.
+// Created by charlotte on 29.11.24.
 //
 #include "idol/general/optimizers/LambdaOptimizer/LambdaOptimizer.h"
 #include "idol/general/optimizers/LambdaOptimizer/Optimizers_LambdaOptimizer.h"
@@ -21,7 +21,6 @@ idol::Optimizer *idol::LambdaOptimizer::create(const idol::Model &t_model) const
         throw Exception("No lambda function has been set.");
     }
 
-    std::cout << t_model.get_obj_expr() << std::endl;
     auto* result = new idol::Optimizers::LambdaOptimizer(t_model, m_lambda);
 
     return result;
