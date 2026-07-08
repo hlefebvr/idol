@@ -15,7 +15,6 @@ std::string idol::Optimizers::LambdaOptimizer::name() const {
 }
 
 double idol::Optimizers::LambdaOptimizer::get_var_primal(const idol::Var &t_var) const {
-    if (m_solution.size() != parent().vars().size()) {
     if (m_solution.empty()) {
         throw Exception(std::string(__FUNCTION__) + " solution is empty.");
     }
