@@ -14,6 +14,7 @@ add_example(flp-bab)
 # Branch-and-price algorithm
 add_example(gap-bap)
 add_example(bin-bap)
+add_example(lambda-optimizer)
 
 # Legacy examples
 #add_example(knapsack-cover)
