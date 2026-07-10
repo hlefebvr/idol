@@ -86,6 +86,8 @@ public:
 
     double get_original_space_var_primal(const Var& t_var, const PrimalPoint& t_master_primal) const;
 
+    PrimalPoint build_original_space_solution(const PrimalPoint& t_master_primal) const;
+
     void update_var_lb(const Var& t_var, double t_lb, bool t_hard, bool t_remove_infeasible_columns);
 
     void update_var_ub(const Var& t_var, double t_ub, bool t_hard, bool t_remove_infeasible_columns);

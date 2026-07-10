@@ -65,7 +65,8 @@ public:
 
         std::list<TempCtr> to_idol_cuts(OsiCuts& t_cuts);
         TempCtr to_idol_cut(OsiRowCut& t_cut);
-        std::vector<std::pair<TempCtr, double>> sort_cuts_by_effectiveness(const std::list<TempCtr>& t_cuts);
+        std::vector<std::pair<TempCtr, double>> sort_and_filter_cuts_by_effectiveness(const std::list<TempCtr>& t_cuts);
+        void standard_scaling(std::list<TempCtr>& t_cuts);
     protected:
         NodeCutContext& get_cut_context();
         const NodeCutContext& get_cut_context() const { return const_cast<Strategy*>(this)->get_cut_context(); }
@@ -184,7 +185,8 @@ void idol::CglCutCallback<NodeInfoT>::Strategy::operator()(CallbackEvent t_event
 
         auto osi_cuts = cut_family->generate(*m_osi_solver, be_aggressive ? 100 : 0);
         auto idol_cuts = to_idol_cuts(osi_cuts);
-        auto sorted_cuts = sort_cuts_by_effectiveness(idol_cuts);
+        standard_scaling(idol_cuts);
+        auto sorted_cuts = sort_and_filter_cuts_by_effectiveness(idol_cuts);
 
         for (auto& [cut, effectiveness] : sorted_cuts) {
 
@@ -290,7 +292,7 @@ idol::TempCtr idol::CglCutCallback<NodeInfoT>::Strategy::to_idol_cut(OsiRowCut& 
 }
 
 template <class NodeInfoT>
-std::vector<std::pair<idol::TempCtr, double>> idol::CglCutCallback<NodeInfoT>::Strategy::sort_cuts_by_effectiveness(
+std::vector<std::pair<idol::TempCtr, double>> idol::CglCutCallback<NodeInfoT>::Strategy::sort_and_filter_cuts_by_effectiveness(
     const std::list<TempCtr>& t_cuts) {
     std::vector<std::pair<TempCtr, double>> result;
     const auto primal_solution = this->node().info().primal_solution();
@@ -318,6 +320,34 @@ std::vector<std::pair<idol::TempCtr, double>> idol::CglCutCallback<NodeInfoT>::S
     });
 
     return result;
+}
+
+template <class NodeInfoT>
+void idol::CglCutCallback<NodeInfoT>::Strategy::standard_scaling(std::list<TempCtr>& t_cuts) {
+
+    for (auto& cut : t_cuts) {
+
+        auto& row = cut.lhs();
+        double& rhs = cut.rhs();
+        double infinity_norm = 0;
+        for (const auto& [var, coeff] : row) {
+            infinity_norm = std::max(std::abs(coeff), infinity_norm);
+        }
+        infinity_norm = std::max(infinity_norm, std::abs(rhs));
+
+        if (is_zero(infinity_norm, Tolerance::Sparsity)) {
+            continue;
+        }
+
+        int e = 0;
+        std::frexp(infinity_norm, &e);
+        double closest_power_of_2 = std::ldexp(1.0, e - 1); // scale = 2^(e-1) or 2^e depending on your normalization choice
+        if (closest_power_of_2 != 1.) {
+            row /= closest_power_of_2;
+            rhs /= closest_power_of_2;
+        }
+
+    }
 }
 
 template <class NodeInfoT>

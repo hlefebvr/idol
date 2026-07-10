@@ -147,8 +147,10 @@ void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_node_after_solve
 
     const double total_time = parent.time().count();
 
-    if (!m_root_node_has_been_printed) {
-        log_root_node(t_node);
+    if (!m_root_node_has_been_printed && t_node.id() == 0) {
+        if (t_node.id() == 0) {
+            log_root_node(t_node);
+        }
         return;
     }
 

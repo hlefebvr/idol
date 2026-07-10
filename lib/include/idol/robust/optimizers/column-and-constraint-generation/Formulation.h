@@ -57,6 +57,7 @@ public:
     const Model& original_model() const { return m_parent; }
     bool has_second_stage_epigraph() const { return m_second_stage_epigraph.has_value(); }
     bool has_second_stage_objective() const { return m_has_second_stage_objective; }
+    auto generated_scenarios() const { return ConstIteratorForward(m_generated_scenarios); }
 
 };
 

@@ -130,6 +130,7 @@ std::ostream& operator<<(std::ostream& t_os, ProblemType t_problem_type) {
 void add_default_args(CLI::App* t_app, Arguments& t_result) {
     t_app->add_option("--method", t_result.method, "Solution method")->configurable();
     t_app->add_option("--time-limit", t_result.time_limit, "Time limit in seconds")->configurable();
+    t_app->add_option("--thread-limit", t_result.n_threads, "Maximum number of threads")->configurable();
     t_app->add_option("--tol-feasibility", t_result.tol_feasibility, "Tolerance used to check feasibility")->configurable();
     t_app->add_flag("--csv-report", t_result.csv_report, "If set to true, additionally prints a report in csv format")->configurable();
 }
@@ -386,6 +387,12 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
     }
 
     std::cout << "-- Problem type is " << result.problem_type << '.' << std::endl;
+    if (!idol::is_pos_inf(result.time_limit)) {
+        std::cout << "-- The time limit is set to " << result.time_limit << " seconds." << std::endl;
+    } else {
+        std::cout << "-- No time limit was configured (use --time-limit to configure)." << std::endl;
+    }
+    std::cout << "-- Using up to " << result.n_threads << " threads (use --thread-limit to configure)." << std::endl;
 
     return result;
 }

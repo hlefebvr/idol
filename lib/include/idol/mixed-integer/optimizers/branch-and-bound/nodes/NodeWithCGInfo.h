@@ -18,7 +18,7 @@ public:
 
     void save(const Model& t_original_formulation, const Model& t_model) override;
 
-    NodeWithCGInfo* clone() const override;
+    [[nodiscard]] NodeWithCGInfo* clone() const override;
 
     [[nodiscard]] NodeWithCGInfo* create_child() const override;
 

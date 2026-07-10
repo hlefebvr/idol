@@ -100,6 +100,10 @@ idol::Optimizers::GLPK::DynamicLib::DynamicLib() {
 
     const auto glpk_path = find_library();
 
+    if (glpk_path.empty()) {
+        return;
+    }
+
     m_handle = dlopen(glpk_path.c_str(), RTLD_LAZY);
 
     if (!m_handle) {

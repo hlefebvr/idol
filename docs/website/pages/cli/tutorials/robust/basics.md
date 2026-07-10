@@ -288,7 +288,7 @@ For more details on the `.aux` file format, see the page \ref cli_input_format_b
 Given a two-stage robust problem, you can solve it by running 
 
 ```shell
-idol_cl solve robust model.lp --aux stages.aux --par parameters.par --unc uncertainty-set.mps
+idol_cl robust solve model.lp --aux stages.aux --par parameters.par --unc uncertainty-set.mps
 ```
 
 Here, `model.lp` is the deterministic model, `stages.aux` is the auxiliary file indicating which variable and constraints
@@ -297,5 +297,5 @@ belong to the second-stage and `uncertainty-set.mps` denotes the uncertainty set
 Here again, to list the available methods for your problem class, you may use
 
 ```shell
-idol_cl list robust model.lp --aux stages.aux --par parameters.par --unc uncertainty-set.mps
+idol_cl robust list model.lp --aux stages.aux --par parameters.par --unc uncertainty-set.mps
 ```

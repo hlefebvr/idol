@@ -35,7 +35,7 @@ const idol::LinExpr<idol::Var, idol::LinExpr<>>& idol::Robust::Description::unce
     return m_uncertain_obj;
 }
 
-std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description::View &t_view) {
+std::ostream &idol::Robust::operator<<(std::ostream &t_os, const idol::Robust::Description::View &t_view) {
 
     using namespace idol;
 
@@ -209,7 +209,7 @@ idol::Robust::Description::View::View(const Model& t_deterministic_model, const 
 
 }
 
-std::ostream &operator<<(std::ostream &t_os, const idol::Robust::Description &t_description) {
+std::ostream &idol::Robust::operator<<(std::ostream &t_os, const idol::Robust::Description &t_description) {
 
     t_os << "@RHS\n";
 

@@ -26,10 +26,11 @@ public:
     bool mute = false;
     bool csv_report = false;
     std::string method;
+    double time_limit = idol::Inf;
+    unsigned int n_threads = 1;
 
     // MILPs
     std::string file;
-    double time_limit = idol::Inf;
     double tol_feasibility = -1.;
     std::string julia_using;
     std::string jump_optimizer;

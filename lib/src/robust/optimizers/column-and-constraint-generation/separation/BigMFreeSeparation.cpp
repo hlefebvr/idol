@@ -354,7 +354,7 @@ double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_ctr_dual_ub(con
 }
 
 double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_ctr_slack_lb(const Ctr& t_ctr) {
-    assert(false);
+    throw Exception("BigMFreeSeparation::BoundProvider::get_ctr_slack_lb was called.");
 }
 
 double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_ctr_slack_ub(const Ctr& t_ctr) {
@@ -370,7 +370,7 @@ double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_ctr_slack_ub(co
 }
 
 double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_var_ub_dual_lb(const Var& t_var) {
-    assert(false);
+    throw Exception("BigMFreeSeparation::BoundProvider::get_var_ub_dual_lb was called.");
 }
 
 double idol::Robust::CCG::BigMFreeSeparation::BoundProvider::get_var_lb_dual_ub(const Var& t_var) {

@@ -5,6 +5,7 @@
 #include "idol/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.h"
 #include "idol/mixed-integer/modeling/variables/TempVar.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/optimizers/callbacks/cutting-planes/CglCutCallback.h"
 
 idol::CVCCG::Formulation::Formulation(const idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration& t_parent) :
     m_parent(t_parent),
@@ -15,6 +16,7 @@ idol::CVCCG::Formulation::Formulation(const idol::Optimizers::Robust::CriticalVa
     check_assumptions();
     initialize_master();
     initialize_sub_problem();
+    m_global_lower_bound = compute_trivial_lower_bound();
 
 }
 
@@ -25,7 +27,7 @@ void idol::CVCCG::Formulation::check_assumptions() {
     const auto& uncertainty_set = description.uncertainty_set();
 
     // Check that all linking variables are binary
-    // and checks if has linking variabes
+    // and checks if has linking variables
     for (const auto& var : uncertainty_set.vars()) {
 
         const bool is_linking = model.has(var);
@@ -82,6 +84,10 @@ void idol::CVCCG::Formulation::initialize_master() {
         const double ub = model.get_var_ub(var);
         const auto type = model.get_var_type(var);
         m_master.add(var, TempVar(lb, ub, type, 0., LinExpr<Ctr>()));
+
+        if (type != Continuous) {
+            m_master_is_continuous = false;
+        }
     }
 
     // Copy constraints to master or create subproblem
@@ -106,7 +112,7 @@ void idol::CVCCG::Formulation::initialize_master() {
     }
 
     // Create cover constraints
-    if (m_use_cover_constraints) {
+    if (!m_parent.use_indicator() && m_use_cover_constraints) {
         for (auto& linking : m_linking_constraints) {
             linking.cover_constraint = m_master.add_ctr(LinExpr(), LessOrEqual, 1, "__cover_" + linking.ctr_in_uncertainty_set.name());
         }
@@ -146,7 +152,8 @@ void idol::CVCCG::Formulation::initialize_sub_problem() {
             }
             fixed_row += coeff * var;
         }
-        m_sub_problem.add(ctr, TempCtr(std::move(fixed_row), type, 0.));
+        const double rhs = uncertainty_set.get_ctr_rhs(ctr);
+        m_sub_problem.add(ctr, TempCtr(std::move(fixed_row), type, rhs));
     }
 
     // Set optimizer for sub-problem
@@ -219,7 +226,11 @@ update_sub_problem_objective(const PrimalPoint& t_master_solution, const Uncerta
     }
     // Can we use evaluate(*unc_coeffs, t_master_solution); instead ?
     for (const auto& [var, unc_coeff] : *unc_coeffs) {
-        fixed_row += t_master_solution.get(var) * unc_coeff;
+        const double var_val = t_master_solution.get(var);
+        if (is_zero(var_val, Tolerance::Sparsity)) {
+            continue;
+        }
+        fixed_row += var_val * unc_coeff;
     }
     if (unc_constant) {
         fixed_row -= *unc_constant;
@@ -245,8 +256,28 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
 
 double idol::CVCCG::Formulation::get_scenario_var_primal(const Var& t_var) const {
 
+    if (m_master_is_continuous) {
+
+        double value = 0.;
+        double norm = 0.;
+
+        for (const auto& uncertainty : m_uncertainties) {
+            for (const auto& cut : uncertainty.currently_present_cuts()) {
+                const double dual_val = m_master.get_ctr_dual(cut.cut);
+                if (is_zero(dual_val, Tolerance::Sparsity)) {
+                    continue;
+                }
+                value += dual_val * cut.scenario->scenario.get(t_var);
+                norm += dual_val;
+            }
+        }
+
+        return value / norm;
+    }
+
     double value = 0.;
     unsigned int n_scenarios = 0;
+
     for (const auto& uncertainty : m_uncertainties) {
         for (const auto& cut : uncertainty.currently_present_cuts()) {
             value += cut.scenario->scenario.get(t_var);
@@ -259,6 +290,75 @@ double idol::CVCCG::Formulation::get_scenario_var_primal(const Var& t_var) const
 
 bool idol::CVCCG::Formulation::master_provides_a_valid_bound() const {
     return m_parent.description().uncertain_obj().empty() || m_epigraph_variable;
+}
+
+void idol::CVCCG::Formulation::remove_cut_if(Uncertainty& t_uncertainty, const std::function<bool(const Ctr&, const PrimalPoint&)>& t_indicator) {
+    const auto cuts = t_uncertainty.currently_present_cuts();
+    for (auto it = cuts.begin() ; it != cuts.end() ; ) {
+        if (t_indicator(it->cut, it->scenario->scenario)) {
+            m_master.remove(it->cut);
+            it = t_uncertainty.remove_from_currently_present_cuts(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+void idol::CVCCG::Formulation::set_unc_var_lb(const Var& t_var, double t_lb) {
+    m_sub_problem.set_var_lb(t_var, t_lb);
+    const double tol_feasibility = m_parent.get_tol_feasibility();
+    for (auto& uncertainty : m_uncertainties) {
+        remove_cut_if(uncertainty, [&](const Ctr &t_object, const PrimalPoint &t_generator)-> bool {
+            return true;
+            const double value = t_generator.get(t_var);
+            return !is(value, GreaterOrEqual, t_lb, tol_feasibility);
+        });
+    }
+    //m_scenario_pool.clear();
+}
+
+void idol::CVCCG::Formulation::set_unc_var_ub(const Var& t_var, double t_ub) {
+    m_sub_problem.set_var_ub(t_var, t_ub);
+    const double tol_feasibility = m_parent.get_tol_feasibility();
+    for (auto& uncertainty : m_uncertainties) {
+        remove_cut_if(uncertainty, [&](const Ctr &t_object, const PrimalPoint &t_generator)-> bool {
+            return true;
+            const double value = t_generator.get(t_var);
+            return !is(value, LessOrEqual, t_ub, tol_feasibility);
+        });
+    }
+}
+
+void idol::CVCCG::Formulation::load_cut_from_pool() {
+
+    const auto tol_feasibility = m_parent.get_tol_feasibility();
+    for (auto it = m_scenario_pool.begin(), end = m_scenario_pool.end(); it != end; ++it) {
+        bool is_feasible = true;
+        for (const auto& var : m_parent.branching_candidates()) {
+            const double value = it->scenario.get(var);
+            const double lb = m_sub_problem.get_var_lb(var);
+            const double ub = m_sub_problem.get_var_ub(var);
+            if (
+                !is(value, GreaterOrEqual, lb, tol_feasibility)
+                ||
+                !is(value, LessOrEqual, ub, tol_feasibility)
+            ) {
+                is_feasible = false;
+                break;
+            }
+        }
+        if (is_feasible) {
+            for (auto& uncertainty : m_uncertainties) {
+                add_scenario_to_master(it, uncertainty);
+            }
+        }
+    }
+
+    if (m_epigraph_variable && m_uncertainties.back().currently_present_cuts().size() == 0) {
+        m_master.remove(*m_epigraph_variable);
+        m_epigraph_variable.reset();
+    }
+
 }
 
 std::list<idol::CVCCG::Formulation::GeneratedScenario>::iterator idol::CVCCG::Formulation::add_scenario_to_pool(PrimalPoint&& t_scenario, PrimalPoint&& t_master_scenario) {
@@ -293,7 +393,106 @@ double idol::CVCCG::Formulation::compute_critical_value(const Ctr& t_ctr, const 
     return result + 1;
 }
 
+double idol::CVCCG::Formulation::compute_trivial_lower_bound() const {
+
+    const auto& model = m_parent.parent();
+    const auto& uncertainty_set = m_parent.description().uncertainty_set();
+    const auto& objective = m_parent.parent().get_obj_expr();
+
+    assert(!objective.has_quadratic());
+
+    double result = objective.affine().constant();
+
+    for (const auto& [var, coeff] : objective.affine().linear()) {
+        if (coeff > 0) {
+            const double lb = model.get_var_lb(var);
+            assert(!is_neg_inf(lb));
+            result += coeff * lb;
+        } else {
+            const double ub = model.get_var_ub(var);
+            assert(!is_pos_inf(ub));
+            result += coeff * ub;
+        }
+    }
+
+    for (const auto& [var, unc_coefff] : m_parent.description().uncertain_objs()) {
+        for (const auto& [unc_var, coeff] : unc_coefff) {
+
+            // Underestimate the following
+            const double lb_var = model.get_var_lb(var);
+            const double ub_var = model.get_var_ub(var);
+            const double lb_unc_var = uncertainty_set.get_var_lb(unc_var);
+            const double ub_unc_var = uncertainty_set.get_var_ub(unc_var);
+
+            const double v1 = lb_var * lb_unc_var;
+            const double v2 = lb_var * ub_unc_var;
+            const double v3 = ub_var * lb_unc_var;
+            const double v4 = ub_var * ub_unc_var;
+
+            const double min_prod = std::min({v1, v2, v3, v4});
+            const double max_prod = std::max({v1, v2, v3, v4});
+
+            if (coeff >= 0) {
+                result += coeff * min_prod;
+            } else {
+                result += coeff * max_prod;
+            }
+
+        }
+    }
+
+    return result;
+}
+
+double idol::CVCCG::Formulation::compute_penalty(const LinExpr<Var, double>& t_row, CtrType t_type, double t_rhs) const {
+
+    // a^\top x \le b => M = max(0, (max_{x\in [l,u]} a^\top x ) - b) ==> a^\top x \le b + Mz
+    // a^T x >= b => M = max(0, b - (min_{x in [l,u]} a^T x)) ==> a^\top x >= b -Mz
+
+    const auto& model = m_parent.parent();
+
+    if (t_type == LessOrEqual) {
+
+        double max_activity = 0;
+
+        for (const auto& [var, coeff] : t_row) {
+            if (coeff > 0) {
+                const double ub = model.get_var_ub(var);
+                assert(!is_pos_inf(ub));
+                max_activity += coeff * ub;
+            } else {
+                const double lb = m_epigraph_variable && m_epigraph_variable->id() == var.id() ? m_master.get_var_lb(var) : model.get_var_lb(var);
+                assert(!is_neg_inf(lb));
+                max_activity += coeff * lb;
+            }
+        }
+
+        return std::max(0., max_activity - t_rhs);
+    }
+
+    double min_activity = 0;
+
+    for (const auto& [var, coeff] : t_row) {
+        if (coeff > 0) {
+            const double lb = model.get_var_lb(var);
+            assert(!is_neg_inf(lb));
+            min_activity += coeff * lb;
+        } else {
+            const double ub = model.get_var_ub(var);
+            assert(!is_pos_inf(ub));
+            min_activity += coeff * ub;
+        }
+    }
+
+    return std::max(0., t_rhs - min_activity);
+
+}
+
 void idol::CVCCG::Formulation::create_critical_value_variable_if_needed(const PrimalPoint& t_scenario) {
+
+    if (m_parent.use_indicator()) {
+        return;
+    }
 
     for (auto& linking : m_linking_constraints) {
 
@@ -381,68 +580,57 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
     const auto& description = m_parent.description();
     const auto& [scenario, master_solution] = *t_iterator_in_pool;
 
-    const LinExpr<Var, LinExpr<Var>>* unc_coeffs = nullptr;
+    const LinExpr<Var, LinExpr<Var>>* unc_row_coeffs = nullptr;
     const LinExpr<Var>* unc_constant = nullptr;
-    CtrType type = LessOrEqual;
+    CtrType type;
 
     LinExpr<Var> row;
     double constant = 0.;
 
     if (t_uncertainty.is_constraint()) {
-        const auto& ctr = t_uncertainty.ctr();
 
+        // We have an uncertain constraint : a^\top x \le b or a^T x >= b
+
+        const auto& ctr = t_uncertainty.ctr();
         row = model.get_ctr_row(ctr);
         type = model.get_ctr_type(ctr);
         constant = model.get_ctr_rhs(ctr);
-
-        unc_coeffs = &description.uncertain_mat_coeffs(ctr);
+        unc_row_coeffs = &description.uncertain_mat_coeffs(ctr);
         unc_constant = &description.uncertain_rhs(ctr);
+
     } else {
-        row = model.get_obj_expr().affine().linear();
-        unc_coeffs = &description.uncertain_objs();
-        constant = model.get_obj_expr().affine().constant();
+
+        // We rewrite the "objective" in epigraph as c^\top x - theta \le -c_0
 
         if (!m_epigraph_variable) {
-            m_epigraph_variable = m_master.add_var(-Inf, Inf, Continuous, 1, "__epigraph");
+            m_epigraph_variable = m_master.add_var(m_global_lower_bound, Inf, Continuous, 1, "__epigraph");
         }
 
+        row = model.get_obj_expr().affine().linear() - *m_epigraph_variable;
+        type = LessOrEqual;
+        constant = -model.get_obj_expr().affine().constant();
+        unc_row_coeffs = &description.uncertain_objs();
+        unc_constant = nullptr;
+
     }
 
-    for (const auto& [var, unc_coeff] : *unc_coeffs) {
-        row += evaluate(unc_coeff, scenario) * var;
+    // Add uncertain coefficients terms
+    if (unc_row_coeffs) {
+        for (const auto& [var, unc_coeff] : *unc_row_coeffs) {
+            row += evaluate(unc_coeff, scenario) * var;
+        }
     }
+
+    // Add uncertain constant terms
     if (unc_constant) {
         for (const auto& [unc_param, coeff] : *unc_constant) {
             constant += coeff * scenario.get(unc_param);
         }
     }
 
-    double penalty = -constant;
-    for (const auto& [var, coeff] : row) {
-        if (coeff > 0) {
-            const double ub = model.get_var_ub(var);
-            if (is_pos_inf(ub)) {
-                throw Exception("Found variable with infinite bound during big-M computation.");
-            }
-            penalty += coeff * ub;
-        } else {
-            const double lb = model.get_var_lb(var);
-            if (is_neg_inf(lb)) {
-                throw Exception("Found variable with infinite bound during big-M computation.");
-            }
-            penalty += coeff * lb;
-        }
-    }
+    const double penalty = (type == LessOrEqual ? -1. : 1.) * compute_penalty(row, type, constant);
 
-    if (type == LessOrEqual) {
-        penalty *= -1.;
-    }
-
-    if (!t_uncertainty.is_constraint()) {
-        row -= *m_epigraph_variable;
-    }
-
-    if (m_linking_variables.empty() || m_parent.use_indicator()) { // Add indicator
+    if (uses_indicator()) { // Add indicator
 
         for (const auto& var : m_linking_variables) {
             const double val = master_solution.get(var);
@@ -450,7 +638,8 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
             constant -= penalty * val;
         }
 
-        m_master.add_ctr(std::move(row), type, constant);
+        const auto cut = m_master.add_ctr(std::move(row), type, constant);
+        t_uncertainty.add_currently_present_cut(cut, t_iterator_in_pool, penalty);
 
     } else { // Add critical value
 
@@ -471,4 +660,9 @@ void idol::CVCCG::Formulation::add_scenario_to_master(const std::list<GeneratedS
 
     }
 
+}
+
+
+bool idol::CVCCG::Formulation::uses_indicator() const {
+    return m_linking_variables.empty() || m_parent.use_indicator() || !m_all_data_in_linking_constraints_is_integer;
 }

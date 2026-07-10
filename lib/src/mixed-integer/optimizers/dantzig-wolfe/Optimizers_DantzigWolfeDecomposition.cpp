@@ -42,6 +42,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::hook_before_optimize() {
     set_reason(NotSpecified);
     set_best_bound(-Inf);
     set_best_obj(+Inf);
+    m_original_space_solution.reset();
 
     auto& master = m_formulation.master();
 
@@ -137,7 +138,18 @@ void idol::Optimizers::DantzigWolfeDecomposition::write(const std::string &t_nam
 }
 
 double idol::Optimizers::DantzigWolfeDecomposition::get_var_primal(const idol::Var &t_var) const {
-    return m_formulation.get_original_space_var_primal(t_var, m_strategy->primal_solution());
+
+    const unsigned int sub_problem_id = t_var.get(m_formulation.decomposition());
+
+    if (sub_problem_id == MasterId) {
+        return m_formulation.master().get_var_primal(t_var);
+    }
+
+    if (!m_original_space_solution) {
+        const_cast<DantzigWolfeDecomposition*>(this)->m_original_space_solution = m_formulation.build_original_space_solution(m_strategy->primal_solution());
+    }
+
+    return m_original_space_solution->get(t_var);
 }
 
 double idol::Optimizers::DantzigWolfeDecomposition::get_var_ray(const idol::Var &t_var) const {

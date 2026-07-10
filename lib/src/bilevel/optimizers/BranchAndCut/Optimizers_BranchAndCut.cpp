@@ -1,9 +1,7 @@
 #include "idol/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/optimizers/callbacks/cutting-planes/LazyCutCallback.h"
-#include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
-#include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 #include <cassert>
 
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"

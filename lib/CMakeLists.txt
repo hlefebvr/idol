@@ -322,6 +322,12 @@ add_library(idol STATIC
         include/idol/general/optimizers/LambdaOptimizer/Optimizers_LambdaOptimizer.h
         src/general/optimizers/LambdaOptimizer/LambdaOptimizer.cpp
         src/general/optimizers/LambdaOptimizer/Optimizers_LambdaOptimizer.cpp
+        include/idol/robust/optimizers/bilevel-based-branch-and-bound/MaxMinRelaxation.h
+        src/robust/optimizers/bilevel-based-branch-and-bound/MaxMinRelaxation.cpp
+        include/idol/robust/optimizers/bilevel-based-branch-and-bound/Optimizers_MaxMinRelaxation.h
+        src/robust/optimizers/bilevel-based-branch-and-bound/Optimizers_MaxMinRelaxation.cpp
+        include/idol/mixed-integer/optimizers/presolve/StandardScaling.h
+        src/mixed-integer/optimizers/presolve/StandardScaling.cpp
 )
 
 target_link_libraries(idol PRIVATE dl)

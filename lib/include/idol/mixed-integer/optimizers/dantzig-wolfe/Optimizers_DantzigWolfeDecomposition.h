@@ -28,6 +28,8 @@ class idol::Optimizers::DantzigWolfeDecomposition : public Algorithm {
     unsigned int m_max_parallel_pricing;
     bool m_use_hard_branching;
     bool m_remove_infeasible_columns;
+
+    std::optional<PrimalPoint> m_original_space_solution;
 public:
     DantzigWolfeDecomposition(const Model& t_model,
                               idol::DantzigWolfe::Formulation&& t_formulation,

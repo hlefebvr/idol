@@ -73,6 +73,10 @@ idol::Optimizers::HiGHS::DynamicLib::DynamicLib() {
 
     const auto HiGHS_path = find_library();
 
+    if (HiGHS_path.empty()) {
+        return;
+    }
+
     m_handle = dlopen(HiGHS_path.c_str(), RTLD_LAZY);
 
     if (!m_handle) {

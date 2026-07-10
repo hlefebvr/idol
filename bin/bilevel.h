@@ -17,6 +17,7 @@ inline void bilevel(const Arguments& t_args) {
     using namespace idol;
 
     Env env;
+    env.set_param_thread_limit(t_args.n_threads);
 
     // Read model
     std::optional<Model> model;
@@ -48,7 +49,7 @@ inline void bilevel(const Arguments& t_args) {
     }
 
     if (!model || !bilevel_description) {
-        std::cerr << "No robust model was given (please, provide at least: .lp/.mps, --aux and --unc)." << std::endl;
+        std::cerr << "No robust model was given (please, provide at least: .lp/.mps and --aux)." << std::endl;
         exit(1);
     }
 

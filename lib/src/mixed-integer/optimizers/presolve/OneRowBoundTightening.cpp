@@ -78,7 +78,7 @@ bool idol::Presolvers::OneRowBoundTightening::execute(Model& t_model) {
 void idol::Presolvers::OneRowBoundTightening::log_after_termination() const {
     AbstractPresolver::log_after_termination();
 
-    std::cout << "OneRowBoundTightening: " << m_n_total_changes;
+    std::cout << "One row bound tightening: " << m_n_total_changes;
 
 }
 

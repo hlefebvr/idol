@@ -8,6 +8,7 @@
 #include "idol/general/optimizers/Algorithm.h"
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/general/utils/GenerationPattern.h"
+#include <memory>
 
 namespace idol::Optimizers::Bilevel {
     class BranchAndCut;

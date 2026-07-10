@@ -8,13 +8,20 @@
 #include "Optimizers_DantzigWolfeDecomposition.h"
 
 class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
+
+    enum NumericalPolicy { Default, ColumnPoolCleanUp, NoDualSmoothing, Failure };
+
     DantzigWolfeDecomposition& m_parent;
     double m_best_bound_stop;
+
+    const unsigned int m_max_n_iterations_without_generating_column = 200;
+    unsigned int m_n_iterations_without_generating_column = 0;
+    NumericalPolicy m_numerical_policy = Default;
 
     SolutionStatus m_status = Loaded;
     SolutionReason m_reason = NotSpecified;
     std::optional<PrimalPoint> m_master_primal_solution;
-    std::optional<DualPoint> m_last_master_solution;
+    std::optional<DualPoint> m_master_dual_solution;
     std::vector<DantzigWolfe::SubProblem::PhaseId> m_sub_problems_phases;
     double m_best_obj = -Inf;
     double m_best_bound = +Inf;
@@ -28,38 +35,44 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
 
     void initialize_sub_problem_phases();
     void solve_dual_master();
-    bool gap_is_closed() const;
+    [[nodiscard]] bool gap_is_closed() const;
     bool check_stopping_criterion();
     void update_sub_problems();
     void solve_sub_problems_in_parallel();
     void analyze_sub_problems();
     void enrich_master();
+    bool check_numerical_stability();
     void pool_clean_up();
+
+    void next_numerical_policy();
 
     void log_init();
     void log_master();
     void log_sub_problems();
     void log_end();
+
+    friend std::ostream& operator<<(std::ostream& t_os, idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::NumericalPolicy t_numerical_policy);
 public:
     ColumnGeneration(DantzigWolfeDecomposition& t_parent, bool t_use_farkas_for_infeasibility, double t_best_bound_stop);
 
-    const DantzigWolfeDecomposition& parent() const { return m_parent; }
+    [[nodiscard]] const DantzigWolfeDecomposition& parent() const { return m_parent; }
 
     DantzigWolfeDecomposition& parent() { return m_parent; }
 
-    SolutionStatus status() const { return m_status; }
+    [[nodiscard]] SolutionStatus status() const { return m_status; }
 
-    SolutionReason reason() const { return m_reason; }
+    [[nodiscard]] SolutionReason reason() const { return m_reason; }
 
-    double best_obj() const { return m_best_obj; }
+    [[nodiscard]] double best_obj() const { return m_best_obj; }
 
-    double best_bound() const { return m_best_bound; }
+    [[nodiscard]] double best_bound() const { return m_best_bound; }
 
-    const PrimalPoint& primal_solution() const { return m_master_primal_solution.value(); }
+    [[nodiscard]] const PrimalPoint& primal_solution() const { return m_master_primal_solution.value(); }
 
     void set_best_bound_stop(double t_best_bound_stop) { m_best_bound_stop = t_best_bound_stop; }
 
     void execute();
 };
+
 
 #endif //IDOL_COLUMNGENERATION_H

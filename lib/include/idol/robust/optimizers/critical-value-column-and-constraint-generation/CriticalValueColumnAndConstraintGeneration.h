@@ -6,6 +6,7 @@
 #define IDOL_CRITICALVALUECOLUMNANDCONSTRAINTGENERATION_H
 
 #include <idol/general/optimizers/OptimizerFactory.h>
+#include <memory>
 
 namespace idol::Robust {
     class Description;

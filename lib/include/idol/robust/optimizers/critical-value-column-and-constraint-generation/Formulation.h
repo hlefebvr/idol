@@ -19,7 +19,7 @@ namespace idol::CVCCG {
 }
 
 class idol::CVCCG::Formulation {
-
+public:
     struct LinkingConstraint {
         Ctr ctr_in_uncertainty_set;
         Map<long int, std::pair<Var, Ctr>> critical_values;
@@ -42,24 +42,28 @@ class idol::CVCCG::Formulation {
     class Uncertainty {
         std::optional<Ctr> m_constraint_in_original_model;
         std::list<CurrentlyPresentCut> m_currently_present_cuts;
+        std::list<CurrentlyPresentCut> m_not_currently_present_cuts;
     public:
         [[nodiscard]] bool is_constraint() const { return m_constraint_in_original_model.has_value(); }
         [[nodiscard]] const Ctr& ctr() const { return m_constraint_in_original_model.value(); }
         [[nodiscard]] auto currently_present_cuts() const { return ConstIteratorForward(m_currently_present_cuts); }
         auto currently_present_cuts() { return IteratorForward(m_currently_present_cuts); }
         void add_currently_present_cut(const Ctr& t_ctr, std::list<GeneratedScenario>::iterator t_scenario, double t_penalty) { m_currently_present_cuts.emplace_back(t_ctr, t_scenario, t_penalty); }
+        auto remove_from_currently_present_cuts(const std::list<CurrentlyPresentCut>::const_iterator& t_it) { return m_currently_present_cuts.erase(t_it); }
 
         Uncertainty() = default;
         Uncertainty(const Ctr& t_ctr) : m_constraint_in_original_model(t_ctr) {}
     };
-
+private:
     const Optimizers::Robust::CriticalValueColumnAndConstraintGeneration& m_parent;
 
     // Analysis of the model
     std::list<Var> m_linking_variables;
+    bool m_master_is_continuous = true;
     bool m_all_linking_variables_are_binary = true;
     bool m_all_data_in_linking_constraints_is_integer = true;
     const bool m_use_cover_constraints = true;
+    double m_global_lower_bound = -Inf;
 
     Model m_master;
     Model m_sub_problem;
@@ -79,6 +83,8 @@ class idol::CVCCG::Formulation {
     void create_critical_value_variable_if_needed(const PrimalPoint& t_scenario);
     void create_critical_value_variable(const PrimalPoint& t_scenario, LinkingConstraint& t_linking);
     double compute_critical_value(const Ctr& t_ctr, const PrimalPoint& t_scenario) const;
+    double compute_trivial_lower_bound() const;
+    double compute_penalty(const LinExpr<Var, double>& t_row, CtrType t_type, double t_rhs) const;
 public:
     Formulation(const idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration& t_parent);
 
@@ -100,6 +106,14 @@ public:
 
     bool master_provides_a_valid_bound() const;
     const Var& epigraph_variable() const { return *m_epigraph_variable; }
+
+    void remove_cut_if(Uncertainty& t_uncertainty, const std::function<bool(const Ctr&, const PrimalPoint&)>& t_indicator);
+    void set_unc_var_lb(const Var& t_var, double t_lb);
+    void set_unc_var_ub(const Var& t_var, double t_ub);
+    void load_cut_from_pool();
+
+    bool uses_indicator() const;
+
 };
 
 #endif //IDOL_CVCCG_FORMULATION_H

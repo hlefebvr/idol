@@ -303,6 +303,8 @@ public:
     void reset_minor_representation();
 
     static Model read_from_file(Env& t_env, const std::string& t_filename);
+
+    void print_statistics(std::ostream& t_os = std::cout) const;
 };
 
 template<class T, unsigned int N>

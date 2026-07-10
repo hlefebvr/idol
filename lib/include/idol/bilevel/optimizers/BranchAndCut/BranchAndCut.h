@@ -7,6 +7,7 @@
 
 #include "idol/general/optimizers/OptimizerFactory.h"
 #include "idol/bilevel/optimizers/BilevelOptimizerInterface.h"
+#include <memory>
 
 namespace idol::Bilevel {
     class BranchAndCut;
