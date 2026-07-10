@@ -27,7 +27,8 @@
 
 \subsection examples_mixed_integer_branch_and_price Branch-and-price algorithm
 
-| Example name                           | Description                              |
-|----------------------------------------|------------------------------------------|
-| \subpage example_mixed_integer_gap_bap | \copybrief example_mixed_integer_gap_bap |
-| \subpage example_mixed_integer_bin_bap | \copybrief example_mixed_integer_bin_bap |
+| Example name                              | Description                                 |
+|-------------------------------------------|---------------------------------------------|
+| \subpage example_mixed_integer_gap_bap    | \copybrief example_mixed_integer_gap_bap    |
+| \subpage example_mixed_integer_bin_bap    | \copybrief example_mixed_integer_bin_bap    |
+| \subpage example_mixed_integer_lambda_bap | \copybrief example_mixed_integer_lambda_bap |
