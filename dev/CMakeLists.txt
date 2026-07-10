@@ -1,10 +1,4 @@
 add_executable(dev
         main.cpp
 )
-
-find_package(Boost REQUIRED CONFIG)
-
-target_link_libraries(dev PRIVATE
-        idol
-        Boost::boost
-)
+target_link_libraries(dev PRIVATE idol)
