@@ -1,9 +1,6 @@
-
-find_package(Boost REQUIRED CONFIG)
-
 function(ADD_EXAMPLE NAME)
     add_executable(example-${NAME} ${NAME}.example.cpp)
-    target_link_libraries(example-${NAME} PRIVATE idol Boost::boost)
+    target_link_libraries(example-${NAME} PRIVATE idol)
     file(GLOB DATA_FILES "${CMAKE_CURRENT_SOURCE_DIR}/${NAME}.data.*")
     foreach(FILE ${DATA_FILES})
         message(STATUS "Copying ${FILE}")
