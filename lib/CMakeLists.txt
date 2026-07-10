@@ -317,6 +317,11 @@ add_library(idol STATIC
         include/idol/robust/optimizers/convexification/Optimizers_Convexification.h
         src/robust/optimizers/convexification/Convexification.cpp
         src/robust/optimizers/convexification/Optimizers_Convexification.cpp
+        include/idol/general/optimizers/LambdaOptimizer/LambdaContext.h
+        include/idol/general/optimizers/LambdaOptimizer/LambdaOptimizer.h
+        include/idol/general/optimizers/LambdaOptimizer/Optimizers_LambdaOptimizer.h
+        src/general/optimizers/LambdaOptimizer/LambdaOptimizer.cpp
+        src/general/optimizers/LambdaOptimizer/Optimizers_LambdaOptimizer.cpp
         include/idol/robust/optimizers/bilevel-based-branch-and-bound/MaxMinRelaxation.h
         src/robust/optimizers/bilevel-based-branch-and-bound/MaxMinRelaxation.cpp
         include/idol/robust/optimizers/bilevel-based-branch-and-bound/Optimizers_MaxMinRelaxation.h
