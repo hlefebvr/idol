@@ -23,8 +23,8 @@ if(NOT Boost_FOUND)
     set(BOOST_INCLUDE_LIBRARIES graph CACHE INTERNAL "")
     FetchContent_MakeAvailable(Boost)
 endif()
-add_example(lambda-optimizer)
-target_link_libraries(example-lambda-optimizer PRIVATE Boost::graph)
+add_example(rspp-bap)
+target_link_libraries(example-rspp-bap PRIVATE Boost::graph)
 
 # Legacy examples
 #add_example(knapsack-cover)
