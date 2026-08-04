@@ -7,14 +7,17 @@
 
 bool idol::Presolvers::StandardScaling::execute(Model& t_model) {
 
+    constexpr int max_scaling_exp = 15;
+
     for (const auto& ctr : t_model.ctrs()) {
+
         const auto& row = t_model.get_ctr_row(ctr);
         const double rhs = t_model.get_ctr_rhs(ctr);
-        double infinity_norm = 0;
+
+        double infinity_norm = std::abs(rhs);
         for (const auto& [var, coeff] : row) {
-            infinity_norm = std::max(std::abs(coeff), infinity_norm);
+            infinity_norm = std::max(infinity_norm, std::abs(coeff));
         }
-        infinity_norm = std::max(infinity_norm, std::abs(rhs));
 
         if (is_zero(infinity_norm, Tolerance::Sparsity)) {
             continue;
@@ -22,11 +25,16 @@ bool idol::Presolvers::StandardScaling::execute(Model& t_model) {
 
         int e = 0;
         std::frexp(infinity_norm, &e);
-        double closest_power_of_2 = std::ldexp(1.0, e - 1); // scale = 2^(e-1) or 2^e depending on your normalization choice
-        if (closest_power_of_2 != 1.) {
-            t_model.set_ctr_row(ctr, row / closest_power_of_2);
-            t_model.set_ctr_rhs(ctr, rhs / closest_power_of_2);
-            m_n_rescaled++;
+
+        // Cap the scaling exponent while preserving a power-of-two scaling factor.
+        e = std::clamp(e - 1, -max_scaling_exp, max_scaling_exp);
+
+        const double scaling_factor = std::ldexp(1.0, e);
+
+        if (scaling_factor != 1.0) {
+            t_model.set_ctr_row(ctr, row / scaling_factor);
+            t_model.set_ctr_rhs(ctr, rhs / scaling_factor);
+            ++m_n_rescaled;
         }
     }
 
