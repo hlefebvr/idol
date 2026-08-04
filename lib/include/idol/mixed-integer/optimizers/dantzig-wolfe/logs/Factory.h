@@ -47,7 +47,7 @@ public:
                                      unsigned int t_n_generated_columns,
                                      unsigned int t_n_present_columns) = 0;
 
-        virtual void log_end() = 0;
+        virtual void log_end(unsigned int t_n_generated) = 0;
     };
 
     virtual Strategy* operator()() const = 0;

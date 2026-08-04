@@ -52,7 +52,7 @@ public:
                              unsigned int t_n_generated_columns,
                              unsigned int t_n_present_columns) override;
 
-        void log_end() override;
+        void log_end(unsigned int t_n_generated) override;
     };
 
     Info& with_frequency_in_seconds(double t_frequency);

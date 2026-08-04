@@ -518,7 +518,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_end() {
         return;
     }
 
-    m_parent.m_logger->log_end();
+    m_parent.m_logger->log_end(m_n_generated_columns);
 }
 
 std::ostream& idol::Optimizers::operator<<(std::ostream& t_os, DantzigWolfeDecomposition::ColumnGeneration::NumericalPolicy t_numerical_policy) {

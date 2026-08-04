@@ -158,8 +158,10 @@ idol::Logs::DantzigWolfe::Info::Strategy::log_sub_problem(unsigned int t_iterati
     std::cout << std::endl;
 }
 
-void idol::Logs::DantzigWolfe::Info::Strategy::log_end() {
+void idol::Logs::DantzigWolfe::Info::Strategy::log_end(unsigned int t_n_generated) {
     std::cout << " ";center(std::cout, "-", table_space, '-') << std::endl;
+
+    std::cout << "Generated " << t_n_generated << " columns." << std::endl;
 }
 
 idol::Logs::DantzigWolfe::Info::Strategy::Strategy(unsigned int t_frequency, bool t_log_sub_problems)

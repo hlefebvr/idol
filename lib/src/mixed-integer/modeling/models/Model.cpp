@@ -1054,6 +1054,10 @@ void idol::Model::print_statistics(std::ostream& t_os) const {
     unsigned int n_non_zeroes = 0;
     double min_mat_val = Inf, min_bound_val = Inf;
     double max_mat_val = -Inf, max_bound_val = -Inf;
+    double min_col_ratio = Inf, max_col_ratio = -Inf;
+    double min_row_ratio = Inf, max_row_ratio = -Inf;
+    double min_activity_range = Inf, max_activity_range = -Inf;
+    double max_big_M = -Inf;
     const auto [min_obj_val, max_obj_val] = get_obj_expr().affine().linear().range();
     const auto [min_rhs_val, max_rhs_val] = get_rhs_expr().range();
 
@@ -1084,12 +1088,33 @@ void idol::Model::print_statistics(std::ostream& t_os) const {
 
         n_non_zeroes += column.size();
 
-        for (const auto& [ctr, coeff] : column) {
-            const double abs_coeff = std::abs(coeff);
-            min_mat_val = std::min(min_mat_val, abs_coeff);
-            max_mat_val = std::max(max_mat_val, abs_coeff);
+        const auto [min_col_val, max_col_val] = column.range();
+        min_mat_val = std::min(min_mat_val, min_col_val);
+        max_mat_val = std::max(max_mat_val, min_col_val);
+
+        const auto col_ratio = max_col_val / min_col_val;
+        min_col_ratio = std::min(min_col_ratio, col_ratio);
+        max_col_ratio = std::max(max_col_ratio, col_ratio);
+
+        if (type == Binary && max_col_val > 1e8) {
+            max_big_M = std::max(max_big_M, max_col_val);
         }
 
+    }
+
+    for (const auto& ctr : ctrs()) {
+
+        const auto& row = get_ctr_row(ctr);
+        const double rhs = get_ctr_rhs(ctr);
+
+        const auto& [min_row_val, max_row_val] = row.range();
+        const auto row_ratio = max_row_val / min_row_val;
+        min_row_ratio = std::min(min_row_ratio, row_ratio);
+        max_row_ratio = std::max(max_row_ratio, row_ratio);
+
+        const auto activity_range = std::abs(rhs) / max_row_val;
+        min_activity_range = std::min(min_activity_range, activity_range);
+        max_activity_range = std::max(max_activity_range, activity_range);
     }
 
     t_os << "Model with " << m_constraints.size() << " row, " << m_variables.size() << " columns and " << n_non_zeroes << " nonzeroes" << std::endl;
@@ -1099,6 +1124,41 @@ void idol::Model::print_statistics(std::ostream& t_os) const {
             "\tObjective range\t[" << min_obj_val << ", " << max_obj_val << "]\n"
             "\tBounds range\t[" << min_bound_val << ", " << max_bound_val << "]\n"
             "\tRHS range\t\t[" << min_rhs_val << ", " << max_rhs_val << "]\n";
+
+    unsigned int numerical_score = 0;
+    const double matrix_ratio = max_mat_val / min_mat_val;
+
+    if (matrix_ratio > 1e8) {
+        numerical_score += 1;
+    }
+
+    if (max_row_ratio > 1e8) {
+        numerical_score += 3;
+    }
+
+    if (max_col_ratio > 1e8) {
+        numerical_score += 3;
+    }
+
+    if (max_big_M > 1e8) {
+        numerical_score += 3;
+    }
+
+    if (min_activity_range < 1e-8 || max_activity_range > 1e8) {
+        numerical_score += 2;
+    }
+
+    if (numerical_score > 10) {
+
+        t_os << "WARNING: the model seems to be numerically challenging" << std::endl;
+
+        t_os << "\tMatrix ratio: " << matrix_ratio << std::endl;
+        t_os << "\tRow ratio range: [" << min_row_ratio << ", " << max_row_ratio << "]" << std::endl;
+        t_os << "\tColumn ratio range: [" << min_col_ratio << ", " << max_col_ratio << "]" << std::endl;
+        t_os << "\tActivity range: [" << min_activity_range << ", " << max_activity_range << "]" << std::endl;
+        t_os << "\tMax. big-M: " << max_big_M << std::endl;
+
+    }
 
 }
 
