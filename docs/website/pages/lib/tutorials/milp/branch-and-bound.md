@@ -126,12 +126,9 @@ the intended Best Projection convention requires confirmation from Henri Lefebvr
 > If there is no incumbent solution yet, the strategy defaults to the node with the best objective value. 
 > Thus, it acts like the best bound approach.
 
-\warning The current `BestEstimate` implementation calls `objective_value()` on the node-information type, but
-`DefaultNodeInfo` exposes this value as `best_obj()`. Consequently, the example below does not currently compile
-when `BestEstimate` is instantiated with the default node type. This is an implementation/API inconsistency rather
-than an alternative score definition.
-
 Here is how to use it.
+
+This built-in rule works with the default `BranchAndBound` node-information type, `DefaultNodeInfo`.
 
 ```cpp
 branch_and_bound.with_node_selection_rule(BestEstimate());
@@ -252,7 +249,7 @@ The least infeasible strategy selects the variable whose value is closest to an 
 Here is how to use it.
 
 ```cpp
-branch_and_bound.with_branching_rule(LeastInfeasibleFound());
+branch_and_bound.with_branching_rule(LeastInfeasible());
 ```
 
 \section lib_milp_bnb_branching_rule_MostInfeasible Most Infeasible
@@ -262,7 +259,7 @@ The most infeasible strategy selects the variable whose value is farthest from a
 Here is how to use it.
 
 ```cpp
-branch_and_bound.with_branching_rule(MostInfeasibleFound());
+branch_and_bound.with_branching_rule(MostInfeasible());
 ```
 
 \section lib_milp_bnb_branching_rule_PseudoCost Pseudo Cost Branching
@@ -420,9 +417,7 @@ are `NodeScoreFunctions::Linear`, whose constructor optionally receives \f$ \alp
 \f$ \varepsilon \f$ and defaults to \f$ \varepsilon = 10^{-5} \f$. Strong branching uses `Product` by default.
 For instance, the following selects the linear combiner with \f$ \alpha = 0.1 \f$.
 
-\warning The current strong-branching implementation calls `objective_value()` and `has_objective_value()` directly
-on the node-information type, while `DefaultNodeInfo` exposes these operations through `primal_solution()`. Thus,
-instantiating the strong-branching scoring path with `DefaultNodeInfo` currently produces an API mismatch.
+`StrongBranching` works with the default `BranchAndBound` node-information type, `DefaultNodeInfo`.
 
 ```cpp
 auto strong_branching = StrongBranching();

@@ -19,8 +19,6 @@ add_library(idol STATIC
         src/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.cpp
         include/idol/mixed-integer/modeling/expressions/AffExpr.h
         include/idol/mixed-integer/modeling/expressions/operations/operators.h
-        include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h
-        src/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.cpp
         src/mixed-integer/problems/facility-location-problem/FLP_Instance.cpp
         include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h
         include/idol/mixed-integer/problems/helpers/distances.h
@@ -535,8 +533,6 @@ set(AVAILABLE_BILEVEL_SOLVERS "${AVAILABLE_BILEVEL_SOLVERS}" PARENT_SCOPE)
 
 if (${WITH_PROFILING})
     target_compile_options(idol PRIVATE -pg)
-    set(CMAKE_C_COMPILER gcc)
-    set(CMAKE_CPP_COMPILER g++)
 endif()
 
 # "Compile" the Julia module code

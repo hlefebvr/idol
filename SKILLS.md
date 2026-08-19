@@ -246,8 +246,8 @@ Read the corresponding modeling/optimizer classes and implementation.
 The older RST tutorials under:
 
 ```text
-docs/website/tutorials/mixed-integer/modeling/
-docs/website/tutorials/mixed-integer/optimizers/
+docs/website/tutorials-old/mixed-integer/modeling/
+docs/website/tutorials-old/mixed-integer/optimizers/
 ```
 
 contain substantial source material for these concepts.

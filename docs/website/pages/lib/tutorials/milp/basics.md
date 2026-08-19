@@ -827,10 +827,10 @@ Support for SOS constraints is optimizer-specific.
 \brief Describes how to define, inspect, and modify a model's objective function.
 \tableofcontents
 
-The objective function tells an optimizer which quantity to minimize or
-maximize. In `idol`, the objective expression is stored as a
+The objective function tells an optimizer which quantity to minimize. `idol`
+is minimization-only. The objective expression is stored as a
 `QuadExpr<Var>`, so the same interface accepts linear, affine, and quadratic
-objectives. A new `Model` has the zero objective and uses the `Minimize` sense.
+objectives. A new `Model` has the zero objective.
 
 \section lib_milp_basics_advanced_objectives_set Setting the Objective
 
@@ -862,21 +862,11 @@ Whether a particular objective can be solved depends on the attached
 optimizer. The model can represent a quadratic objective even when a selected
 solver does not support it.
 
-\section lib_milp_basics_advanced_objectives_sense Objective Sense
+\section lib_milp_basics_advanced_objectives_sense Minimization
 
-The `ObjectiveSense` values are `Minimize` and `Maximize`. Change the sense
-with `Model::set_obj_sense` and query it with `Model::get_obj_sense`.
-
-```cpp
-model.set_obj_sense(Maximize);
-
-if (model.get_obj_sense() == Maximize) {
-    std::cout << "The model is a maximization problem." << std::endl;
-}
-```
-
-The sense is independent of the sign of the expression. Changing it updates
-an attached optimizer through its objective-sense update mechanism.
+`idol` models are minimized. `Model::get_obj_sense` therefore reports
+`Minimize` for the supported objective convention. To prefer larger values of
+a quantity, negate that quantity and minimize the resulting objective.
 
 \section lib_milp_basics_advanced_objectives_access Accessing and Modifying the Objective
 

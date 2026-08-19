@@ -54,7 +54,7 @@ void idol::DefaultNodeInfo::save(const idol::Model &t_original_formulation,
     m_primal_solution = save_primal(t_original_formulation, t_model);
     m_best_bound = t_model.get_best_bound();
 
-    compute_sum_of_infeasibilities();
+    compute_sum_of_infeasibilities(t_original_formulation);
 
 }
 
@@ -62,11 +62,13 @@ idol::DefaultNodeInfo *idol::DefaultNodeInfo::create_child() const {
     return new DefaultNodeInfo();
 }
 
-void idol::DefaultNodeInfo::compute_sum_of_infeasibilities() {
+void idol::DefaultNodeInfo::compute_sum_of_infeasibilities(const Model& t_original_formulation) {
 
     m_sum_of_infeasibilities = 0;
     for (const auto& [var, value] : m_primal_solution) {
-        m_sum_of_infeasibilities.value() += std::abs(value - std::round(value));
+        if (t_original_formulation.get_var_type(var) != Continuous) {
+            m_sum_of_infeasibilities.value() += std::abs(value - std::round(value));
+        }
     }
 
 }

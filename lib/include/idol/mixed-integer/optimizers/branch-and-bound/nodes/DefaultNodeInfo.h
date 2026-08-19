@@ -57,7 +57,7 @@ public:
 
     [[nodiscard]] virtual DefaultNodeInfo* clone() const;
 protected:
-    virtual void compute_sum_of_infeasibilities();
+    virtual void compute_sum_of_infeasibilities(const Model& t_original_formulation);
 
     PrimalPoint m_primal_solution;
     double m_best_bound = -Inf;

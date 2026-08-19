@@ -17,6 +17,7 @@ add_subdirectory(bin)
 set(BUILD_EXAMPLES OFF CACHE BOOL "Build the example targets")
 set(BUILD_TESTS OFF CACHE BOOL "Build the test targets")
 set(TEST_COVERAGE OFF CACHE BOOL "Build in test coverage mode (must have BUILD_TESTS=ON)")
+set(BUILD_DEV OFF CACHE BOOL "Build the development target (advanced users only)")
 
 if (${BUILD_DEV})
     add_subdirectory(dev)
@@ -31,8 +32,6 @@ if (${BUILD_TESTS})
 elseif(${TEST_COVERAGE})
     message(FATAL "Must have BUILD_TESTS=YES in order to build code coverage")
 endif()
-
-set(BUILD_DEV OFF CACHE BOOL "Build the development target (advanced users only)")
 
 add_custom_target(doc COMMAND ./build_docs.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/scripts)
 

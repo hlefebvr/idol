@@ -121,7 +121,7 @@ void idol::Utils::ExportBranchAndBoundTreeToCSV<NodeInfoT>::Strategy::operator()
          << parent_id << ","
          << node.level() << ","
          << status << ","
-         << node.info().objective_value() << ","
+         << node.info().best_obj() << ","
          << branch_label.str() << ","
          << t_event << ","
          << sum_of_infeasibilities

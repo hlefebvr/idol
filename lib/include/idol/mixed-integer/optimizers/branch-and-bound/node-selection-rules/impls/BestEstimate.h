@@ -21,9 +21,9 @@ class idol::NodeSelectionRules::BestEstimate : public NodeSelectionRule<NodeT> {
 
     double compute_score(const Node<NodeT>& t_node) {
 
-        const double node_obj = t_node.info().objective_value();
+        const double node_obj = t_node.info().best_obj();
         const double node_sum_of_infeasibilities = t_node.info().sum_of_infeasibilities();
-        const double incumbent_obj = this->parent().incumbent().info().objective_value();
+        const double incumbent_obj = this->parent().incumbent().info().best_obj();
 
         return node_obj + ( m_root_node_obj.value() - incumbent_obj ) * node_sum_of_infeasibilities / m_root_node_sum_of_infeasibilities.value();
     }
@@ -34,7 +34,7 @@ public:
 
         if (t_active_nodes.size() == 1 && t_active_nodes.by_objective_value().begin()->id() == 0) {
             const auto& root_node_it = t_active_nodes.by_objective_value().begin();
-            m_root_node_obj = (double) root_node_it->info().objective_value();
+            m_root_node_obj = root_node_it->info().best_obj();
             m_root_node_sum_of_infeasibilities = root_node_it->info().sum_of_infeasibilities();
             return root_node_it;
         }

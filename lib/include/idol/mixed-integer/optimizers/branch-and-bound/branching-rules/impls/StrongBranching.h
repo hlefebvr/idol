@@ -74,7 +74,7 @@ idol::BranchingRules::StrongBranching<NodeInfoT>::scoring_function(const std::li
     const auto sorted_scores = sort_variables_by_score(scores);
     const unsigned int n_nodes_to_solve = std::min<unsigned int>(phase.max_n_variables(), sorted_scores.size());
 
-    const double objective_value_parent_node = t_node.info().objective_value();
+    const double objective_value_parent_node = t_node.info().best_obj();
 
     for (unsigned int k = 0 ; k < n_nodes_to_solve ; ++k) {
 
@@ -151,8 +151,8 @@ double idol::BranchingRules::StrongBranching<NodeInfoT>::compute_score(double t_
     const auto& left_node_info = t_nodes.front().info();
     const auto& right_node_info = t_nodes.back().info();
 
-    const double left_objective_value = left_node_info.has_objective_value() ? left_node_info.objective_value() : Inf;
-    const double right_objective_value = right_node_info.has_objective_value() ? right_node_info.objective_value() : Inf;
+    const double left_objective_value = left_node_info.has_best_obj() ? left_node_info.best_obj() : Inf;
+    const double right_objective_value = right_node_info.has_best_obj() ? right_node_info.best_obj() : Inf;
 
     return m_score_function->operator()(
             left_objective_value - t_parent_objective,
