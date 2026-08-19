@@ -177,6 +177,32 @@ Use commands in the same form as neighboring CLI tutorials.
 
 Mathematical explanations must be faithful to the algorithm already implemented or to mathematical text explicitly supplied by the user.
 
+Whenever mathematical objects or expressions are discussed in documentation
+prose, use LaTeX mathematics rather than plain-text approximations. Use the
+established Doxygen forms for inline mathematics, such as
+`\( x_j \)`, `\( \ell_j \le x_j \le u_j \)`,
+`\( c^\top x \)`, and `\( \mathbb{R}^n \)`, and use
+
+```text
+\f[
+    ...
+\f]
+```
+
+for displayed mathematics, or the locally established equivalent.
+
+Keep mathematical notation distinct from software identifiers. A mathematical
+variable is written \( x_j \), while the API class is `Var`; a mathematical
+bound is \( \ell_j \le x_j \le u_j \), while the API function is
+`Model::set_var_lb`; a mathematical expression is \( c^\top x \), while the
+C++ expression object is `LinExpr`.
+
+Backticks remain for C++ identifiers, API names, filenames, CLI options, and
+literal code. LaTeX is required for mathematical variables, indexed
+quantities, vectors, matrices, domains, objective functions, constraints,
+equalities, inequalities, sums, products, linear or quadratic expressions,
+and optimization problems. Do not turn API identifiers into mathematics.
+
 You may:
 - explain notation;
 - reorganize an existing derivation for clarity;
@@ -320,6 +346,7 @@ Before reporting completion, check:
 - [ ] Doxygen page IDs match parent references.
 - [ ] Internal references are valid as far as can be checked.
 - [ ] Examples follow current local style.
+- [ ] Mathematical notation in prose uses LaTeX, while API and code identifiers remain in backticks.
 - [ ] Mathematical statements were not altered beyond the authorized scope.
 - [ ] Documentation build was attempted when feasible.
 - [ ] All failures or unavailable dependencies are reported.

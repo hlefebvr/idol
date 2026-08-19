@@ -62,12 +62,12 @@ like callbacks, presolve, cutting planes, etc.
 
 - \subpage lib_milp_bnb_node_selection
 - \subpage lib_milp_bnb_branching_rule
-- \subpage lib_milp_bnb_callbacks (TODO)
+- \subpage lib_milp_bnb_callbacks
 - \subpage lib_milp_bnb_presolve
-- \subpage lib_milp_bnb_cutting_planes (TODO)
-- \subpage lib_milp_bnb_heuristics (TODO)
-- \subpage lib_milp_bnb_node_type (TODO)
-- \subpage lib_milp_bnb_options (TODO)
+- \subpage lib_milp_bnb_cutting_planes
+- \subpage lib_milp_bnb_heuristics
+- \subpage lib_milp_bnb_node_type
+- \subpage lib_milp_bnb_options
 
 \page lib_milp_bnb_node_selection Node Selection Rules
 
@@ -167,7 +167,51 @@ branch_and_bound.with_node_selection_rule(WorstBound());
 
 \section lib_milp_bnb_node_selection_writing Writing Your Own Node Selection Rule
 
-\warning TODO write this section
+A node-selection strategy derives from `NodeSelectionRule<NodeInfoT>` and returns an iterator into the
+`NodeSet<Node<NodeInfoT>>` passed to `operator()`. The set exposes two ordered views:
+`by_objective_value()` and `by_level()`. The returned iterator must belong to one of these views because the
+branch-and-bound optimizer erases the selected node through that iterator.
+
+The strategy is created by a matching `NodeSelectionRuleFactory<NodeInfoT>`. Factories are cloned when the
+`BranchAndBound` factory is copied, so a custom factory must implement both `operator()` and `clone()`.
+The following rule selects the deepest active node.
+
+```cpp
+template<class NodeInfoT>
+class DeepestNodeSelection : public NodeSelectionRule<NodeInfoT> {
+public:
+    explicit DeepestNodeSelection(Optimizers::BranchAndBound<NodeInfoT>& parent)
+        : NodeSelectionRule<NodeInfoT>(parent) {}
+
+    typename NodeSet<Node<NodeInfoT>>::const_iterator
+    operator()(const NodeSet<Node<NodeInfoT>>& active_nodes) override {
+        auto result = active_nodes.by_level().end();
+        --result;
+        return result;
+    }
+};
+
+template<class NodeInfoT>
+class DeepestNodeSelectionFactory : public NodeSelectionRuleFactory<NodeInfoT> {
+public:
+    NodeSelectionRule<NodeInfoT>*
+    operator()(Optimizers::BranchAndBound<NodeInfoT>& parent) const override {
+        return new DeepestNodeSelection<NodeInfoT>(parent);
+    }
+
+    DeepestNodeSelectionFactory* clone() const override {
+        return new DeepestNodeSelectionFactory(*this);
+    }
+};
+```
+
+It is then configured like any built-in strategy.
+
+```cpp
+branch_and_bound.with_node_selection_rule(
+    DeepestNodeSelectionFactory<DefaultNodeInfo>()
+);
+```
 
 \page lib_milp_bnb_branching_rule Branching Rules
 
@@ -243,7 +287,7 @@ Then, the two scores are combined using one of the two following formulas:
 \f]
   This slightly favors the larger score while keeping a base weight on the smaller one.
   It is the default setting.
-- a quadratic one using (with default value \\( \varepsilon = 10^{-6} \\))
+- a quadratic one using (with default value \\( \varepsilon = 10^{-5} \\))
 \f[
   \text{score}_j = \min\{ \varepsilon, \text{score}^+_j \} \times \min\{ \varepsilon, \text{score}^-_j \}
 \f]
@@ -257,7 +301,9 @@ Here is how to use it.
 branch_and_bound.with_branching_rule(PseudoCost());
 ```
 
-\warning TODO add how to change node scoring function and their parameters 
+The current `PseudoCost` factory does not expose a method for changing this combination: it always uses
+`NodeScoreFunctions::Linear()` and therefore its default parameter \\( \alpha = 1/16 \\). The public score-function
+configuration described below is currently available for `StrongBranching`, not for `PseudoCost`.
 
 \section lib_milp_bnb_branching_rule_StrongBranching Strong Branching
 
@@ -346,12 +392,15 @@ Unfortunately, this approach is not yet implemented in `idol`.
 
 \subsection lib_milp_bnb_branching_rule_scoring Changing the Scoring Function
 
-The scoring function can be changed using the `.with_scoring_function` method.
-For instance, here is how to use the quadratic scoring function.
+The strong-branching score combiner is selected with `with_node_scoring_function`. The available implementations
+are `NodeScoreFunctions::Linear`, whose constructor optionally receives \\( \alpha \\) and defaults to
+\\( \alpha = 1/16 \\), and `NodeScoreFunctions::Product`, whose constructor optionally receives
+\\( \varepsilon \\) and defaults to \\( \varepsilon = 10^{-5} \\). Strong branching uses `Product` by default.
+For instance, the following selects the linear combiner with \\( \alpha = 0.1 \\).
 
 ```cpp
 auto strong_branching = StrongBranching();
-strong_branching.with_scoring_function(NodeScoreFunctions::Product()); 
+strong_branching.with_node_scoring_function(NodeScoreFunctions::Linear(0.1));
 ```
 
 \section lib_milp_bnb_branching_rule_UniformlyRandom Uniformly Random Branching
@@ -386,31 +435,248 @@ Once all the variables in this batch have integer values, it considers the low-p
 
 \section lib_milp_bnb_branching_rule_writing Writing Your Own Branching Rule
 
-\warning TODO write this section
+A branching strategy derives from `BranchingRule<NodeInfoT>`. It must decide whether a solved node is valid for
+the original problem in `is_valid` and, for an invalid node, allocate the information objects for its children in
+`create_child_nodes`. Ownership of the returned pointers is transferred to the branch-and-bound tree. The optional
+hooks `initialize`, `on_node_solved`, and `on_nodes_have_been_created` support strategies that maintain state.
+
+Most MILP rules can reuse `BranchingRules::VariableBranching<NodeInfoT>`. That class already checks integrality,
+creates the two children imposing \\( x_j \ge \lceil x_j^* \rceil \\) and
+\\( x_j \le \lfloor x_j^* \rfloor \\), and selects the variable having the largest score. A derived strategy only
+needs to implement `scoring_function`. Its corresponding factory derives from `BranchingRuleFactory<NodeInfoT>`.
+The following minimal rule scores a fractional variable \\( x_j \\) by its distance to the nearest integer.
+
+```cpp
+template<class NodeInfoT>
+class FractionalityBranching
+    : public BranchingRules::VariableBranching<NodeInfoT> {
+public:
+    FractionalityBranching(
+        const Optimizers::BranchAndBound<NodeInfoT>& parent,
+        std::list<Var> candidates
+    ) : BranchingRules::VariableBranching<NodeInfoT>(parent,
+                                                      std::move(candidates)) {}
+
+    std::list<std::pair<Var, double>> scoring_function(
+        const std::list<Var>& variables,
+        const Node<NodeInfoT>& node
+    ) override {
+        std::list<std::pair<Var, double>> result;
+        for (const auto& var : variables) {
+            const double value = node.info().primal_solution().get(var);
+            result.emplace_back(var, std::abs(value - std::round(value)));
+        }
+        return result;
+    }
+};
+
+template<class NodeInfoT>
+class FractionalityBranchingFactory
+    : public BranchingRuleFactory<NodeInfoT> {
+public:
+    BranchingRule<NodeInfoT>* operator()(
+        const Optimizers::BranchAndBound<NodeInfoT>& parent
+    ) const override {
+        std::list<Var> candidates;
+        for (const auto& var : parent.parent().vars()) {
+            if (parent.parent().get_var_type(var) != Continuous) {
+                candidates.emplace_back(var);
+            }
+        }
+        return new FractionalityBranching<NodeInfoT>(
+            parent,
+            std::move(candidates)
+        );
+    }
+
+    FractionalityBranchingFactory* clone() const override {
+        return new FractionalityBranchingFactory(*this);
+    }
+};
+```
+
+The custom factory is supplied directly to the algorithm.
+
+```cpp
+branch_and_bound.with_branching_rule(
+    FractionalityBranchingFactory<DefaultNodeInfo>()
+);
+```
 
 \page lib_milp_bnb_callbacks Callbacks
 
 \tableofcontents
 
+Callbacks observe the search and may modify it at specific points. Add as many callback factories as needed with
+`BranchAndBound::add_callback`; the algorithm creates and owns the callback strategies when it is attached to a
+model.
+
+The current branch-and-bound implementation emits three events:
+
+- `IncumbentSolution`, after a node solution satisfies the branching rule and before it becomes the incumbent;
+- `InvalidSolution`, after a node relaxation has a promising solution that does not satisfy the branching rule;
+- `PrunedSolution`, when a node is pruned because of infeasibility, an objective limit, or its bound.
+
+`NodeLoaded` is part of the generic `CallbackEvent` enumeration, but the current `BranchAndBound` implementation
+does not emit it. Callback code should therefore not rely on receiving that event from this optimizer.
+
 \section lib_milp_bnb_callbacks_specific Writing a Branch-and-Bound-Specific Callback
 
+A branch-and-bound-specific callback derives from `BranchAndBoundCallback<NodeInfoT>`. Its `operator()` receives
+the event and can inspect `node()`, `original_model()`, the elapsed `time()`, `best_bound()`, `best_obj()`, and
+`node_count()`. During callbacks associated with a solved tree node, `relaxation()` gives read-only access to the
+current node relaxation. The callback may add user or lazy cuts, add a local variable-branching decision, submit a
+candidate node-information object, submit a proven bound, or call `terminate()`.
+
+The callback is paired with a `BranchAndBoundCallbackFactory<NodeInfoT>`, which implements `operator()` and
+`clone()`. The following callback stops after a chosen number of solved nodes.
+
+```cpp
+template<class NodeInfoT>
+class NodeLimitCallback : public BranchAndBoundCallback<NodeInfoT> {
+    unsigned int m_limit;
+public:
+    explicit NodeLimitCallback(unsigned int limit) : m_limit(limit) {}
+
+protected:
+    void operator()(CallbackEvent) override {
+        if (node_count() >= m_limit) {
+            terminate();
+        }
+    }
+};
+
+template<class NodeInfoT>
+class NodeLimitCallbackFactory
+    : public BranchAndBoundCallbackFactory<NodeInfoT> {
+    unsigned int m_limit;
+public:
+    explicit NodeLimitCallbackFactory(unsigned int limit) : m_limit(limit) {}
+
+    BranchAndBoundCallback<NodeInfoT>* operator()() override {
+        return new NodeLimitCallback<NodeInfoT>(m_limit);
+    }
+
+    NodeLimitCallbackFactory* clone() const override {
+        return new NodeLimitCallbackFactory(*this);
+    }
+};
+
+branch_and_bound.add_callback(
+    NodeLimitCallbackFactory<DefaultNodeInfo>(1000)
+);
+```
+
 \section lib_milp_bnb_callbacks_universal Writing a Universal Callback
+
+A universal callback derives from `Callback` and is created by a `CallbackFactory`. It uses the same
+`CallbackEvent` values but does not expose the branch-and-bound-specific `Node<NodeInfoT>` or `relaxation()`.
+Instead, it provides the current `primal_solution()`, the original model, bounds, elapsed time, node count, cut and
+heuristic-solution submission, and termination. This makes the callback usable with any optimizer that implements
+the universal callback interface.
+
+Passing a `CallbackFactory` to `BranchAndBound::add_callback` automatically wraps it in
+`CallbackAsBranchAndBoundCallback<NodeInfoT>`. Built-in factories such as `ReducedCostFixing`, `UserCutCallback`,
+`LazyCutCallback`, and `Heuristics::SimpleRounding` use this interface.
 
 \page lib_milp_bnb_cutting_planes Cutting Planes
 
 \tableofcontents
 
+Cuts are submitted from callbacks as temporary linear constraints. User cuts strengthen a relaxation without
+removing any feasible solution of the original problem; lazy cuts reject solutions that violate constraints omitted
+from the initial formulation. These two roles correspond to `add_user_cut` and `add_lazy_cut` on both callback
+interfaces.
+
 \section lib_milp_bnb_cutting_planes_cut_pool The Cut Pool
+
+User cuts pass through the branch-and-bound `CutPool`. The pool rejects duplicate or nearly parallel cuts, keeps
+accepted cuts available for later nodes, recycles violated cuts before branching, and periodically removes inactive
+cuts from the current relaxation. If recycling adds a violated cut, the node is reoptimized before branching.
+
+Lazy cuts do not currently use this pool. The implementation adds them directly to the first relaxation. This is a
+current capability boundary and differs from the user-cut lifecycle.
 
 \section lib_milp_bnb_cutting_planes_cgl Using the Coin-OR Cut Generation Library (Cgl)
 
+When idol is built with Cgl support, `CglCutCallback<NodeInfoT>` separates standard Cgl cut families at
+`InvalidSolution` events and submits accepted inequalities as user cuts. The callback is added directly to the
+branch-and-bound factory.
+
+```cpp
+branch_and_bound.add_callback(CglCutCallback());
+```
+
+The current callback includes cover, flow-cover, zero-half, mixed-integer-rounding, and residual-capacity
+generators. If idol was not linked with Cgl, initialization of this callback throws an exception.
+
 \section lib_milp_bnb_cutting_planes_user_cuts Adding Your Own User Cuts
 
+A custom callback should separate user cuts at `InvalidSolution`, where the current relaxation point is available.
+After one or more accepted cuts are added, the node is solved again. For example, the following universal callback
+adds the valid inequality \\( x + y \le 1 \\) whenever the current relaxation violates it.
+
+```cpp
+class MyUserCutCallback : public Callback {
+    Var m_x;
+    Var m_y;
+public:
+    MyUserCutCallback(Var x, Var y) : m_x(x), m_y(y) {}
+
+protected:
+    void operator()(CallbackEvent event) override {
+        if (event != InvalidSolution) {
+            return;
+        }
+        const auto point = primal_solution();
+        if (point.get(m_x) + point.get(m_y) > 1 + Tolerance::Feasibility) {
+            add_user_cut(m_x + m_y <= 1);
+        }
+    }
+};
+```
+
+As with every `Callback`, this strategy must be returned by a `CallbackFactory` before being passed to
+`BranchAndBound::add_callback`. For separation expressed as an optimization model, the built-in
+`UserCutCallback` factory performs this wiring and requires a separation optimizer configured through
+`with_separation_optimizer`.
+
 \section lib_milp_bnb_cutting_planes_lazy_cuts Adding Your Own Lazy Cuts
+
+Lazy cuts are normally separated at `IncumbentSolution`. If the callback adds a lazy cut, the candidate is not
+accepted as incumbent and its node is reoptimized. A universal callback can inspect `primal_solution()` and call
+`add_lazy_cut` exactly as in the user-cut example, but with `IncumbentSolution` as its triggering event.
+
+The built-in `LazyCutCallback` expresses separation as an auxiliary optimization model. It is configured with the
+separation model, a `GenerationPattern<Ctr>`, an optional constraint type, and an optimizer through
+`with_separation_optimizer`. Its strategy is triggered only by `IncumbentSolution`.
 
 \page lib_milp_bnb_heuristics Heuristics
 
 \tableofcontents
+
+The callback interface is also the extension point for primal heuristics. A universal `Callback` submits a
+`PrimalPoint` with `submit_heuristic_solution`; a `BranchAndBoundCallback<NodeInfoT>` instead transfers ownership
+of a `NodeInfoT*` whose primal solution has been filled. The optimizer ignores a candidate whose objective value is
+worse than the current incumbent. It then invokes `IncumbentSolution` callbacks for the candidate, rejects it if
+those callbacks add a lazy cut, and otherwise stores it as a new incumbent.
+
+For the default node type, a branch-and-bound-specific callback can submit a point as follows.
+
+```cpp
+auto* candidate = new DefaultNodeInfo();
+candidate->set_primal_solution(std::move(point));
+submit_heuristic_solution(candidate); // ownership is transferred
+```
+
+Submission does not itself construct or repair a feasible point; the callback is responsible for doing so. The
+current public design therefore does not require a separate heuristic base class. Built-in heuristic factories,
+including `Heuristics::SimpleRounding`, `Heuristics::LocalMIP`, and `Heuristics::RENS`, are callbacks and are added
+with `BranchAndBound::add_callback`.
+
+```cpp
+branch_and_bound.add_callback(Heuristics::LocalMIP());
+```
 
 \page lib_milp_bnb_presolve Presolve
 
@@ -481,12 +747,105 @@ Only one round per constraint is applied per presolve pass.
 
 \tableofcontents
 
+The template parameter `NodeTypeT` in `BranchAndBound<NodeTypeT>` is the information stored in every
+`Node<NodeTypeT>`. The default, `DefaultNodeInfo`, stores the node status and termination reason, its primal
+solution, best objective and bound, sum of integrality infeasibilities, and the variable and constraint branching
+decisions needed to reconstruct the node relaxation.
+
+Using a template parameter lets specialized algorithms preserve additional information with every node while
+reusing the branch-and-bound engine. A custom type is most conveniently derived from `DefaultNodeInfo`. It must be
+default-constructible unless a root instance is supplied with `with_root_node_info`; it must provide `clone()`,
+`create_child()`, and the static `create_updator(const Model&, Model&)` function expected by the optimizer. Methods
+used by the chosen branching, selection, logging, and callback components must also remain available. Deriving from
+`DefaultNodeInfo` preserves the interface required by the standard components.
+
+```cpp
+class MyNodeInfo : public DefaultNodeInfo {
+    unsigned int m_tag = 0;
+public:
+    MyNodeInfo() = default;
+
+    MyNodeInfo* clone() const override {
+        return new MyNodeInfo(*this);
+    }
+
+    MyNodeInfo* create_child() const override {
+        auto* result = new MyNodeInfo();
+        result->m_tag = m_tag;
+        return result;
+    }
+
+    static DefaultNodeUpdator<MyNodeInfo>* create_updator(
+        const Model& source,
+        Model& relaxation
+    ) {
+        return new DefaultNodeUpdator<MyNodeInfo>(source, relaxation);
+    }
+};
+```
+
+All node-dependent factories must use the same type.
+
+```cpp
+auto branch_and_bound = BranchAndBound<MyNodeInfo>()
+    .with_node_optimizer(Gurobi::ContinuousRelaxation())
+    .with_node_selection_rule(BestBound())
+    .with_branching_rule(MostInfeasible());
+```
+
+Override `save` when extra data must be extracted from the solved relaxation, and provide a custom
+`NodeUpdator<MyNodeInfo>` when preparing and clearing a node requires more than applying the default branching
+decisions. `NodeWithCGInfo` is a current example: it extends `DefaultNodeInfo` to save active column-generation
+columns while continuing to use `DefaultNodeUpdator`.
+
 \page lib_milp_bnb_options Other Options
 
 \tableofcontents
 
+In addition to the required node optimizer, node-selection rule, and branching rule, the `BranchAndBound` factory
+exposes callbacks, presolvers, root-node information, subtree exploration, and logging. General optimizer
+parameters such as time limits, optimality gaps, tolerances, and whether logs are enabled come from
+`OptimizerFactoryWithDefaultParameters` and use the usual `with_*` methods.
+
 \section lib_milp_bnb_options_solution_pool Solution Pool Size
+
+The runtime optimizer currently stores up to ten incumbents internally and exposes them through the standard model
+solution-pool interface, such as `Model::get_n_solutions` and `Model::set_solution_index`. The value ten is an
+implementation default; the `BranchAndBound` factory currently has no public option for changing it.
 
 \section lib_milp_bnb_options_sub_tree Sub-Trees
 
+`with_subtree_depth(depth)` controls how far each selected child's subtree is explored before its remaining active
+nodes are merged back into the main search. The default depth is zero, meaning that each child root is solved before
+control returns to the main node-selection rule. A depth of one also explores one further branching level, and so
+on.
+
+```cpp
+branch_and_bound.with_subtree_depth(1);
+```
+
+The current factory does not expose a thread-count option; branch-and-bound execution therefore uses its internal
+single-thread default.
+
 \section lib_milp_bnb_options_logs Logging
+
+Logging is enabled or disabled with the general `with_logs` parameter. Unless another logger is selected,
+`BranchAndBound` uses `Logs::BranchAndBound::Info`, which prints the root relaxation and periodic search progress.
+Its default progress interval is five seconds and node-optimizer logs are disabled after the root node.
+
+Use `with_logger` to configure this logger explicitly. `with_frequency_in_seconds` changes the progress interval,
+and `with_node_logs(true)` keeps the node optimizer's logs enabled after the root.
+
+```cpp
+branch_and_bound
+    .with_logs(true)
+    .with_logger(
+        Logs::BranchAndBound::Info()
+            .with_frequency_in_seconds(1)
+            .with_node_logs(false)
+    );
+```
+
+Each of `with_node_optimizer`, `with_branching_rule`, `with_node_selection_rule`, `with_logger`, and
+`with_root_node_info` may be configured only once. In contrast, `add_callback` and `add_presolver` may be called
+repeatedly to compose several callbacks or presolve operations.

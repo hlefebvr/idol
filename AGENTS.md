@@ -12,17 +12,30 @@ Henri Lefebvre is the sole mathematical authority. Mathematical content, algorit
 
 - The most advanced development branch is `dev`.
 - All Codex work must be performed on a branch named `dev-ai`.
-- `dev-ai` must start from the intended current state of `dev`.
 - Never work directly on `dev`.
-- Do not base new work on `main`.
+- Never work on or base new work on `main`.
 
-Before each implementation iteration, verify that the working branch is `dev-ai` and that it is based on the intended `dev` baseline.
+At the start of a normal task, verify only that the working branch is `dev-ai`.
+Assume the current `dev-ai` branch is the intended working baseline unless Henri
+Lefebvre says otherwise. Do not repeatedly compare `dev-ai` with `dev`, and do
+not fetch or synchronize `dev` unless Henri explicitly asks or resolving the
+branch state is genuinely required by the current task. Branch verification
+must not become a repeated workflow step.
+
+## Commits, Pushes, and Pull Requests
+
+Do not create commits, push branches, or open pull requests on your own.
+
+After completing a task, leave the changes in the working tree, report exactly
+what changed, and wait for Henri Lefebvre to decide whether the changes should
+be committed, pushed, amended, or discarded. Only commit, push, or open a pull
+request when Henri explicitly asks for that action.
 
 ## Source-of-Truth Hierarchy
 
 When determining how idol currently behaves, use this authority order:
 
-1. `lib/include/` and `lib/src/` on `dev`
+1. Current public API and implementation under `lib/include/` and `lib/src/`
 2. Tests
 3. `bin/` / `idol_cl`
 4. Current documentation
@@ -70,9 +83,14 @@ If documentation exposes an API inconsistency, report it rather than fixing the 
 
 For documentation tasks, do not modify implementation code under `lib/`, `bin/`, or other source directories unless explicitly authorized.
 
+Do not modify `lib/`, `bin/`, tests, examples, or workflows during a
+documentation task unless Henri Lefebvre explicitly asks. If documentation
+exposes an apparent implementation issue, report it rather than repairing it.
+
 Do not perform opportunistic cleanup, refactoring, formatting, warning fixes, TODO fixes, or unrelated maintenance.
 
-The only existing-code exception that may be made without separate discussion is editing `CMakeLists.txt` when necessary to register newly added files. Documentation work normally should not require this.
+Do not edit `CMakeLists.txt` during documentation work unless Henri Lefebvre
+explicitly authorizes that change.
 
 ## Documentation Baseline
 
@@ -190,10 +208,18 @@ If completing the requested documentation requires a source-code change, stop an
 
 At the end of every implementation iteration, report all work performed.
 
+**THE FINAL REPORT IS NOT OPTIONAL.** A task is not complete until the report
+required by its instructions has been provided. Even when all implementation
+work and file modifications are finished, the task remains incomplete until
+the report has been written. Before ending an iteration, explicitly verify
+that every required report item is present. Failure to provide the mandatory
+report is a task failure.
+
 The report must include:
-- branch and baseline used;
+- current branch;
 - files created;
 - existing files modified;
+- what was done in each file;
 - documentation sections added or completed;
 - source files/tests/examples consulted to validate the documentation;
 - commands or documentation builds run;
@@ -201,6 +227,9 @@ The report must include:
 - warnings, unresolved references, or missing dependencies;
 - ambiguities encountered;
 - anything deliberately not changed because it was outside scope.
+
+Do not require a `dev` baseline commit in every report. Commit hashes are only
+required when the task explicitly involves commits.
 
 Never use silent fixes.
 

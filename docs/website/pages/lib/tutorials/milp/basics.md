@@ -135,11 +135,11 @@ Next is a list of more in-depth pages about basic concepts in `idol`.
 - \subpage lib_milp_basics_advanced_environment
 - \subpage lib_milp_basics_advanced_models
 - \subpage lib_milp_basics_advanced_variables
-- \subpage lib_milp_basics_advanced_expressions (TODO)
-- \subpage lib_milp_basics_advanced_constraints (TODO)
-- \subpage lib_milp_basics_advanced_objectives (TODO)
-- \subpage lib_milp_basics_advanced_optimizers (TODO)
-- \subpage lib_milp_basics_advanced_create_optimizer (TODO)
+- \subpage lib_milp_basics_advanced_expressions
+- \subpage lib_milp_basics_advanced_constraints
+- \subpage lib_milp_basics_advanced_objectives
+- \subpage lib_milp_basics_advanced_optimizers
+- \subpage lib_milp_basics_advanced_create_optimizer
 
 \page lib_milp_basics_advanced_environment The Optimization Environment
 \brief Describes what is an optimization environment and how it is used.
@@ -584,26 +584,596 @@ model.set_var_obj(x[0], 5); // sets the objective coefficient of x_0 to 5
 ```
 
 \page lib_milp_basics_advanced_expressions Expressions
+\brief Describes how mathematical expressions are represented and built in `idol`.
 \tableofcontents
 
-\warning This page is still under construction. Thank you for your understanding.
+Expressions are the building blocks of objective functions, constraints, rows,
+and columns. In ordinary modeling code, they are created naturally by combining
+variables, constants, and the usual arithmetic operators. The header
+`idol/modeling.h` provides the expression types and their operators.
+
+\section lib_milp_basics_advanced_expressions_types Expression Types
+
+`idol` exposes three main expression categories.
+
+| Type | Represents | Main parts |
+|------|------------|------------|
+| `LinExpr<T>` | A linear combination of objects of type `T` | Terms \\( a_i t_i \\) |
+| `AffExpr<T>` | A linear expression plus a constant | `linear()` and `constant()` |
+| `QuadExpr<T>` | Quadratic terms plus an affine expression | Quadratic terms and `affine()` |
+
+For model expressions, the template argument is normally `Var`. Thus,
+`LinExpr<Var>`, `AffExpr<Var>`, and `QuadExpr<Var>` represent linear, affine,
+and quadratic functions of decision variables. `LinExpr` is also used with
+other optimization objects. In particular, `LinExpr<Ctr>` represents a column
+of the linear constraint matrix.
+
+The distinction between linear and affine expressions matters because a
+`LinExpr` has no constant term. For example, \\( 2x-y \\) is linear, while
+\\( 2x-y+3 \\) is affine. Multiplying variables produces a `QuadExpr`.
+
+\section lib_milp_basics_advanced_expressions_create Building Expressions
+
+The most convenient way to create expressions is with overloaded arithmetic
+operators. Suppose that `x`, `y`, and `z` are variables in a model.
+
+```cpp
+LinExpr<Var> linear = 2 * x - 3 * y + z;
+AffExpr<Var> affine = 4 + linear;
+QuadExpr<Var> quadratic = x * x + 2 * x * y + affine;
+```
+
+Addition and subtraction combine compatible expressions. Multiplication by a
+scalar and division by a scalar preserve the expression category. A product of
+two variables, or of a variable and a linear or affine expression, creates a
+quadratic expression.
+
+Expressions are value objects and can be assembled incrementally.
+
+```cpp
+LinExpr<Var> activity;
+activity += 2 * x;
+activity -= y;
+activity += z;
+
+AffExpr<Var> shifted = activity;
+shifted.constant() = 5;
+```
+
+The `linear()` and `constant()` accessors give access to the two parts of an
+affine expression. The affine part of a quadratic expression is available
+through `QuadExpr::affine()`. The quadratic terms themselves are stored in the
+`QuadExpr` base linear expression, indexed by unordered pairs of objects.
+
+\section lib_milp_basics_advanced_expressions_sum Summing Indexed Terms
+
+For indexed models, the `idol_Sum` helper builds an expression by evaluating a
+term over an iterable range. The following example creates
+\\( \sum_{i=0}^{n-1} c_i x_i \\).
+
+```cpp
+const unsigned int n = 4;
+const std::vector<double> cost { 1, 3, 2, 5 };
+const auto x = model.add_vars(Dim<1>(n), 0, Inf, Continuous, 0, "x");
+
+const auto total_cost = idol_Sum(i, Range(n), cost[i] * x[i]);
+model.set_obj_expr(total_cost);
+```
+
+`Range(n)` iterates from zero up to, but not including, `n`. The iterable
+passed to `idol_Sum` must be non-destructive to traverse, and an empty range
+produces a zero expression of the inferred type.
+
+\section lib_milp_basics_advanced_expressions_access Inspecting and Modifying Terms
+
+Linear expressions are sparse containers. They can be iterated over and their
+coefficients can be read or changed with `get` and `set`.
+
+```cpp
+LinExpr<Var> expression = 2 * x + 3 * y;
+
+std::cout << "coefficient of x: " << expression.get(x) << std::endl;
+expression.set(y, -1);
+
+for (const auto& [var, coefficient] : expression) {
+    std::cout << coefficient << " * " << var.name() << std::endl;
+}
+```
+
+Querying a missing term with `get` returns zero. Setting a coefficient to a
+numerically zero value removes that sparse term. The same iteration pattern
+applies to the quadratic part of a `QuadExpr`; each key is a
+`CommutativePair<Var>` with `first` and `second` members.
+
+Expressions are not attached to a model by themselves. When an expression is
+used as an objective, row, column, or quadratic constraint, construct it from
+the optimization objects that belong to the corresponding model.
 
 \page lib_milp_basics_advanced_constraints Constraints
+\brief Describes linear, quadratic, and special ordered set constraints in `idol`.
 \tableofcontents
 
-\warning This page is still under construction. Thank you for your understanding.
+Constraints restrict the feasible solutions of a model. `idol` represents
+linear constraints with `Ctr`, quadratic constraints with `QCtr`, and special
+ordered set constraints with `SOSCtr`. These objects have an identity in the
+optimization environment, while their expressions and other attributes are
+stored as model-specific versions.
+
+\section lib_milp_basics_advanced_constraints_linear Linear Constraints
+
+A linear constraint such as \\( a^\top x \le b \\) is represented in C++ by
+writing `<=`, `>=`, or `==` between affine expressions. The comparison creates
+a lightweight `TempCtr`, which `Model::add_ctr` turns into a `Ctr` associated
+with the model.
+
+```cpp
+Env env;
+Model model(env);
+
+const auto x = model.add_var(0, Inf, Continuous, 0, "x");
+const auto y = model.add_var(0, Inf, Continuous, 0, "y");
+
+const auto capacity = model.add_ctr(2 * x + y <= 10, "capacity");
+const auto balance = model.add_ctr(x - y == 0, "balance");
+const auto demand = model.add_ctr(x + y >= 3, "demand");
+```
+
+Constants may appear on either side. `TempCtr` moves all variable terms to its
+left-hand side and stores a separate right-hand side. The possible `CtrType`
+values are `LessOrEqual`, `GreaterOrEqual`, and `Equal`.
+
+A constraint can instead be created in the environment and added later. As
+with variables, this creates a default version that a model uses when the
+object is added.
+
+```cpp
+Ctr linking(env, x + 2 * y <= 8, "linking");
+model.add(linking);
+```
+
+The expression must reference variables already known to the model.
+
+\subsection lib_milp_basics_advanced_constraints_linear_access Accessing and Modifying Linear Constraints
+
+The row, right-hand side, type, and model index are accessed through the
+model. The matrix coefficient API provides a convenient way to update a
+single term.
+
+```cpp
+const auto row = model.get_ctr_row(capacity);
+const double rhs = model.get_ctr_rhs(capacity);
+const auto type = model.get_ctr_type(capacity);
+
+model.set_mat_coeff(capacity, y, 4);
+model.set_ctr_rhs(capacity, 12);
+model.set_ctr_type(capacity, GreaterOrEqual);
+model.set_ctr_row(capacity, 3 * x + 4 * y);
+```
+
+`Model::ctrs()` iterates over the linear constraints. `Model::has` tests
+membership, `Model::get_ctr_by_index` retrieves a constraint by its current
+model index, and `Model::remove` removes it. Indices may change when objects
+are removed.
+
+After optimization, `Model::get_ctr_dual` and `Model::get_ctr_farkas` expose
+solver results when the attached optimizer and solution status provide them.
+These values are optimizer capabilities; they are not available for every
+model and every solve result.
+
+\section lib_milp_basics_advanced_constraints_quadratic Quadratic Constraints
+
+A quadratic constraint stores a `QuadExpr<Var>` and a `CtrType`. Its expression
+is interpreted relative to zero. For example, the following adds
+\\( x^2 + y \le 10 \\).
+
+```cpp
+const auto quadratic = model.add_qctr(
+    x * x + y - 10,
+    LessOrEqual,
+    "quadratic"
+);
+```
+
+The corresponding model accessors are `Model::qctrs()`,
+`Model::get_qctr_expr`, `Model::get_qctr_type`,
+`Model::get_qctr_index`, and `Model::get_qctr_by_index`. Membership and removal
+use the same `Model::has` and `Model::remove` overloads as other optimization
+objects.
+
+```cpp
+const auto& expression = model.get_qctr_expr(quadratic);
+const auto quadratic_type = model.get_qctr_type(quadratic);
+
+if (model.has(quadratic)) {
+    model.remove(quadratic);
+}
+```
+
+The current `Model` API does not expose setters for the expression or type of
+an existing quadratic constraint. Remove and recreate the constraint when a
+different version is needed. Solver support for quadratic constraints also
+depends on the selected optimizer.
+
+\section lib_milp_basics_advanced_constraints_sos SOS Constraints
+
+An SOS constraint contains variables \\( x_j \\) with associated weights and is
+either SOS1 or SOS2. In an SOS1 constraint, at most one \\( x_j \\) may be
+nonzero; in an SOS2 constraint, at most two adjacent variables in weight order
+may be nonzero.
+The model-level constructor takes a Boolean whose value is `true` for SOS1 and
+`false` for SOS2.
+
+```cpp
+const auto lambda = model.add_vars(
+    Dim<1>(3), 0, 1, Continuous, 0, "lambda"
+);
+
+const auto sos1 = model.add_sosctr(
+    true,
+    { lambda[0], lambda[1], lambda[2] },
+    { 1, 2, 3 },
+    "choose_one"
+);
+```
+
+An SOS constraint must contain at least two variables, all variables must
+already belong to the model, and the variable and weight vectors must have
+the same length. The methods `Model::is_sos1`, `Model::get_sosctr_vars`, and
+`Model::get_sosctr_weights` access its model-specific data. SOS constraints
+can be iterated with `Model::sosctrs()` and removed with `Model::remove`.
+Support for SOS constraints is optimizer-specific.
 
 \page lib_milp_basics_advanced_objectives The Objective Function
+\brief Describes how to define, inspect, and modify a model's objective function.
 \tableofcontents
 
-\warning This page is still under construction. Thank you for your understanding.
+The objective function tells an optimizer which quantity to minimize or
+maximize. In `idol`, the objective expression is stored as a
+`QuadExpr<Var>`, so the same interface accepts linear, affine, and quadratic
+objectives. A new `Model` has the zero objective and uses the `Minimize` sense.
+
+\section lib_milp_basics_advanced_objectives_set Setting the Objective
+
+Use `Model::set_obj_expr` to replace the complete objective expression. The
+following example sets the affine objective \\( 2x+3y+5 \\).
+
+```cpp
+Env env;
+Model model(env);
+
+const auto x = model.add_var(0, Inf, Continuous, 0, "x");
+const auto y = model.add_var(0, Inf, Continuous, 0, "y");
+
+model.set_obj_expr(2 * x + 3 * y + 5);
+```
+
+Build the expression from variables that already belong to the model. Calling
+`set_obj_expr` replaces the old linear, quadratic, and constant terms; it does
+not add to the existing objective.
+
+A quadratic objective, such as
+\\( x^2+2xy+y^2-4x \\), is set through the same method.
+
+```cpp
+model.set_obj_expr(x * x + 2 * x * y + y * y - 4 * x);
+```
+
+Whether a particular objective can be solved depends on the attached
+optimizer. The model can represent a quadratic objective even when a selected
+solver does not support it.
+
+\section lib_milp_basics_advanced_objectives_sense Objective Sense
+
+The `ObjectiveSense` values are `Minimize` and `Maximize`. Change the sense
+with `Model::set_obj_sense` and query it with `Model::get_obj_sense`.
+
+```cpp
+model.set_obj_sense(Maximize);
+
+if (model.get_obj_sense() == Maximize) {
+    std::cout << "The model is a maximization problem." << std::endl;
+}
+```
+
+The sense is independent of the sign of the expression. Changing it updates
+an attached optimizer through its objective-sense update mechanism.
+
+\section lib_milp_basics_advanced_objectives_access Accessing and Modifying the Objective
+
+`Model::get_obj_expr` returns the complete quadratic expression. Its
+`affine()` accessor gives the affine part, from which the linear terms and
+constant can be inspected.
+
+```cpp
+const auto& objective = model.get_obj_expr();
+const double constant = objective.affine().constant();
+const double coefficient = model.get_var_obj(x);
+
+std::cout << "constant: " << constant << std::endl;
+std::cout << "coefficient of x: " << coefficient << std::endl;
+```
+
+For a focused update, `Model::set_var_obj` changes one coefficient in the
+linear part and `Model::set_obj_const` changes the constant term.
+
+```cpp
+model.set_var_obj(x, -2);
+model.set_obj_const(10);
+```
+
+These methods preserve the other objective terms. To modify quadratic terms,
+construct a new expression and pass it to `Model::set_obj_expr`.
+
+After a solve, `Model::get_best_obj` returns the objective value of the best
+known feasible solution and `Model::get_best_bound` returns the optimizer's
+best bound. Query the solution status first, because the availability and
+meaning of result values depend on the solve outcome and optimizer.
 
 \page lib_milp_basics_advanced_optimizers Optimizers and Optimizer Factories
+\brief Explains how optimizer factories configure and create model-bound optimizers.
 \tableofcontents
 
-\warning This page is still under construction. Thank you for your understanding.
+Formulating a `Model` and solving it are separate operations in `idol`. A model
+contains variables, constraints, and an objective, but it can only be solved
+after an optimizer has been attached.
+
+Two related classes implement this separation.
+
+- An `OptimizerFactory` is a reusable configuration object. It stores the
+  choices needed to construct an optimizer, including common parameters and,
+  for algorithmic factories, subordinate strategies or optimizers.
+- An `Optimizer` is the runtime object bound to one `Model`. It synchronizes
+  the model with a solver or algorithm, performs optimization, and owns the
+  resulting status and solution interface.
+
+Users normally configure factories and let `Model` create and own optimizers.
+
+\section lib_milp_basics_advanced_optimizers_lifecycle Normal Lifecycle
+
+The usual sequence is to create a model, configure a factory, pass the factory
+to `Model::use`, and then optimize.
+
+```cpp
+#include "idol/modeling.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+
+using namespace idol;
+
+Env env;
+Model model(env);
+const auto x = model.add_var(0, Inf, Continuous, -1, "x");
+model.add_ctr(x <= 4);
+
+auto highs = HiGHS();
+highs.with_time_limit(60).with_logs(true);
+
+model.use(highs);
+model.optimize();
+```
+
+`Model::use` asks the factory to create an optimizer for the model, builds that
+optimizer, stores it, and clones the factory into the model. Consequently, the
+local `highs` variable does not need to outlive the model. Calling
+`Model::optimize` first synchronizes pending updates and then invokes the
+optimizer's solve routine.
+
+Calling `optimize` without an attached optimizer throws an exception.
+`Model::has_optimizer` tests whether one is attached, and `Model::unuse`
+removes both the optimizer and the stored factory. Calling `use` again replaces
+the currently attached optimizer.
+
+\section lib_milp_basics_advanced_optimizers_parameters Configuring Factories
+
+Factories derived from `OptimizerFactoryWithDefaultParameters` provide common
+`with_*` methods. For example:
+
+```cpp
+auto optimizer = HiGHS()
+    .with_time_limit(300)
+    .with_thread_limit(4)
+    .with_tol_mip_relative_gap(1e-4)
+    .with_presolve(true)
+    .with_logs(true);
+
+model.use(optimizer);
+```
+
+Values explicitly set on the factory take precedence over the corresponding
+defaults stored in the model's `Env`. A particular optimizer may reject or
+ignore capabilities that its underlying solver does not provide; consult that
+optimizer's interface for solver-specific options.
+
+\section lib_milp_basics_advanced_optimizers_results Querying Results
+
+The model forwards the common result interface to its attached optimizer.
+
+```cpp
+model.optimize();
+
+const auto status = model.get_status();
+std::cout << "Status: " << status << std::endl;
+std::cout << "Reason: " << model.get_reason() << std::endl;
+
+if (status == Optimal || status == Feasible || status == SubOptimal) {
+    std::cout << "Objective: " << model.get_best_obj() << std::endl;
+    std::cout << "x = " << model.get_var_primal(x) << std::endl;
+}
+```
+
+Other common queries include `Model::get_best_bound`, solution-pool access
+through `Model::get_n_solutions` and `Model::set_solution_index`, reduced
+costs, rays, dual values, and Farkas certificates. Their availability depends
+on the status and on the concrete optimizer.
+
+\section lib_milp_basics_advanced_optimizers_access Accessing the Runtime Optimizer
+
+Advanced code can obtain the model-owned runtime object through
+`Model::optimizer`. The returned type is `Optimizer&`. Use `Optimizer::is<T>`
+to test its concrete type and `Optimizer::as<T>` to obtain a checked reference.
+
+```cpp
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"
+
+if (model.optimizer().is<Optimizers::HiGHS>()) {
+    const auto& highs = model.optimizer().as<Optimizers::HiGHS>();
+    std::cout << "Optimizer: " << highs.name() << std::endl;
+}
+```
+
+The runtime type is `Optimizers::HiGHS`, whereas the factory type is `HiGHS`.
+Trying to cast to the factory type, or to any other incorrect runtime type,
+throws an exception. Prefer the `Model` result methods unless an
+optimizer-specific feature is actually needed.
+
+\section lib_milp_basics_advanced_optimizers_composition Composing Algorithms
+
+Many algorithmic factories accept other optimizer factories for subproblems.
+This makes solver choice part of configuration rather than hard-coding it in
+the algorithm. For example, the current branch-and-bound factory accepts a
+node optimizer together with branching and node-selection rules.
+
+```cpp
+auto branch_and_bound = BranchAndBound<DefaultNodeInfo>()
+    .with_node_optimizer(HiGHS::ContinuousRelaxation())
+    .with_branching_rule(MostInfeasible())
+    .with_node_selection_rule(BestBound())
+    .with_time_limit(300);
+
+model.use(branch_and_bound);
+```
+
+Each component remains a factory or strategy object until the owning
+algorithm creates the runtime objects it needs. Composition is specific to
+the public configuration methods of each algorithm; it does not imply that
+arbitrary factories can be combined through a universal interface.
 
 \page lib_milp_basics_advanced_create_optimizer Creating Your Own Optimizer
+\brief Introduces the existing extension points for implementing an optimizer.
 \tableofcontents
 
-\warning This page is still under construction. Thank you for your understanding.
+Implementing a new optimizer requires two cooperating classes: a public
+factory derived from `OptimizerFactory`, and a model-bound runtime class
+derived from `Optimizer` or one of its helper classes. The factory captures
+configuration. The runtime class implements the solver or algorithm and reads
+the model through `Optimizer::parent()`.
+
+This page describes the existing architecture. It is not a complete solver
+wrapper implementation; the details of translating objects and retrieving
+solutions necessarily depend on the external solver or algorithm.
+
+\section lib_milp_basics_advanced_create_optimizer_factory The Factory
+
+A factory has two essential protected/public operations.
+
+- `create(const Model&) const` allocates and returns a new runtime
+  `Optimizer` bound to the supplied model.
+- `clone() const` returns an independent copy of the factory. `Model::use`
+  stores this copy after creating the runtime optimizer.
+
+Most factories derive from `OptimizerFactoryWithDefaultParameters<Factory>`
+instead of directly from `OptimizerFactory`. The CRTP helper provides the
+standard fluent methods such as `with_time_limit`, `with_logs`, and tolerance
+configuration. A custom factory can add its own `with_*` methods and retain
+their values until `create` is called.
+
+The current `HiGHS` factory is a compact representative pattern: it stores the
+continuous-relaxation option, creates an `Optimizers::HiGHS` with the model and
+that option, and implements `clone` by copying itself. The base
+`OptimizerFactory::operator()` then applies factory values or environment
+defaults to the newly created optimizer.
+
+Factory configuration objects should own or clone any subordinate factories
+needed by an algorithm. Do not store references to temporary configuration
+objects whose lifetimes end before `create` uses them.
+
+\section lib_milp_basics_advanced_create_optimizer_runtime The Runtime Optimizer
+
+Every runtime optimizer is constructed with `const Model&` and passes it to
+the `Optimizer` constructor. `Optimizer::parent()` then provides the
+model-specific rows, columns, bounds, objective, and object indices.
+
+The abstract `Optimizer` interface groups the responsibilities of a concrete
+implementation as follows.
+
+| Responsibility | Core virtual methods |
+|----------------|----------------------|
+| Initial construction | `build()` |
+| Solve lifecycle | `hook_optimize()`; optionally `hook_before_optimize()` and `hook_after_optimize()` |
+| Object changes | `add(...)`, `remove(...)`, and `update()` |
+| Attribute changes | `update_obj_sense`, `update_obj`, `update_rhs`, `update_obj_constant`, matrix/constraint/variable update methods |
+| Common results | `get_status`, `get_reason`, `get_best_obj`, `get_best_bound`, primal/dual/ray/Farkas and gap methods |
+| Solution pools | `get_n_solutions`, `get_solution_index`, and `set_solution_index` |
+| Utilities | `name()` and `write(...)` |
+
+The overloads for adding and removing `Var`, `Ctr`, and `QCtr` are mandatory.
+The base implementation of SOS add/remove throws an unsupported-feature
+exception, so an optimizer only overrides those operations when it supports
+SOS constraints. Likewise, a valid implementation may throw a clear
+exception from a result method or update path that it does not support; it
+must not return invented data.
+
+`Optimizer::optimize()` itself is managed by the base class. It calls
+`update()`, starts the timer, invokes the before/solve/after hooks, and stops
+the timer. Concrete implementations put the actual solve in
+`hook_optimize()` rather than replacing that lifecycle.
+
+\section lib_milp_basics_advanced_create_optimizer_patterns Implementation Patterns
+
+There are two common patterns in the current codebase.
+
+**Solver wrappers.** A wrapper such as `Optimizers::HiGHS` derives from
+`OptimizerWithLazyUpdates`. It maps idol objects to solver-side handles,
+translates pending additions and changes in `hook_add` and `hook_update`, calls
+the external solver in `hook_optimize`, and translates solver statuses and
+solutions back to idol's common interface.
+
+**Algorithmic optimizers.** A native algorithm may derive from `Optimizer`
+directly or use `Algorithm`, which already stores the common status, reason,
+best objective, and best bound and implements the gap calculations. Such an
+optimizer may construct internal models and attach subordinate optimizer
+factories to solve them. It still must define how changes to its parent model
+affect internal state.
+
+Choose the pattern that matches the implementation. A solver wrapper needs
+incremental synchronization and solver-handle mappings; an algorithm that
+rebuilds an internal formulation may instead invalidate that formulation when
+the parent changes.
+
+\section lib_milp_basics_advanced_create_optimizer_lazy Lazy Update Support
+
+`OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>` is a
+helper for wrappers that want to defer synchronization until `update`,
+`optimize`, or `write` requires it. The template arguments are the solver-side
+handle types associated with idol variables and constraints.
+
+Derived classes implement hooks such as `hook_build`, `hook_add`,
+`hook_update`, `hook_remove`, `hook_update_objective`,
+`hook_update_objective_sense`, `hook_update_rhs`, and `hook_update_matrix`.
+The helper tracks pending objects and exposes `operator[]` for accessing the
+stored variable and linear-constraint handles.
+
+The current helper has explicit capability boundaries: updating an existing
+quadratic or SOS constraint is not supported by its lazy-update path and
+throws an exception. A new optimizer should document its own supported object
+types and update operations rather than implying that the base interface
+guarantees solver support.
+
+\section lib_milp_basics_advanced_create_optimizer_checklist Practical Checklist
+
+Before exposing a new optimizer factory, verify that the implementation:
+
+1. creates and clones the factory without lifetime leaks;
+2. binds each runtime optimizer to exactly one parent model;
+3. translates every supported model object and objective sense correctly;
+4. handles additions, removals, and attribute changes consistently;
+5. reports unsupported quadratic or SOS features explicitly;
+6. maps statuses, reasons, bounds, solutions, rays, and certificates without
+   manufacturing unavailable values;
+7. applies common parameters and tolerances supported by the backend;
+8. includes tests for initial construction, re-optimization after updates,
+   result access, and unsupported operations.
+
+Representative implementations to study are the `HiGHS` factory and
+`Optimizers::HiGHS` runtime wrapper for solver integration, and
+`LambdaOptimizer` with `Optimizers::LambdaOptimizer` for a small algorithmic
+optimizer using the `Algorithm` base class.
