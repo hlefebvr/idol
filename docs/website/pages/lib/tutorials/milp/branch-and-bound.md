@@ -27,6 +27,11 @@ Then, at least three ingredients need to be provided in order to set up the algo
 > Clearly, the `BranchAndBound` class can be used to create any sort of branch-and-bound algorithm. To streamline the discussion, however, we will focus on 
 > a branch-and-bound algorithm for solving an MILP, based on the LP relaxation. 
 
+Throughout this tutorial, bounds and objective values are described using the minimization convention implemented
+by the current branch-and-bound optimizer. Thus, a node relaxation provides a lower bound, a smaller node bound is
+better for node selection, and an incumbent provides an upper bound on the optimal objective value. Changing the
+objective sense after attaching this optimizer is not currently implemented.
+
 To start with, we give a minimal example for constructing such a branch-and-bound method. 
 Assume to have an object called `model` of the class `Model`, storing your MILP. 
 Here is how to define a branch-and-bound method to solve it.
@@ -88,7 +93,8 @@ Here is a quick sumary.
 
 \section lib_milp_bnb_node_selection_BestBound Best Bound
 
-The best bound strategy selects the node with the best (i.e., the lowest) bound among all active nodes.
+Under the minimization convention stated above, the best bound strategy selects the active node with the smallest
+relaxation bound.
 
 Here is how to use it.
 
@@ -98,32 +104,32 @@ branch_and_bound.with_node_selection_rule(BestBound());
 
 \section lib_milp_bnb_node_selection_BestEstimate Best Estimate
 
-The best estimate strategy selects the node that is expected to lead to the best final solution by combining objective value and degree of infeasibility.
+The best estimate strategy combines the node relaxation value with its degree of integrality infeasibility.
 
 To do so, a score is computed for each node and the one with the lowest score is selected.
 The score is computed as follows.
 
 \f[
-    \begin{equation}
-        \text{score} = \text{objective\_value} + \frac{
-            (\text{root\_node\_objective} - \text{incumbent\_objective}) \times \text{sum\_of\_infeasibilities}
-        }{
-            \text{root\_node\_sum\_of\_infeasibilities}
-        }
-    \end{equation}
+    s_v = z_v + (z_0 - \bar z)\frac{I_v}{I_0}.
 \f]
 
-where 
+Here, \f$z_v\f$ and \f$I_v\f$ are respectively the relaxation objective value and the sum of integrality
+infeasibilities at node \f$v\f$; \f$z_0\f$ and \f$I_0\f$ are their values at the root node; and \f$\bar z\f$ is the
+objective value of the current incumbent. The implementation selects an active node minimizing \f$s_v\f$. Under
+minimization, a smaller \f$z_v\f$ lowers the score. Since normally \f$z_0 \le \bar z\f$, the coefficient
+\f$z_0-\bar z\f$ is non-positive, so the formula as implemented lowers the score when \f$I_v\f$ increases.
 
-- objective_value is the objective value at the current node;
-- sum_of_infeasibilities is the sum of violation of integralities constraints at the node;
-- incumbent_objective is the objective value of the best known feasible point so far;
-- root_onode_bjective and root_node_sum_of_infeasibilities are the values stored at the root node of "objective_value" and "sum_of_infeasibilities".
-
-Intuitively, this balances two factors: nodes with high objective values are promising, but nodes that are less infeasible (closer to satisfying integrality constraints) are more likely to lead to feasible solutions. 
+\warning The score formula above matches the current implementation exactly. Its sign means that, once an
+incumbent exists, a larger sum of infeasibilities can make a node more likely to be selected. Whether that sign is
+the intended Best Projection convention requires confirmation from Henri Lefebvre.
 
 > If there is no incumbent solution yet, the strategy defaults to the node with the best objective value. 
 > Thus, it acts like the best bound approach.
+
+\warning The current `BestEstimate` implementation calls `objective_value()` on the node-information type, but
+`DefaultNodeInfo` exposes this value as `best_obj()`. Consequently, the example below does not currently compile
+when `BestEstimate` is instantiated with the default node type. This is an implementation/API inconsistency rather
+than an alternative score definition.
 
 Here is how to use it.
 
@@ -261,37 +267,52 @@ branch_and_bound.with_branching_rule(MostInfeasibleFound());
 
 \section lib_milp_bnb_branching_rule_PseudoCost Pseudo Cost Branching
 
-The pseudo cost strategy selects the variable with the highest estimated impact on the objective value, based on past branching decisions.
-To do so, for each branching candidate \\( x_j \\), two scores are first computed:
+The pseudo-cost strategy estimates, from earlier branching observations, how much each candidate variable may
+increase the relaxation bound. For a candidate \f$x_j\f$ having value \f$x_j^*\f$ at the current node, the
+implementation computes a separate score for each branching direction:
 
-- an upper bounding score (for the branch \\( x_j \le \lfloor x_j^* \rfloor \\))
+- the score of the upper-bound branch \f$x_j \le \lfloor x_j^* \rfloor\f$,
 \f[
-    \text{score}^+_j = (x_j^* - \lfloor x_j^* \rfloor) \cdot \frac{ \sum_{k} \Delta\text{obj}_{kj}^+ }{ n_j }
+    s_j^{\mathrm{ub}}
+    = (x_j^* - \lfloor x_j^* \rfloor)
+      \frac{\sum_{k \in K_j^{\mathrm{ub}}} \Delta z_{kj}^{\mathrm{ub}}}
+           {n_j^{\mathrm{ub}}},
 \f]
-- a lower bounding score (for the branch \\( x_j \ge \lceil x_j^* \rceil \\))
+- the score of the lower-bound branch \f$x_j \ge \lceil x_j^* \rceil\f$,
 \f[
-    \text{score}^-_j = (\lceil x_j^* \rceil - x_j^*) \cdot \frac{ \sum_{k} \Delta\text{obj}_{kj}^- }{ n_j }
+    s_j^{\mathrm{lb}}
+    = (\lceil x_j^* \rceil - x_j^*)
+      \frac{\sum_{k \in K_j^{\mathrm{lb}}} \Delta z_{kj}^{\mathrm{lb}}}
+           {n_j^{\mathrm{lb}}}.
 \f]
 
-Here, 
-- \\( x^* \\) denotes the current node solution,
-- \\( n_j \\) denote the number of times \\( x_j \\) has previously been selected for branching, 
-- \\( \Delta\text{obj}_{kj}^+ \\) (resp., \\( \Delta\text{obj}_{kj}^- \\)) denotes the objective change that occurred at node \\( k \\) after having branched on 
-\\( x_j \\) in the left (resp., right) child node w.r.t. the parent node.
+Here, \f$K_j^{\mathrm{ub}}\f$ and \f$K_j^{\mathrm{lb}}\f$ index the previous observations for the two directions;
+\f$n_j^{\mathrm{ub}} = |K_j^{\mathrm{ub}}|\f$ and
+\f$n_j^{\mathrm{lb}} = |K_j^{\mathrm{lb}}|\f$ are their separate sample counts; and
+\f$\Delta z_{kj}^{\mathrm{ub}}\f$ and \f$\Delta z_{kj}^{\mathrm{lb}}\f$ are the observed relaxation-bound
+increases per unit change in \f$x_j\f$. If a direction has no observation yet, the implementation substitutes the
+average available directional score over the other candidates, or zero if no such observation exists.
 
 Then, the two scores are combined using one of the two following formulas:
 
-- a linear one using (with default value \\( \alpha = 1/16 \\))
+- a linear score with default parameter \f$\alpha = 1/16\f$,
 \f[
-    \text{score}_j = (1 - \alpha) \times \min\{ \text{score}^+_j, \text{score}^-_j \} + \alpha\times \max\{ \text{score}^+_j, \text{score}^-_j \}.
+    s_j = (1 - \alpha)\min\{s_j^{\mathrm{ub}},s_j^{\mathrm{lb}}\}
+          + \alpha\max\{s_j^{\mathrm{ub}},s_j^{\mathrm{lb}}\}.
 \f]
-  This slightly favors the larger score while keeping a base weight on the smaller one.
-  It is the default setting.
-- a quadratic one using (with default value \\( \varepsilon = 10^{-5} \\))
+  This is the score used by `PseudoCost`.
+- a product score with default parameter \f$\varepsilon = 10^{-5}\f$,
 \f[
-  \text{score}_j = \min\{ \varepsilon, \text{score}^+_j \} \times \min\{ \varepsilon, \text{score}^-_j \}
+    s_j = \min\{\varepsilon,s_j^{\mathrm{ub}}\}
+          \min\{\varepsilon,s_j^{\mathrm{lb}}\}.
 \f]
-  This method heavily penalizes variables where one score is very small, favoring variables that are strong in both directions.
+  The implementation caps each directional score at \f$\varepsilon\f$ before multiplication. In particular, if both
+  directional scores are at least \f$\varepsilon\f$, the combined score is \f$\varepsilon^2\f$; larger directional
+  scores do not increase it further.
+
+\warning The product formula above deliberately documents the current use of `min`. Whether the intended score
+should instead use `max`—as in the more usual floor-at-\f$\varepsilon\f$ product—requires confirmation from Henri
+Lefebvre; the implementation has not been changed.
 
 The branching candidate with the highest score is selected for branching.
 
@@ -302,31 +323,31 @@ branch_and_bound.with_branching_rule(PseudoCost());
 ```
 
 The current `PseudoCost` factory does not expose a method for changing this combination: it always uses
-`NodeScoreFunctions::Linear()` and therefore its default parameter \\( \alpha = 1/16 \\). The public score-function
+`NodeScoreFunctions::Linear()` and therefore its default parameter \f$ \alpha = 1/16 \f$. The public score-function
 configuration described below is currently available for `StrongBranching`, not for `PseudoCost`.
 
 \section lib_milp_bnb_branching_rule_StrongBranching Strong Branching
 
-Strong branching is a sophisticated variable selection strategy that estimates 
-the impact of branching by temporarily solving child nodes before making the final branching decision.
+Strong branching estimates the effect of branching by performing temporary trial solves before selecting a
+variable. For each candidate \f$x_j\f$, the implementation constructs two temporary node-information objects and
+solves the relaxations corresponding to the two candidate branches. These trials are not inserted into the active
+branch-and-bound tree and are distinct from the actual children created after the variable is selected.
 
-More specifically, for each branching candidate, strong branching requires to solves, before branching happens,
-the left and right child node. Thus, two scores are computed: 
+Let \f$z_v\f$ be the relaxation bound of the current parent node \f$v\f$. If
+\f$z_j^{\mathrm{ub}}\f$ and \f$z_j^{\mathrm{lb}}\f$ are the bounds obtained by the upper-bound and lower-bound trial
+solves, respectively, the directional gains are
 
-- an upper bounding score (for the branch \\( x_j \le \lfloor x_j^* \rfloor \\))
-  \f[
-  \text{score}^+_j = \text{objective\_value}^+ - \text{parent\_objective\_value}
-  \f]
-- a lower bounding score (for the branch \\( x_j \ge \lceil x_j^* \rceil \\))
-  \f[
-  \text{score}^-_j = \text{objective\_value}^- - \text{parent\_objective\_value}
-  \f]
+\f[
+    g_j^{\mathrm{ub}} = z_j^{\mathrm{ub}} - z_v
+\f]
+and
+\f[
+    g_j^{\mathrm{lb}} = z_j^{\mathrm{lb}} - z_v.
+\f]
 
-Here,
-- \\( \text{parent\\_objective\\_value} \\) denotes the optimal objective function value of the parent node,
-- \\( \text{objective\\_value}^+ \\) (resp., \\( \text{objective\\_value}^- \\)) denotes the objective value of the left (resp., right) node.
-
-Then, the two scores are combined using one of the two formulas that are detailed in the pseudo cost section.
+The upper-bound trial imposes \f$x_j \le \lfloor x_j^*\rfloor\f$, while the lower-bound trial imposes
+\f$x_j \ge \lceil x_j^*\rceil\f$. The two gains are combined by the configured `NodeScoreFunction`, using the
+linear or product formula described above.
 
 The branching candidate with the highest score is selected for branching.
 
@@ -334,8 +355,9 @@ Several variants of strong branching exists, and are detailed next along with th
 
 \subsection lib_milp_bnb_branching_rule_StrongBranching_full Full Strong Branching
 
-Full strong branching denotes the standard strong branching rule which solves twice as many nodes as there are branching candidates at each node selected for branching. 
-Thus, a clear drawback is that it may take a lot of time to solve all these sub-problems.
+Full strong branching performs two trial relaxation solves for every branching candidate at each branching
+decision. These extra solves can be computationally expensive, even though their temporary nodes are not inserted
+into the search tree.
 
 Here is how to use it.
 
@@ -346,17 +368,17 @@ branch_and_bound.with_branching_rule(StrongBranching());
 \subsection lib_milp_bnb_branching_rule_StrongBranching_restricted Restricted Strong Branching
 
 Restricted strong branching is an attempt to reduce the computational burden of full strong branching. 
-The idea is to consider only a maximum of \\(K\\) branching candidates at each branching decision instead of the whole set of branching candidates.
-At each node, we therefore build a "restricted branching candidate set" obtained by taking the \\( K \\) first variables selected by
-another branching rule. Then, strong branching is applied on these \\( K \\) variables. 
+The idea is to consider only a maximum of \f$K\f$ branching candidates at each branching decision instead of the whole set of branching candidates.
+At each node, we therefore build a "restricted branching candidate set" obtained by taking the \f$ K \f$ first variables selected by
+another branching rule. Then, strong branching is applied on these \f$ K \f$ variables.
 
-Here is how to use it, here with \\( K = 10 \\).
+Here is how to use it, here with \f$ K = 10 \f$.
 
 ```cpp
 branch_and_bound.with_branching_rule(StrongBranching().with_max_n_variables(10));
 ```
 
-By default, the branching rule used to select the \\( K \\) candidates is the most infeasible branching rule.
+By default, the branching rule used to select the \f$ K \f$ candidates is the most infeasible branching rule.
 
 \subsection lib_milp_bnb_branching_rule_StrongBranching_phases Strong Branching with Phases
 
@@ -365,7 +387,7 @@ on the level of the current node in the branch-and-bound tree. Additionally, it 
 by, e.g., imposing a maximum number of iterations for the underlying optimizer.
 
 Here is an example of strong branching with phases which, for nodes whose level is below or equal to 3, applies full
-strong branching, then switches to restricted strong branching with \\( K = 30 \\) and solves nodes with an iteration
+strong branching, then switches to restricted strong branching with \f$ K = 30 \f$ and solves nodes with an iteration
 limit of 20. 
 
 ```cpp
@@ -385,7 +407,7 @@ Here, however, we make sure that the second phase is always triggered.
 
 Strong branchign with look ahead is similar to restricted strong branching yet differs from it by not specifying a
 fixed size for the "restricted branching candidate set". Instead, it considers a look ahead parameter, noted
-\\( L \\), and applies the full strong branching rule until the branching candidate does not change after \\( L \\)
+\f$ L \f$, and applies the full strong branching rule until the branching candidate does not change after \f$ L \f$
 iterations. Then, the algorithm stops and the current branching candidate is returned.
 
 Unfortunately, this approach is not yet implemented in `idol`.
@@ -393,10 +415,14 @@ Unfortunately, this approach is not yet implemented in `idol`.
 \subsection lib_milp_bnb_branching_rule_scoring Changing the Scoring Function
 
 The strong-branching score combiner is selected with `with_node_scoring_function`. The available implementations
-are `NodeScoreFunctions::Linear`, whose constructor optionally receives \\( \alpha \\) and defaults to
-\\( \alpha = 1/16 \\), and `NodeScoreFunctions::Product`, whose constructor optionally receives
-\\( \varepsilon \\) and defaults to \\( \varepsilon = 10^{-5} \\). Strong branching uses `Product` by default.
-For instance, the following selects the linear combiner with \\( \alpha = 0.1 \\).
+are `NodeScoreFunctions::Linear`, whose constructor optionally receives \f$ \alpha \f$ and defaults to
+\f$ \alpha = 1/16 \f$, and `NodeScoreFunctions::Product`, whose constructor optionally receives
+\f$ \varepsilon \f$ and defaults to \f$ \varepsilon = 10^{-5} \f$. Strong branching uses `Product` by default.
+For instance, the following selects the linear combiner with \f$ \alpha = 0.1 \f$.
+
+\warning The current strong-branching implementation calls `objective_value()` and `has_objective_value()` directly
+on the node-information type, while `DefaultNodeInfo` exposes these operations through `primal_solution()`. Thus,
+instantiating the strong-branching scoring path with `DefaultNodeInfo` currently produces an API mismatch.
 
 ```cpp
 auto strong_branching = StrongBranching();
@@ -441,10 +467,10 @@ the original problem in `is_valid` and, for an invalid node, allocate the inform
 hooks `initialize`, `on_node_solved`, and `on_nodes_have_been_created` support strategies that maintain state.
 
 Most MILP rules can reuse `BranchingRules::VariableBranching<NodeInfoT>`. That class already checks integrality,
-creates the two children imposing \\( x_j \ge \lceil x_j^* \rceil \\) and
-\\( x_j \le \lfloor x_j^* \rfloor \\), and selects the variable having the largest score. A derived strategy only
+creates the two children imposing \f$ x_j \ge \lceil x_j^* \rceil \f$ and
+\f$ x_j \le \lfloor x_j^* \rfloor \f$, and selects the variable having the largest score. A derived strategy only
 needs to implement `scoring_function`. Its corresponding factory derives from `BranchingRuleFactory<NodeInfoT>`.
-The following minimal rule scores a fractional variable \\( x_j \\) by its distance to the nearest integer.
+The following minimal rule scores a fractional variable \f$ x_j \f$ by its distance to the nearest integer.
 
 ```cpp
 template<class NodeInfoT>
@@ -511,11 +537,14 @@ Callbacks observe the search and may modify it at specific points. Add as many c
 `BranchAndBound::add_callback`; the algorithm creates and owns the callback strategies when it is attached to a
 model.
 
-The current branch-and-bound implementation emits three events:
+The current branch-and-bound implementation emits three events after solving and analyzing a node relaxation:
 
-- `IncumbentSolution`, after a node solution satisfies the branching rule and before it becomes the incumbent;
-- `InvalidSolution`, after a node relaxation has a promising solution that does not satisfy the branching rule;
-- `PrunedSolution`, when a node is pruned because of infeasibility, an objective limit, or its bound.
+- `IncumbentSolution`, after the relaxation point satisfies the branching rule and improves the incumbent bound,
+  but before idol accepts it as the new incumbent;
+- `InvalidSolution`, after a promising relaxation point fails the branching rule, and before cuts are recycled or
+  children are created;
+- `PrunedSolution`, after idol determines that the node will not be branched because it is infeasible, reached an
+  objective limit, or cannot improve the incumbent.
 
 `NodeLoaded` is part of the generic `CallbackEvent` enumeration, but the current `BranchAndBound` implementation
 does not emit it. Callback code should therefore not rely on receiving that event from this optimizer.
@@ -540,8 +569,8 @@ public:
 
 protected:
     void operator()(CallbackEvent) override {
-        if (node_count() >= m_limit) {
-            terminate();
+        if (this->node_count() >= m_limit) {
+            this->terminate();
         }
     }
 };
@@ -583,16 +612,19 @@ Passing a `CallbackFactory` to `BranchAndBound::add_callback` automatically wrap
 
 \tableofcontents
 
-Cuts are submitted from callbacks as temporary linear constraints. User cuts strengthen a relaxation without
-removing any feasible solution of the original problem; lazy cuts reject solutions that violate constraints omitted
-from the initial formulation. These two roles correspond to `add_user_cut` and `add_lazy_cut` on both callback
-interfaces.
+Cuts are submitted from callbacks as temporary linear constraints. A user cut is intended to strengthen a node
+relaxation at an `InvalidSolution` event. The caller is responsible for ensuring that it does not remove solutions
+that should remain feasible; the callback API does not prove this property. A lazy cut is intended to reject a
+candidate encountered at an `IncumbentSolution` event because it violates a constraint omitted from the initial
+formulation. These two roles correspond to `add_user_cut` and `add_lazy_cut` on both callback interfaces.
 
 \section lib_milp_bnb_cutting_planes_cut_pool The Cut Pool
 
 User cuts pass through the branch-and-bound `CutPool`. The pool rejects duplicate or nearly parallel cuts, keeps
 accepted cuts available for later nodes, recycles violated cuts before branching, and periodically removes inactive
-cuts from the current relaxation. If recycling adds a violated cut, the node is reoptimized before branching.
+cuts from the current relaxation. An accepted user cut or a recycled cut causes the current node relaxation to be
+reoptimized before branching. The pool is owned by the branch-and-bound optimizer and is shared across its node
+processing rather than being stored as metadata on one tree node.
 
 Lazy cuts do not currently use this pool. The implementation adds them directly to the first relaxation. This is a
 current capability boundary and differs from the user-cut lifecycle.
@@ -614,7 +646,7 @@ generators. If idol was not linked with Cgl, initialization of this callback thr
 
 A custom callback should separate user cuts at `InvalidSolution`, where the current relaxation point is available.
 After one or more accepted cuts are added, the node is solved again. For example, the following universal callback
-adds the valid inequality \\( x + y \le 1 \\) whenever the current relaxation violates it.
+adds the valid inequality \f$ x + y \le 1 \f$ whenever the current relaxation violates it.
 
 ```cpp
 class MyUserCutCallback : public Callback {
@@ -629,7 +661,7 @@ protected:
             return;
         }
         const auto point = primal_solution();
-        if (point.get(m_x) + point.get(m_y) > 1 + Tolerance::Feasibility) {
+        if (point.get(m_x) + point.get(m_y) > 1) {
             add_user_cut(m_x + m_y <= 1);
         }
     }
@@ -657,9 +689,13 @@ separation model, a `GenerationPattern<Ctr>`, an optional constraint type, and a
 
 The callback interface is also the extension point for primal heuristics. A universal `Callback` submits a
 `PrimalPoint` with `submit_heuristic_solution`; a `BranchAndBoundCallback<NodeInfoT>` instead transfers ownership
-of a `NodeInfoT*` whose primal solution has been filled. The optimizer ignores a candidate whose objective value is
-worse than the current incumbent. It then invokes `IncumbentSolution` callbacks for the candidate, rejects it if
-those callbacks add a lazy cut, and otherwise stores it as a new incumbent.
+of a `NodeInfoT*` whose primal solution has been filled. Submission only proposes a candidate. Under minimization,
+the incumbent is the accepted candidate with the smallest objective value found so far, and its value is the current
+upper bound. The optimizer first rejects a submitted candidate whose stored objective value is worse than the
+incumbent value. It then invokes `IncumbentSolution` callbacks, rejects the candidate if those callbacks add a lazy
+cut, and otherwise stores it as the new incumbent. The current submission path does not independently check the
+candidate against the model constraints or call the branching rule's validity test; the submitting heuristic is
+responsible for constructing a feasible candidate.
 
 For the default node type, a branch-and-bound-specific callback can submit a point as follows.
 
@@ -714,21 +750,21 @@ One-row bound strengthening tightens variable bounds by analyzing each constrain
     A_{iS} x_S + a_{ik} x_k \le b_i,
 \f]
 
-where \\( S = \text{supp}(A_i\cdot) \setminus \\{k\\} \\) and \\( a_{ik} \neq 0 \\). First, a lower bound on the sum of the other variables is computed
+where \f$ S = \text{supp}(A_i\cdot) \setminus \\{k\\} \f$ and \f$ a_{ik} \neq 0 \f$. First, a lower bound on the sum of the other variables is computed
 
 \f[
     \ell_{iS} = \inf \{ A_{iS} x_S \}.
 \f]
 
-Then, depending on the sign of \\(a_{ik}\\), the bound of \\(x_k\\) is updated as follows:
+Then, depending on the sign of \f$a_{ik}\f$, the bound of \f$x_k\f$ is updated as follows:
 
-- If \\(a_{ik} > 0\\), update the upper bound:
+- If \f$a_{ik} > 0\f$, update the upper bound:
 
 \f[
     u_k := \min \Big\{ u_k, \frac{b_i - \ell_{iS}}{a_{ik}} \Big\}.
 \f]
 
-- If \\(a_{ik} < 0\\), update the lower bound:
+- If \f$a_{ik} < 0\f$, update the lower bound:
 
 \f[
     \ell_k := \max \Big\{ \ell_k, \frac{b_i - \ell_{iS}}{a_{ik}} \Big\}.
@@ -736,8 +772,8 @@ Then, depending on the sign of \\(a_{ik}\\), the bound of \\(x_k\\) is updated a
 
 This procedure is applied iteratively across all constraints, with safeguards to prevent infinite sequences of tiny reductions. 
 More specifically, 
-- a change is ignored if the improvement is smaller than \\(10^3 \cdot \varepsilon\\), where \\(\varepsilon\\) is the feasibility tolerance,
-- bounds with absolute values exceeding \\(10^8\\) are also ignored.  
+- a change is ignored if the improvement is smaller than \f$10^3 \cdot \varepsilon\f$, where \f$\varepsilon\f$ is the feasibility tolerance,
+- bounds with absolute values exceeding \f$10^8\f$ are also ignored.
 
 Only one round per constraint is applied per presolve pass. 
 
@@ -747,13 +783,16 @@ Only one round per constraint is applied per presolve pass.
 
 \tableofcontents
 
-The template parameter `NodeTypeT` in `BranchAndBound<NodeTypeT>` is the information stored in every
-`Node<NodeTypeT>`. The default, `DefaultNodeInfo`, stores the node status and termination reason, its primal
-solution, best objective and bound, sum of integrality infeasibilities, and the variable and constraint branching
-decisions needed to reconstruct the node relaxation.
+The template parameter `NodeTypeT` in `BranchAndBound<NodeTypeT>` is algorithmic metadata attached to every
+`Node<NodeTypeT>`. It does not by itself add a variable or constraint to the mathematical model, nor does merely
+storing data in it change a node relaxation. The default, `DefaultNodeInfo`, records the result of solving a node:
+status and termination reason, primal relaxation point, objective value and bound, sum of integrality
+infeasibilities, and the variable and constraint branching decisions used by `DefaultNodeUpdator` to reconstruct
+that node's relaxation.
 
-Using a template parameter lets specialized algorithms preserve additional information with every node while
-reusing the branch-and-bound engine. A custom type is most conveniently derived from `DefaultNodeInfo`. It must be
+Using a template parameter lets an advanced algorithm preserve additional per-node state—for example, information
+needed by a specialized branching rule or node updater—while reusing the branch-and-bound engine. A custom type is
+most conveniently derived from `DefaultNodeInfo`. It must be
 default-constructible unless a root instance is supplied with `with_root_node_info`; it must provide `clone()`,
 `create_child()`, and the static `create_updator(const Model&, Model&)` function expected by the optimizer. Methods
 used by the chosen branching, selection, logging, and callback components must also remain available. Deriving from
