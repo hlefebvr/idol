@@ -64,7 +64,6 @@ protected:
     void write(const std::string &t_name) override;
     void hook_optimize() override;
     void set_solution_index(unsigned int t_index) override;
-    void update_obj_sense() override;
     void update_obj() override;
     void update_rhs() override;
     void update_obj_constant() override;

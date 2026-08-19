@@ -85,10 +85,6 @@ void idol::Optimizers::Bilevel::BranchAndCut::set_solution_index(unsigned int t_
     m_hpr->set_solution_index(t_index);
 }
 
-void idol::Optimizers::Bilevel::BranchAndCut::update_obj_sense() {
-
-}
-
 void idol::Optimizers::Bilevel::BranchAndCut::update_obj() {
 
 }

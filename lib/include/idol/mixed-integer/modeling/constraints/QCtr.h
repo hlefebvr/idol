@@ -29,8 +29,8 @@ public:
     QCtr(Env& t_env, CtrType t_type, std::string t_name = "");
 
     template<unsigned int N = 1, unsigned int I = 0>
-    static Vector<Ctr, N - I> make_vector(Env& t_env, const Dim<N>& t_dim, CtrType t_type, const std::string& t_name = "") {
-        return idol::impl::create_many<Ctr, N, I>(t_dim, t_name, [&](const std::string& t_name_i) {
+    static Vector<QCtr, N - I> make_vector(Env& t_env, const Dim<N>& t_dim, CtrType t_type, const std::string& t_name = "") {
+        return idol::impl::create_many<QCtr, N, I>(t_dim, t_name, [&](const std::string& t_name_i) {
             return QCtr(t_env, t_type, t_name_i);
         });
     }

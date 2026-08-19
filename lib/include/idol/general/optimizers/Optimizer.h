@@ -80,8 +80,6 @@ protected:
 
     virtual void set_solution_index(unsigned int t_index) = 0;
 
-    virtual void update_obj_sense() = 0;
-
     virtual void update_obj() = 0;
 
     virtual void update_rhs() = 0;

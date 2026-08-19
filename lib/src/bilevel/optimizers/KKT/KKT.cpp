@@ -77,10 +77,6 @@ idol::Bilevel::KKT::KKT(const idol::Bilevel::KKT &t_src)
 idol::Model
 idol::Bilevel::KKT::make_model(const idol::Model &t_model, const idol::Bilevel::Description &t_description, bool t_use_sos1) {
 
-    if (t_model.get_obj_sense() != Minimize) {
-        throw Exception("Only minimization problems are supported.");
-    }
-
     auto& env = t_model.env();
 
     Reformulators::KKT reformulator(t_model, t_description);
@@ -97,10 +93,6 @@ idol::Bilevel::KKT::make_model(const idol::Model &t_model, const idol::Bilevel::
 idol::Model idol::Bilevel::KKT::make_model(const idol::Model &t_model,
                                            const idol::Bilevel::Description &t_description,
                                            Reformulators::KKT::BoundProvider &t_bound_provider) {
-
-    if (t_model.get_obj_sense() != Minimize) {
-        throw Exception("Only minimization problems are supported.");
-    }
 
     auto& env = t_model.env();
 

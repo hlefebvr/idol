@@ -66,7 +66,6 @@ protected:
 
     void set_solution_index(unsigned int t_index) override;
 
-    void update_obj_sense() override;
 
     void update_obj() override;
 

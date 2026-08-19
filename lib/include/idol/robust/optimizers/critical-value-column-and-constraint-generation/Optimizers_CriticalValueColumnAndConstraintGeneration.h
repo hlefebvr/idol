@@ -66,7 +66,6 @@ protected:
     void hook_before_optimize() override;
     void hook_optimize() override;
     void set_solution_index(unsigned t_index) override;
-    void update_obj_sense() override { m_formulation.reset(); }
     void update_obj() override { m_formulation.reset(); }
     void update_rhs() override { m_formulation.reset(); }
     void update_obj_constant() override { m_formulation.reset(); }

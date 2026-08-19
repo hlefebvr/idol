@@ -406,8 +406,7 @@ void idol::Reformulators::KKT::add_dual_constraints(idol::Model &t_destination) 
 }
 
 void idol::Reformulators::KKT::add_dual_objective(idol::Model &t_destination) {
-    t_destination.set_obj_expr(t_destination.get_obj_expr() + m_dual_objective);
-    t_destination.set_obj_sense(Maximize);
+    t_destination.set_obj_expr(t_destination.get_obj_expr() - m_dual_objective);
 }
 
 void idol::Reformulators::KKT::add_coupling(idol::Model &t_destination) {
@@ -520,7 +519,6 @@ void idol::Reformulators::KKT::add_primal_constraints(idol::Model &t_destination
 
 void idol::Reformulators::KKT::add_primal_objective(idol::Model &t_destination) {
     t_destination.set_obj_expr(m_primal_objective);
-    t_destination.set_obj_sense(Minimize);
 }
 
 void idol::Reformulators::KKT::add_strong_duality_reformulation(idol::Model &t_destination) {

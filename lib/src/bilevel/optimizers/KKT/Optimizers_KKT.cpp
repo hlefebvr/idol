@@ -129,10 +129,6 @@ void idol::Optimizers::Bilevel::KKT::set_solution_index(unsigned int t_index) {
     m_deterministic_model->set_solution_index(t_index);
 }
 
-void idol::Optimizers::Bilevel::KKT::update_obj_sense() {
-    m_deterministic_model.reset();
-}
-
 void idol::Optimizers::Bilevel::KKT::update_obj() {
     m_deterministic_model.reset();
 }

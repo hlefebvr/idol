@@ -36,7 +36,6 @@ protected:
     void write(const std::string& t_name) override THROW_NOT_IMPLEMENTED
     void hook_optimize() override;
     void set_solution_index(unsigned t_index) override THROW_NOT_IMPLEMENTED
-    void update_obj_sense() override THROW_NOT_IMPLEMENTED
     void update_obj() override THROW_NOT_IMPLEMENTED
     void update_rhs() override THROW_NOT_IMPLEMENTED
     void update_obj_constant() override THROW_NOT_IMPLEMENTED

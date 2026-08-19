@@ -18,8 +18,6 @@ TEST_CASE("Can manipulate mathematical expressions", "[expressions]") {
 
     SECTION("Can add mathematical expressions together via overloaded operator+") {
 
-        SKIP();
-
         // Unary plus
         CHECK(std::is_same_v<decltype(+type<Var>()), LinExpr<Var>>);
 
@@ -73,8 +71,6 @@ TEST_CASE("Can manipulate mathematical expressions", "[expressions]") {
     }
 
     SECTION("Can subtract mathematical expressions from each other via overloaded operator-") {
-
-        SKIP();
 
         // Unary minus
         CHECK(std::is_same_v<decltype(-type<Var>()), LinExpr<Var>>);
@@ -130,8 +126,6 @@ TEST_CASE("Can manipulate mathematical expressions", "[expressions]") {
 
     SECTION("Can multiply mathematical expressions with each other via overloaded operator*") {
 
-        SKIP();
-
         // double * X
         CHECK(std::is_same_v<decltype(type<double>() * type<Var>()), LinExpr<Var>>);
         CHECK(std::is_same_v<decltype(type<double>() * type<LinExpr<Var>>()), LinExpr<Var>>);
@@ -173,8 +167,6 @@ TEST_CASE("Can manipulate mathematical expressions", "[expressions]") {
 
     SECTION("Can divide mathematical expressions by each other via overloaded operator/") {
 
-        SKIP();
-
         // double / X
         CHECK(std::is_same_v<decltype(type<double>() / type<double>()), double>);
         // Var, LinExpr, AffExpr, QuadExpr, GenerationPattern are unsupported for double
@@ -202,7 +194,16 @@ TEST_CASE("Can manipulate mathematical expressions", "[expressions]") {
 
     SECTION("Can iterate over terms in mathematical expressions") {
 
-        SKIP();
+        Env env;
+        const Var x(env, 0., 1., Continuous, 0., "x");
+        const Var y(env, 0., 1., Continuous, 0., "y");
+        const LinExpr<Var> linear = 2 * x - 3 * y;
+        unsigned int count = 0;
+        for (const auto& [var, coefficient] : linear) {
+            CHECK(coefficient == linear.get(var));
+            ++count;
+        }
+        CHECK(count == 2);
 
     }
 

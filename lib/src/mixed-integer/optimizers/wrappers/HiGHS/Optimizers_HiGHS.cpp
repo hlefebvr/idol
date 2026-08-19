@@ -140,7 +140,7 @@ void idol::Optimizers::HiGHS::hook_build() {
 
     auto& lib = get_dynamic_lib();
 
-    hook_update_objective_sense();
+    lib.Highs_changeObjectiveSense(m_model, 1);
     update_objective_constant();
     set_objective_as_updated();
     set_rhs_as_updated();
@@ -325,11 +325,6 @@ int idol::Optimizers::HiGHS::hook_add(const Ctr &t_ctr) {
     delete[] var_coefficients;
 
     return index;
-}
-
-void idol::Optimizers::HiGHS::hook_update_objective_sense() {
-    auto& lib = get_dynamic_lib();
-    lib.Highs_changeObjectiveSense(m_model, parent().get_obj_sense() == Minimize ? 1 : -1 );
 }
 
 void idol::Optimizers::HiGHS::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {

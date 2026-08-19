@@ -9,6 +9,8 @@
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 #include "idol/mixed-integer/modeling/models/KKT.h"
 
 using namespace Catch::literals;

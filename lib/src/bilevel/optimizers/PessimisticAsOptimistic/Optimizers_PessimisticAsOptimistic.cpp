@@ -173,10 +173,6 @@ void idol::Optimizers::Bilevel::PessimisticAsOptimistic::set_solution_index(unsi
     m_optimistic_bilevel_model->set_solution_index(t_index);
 }
 
-void idol::Optimizers::Bilevel::PessimisticAsOptimistic::update_obj_sense() {
-    m_optimistic_bilevel_model.reset();
-}
-
 void idol::Optimizers::Bilevel::PessimisticAsOptimistic::update_obj() {
     m_optimistic_bilevel_model.reset();
 }
@@ -241,4 +237,3 @@ double idol::Optimizers::Bilevel::PessimisticAsOptimistic::get_relative_gap() co
 double idol::Optimizers::Bilevel::PessimisticAsOptimistic::get_absolute_gap() const {
     return m_optimistic_bilevel_model->optimizer().get_absolute_gap();
 }
-

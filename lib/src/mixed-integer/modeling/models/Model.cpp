@@ -17,7 +17,6 @@ idol::Model::Model(Env &t_env, Storage t_storage) : m_env(t_env), m_id(t_env.cre
 idol::Model::Model(idol::Model && t_src) noexcept
     : m_env(t_src.m_env),
       m_id(t_src.m_id),
-      m_sense(t_src.m_sense),
       m_variables(std::move(t_src.m_variables)),
       m_constraints(std::move(t_src.m_constraints)),
       m_qconstraints(std::move(t_src.m_qconstraints)),
@@ -299,10 +298,6 @@ void idol::Model::add(const Ctr &t_ctr) {
         );
 }
 
-idol::ObjectiveSense idol::Model::get_obj_sense() const {
-    return m_sense;
-}
-
 const idol::QuadExpr<idol::Var>& idol::Model::get_obj_expr() const {
     return m_objective;
 }
@@ -413,7 +408,6 @@ idol::Model::Model(const Model& t_src) : Model(t_src.m_env) {
             ));
         }
 
-        set_obj_sense(t_src.get_obj_sense());
         set_obj_expr(t_src.get_obj_expr());
 
     } else {
@@ -436,7 +430,6 @@ idol::Model::Model(const Model& t_src) : Model(t_src.m_env) {
             ));
         }
 
-        set_obj_sense(t_src.get_obj_sense());
         set_obj_expr(t_src.get_obj_expr());
 
     }
@@ -518,20 +511,6 @@ double idol::Model::get_var_ray(const Var &t_var) const {
 
 double idol::Model::get_best_bound() const {
     return optimizer().get_best_bound();
-}
-
-void idol::Model::set_obj_sense(ObjectiveSense t_value) {
-
-    if (t_value != Minimize && t_value != Maximize) {
-        throw Exception("Unsupported objective sense.");
-    }
-
-    m_sense = t_value;
-
-    if (has_optimizer()) {
-        optimizer().update_obj_sense();
-    }
-
 }
 
 void idol::Model::set_obj_expr(const QuadExpr<Var> &t_objective) {

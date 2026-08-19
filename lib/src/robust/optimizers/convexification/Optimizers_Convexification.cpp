@@ -142,10 +142,6 @@ void idol::Optimizers::Robust::Convexification::set_solution_index(unsigned int 
     m_deterministic_model->set_solution_index(t_index);
 }
 
-void idol::Optimizers::Robust::Convexification::update_obj_sense() {
-    m_deterministic_model.reset();
-}
-
 void idol::Optimizers::Robust::Convexification::update_obj() {
     m_deterministic_model.reset();
 }
@@ -258,7 +254,6 @@ void idol::Optimizers::Robust::Convexification::build_deterministic_model() {
 
     m_deterministic_model->set_obj_expr(0.);
     reformulator.add_dual(*m_deterministic_model);
-    m_deterministic_model->set_obj_sense(idol::Minimize);
     m_deterministic_model->set_obj_expr(parent.get_obj_expr() - m_deterministic_model->get_obj_expr());
 
 }

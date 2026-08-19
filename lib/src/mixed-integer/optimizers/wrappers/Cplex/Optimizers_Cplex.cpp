@@ -70,7 +70,7 @@ void idol::Optimizers::Cplex::hook_build() {
     const auto& objective = model.get_obj_expr();
 
     if (!objective.has_quadratic()) {
-        hook_update_objective_sense();
+        m_objective.setSense(IloObjective::Minimize);
         update_objective_constant();
         set_objective_as_updated();
     }
@@ -240,8 +240,6 @@ void idol::Optimizers::Cplex::hook_update_objective() {
 
     const auto& model = parent();
     const auto& objective = model.get_obj_expr();
-    const auto sense = model.get_obj_sense();
-
     IloNumExpr expr(m_env);
     expr += cplex_numeric(objective.affine().constant());
 
@@ -255,7 +253,7 @@ void idol::Optimizers::Cplex::hook_update_objective() {
 
     auto cplex_objective = m_objective;
     cplex_objective.setExpr(expr);
-    cplex_objective.setSense(sense == Minimize ? IloObjective::Minimize : IloObjective::Maximize);
+    cplex_objective.setSense(IloObjective::Minimize);
 }
 
 void idol::Optimizers::Cplex::hook_update_rhs() {
@@ -315,11 +313,6 @@ void idol::Optimizers::Cplex::hook_optimize() {
 
 void idol::Optimizers::Cplex::hook_write(const std::string &t_name) {
     m_cplex.exportModel(t_name.c_str());
-}
-
-void idol::Optimizers::Cplex::hook_update_objective_sense() {
-    const auto sense = parent().get_obj_sense();
-    m_objective.setSense(sense == Minimize ? IloObjective::Minimize : IloObjective::Maximize);
 }
 
 void idol::Optimizers::Cplex::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {

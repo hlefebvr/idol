@@ -2,8 +2,6 @@ include(CMakeFindDependencyMacro)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "@CMAKE_INSTALL_PREFIX@/lib/cmake/idol/")
 
-set(USE_GUROBI @USE_GUROBI@)
-set(USE_GLPK @USE_GLPK@)
 set(USE_CPLEX @USE_CPLEX@)
 set(USE_MIBS @USE_MIBS@)
 set(USE_OSI @USE_OSI@)
@@ -17,11 +15,6 @@ set(USE_JULIA @USE_JULIA@)
 set(USE_CGL @USE_CGL@)
 set(USE_LOCAL_MIP @USE_LOCAL_MIP@)
 
-# Legacy/general availability names retained as part of the installed package interface.
-set(USE_SYMPHONY @USE_SYMPHONY@)
-set(USE_CBC @USE_CBC@)
-set(USE_CLP @USE_CLP@)
-
 find_dependency(OpenMP REQUIRED)
 
 if (@USE_CPLEX@)
@@ -31,25 +24,18 @@ if (@USE_CPLEX@)
     add_compile_definitions(IDOL_USE_CPLEX)
 endif()
 
-if (USE_OSI_SYMPHONY OR USE_SYMPHONY)
+if (USE_OSI_SYMPHONY)
 
     set(COIN_OR_DIR "@COIN_OR_DIR@")
     find_dependency(SYMPHONY REQUIRED)
     add_compile_definitions(IDOL_USE_SYMPHONY)
 endif()
 
-if (USE_CBC)
-
-    set(COIN_OR_DIR "@COIN_OR_DIR@")
-    find_dependency(CBC REQUIRED)
-    add_compile_definitions(IDOL_USE_CBC)
-endif()
-
-if (USE_OSI_CLP OR USE_CLP)
+if (USE_OSI_CLP)
 
     set(COIN_OR_DIR "@COIN_OR_DIR@")
     find_dependency(CLP REQUIRED)
-    add_compile_definitions(IDOL_USE_CLP)
+    add_compile_definitions(IDOL_USE_OSI_CLP)
 endif()
 
 if (@USE_ROOT@)
@@ -76,8 +62,39 @@ if (@USE_MIBS@)
 
     find_dependency(MIBS REQUIRED)
 
-    add_compile_definitions(idol PUBLIC IDOL_USE_MIBS)
+    add_compile_definitions(IDOL_USE_MIBS)
 
+endif()
+
+if (@USE_CGL@)
+    set(COIN_OR_DIR "@COIN_OR_DIR@")
+    find_dependency(CGL REQUIRED)
+    add_compile_definitions(IDOL_USE_CGL)
+endif()
+
+if (@USE_TSL@)
+    set(TSL_SPARSE_MAP_DIR "@TSL_SPARSE_MAP_DIR@")
+    set(TSL_ORDERED_DIR "@TSL_ORDERED_DIR@")
+    find_dependency(TSL REQUIRED)
+    add_compile_definitions(IDOL_USE_TSL)
+endif()
+
+if (@USE_LOCAL_MIP@)
+    set(LOCAL_MIP_DIR "@LOCAL_MIP_DIR@")
+    find_dependency(LocalMIP REQUIRED)
+    add_compile_definitions(IDOL_USE_LOCAL_MIP)
+endif()
+
+if (@USE_ROCPP@)
+    set(ROCPP_DIR "@ROCPP_DIR@")
+    find_dependency(ROCPP REQUIRED)
+    add_compile_definitions(IDOL_USE_ROCPP)
+endif()
+
+if (@USE_JULIA@)
+    set(JULIA_DIR "@JULIA_DIR@")
+    find_dependency(Julia REQUIRED)
+    add_compile_definitions(IDOL_USE_JULIA)
 endif()
 
 if (@USE_OSI@)

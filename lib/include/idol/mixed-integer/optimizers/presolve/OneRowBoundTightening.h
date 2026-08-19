@@ -14,7 +14,7 @@ namespace idol::Presolvers {
 
 class idol::Presolvers::OneRowBoundTightening : public AbstractPresolver {
     unsigned int m_n_total_changes = 0;
-    static unsigned int do_single_row_bound_tightening(Model& t_model, const LinExpr<Var>& t_row, CtrType t_type, double t_rhs);
+    static unsigned int process_less_or_equal(Model& t_model, const LinExpr<Var>& t_row, double t_rhs);
 public:
     bool execute(Model& t_model) override;
     void log_after_termination() const override;

@@ -55,10 +55,6 @@ idol::Bilevel::MinMax::Dualize::Dualize(const idol::Bilevel::MinMax::Dualize &t_
 idol::Model
 idol::Bilevel::MinMax::Dualize::make_model(const idol::Model &t_model, const idol::Bilevel::Description &t_description) {
 
-    if (t_model.get_obj_sense() != Minimize) {
-        throw Exception("Only minimization problems are supported.");
-    }
-
     assert((t_model.get_obj_expr().affine().linear() + t_description.lower_level_obj().affine().linear()).is_zero(1e-3));
 
     auto& env = t_model.env();
@@ -69,7 +65,6 @@ idol::Bilevel::MinMax::Dualize::make_model(const idol::Model &t_model, const ido
     reformulator.add_coupling_variables(result);
     reformulator.add_coupling_constraints(result);
     reformulator.add_dual(result, false);
-    result.set_obj_sense(Minimize);
     result.set_obj_expr(-reformulator.get_dual_obj_expr() + t_model.get_obj_expr().affine().constant());
 
     return std::move(result);
@@ -83,10 +78,6 @@ idol::Model
 idol::Bilevel::MinMax::Dualize::make_model(const idol::Model &t_model, const idol::Bilevel::Description &t_description,
                                            idol::Reformulators::KKT::BoundProvider &t_bound_provider) {
 
-    if (t_model.get_obj_sense() != Minimize) {
-        throw Exception("Only minimization problems are supported.");
-    }
-
     auto& env = t_model.env();
 
     Reformulators::KKT reformulator(t_model, t_description);
@@ -95,7 +86,6 @@ idol::Bilevel::MinMax::Dualize::make_model(const idol::Model &t_model, const ido
     reformulator.add_coupling_variables(result);
     reformulator.add_coupling_constraints(result);
     reformulator.add_dual(result, false);
-    result.set_obj_sense(Minimize);
     result.set_obj_expr(-reformulator.get_dual_obj_expr() + t_model.get_obj_expr().affine().constant());
     reformulator.add_bounds_on_dual_variables(result, t_bound_provider);
 

@@ -185,10 +185,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::set_solution_index(unsigned in
     throw Exception("Solution index out of bounds.");
 }
 
-void idol::Optimizers::DantzigWolfeDecomposition::update_obj_sense() {
-    throw Exception("Not implemented update_obj_sense");
-}
-
 void idol::Optimizers::DantzigWolfeDecomposition::update_obj() {
     m_formulation.update_obj(parent().get_obj_expr());
 }

@@ -29,8 +29,8 @@ Then, at least three ingredients need to be provided in order to set up the algo
 
 Throughout this tutorial, bounds and objective values are described using the minimization convention implemented
 by the current branch-and-bound optimizer. Thus, a node relaxation provides a lower bound, a smaller node bound is
-better for node selection, and an incumbent provides an upper bound on the optimal objective value. Changing the
-objective sense after attaching this optimizer is not currently implemented.
+better for node selection, and an incumbent provides an upper bound on the optimal objective value. Idol models are
+minimization problems.
 
 To start with, we give a minimal example for constructing such a branch-and-bound method. 
 Assume to have an object called `model` of the class `Model`, storing your MILP. 
@@ -118,10 +118,6 @@ infeasibilities at node \f$v\f$; \f$z_0\f$ and \f$I_0\f$ are their values at the
 objective value of the current incumbent. The implementation selects an active node minimizing \f$s_v\f$. Under
 minimization, a smaller \f$z_v\f$ lowers the score. Since normally \f$z_0 \le \bar z\f$, the coefficient
 \f$z_0-\bar z\f$ is non-positive, so the formula as implemented lowers the score when \f$I_v\f$ increases.
-
-\warning The score formula above matches the current implementation exactly. Its sign means that, once an
-incumbent exists, a larger sum of infeasibilities can make a node more likely to be selected. Whether that sign is
-the intended Best Projection convention requires confirmation from Henri Lefebvre.
 
 > If there is no incumbent solution yet, the strategy defaults to the node with the best objective value. 
 > Thus, it acts like the best bound approach.
@@ -307,10 +303,6 @@ Then, the two scores are combined using one of the two following formulas:
   directional scores are at least \f$\varepsilon\f$, the combined score is \f$\varepsilon^2\f$; larger directional
   scores do not increase it further.
 
-\warning The product formula above deliberately documents the current use of `min`. Whether the intended score
-should instead use `max`—as in the more usual floor-at-\f$\varepsilon\f$ product—requires confirmation from Henri
-Lefebvre; the implementation has not been changed.
-
 The branching candidate with the highest score is selected for branching.
 
 Here is how to use it.
@@ -389,7 +381,7 @@ limit of 20.
 
 ```cpp
 auto strong_branching = StrongBranching();
-strong_branching.add_phase(StrongBranchingPhases::WithNodeOptimizer(), std::numeric_limits<unsigned int>::max(), 3)
+strong_branching.add_phase(StrongBranchingPhases::WithNodeOptimizer(), std::numeric_limits<unsigned int>::max(), 3);
 strong_branching.add_phase(StrongBranchingPhases::WithIterationLimit(20), 30, std::numeric_limits<unsigned int>::max());
 
 branch_and_bound.with_branching_rule(strong_branching);
@@ -586,9 +578,11 @@ public:
     }
 };
 
-branch_and_bound.add_callback(
-    NodeLimitCallbackFactory<DefaultNodeInfo>(1000)
-);
+void add_node_limit_callback(BranchAndBound<DefaultNodeInfo>& branch_and_bound) {
+    branch_and_bound.add_callback(
+        NodeLimitCallbackFactory<DefaultNodeInfo>(1000)
+    );
+}
 ```
 
 \section lib_milp_bnb_callbacks_universal Writing a Universal Callback
@@ -718,10 +712,10 @@ For instance, it may tighten variable bounds, remove redundancies, or strengthen
 Presolve can significantly speed up the solution process.
 
 Typically, a presolve operation is added using the `.with_presolver` method. For instance, here is how to add the 
-`OneRowBoundStrengthening` presolver detailed bellow. 
+`Presolvers::OneRowBoundTightening` presolver detailed below.
 
 ```cpp
-branch_and_bound.add_presolver(OneRowBoundStrengthening());
+branch_and_bound.add_presolver(Presolvers::OneRowBoundTightening());
 ```
 
 For more details, please refer to <a href="https://doi.org/10.1287/ijoc.2018.0857">Achterberg et al. (2019)</a>.
@@ -734,10 +728,10 @@ This is typically used in combination with other presolvers that may affect vari
 Here is how to add it.
 
 ```cpp
-branch_and_bound.add_presolver(BoundRounding());
+branch_and_bound.add_presolver(Presolvers::BoundRounding());
 ```
 
-\section lib_milp_bnb_presolve_OneRowBoundStrengthening One Row Bound Strengthening
+\section lib_milp_bnb_presolve_OneRowBoundTightening One Row Bound Tightening
 
 One-row bound strengthening tightens variable bounds by analyzing each constraint individually. Consider a linear inequality
 
@@ -772,7 +766,7 @@ More specifically,
 
 Only one round per constraint is applied per presolve pass. 
 
-> Note that this presolver does not round the bounds for integer variables. Please, use this in combination with the `BoundRounding` presolver for better performance.
+> Note that this presolver does not round the bounds for integer variables. Use it in combination with the `Presolvers::BoundRounding` presolver when bound rounding is desired.
 
 \page lib_milp_bnb_node_type Using Your Own Node Type
 

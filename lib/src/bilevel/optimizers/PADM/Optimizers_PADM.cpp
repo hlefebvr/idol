@@ -162,10 +162,6 @@ void idol::Optimizers::Bilevel::PADM::set_solution_index(unsigned int t_index) {
     m_single_level_reformulation->set_solution_index(t_index);
 }
 
-void idol::Optimizers::Bilevel::PADM::update_obj_sense() {
-    m_single_level_reformulation.reset();
-}
-
 void idol::Optimizers::Bilevel::PADM::update_obj() {
     m_single_level_reformulation.reset();
 }

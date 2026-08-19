@@ -73,7 +73,6 @@ protected:
     void hook_before_optimize() override;
     void hook_optimize() override;
     void set_solution_index(unsigned t_index) override THROW_NOT_IMPLEMENTED
-    void update_obj_sense() override {}
     void update_obj() override {}
     void update_rhs() override THROW_NOT_IMPLEMENTED
     void update_obj_constant() override THROW_NOT_IMPLEMENTED

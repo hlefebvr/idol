@@ -90,7 +90,6 @@ TEST_CASE("Objective state supports affine and quadratic expressions", "[basic][
     const auto x = model.add_vars(Dim<1>(2), -Inf, Inf, Continuous, 0., "x");
 
     model.set_obj_expr(2 * x[0] - x[1] + 4);
-    CHECK(model.get_obj_sense() == Minimize);
     CHECK(model.get_obj_expr().affine().constant() == 4.);
     CHECK(model.get_var_obj(x[0]) == 2.);
 
@@ -112,7 +111,6 @@ TEST_CASE("Copying a model preserves and isolates its formulation", "[basic][mod
     CHECK(copy.has(c));
     CHECK(copy.get_var_ub(x) == 4.);
     CHECK(copy.get_ctr_rhs(c) == 9.);
-    CHECK(copy.get_obj_sense() == Minimize);
 
     copy.set_var_ub(x, 2.);
     copy.set_ctr_rhs(c, 6.);

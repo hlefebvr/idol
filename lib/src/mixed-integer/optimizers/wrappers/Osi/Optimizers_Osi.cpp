@@ -188,7 +188,7 @@ void idol::Optimizers::Osi::hook_build() {
 
     const auto& objective = parent().get_obj_expr();
 
-    hook_update_objective_sense();
+    m_solver_interface->setObjSense(1.);
     set_objective_as_updated();
     set_rhs_as_updated();
 
@@ -279,11 +279,6 @@ int idol::Optimizers::Osi::hook_add(const idol::Ctr &t_ctr) {
     m_solver_interface->addRow(vector, lb, ub, t_ctr.name());
 
     return index;
-}
-
-void idol::Optimizers::Osi::hook_update_objective_sense() {
-    const auto sense = parent().get_obj_sense();
-    m_solver_interface->setObjSense(sense == Minimize ? 1. : -1.);
 }
 
 void idol::Optimizers::Osi::hook_update_matrix(const idol::Ctr &t_ctr, const idol::Var &t_var, double t_constant) {

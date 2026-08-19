@@ -165,10 +165,6 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::set_solution_index
     throw Exception("Not implemented set_solution_index");
 }
 
-void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_obj_sense() {
-    throw Exception("Not implemented update_obj_sense");
-}
-
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_obj() {
     throw Exception("Not implemented update_obj");
 }

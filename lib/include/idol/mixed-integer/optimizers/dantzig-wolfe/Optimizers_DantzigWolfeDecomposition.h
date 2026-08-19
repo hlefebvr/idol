@@ -73,7 +73,6 @@ protected:
     unsigned int get_n_solutions() const override;
     unsigned int get_solution_index() const override;
     void set_solution_index(unsigned int t_index) override;
-    void update_obj_sense() override;
     void update_obj() override;
     void update_rhs() override;
     void update_obj_constant() override;

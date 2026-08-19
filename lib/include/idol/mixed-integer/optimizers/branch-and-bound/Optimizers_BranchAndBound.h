@@ -101,7 +101,6 @@ protected:
     void log_after_termination();
 
     SideEffectRegistry call_callbacks(CallbackEvent t_event, const TreeNode& t_node, unsigned int t_relaxation_id);
-    void update_obj_sense() override;
     void update_obj() override;
     void update_rhs() override;
     void update_obj_constant() override;
@@ -383,11 +382,6 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::update_var_obj(const Var &t_va
     for (auto& relaxation : m_relaxations) {
         relaxation->set_var_obj(t_var, working_model().get_var_obj(t_var));
     }
-}
-
-template<class NodeInfoT>
-void idol::Optimizers::BranchAndBound<NodeInfoT>::update_obj_sense() {
-    throw Exception("Not implemented");
 }
 
 template<class NodeInfoT>

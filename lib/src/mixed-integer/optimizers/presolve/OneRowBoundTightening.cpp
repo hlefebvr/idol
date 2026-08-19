@@ -5,7 +5,7 @@
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
 
-unsigned int idol::Presolvers::OneRowBoundTightening::do_single_row_bound_tightening(Model& t_model, const LinExpr<Var>& t_row, CtrType t_type, double t_rhs) {
+unsigned int idol::Presolvers::OneRowBoundTightening::process_less_or_equal(Model& t_model, const LinExpr<Var>& t_row, double t_rhs) {
 
     unsigned int result = 0;
 
@@ -60,11 +60,17 @@ bool idol::Presolvers::OneRowBoundTightening::execute(Model& t_model) {
         const auto& row = t_model.get_ctr_row(ctr);
         const auto rhs = t_model.get_ctr_rhs(ctr);
 
-        if (type == Equal) {
-            changes += do_single_row_bound_tightening(t_model, row, LessOrEqual, rhs);
-            changes += do_single_row_bound_tightening(t_model, row, GreaterOrEqual, rhs);
-        } else {
-            changes += do_single_row_bound_tightening(t_model, row, type, rhs);
+        switch (type) {
+            case LessOrEqual:
+                changes += process_less_or_equal(t_model, row, rhs);
+                break;
+            case GreaterOrEqual:
+                changes += process_less_or_equal(t_model, -row, -rhs);
+                break;
+            case Equal:
+                changes += process_less_or_equal(t_model, row, rhs);
+                changes += process_less_or_equal(t_model, -row, -rhs);
+                break;
         }
 
     }

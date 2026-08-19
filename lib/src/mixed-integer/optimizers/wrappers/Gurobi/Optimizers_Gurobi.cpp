@@ -211,15 +211,6 @@ char idol::Optimizers::Gurobi::gurobi_ctr_type(int t_type) {
     throw Exception("Unsupported constraint type: " + std::to_string(t_type));
 }
 
-char idol::Optimizers::Gurobi::gurobi_obj_sense(int t_sense) {
-    switch (t_sense) {
-        case Minimize: return 1;
-        case Maximize: return -1;
-        default:;
-    }
-    throw Exception("Unsupported objective sense: " + std::to_string(t_sense));
-}
-
 std::pair<idol::SolutionStatus, idol::SolutionReason> idol::Optimizers::Gurobi::gurobi_status(int t_status) const {
     auto& lib = get_dynamic_lib();
     switch (t_status) {
@@ -299,7 +290,8 @@ void idol::Optimizers::Gurobi::hook_build() {
     const auto& objective = model.get_obj_expr();
 
     if (!objective.has_quadratic()) {
-        hook_update_objective_sense();
+        auto& lib = get_dynamic_lib();
+        GUROBI_CATCH(m_model, GRBsetintattr(m_model, "ModelSense", 1))
         update_objective_constant();
         set_objective_as_updated();
     }
@@ -513,8 +505,6 @@ void idol::Optimizers::Gurobi::hook_update_objective() {
     auto& lib = get_dynamic_lib();
     const auto& model = parent();
     const auto& objective = model.get_obj_expr();
-    const auto sense = gurobi_obj_sense(model.get_obj_sense());
-
     // Linear part
     const auto& linear_terms = objective.affine().linear();
     std::vector<int> linear_indices;
@@ -546,7 +536,7 @@ void idol::Optimizers::Gurobi::hook_update_objective() {
     GUROBI_CATCH(
                 m_model,
                 GRBsetobjective(m_model,
-                              sense,
+                              1,
                               linear_constant,
                               (int) linear_indices.size(),
                               linear_indices.data(),
@@ -621,18 +611,6 @@ void idol::Optimizers::Gurobi::hook_write(const std::string &t_name) {
     GUROBI_CATCH(
         m_model,
         GRBwrite(m_model, t_name.c_str())
-    )
-}
-
-void idol::Optimizers::Gurobi::hook_update_objective_sense() {
-    auto& lib = get_dynamic_lib();
-    GUROBI_CATCH(
-        m_model,
-        GRBsetintattr(
-            m_model,
-            "ModelSense",
-            gurobi_obj_sense(parent().get_obj_sense())
-        )
     )
 }
 
@@ -1116,6 +1094,10 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(Env& t_env, const std::stri
 
     }
 
+    double objective_constant = 0.;
+    GUROBI_CATCH(model, GRBgetdblattr(model, "ObjCon", &objective_constant));
+    result.set_obj_const(objective_constant);
+
     std::vector<double> rhs(n_ctrs);
     std::vector<char> sense(n_ctrs);
     std::vector<char*> ctr_names(n_ctrs);
@@ -1199,17 +1181,6 @@ idol::CtrType idol::Optimizers::Gurobi::idol_ctr_type(char t_type) {
         case '<': return LessOrEqual;
         case '>': return GreaterOrEqual;
         case '=': return Equal;
-        default:;
-    }
-
-    throw Exception("Unexpected constraint type.");
-}
-
-idol::ObjectiveSense idol::Optimizers::Gurobi::idol_obj_sense(int t_sense) {
-
-    switch (t_sense) {
-        case 1: return Minimize;
-        case -1: return Maximize;
         default:;
     }
 

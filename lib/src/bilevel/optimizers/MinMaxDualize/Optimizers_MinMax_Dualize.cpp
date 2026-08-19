@@ -132,11 +132,6 @@ void idol::Optimizers::Bilevel::MinMax::Dualize::set_solution_index(unsigned int
     m_deterministic_model->set_solution_index(t_index);
 }
 
-void idol::Optimizers::Bilevel::MinMax::Dualize::update_obj_sense() {
-    m_deterministic_model.reset();
-    m_lower_level_model.reset();
-}
-
 void idol::Optimizers::Bilevel::MinMax::Dualize::update_obj() {
     m_deterministic_model.reset();
     m_lower_level_model.reset();

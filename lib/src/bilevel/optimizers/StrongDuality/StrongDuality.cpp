@@ -52,10 +52,6 @@ idol::Bilevel::StrongDuality::StrongDuality(const idol::Bilevel::StrongDuality &
 idol::Model
 idol::Bilevel::StrongDuality::make_model(const idol::Model &t_model, const idol::Bilevel::Description &t_description) {
 
-    if (t_model.get_obj_sense() != Minimize) {
-        throw Exception("Only minimization problems are supported.");
-    }
-
     auto& env = t_model.env();
 
     Reformulators::KKT reformulator(t_model, t_description);

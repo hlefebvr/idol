@@ -16,7 +16,6 @@ class OsiIdolSolverInterface : public OsiSolverInterface {
     std::list<std::pair<idol::Var, idol::VarType>> m_relaxed_variables;
     std::vector<int> m_variable_indices_in_mibs;
     std::vector<int> m_constraint_indices_in_mibs;
-    //double m_objective_sense = 1.; // 1. is minimization, -1. is maximization.
     std::unique_ptr<idol::OptimizerFactory> m_optimizer;
 
     mutable double* m_col_lower = nullptr;

@@ -37,7 +37,7 @@ double idol::impl::Optimizer::get_param_best_obj_stop() const {
         return m_param_best_obj_stop.value();
     }
 
-    return m_parent.get_obj_sense() == Minimize ? -Inf : Inf;
+    return -Inf;
 }
 
 double idol::impl::Optimizer::get_param_best_bound_stop() const {
@@ -46,7 +46,7 @@ double idol::impl::Optimizer::get_param_best_bound_stop() const {
         return m_param_best_bound_stop.value();
     }
 
-    return m_parent.get_obj_sense() == Minimize ? Inf : -Inf;
+    return Inf;
 
 }
 

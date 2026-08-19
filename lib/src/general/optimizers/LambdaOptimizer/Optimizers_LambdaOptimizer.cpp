@@ -97,10 +97,6 @@ void idol::Optimizers::LambdaOptimizer::set_solution_index(unsigned int t_index)
     throw Exception("Solution index out of bounds.");
 }
 
-void idol::Optimizers::LambdaOptimizer::update_obj_sense() {
-    clear_solution();
-}
-
 void idol::Optimizers::LambdaOptimizer::update_obj() {
     clear_solution();
 }

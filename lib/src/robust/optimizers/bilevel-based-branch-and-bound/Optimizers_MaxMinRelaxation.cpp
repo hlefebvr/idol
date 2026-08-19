@@ -91,12 +91,10 @@ void idol::Optimizers::Robust::MaxMinRelaxation::build_model() {
 
     Model hpr = m_description.uncertainty_set().copy();
     hpr.unuse();
-    hpr.set_obj_sense(Minimize);
 
     Model uncertainty_set = original_model.copy();
     uncertainty_set.unuse();
     uncertainty_set.set_obj_expr(0.);
-    uncertainty_set.set_obj_sense(Minimize);
 
     // Add all original uncertain parameters (in case of constraint uncertainty)
     for (const auto& unc_var : original_uncertainty_set.vars()) {

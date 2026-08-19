@@ -118,10 +118,6 @@ void idol::Optimizers::Bilevel::StrongDuality::set_solution_index(unsigned int t
     m_deterministic_model->set_solution_index(t_index);
 }
 
-void idol::Optimizers::Bilevel::StrongDuality::update_obj_sense() {
-    m_deterministic_model.reset();
-}
-
 void idol::Optimizers::Bilevel::StrongDuality::update_obj() {
     m_deterministic_model.reset();
 }

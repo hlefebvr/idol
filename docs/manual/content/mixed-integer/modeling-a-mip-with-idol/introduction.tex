@@ -248,11 +248,7 @@ Model model(env); // Creates an empty model.
 
 Here, we first create a new optimization environment, then create an
 optimization model. Note that the newly created model does not yet contain any
-variables or constraints. By default, all models are treated as minimization
-problems. Currently, \textsf{idol} offers only limited support for
-maximization problems. This is not a real restriction, however, since
-$\max_{x\in X} f(x) = - \min_{x\in X} -f(x)$ holds for all function $f$ and
-all set $X$.
+variables or constraints. All \textsf{idol} models are minimization problems.
 
 Another way to create a model is by importing it from an \textsf{.mps} or
 an~\textsf{.lp} file. To do this, you will need to rely on an external solver.

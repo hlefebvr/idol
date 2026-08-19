@@ -258,10 +258,6 @@ void idol::Optimizers::PADM::set_solution_index(unsigned int t_index) {
     }
 }
 
-void idol::Optimizers::PADM::update_obj_sense() {
-    throw Exception("Not implemented");
-}
-
 void idol::Optimizers::PADM::update_obj() {
     throw Exception("Not implemented");
 }

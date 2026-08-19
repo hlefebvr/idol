@@ -72,7 +72,6 @@ class idol::OptimizerWithLazyUpdates : public Optimizer {
     void update_qctrs();
     void update_sosctrs();
 
-    void lazy_update_objective_sense();
     void lazy_update_matrix(const Ctr& t_ctr, const Var &t_var, double t_constant);
     void lazy_update(const Var& t_var);
     void lazy_update(const Ctr& t_ctr);
@@ -99,7 +98,6 @@ protected:
     void add(const SOSCtr& t_ctr) final;
     virtual SOSCtrImplT hook_add(const SOSCtr& t_ctr) = 0;
 
-    virtual void hook_update_objective_sense() = 0;
     virtual void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) = 0;
 
     void update() final;
@@ -170,7 +168,6 @@ protected:
     [[nodiscard]] bool is_rhs_to_be_updated() const { return m_is_rhs_to_be_updated; }
     void set_rhs_as_updated() { m_is_rhs_to_be_updated = false; }
 
-    void update_obj_sense() override;
     void update_obj() override;
     void update_rhs() override;
     void update_obj_constant() override;
@@ -233,12 +230,6 @@ template<class VarImplT, class CtrImplT, class QCtrImplT, class SOSCtrImplT>
 void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>::update_obj() {
     lazy_update_objective();
 }
-
-template<class VarImplT, class CtrImplT, class QCtrImplT, class SOSCtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>::update_obj_sense() {
-    lazy_update_objective_sense();
-}
-
 
 template<class VarImplT, class CtrImplT, class QCtrImplT, class SOSCtrImplT>
 void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>::update_rhs() {
@@ -401,11 +392,6 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>:
 template<class VarImplT, class CtrImplT, class QCtrImplT, class SOSCtrImplT>
 void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>::lazy_update_objective() {
     set_objective_to_be_updated();
-}
-
-template<class VarImplT, class CtrImplT, class QCtrImplT, class SOSCtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT, SOSCtrImplT>::lazy_update_objective_sense() {
-    hook_update_objective_sense();
 }
 
 template<class VarImplT, class CtrImplT, class QCtrImplT, class SOSCtrImplT>

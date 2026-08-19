@@ -126,7 +126,6 @@ protected:
     bool hook_add(const Ctr &t_ctr) override;
     bool hook_add(const QCtr &t_ctr) override;
     bool hook_add(const SOSCtr &t_ctr) override;
-    void hook_update_objective_sense() override;
     void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) override;
     void hook_update() override;
     void hook_update(const Var &t_var) override;

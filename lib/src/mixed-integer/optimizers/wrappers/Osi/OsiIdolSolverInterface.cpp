@@ -298,7 +298,7 @@ const double *OsiIdolSolverInterface::getObjCoefficients() const {
 
 double OsiIdolSolverInterface::getObjSense() const {
     OSI_IDOL_DEBUG
-    return m_model->get_obj_sense() == idol::Minimize ? 1. : -1.;
+    return 1.;
 }
 
 bool OsiIdolSolverInterface::isContinuous(int colIndex) const {
@@ -487,7 +487,9 @@ void OsiIdolSolverInterface::setObjCoeff(int elementIndex, double elementValue) 
 }
 
 void OsiIdolSolverInterface::setObjSense(double s) {
-    m_model->set_obj_sense(s > 0 ? idol::Minimize : idol::Maximize);
+    if (s < 0.) {
+        throw idol::Exception("idol models are minimization problems; OSI maximization sense is unsupported.");
+    }
 }
 
 void OsiIdolSolverInterface::setColLower(int elementIndex, double elementValue) {

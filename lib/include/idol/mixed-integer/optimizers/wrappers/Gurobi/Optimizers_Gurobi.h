@@ -33,11 +33,9 @@ class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<int, int, int, 
 
     char gurobi_var_type(int t_type);
     static char gurobi_ctr_type(int t_type);
-    static char gurobi_obj_sense(int t_sense);
     static double gurobi_numeric(double t_value);
     static VarType idol_var_type(char t_type);
     static CtrType idol_ctr_type(char t_type);
-    static ObjectiveSense idol_obj_sense(int t_sense);
     [[nodiscard]] std::pair<SolutionStatus, SolutionReason> gurobi_status(int t_status) const;
 protected:
     static GRBenv* get_new_env();
@@ -51,7 +49,6 @@ protected:
     int hook_add(const SOSCtr& t_ctr) override;
     void hook_update(const Var& t_var) override;
     void hook_update(const Ctr& t_ctr) override;
-    void hook_update_objective_sense() override;
     void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) override;
     void hook_update_objective() override;
     void hook_update_rhs() override;

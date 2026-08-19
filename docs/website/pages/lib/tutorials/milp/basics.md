@@ -25,7 +25,7 @@ The continuous relaxation of this problem (where \\( x \\) and \\( y \\) are all
 take real values) has a unique solution at \\( (x^*, y^*) = (2.4, 2.4) \\), with
 objective value \\( -7.2 \\). The original integer-constrained problem also admits a
 unique solution, which is attained at \\( (x^*, y^*) = (2, 2)\\), with objective
-value \\( -5 \\).
+value \\( -6 \\).
 
 Modeling this problem in `idol` is straightforward and will look familiar if you use other optimization frameworks such as JuMP
 in Julia or the Gurobi C++, or even Python, interface.
@@ -232,8 +232,8 @@ corresponding `Env::get_*` method.
 Here is an example to impose a thread limit of one on all underlying methods. 
 
 ```cpp
-env.set_thread_limit(5);
-std::cout << "Using at most " << env.get_thread_limit(); << " threads." << std::endl; 
+env.set_param_thread_limit(5);
+std::cout << "Using at most " << env.get_param_thread_limit() << " threads." << std::endl;
 ```
 
 \page lib_milp_basics_advanced_models Models
@@ -266,8 +266,13 @@ can be easily installed on your computer.
 
 ```cpp
 Env env;
-auto model = GLPK::read_from_file("/path/to/some/file.mps");
+auto model = GLPK::read_from_file(env, "/path/to/some/file.mps");
 ```
+
+If an imported LP/MPS file declares a maximization objective, the reader
+negates the complete objective while constructing the minimization-only idol
+model. Objective values reported by idol are then the negatives of the
+original file's maximization objective values.
 
 The decision to rely on external solvers is justified by two main
 considerations. First, `idol` is typically used in combination with
@@ -353,7 +358,7 @@ Model copy_and_relax_integrality(const Model& t_model) {
     return std::move(result);
 }
 
-const auto model = Gurobi::read_from_file("problem.lp");
+const auto model = GLPK::read_from_file(env, "problem.lp");
 auto continuous_relaxation = copy_and_relax_integrality(model);
 ```
 
@@ -431,7 +436,7 @@ We provide one illustrative example here.
 const std::vector<Ctr> ctrs = get_vector_of_ctrs();
 
 // Create the column associated to x.
-LinExpr<Ctr> column = -1 * c[0] + 2 * c[1] + 3 * c[2];
+LinExpr<Ctr> column = -1 * ctrs[0] + 2 * ctrs[1] + 3 * ctrs[2];
 
 // Create a variable in the environment.
 Var x(env, 0, Inf, Integer, -1, std::move(column), "x");
@@ -445,7 +450,7 @@ model by overriding it as follows.
 
 ```cpp
 // Add the variable to a model, overriding the default version.
-model.add(x, TempVar(0, Inf, Continuous, 2, LinExpr<Var>()));
+model.add(x, TempVar(0, Inf, Continuous, 2, LinExpr<Ctr>()));
 ```
 
 Here, we note the use of the `TempVar` class. This lightweight class is
@@ -483,7 +488,7 @@ following illustrates how to create a set of variables indexed by a \\( 2\times 
 
 ```cpp
 // Create a (2,3) "vector" of variables.
-const auto x = Var::make_vector(env, Dim<2>(2, 3), 0, Inf, Continuous, "x");
+const auto x = Var::make_vector(env, Dim<2>(2, 3), 0, Inf, Continuous, 0, "x");
 
 // Add all variables
 model.add_vector<Var, 2>(x);
@@ -503,7 +508,7 @@ Alternatively, the same result can be achieved using methods of the
 `Model` class. The following snippet illustrates this approach.
 
 ```cpp
-const auto x = model.add_vars(Dim<2>(2,3), 0, Inf, Continuous, "x");
+const auto x = model.add_vars(Dim<2>(2,3), 0, Inf, Continuous, 0, "x");
 ```
 
 \section lib_milp_basics_advanced_variables_remove Removing Variables
@@ -864,9 +869,8 @@ solver does not support it.
 
 \section lib_milp_basics_advanced_objectives_sense Minimization
 
-`idol` models are minimized. `Model::get_obj_sense` therefore reports
-`Minimize` for the supported objective convention. To prefer larger values of
-a quantity, negate that quantity and minimize the resulting objective.
+`idol` models are minimization problems. To optimize the negative of a
+quantity, negate that quantity explicitly in the objective expression.
 
 \section lib_milp_basics_advanced_objectives_access Accessing and Modifying the Objective
 
@@ -1090,7 +1094,7 @@ implementation as follows.
 | Initial construction | `build()` |
 | Solve lifecycle | `hook_optimize()`; optionally `hook_before_optimize()` and `hook_after_optimize()` |
 | Object changes | `add(...)`, `remove(...)`, and `update()` |
-| Attribute changes | `update_obj_sense`, `update_obj`, `update_rhs`, `update_obj_constant`, matrix/constraint/variable update methods |
+| Attribute changes | `update_obj`, `update_rhs`, `update_obj_constant`, matrix/constraint/variable update methods |
 | Common results | `get_status`, `get_reason`, `get_best_obj`, `get_best_bound`, primal/dual/ray/Farkas and gap methods |
 | Solution pools | `get_n_solutions`, `get_solution_index`, and `set_solution_index` |
 | Utilities | `name()` and `write(...)` |
@@ -1138,7 +1142,7 @@ handle types associated with idol variables and constraints.
 
 Derived classes implement hooks such as `hook_build`, `hook_add`,
 `hook_update`, `hook_remove`, `hook_update_objective`,
-`hook_update_objective_sense`, `hook_update_rhs`, and `hook_update_matrix`.
+`hook_update_rhs`, and `hook_update_matrix`.
 The helper tracks pending objects and exposes `operator[]` for accessing the
 stored variable and linear-constraint handles.
 
@@ -1154,7 +1158,7 @@ Before exposing a new optimizer factory, verify that the implementation:
 
 1. creates and clones the factory without lifetime leaks;
 2. binds each runtime optimizer to exactly one parent model;
-3. translates every supported model object and objective sense correctly;
+3. translates every supported model object and the minimization objective correctly;
 4. handles additions, removals, and attribute changes consistently;
 5. reports unsupported quadratic or SOS features explicitly;
 6. maps statuses, reasons, bounds, solutions, rays, and certificates without

@@ -311,14 +311,12 @@ idol::SolutionReason idol::Optimizers::JuMP::get_reason() const {
 double idol::Optimizers::JuMP::get_best_obj() const {
 
     const auto status = get_status();
-    const bool is_minimization = parent().get_obj_sense() == Minimize;
-
     if (status == Unbounded) {
-        return is_minimization ? -Inf : Inf;
+        return -Inf;
     }
 
     if (status != Optimal && status != Feasible) {
-        return is_minimization ? Inf : -Inf;
+        return Inf;
     }
     
     auto& lib = idol::Optimizers::JuMP::get_dynamic_lib();
@@ -333,14 +331,12 @@ double idol::Optimizers::JuMP::get_best_obj() const {
 double idol::Optimizers::JuMP::get_best_bound() const {
 
     const auto status = get_status();
-    const bool is_minimization = parent().get_obj_sense() == Minimize;
-
     if (status == Unbounded) {
-        return is_minimization ? Inf : -Inf;
+        return Inf;
     }
 
     if (status != Optimal && status != Feasible) {
-        return is_minimization ? -Inf : Inf;
+        return -Inf;
     }
     
     auto& lib = idol::Optimizers::JuMP::get_dynamic_lib();
@@ -439,7 +435,10 @@ void idol::Optimizers::JuMP::hook_build() {
     const auto& objective = model.get_obj_expr();
 
     if (!objective.has_quadratic()) {
-        hook_update_objective_sense();
+        auto& lib = idol::Optimizers::JuMP::get_dynamic_lib();
+        auto* set_minimization = (jl_function_t*) lib.jl_get_function(jl_main_module, "idol_set_minimization");
+        lib.jl_call1(set_minimization, lib.jl_box_uint64(*m_model_id));
+        impl::JuliaSessionManager::throw_if_julia_error();
         //TODO: update_objective_constant();
         set_objective_as_updated();
     }
@@ -529,18 +528,6 @@ bool idol::Optimizers::JuMP::hook_add(const idol::QCtr &t_ctr) {
 
 bool idol::Optimizers::JuMP::hook_add(const idol::SOSCtr &t_ctr) {
     throw Exception("Not implemented.");
-}
-
-void idol::Optimizers::JuMP::hook_update_objective_sense() {
-
-    const auto sense = parent().get_obj_sense();
-    
-    auto& lib = idol::Optimizers::JuMP::get_dynamic_lib();
-
-    auto* update_objective_sense = (jl_function_t*) lib.jl_get_function(jl_main_module, "idol_update_objective_sense");
-    lib.jl_call2(update_objective_sense, lib.jl_box_uint64(*m_model_id), lib.jl_box_uint16((uint16_t)sense));
-    impl::JuliaSessionManager::throw_if_julia_error();
-
 }
 
 void idol::Optimizers::JuMP::hook_update_matrix(const idol::Ctr &t_ctr, const idol::Var &t_var, double t_constant) {

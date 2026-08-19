@@ -171,11 +171,11 @@ module IdolJuMP
         return objective_bound(model)
     end
 
-    function idol_update_objective_sense(t_id::UInt64, t_sense::UInt16)
+    function idol_set_minimization(t_id::UInt64)
         obj = _registry[t_id]
         model = obj.model
 
-        MOI.set(model, MOI.ObjectiveSense(), t_sense == 0 ? MOI.MIN_SENSE : MOI.MAX_SENSE)
+        MOI.set(model, MOI.ObjectiveSense(), MOI.MIN_SENSE)
     end
 
     export idol_create_model,
@@ -190,7 +190,7 @@ module IdolJuMP
            idol_get_ctr_dual,
            idol_get_best_obj,
            idol_get_best_bound,
-           idol_update_objective_sense
+           idol_set_minimization
 end
 
 using ..IdolJuMP

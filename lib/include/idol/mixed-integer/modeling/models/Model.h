@@ -48,8 +48,6 @@ private:
     const unsigned int m_id;
     bool m_has_been_moved = false;
 
-    ObjectiveSense m_sense = Minimize;
-
     QuadExpr<Var> m_objective;
     LinExpr<Ctr> m_rhs;
     std::vector<Var> m_variables;
@@ -186,8 +184,6 @@ public:
 
     void update();
 
-    [[nodiscard]] ObjectiveSense get_obj_sense() const;
-
     [[nodiscard]] const QuadExpr<Var>& get_obj_expr() const;
 
     [[nodiscard]] const LinExpr<Ctr>& get_rhs_expr() const;
@@ -201,8 +197,6 @@ public:
     [[nodiscard]] double get_best_obj() const;
 
     [[nodiscard]] double get_best_bound() const;
-
-    void set_obj_sense(ObjectiveSense t_value);
 
     void set_obj_expr(const QuadExpr<Var>& t_objective);
 
@@ -331,6 +325,13 @@ template<unsigned int N>
 idol::Vector<idol::Ctr, N> idol::Model::add_ctrs(Dim<N> t_dim, CtrType t_type, double t_rhs, const std::string &t_name) {
     auto result = Ctr::make_vector(m_env, t_dim, t_type, t_rhs, t_name);
     add_vector<Ctr, N>(result);
+    return result;
+}
+
+template<unsigned int N>
+idol::Vector<idol::QCtr, N> idol::Model::add_qctrs(Dim<N> t_dim, CtrType t_type, const std::string& t_name) {
+    auto result = QCtr::make_vector(m_env, t_dim, t_type, t_name);
+    add_vector<QCtr, N>(result);
     return result;
 }
 
@@ -496,13 +497,7 @@ namespace idol {
 
         LimitedWidthStream stream(t_os, 120);
 
-        if (t_model.get_obj_sense() == Minimize) {
-            stream << "Minimize";
-        } else {
-            stream << "Maximize";
-        }
-
-        stream << std::endl << t_model.get_obj_expr() << std::endl << "Subject To" << std::endl;
+        stream << "Minimize" << std::endl << t_model.get_obj_expr() << std::endl << "Subject To" << std::endl;
 
         for (const auto &ctr: t_model.ctrs()) {
 

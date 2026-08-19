@@ -50,7 +50,7 @@ std::ostream &idol::Robust::operator<<(std::ostream &t_os, const idol::Robust::D
 
     const auto& obj = model.get_obj_expr();
 
-    stream << model.get_obj_sense() << "\n\t" << obj.affine().constant();
+    stream << "Minimize\n\t" << obj.affine().constant();
     for (const auto& [var, constant] : obj.affine().linear()) {
 
         stream << " + ";

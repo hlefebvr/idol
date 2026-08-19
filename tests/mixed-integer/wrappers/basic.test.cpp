@@ -6,11 +6,13 @@
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
 
 using namespace idol;
 
@@ -75,6 +77,28 @@ TEST_CASE("Basic infeasible model", "[basic][solver][infeasible]") {
     CHECK(model.get_status() == Infeasible);
 }
 
+TEST_CASE("Default node save uses original variable types for integrality infeasibility", "[basic][solver][branch-and-bound][node-info]") {
+    Env env;
+    Model original(env);
+    const auto integer = original.add_var(0., 10., Integer, 0., "integer");
+    const auto binary = original.add_var(0., 1., Binary, 0., "binary");
+    const auto continuous = original.add_var(0., 10., Continuous, 0., "continuous");
+
+    Model relaxation = original.copy();
+    relaxation.set_var_type(integer, Continuous);
+    relaxation.set_var_type(binary, Continuous);
+    relaxation.add_ctr(integer == 2.25);
+    relaxation.add_ctr(binary == 0.8);
+    relaxation.add_ctr(continuous == 3.4);
+    relaxation.use(OPTIMIZER());
+    relaxation.optimize();
+    REQUIRE(relaxation.get_status() == Optimal);
+
+    DefaultNodeInfo info;
+    info.save(original, relaxation);
+    CHECK(info.sum_of_infeasibilities() == Catch::Approx(0.45));
+}
+
 template<class NodeSelectionRuleT, class BranchingRuleT>
 void solve_with_branch_and_bound(const NodeSelectionRuleT& t_node_selection, const BranchingRuleT& t_branching_rule) {
     Env env;
@@ -91,6 +115,9 @@ void solve_with_branch_and_bound(const NodeSelectionRuleT& t_node_selection, con
 
     CHECK(model.get_status() == Optimal);
     CHECK(model.get_best_obj() == Catch::Approx(-3.));
+    CHECK(model.get_var_primal(x[0]) == Catch::Approx(1.));
+    CHECK(model.get_var_primal(x[1]) == Catch::Approx(0.));
+    CHECK(model.get_var_primal(x[2]) == Catch::Approx(1.));
 }
 
 TEST_CASE("BranchAndBound runs with BestEstimate and default node information", "[basic][solver][branch-and-bound][best-estimate]") {

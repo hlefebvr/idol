@@ -21,11 +21,6 @@ namespace idol {
         Equal
     };
 
-    enum ObjectiveSense : int {
-        Minimize,
-        Maximize
-    };
-
     static std::ostream &operator<<(std::ostream &t_os, VarType t_type) {
         switch (t_type) {
             case Continuous:
@@ -47,17 +42,6 @@ namespace idol {
                 return t_os << ">=";
             case Equal:
                 return t_os << "=";
-            default:;
-        }
-        throw Exception("Enum out of bounds.");
-    }
-
-    static std::ostream &operator<<(std::ostream &t_os, ObjectiveSense t_type) {
-        switch (t_type) {
-            case Minimize:
-                return t_os << "Minimize";
-            case Maximize:
-                return t_os << "Maximize";
             default:;
         }
         throw Exception("Enum out of bounds.");

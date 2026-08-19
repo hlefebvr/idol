@@ -52,7 +52,6 @@ protected:
     std::variant<IloSOS1, IloSOS2> hook_add(const SOSCtr& t_ctr) override;
     void hook_update(const Var& t_var) override;
     void hook_update(const Ctr& t_ctr) override;
-    void hook_update_objective_sense() override;
     void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) override;
     void hook_update_objective() override;
     void hook_update_rhs() override;

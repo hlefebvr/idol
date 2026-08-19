@@ -146,10 +146,6 @@ void idol::Optimizers::Bilevel::MibS::set_solution_index(unsigned int t_index) {
     throw Exception("Solution index out of bounds.");
 }
 
-void idol::Optimizers::Bilevel::MibS::update_obj_sense() {
-    m_mibs.reset();
-}
-
 void idol::Optimizers::Bilevel::MibS::update_obj() {
     m_mibs.reset();
 }

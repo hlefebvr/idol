@@ -181,7 +181,7 @@ idol::Optimizers::GLPK::DynamicLib& idol::Optimizers::GLPK::get_dynamic_lib(bool
 
 void idol::Optimizers::GLPK::hook_build() {
 
-    hook_update_objective_sense();
+    get_dynamic_lib().glp_set_obj_dir(m_model, GLP_MIN);
     set_objective_as_updated();
     set_rhs_as_updated();
 
@@ -336,11 +336,6 @@ int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
     delete[] coefficients;
 
     return index;
-}
-
-void idol::Optimizers::GLPK::hook_update_objective_sense() {
-    auto& lib = get_dynamic_lib();
-    lib.glp_set_obj_dir(m_model, parent().get_obj_sense() == Minimize ? GLP_MIN : GLP_MAX);
 }
 
 void idol::Optimizers::GLPK::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
@@ -972,6 +967,8 @@ idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t
         result.add_var(lb, ub, type, obj, LinExpr<Ctr>(),name);
     }
 
+    result.set_obj_const(lib.glp_get_obj_coef(t_model, 0));
+
     for (int i = 1 ; i <= n_constraints ; ++i) {
 
         const std::string name = lib.glp_get_row_name(t_model, i);
@@ -1024,7 +1021,7 @@ idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t
     }
 
     if (lib.glp_get_obj_dir(t_model) == GLP_MAX) {
-        result.set_obj_sense(Maximize);
+        result.set_obj_expr(-result.get_obj_expr());
     }
 
     return std::move(result);

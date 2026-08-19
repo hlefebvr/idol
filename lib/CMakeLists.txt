@@ -365,7 +365,7 @@ endif()
 
 set(USE_TSL OFF CACHE BOOL "Build idol with TSL for hash maps (https://github.com/Tessil/ordered-map and https://github.com/Tessil/sparse-map)")
 set_DIR_variable(tsl_sparse_map)
-set_DIR_variable(tsl_oredered_map)
+set_DIR_variable(tsl_ordered)
 if (${USE_TSL})
 
     find_package(TSL REQUIRED)
@@ -625,5 +625,9 @@ install(FILES
         "${idol_SOURCE_DIR}/lib/include/idol/mixed-integer/optimizers/wrappers/JuMP/module/module.h"
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/idol
         )
+
+install(DIRECTORY "${idol_SOURCE_DIR}/cmake/"
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/idol
+        FILES_MATCHING PATTERN "Find*.cmake")
 
 file(WRITE "${CMAKE_BINARY_DIR}/IDOL_VERSION" "${PROJECT_VERSION}")

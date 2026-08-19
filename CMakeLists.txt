@@ -28,9 +28,10 @@ if (${BUILD_EXAMPLES})
 endif()
 
 if (${BUILD_TESTS})
+    enable_testing()
     add_subdirectory(tests)
 elseif(${TEST_COVERAGE})
-    message(FATAL "Must have BUILD_TESTS=YES in order to build code coverage")
+    message(FATAL_ERROR "Must have BUILD_TESTS=YES in order to build code coverage")
 endif()
 
 add_custom_target(doc COMMAND ./build_docs.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/scripts)
