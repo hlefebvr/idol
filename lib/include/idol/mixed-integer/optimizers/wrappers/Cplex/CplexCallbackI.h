@@ -32,7 +32,7 @@ protected:
     void main() override;
 
     [[nodiscard]] CallbackI *duplicateCallback() const override {
-        throw Exception("Duplicate CplexUserCutCallbackI!");
+        return new CplexUserCutCallbackI(getEnv(), m_callback);
     }
 };
 
@@ -46,8 +46,7 @@ protected:
     void main() override;
 
     [[nodiscard]] CallbackI *duplicateCallback() const override {
-        std::cerr << "Warning: Cplex called duplicateCallback and it is not implemented..." << std::endl;
-        throw Exception("Duplicate CplexLazyConstraintCallbackI!");
+        return new CplexLazyConstraintCallbackI(getEnv(), m_callback);
     }
 };
 
@@ -61,8 +60,7 @@ protected:
     void main() override;
 
     [[nodiscard]] CallbackI *duplicateCallback() const override {
-        std::cerr << "Warning: Cplex called duplicateCallback and it is not implemented..." << std::endl;
-        throw Exception("Duplicate CplexBranchCallbackI!");
+        return new CplexBranchCallbackI(getEnv(), m_callback);
     }
 };
 

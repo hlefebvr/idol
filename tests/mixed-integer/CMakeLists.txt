@@ -9,7 +9,7 @@ function(idol_register_catch_test name target filter labels)
     else ()
         add_test(NAME ${name} COMMAND ${target} ${filter})
     endif ()
-    set_tests_properties(${name} PROPERTIES LABELS "${labels}")
+    set_tests_properties(${name} PROPERTIES LABELS "${labels}" TIMEOUT 60)
 endfunction()
 
 function(idol_solver_labels solver output)

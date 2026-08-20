@@ -36,12 +36,16 @@ idol::SolutionStatus idol::Optimizers::Osi::get_status() const {
         return Optimal;
     }
 
-    if (m_solver_interface->isProvenDualInfeasible()) {
-        return Unbounded;
-    }
-
     if (m_solver_interface->isProvenPrimalInfeasible()) {
         return Infeasible;
+    }
+
+    try {
+        if (m_solver_interface->isProvenDualInfeasible()) {
+            return Unbounded;
+        }
+    } catch (const CoinError&) {
+        // Some OSI backends do not implement this optional status query.
     }
 
     if (m_solver_interface->isPrimalObjectiveLimitReached()) {
@@ -282,7 +286,16 @@ int idol::Optimizers::Osi::hook_add(const idol::Ctr &t_ctr) {
 }
 
 void idol::Optimizers::Osi::hook_update_matrix(const idol::Ctr &t_ctr, const idol::Var &t_var, double t_constant) {
-    throw Exception("Not implemented Osi::hook_update_matrix");
+    const int index = lazy(t_ctr).impl();
+    m_solver_interface->deleteRows(1, &index);
+
+    for (auto& lazy_ctr : lazy_ctrs()) {
+        if (lazy_ctr.impl() > index) {
+            lazy_ctr.impl() -= 1;
+        }
+    }
+
+    lazy(t_ctr).impl() = hook_add(t_ctr);
 }
 
 void idol::Optimizers::Osi::hook_update() {
@@ -356,7 +369,9 @@ void idol::Optimizers::Osi::hook_update_objective() {
 }
 
 void idol::Optimizers::Osi::hook_update_rhs() {
-    throw Exception("Not implemented Osi::hook_update_rhs");
+    for (const auto& ctr : parent().ctrs()) {
+        hook_update(ctr);
+    }
 }
 
 void idol::Optimizers::Osi::hook_remove(const idol::Var &t_var) {
@@ -377,7 +392,7 @@ void idol::Optimizers::Osi::hook_remove(const idol::Ctr &t_ctr) {
 
     const int index = lazy(t_ctr).impl();
 
-    m_solver_interface->deleteCols(1, &index);
+    m_solver_interface->deleteRows(1, &index);
 
     for (auto& lazy : lazy_ctrs()) {
         if (lazy.impl() > index) {
@@ -399,7 +414,11 @@ void idol::Optimizers::Osi::set_param_presolve(bool t_value) {
 }
 
 double idol::Optimizers::Osi::get_var_reduced_cost(const idol::Var &t_var) const {
-    throw Exception("Not implemented get_var_reduced_cost");
+    const auto* reduced_costs = m_solver_interface->getReducedCost();
+    if (reduced_costs == nullptr) {
+        throw Exception("Reduced costs not available.");
+    }
+    return reduced_costs[lazy(t_var).impl()];
 }
 
 int idol::Optimizers::Osi::hook_add(const idol::QCtr &t_ctr) {

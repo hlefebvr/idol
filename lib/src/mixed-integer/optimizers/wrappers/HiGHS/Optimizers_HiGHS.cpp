@@ -627,6 +627,9 @@ double idol::Optimizers::HiGHS::get_best_obj() const {
 }
 
 double idol::Optimizers::HiGHS::get_best_bound() const {
+    if (m_solution_status == Optimal) {
+        return get_best_obj();
+    }
     auto& lib = get_dynamic_lib();
     double result;
     lib.Highs_getDoubleInfoValue(m_model, "mip_dual_bound", &result);

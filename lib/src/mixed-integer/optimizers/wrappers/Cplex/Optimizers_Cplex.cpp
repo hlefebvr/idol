@@ -318,9 +318,9 @@ void idol::Optimizers::Cplex::hook_write(const std::string &t_name) {
 void idol::Optimizers::Cplex::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
 
     const auto& var_impl = lazy(t_var).impl();
-    const auto& ctr_impl = lazy(t_ctr).impl();
+    auto& ctr_impl = lazy(t_ctr).impl();
 
-    throw Exception("Not implemented");
+    ctr_impl.setLinearCoef(var_impl, cplex_numeric(t_constant));
 
 }
 

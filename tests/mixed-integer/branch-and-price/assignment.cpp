@@ -20,6 +20,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 #include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
+#include <cstdlib>
 
 using namespace Catch::literals;
 using namespace idol;
@@ -42,11 +43,23 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
             std::make_pair<std::string, double>("GAP_instance1.txt", -22.),
             std::make_pair<std::string, double>("GAP_instance2.txt", -40.)
     );
+    if (const char* selected = std::getenv("IDOL_BAP_INSTANCE")) {
+        const int instance = std::atoi(selected);
+        const int current = filename == "GAP_instance0.txt" ? 0 : filename == "GAP_instance1.txt" ? 1 : 2;
+        if (current != instance) {
+            return;
+        }
+    }
     const auto integer_master_heuristic = GENERATE(false, true);
     const auto branching_on_sub_problem = GENERATE(true, false);
     const double smoothing_factor = GENERATE(0., .3, .5, .8);
     const auto subtree_depth = GENERATE(0, 1);
     const auto solver_index = GENERATE(0, 1, 2);
+    if (const char* selected = std::getenv("IDOL_BAP_SOLVER")) {
+        if (solver_index != static_cast<unsigned int>(std::atoi(selected))) {
+            return;
+        }
+    }
 
     const auto instance = read_instance("../../data/generalized-assignment-problem/" + filename);
     const unsigned int n_agents = instance.n_agents();
