@@ -11,4 +11,3 @@
 | \subpage test_wrapper_HiGHS      | \copybrief test_wrapper_HiGHS        |
 | \subpage test_wrapper_GLPK       | \copybrief test_wrapper_GLPK         |
 | \subpage test_wrapper_JuMP       | \copybrief test_wrapper_JuMP         |
-| \subpage test_wrapper_OsiSymphony| \copybrief test_wrapper_OsiSymphony  |
