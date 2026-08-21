@@ -40,9 +40,9 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     void update_sub_problems();
     void solve_sub_problems_in_parallel();
     void analyze_sub_problems();
-    void enrich_master();
+    bool enrich_master();
     bool check_numerical_stability();
-    void pool_clean_up();
+    bool pool_clean_up();
 
     void next_numerical_policy();
 
