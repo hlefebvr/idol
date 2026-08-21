@@ -428,7 +428,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::next_numeric
 
     if (m_numerical_policy == ColumnPoolCleanUp) {
         const unsigned int n_sub_problems = m_parent.m_formulation.n_sub_problems();
-        const auto& primals = save_primal(m_parent.m_formulation.master());
+        const auto& primals = PrimalPoint(); // save_primal(m_parent.m_formulation.master());
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
             m_parent.m_formulation.clean_up(i, .0, primals, false);
         }
