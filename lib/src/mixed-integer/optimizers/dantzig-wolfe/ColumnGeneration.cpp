@@ -58,9 +58,10 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
 
         if (check_stopping_criterion()) { break; }
 
-        pool_clean_up();
+        m_solve_dual_master = pool_clean_up();
 
-        enrich_master();
+        m_solve_dual_master |= enrich_master();
+        m_solve_dual_master &= !m_is_terminated;
 
     }
 
@@ -235,7 +236,7 @@ bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::gap_is_close
            || absolute_gap(m_best_bound, m_best_obj) < m_parent.get_tol_mip_absolute_gap();
 }
 
-void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_master() {
+bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_master() {
 
     auto& formulation = m_parent.m_formulation;
     const double tol_feasibility = m_parent.get_tol_feasibility();
@@ -303,16 +304,15 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
         m_status = Infeasible;
         m_reason = Proved;
         m_is_terminated = true;
-        return;
+        return false;
     }
 
     if (at_least_one_column_have_been_generated) {
         m_n_iterations_without_generating_column = 0;
-        m_solve_dual_master = true;
     } else {
         m_n_iterations_without_generating_column++;
-        m_solve_dual_master = false;
     }
+    return at_least_one_column_have_been_generated;
 }
 
 bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::check_numerical_stability() {
@@ -382,10 +382,11 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::initialize_s
 
 }
 
-void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_up() {
+bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_up() {
 
     auto& formulation = m_parent.m_formulation;
     const auto n_sub_problems = formulation.n_sub_problems();
+    const auto n_master_vars = formulation.master().vars().size();
 
     std::optional<PrimalPoint> primal_solution;
     const auto& get_master_primal = [&]() {
@@ -411,6 +412,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_u
         }
     }
 
+    return formulation.master().vars().size() != n_master_vars;
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::next_numerical_policy() {
@@ -428,7 +430,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::next_numeric
 
     if (m_numerical_policy == ColumnPoolCleanUp) {
         const unsigned int n_sub_problems = m_parent.m_formulation.n_sub_problems();
-        const auto& primals = save_primal(m_parent.m_formulation.master());
+        const auto& primals = PrimalPoint(); // save_primal(m_parent.m_formulation.master());
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
             m_parent.m_formulation.clean_up(i, .0, primals, false);
         }
