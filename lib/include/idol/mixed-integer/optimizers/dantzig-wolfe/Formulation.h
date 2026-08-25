@@ -80,13 +80,21 @@ public:
 
     void generate_column(unsigned int t_sub_problem_id, PrimalPoint t_generator);
 
+    void generate_ray(unsigned int t_sub_problem_id, PrimalPoint t_ray);
+
     double compute_reduced_cost(unsigned int t_sub_problem_id, const DualPoint& t_master_dual, const PrimalPoint& t_generator);
+
+    double compute_ray_reduced_cost(unsigned int t_sub_problem_id, const DualPoint& t_master_dual, const PrimalPoint& t_ray, bool t_use_farkas = false);
+
+    bool is_recession_direction(const PrimalPoint& t_ray, unsigned int t_sub_problem_id) const;
 
     const GenerationPattern<Var>& generation_pattern(const Var& t_var) const;
 
     double get_original_space_var_primal(const Var& t_var, const PrimalPoint& t_master_primal) const;
 
     PrimalPoint build_original_space_solution(const PrimalPoint& t_master_primal) const;
+
+    PrimalPoint build_original_space_ray(const PrimalPoint& t_master_ray) const;
 
     void update_var_lb(const Var& t_var, double t_lb, bool t_hard, bool t_remove_infeasible_columns);
 

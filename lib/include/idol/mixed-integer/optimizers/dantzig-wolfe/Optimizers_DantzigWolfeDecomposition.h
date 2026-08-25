@@ -30,6 +30,7 @@ class idol::Optimizers::DantzigWolfeDecomposition : public Algorithm {
     bool m_remove_infeasible_columns;
 
     std::optional<PrimalPoint> m_original_space_solution;
+    std::optional<PrimalPoint> m_original_space_ray;
 public:
     DantzigWolfeDecomposition(const Model& t_model,
                               idol::DantzigWolfe::Formulation&& t_formulation,

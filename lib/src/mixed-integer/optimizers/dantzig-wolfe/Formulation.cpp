@@ -285,6 +285,10 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
 void idol::DantzigWolfe::Formulation::generate_column(unsigned int t_sub_problem_id,
                                                       idol::PrimalPoint t_generator) {
 
+    if (t_generator.status() == Unbounded) {
+        throw Exception("Trying to generate a recession ray as an ordinary point column.");
+    }
+
     auto generated = m_generation_patterns[t_sub_problem_id](t_generator);
 
     auto alpha = m_master.add_var(0.,
@@ -302,9 +306,39 @@ void idol::DantzigWolfe::Formulation::generate_column(unsigned int t_sub_problem
 
 }
 
+void idol::DantzigWolfe::Formulation::generate_ray(unsigned int t_sub_problem_id, idol::PrimalPoint t_ray) {
+
+    if (t_ray.status() != Unbounded) {
+        throw Exception("Trying to generate a ray from a point which is not marked as unbounded.");
+    }
+
+    if (!is_recession_direction(t_ray, t_sub_problem_id)) {
+        throw Exception("Trying to generate an invalid recession direction.");
+    }
+
+    auto generated = m_generation_patterns[t_sub_problem_id].generate_direction(t_ray);
+
+    auto alpha = m_master.add_var(0.,
+                                  Inf,
+                                  Continuous,
+                                  std::move(generated.constant()),
+                                  std::move(generated.linear()));
+
+    auto& pool = m_pools[t_sub_problem_id];
+    auto& present_generators = m_present_generators[t_sub_problem_id];
+
+    pool.add(alpha, std::move(t_ray));
+    present_generators.emplace_back(alpha, pool.last_inserted());
+
+}
+
 double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_problem_id,
                                                              const idol::DualPoint &t_master_dual,
                                                              const idol::PrimalPoint &t_generator) {
+
+    if (t_generator.status() == Unbounded) {
+        throw Exception("Trying to compute an ordinary point reduced cost for a recession ray.");
+    }
 
     double result = 0.;
 
@@ -319,6 +353,30 @@ double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_
     }
 
     result += evaluate(generation_pattern.constant(), t_generator);
+
+    return result;
+
+}
+
+double idol::DantzigWolfe::Formulation::compute_ray_reduced_cost(unsigned int t_sub_problem_id,
+                                                                 const idol::DualPoint &t_master_dual,
+                                                                 const idol::PrimalPoint &t_ray,
+                                                                 bool t_use_farkas) {
+
+    const auto& generation_pattern = m_generation_patterns[t_sub_problem_id];
+    double result = 0.;
+
+    for (const auto& [ctr, coefficient] : generation_pattern.linear()) {
+        const double dual_val = t_master_dual.get(ctr);
+        if (is_zero(dual_val, Tolerance::Sparsity)) {
+            continue;
+        }
+        result -= dual_val * evaluate(coefficient.linear(), t_ray);
+    }
+
+    if (!t_use_farkas) {
+        result += evaluate(generation_pattern.constant().linear(), t_ray);
+    }
 
     return result;
 
@@ -393,6 +451,25 @@ idol::PrimalPoint idol::DantzigWolfe::Formulation::build_original_space_solution
     return result;
 }
 
+idol::PrimalPoint idol::DantzigWolfe::Formulation::build_original_space_ray(const PrimalPoint& t_master_ray) const {
+
+    PrimalPoint result = t_master_ray;
+    result.set_status(Unbounded);
+    result.set_reason(t_master_ray.reason());
+    result.set_objective_value(-Inf);
+
+    for (unsigned int sub_problem_id = 0 ; sub_problem_id < m_sub_problems.size(); ++sub_problem_id) {
+        for (const auto& [alpha, generator] : m_present_generators[sub_problem_id]) {
+            const double alpha_val = t_master_ray.get(alpha);
+            if (!is_zero(alpha_val, Tolerance::Sparsity)) {
+                result += alpha_val * generator;
+            }
+        }
+    }
+
+    return result;
+}
+
 void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, double t_lb, bool t_hard, bool t_remove_infeasible_columns) {
 
     const unsigned int sub_problem_id = t_var.get(m_decomposition);
@@ -407,6 +484,10 @@ void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, doub
     if (t_remove_infeasible_columns) {
         remove_column_if(sub_problem_id, [&](const Var &t_object, const PrimalPoint &t_generator)-> bool {
             const double value = t_generator.get(t_var);
+            if (t_generator.status() == Unbounded) {
+                const double ub = sub_problem(sub_problem_id).get_var_ub(t_var);
+                return is_neg_inf(t_lb) ? false : is_pos_inf(ub) ? value < -tol_feasibility : !is_zero(value, tol_feasibility);
+            }
             return !is(value, GreaterOrEqual, t_lb, tol_feasibility);
         });
     }
@@ -433,6 +514,10 @@ void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, doub
     if (t_remove_infeasible_columns) {
         remove_column_if(sub_problem_id, [&](const Var &t_object, const PrimalPoint &t_generator)-> bool {
             const double value = t_generator.get(t_var);
+            if (t_generator.status() == Unbounded) {
+                const double lb = sub_problem(sub_problem_id).get_var_lb(t_var);
+                return is_pos_inf(t_ub) ? false : is_neg_inf(lb) ? value > tol_feasibility : !is_zero(value, tol_feasibility);
+            }
             return !is(value, LessOrEqual, t_ub, tol_feasibility);
         });
     }
@@ -691,14 +776,21 @@ void idol::DantzigWolfe::Formulation::load_columns_from_pool() {
 
         for (const auto& [var, generator] : m_pools[sub_problem_id].values()) {
 
-            if (!m_master.has(var) && is_feasible(generator, sub_problem_id)) {
+            const bool is_ray = generator.status() == Unbounded;
+            const bool is_valid = is_ray ? is_recession_direction(generator, sub_problem_id) : is_feasible(generator, sub_problem_id);
+
+            if (!m_master.has(var) && is_valid) {
+
+                auto generated = is_ray ?
+                    m_generation_patterns[sub_problem_id].generate_direction(generator) :
+                    m_generation_patterns[sub_problem_id](generator);
 
                 m_master.add(var, TempVar(
                     0,
                     Inf,
                     Continuous,
-                    evaluate(m_generation_patterns[sub_problem_id].constant(), generator),
-                    evaluate(m_generation_patterns[sub_problem_id].linear(), generator)
+                    std::move(generated.constant()),
+                    std::move(generated.linear())
                 ));
                 m_present_generators[sub_problem_id].emplace_back(var, generator);
 
@@ -708,6 +800,36 @@ void idol::DantzigWolfe::Formulation::load_columns_from_pool() {
 
     }
 
+}
+
+bool idol::DantzigWolfe::Formulation::is_recession_direction(const idol::PrimalPoint &t_ray,
+                                                              unsigned int t_sub_problem_id) const {
+
+    const auto& model = m_sub_problems[t_sub_problem_id];
+    const double tolerance = m_original_formulation.optimizer().get_tol_feasibility();
+
+    for (const auto& var : model.vars()) {
+        const double lb = model.get_var_lb(var);
+        const double ub = model.get_var_ub(var);
+        const double value = t_ray.get(var);
+
+        if (!is_neg_inf(lb) && !is_pos_inf(ub)) {
+            if (!is_zero(value, tolerance)) { return false; }
+        } else if (!is_neg_inf(lb)) {
+            if (value < -tolerance) { return false; }
+        } else if (!is_pos_inf(ub)) {
+            if (value > tolerance) { return false; }
+        }
+    }
+
+    for (const auto& ctr : model.ctrs()) {
+        const double lhs = evaluate(model.get_ctr_row(ctr), t_ray);
+        if (!is(lhs, model.get_ctr_type(ctr), 0., tolerance)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 bool

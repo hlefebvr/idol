@@ -29,6 +29,10 @@ class idol::Heuristics::IntegerMaster : public BranchAndBoundCallbackFactory<Nod
 public:
     IntegerMaster() = default;
 
+    [[nodiscard]] static VarType generator_type(const PrimalPoint& t_generator) {
+        return t_generator.status() == Unbounded ? Integer : Binary;
+    }
+
     IntegerMaster(IntegerMaster&&) noexcept = default;
 
     IntegerMaster& operator=(const IntegerMaster&) = delete;
@@ -198,7 +202,11 @@ void idol::Heuristics::IntegerMaster<NodeInfoT>::Strategy::operator()(CallbackEv
     // Here, we add all columns currently present in the relaxation
     for (unsigned int k = 0 ; k < n_sub_problems ; ++k) {
         for (const auto& [var, col] : formulation.present_generators(k)) {
-            dw.formulation().generate_column(k, col);
+            if (col.status() == Unbounded) {
+                dw.formulation().generate_ray(k, col);
+            } else {
+                dw.formulation().generate_column(k, col);
+            }
         }
     }
 
@@ -206,7 +214,7 @@ void idol::Heuristics::IntegerMaster<NodeInfoT>::Strategy::operator()(CallbackEv
     if (m_integer_columns) {
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
             for (const auto &[alpha, generator]: dw.formulation().present_generators(i)) {
-                dw.formulation().master().set_var_type(alpha, Binary);
+                dw.formulation().master().set_var_type(alpha, IntegerMaster<NodeInfoT>::generator_type(generator));
             }
         }
     }

@@ -18,6 +18,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     m_status = Loaded;
     m_reason = NotSpecified;
     m_master_dual_solution.reset();
+    m_master_primal_solution.reset();
+    m_master_primal_ray.reset();
+    m_pricing_dual_solution.reset();
     m_iteration_count = 0;
     m_n_generated_columns = 0;
     m_solve_dual_master = true;
@@ -25,6 +28,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     m_best_obj = +Inf;
     m_is_terminated = false;
     m_current_iteration_is_using_farkas = false;
+    m_force_raw_pricing = false;
     m_numerical_policy = Default;
     m_n_iterations_without_generating_column = 0;
     initialize_sub_problem_phases();
@@ -81,6 +85,13 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 
     master.optimize();
 
+    if (!m_use_farkas_for_infeasibility &&
+        (master.get_status() == Unbounded || master.get_status() == InfOrUnbnd)) {
+        master.optimizer().set_param_infeasible_or_unbounded_info(true);
+        master.optimize();
+        master.optimizer().set_param_infeasible_or_unbounded_info(false);
+    }
+
     const bool save_dual_solution = m_iteration_count < parent().get_param_iteration_limit();
 
     const auto status = master.get_status();
@@ -105,6 +116,10 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
     m_status = status;
     m_reason = master.get_reason();
 
+    if (m_status == Unbounded) {
+        m_master_primal_ray = save_ray(master);
+    }
+
     if (m_status == Infeasible && m_use_farkas_for_infeasibility) {
 
         m_current_iteration_is_using_farkas = true;
@@ -126,12 +141,14 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::update_sub_p
 
     auto& formulation = m_parent.m_formulation;
     assert(m_master_dual_solution.has_value());
-    auto dual_values = m_current_iteration_is_using_farkas || m_numerical_policy >= NoDualSmoothing ?
+    m_current_pricing_uses_raw_dual = m_current_iteration_is_using_farkas || m_numerical_policy >= NoDualSmoothing || m_force_raw_pricing;
+    m_pricing_dual_solution = m_current_pricing_uses_raw_dual ?
         m_master_dual_solution.value() :
         m_parent.m_stabilization->compute_smoothed_dual_solution(m_master_dual_solution.value());
+    m_force_raw_pricing = false;
 
     for (unsigned int i = 0, n = formulation.n_sub_problems() ; i < n ; ++i) {
-        formulation.update_sub_problem_objective(i, dual_values, m_current_iteration_is_using_farkas);
+        formulation.update_sub_problem_objective(i, m_pricing_dual_solution.value(), m_current_iteration_is_using_farkas);
     }
 
 }
@@ -144,6 +161,11 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_sub_pr
     for (auto& sub_problem : m_parent.m_formulation.sub_problems()) {
         sub_problem.optimizer().set_param_time_limit(m_parent.get_remaining_time());
         sub_problem.optimize();
+        if (sub_problem.get_status() == Unbounded || sub_problem.get_status() == InfOrUnbnd) {
+            sub_problem.optimizer().set_param_infeasible_or_unbounded_info(true);
+            sub_problem.optimize();
+            sub_problem.optimizer().set_param_infeasible_or_unbounded_info(false);
+        }
     }
 
 }
@@ -241,6 +263,7 @@ bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
     auto& formulation = m_parent.m_formulation;
     const double tol_feasibility = m_parent.get_tol_feasibility();
     const double tol_red_cost = m_parent.get_tol_optimality();
+    const double ray_tolerance = m_current_iteration_is_using_farkas ? tol_feasibility : tol_red_cost;
 
     bool at_least_one_column_have_been_generated = false;
 
@@ -248,21 +271,64 @@ bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
         auto& model = formulation.sub_problem(i);
 
-        const bool is_unbounded = model.get_status() == Unbounded;
+        if (model.get_status() == Unbounded) {
 
-        if (is_unbounded) {
+            auto ray = save_ray(model);
+            if (!formulation.is_recession_direction(ray, i)) {
+                throw Exception("Pricing optimizer returned an invalid recession direction for sub-problem " + std::to_string(i) + ".");
+            }
 
-            // TODO: if unbounded, compute reduced cost differently and add column differently
+            if (m_parent.m_sub_problem_specifications[i].lower_multiplicity() <= tol_feasibility) {
+                throw Exception("Ray generation for an optional block with zero point multiplicity is not currently supported.");
+            }
 
-            throw Exception("Unbounded SP not implemented.");
+            assert(m_master_dual_solution.has_value());
+            double reduced_cost = formulation.compute_ray_reduced_cost(i,
+                                                                        m_master_dual_solution.value(),
+                                                                        ray,
+                                                                        m_current_iteration_is_using_farkas);
 
-            std::cout << "Let's read the unbounded ray!" << std::endl;
+            if (!m_current_pricing_uses_raw_dual && reduced_cost >= -ray_tolerance) {
+                m_force_raw_pricing = true;
+                formulation.update_sub_problem_objective(i,
+                                                         m_master_dual_solution.value(),
+                                                         m_current_iteration_is_using_farkas);
+                model.optimizer().set_param_time_limit(m_parent.get_remaining_time());
+                model.optimize();
+                if (model.get_status() == Unbounded || model.get_status() == InfOrUnbnd) {
+                    model.optimizer().set_param_infeasible_or_unbounded_info(true);
+                    model.optimize();
+                    model.optimizer().set_param_infeasible_or_unbounded_info(false);
+                }
 
-            auto generator = save_ray(model);
+                if (model.get_status() == Unbounded) {
+                    ray = save_ray(model);
+                    if (!formulation.is_recession_direction(ray, i)) {
+                        throw Exception("Pricing optimizer returned an invalid recession direction during raw-dual repricing for sub-problem " + std::to_string(i) + ".");
+                    }
+                    reduced_cost = formulation.compute_ray_reduced_cost(i,
+                                                                         m_master_dual_solution.value(),
+                                                                         ray,
+                                                                         m_current_iteration_is_using_farkas);
+                }
+            }
 
-            std::cout << generator << std::endl;
+            if (model.get_status() == Unbounded) {
+                if (reduced_cost >= -ray_tolerance) {
+                    throw Exception("Raw-dual pricing is unbounded but its returned ray does not have negative directional reduced cost for sub-problem " + std::to_string(i) + ".");
+                }
+                formulation.generate_ray(i, std::move(ray));
+                at_least_one_column_have_been_generated = true;
+                ++m_n_generated_columns;
+                continue;
+            }
 
-            continue;
+            if (const auto status = model.get_status(); status != Optimal && status != Feasible) {
+                m_status = status;
+                m_reason = model.get_reason();
+                m_is_terminated = true;
+                continue;
+            }
         }
 
         if (m_current_iteration_is_using_farkas) {
@@ -276,7 +342,7 @@ bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
                 continue;
 
             }
-
+            continue;
         }
 
         const auto n_solutions = model.get_n_solutions();

@@ -43,6 +43,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::hook_before_optimize() {
     set_best_bound(-Inf);
     set_best_obj(+Inf);
     m_original_space_solution.reset();
+    m_original_space_ray.reset();
 
     auto& master = m_formulation.master();
 
@@ -153,7 +154,17 @@ double idol::Optimizers::DantzigWolfeDecomposition::get_var_primal(const idol::V
 }
 
 double idol::Optimizers::DantzigWolfeDecomposition::get_var_ray(const idol::Var &t_var) const {
-    throw Exception("Not implemented get_var_ray");
+
+    if (get_status() != Unbounded) {
+        throw Exception("Ray not available.");
+    }
+
+    if (!m_original_space_ray) {
+        const_cast<DantzigWolfeDecomposition*>(this)->m_original_space_ray =
+            m_formulation.build_original_space_ray(m_strategy->ray());
+    }
+
+    return m_original_space_ray->get(t_var);
 }
 
 double idol::Optimizers::DantzigWolfeDecomposition::get_ctr_dual(const idol::Ctr &t_ctr) const {

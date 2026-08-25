@@ -21,7 +21,9 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     SolutionStatus m_status = Loaded;
     SolutionReason m_reason = NotSpecified;
     std::optional<PrimalPoint> m_master_primal_solution;
+    std::optional<PrimalPoint> m_master_primal_ray;
     std::optional<DualPoint> m_master_dual_solution;
+    std::optional<DualPoint> m_pricing_dual_solution;
     std::vector<DantzigWolfe::SubProblem::PhaseId> m_sub_problems_phases;
     double m_best_obj = -Inf;
     double m_best_bound = +Inf;
@@ -32,6 +34,8 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     bool m_solve_dual_master = false;
     bool m_is_terminated = false;
     bool m_current_iteration_is_using_farkas = false;
+    bool m_current_pricing_uses_raw_dual = true;
+    bool m_force_raw_pricing = false;
 
     void initialize_sub_problem_phases();
     void solve_dual_master();
@@ -68,6 +72,8 @@ public:
     [[nodiscard]] double best_bound() const { return m_best_bound; }
 
     [[nodiscard]] const PrimalPoint& primal_solution() const { return m_master_primal_solution.value(); }
+
+    [[nodiscard]] const PrimalPoint& ray() const { return m_master_primal_ray.value(); }
 
     void set_best_bound_stop(double t_best_bound_stop) { m_best_bound_stop = t_best_bound_stop; }
 

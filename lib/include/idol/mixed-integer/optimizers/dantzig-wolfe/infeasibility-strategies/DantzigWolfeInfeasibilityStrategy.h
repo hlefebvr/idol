@@ -26,6 +26,7 @@ public:
         std::optional<double> m_best_obj;
         std::optional<double> m_best_bound;
         std::optional<PrimalPoint> m_primal_solution;
+        std::optional<PrimalPoint> m_ray;
     public:
         virtual ~Strategy() = default;
 
@@ -40,12 +41,18 @@ public:
         double best_bound() const { return m_best_bound.value(); }
 
         const PrimalPoint& primal_solution() const;
+
+        const PrimalPoint& ray() const;
     protected:
         void set_status(SolutionStatus t_status) { m_status = t_status; }
 
         void set_reason(SolutionReason t_reason) { m_reason = t_reason; }
 
         void set_primal_solution(PrimalPoint t_solution) { m_primal_solution = std::move(t_solution); }
+
+        void set_ray(PrimalPoint t_ray) { m_ray = std::move(t_ray); }
+
+        void reset_ray() { m_ray.reset(); }
 
         void set_best_obj(double t_best_obj) { m_best_obj = t_best_obj; }
 

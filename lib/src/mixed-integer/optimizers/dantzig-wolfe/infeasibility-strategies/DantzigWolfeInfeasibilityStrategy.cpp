@@ -11,3 +11,12 @@ const idol::PrimalPoint &idol::DantzigWolfe::InfeasibilityStrategyFactory::Strat
 
     return m_primal_solution.value();
 }
+
+const idol::PrimalPoint &idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::ray() const {
+
+    if (!m_ray.has_value()) {
+        throw Exception("Ray not accessible.");
+    }
+
+    return m_ray.value();
+}

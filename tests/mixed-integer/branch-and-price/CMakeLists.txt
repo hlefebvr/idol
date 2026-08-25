@@ -15,3 +15,10 @@ foreach (OPTIMIZER ${IDOL_TEST_SOLVERS})
         endforeach ()
     endforeach ()
 endforeach ()
+
+if ("Gurobi" IN_LIST IDOL_TEST_SOLVERS)
+    idol_add_catch_executable(test_bap_recession_rays_Gurobi recession-rays.cpp)
+    idol_register_catch_test(bap.Gurobi.recession_rays test_bap_recession_rays_Gurobi ""
+            "branch-and-price;ray;Gurobi;commercial-solver"
+    )
+endif ()

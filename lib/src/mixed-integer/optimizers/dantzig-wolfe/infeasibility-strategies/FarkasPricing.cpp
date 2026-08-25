@@ -6,6 +6,8 @@
 
 void idol::DantzigWolfe::FarkasPricing::Strategy::execute(Optimizers::DantzigWolfeDecomposition &t_parent) {
 
+    reset_ray();
+
     Optimizers::DantzigWolfeDecomposition::ColumnGeneration column_generation(t_parent, true, t_parent.get_param_best_bound_stop());
     column_generation.execute();
 
@@ -18,7 +20,8 @@ void idol::DantzigWolfe::FarkasPricing::Strategy::execute(Optimizers::DantzigWol
 
     if (status == Optimal || status == Feasible) {
         set_primal_solution(column_generation.primal_solution());
+    } else if (status == Unbounded) {
+        set_ray(column_generation.ray());
     }
 
 }
-

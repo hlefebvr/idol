@@ -16,6 +16,8 @@ idol::DantzigWolfe::ArtificialCosts::Strategy::Strategy(double t_initial_costs,
 
 void idol::DantzigWolfe::ArtificialCosts::Strategy::execute(Optimizers::DantzigWolfeDecomposition &t_parent) {
 
+    reset_ray();
+
     auto& formulation = t_parent.formulation();
     const double tol_feasibility = t_parent.get_tol_feasibility();
 
@@ -47,6 +49,8 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::execute(Optimizers::DantzigW
 
     if (status == Optimal || status == Feasible) {
         set_primal_solution(column_generation.primal_solution());
+    } else if (status == Unbounded) {
+        set_ray(column_generation.ray());
     }
 
 }

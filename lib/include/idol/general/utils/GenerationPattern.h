@@ -53,6 +53,26 @@ public:
         return result;
     }
 
+    [[nodiscard]] double generate_directional_constant(const Point<CoefficientT>& t_direction) const {
+        return evaluate(m_constant.linear(), t_direction);
+    }
+
+    [[nodiscard]] LinExpr<KeyT> generate_directional_linear(const Point<CoefficientT>& t_direction) const {
+        LinExpr<KeyT> result;
+
+        for (const auto& [key, value] : m_linear) {
+            result += key * evaluate(value.linear(), t_direction);
+        }
+
+        return result;
+    }
+
+    [[nodiscard]] AffExpr<KeyT> generate_direction(const Point<CoefficientT>& t_direction) const {
+        AffExpr<KeyT> result(generate_directional_linear(t_direction));
+        result.constant() = generate_directional_constant(t_direction);
+        return result;
+    }
+
     GenerationPattern operator+=(const AffExpr<CoefficientT>& t_other) {
         m_constant += t_other.constant();
         for (const auto& [var, coeff] : t_other.linear()) {
