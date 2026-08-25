@@ -1,0 +1,463 @@
+<!-- HTML header for doxygen 1.9.1-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.16.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>idol: idol::Optimizers::LambdaOptimizer Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+<script>
+    $(document).ready(() => {
+        var typed = new Typed('#cli', {
+            strings: ["<pre>idol_cl bilevel solve model.mps \\ \n   --aux follower.aux \\ \n   --method KKT_SOS1 \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl bilevel solve model.mps \\ \n   --aux follower.aux \\ \n   --method MibS \\ \n   --time-limit 300</pre>",
+                      "<pre>idol_cl bilevel solve model.mps \\ \n   --aux follower.aux \\ \n   --method KKT_BigM \\ \n   --bound-provider bounds.txt</pre>",
+                      "<pre>idol_cl milp solve model.mps \\ \n   --method Gurobi \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl robust solve model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG_Farkas \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl robust solve model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG_KKT_SOS1 \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl robust solve model.mps \\ \n   --aux stages.aux \\ \n   --uncertainty-param uncertainty.par \\ \n   --uncertainty-set gamma-3.mps \\ \n   --method CCG_MibS \\ \n   --time-limit 3600</pre>",
+                      "<pre>idol_cl milp solve model.mps \\ \n   --method HiGHS \\ \n   --time-limit 3600</pre>",
+            ],
+            showCursor: false,
+            loop: true,
+            loopCount: Infinity,
+            smartBackspace: true,
+            typeSpeed: 25,
+            backSpeed: 25,
+            backDelay: 7 * 1000,
+        });
+    })
+</script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-extra.css" rel="stylesheet" type="text/css"/>
+<!-- ... other metadata & script includes ... -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/firacode/fira-math@6.2.0/fira-math.css" rel="stylesheet">
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script>
+    $(document).ready(function() {
+        var $firstPara = $('.contents > .textblock > p:first-child');
+        var firstWord = $firstPara.text().trim().split(/\s+/)[0];
+        if (firstWord === 'Describes') {
+            $firstPara.prepend('<strong>Goal: </strong> ');
+        }
+        if ($("title").text() === "idol: Home") {
+            $("div.header").css("display", "none");
+        }
+    });
+    $(document).ready(function() {
+        // Toggle dropdown on click
+        $('.dropbtn').click(function(e) {
+            e.preventDefault();
+            $('.dropbtn').css("color", "")
+            $(this).attr('style', 'color: #2f42ff !important;');
+            // Close other dropdowns
+            $('.dropdown-content').not($(this).siblings('.dropdown-content')).slideUp(200);
+            // Toggle this dropdown
+            $(this).siblings('.dropdown-content').slideToggle(200);
+        });
+        // Close dropdowns if clicked outside
+        $(document).click(function(e) {
+            if(!$(e.target).closest('.dropdown').length) {
+                $('.dropbtn').css("color", "")
+                $('.dropdown-content').slideUp(200);
+            }
+        });
+    });
+</script>
+<!-- MATHJAX -->
+<script>
+window.MathJax = {
+    output: { font: 'mathjax-fira', scale: 1.1 }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="my-header">
+    <div class="header-inner">
+        <!-- Top row: logo, search, GitHub link -->
+        <div class="header-top">
+            <div class="header-left">
+                <a id="idol-logo" href="index.html">idol </a>
+            </div>
+            <div class="header-center">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Command-Line Interface</a>
+                        <ul class="dropdown-content">
+                            <li><a href="cli_installation.html">Installation</a></li>
+                            <li><a href="cli_tutorials.html">Tutorials</a></li>
+                            <!-- <li><a href="cli_instances.html">Instances</a></li> -->
+                            <li><a href="cli_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">C++ Library</a>
+                        <ul class="dropdown-content">
+                            <li><a href="lib_installation.html">Installation</a></li>
+                            <!-- <li><a href="#">Basics</a></li> -->
+                            <li><a href="lib_tutorials.html">Tutorials</a></li>
+                            <li><a href="examples.html">Examples</a></li>
+                            <li><a href="classes.html">API Reference</a></li>
+                            <li><a href="lib_troubleshooting.html">Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="https://github.com/hlefebvr/idol" target="_blank">
+                        GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link externalLinkIcon_usHj" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Generated by Doxygen 1.16.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>idol</b></li><li class="navelem"><b>Optimizers</b></li><li class="navelem"><a href="classidol_1_1Optimizers_1_1LambdaOptimizer.html">LambdaOptimizer</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Methods</a> &#124;
+<a href="#pro-methods">Protected Methods</a> &#124;
+<a href="#friends">Friends</a> &#124;
+<a href="classidol_1_1Optimizers_1_1LambdaOptimizer-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">idol::Optimizers::LambdaOptimizer Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="Optimizers__LambdaOptimizer_8h_source.html#l00019">19</a> of file <a class="el" href="Optimizers__LambdaOptimizer_8h_source.html">Optimizers_LambdaOptimizer.h</a>.</p>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Methods</h2></td></tr>
+<tr class="memitem:a257c7389532902981ad466d09cdaa894" id="r_a257c7389532902981ad466d09cdaa894"><td class="memItemLeft"><a id="a257c7389532902981ad466d09cdaa894" name="a257c7389532902981ad466d09cdaa894"></a>
+&#160;</td><td class="memItemRight"><b>LambdaOptimizer</b> (const Model &amp;t_model, const std::function&lt; void(LambdaContext &amp;)&gt; &amp;t_lambda)</td></tr>
+<tr class="memitem:ae8c506d4238a8f97416ef21b05f3143b" id="r_ae8c506d4238a8f97416ef21b05f3143b"><td class="memItemLeft"><a id="ae8c506d4238a8f97416ef21b05f3143b" name="ae8c506d4238a8f97416ef21b05f3143b"></a>
+std::string&#160;</td><td class="memItemRight"><b>name</b> () const override</td></tr>
+<tr class="memitem:a7d0445fb95167f3fa730bb2f0d474ebf" id="r_a7d0445fb95167f3fa730bb2f0d474ebf"><td class="memItemLeft"><a id="a7d0445fb95167f3fa730bb2f0d474ebf" name="a7d0445fb95167f3fa730bb2f0d474ebf"></a>
+void&#160;</td><td class="memItemRight"><b>set_var_primal</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var, double t_value)</td></tr>
+<tr class="memitem:a8a281ca0eca524b4888da0d08e56c090" id="r_a8a281ca0eca524b4888da0d08e56c090"><td class="memItemLeft"><a id="a8a281ca0eca524b4888da0d08e56c090" name="a8a281ca0eca524b4888da0d08e56c090"></a>
+double&#160;</td><td class="memItemRight"><b>get_var_primal</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) const override</td></tr>
+<tr class="memitem:ade4179cd5ac6904ef72d3fecde776022" id="r_ade4179cd5ac6904ef72d3fecde776022"><td class="memItemLeft"><a id="ade4179cd5ac6904ef72d3fecde776022" name="ade4179cd5ac6904ef72d3fecde776022"></a>
+double&#160;</td><td class="memItemRight"><b>get_var_reduced_cost</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) const override</td></tr>
+<tr class="memitem:ae9da4e9761596afded58f59e8c884fab" id="r_ae9da4e9761596afded58f59e8c884fab"><td class="memItemLeft"><a id="ae9da4e9761596afded58f59e8c884fab" name="ae9da4e9761596afded58f59e8c884fab"></a>
+double&#160;</td><td class="memItemRight"><b>get_var_ray</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) const override</td></tr>
+<tr class="memitem:a6f07644566ec6bb4ac27cf71bcbe3061" id="r_a6f07644566ec6bb4ac27cf71bcbe3061"><td class="memItemLeft"><a id="a6f07644566ec6bb4ac27cf71bcbe3061" name="a6f07644566ec6bb4ac27cf71bcbe3061"></a>
+double&#160;</td><td class="memItemRight"><b>get_ctr_dual</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) const override</td></tr>
+<tr class="memitem:aecbdb125c98901381f20a2c007f698ba" id="r_aecbdb125c98901381f20a2c007f698ba"><td class="memItemLeft"><a id="aecbdb125c98901381f20a2c007f698ba" name="aecbdb125c98901381f20a2c007f698ba"></a>
+double&#160;</td><td class="memItemRight"><b>get_ctr_farkas</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) const override</td></tr>
+<tr class="memitem:a1bd307c311d027df369527ebb264e471" id="r_a1bd307c311d027df369527ebb264e471"><td class="memItemLeft"><a id="a1bd307c311d027df369527ebb264e471" name="a1bd307c311d027df369527ebb264e471"></a>
+unsigned int&#160;</td><td class="memItemRight"><b>get_n_solutions</b> () const override</td></tr>
+<tr class="memitem:afa27f763a09eb25ed7810f1da74875c2" id="r_afa27f763a09eb25ed7810f1da74875c2"><td class="memItemLeft"><a id="afa27f763a09eb25ed7810f1da74875c2" name="afa27f763a09eb25ed7810f1da74875c2"></a>
+unsigned int&#160;</td><td class="memItemRight"><b>get_solution_index</b> () const override</td></tr>
+<tr class="memitem:aca1da2a76fe7439c2e5d990860ef4e0d" id="r_aca1da2a76fe7439c2e5d990860ef4e0d"><td class="memItemLeft"><a id="aca1da2a76fe7439c2e5d990860ef4e0d" name="aca1da2a76fe7439c2e5d990860ef4e0d"></a>
+SolutionStatus&#160;</td><td class="memItemRight"><b>get_status</b> () const override</td></tr>
+<tr class="memitem:ae7e31752554b7d0ec5f77aed4e0bc46c" id="r_ae7e31752554b7d0ec5f77aed4e0bc46c"><td class="memItemLeft"><a id="ae7e31752554b7d0ec5f77aed4e0bc46c" name="ae7e31752554b7d0ec5f77aed4e0bc46c"></a>
+SolutionReason&#160;</td><td class="memItemRight"><b>get_reason</b> () const override</td></tr>
+<tr class="memitem:a0f622ce8c74e2207050de31504c34ada" id="r_a0f622ce8c74e2207050de31504c34ada"><td class="memItemLeft"><a id="a0f622ce8c74e2207050de31504c34ada" name="a0f622ce8c74e2207050de31504c34ada"></a>
+double&#160;</td><td class="memItemRight"><b>get_best_obj</b> () const override</td></tr>
+<tr class="memitem:a4e6c0365b139516387e991f8e798e65e" id="r_a4e6c0365b139516387e991f8e798e65e"><td class="memItemLeft"><a id="a4e6c0365b139516387e991f8e798e65e" name="a4e6c0365b139516387e991f8e798e65e"></a>
+double&#160;</td><td class="memItemRight"><b>get_best_bound</b> () const override</td></tr>
+<tr class="memitem:a424a643bf34fdc305e5e14c32c60ebde" id="r_a424a643bf34fdc305e5e14c32c60ebde"><td class="memItemLeft"><a id="a424a643bf34fdc305e5e14c32c60ebde" name="a424a643bf34fdc305e5e14c32c60ebde"></a>
+double&#160;</td><td class="memItemRight"><b>get_relative_gap</b> () const override</td></tr>
+<tr class="memitem:ad65545801432ff973e15a47da2cb230e" id="r_ad65545801432ff973e15a47da2cb230e"><td class="memItemLeft"><a id="ad65545801432ff973e15a47da2cb230e" name="ad65545801432ff973e15a47da2cb230e"></a>
+double&#160;</td><td class="memItemRight"><b>get_absolute_gap</b> () const override</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Methods</h2></td></tr>
+<tr class="memitem:a676bf5a8c6d0fb28a22e88902bfd8635" id="r_a676bf5a8c6d0fb28a22e88902bfd8635"><td class="memItemLeft"><a id="a676bf5a8c6d0fb28a22e88902bfd8635" name="a676bf5a8c6d0fb28a22e88902bfd8635"></a>
+void&#160;</td><td class="memItemRight"><b>add</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a62762bea48100b061fe443696781f11a" id="r_a62762bea48100b061fe443696781f11a"><td class="memItemLeft"><a id="a62762bea48100b061fe443696781f11a" name="a62762bea48100b061fe443696781f11a"></a>
+void&#160;</td><td class="memItemRight"><b>add</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a297cec5c69cac09aea50f8541d75aea9" id="r_a297cec5c69cac09aea50f8541d75aea9"><td class="memItemLeft"><a id="a297cec5c69cac09aea50f8541d75aea9" name="a297cec5c69cac09aea50f8541d75aea9"></a>
+void&#160;</td><td class="memItemRight"><b>add</b> (const <a class="el" href="classidol_1_1QCtr.html">QCtr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:ae1245565687e86ab070e9538542678f1" id="r_ae1245565687e86ab070e9538542678f1"><td class="memItemLeft"><a id="ae1245565687e86ab070e9538542678f1" name="ae1245565687e86ab070e9538542678f1"></a>
+void&#160;</td><td class="memItemRight"><b>remove</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a2bd3548462182bcae7eaeeb9e53a2d1e" id="r_a2bd3548462182bcae7eaeeb9e53a2d1e"><td class="memItemLeft"><a id="a2bd3548462182bcae7eaeeb9e53a2d1e" name="a2bd3548462182bcae7eaeeb9e53a2d1e"></a>
+void&#160;</td><td class="memItemRight"><b>remove</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a066b7d1bcd5ae63155df70c751374c3c" id="r_a066b7d1bcd5ae63155df70c751374c3c"><td class="memItemLeft"><a id="a066b7d1bcd5ae63155df70c751374c3c" name="a066b7d1bcd5ae63155df70c751374c3c"></a>
+void&#160;</td><td class="memItemRight"><b>remove</b> (const <a class="el" href="classidol_1_1QCtr.html">QCtr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a385a933f5002a5c396ceca645b495190" id="r_a385a933f5002a5c396ceca645b495190"><td class="memItemLeft"><a id="a385a933f5002a5c396ceca645b495190" name="a385a933f5002a5c396ceca645b495190"></a>
+void&#160;</td><td class="memItemRight"><b>update</b> () override</td></tr>
+<tr class="memitem:a23eb37f458fdaa5e22d9106257fcc455" id="r_a23eb37f458fdaa5e22d9106257fcc455"><td class="memItemLeft"><a id="a23eb37f458fdaa5e22d9106257fcc455" name="a23eb37f458fdaa5e22d9106257fcc455"></a>
+void&#160;</td><td class="memItemRight"><b>write</b> (const std::string &amp;t_name) override</td></tr>
+<tr class="memitem:a894bb304e6c4d7c63f338792a10f897d" id="r_a894bb304e6c4d7c63f338792a10f897d"><td class="memItemLeft"><a id="a894bb304e6c4d7c63f338792a10f897d" name="a894bb304e6c4d7c63f338792a10f897d"></a>
+void&#160;</td><td class="memItemRight"><b>hook_optimize</b> () override</td></tr>
+<tr class="memitem:ab209a5ca691d5410dc83777ef9707959" id="r_ab209a5ca691d5410dc83777ef9707959"><td class="memItemLeft"><a id="ab209a5ca691d5410dc83777ef9707959" name="ab209a5ca691d5410dc83777ef9707959"></a>
+void&#160;</td><td class="memItemRight"><b>set_solution_index</b> (unsigned int t_index) override</td></tr>
+<tr class="memitem:afe53b86e206a18f379931cece5447773" id="r_afe53b86e206a18f379931cece5447773"><td class="memItemLeft"><a id="afe53b86e206a18f379931cece5447773" name="afe53b86e206a18f379931cece5447773"></a>
+void&#160;</td><td class="memItemRight"><b>update_obj_sense</b> () override</td></tr>
+<tr class="memitem:a5eeba7a0993c420b4b07efda0fe59bc8" id="r_a5eeba7a0993c420b4b07efda0fe59bc8"><td class="memItemLeft"><a id="a5eeba7a0993c420b4b07efda0fe59bc8" name="a5eeba7a0993c420b4b07efda0fe59bc8"></a>
+void&#160;</td><td class="memItemRight"><b>update_obj</b> () override</td></tr>
+<tr class="memitem:a9b9895c5446623bd8b23ddcb703a59ce" id="r_a9b9895c5446623bd8b23ddcb703a59ce"><td class="memItemLeft"><a id="a9b9895c5446623bd8b23ddcb703a59ce" name="a9b9895c5446623bd8b23ddcb703a59ce"></a>
+void&#160;</td><td class="memItemRight"><b>update_rhs</b> () override</td></tr>
+<tr class="memitem:a2b050498d86b9b5b4d093d7483af41aa" id="r_a2b050498d86b9b5b4d093d7483af41aa"><td class="memItemLeft"><a id="a2b050498d86b9b5b4d093d7483af41aa" name="a2b050498d86b9b5b4d093d7483af41aa"></a>
+void&#160;</td><td class="memItemRight"><b>update_obj_constant</b> () override</td></tr>
+<tr class="memitem:a3c66ee6d1ec513f109d0b84581f26b8b" id="r_a3c66ee6d1ec513f109d0b84581f26b8b"><td class="memItemLeft"><a id="a3c66ee6d1ec513f109d0b84581f26b8b" name="a3c66ee6d1ec513f109d0b84581f26b8b"></a>
+void&#160;</td><td class="memItemRight"><b>update_mat_coeff</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr, const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a362c7cc4b5ea1b3262a6022702841499" id="r_a362c7cc4b5ea1b3262a6022702841499"><td class="memItemLeft"><a id="a362c7cc4b5ea1b3262a6022702841499" name="a362c7cc4b5ea1b3262a6022702841499"></a>
+void&#160;</td><td class="memItemRight"><b>update_ctr_type</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a65418afc9093c1faf43cf3bf7f2b3627" id="r_a65418afc9093c1faf43cf3bf7f2b3627"><td class="memItemLeft"><a id="a65418afc9093c1faf43cf3bf7f2b3627" name="a65418afc9093c1faf43cf3bf7f2b3627"></a>
+void&#160;</td><td class="memItemRight"><b>update_ctr_rhs</b> (const <a class="el" href="classidol_1_1Ctr.html">Ctr</a> &amp;t_ctr) override</td></tr>
+<tr class="memitem:a1292125805848c66d32470e0a111b2f3" id="r_a1292125805848c66d32470e0a111b2f3"><td class="memItemLeft"><a id="a1292125805848c66d32470e0a111b2f3" name="a1292125805848c66d32470e0a111b2f3"></a>
+void&#160;</td><td class="memItemRight"><b>update_var_type</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:ae78989bf3e1ca9d88f85899541337cfc" id="r_ae78989bf3e1ca9d88f85899541337cfc"><td class="memItemLeft"><a id="ae78989bf3e1ca9d88f85899541337cfc" name="ae78989bf3e1ca9d88f85899541337cfc"></a>
+void&#160;</td><td class="memItemRight"><b>update_var_lb</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a0c79be17649637fe89dff319eda56663" id="r_a0c79be17649637fe89dff319eda56663"><td class="memItemLeft"><a id="a0c79be17649637fe89dff319eda56663" name="a0c79be17649637fe89dff319eda56663"></a>
+void&#160;</td><td class="memItemRight"><b>update_var_ub</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a72798671c5f8966b6b0b1805a817b1cf" id="r_a72798671c5f8966b6b0b1805a817b1cf"><td class="memItemLeft"><a id="a72798671c5f8966b6b0b1805a817b1cf" name="a72798671c5f8966b6b0b1805a817b1cf"></a>
+void&#160;</td><td class="memItemRight"><b>update_var_obj</b> (const <a class="el" href="classidol_1_1Var.html">Var</a> &amp;t_var) override</td></tr>
+<tr class="memitem:a53ef1b593a64a9bb5a79593963e02d1d" id="r_a53ef1b593a64a9bb5a79593963e02d1d"><td class="memItemLeft"><a id="a53ef1b593a64a9bb5a79593963e02d1d" name="a53ef1b593a64a9bb5a79593963e02d1d"></a>
+void&#160;</td><td class="memItemRight"><b>clear_solution</b> ()</td></tr>
+<tr class="memitem:a7827fa271c95cd5bfd474af2a702c094" id="r_a7827fa271c95cd5bfd474af2a702c094"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Algorithm.html#a7827fa271c95cd5bfd474af2a702c094">build</a> () override</td></tr>
+<tr class="memitem:afa4fa983d18213614037fa92484bf24c" id="r_afa4fa983d18213614037fa92484bf24c"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Algorithm.html#afa4fa983d18213614037fa92484bf24c">set_status</a> (SolutionStatus t_status)</td></tr>
+<tr class="memitem:a82ae81a413801e3467a528d6723ef98b" id="r_a82ae81a413801e3467a528d6723ef98b"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Algorithm.html#a82ae81a413801e3467a528d6723ef98b">set_reason</a> (SolutionReason t_reason)</td></tr>
+<tr class="memitem:a1a093633b2534aaea279a13506e15b94" id="r_a1a093633b2534aaea279a13506e15b94"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Algorithm.html#a1a093633b2534aaea279a13506e15b94">set_best_bound</a> (double t_value)</td></tr>
+<tr class="memitem:a42b635afff87af2e867b53c66bf5bfc5" id="r_a42b635afff87af2e867b53c66bf5bfc5"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="classidol_1_1Algorithm.html#a42b635afff87af2e867b53c66bf5bfc5">set_best_obj</a> (double t_value)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-friends" class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a7cf249d52b005ba74c709b5e0525ad4a" id="r_a7cf249d52b005ba74c709b5e0525ad4a"><td class="memItemLeft">class&#160;</td><td class="memItemRight"><a class="el" href="#a7cf249d52b005ba74c709b5e0525ad4a">idol::LambdaContext</a></td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Methods Documentation</h2>
+<a id="a7827fa271c95cd5bfd474af2a702c094" name="a7827fa271c95cd5bfd474af2a702c094"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7827fa271c95cd5bfd474af2a702c094">&#9670;&#160;</a></span>build()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void idol::Algorithm::build </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Algorithm_8h_source.html#l00021">21</a> of file <a class="el" href="Algorithm_8h_source.html">Algorithm.h</a>.</p>
+
+</div>
+</div>
+<a id="a1a093633b2534aaea279a13506e15b94" name="a1a093633b2534aaea279a13506e15b94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a093633b2534aaea279a13506e15b94">&#9670;&#160;</a></span>set_best_bound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void idol::Algorithm::set_best_bound </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Algorithm_8h_source.html#l00025">25</a> of file <a class="el" href="Algorithm_8h_source.html">Algorithm.h</a>.</p>
+
+</div>
+</div>
+<a id="a42b635afff87af2e867b53c66bf5bfc5" name="a42b635afff87af2e867b53c66bf5bfc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42b635afff87af2e867b53c66bf5bfc5">&#9670;&#160;</a></span>set_best_obj()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void idol::Algorithm::set_best_obj </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Algorithm_8h_source.html#l00026">26</a> of file <a class="el" href="Algorithm_8h_source.html">Algorithm.h</a>.</p>
+
+</div>
+</div>
+<a id="a82ae81a413801e3467a528d6723ef98b" name="a82ae81a413801e3467a528d6723ef98b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82ae81a413801e3467a528d6723ef98b">&#9670;&#160;</a></span>set_reason()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void idol::Algorithm::set_reason </td>
+          <td>(</td>
+          <td class="paramtype">SolutionReason</td>          <td class="paramname"><span class="paramname"><em>t_reason</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Algorithm_8h_source.html#l00024">24</a> of file <a class="el" href="Algorithm_8h_source.html">Algorithm.h</a>.</p>
+
+</div>
+</div>
+<a id="afa4fa983d18213614037fa92484bf24c" name="afa4fa983d18213614037fa92484bf24c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa4fa983d18213614037fa92484bf24c">&#9670;&#160;</a></span>set_status()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void idol::Algorithm::set_status </td>
+          <td>(</td>
+          <td class="paramtype">SolutionStatus</td>          <td class="paramname"><span class="paramname"><em>t_status</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span><span class="mlabel inherited">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Algorithm_8h_source.html#l00023">23</a> of file <a class="el" href="Algorithm_8h_source.html">Algorithm.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-related-members" id="doc-related-members"></a><h2 id="header-doc-related-members" class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a7cf249d52b005ba74c709b5e0525ad4a" name="a7cf249d52b005ba74c709b5e0525ad4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cf249d52b005ba74c709b5e0525ad4a">&#9670;&#160;</a></span>idol::LambdaContext</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classidol_1_1LambdaContext.html">idol::LambdaContext</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel friend">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Optimizers__LambdaOptimizer_8h_source.html#l00090">90</a> of file <a class="el" href="Optimizers__LambdaOptimizer_8h_source.html">Optimizers_LambdaOptimizer.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>
