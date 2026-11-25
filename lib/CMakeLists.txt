@@ -385,22 +385,10 @@ if (${USE_ROBINHOOD})
 endif()
 
 set(USE_CPLEX OFF CACHE BOOL "Build idol with CPLEX (https://www.ibm.com/analytics/cplex-optimizer)")
-set_DIR_variable(CPLEX)
-if ("${CPLEX_DIR}" STREQUAL "")
-    file(GLOB CPLEX_IN_OPT "/opt/ibm/ILOG/CPLEX_Studio*")
-    if(CPLEX_IN_OPT_LEN GREATER 0)
-        list(GET CPLEX_IN_OPT 0 CPLEX_IN_OPT)
-    endif ()
-    set(CPLEX_DIR "${CPLEX_IN_OPT}" CACHE STRING "Path to CPLEX" FORCE)
-endif()
 if (${USE_CPLEX})
-
-    find_package(CPLEX REQUIRED)
-    target_link_libraries(idol PUBLIC cplex)
-    target_compile_definitions(idol PUBLIC IDOL_USE_CPLEX)
     list(APPEND AVAILABLE_MILP_SOLVERS "Cplex")
-
 endif()
+target_link_libraries(idol PRIVATE ${CMAKE_DL_LIBS})
 
 #######################
 ## LOCAL-MIP LIBRARY ##

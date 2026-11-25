@@ -1,0 +1,298 @@
+IDOL — ORDERED DEVELOPMENT BACKLOG
+==================================
+
+Purpose: sequential library development by Codex or Claude. Striplib import
+is the first task because it enables an independently managed HPC campaign.
+Repository: https://github.com/hlefebvr/idol
+
+EXECUTION RULES
+---------------
+Read AGENTS.md, SKILLS.md and the relevant skills before each task.
+Work in numerical order, one focused task at a time. Inspect the current
+implementation first: an item may already be partially implemented.
+[ ] = pending; [D] = design proposal / maintainer approval required;
+[A] = audit first, not permission for a wholesale rewrite;
+[+] = additional proposed task. All tasks are initially pending.
+For [D], deliver a concrete proposal with public API examples, alternatives,
+mathematical invariants, migration impact and tests. Wait for approval before
+implementation. If blocked, record why; ask whether to proceed to independent
+items. Never silently skip prerequisites or change public APIs/defaults.
+Use small, explicit, pseudocode-like implementations; comments only where
+needed. Prefer incremental updates, partial invalidation, then lazy rebuild.
+Do not sacrifice clarity without significant measured performance benefit.
+
+For every task: reproduce the issue or establish a baseline, implement the
+smallest coherent change, add tests, run relevant available tests, document
+limitations and report the commit/revision, commands and actual results.
+Keep tests and examples in idol. HPC campaign design, implementation, execution,
+benchmark baselines, analysis and scientific validation are entirely outside
+the scope of this backlog and are managed independently in another repository.
+Do not create campaign specifications, handoff packages or HPC infrastructure,
+or wait for campaign results. Report only actual local/CI validation and record
+skipped tests explicitly.
+Do not weaken tests or use heuristic failure as proof of infeasibility.
+
+PHASE 1 — STRIPLIB IMPORT AND SOLUTION EXPORT (P0)
+-----------------------------------------
+
+01 [ ] Import Striplib instances into idol. START HERE.
+   Source: https://striplib.or.rwth-aachen.de/start/
+   Inspect the published format and representative files; implement a reader
+   using existing Model, Env and decomposition annotations. Preserve objective,
+   bounds, types, constraints, block membership and linking structure. Reuse
+   existing model readers where appropriate. Reject unsupported or malformed
+   input explicitly. Keep only small redistributable fixtures in idol; document
+   acquisition and citation of full instances. Provide an example demonstrating
+   import and solution with existing DantzigWolfeDecomposition and a compatible
+   master/pricing backend. Verify imported model against the source and compare
+   small instances with a direct solver. Do not wait for later CG refactoring.
+   Done: parser, tests, example, documentation and reproducible invocation.
+
+02 [ ] Add CLI --save-primal model.sol.
+   Write the Gurobi plain-text SOL format; verify its precise syntax against
+   official documentation. Export the original model's variable values, not
+   internal master columns. Handle no-incumbent cases explicitly, preserve
+   numerical precision, and test names, objective comments and file errors.
+   Use a reusable library helper if appropriate; integrate existing CLI paths.
+
+PHASE 2 — CORRECTNESS BEFORE ALGORITHMIC EXTENSIONS (P0)
+-------------------------------------------------------
+
+03 [ ] [D] Add Unknown solution status and define status/reason semantics.
+   Replace misleading Infeasible/TimeLimit when infeasibility is not proven.
+   Agree on the public status contract, including Feasible with incumbent,
+   Unknown without proof/incumbent, proven Infeasible, Unbounded, ambiguous
+   infeasible-or-unbounded, and loaded/not-solved states. Keep termination
+   reasons orthogonal. Audit enum values, serialization, printing, CLI, switch
+   statements and consumers. Preserve compatibility where possible.
+
+04 [ ] Standardize status and termination reason semantics across optimizers.
+   Depends on 03. Audit all solver wrappers and algorithms, especially nested
+   optimizers; cover time/iteration limits, interruption, numerical failures,
+   infeasibility proofs and early stop with/without incumbent. Test that bounds,
+   primal availability and certificates remain valid. Never infer infeasibility
+   from timeout, failure to find a solution or lack of a negative-cost column.
+
+05 [ ] Fix presolve being re-enabled after external parameter configuration.
+   Reproduce exact precedence through Env, factory, CLI/native parameters and
+   repeated solves; establish intended precedence before changing defaults.
+   Test explicit true/false and unset configurations across relevant wrappers.
+
+06 [ ] Audit parameter propagation to nested optimizers.
+   Check remaining time, threads, presolve, tolerances, logs, iteration limits
+   and objective/bound stopping conditions. Respect explicit child settings
+   subject to parent resource limits; do not oversubscribe CPUs. Check factory
+   cloning and Env defaults. Investigate apparent wrong member assignment in
+   Env::set_param_infeasible_or_unbounded_info and duplicate-check condition in
+   with_tol_integer; confirm on current code and add regression tests if present.
+
+07 [ ] Check lazy-cut separator for >= constraints.
+   Reproduce and fix sense/sign handling. Test <=, >= and equality where
+   supported, violated/nonviolated cuts, tolerance boundaries and equivalent
+   sign-reversed formulations across relevant callback implementations.
+
+08 [ ] Fix reduced-cost computation in CG and reduced-cost fixing accordingly.
+   Audit ColumnGeneration, Formulation and ReducedCostFixing, including dual
+   signs, objective constants, convexity/linking rows, stabilization and pricing
+   bounds. Distinguish original-variable reduced costs from master-column costs;
+   do not expose unsupported quantities as valid. Prove fixing is safe under
+   applicable assumptions and use valid bounds. Test against explicit full
+   master/direct LP and small integer enumeration; include negative objectives
+   and non-optimal pricing termination. Run small local Striplib regression tests.
+
+09 [ ] Test every solver wrapper against common interface contracts.
+   Reuse existing tests/mixed-integer/wrappers and tests/bilevel/wrappers.
+   Share applicable tests, not assumptions that all solvers support every
+   operation. Cover status/reason, bounds, dual/reduced-cost signs, Farkas/rays,
+   objective constants/sense, modifications, repeated solves and parameters.
+   Report unsupported capabilities and unavailable licenses separately from
+   failures. Audit CI's ignored wrapper failures; make real regressions visible.
+
+10 [ ] [+] Independent solution and certificate checks.
+   Start with primal feasibility/objective checks and LP dual/reduced-cost
+   consistency. Add ray/Farkas checks when conventions are established. Use
+   original model objects and configured tolerances; avoid relying on the
+   algorithm under test. Supply negative tests and a reusable library interface.
+
+PHASE 3 — RATIONALIZE CORE INFRASTRUCTURE (P1)
+--------------------------------------------
+
+11 [ ] Update lib/idolConfig.cmake.in for consistency.
+   Match lib/CMakeLists.txt, exported targets, dependency discovery and optional
+   solver configurations. Test build-tree and installed-package consumption as
+   applicable, with and without optional backends; use a minimal external
+   find_package(idol) example. Do not expose private build paths.
+
+12 [ ] [A] Audit memory management and propose improvements.
+   Review Env/object lifetimes, model copies/moves, factory cloning, callbacks,
+   optimizer ownership, native resources, exception safety and column storage.
+   Use ASan/UBSan and leak checks where available. Deliver findings by severity,
+   evidence and proposed localized fixes; no blanket smart-pointer migration.
+   Fix confirmed small defects separately; seek approval for ownership redesign.
+
+13 [ ] [D] Standardize incremental updates and state invalidation.
+   Inventory supported model modifications per optimizer. Prefer incremental
+   updates, then partial invalidation, then deferred full rebuild on demand.
+   Never reconstruct the entire model after every individual modification.
+   Preserve valid columns, cuts and solver state; invalidate stale solutions and
+   certificates. Define lifecycle contract and test batched changes, reoptimization,
+   repeated solves and removal. Coordinate with 17 and 19.
+
+14 [ ] Improve graceful interruption of external solvers.
+   Map termination requests to supported native mechanisms; verify that
+   interruption is safe, resources are released and incumbent/bound information
+   remains valid. Distinguish time limits from user interruption. Test repeated
+   optimize after cancellation; coordinate with 04 and 06.
+
+15 [ ] [D] Improve structured algorithm statistics.
+   Review existing logs and algorithm-specific counters. Propose a minimal
+   reusable statistics interface without coupling logs to algorithm logic.
+   Distinguish cumulative vs per-solve statistics, define units and reset
+   semantics; support machine-readable output. Keep logs optional.
+
+16 [ ] Implement column generation statistics.
+   Depends on 15. Collect iterations, master/pricing time, pricing calls,
+   generated/accepted/reused/deleted columns, pool sizes, bound progress and
+   termination details as available. Avoid expensive instrumentation by default.
+   Check consistency with small local tests.
+
+PHASE 4 — COLUMN GENERATION / BRANCH-AND-PRICE ARCHITECTURE (P1)
+--------------------------------------------------------------
+
+17 [ ] [D] Refactor column pool, column reuse and clean-up.
+   Review DantzigWolfe Formulation, ColumnGeneration and SubProblem. Define
+   column identity, ownership, active/inactive status, validity under branching,
+   reuse across nodes/iterations, eviction and regeneration. Discuss API and
+   interaction with Vanderbeck branching and incremental changes. Preserve
+   mathematical validity of bounds and feasibility; no eviction that prevents
+   necessary columns from being regenerated. Benchmark memory and time.
+
+18 [ ] Detect duplicate columns.
+   Depends on 17. Define equivalence per block and column kind, including
+   relevant coefficients, objective, point/ray distinction and branching
+   information. Avoid unsafe merging by approximate equality or identical
+   master coefficients alone if pricing semantics differ. Test duplicates,
+   near-duplicates, collisions and reuse after cleanup.
+
+19 [ ] [D] Assess whether branch-and-bound needs restructuring.
+   Audit current behavior of solving both child nodes when branching, node
+   lifecycle, relaxation evaluation, node selection, strong branching, callback
+   events and diving. Propose separation of node creation, evaluation and
+   processing, if warranted, to make diving natural and parallel execution
+   possible. Compare alternatives including retaining eager evaluation; quantify
+   costs, preserve valid global bounds and existing API where possible.
+   No parallel B&B implementation or wholesale rewrite without approval.
+   Implement only approved staged changes, with regression tests.
+
+20 [ ] [D] Implement Vanderbeck branching.
+   Discuss public API first, including generic branching decisions, pricing
+   compatibility and column validity. Specify mathematical assumptions and
+   original reference. Coordinate with 17-19; retain interchangeable branching
+   rules. Test exhaustive small examples, branch disjunction validity, existing
+   columns and newly generated columns, and full B&P on small Striplib instances.
+
+21 [ ] Export Dantzig-Wolfe reformulation following Striplib format.
+   Reuse the format knowledge from 01. Verify what Striplib actually represents;
+   distinguish annotated original model/decomposition from a restricted master
+   or full reformulation. If the format cannot express the requested object,
+   propose a representation rather than inventing an incompatible format.
+   Test import/export round trips where mathematically meaningful.
+
+PHASE 5 — ALGORITHMIC IMPROVEMENTS (P2)
+-------------------------------------
+
+22 [ ] Implement reliability branching.
+   Reuse current StrongBranching and PseudoCost strategies. Define reliability
+   thresholds, score computation, updates and evaluation budgets; handle failed
+   or interrupted child solves safely. Depends on any approved changes in 19.
+   Test against existing branching strategies on direct MILP and B&P examples.
+
+23 [ ] Implement diving heuristics.
+   Inspect existing Diver and heuristic callbacks first; avoid duplication.
+   Build on approved node lifecycle (19); define dive selection, termination,
+   restoration of state and submission of feasible original-model solutions.
+   No impact on exactness when heuristic fails.
+
+24 [ ] Implement additional dual stabilization strategies: box step, trust region.
+   Reuse existing stabilization interfaces where mathematically appropriate.
+   Specify exact algorithm, parameter updates and valid termination/bounds;
+   stabilized duals alone must not establish convergence incorrectly. Discuss
+   interface changes if required. Test unstabilized equivalence on small cases
+   and compare iteration counts/time on small local examples.
+
+25 [ ] [D] Implement parallel pricing.
+   Audit existing implementation for concurrency support. Assess Env and model
+   thread safety, independent solver instances, native licensing, resource
+   budgets, shared column pool access and deterministic result aggregation.
+   Provide serial fallback and cancellation propagation. Benchmark actual
+   speedup with equal CPU allocation; test correctness with multiple threads.
+   Do not assume Env is thread safe or change default parallelism unapproved.
+
+26 [ ] [A] Investigate presolve in column generation.
+   Reference: https://atoptima.github.io/Coluna.jl/latest/api/presolve/
+   Examine what Coluna does, existing idol presolvers, and which reductions
+   preserve decomposability, pricing and reconstruction of original solutions.
+   Separate original-model, master and subproblem presolve. Propose suitable
+   reductions and proof/test strategy before implementation. Do not copy code
+   without checking license or apply generic presolve blindly to CG.
+
+PHASE 6 — SOLVER CAPABILITIES AND CLI (P2)
+----------------------------------------
+
+27 [ ] [D] Implement IIS for Gurobi and other compatible solvers.
+   Propose a minimal solver-independent public representation of inconsistent
+   constraints and variable bounds (including applicable constraint types).
+   Distinguish infeasibility proof from incomplete IIS computation; document
+   supported models/backends and unavailable capabilities. Test known IIS,
+   redundant constraints, bounds and unsupported operations. Start with Gurobi.
+
+28 [ ] [D] Implement GLPK callbacks.
+   Reference: https://en.m.wikibooks.org/wiki/GLPK/Callback_functions
+   Verify against current GLPK API/manual. Map only supported events and
+   operations to existing generic callbacks; distinguish lazy constraints,
+   user cuts and heuristic solutions. Review ownership, native callback lifetime
+   and exception handling. Do not simulate unavailable features silently.
+   Reuse universal callback contract tests; document capability limitations.
+
+PHASE 7 — ROBUST OPTIMIZATION (P3)
+---------------------------------
+
+29 [ ] [D] Convert decision-dependent robust problems to bilevel problems or QIPs.
+   Reference: 'Solving decision-dependent robust problems as bilevel
+   optimization problems' (arXiv; verify exact paper/version).
+   Implement reusable library transformations before CLI integration, with
+   explicit assumptions, quantifier ordering and original-solution mapping.
+   Required CLI commands:
+     idol_cl robust convert model.lp --par uncertainty.par --unc uncertainty.lp --output bilevel
+     idol_cl robust convert model.lp --par uncertainty.par --unc uncertainty.lp --output qlp
+   Agree on output format, files/names and QIP/QLP conventions; reject unsupported
+   uncertainty structures. Test equivalent small problems against independent
+   enumeration/reference formulations, including infeasibility and bounds.
+
+30 [ ] [D] Implement finite adaptability / K-adaptability.
+   Support both idol BranchAndBound and direct Cplex use when mathematically
+   compatible. Reference: https://github.com/Subramanyam-Lab/KAdaptabilitySolver
+   Inspect existing ROCPP_KAdaptability integration to avoid duplicating it.
+   Study reference algorithm and licensing; propose common reusable components
+   and callback/branching requirements rather than two unrelated implementations.
+   Specify assumptions, K, bounds, exact vs heuristic guarantees and scenario
+   separation. Test K=1, small enumerated cases and cross-backend equivalence.
+   Depends on callback/lifecycle contracts and any required approved B&B changes.
+
+PHASE 8 — ORGANIZATION AND FINAL CONSOLIDATION (P3)
+-------------------------------------------------
+
+31 [ ] [D] Fix naming of optimizer folders.
+   Inventory current inconsistent folder and include naming; agree on canonical
+   scheme and migration. Preserve existing public include compatibility via
+   forwarding headers if approved. Update source, CMake, installed headers,
+   examples, documentation and CLI references. Keep this mechanical change
+   separate from behavior changes; test case-sensitive Linux and supported builds.
+
+32 [ ] [+] Consolidated local and CI regression validation.
+   Run all available applicable tests and examples, including small Striplib
+   regression fixtures and robust reference cases. Report failures, missing
+   backends, skipped tests and outstanding design decisions. Do not weaken tests.
+   This task does not include external experimental validation.
+
+END OF BACKLOG

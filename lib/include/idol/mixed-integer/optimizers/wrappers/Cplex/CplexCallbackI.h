@@ -1,126 +1,57 @@
-//
-// Created by henri on 10.04.25.
-//
+#ifndef IDOL_CPLEX_CALLBACK_I_H
+#define IDOL_CPLEX_CALLBACK_I_H
 
-#ifndef IDOL_CPLEXCALLBACKI_H
-#define IDOL_CPLEXCALLBACKI_H
-
-#ifdef IDOL_USE_CPLEX
+#include <exception>
+#include <list>
+#include <memory>
+#include <optional>
+#include <vector>
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 #include "idol/mixed-integer/optimizers/callbacks/Callback.h"
-#include <ilcplex/ilocplex.h>
+#include "idol/mixed-integer/optimizers/wrappers/Cplex/headers/header_cplex.h"
+
+namespace idol::Optimizers { class Cplex; }
 
 namespace idol {
-    namespace Optimizers {
-        class Cplex;
-        namespace impl {
-            class CplexUserCutCallbackI;
-            class CplexLazyConstraintCallbackI;
-            class CplexHeuristicCallbackI;
-            class CplexBranchCallbackI;
-        }
-    }
-    class CplexCallbackI;
+class CplexCallbackI final : public CallbackI {
+    Optimizers::Cplex& m_parent;
+    std::list<std::unique_ptr<Callback>> m_callbacks;
+    void* m_cbdata = nullptr;
+    int m_wherefrom = 0;
+    CallbackEvent m_event = NodeLoaded;
+    const double* m_callback_solution = nullptr;
+    std::optional<PrimalPoint> m_heuristic_solution;
+    double m_best_obj = Inf;
+    double m_best_bound = -Inf;
+    unsigned int m_node_count = 0;
+    volatile int m_terminate = 0;
+    bool m_added_cut = false;
+    std::exception_ptr m_exception;
+    void call(CallbackEvent);
+    void set_context(void*, int, CallbackEvent, const double* = nullptr);
+    void clear_context();
+    void add_cut(const TempCtr&, bool);
+public:
+    explicit CplexCallbackI(Optimizers::Cplex&);
+    void add_callback(Callback*);
+    void register_callbacks();
+    void rethrow_exception();
+    static int IDOL_CPXPUBLIC user_cut(CPXCENVptr, void*, int, void*, int*);
+    static int IDOL_CPXPUBLIC lazy_cut(CPXCENVptr, void*, int, void*, int*);
+    static int IDOL_CPXPUBLIC heuristic(CPXCENVptr, void*, int, void*, double*, double*, int*, int*);
+    static int IDOL_CPXPUBLIC info(CPXCENVptr, void*, int, void*);
+protected:
+    [[nodiscard]] const Model& original_model() const override;
+    void add_user_cut(const TempCtr&) override;
+    void add_lazy_cut(const TempCtr&) override;
+    void submit_heuristic_solution(PrimalPoint) override;
+    [[nodiscard]] PrimalPoint primal_solution() const override;
+    [[nodiscard]] const Timer& time() const override;
+    [[nodiscard]] double best_obj() const override;
+    [[nodiscard]] double best_bound() const override;
+    [[nodiscard]] unsigned int node_count() const override;
+    void terminate() override;
+};
 }
 
-class idol::Optimizers::impl::CplexUserCutCallbackI : public IloCplex::UserCutCallbackI {
-    CplexCallbackI *m_callback;
-public:
-    explicit CplexUserCutCallbackI(IloEnv t_env, CplexCallbackI *t_callback) : IloCplex::UserCutCallbackI(t_env), m_callback(t_callback) {}
-
-    using IloCplex::UserCutCallbackI::add;
-protected:
-    void main() override;
-
-    [[nodiscard]] CallbackI *duplicateCallback() const override {
-        return new CplexUserCutCallbackI(getEnv(), m_callback);
-    }
-};
-
-class idol::Optimizers::impl::CplexLazyConstraintCallbackI : public IloCplex::LazyConstraintCallbackI {
-    CplexCallbackI *m_callback = nullptr;
-public:
-    explicit CplexLazyConstraintCallbackI(IloEnv t_env, CplexCallbackI *t_callback) : IloCplex::LazyConstraintCallbackI(t_env), m_callback(t_callback) {}
-
-    using IloCplex::LazyConstraintCallbackI::add;
-protected:
-    void main() override;
-
-    [[nodiscard]] CallbackI *duplicateCallback() const override {
-        return new CplexLazyConstraintCallbackI(getEnv(), m_callback);
-    }
-};
-
-class idol::Optimizers::impl::CplexBranchCallbackI : public IloCplex::BranchCallbackI {
-    CplexCallbackI *m_callback = nullptr;
-public:
-    explicit CplexBranchCallbackI(IloEnv t_env, CplexCallbackI *t_callback) : IloCplex::BranchCallbackI(t_env), m_callback(t_callback) {}
-
-    using IloCplex::BranchCallbackI::makeBranch;
-protected:
-    void main() override;
-
-    [[nodiscard]] CallbackI *duplicateCallback() const override {
-        return new CplexBranchCallbackI(getEnv(), m_callback);
-    }
-};
-
-class idol::CplexCallbackI : public CallbackI {
-    Optimizers::Cplex &m_parent;
-    std::list<std::unique_ptr<Callback>> m_callbacks;
-    IloCplex::ControlCallbackI* m_caller = nullptr;
-
-    std::unique_ptr<Optimizers::impl::CplexUserCutCallbackI> m_user_cut_callback;
-    std::unique_ptr<Optimizers::impl::CplexLazyConstraintCallbackI> m_lazy_constraint_callback;
-    // std::unique_ptr<Optimizers::impl::CplexHeuristicCallbackI> m_heuristic_callback;
-    std::unique_ptr<Optimizers::impl::CplexBranchCallbackI> m_branch_callback;
-
-    Optimizers::impl::CplexUserCutCallbackI* create_user_cut_callback();
-    Optimizers::impl::CplexLazyConstraintCallbackI* create_lazy_constraint_callback();
-    Optimizers::impl::CplexHeuristicCallbackI* create_heuristic_callback();
-    Optimizers::impl::CplexBranchCallbackI* create_branch_callback();
-
-    std::optional<IloCplex::MIPCallbackI::NodeId> m_local_bounds_node_id;
-    std::vector<std::pair<Var, double>> m_local_lbs;
-    std::vector<std::pair<Var, double>> m_local_ubs;
-
-    IloRange cplex_temp_constr(const TempCtr &t_temp_ctr);
-public:
-    explicit CplexCallbackI(Optimizers::Cplex &t_parent);
-
-    void add_callback(Callback *t_callback);
-
-    void call(IloCplex::ControlCallbackI* t_caller, CallbackEvent t_event);
-
-    [[nodiscard]] const Model &original_model() const override;
-
-    void add_lazy_cut(const TempCtr &t_lazy_cut) override;
-
-    void add_user_cut(const TempCtr &t_user_cut) override;
-
-    void submit_heuristic_solution(PrimalPoint t_solution) override {}
-
-    [[nodiscard]] PrimalPoint primal_solution() const override;
-
-    [[nodiscard]] const Timer &time() const override;
-
-    [[nodiscard]] double best_obj() const override;
-
-    [[nodiscard]] double best_bound() const override;
-
-    [[nodiscard]] unsigned node_count() const override;
-
-    [[nodiscard]] double get_var_primal(const Var& t_var) const;
-    [[nodiscard]] double get_var_local_lb(const Var& t_var) const;
-    [[nodiscard]] double get_var_local_ub(const Var& t_var) const;
-    void set_var_local_lb(const Var& t_var, double t_bound);
-    void set_var_local_ub(const Var& t_var, double t_bound);
-
-public:
-    void terminate() override;
-
-    friend class idol::Optimizers::Cplex;
-    friend class idol::Optimizers::impl::CplexBranchCallbackI;
-};
-
 #endif
-#endif //IDOL_CPLEXCALLBACKI_H

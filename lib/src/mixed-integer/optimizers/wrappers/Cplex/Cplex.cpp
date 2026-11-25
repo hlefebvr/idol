@@ -6,8 +6,6 @@
 
 
 idol::Optimizer *idol::Cplex::create(const Model &t_model) const {
-#ifdef IDOL_USE_CPLEX
-
     auto* result = new Optimizers::Cplex(t_model, m_continuous_relaxation.has_value() && m_continuous_relaxation.value());
 
     for (auto& cb : m_callbacks) {
@@ -23,9 +21,6 @@ idol::Optimizer *idol::Cplex::create(const Model &t_model) const {
     }
 
     return result;
-#else
-    throw Exception("idol was not linked with Cplex.");
-#endif
 }
 
 idol::Cplex idol::Cplex::ContinuousRelaxation() {
@@ -76,12 +71,12 @@ idol::Cplex &idol::Cplex::with_continuous_relaxation_only(bool t_value) {
 }
 
 idol::Model idol::Cplex::read_from_file(idol::Env &t_env, const std::string &t_filename) {
-#if IDOL_USE_CPLEX
     return Optimizers::Cplex::read_from_file(t_env, t_filename);
-#else
-    throw Exception("idol was not linked with Cplex.");
-#endif
 }
+
+bool idol::Cplex::is_available() { return Optimizers::Cplex::is_available(); }
+
+std::string idol::Cplex::get_version() { return Optimizers::Cplex::get_version(); }
 
 idol::Cplex &idol::Cplex::with_lazy_cut(bool t_value) {
 

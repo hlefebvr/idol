@@ -10,6 +10,20 @@
 using namespace Catch::literals;
 using namespace idol;
 
+#ifdef WRAPPER_HAS_SOS
+TEST_CASE("MILP: SOS1 constraint", "[MILP]") {
+    Env env;
+    Model model(env);
+    const auto x = model.add_var(0, 1, Binary, -1, "x");
+    const auto y = model.add_var(0, 1, Binary, -1, "y");
+    model.add_sosctr(true, {x, y}, {1, 2});
+    model.use(OPTIMIZER());
+    model.optimize();
+    REQUIRE(model.get_status() == Optimal);
+    CHECK(model.get_best_obj() == -1_a);
+}
+#endif
+
 TEST_CASE("MILP: binary model has a unique optimum", "[MILP]") {
     // min -x-y-2z; x+2y+3z<=4, x+y>=1, x,y,z binary.
     // Unique optimum: (1,0,1), objective -3.
@@ -135,3 +149,15 @@ TEST_CASE("MILP: infeasible status", "[MILP]") {
     CHECK(model.get_status() == Infeasible);
     CHECK(is_pos_inf(model.get_best_obj()));
 }
+
+#ifdef WRAPPER_HAS_MILP_UNBOUNDED
+TEST_CASE("MILP: unbounded status", "[MILP]") {
+    Env env;
+    Model model(env);
+    model.add_var(0, Inf, Integer, -1, "x");
+    model.use(OPTIMIZER());
+    model.optimize();
+    CHECK(model.get_status() == Unbounded);
+    CHECK(is_neg_inf(model.get_best_obj()));
+}
+#endif

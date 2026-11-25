@@ -154,6 +154,48 @@ TEST_CASE("LP: unbounded status", "[LP]") {
     CHECK(is_neg_inf(model.get_best_obj()));
 }
 
+#ifdef WRAPPER_HAS_RAY
+TEST_CASE("LP: primal ray certifies unboundedness", "[LP]") {
+    Env env;
+    Model model(env);
+    const auto x = model.add_var(0, Inf, Continuous, -1, "x");
+    model.use(OPTIMIZER().with_infeasible_or_unbounded_info(true));
+    model.optimize();
+    REQUIRE(model.get_status() == Unbounded);
+    const double ray = model.get_var_ray(x);
+    CHECK(ray >= -1e-7);
+    CHECK(-ray < -1e-7);
+}
+#endif
+
+#ifdef WRAPPER_HAS_QUADRATIC
+TEST_CASE("LP: convex quadratic objective", "[LP]") {
+    Env env;
+    Model model(env);
+    const auto x = model.add_var(0, 4, Continuous, -4, "x");
+    model.set_obj_expr(x * x - 4 * x);
+    model.use(OPTIMIZER());
+    model.optimize();
+    REQUIRE(model.get_status() == Optimal);
+    CHECK(model.get_var_primal(x) == 2_a);
+    CHECK(model.get_best_obj() == -4_a);
+}
+
+#ifdef WRAPPER_HAS_QUADRATIC_CONSTRAINT
+TEST_CASE("LP: convex quadratic constraint", "[LP]") {
+    Env env;
+    Model model(env);
+    const auto x = model.add_var(0, 4, Continuous, -1, "x");
+    model.add_qctr(x * x - 4, LessOrEqual);
+    model.use(OPTIMIZER());
+    model.optimize();
+    REQUIRE(model.get_status() == Optimal);
+    CHECK(model.get_var_primal(x) == 2_a);
+    CHECK(model.get_best_obj() == -2_a);
+}
+#endif
+#endif
+
 TEST_CASE("LP: dual values follow idol row conventions", "[LP]") {
     // min x subject to x>=1 and x<=2. Duals are 1 and 0, respectively.
     Env env;

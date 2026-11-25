@@ -17,13 +17,6 @@ set(USE_LOCAL_MIP @USE_LOCAL_MIP@)
 
 find_dependency(OpenMP REQUIRED)
 
-if (@USE_CPLEX@)
-
-    set(CPLEX_DIR "@CPLEX_DIR@")
-    find_dependency(CPLEX REQUIRED)
-    add_compile_definitions(IDOL_USE_CPLEX)
-endif()
-
 if (USE_OSI_SYMPHONY)
 
     set(COIN_OR_DIR "@COIN_OR_DIR@")

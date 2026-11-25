@@ -1,249 +1,57 @@
-# AGENTS.md
+# idol — instructions for coding agents
 
-## Purpose
+## Mission and authority
 
-This repository is `idol`, a C++ framework for mathematical optimization, together with `idol_cl`, its command-line interface.
+idol is a C++20 framework for mathematical optimization. Its defining principles are interoperability and ease of use: independently implemented algorithms should compose whenever their mathematical contracts are compatible. The maintainer remains the architect. Prioritize mathematical correctness, readable code, compatibility and measured performance over speed of delivery. These instructions apply to new and modified code; existing code is evidence of conventions, not proof of correctness. Read `SKILLS.md` and the relevant skill before substantial changes. Inspect the actual checkout; paths and examples are starting points, not immutable specifications.
 
-For the work covered by these instructions, your role is **documentation implementer**. Extend and maintain the existing documentation accurately and conservatively.
+## Architecture
 
-Henri Lefebvre is the sole mathematical authority. Mathematical content, algorithmic choices, API design, and intended semantics are not yours to decide.
+- Use existing abstractions before inventing new ones. Distinguish complete optimizers, interchangeable strategies, mathematical transformations and utilities. A complete optimizer should be exposed through an `OptimizerFactory` and usable via `Model::use()` wherever mathematically compatible. Do not force a strategy or utility into an optimizer interface merely for uniformity.
+- Separate public factory configuration from model-bound execution state. Follow `OptimizerFactory`, `OptimizerFactoryWithDefaultParameters<CRTP>`, `Optimizer` and `Algorithm` as appropriate. Implement `create`, `clone` and copy/ownership behavior consistently; cloned configurations must not share unintended mutable state. Preserve fluent `with_...` methods and existing composition operators. Do not introduce a parallel optimizer framework.
+- Accept subordinate optimizers via factories, not hardcoded solver choices. Specify required capabilities (e.g. LP duals, Farkas certificates, integer solutions, callbacks) and reject unsupported combinations clearly. Solver-specific code belongs in wrappers or explicitly solver-specific components, not general algorithms. Examples may select a concrete solver.
+- Represent problem structure via annotations and existing descriptions, including Dantzig-Wolfe decomposition, `Bilevel::Description` and `Robust::Description`. Keep general algorithms independent of instance families. Use existing callbacks, branching/node selection rules, pricing, stabilization and separation extension points when applicable.
+- Keep public headers under `lib/include/idol/` and corresponding implementation under `lib/src/`, organized by domain. Preserve the public/implementation distinction and existing namespace conventions. Integrate new code into the actual CMake targets and relevant umbrella headers only when appropriate. Keep optional solver dependencies optional.
 
-## Authoritative Branches
+## Modeling, identity and lifetime
 
-- The most advanced development branch is `dev`.
-- All Codex work must be performed on a branch named `dev-ai`.
-- Never work directly on `dev`.
-- Never work on or base new work on `main`.
+- `Env` owns optimization objects and their versions; it must outlive models, annotations and object handles. Multiple models in the same environment can hold different versions of the same `Var`, `Ctr`, `QCtr` or `SOSCtr`. Preserve identity across copies, relaxations, and reformulations when appropriate. Do not use names or model-local indices as cross-model identities. Do not mix environments without an explicit valid mapping.
+- Read bounds, coefficients, types, rows, columns and objectives from the correct model, not from default object versions by accident. Use model APIs to mutate models so notifications and storage representations stay synchronized. Respect row/column storage and avoid unnecessary materialization of the minor representation.
+- Use existing expressions, points, annotations and containers when they fit; explicitly map newly introduced objects and translate results back to the parent model. Verify ownership and lifetime of model references, factories, callbacks and solver handles; use RAII and existing smart-pointer conventions. Respect existing raw-pointer factory interfaces while adopting ownership safely. Never retain references to temporary configuration objects.
 
-At the start of a normal task, verify only that the working branch is `dev-ai`.
-Assume the current `dev-ai` branch is the intended working baseline unless Henri
-Lefebvre says otherwise. Do not repeatedly compare `dev-ai` with `dev`, and do
-not fetch or synchronize `dev` unless Henri explicitly asks or resolving the
-branch state is genuinely required by the current task. Branch verification
-must not become a repeated workflow step.
+## Optimizer lifecycle and updates
 
-## Commits, Pushes, and Pull Requests
+- Implement the optimizer as a persistent model-bound object, not a one-shot solve function. Follow `build`, modification hooks, `update`, `hook_before_optimize`, `hook_optimize`, `hook_after_optimize` and `terminate` as appropriate. Respect repeated solves, model copies and factory reuse. Reset transient state, solution availability, termination flags and stale bounds appropriately.
+- Prefer incremental changes to affected internal representations. If that is impractical, invalidate only the affected state. If partial maintenance is excessively complex or costly, mark the full representation invalid and rebuild lazily on the next operation requiring it. Do not rebuild the entire representation on every individual modification. Coalesce changes where possible. Preserve columns, cuts, caches, warm starts and solver state only when still valid. If a modification is fundamentally unsupported, explicitly reject it; never silently ignore it.
+- Cover variable and constraint additions/removals, bound/type/objective/RHS/matrix/sense/constant changes and supported quadratic/SOS operations as relevant. Define behavior for unsupported model classes, edits and result queries. Do not return stale solutions or certificates after invalidation.
 
-Do not create commits, push branches, or open pull requests on your own.
+## Mathematical contracts
 
-After completing a task, leave the changes in the working tree, report exactly
-what changed, and wait for Henri Lefebvre to decide whether the changes should
-be committed, pushed, amended, or discarded. Only commit, push, or open a pull
-request when Henri explicitly asks for that action.
+- State the problem class, objective sense, assumptions, algorithm invariants, proof of valid bounds, termination criteria and exact/heuristic nature before implementing a substantial algorithm. Read the actual mathematical reference when available; identify the source and deviations. Do not invent missing steps or silently change the mathematical method.
+- An incumbent must be feasible for the parent/original problem within applicable tolerances. A bound must be valid for that problem, not just an internal master, restricted model, relaxation or heuristic subproblem. Correctly translate objective constants, signs, senses, variable/constraint mappings, duals, reduced costs, rays and certificates where supported.
+- For minimization, a feasible objective is an upper bound and a valid relaxation bound is a lower bound; reverse roles for maximization. Support both senses correctly or explicitly enforce and document restrictions. Distinguish lack of a solution from proven infeasibility, lack of a finite bound from proven unboundedness, and heuristic failure from a certificate. Never report `Optimal` without the applicable proof/tolerance criterion. Preserve valid incumbent/bound information on early termination, and map status and reason separately.
+- A restricted master objective is not automatically a global lower bound. Heuristic pricing failure does not certify column-generation convergence. A scenario subset does not certify robust feasibility; heuristic separation failure is not a proof. Bilevel optimality requires the stated follower semantics. Check these conditions when composing methods.
+- Use `idol::Inf` and `is_inf`, `is_pos_inf`, `is_neg_inf` rather than assuming IEEE infinity; avoid arithmetic on sentinel values that creates false finite bounds. Use configured feasibility, integrality, optimality and gap tolerances with existing helpers (`equals`, `is_zero`, `is_integer`, gap functions) where appropriate. Sparsity tolerance is not a feasibility or proof tolerance. Do not introduce magic epsilons or arbitrary big-M constants. Justify valid finite bounds and any numerical safeguards. Handle zero/negative objectives, degeneracy, scaling and nonfinite values explicitly.
+- Unsupported solution information must be rejected clearly, not fabricated. Check both availability and semantic validity of primal/dual/ray/Farkas information before consumption. Avoid using an absolute gap calculation to conceal crossed or invalid bounds.
 
-## Source-of-Truth Hierarchy
+## Configuration and resources
 
-When determining how idol currently behaves, use this authority order:
+- Preserve precedence: explicit factory settings override `Env` defaults when creating optimizer instances; runtime settings control the instance. Follow existing duplicate-setting behavior and parameter APIs. Keep local suboptimizer configuration unless parent correctness or resource limits require constraints; document the policy.
+- Use the parent's remaining time, not a fresh full budget per subsolve. Account for repeated/nested solves, cancellation, iteration limits and logging. Respect parent thread budgets; concurrent subsolves must not oversubscribe allocated resources. Do not assume `Env` or solver objects are thread-safe. Do not silently override tolerances or solver parameters; propagate only where semantically valid. Use existing timer/logging mechanisms and honor log settings.
 
-1. Current public API and implementation under `lib/include/` and `lib/src/`
-2. Tests
-3. `bin/` / `idol_cl`
-4. Current documentation
-5. Examples
-6. Older or legacy documentation
+## Code style and performance
 
-The current library implementation and public API are authoritative.
+- Algorithms should read like mathematical pseudocode. Use small coherent blocks and focused functions with explicit meaningful names. Keep the main algorithm visible; avoid both monolithic functions and excessive fragmentation/indirection. Use terminology from the mathematical literature and existing idol code.
+- Follow neighboring C++ style: PascalCase classes; snake_case functions and local variables; `m_` data members; `t_` parameters; four-space indentation; `.h` and `.cpp`; include guards; `[[nodiscard]]` and const-correctness where appropriate; `idol::Exception` for unsupported or invalid operations. Use `with_...`, `get_param_...`, `set_param_...` and existing factory patterns. Do not reformat unrelated code or impose a new coding style.
+- Comments are rare. Prefer self-explanatory names and code. Comment only non-obvious mathematical reasoning, assumptions, invariants, tricky ownership or measured performance tradeoffs; do not narrate obvious statements. Public API documentation and scientific references are distinct from implementation comments.
+- Prefer the simplest correct implementation. Avoid speculative generality, duplicated abstractions, unnecessary dependencies, copies and allocations. Sacrifice readability only for a measurable, significant performance benefit on relevant workloads; identify the bottleneck, compare before/after under controlled conditions, and isolate/document the optimization. Do not claim performance improvement without measurements.
 
-Examples, old tutorials, and manuals are useful source material, but they may lag the current API. Never copy an old API pattern merely because it appears in documentation.
+## Scope and autonomy
 
-If sources conflict and intended behavior cannot be determined confidently from current implementation, stop and report the ambiguity instead of guessing.
+Agents may choose private implementation details, add small helpers, tests, examples and consistent public configuration options, and fix directly related bugs with explanation. Ask for approval before breaking public APIs, changing established defaults, introducing dependencies, redesigning core abstractions, or materially changing algorithm guarantees. Never silently weaken correctness, tests or validation. Report unrelated defects separately; do not reproduce them or fix them opportunistically. Respect existing uncommitted work; do not reset, overwrite, publish or push changes without authorization. Do not edit these instructions to evade requirements.
 
-## Mathematical Authority
+## Validation and delivery
 
-Do not take mathematical initiative.
-
-Do not:
-- invent new formulations;
-- change an algorithm;
-- “correct” a derivation unless explicitly instructed;
-- decide whether an algorithm should be optimistic, pessimistic, exact, approximate, convergent, or otherwise;
-- reinterpret problem classes;
-- change mathematical assumptions;
-- silently harmonize two formulations that appear different.
-
-If documentation requires a mathematical choice that has not been specified, stop and report exactly what needs to be decided.
-
-## API Authority
-
-Treat the current idol API as intentional.
-
-You may document it and identify inconsistencies. You may not redesign it.
-
-Do not:
-- rename public classes, methods, namespaces, or CLI options;
-- introduce alternative APIs;
-- change signatures;
-- modernize API style;
-- replace a current mechanism with one you prefer;
-- make undocumented compatibility changes.
-
-If documentation exposes an API inconsistency, report it rather than fixing the API unless explicitly authorized.
-
-## Existing Source Code Is Read-Only by Default
-
-For documentation tasks, do not modify implementation code under `lib/`, `bin/`, or other source directories unless explicitly authorized.
-
-Do not modify `lib/`, `bin/`, tests, examples, or workflows during a
-documentation task unless Henri Lefebvre explicitly asks. If documentation
-exposes an apparent implementation issue, report it rather than repairing it.
-
-Do not perform opportunistic cleanup, refactoring, formatting, warning fixes, TODO fixes, or unrelated maintenance.
-
-Do not edit `CMakeLists.txt` during documentation work unless Henri Lefebvre
-explicitly authorizes that change.
-
-## Documentation Baseline
-
-The current documentation baseline is `docs/` on `dev`.
-
-There are two major documentation trees:
-- `docs/website/`: current website/Doxygen documentation
-- `docs/manual/`: LaTeX reference-manual material
-
-Within `docs/website/`, there are both current Markdown/Doxygen pages and an older RST tutorial corpus.
-
-Use the current website structure as the target unless the task explicitly says otherwise.
-
-Older RST and LaTeX material may be reused as source material, but it must be checked against the current code before migration.
-
-Known obsolete documentation patterns include older robust tutorials that use superseded concepts such as `Robust::StageDescription` or `!xi`. Do not revive obsolete APIs.
-
-## Core Semantics That Must Be Preserved
-
-### Models
-
-`Model` is an ordinary optimization model.
-
-For a bilevel problem, the `Model` stores the high-point relaxation. Bilevel semantics are supplied separately through `Bilevel::Description` and the selected algorithm.
-
-### Bilevel
-
-`Bilevel::Description` provides structural bilevel information, including lower-level variables, lower-level constraints, and the lower-level objective.
-
-Optimistic versus pessimistic behavior is a property of the algorithm, not intrinsically of `Model` or `Bilevel::Description`.
-
-### Robust
-
-`Robust::Description` describes uncertainty parameterization: uncertainty set and uncertain objective, right-hand-side, or matrix coefficients.
-
-Stage information for two-stage robust problems is represented using `Bilevel::Description`.
-
-Decision-dependent uncertainty is canonically represented by sharing the actual `Var` object between the deterministic model and the uncertainty-set model.
-
-Do not replace these semantics with a more conventional textbook representation.
-
-## Documentation Style
-
-Imitate the local documentation style of the page being extended.
-
-For `docs/website/pages/`:
-- preserve Doxygen commands such as `\page`, `\brief`, `\section`, `\subsection`, `\tableofcontents`, `\subpage`, and `\ref`;
-- preserve the current Markdown/Doxygen hybrid style;
-- use the same mathematical notation style as neighboring sections;
-- prefer runnable C++ snippets using the current API;
-- use CLI snippets that match the current `idol_cl` parser;
-- keep terminology consistent with the current website.
-
-Do not rewrite an entire page merely to improve prose.
-
-Do not make broad stylistic changes outside the task.
-
-## Documentation Correctness Rules
-
-Every code snippet must be checked against the current API.
-
-Every CLI command must be checked against the current `idol_cl` implementation.
-
-Every class, method, option, namespace, include path, and enum appearing in new documentation must exist in the current `dev` baseline unless explicitly labeled as pseudocode.
-
-When extending a TODO tutorial:
-1. inspect the corresponding current implementation;
-2. inspect tests and examples;
-3. inspect older documentation for reusable explanations;
-4. write the new section in the current website style;
-5. validate every code example against the current API;
-6. avoid changing unrelated text.
-
-Never rely on memory alone for an idol API call.
-
-## Tests and Validation for Documentation Work
-
-For documentation-only work, validation should include as much as is practical:
-- build the documentation if the environment supports it;
-- ensure Doxygen page/section/subpage references resolve;
-- ensure code snippets use existing current symbols;
-- ensure documented CLI options exist;
-- ensure links and include paths are valid where they can be checked;
-- report any validation that could not be run because of missing dependencies.
-
-Do not silently claim documentation builds if it was not built.
-
-If a task also adds implementation code, add unit tests for that implementation.
-
-## TODOs and Unsupported Features
-
-An existing `TODO`, placeholder page, or `throw Exception("Not implemented")` is not permission to implement or redesign anything nearby.
-
-Only fill TODOs explicitly included in the current task.
-
-Do not “finish” other TODOs while you are there.
-
-Unsupported operations are current capability boundaries unless the task explicitly asks to change them.
-
-## Scope Discipline
-
-Make the smallest coherent change that satisfies the task.
-
-Do not:
-- refactor unrelated documentation;
-- migrate unrelated RST pages;
-- fix unrelated typos across the repository;
-- change examples unrelated to the requested tutorial;
-- rewrite website navigation unless needed for the requested page to be reachable;
-- alter implementation code to make documentation easier to write.
-
-If completing the requested documentation requires a source-code change, stop and report why.
-
-## Required Report After Every Iteration
-
-At the end of every implementation iteration, report all work performed.
-
-**THE FINAL REPORT IS NOT OPTIONAL.** A task is not complete until the report
-required by its instructions has been provided. Even when all implementation
-work and file modifications are finished, the task remains incomplete until
-the report has been written. Before ending an iteration, explicitly verify
-that every required report item is present. Failure to provide the mandatory
-report is a task failure.
-
-The report must include:
-- current branch;
-- files created;
-- existing files modified;
-- what was done in each file;
-- documentation sections added or completed;
-- source files/tests/examples consulted to validate the documentation;
-- commands or documentation builds run;
-- test/build results;
-- warnings, unresolved references, or missing dependencies;
-- ambiguities encountered;
-- anything deliberately not changed because it was outside scope.
-
-Do not require a `dev` baseline commit in every report. Commit hashes are only
-required when the task explicitly involves commits.
-
-Never use silent fixes.
-
-Never hide a failed validation step.
-
-## When to Stop and Ask
-
-Stop and report rather than guessing if:
-- a mathematical statement requires a choice not specified by the task;
-- current code and documentation disagree in a way that affects the tutorial;
-- an older tutorial uses an API with no clear current equivalent;
-- a CLI option or method name appears ambiguous;
-- a requested example cannot be expressed with the current public API;
-- completing the task would require modifying existing implementation code;
-- the meaning of a TODO is unclear.
-
-Do not resolve mathematical ambiguity yourself.
+- Local: configure/build relevant targets; add focused deterministic tests and regressions. Test the mathematical result, status, reason, bound, feasibility and edge cases, not merely compilation. Test repeated optimization and supported edits against a freshly built equivalent model. Use available open-source solvers where suitable; do not silently skip tests or require a commercial license for otherwise solver-independent checks.
+- Integration: test relevant factory cloning, strategy substitution, nesting, backend substitutions and parameter propagation. Compare against an independent reference formulation or known optimum. Exercise limit termination and missing certificates. Existing CI is not sufficient evidence if failures are tolerated or tests are not executed.
+- Scientific validation: large campaigns live in a separate repository and run on HPC infrastructure. Keep idol focused on library tests and reproducible examples; do not create campaign infrastructure here unless asked. External results determine campaign validation for the tested commit/configuration/scope; finite experiments are not a mathematical proof. Prepare a handoff with instance families, independent reference checks, failure criteria and metadata (see skill). Do not tune the implementation to pass a benchmark by weakening guarantees or alter reference data to hide failures.
+- Report exact tests/commands actually run, outcomes, skipped/unavailable checks, limitations and remaining risks. Distinguish implemented, locally tested, integration tested and HPC validated; report the highest demonstrated status and its scope. Never claim a campaign passed without actual results tied to the tested revision. Keep changes reviewable; correctness regressions block acceptance regardless of speed.

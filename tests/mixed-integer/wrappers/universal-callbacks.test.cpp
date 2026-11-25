@@ -13,6 +13,7 @@ using namespace idol;
 namespace {
 enum class Action { Observe, UserCut, Terminate };
 struct State { unsigned incumbent = 0, fractional = 0; bool read = false, acted = false; };
+struct HeuristicState { bool submitted = false, accepted = false; };
 
 class TestCallback : public Callback {
     std::shared_ptr<State> state; Var x, y; Action action;
@@ -39,6 +40,34 @@ public:
     Factory(std::shared_ptr<State> s, Var x_, Var y_, Action a) : state(std::move(s)), x(x_), y(y_), action(a) {}
     Callback* operator()() override { return new TestCallback(state, x, y, action); }
     CallbackFactory* clone() const override { return new Factory(*this); }
+};
+
+class HeuristicCallback : public Callback {
+    std::shared_ptr<HeuristicState> state; std::vector<Var> vars; std::vector<double> values; double objective;
+public:
+    HeuristicCallback(std::shared_ptr<HeuristicState> s, std::vector<Var> vars_, std::vector<double> values_, double objective_)
+        : state(std::move(s)), vars(std::move(vars_)), values(std::move(values_)), objective(objective_) {}
+    void operator()(CallbackEvent event) override {
+        if (event == InvalidSolution && !state->submitted) {
+            PrimalPoint point; for (unsigned i = 0; i < vars.size(); ++i) point.set(vars[i], values[i]); point.set_objective_value(objective);
+            submit_heuristic_solution(point); state->submitted = true;
+        }
+        if (event == IncumbentSolution) {
+            const auto point = primal_solution(); bool matches = true;
+            for (unsigned i = 0; i < vars.size(); ++i) matches &= std::abs(point.get(vars[i]) - values[i]) <= 1e-7;
+            if (!matches) return;
+            state->accepted = true;
+        }
+    }
+};
+
+class HeuristicFactory : public CallbackFactory {
+    std::shared_ptr<HeuristicState> state; std::vector<Var> vars; std::vector<double> values; double objective;
+public:
+    HeuristicFactory(std::shared_ptr<HeuristicState> s, std::vector<Var> vars_, std::vector<double> values_, double objective_)
+        : state(std::move(s)), vars(std::move(vars_)), values(std::move(values_)), objective(objective_) {}
+    Callback* operator()() override { return new HeuristicCallback(state, vars, values, objective); }
+    CallbackFactory* clone() const override { return new HeuristicFactory(*this); }
 };
 
 auto make_optimizer() { return OPTIMIZER().with_lazy_cut(true).with_presolve(false); }
@@ -89,4 +118,11 @@ TEST_CASE("Universal callback terminates optimization", "[Callbacks]") {
     Env env; auto [model, x, y] = make_model(env); auto state = std::make_shared<State>();
     auto optimizer = make_optimizer(); optimizer.add_callback(Factory(state, x, y, Action::Terminate));
     model.use(optimizer); model.optimize(); CHECK(state->acted);
+}
+
+TEST_CASE("Universal callback submits a heuristic solution", "[Callbacks]") {
+    Env env; auto [model, y, z] = make_model(env); auto state = std::make_shared<HeuristicState>(); auto optimizer = make_optimizer();
+    add_benders_callback<LazyCutCallback>(optimizer, env, y, z);
+    optimizer.add_callback(HeuristicFactory(state, {y, z}, {2, 1.4}, 5.4)); model.use(optimizer); model.optimize();
+    CHECK(state->submitted); CHECK(model.get_status() == Optimal); CHECK(model.get_best_obj() == 5.4_a);
 }

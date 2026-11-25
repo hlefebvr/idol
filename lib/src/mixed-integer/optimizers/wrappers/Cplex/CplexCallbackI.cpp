@@ -1,235 +1,83 @@
-//
-// Created by henri on 10.04.25.
-//
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/CplexCallbackI.h"
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
+#include <algorithm>
 
-#ifdef IDOL_USE_CPLEX
+using idol::CplexCallbackI;
 
-idol::CplexCallbackI::CplexCallbackI(Optimizers::Cplex &t_parent) :
-        m_parent(t_parent) {
+CplexCallbackI::CplexCallbackI(Optimizers::Cplex& parent) : m_parent(parent) {}
+void CplexCallbackI::add_callback(Callback* callback) { m_callbacks.emplace_back(callback); }
+void CplexCallbackI::set_context(void* data, int where, CallbackEvent event, const double* solution) {
+    m_cbdata = data; m_wherefrom = where; m_event = event; m_callback_solution = solution;
+}
+void CplexCallbackI::clear_context() { m_cbdata = nullptr; m_wherefrom = 0; m_callback_solution = nullptr; }
+void CplexCallbackI::call(CallbackEvent event) { m_event = event; for (auto& cb : m_callbacks) execute(*cb, event); }
 
+void CplexCallbackI::register_callbacks() {
+    auto& lib = Optimizers::Cplex::get_dynamic_lib();
+    m_terminate = 0;
+    m_parent.check(lib.CPXsetintparam(m_parent.m_env, idol_CPXPARAM_MIP_Strategy_Search, idol_CPX_MIPSEARCH_TRADITIONAL));
+    m_parent.check(lib.CPXsetusercutcallbackfunc(m_parent.m_env, user_cut, this));
+    m_parent.check(lib.CPXsetlazyconstraintcallbackfunc(m_parent.m_env, lazy_cut, this));
+    m_parent.check(lib.CPXsetheuristiccallbackfunc(m_parent.m_env, heuristic, this));
+    m_parent.check(lib.CPXsetinfocallbackfunc(m_parent.m_env, info, this));
+    m_parent.check(lib.CPXsetterminate(m_parent.m_env, &m_terminate));
+}
+void CplexCallbackI::rethrow_exception() { if (m_exception) std::rethrow_exception(m_exception); }
+
+int CplexCallbackI::user_cut(CPXCENVptr, void* data, int where, void* handle, int* action) {
+    auto& self = *static_cast<CplexCallbackI*>(handle);
+    try { self.set_context(data, where, InvalidSolution); self.call(InvalidSolution); self.clear_context(); }
+    catch (...) { self.m_exception = std::current_exception(); return 1; }
+    *action = self.m_added_cut ? idol_CPX_CALLBACK_SET : idol_CPX_CALLBACK_DEFAULT; self.m_added_cut = false; return 0;
+}
+int CplexCallbackI::lazy_cut(CPXCENVptr, void* data, int where, void* handle, int* action) {
+    auto& self = *static_cast<CplexCallbackI*>(handle);
+    try { self.set_context(data, where, IncumbentSolution); self.call(IncumbentSolution); self.clear_context(); }
+    catch (...) { self.m_exception = std::current_exception(); return 1; }
+    *action = self.m_added_cut ? idol_CPX_CALLBACK_SET : idol_CPX_CALLBACK_DEFAULT; self.m_added_cut = false; return 0;
+}
+int CplexCallbackI::heuristic(CPXCENVptr, void*, int, void* handle, double* obj, double* x, int* check, int* action) {
+    auto& self = *static_cast<CplexCallbackI*>(handle);
+    if (!self.m_heuristic_solution) { *action = idol_CPX_CALLBACK_DEFAULT; return 0; }
+    const auto& point = *self.m_heuristic_solution;
+    for (const auto& var : self.m_parent.parent().vars()) x[self.m_parent.lazy(var).impl()] = point.get(var);
+    *obj = point.objective_value(); *check = 1; *action = idol_CPX_CALLBACK_SET; self.m_heuristic_solution.reset(); return 0;
+}
+int CplexCallbackI::info(CPXCENVptr env, void* data, int where, void* handle) {
+    auto& self = *static_cast<CplexCallbackI*>(handle); auto& lib = Optimizers::Cplex::get_dynamic_lib(); long long nodes = 0;
+    lib.CPXgetcallbackinfo(env, data, where, idol_CPX_CALLBACK_INFO_BEST_INTEGER, &self.m_best_obj);
+    lib.CPXgetcallbackinfo(env, data, where, idol_CPX_CALLBACK_INFO_BEST_REMAINING, &self.m_best_bound);
+    lib.CPXgetcallbackinfo(env, data, where, idol_CPX_CALLBACK_INFO_NODE_COUNT_LONG, &nodes);
+    self.m_node_count = static_cast<unsigned int>(nodes); return 0;
 }
 
-void idol::CplexCallbackI::add_callback(idol::Callback *t_callback) {
-    m_callbacks.emplace_back(t_callback);
+const idol::Model& CplexCallbackI::original_model() const { return m_parent.parent(); }
+void CplexCallbackI::add_cut(const TempCtr& cut, bool lazy) {
+    if (!m_cbdata) throw Exception("CPLEX cut submission is not available outside a cut callback.");
+    if (lazy && m_event != IncumbentSolution) throw Exception("Cannot add a lazy cut at a fractional point.");
+    if (!lazy && m_event != InvalidSolution) throw Exception("Cannot add a user cut at an integer point.");
+    std::vector<int> indices; std::vector<double> values;
+    for (const auto& [var, value] : cut.lhs()) { indices.push_back(m_parent.lazy(var).impl()); values.push_back(value); }
+    const char sense = Optimizers::Cplex::cplex_ctr_type(cut.type());
+    m_parent.check(Optimizers::Cplex::get_dynamic_lib().CPXcutcallbackadd(
+        m_parent.m_env, m_cbdata, m_wherefrom, static_cast<int>(indices.size()), cut.rhs(), sense,
+        indices.data(), values.data(), idol_CPX_USECUT_FORCE));
+    m_added_cut = true;
 }
-
-void idol::CplexCallbackI::call(IloCplex::ControlCallbackI* t_caller, idol::CallbackEvent t_event) {
-
-    m_caller = t_caller;
-
-    for (auto& cb : m_callbacks) {
-        execute(*cb, t_event);
-    }
-
-    m_caller = nullptr;
-
+void CplexCallbackI::add_user_cut(const TempCtr& cut) { add_cut(cut, false); }
+void CplexCallbackI::add_lazy_cut(const TempCtr& cut) { add_cut(cut, true); }
+void CplexCallbackI::submit_heuristic_solution(PrimalPoint point) { m_heuristic_solution = std::move(point); }
+idol::PrimalPoint CplexCallbackI::primal_solution() const {
+    PrimalPoint result; result.set_status(Feasible); result.set_reason(NotSpecified);
+    std::vector<double> values(m_parent.parent().vars().size());
+    if (m_callback_solution) std::copy_n(m_callback_solution, values.size(), values.begin());
+    else m_parent.check(Optimizers::Cplex::get_dynamic_lib().CPXgetcallbacknodex(
+        m_parent.m_env, m_cbdata, m_wherefrom, values.data(), 0, static_cast<int>(values.size()) - 1));
+    for (const auto& var : m_parent.parent().vars()) result.set(var, values[m_parent.lazy(var).impl()]);
+    return result;
 }
-
-const idol::Model &idol::CplexCallbackI::original_model() const {
-    return m_parent.parent();
-}
-
-void idol::CplexCallbackI::add_lazy_cut(const idol::TempCtr &t_lazy_cut) {
-
-    if (auto* cb = dynamic_cast<Optimizers::impl::CplexLazyConstraintCallbackI*>(m_caller) ; cb) {
-        auto cut = cplex_temp_constr(t_lazy_cut);
-        cb->add(cut);
-        return;
-    }
-
-    if (auto* cb = dynamic_cast<Optimizers::impl::CplexUserCutCallbackI*>(m_caller) ; cb) {
-        if (!m_parent.lazy_cuts()) {
-            throw Exception("Lazy cuts are not enabled.");
-        }
-        auto cut = cplex_temp_constr(t_lazy_cut);
-        cb->add(cut);
-        return;
-    }
-
-    throw Exception("Cannot add a lazy callback at fractional points.");
-
-}
-
-idol::PrimalPoint idol::CplexCallbackI::primal_solution() const {
-
-    PrimalPoint point;
-    point.set_status(Optimal);
-    point.set_reason(Proved);
-    point.set_objective_value(m_caller->getObjValue());
-    for (const auto& var : m_parent.parent().vars()) {
-        const auto& cplex_var = m_parent[var];
-        point.set(var, m_caller->getValue(cplex_var));
-    }
-
-    return point;
-}
-
-const idol::Timer &idol::CplexCallbackI::time() const {
-    return m_parent.time();
-}
-
-double idol::CplexCallbackI::best_obj() const {
-    std::cerr << "best_obj() not implemented" << std::endl;
-    throw Exception("Not implemented");
-}
-
-double idol::CplexCallbackI::best_bound() const {
-    std::cerr << "best_bound() not implemented" << std::endl;
-    throw Exception("Not implemented");
-}
-
-unsigned idol::CplexCallbackI::node_count() const {
-    throw Exception("Not implemented (node count)");
-}
-
-void idol::CplexCallbackI::terminate() {
-    std::cerr << "terminate()" << std::endl;
-    m_caller->abort();
-}
-
-idol::Optimizers::impl::CplexUserCutCallbackI *idol::CplexCallbackI::create_user_cut_callback() {
-    assert(!m_user_cut_callback);
-    m_user_cut_callback = std::make_unique<Optimizers::impl::CplexUserCutCallbackI>(m_parent.env(), this);
-    return m_user_cut_callback.get();
-}
-
-idol::Optimizers::impl::CplexLazyConstraintCallbackI *idol::CplexCallbackI::create_lazy_constraint_callback() {
-    assert(!m_lazy_constraint_callback);
-    m_lazy_constraint_callback = std::make_unique<Optimizers::impl::CplexLazyConstraintCallbackI>(m_parent.env(), this);
-    return m_lazy_constraint_callback.get();
-}
-
-idol::Optimizers::impl::CplexBranchCallbackI *idol::CplexCallbackI::create_branch_callback() {
-    assert(!m_branch_callback);
-    m_branch_callback = std::make_unique<Optimizers::impl::CplexBranchCallbackI>(m_parent.env(), this);
-    return m_branch_callback.get();
-}
-
-idol::Optimizers::impl::CplexHeuristicCallbackI *idol::CplexCallbackI::create_heuristic_callback() {
-    assert(false);
-    /*
-    assert(!m_heuristic_callback);
-    m_heuristic_callback = std::make_unique<Optimizers::impl::CplexHeuristicCallbackI>(m_parent.env(), this);
-    return m_heuristic_callback.get();
-     */
-}
-
-IloRange idol::CplexCallbackI::cplex_temp_constr(const idol::TempCtr &t_temp_ctr) {
-
-    IloExpr expr(m_parent.env());
-    for (const auto& [var, constant] : t_temp_ctr.lhs()) {
-        expr += constant * m_parent[var];
-    }
-
-    switch (t_temp_ctr.type()) {
-        case LessOrEqual: return expr <= t_temp_ctr.rhs();
-        case GreaterOrEqual: return expr >= t_temp_ctr.rhs();
-        case Equal: return expr == t_temp_ctr.rhs();
-        default:
-            throw Exception("Unknown constraint type");
-    }
-
-}
-
-void idol::CplexCallbackI::add_user_cut(const idol::TempCtr &t_user_cut) {
-
-    if (auto* cb = dynamic_cast<Optimizers::impl::CplexUserCutCallbackI*>(m_caller) ; cb) {
-        auto cut = cplex_temp_constr(t_user_cut);
-        cb->add(cut);
-        return;
-    }
-
-    throw Exception("Cannot add a user cut at fractional points.");
-
-}
-
-double idol::CplexCallbackI::get_var_local_lb(const idol::Var &t_var) const {
-    return m_caller->getLB(m_parent[t_var]);
-}
-
-double idol::CplexCallbackI::get_var_local_ub(const idol::Var &t_var) const {
-    return m_caller->getUB(m_parent[t_var]);
-}
-
-double idol::CplexCallbackI::get_var_primal(const idol::Var &t_var) const {
-    return m_caller->getValue(m_parent[t_var]);
-}
-
-void idol::CplexCallbackI::set_var_local_lb(const idol::Var &t_var, double t_bound) {
-    m_local_bounds_node_id = m_caller->getNodeId();
-    m_local_lbs.emplace_back(t_var, t_bound);
-}
-
-void idol::CplexCallbackI::set_var_local_ub(const idol::Var &t_var, double t_bound) {
-    m_local_bounds_node_id = m_caller->getNodeId();
-    m_local_ubs.emplace_back(t_var, t_bound);
-}
-
-void idol::Optimizers::impl::CplexLazyConstraintCallbackI::main() {
-
-    try {
-        m_callback->call(this, IncumbentSolution);
-    } catch (const IloException& t_err) {
-        std::cerr << "There was an error during callback, CPLEX reported " << t_err.getMessage() << std::endl;
-        throw;
-    }
-
-}
-
-void idol::Optimizers::impl::CplexUserCutCallbackI::main() {
-
-    try {
-        m_callback->call(this, InvalidSolution);
-    } catch (const IloException& t_err) {
-        std::cerr << "There was an error during callback, CPLEX reported " << t_err.getMessage() << std::endl;
-        throw;
-    }
-
-}
-
-void idol::Optimizers::impl::CplexBranchCallbackI::main() {
-
-    const unsigned int n_local_lbs = m_callback->m_local_lbs.size();
-    const unsigned int n_local_ubs = m_callback->m_local_ubs.size();
-    const unsigned int n_local_bounds = m_callback->m_local_lbs.size() + m_callback->m_local_ubs.size();
-
-    if (n_local_bounds == 0) {
-        return;
-    }
-
-    assert(*m_callback->m_local_bounds_node_id == getNodeId());
-
-    auto& env = m_callback->m_parent.env();
-    IloNumVarArray var_array(env);
-    IloNumArray bound_array(env);
-    IloCplex::BranchDirectionArray direction_array(env);
-
-    var_array.setSize(n_local_bounds);
-    bound_array.setSize(n_local_bounds);
-    direction_array.setSize(n_local_bounds);
-
-    for (unsigned int i = 0 ; i < n_local_lbs ; ++i) {
-        const auto& [var, lb] = m_callback->m_local_lbs[i];
-        var_array[i] = m_callback->m_parent[var];
-        bound_array[i] = lb;
-        direction_array[i] = IloCplex::BranchUp;
-    }
-
-    for (unsigned int i = 0 ; i < n_local_ubs ; ++i) {
-        const auto& [var, ub] = m_callback->m_local_ubs[i];
-        const unsigned int k = i + n_local_lbs;
-        var_array[k] = m_callback->m_parent[var];
-        bound_array[k] = ub;
-        direction_array[k] = IloCplex::BranchDown;
-    }
-
-    makeBranch(var_array, bound_array, direction_array, getObjValue());
-
-    m_callback->m_local_lbs.clear();
-    m_callback->m_local_ubs.clear();
-    m_callback->m_local_bounds_node_id.reset();
-}
-
-#endif
+const idol::Timer& CplexCallbackI::time() const { return m_parent.time(); }
+double CplexCallbackI::best_obj() const { return m_best_obj; }
+double CplexCallbackI::best_bound() const { return m_best_bound; }
+unsigned int CplexCallbackI::node_count() const { return m_node_count; }
+void CplexCallbackI::terminate() { m_terminate = 1; }

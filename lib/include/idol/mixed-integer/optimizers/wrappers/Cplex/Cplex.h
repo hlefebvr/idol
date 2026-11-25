@@ -12,13 +12,6 @@
 #include "idol/general/utils/Map.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
 
-#ifdef IDOL_USE_CPLEX
-#include <ilcplex/ilocplex.h>
-#else
-// enum GRB_IntParam {};
-// enum GRB_DoubleParam {};
-#endif
-
 namespace idol {
     class Callback;
     class Cplex;
@@ -51,6 +44,10 @@ public:
     Cplex& with_continuous_relaxation_only(bool t_value);
 
     static Model read_from_file(Env& t_env, const std::string& t_filename);
+
+    [[nodiscard]] static bool is_available();
+
+    [[nodiscard]] static std::string get_version();
 
     [[nodiscard]] Cplex *clone() const override;
 };
