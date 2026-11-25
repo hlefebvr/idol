@@ -1,0 +1,17 @@
+\ Synthetic GCG/strIPlib-compatible decomposition for tiny.lp
+PRESOLVED
+0
+NBLOCKS
+2
+BLOCK 1
+block_1
+BLOCK 2
+block_2
+MASTERCONSS
+linking
+BLOCKVARS 1
+x_1
+x_2
+BLOCKVARS 2
+x_3
+x_4

@@ -7,6 +7,7 @@
 
 #include "idol/mixed-integer/modeling/objects/Env.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
+#include "idol/mixed-integer/modeling/read_from_striplib.h"
 
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/general/utils/GenerationPattern.h"

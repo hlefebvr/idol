@@ -5,6 +5,66 @@
 
 \section lib_milp_branch_and_price_dantzig_wolfe Using the Dantzig-Wolfe Decomposition
 
+\subsection lib_milp_branch_and_price_striplib Importing a strIPlib decomposition
+
+[strIPlib](https://striplib.or.rwth-aachen.de/) distributes mixed-integer models
+together with decompositions in GCG's `.dec` format. Download and extract an
+instance archive from the strIPlib browser, then pass the extracted model and
+decomposition files to `DantzigWolfe::read_from_striplib`:
+
+```cpp
+#include "idol/modeling.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/SubProblem.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
+
+using namespace idol;
+
+Env env;
+auto [model, decomposition] = DantzigWolfe::read_from_striplib(
+        env, "instance.lp", "instance.dec");
+
+const auto column_generation = DantzigWolfeDecomposition(decomposition)
+        .with_master_optimizer(GLPK::ContinuousRelaxation())
+        .with_default_sub_problem_spec(
+                DantzigWolfe::SubProblem().add_optimizer(GLPK()));
+const auto branch_and_bound = BranchAndBound()
+        .with_branching_rule(MostInfeasible())
+        .with_node_selection_rule(BestBound());
+
+model.use(branch_and_bound + column_generation);
+model.optimize();
+```
+
+The model file is read through `Model::read_from_file`, so at least one
+installed solver wrapper capable of importing its format must be available.
+Compressed files from a strIPlib archive must be extracted before they are
+passed to this interface.
+
+The importer preserves the model supplied by the model reader and translates
+the constraint and variable names in the `.dec` file into an
+`Annotation<unsigned int>`. Constraints declared under `MASTERCONSS` remain in
+the master. Constraints declared under `BLOCK`, `BLOCKCONS`, or `BLOCKCONSS`
+are assigned to zero-based idol subproblem identifiers even though GCG block
+numbers start at one. Variables are inferred from block constraints, as in the
+GCG format. `BLOCKVARS` and `MASTERVARS` declarations are also checked and
+honored.
+
+idol currently rejects presolved decompositions, empty blocks, nonlinear
+models, and linking variables that occur in more than one block. These cases
+cannot be represented faithfully by the current Dantzig-Wolfe formulation.
+Unknown names, duplicate assignments, malformed sections, and unassigned
+constraints when `CONSDEFAULTMASTER` is zero also produce an exception.
+
+For research use, cite the instance's original source as indicated by strIPlib
+and the library itself: M. Bastubbe, A. Helber, L. Kirchhart, M. Lübbecke,
+N. Rieken, and J. Witt, *strIPlib: Structured Integer Programming Library*,
+https://striplib.or.rwth-aachen.de/. The small files shipped with the idol
+example are synthetic format fixtures, not redistributed strIPlib instances.
+
 \section lib_milp_branch_and_price_bnb Branching
 
 \section lib_milp_branch_and_price_advanced More Advanced Topics

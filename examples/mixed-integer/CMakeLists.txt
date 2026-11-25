@@ -14,6 +14,7 @@ add_example(flp-bab)
 # Branch-and-price algorithm
 add_example(gap-bap)
 add_example(bin-bap)
+add_example(striplib-import)
 
 find_package(Boost 1.80 QUIET CONFIG COMPONENTS graph)
 

@@ -17,6 +17,9 @@ idol_register_catch_test(modeling.basic.model_copy test_modeling_basic "[basic][
 idol_add_catch_executable(test_modeling_presolve presolve.test.cpp)
 idol_register_catch_test(modeling.presolve test_modeling_presolve "" "modeling;presolve")
 
+idol_add_catch_executable(test_modeling_striplib striplib.test.cpp)
+idol_register_catch_test(modeling.striplib test_modeling_striplib "" "modeling;striplib;GLPK;free-solver")
+
 foreach (OPTIMIZER ${IDOL_TEST_SOLVERS})
     set(target_name test_modeling_dualizer_${OPTIMIZER})
     idol_add_catch_executable(${target_name} dualizer.test.cpp)

@@ -32,3 +32,4 @@
 | \subpage example_mixed_integer_gap_bap  | \copybrief example_mixed_integer_gap_bap  |
 | \subpage example_mixed_integer_bin_bap  | \copybrief example_mixed_integer_bin_bap  |
 | \subpage example_mixed_integer_rspp_bap | \copybrief example_mixed_integer_rspp_bap |
+| \subpage example_mixed_integer_striplib_import | \copybrief example_mixed_integer_striplib_import |

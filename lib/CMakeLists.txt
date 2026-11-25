@@ -33,6 +33,8 @@ add_library(idol STATIC
         include/idol/mixed-integer/modeling/objects/Object.h
         include/idol/mixed-integer/modeling/objects/ObjectId.h
         src/mixed-integer/modeling/models/Model.cpp
+        include/idol/mixed-integer/modeling/read_from_striplib.h
+        src/mixed-integer/modeling/read_from_striplib.cpp
         include/idol/mixed-integer/modeling/constraints/Ctr.h
         include/idol/mixed-integer/modeling/constraints/CtrVersion.h
         include/idol/mixed-integer/modeling/objects/Version.h

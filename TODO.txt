@@ -34,7 +34,7 @@ Do not weaken tests or use heuristic failure as proof of infeasibility.
 PHASE 1 — STRIPLIB, SOLUTION EXPORT AND PRESETS (P0)
 --------------------------------------------------
 
-01 [ ] Import Striplib instances into idol. START HERE.
+01 [x] Import Striplib instances into idol. START HERE.
    Source: https://striplib.or.rwth-aachen.de/start/
    Inspect the published format and representative files; implement a reader
    using existing Model, Env and decomposition annotations. Preserve objective,
