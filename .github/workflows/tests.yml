@@ -17,6 +17,15 @@ jobs:
       - name: Install lcov
         run: sudo apt-get install lcov
 
+      - name: Install free solvers
+        run: |
+          sudo apt-get install libglpk-dev
+          git clone --depth 1 --branch v1.16.0 https://github.com/ERGO-Code/HiGHS.git
+          cmake -S HiGHS -B HiGHS/build
+          cmake --build HiGHS/build -j 6
+          sudo cmake --install HiGHS/build
+          sudo ldconfig
+
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DTEST_COVERAGE=YES
 
@@ -65,8 +74,11 @@ jobs:
       - name: Install HiGHS
         if: matrix.test == 'HiGHS'
         run: |
-          git clone --depth 1 --branch v1.9.0 https://github.com/ERGO-Code/HiGHS.git
-          (mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install)
+          git clone --depth 1 --branch v1.16.0 https://github.com/ERGO-Code/HiGHS.git
+          cmake -S HiGHS -B HiGHS/build
+          cmake --build HiGHS/build -j 6
+          sudo cmake --install HiGHS/build
+          sudo ldconfig
 
       - name: Set up Julia
         if: matrix.test == 'JuMP'

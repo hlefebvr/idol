@@ -131,7 +131,7 @@ idol::Optimizers::HiGHS::DynamicLib& idol::Optimizers::HiGHS::get_dynamic_lib(bo
         m_dynamic_lib = std::make_unique<DynamicLib>();
     }
     if (t_throw_on_fail && !m_dynamic_lib->is_available()) {
-        throw Exception("Gurobi library is not available");
+        throw Exception("HiGHS library is not available");
     }
     return *m_dynamic_lib;
 }
