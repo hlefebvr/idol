@@ -34,7 +34,10 @@ elseif(${TEST_COVERAGE})
     message(FATAL_ERROR "Must have BUILD_TESTS=YES in order to build code coverage")
 endif()
 
-add_custom_target(doc COMMAND ./build_docs.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/scripts)
+add_custom_target(doc
+        COMMAND doxygen Doxyfile.in
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/docs/website
+)
 
 ############ .DEB GENERATION ##################
 if(UNIX AND NOT APPLE)
