@@ -1045,11 +1045,11 @@ idol::Model idol::Model::read_from_file(Env& t_env, const std::string& t_filenam
     if (Optimizers::Gurobi::is_available()) {
         return Optimizers::Gurobi::read_from_file(t_env, t_filename);
     }
-    if (Optimizers::HiGHS::is_available()) {
-        return Optimizers::HiGHS::read_from_file(t_env, t_filename);
-    }
     if (Optimizers::GLPK::is_available()) {
         return Optimizers::GLPK::read_from_file(t_env, t_filename);
+    }
+    if (Optimizers::HiGHS::is_available()) {
+        return Optimizers::HiGHS::read_from_file(t_env, t_filename);
     }
     throw Exception("Reading .mps or .lp files is only possible if Gurobi, GLPK or HiGHS is available.\nPlease install one of these solvers.");
 }
