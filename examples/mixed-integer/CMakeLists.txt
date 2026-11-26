@@ -15,6 +15,7 @@ add_example(flp-bab)
 add_example(gap-bap)
 add_example(bin-bap)
 add_example(striplib-import)
+add_example(bap-preset)
 
 find_package(Boost 1.80 QUIET CONFIG COMPONENTS graph)
 

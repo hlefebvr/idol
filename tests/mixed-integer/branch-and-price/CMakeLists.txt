@@ -16,6 +16,16 @@ foreach (OPTIMIZER ${IDOL_TEST_SOLVERS})
     endforeach ()
 endforeach ()
 
+idol_add_catch_executable(test_bap_preset preset.cpp)
+idol_register_catch_test(bap.preset.GLPK test_bap_preset "[preset][GLPK]"
+        "branch-and-price;preset;GLPK;free-solver"
+)
+if ("HiGHS" IN_LIST IDOL_TEST_SOLVERS)
+    idol_register_catch_test(bap.preset.HiGHS test_bap_preset "[preset][HiGHS]"
+            "branch-and-price;preset;HiGHS;free-solver"
+    )
+endif ()
+
 if ("Gurobi" IN_LIST IDOL_TEST_SOLVERS)
     idol_add_catch_executable(test_bap_recession_rays_Gurobi recession-rays.cpp)
     idol_register_catch_test(bap.Gurobi.recession_rays test_bap_recession_rays_Gurobi ""

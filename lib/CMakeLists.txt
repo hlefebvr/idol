@@ -145,6 +145,7 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h
         include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h
         include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h
+        include/idol/mixed-integer/optimizers/presets/BranchAndPrice.h
         include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/NoStabilization.h
         include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h
         src/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.cpp

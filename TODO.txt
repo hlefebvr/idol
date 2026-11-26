@@ -54,7 +54,7 @@ PHASE 1 — STRIPLIB, SOLUTION EXPORT AND PRESETS (P0)
    numerical precision, and test names, objective comments and file errors.
    Use a reusable library helper if appropriate; integrate existing CLI paths.
 
-03 [ ] [D] [+] Design and implement reusable algorithm presets, starting with
+03 [x] [D] [+] Design and implement reusable algorithm presets, starting with
    branch-and-price.
    Discuss the public API before implementation. A preset should compose existing
    factories and strategies, not introduce a monolithic optimizer or hardcode

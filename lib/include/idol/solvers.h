@@ -25,6 +25,7 @@
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/NoStabilization.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h"
+#include "idol/mixed-integer/optimizers/presets/BranchAndPrice.h"
 
 // Wrappers
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"

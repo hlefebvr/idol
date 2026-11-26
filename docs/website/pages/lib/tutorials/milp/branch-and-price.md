@@ -3,6 +3,61 @@
 
 \tableofcontents
 
+\section lib_milp_branch_and_price_preset Recommended preset
+
+`Presets::BranchAndPrice` provides idol's recommended branch-and-price
+configuration. The caller supplies both solver factories; the preset does not
+select or hardcode a backend.
+
+```cpp
+#include "idol/mixed-integer/optimizers/presets/BranchAndPrice.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
+
+model.use(Presets::BranchAndPrice(
+        decomposition,
+        GLPK::ContinuousRelaxation(),
+        GLPK()));
+model.optimize();
+```
+
+The preset uses `NodeWithCGInfo`,
+`MostInfeasible` branching, `BestBound` node selection, the existing
+`DantzigWolfeDecomposition` defaults, and `Wentges(.4)` stabilization. It does
+not install an integer-master heuristic or another callback. The returned
+`BranchAndBound<NodeWithCGInfo>` remains configurable through its normal API:
+
+```cpp
+auto optimizer = Presets::BranchAndPrice(
+        decomposition,
+        GLPK::ContinuousRelaxation(),
+        GLPK());
+optimizer.with_time_limit(300.).with_logs(false);
+model.use(optimizer);
+```
+
+\subsection lib_milp_branch_and_price_bare Explicit bare configuration
+
+For experiments requiring an explicitly selected bare configuration, compose
+the existing factories directly. The following configuration uses no dual-price
+stabilization:
+
+```cpp
+const auto column_generation = DantzigWolfeDecomposition(decomposition)
+        .with_master_optimizer(GLPK::ContinuousRelaxation())
+        .with_default_sub_problem_spec(
+                DantzigWolfe::SubProblem().add_optimizer(GLPK()));
+const auto branch_and_bound = BranchAndBound<NodeWithCGInfo>()
+        .with_branching_rule(MostInfeasible())
+        .with_node_selection_rule(BestBound());
+
+model.use(branch_and_bound + column_generation);
+model.optimize();
+```
+
+Use explicit composition when changing Dantzig-Wolfe strategies or when a
+stable experimental configuration must remain independent of later preset
+changes.
+
 \section lib_milp_branch_and_price_dantzig_wolfe Using the Dantzig-Wolfe Decomposition
 
 \subsection lib_milp_branch_and_price_striplib Importing a strIPlib decomposition
