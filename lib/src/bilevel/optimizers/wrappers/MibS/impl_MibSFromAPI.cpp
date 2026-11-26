@@ -471,11 +471,11 @@ idol::SolutionStatus idol::impl::MibSFromAPI::get_status() const {
 #ifdef IDOL_USE_MIBS
     const auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
     switch (broker->getSolStatus()) {
-        case AlpsExitStatusUnknown: return Fail;
+        case AlpsExitStatusUnknown: return Unknown;
         case AlpsExitStatusOptimal: return Optimal;
         case AlpsExitStatusFeasible: return Feasible;
         case AlpsExitStatusInfeasible: return Infeasible;
-        case AlpsExitStatusFailed: return Fail;
+        case AlpsExitStatusFailed: return Unknown;
         case AlpsExitStatusUnbounded: return Unbounded;
         case AlpsExitStatusNodeLimit: [[fallthrough]];
         case AlpsExitStatusTimeLimit: [[fallthrough]];

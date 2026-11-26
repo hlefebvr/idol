@@ -10,7 +10,7 @@
 #include "idol/bilevel/modeling/write_to_file.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
 
-enum ParFileSection { Unknown, RHS, OBJ, MAT };
+enum class ParFileSection { Unknown, Rhs, Obj, Mat };
 
 idol::Robust::Description
 idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, const std::string& t_path_to_unc) {
@@ -71,7 +71,7 @@ idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, c
     }
 
     std::string line;
-    ParFileSection section;
+    ParFileSection section = ParFileSection::Unknown;
 
     while (std::getline(file, line)) {
 
@@ -83,18 +83,18 @@ idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, c
         // Check for section header
         if (line[0] == '@') {
             if (line.rfind("@RHS", 0) == 0) {
-                section = RHS;
+                section = ParFileSection::Rhs;
             } else if (line.rfind("@OBJ", 0) == 0) {
-                section = OBJ;
+                section = ParFileSection::Obj;
             } else if (line.rfind("@MAT", 0) == 0) {
-                section = MAT;
+                section = ParFileSection::Mat;
             } else {
                 throw Exception("Unexpected section name on line" + line);
             }
             continue;
         }
 
-        if (section == Unknown) {
+        if (section == ParFileSection::Unknown) {
             throw Exception("Expected section name on line " + line);
         }
 
@@ -106,7 +106,7 @@ idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, c
             cols.push_back(token);
         }
 
-        if (section == RHS) {
+        if (section == ParFileSection::Rhs) {
             const auto& ctr = constraints.at(cols[0]);
             const auto& unc_par = variables.at(cols[1]);
             const auto val = std::stod(cols[2]);
@@ -114,7 +114,7 @@ idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, c
             result.set_uncertain_rhs(ctr, current_expr);
         }
 
-        if (section == OBJ) {
+        if (section == ParFileSection::Obj) {
             const auto& var = variables.at(cols[0]);
             const auto& unc_par = variables.at(cols[1]);
             const auto val = std::stod(cols[2]);
@@ -122,7 +122,7 @@ idol::Robust::read_from_file(Model& t_model, const std::string& t_path_to_par, c
             result.set_uncertain_obj(var, current_expr);
         }
 
-        if (section == MAT) {
+        if (section == ParFileSection::Mat) {
             const auto& ctr = constraints.at(cols[0]);
             const auto& var = variables.at(cols[1]);
             const auto& unc_par = variables.at(cols[2]);

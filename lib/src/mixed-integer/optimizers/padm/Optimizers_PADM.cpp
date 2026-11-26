@@ -592,7 +592,7 @@ void idol::Optimizers::PADM::assert_feasibility() {
 
             if (violation > get_tol_feasibility()) {
                 std::cerr << "Error: " << qctr.name() << " has violation = " << violation << " in thought feasible point." << std::endl;
-                set_status(Fail);
+                set_status(Unknown);
                 set_reason(Numerical);
             }
         }
@@ -679,7 +679,7 @@ void idol::Optimizers::PADM::detect_stagnation_due_to_rescaling() {
 void idol::Optimizers::PADM::restart() {
 
     if (m_n_restart >= 1) {
-        set_status(Fail);
+        set_status(Unknown);
         set_reason(Cycling);
         terminate();
         return;

@@ -29,7 +29,7 @@ std::string idol::Optimizers::Osi::name() const {
 idol::SolutionStatus idol::Optimizers::Osi::get_status() const {
 
     if (m_solver_interface->isAbandoned()) {
-        return Fail;
+        return Unknown;
     }
 
     if (m_solver_interface->isProvenOptimal()) {
@@ -53,10 +53,10 @@ idol::SolutionStatus idol::Optimizers::Osi::get_status() const {
     }
 
     if (m_solver_interface->isDualObjectiveLimitReached()) {
-        return SubOptimal;
+        return Unknown;
     }
 
-    return Infeasible; // TODO This is done because MILPs do not have a proper status when infeasible... at least for Cplex
+    return Unknown;
 
     throw Exception("Osi::get_status could not infer status.");
 }
@@ -75,6 +75,10 @@ idol::SolutionReason idol::Optimizers::Osi::get_reason() const {
         return ObjLimit;
     }
 
+    if (m_solver_interface->isDualObjectiveLimitReached()) {
+        return ObjLimit;
+    }
+
     return NotSpecified;
 
 }
@@ -83,7 +87,7 @@ double idol::Optimizers::Osi::get_best_obj() const {
 
     const auto status = get_status();
 
-    if (status == Infeasible || status == InfOrUnbnd) {
+    if (status == Infeasible || status == InfOrUnbnd || status == Unknown || status == Loaded) {
         return Inf;
     }
 

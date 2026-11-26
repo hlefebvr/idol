@@ -465,7 +465,7 @@ void idol::Model::optimize() {
 void idol::Model::write(const std::string& t_name) {
     if (std::filesystem::path(t_name).extension() == ".sol") {
         const auto status = get_status();
-        if (status != Optimal && status != Feasible && status != SubOptimal) {
+        if (status != Optimal && status != Feasible) {
             throw Exception("Cannot write primal solution: no incumbent is available.");
         }
 

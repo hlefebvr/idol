@@ -299,6 +299,12 @@ void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_after_terminatio
         case Numerical:
             std::cout << "There was unrecoverable numerical troubles during the execution of the algorithm." << std::endl;
             break;
+        case NodeLimit:
+            std::cout << "Node limit was reached." << std::endl;
+            break;
+        case Interrupted:
+            std::cout << "Optimization was interrupted." << std::endl;
+            break;
         case NotSpecified:
             std::cout << "The reason for termination is not specified." << std::endl;
             break;
@@ -321,11 +327,8 @@ void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_after_terminatio
         case Unbounded:
             std::cout << "Problem is unbounded" << std::endl;
             break;
-        case Fail:
-            std::cout << "There was unrecoverable exceptions." << std::endl;
-            break;
-        case SubOptimal:
-            std::cout << "Sub-optimal solution found" << std::endl;
+        case Unknown:
+            std::cout << "No incumbent or proof is available" << std::endl;
             break;
         default:;
     }

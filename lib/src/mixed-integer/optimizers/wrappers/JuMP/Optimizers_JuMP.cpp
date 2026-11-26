@@ -283,7 +283,7 @@ idol::SolutionStatus idol::Optimizers::JuMP::get_status() const {
 
     const auto status = lib.jl_unbox_uint16(result);
 
-    if (status <= 7) {
+    if (status <= 6) {
         return (idol::SolutionStatus) status;
     }
 
@@ -300,7 +300,7 @@ idol::SolutionReason idol::Optimizers::JuMP::get_reason() const {
 
     const auto reason = lib.jl_unbox_uint16(result);
 
-    if (reason <= 8) {
+    if (reason <= 10) {
         return (idol::SolutionReason) reason;
     }
 

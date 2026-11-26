@@ -81,7 +81,7 @@ PHASE 1 — STRIPLIB, SOLUTION EXPORT AND PRESETS (P0)
 PHASE 2 — CORRECTNESS BEFORE ALGORITHMIC EXTENSIONS (P0)
 -------------------------------------------------------
 
-04 [ ] [D] Add Unknown solution status and define status/reason semantics.
+04 [x] [D] Add Unknown solution status and define status/reason semantics.
    Replace misleading Infeasible/TimeLimit when infeasibility is not proven.
    Agree on the public status contract, including Feasible with incumbent,
    Unknown without proof/incumbent, proven Infeasible, Unbounded, ambiguous

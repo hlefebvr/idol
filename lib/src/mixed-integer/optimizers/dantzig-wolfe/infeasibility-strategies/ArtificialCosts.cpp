@@ -67,7 +67,7 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::find_initial_columns(idol::O
 
         const auto status = t_column_generation.status();
 
-        if (status == Fail || status == Unbounded || status == InfOrUnbnd) {
+        if (status == Unknown || status == Unbounded || status == InfOrUnbnd) {
             break;
         }
 

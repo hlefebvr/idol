@@ -353,7 +353,7 @@ void idol::Optimizers::Bilevel::BranchAndCut::hook_optimize() {
     for (auto bound : { lambda_lb, lambda_ub, pi_lb, pi_ub }) {
         if (bound > 1e10 || bound < -1e10) {
             std::cout << "Bounds on the dual variables were too large." << std::endl;
-            set_status(Fail);
+            set_status(Unknown);
             set_reason(Numerical);
             terminate();
             return;

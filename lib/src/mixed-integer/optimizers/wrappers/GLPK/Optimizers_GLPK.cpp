@@ -521,7 +521,7 @@ void idol::Optimizers::GLPK::save_simplex_solution_status() {
     int status = lib.glp_get_status(m_model);
 
     if (status == GLP_UNDEF) {
-        m_solution_status = Fail;
+        m_solution_status = Unknown;
         m_solution_reason = NotSpecified;
         return;
     }
@@ -534,11 +534,17 @@ void idol::Optimizers::GLPK::save_simplex_solution_status() {
 
     if (status == GLP_FEAS) {
         m_solution_status = Feasible;
-        m_solution_reason = Proved;
+        m_solution_reason = NotSpecified;
         return;
     }
 
-    if (status == GLP_INFEAS || status == GLP_NOFEAS) {
+    if (status == GLP_INFEAS) {
+        m_solution_status = Unknown;
+        m_solution_reason = NotSpecified;
+        return;
+    }
+
+    if (status == GLP_NOFEAS) {
         m_solution_status = Infeasible;
         m_solution_reason = Proved;
         return;
@@ -778,10 +784,10 @@ void idol::Optimizers::GLPK::save_milp_solution_status() {
 
     if (status == GLP_UNDEF) {
         if (get_remaining_time() == 0) {
-            m_solution_status = Infeasible;
+            m_solution_status = Unknown;
             m_solution_reason = TimeLimit;
         } else {
-            m_solution_status = Fail;
+            m_solution_status = Unknown;
             m_solution_reason = NotSpecified;
         }
         return;
@@ -795,7 +801,7 @@ void idol::Optimizers::GLPK::save_milp_solution_status() {
 
     if (status == GLP_FEAS) {
         m_solution_status = Feasible;
-        m_solution_reason = Proved;
+        m_solution_reason = NotSpecified;
         return;
     }
 
@@ -844,7 +850,8 @@ idol::SolutionReason idol::Optimizers::GLPK::get_reason() const {
 
 double idol::Optimizers::GLPK::get_best_obj() const {
     if (m_solution_status == Unbounded) { return -Inf; }
-    if (m_solution_status == Infeasible) { return +Inf; }
+    if (m_solution_status == Infeasible || m_solution_status == InfOrUnbnd ||
+        m_solution_status == Unknown || m_solution_status == Loaded) { return +Inf; }
     const double constant_term = parent().get_obj_expr().affine().constant();
     auto& lib = get_dynamic_lib();
     return constant_term + (m_solved_as_mip ? lib.glp_mip_obj_val(m_model) : lib.glp_get_obj_val(m_model));

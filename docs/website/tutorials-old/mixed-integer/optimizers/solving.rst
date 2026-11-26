@@ -68,9 +68,7 @@ Here is a detailed list of possible statuses and reasons:
 +-------------------+-------------------------------------------+
 | Unbounded         | The model is unbounded.                   |
 +-------------------+-------------------------------------------+
-| Fail              | The solver failed to solve the model.     |
-+-------------------+-------------------------------------------+
-| SubOptimal        | A suboptimal solution has been found.     |
+| Unknown           | No feasible point or proof is available.  |
 +-------------------+-------------------------------------------+
 
 Related to a status, the reason for the status can be accessed using the :code:`get_reason` method.
@@ -87,6 +85,18 @@ Related to a status, the reason for the status can be accessed using the :code:`
 | IterLimit       | The solver reached the iteration limit.                            |
 +-----------------+--------------------------------------------------------------------+
 | ObjLimit        | The solver reached the objective limit.                            |
++-----------------+--------------------------------------------------------------------+
+| Numerical       | Numerical difficulties stopped the solver.                        |
++-----------------+--------------------------------------------------------------------+
+| MemoryLimit     | The solver reached the memory limit.                               |
++-----------------+--------------------------------------------------------------------+
+| Cycling         | The solver stopped because of cycling.                             |
++-----------------+--------------------------------------------------------------------+
+| SolutionLimit   | The solver reached the solution limit.                             |
++-----------------+--------------------------------------------------------------------+
+| NodeLimit       | The solver reached the node limit.                                 |
++-----------------+--------------------------------------------------------------------+
+| Interrupted     | The solve was interrupted.                                         |
 +-----------------+--------------------------------------------------------------------+
 | Numerical       | A numerical issue occurred during the solution process.            |
 +-----------------+--------------------------------------------------------------------+

@@ -14,6 +14,9 @@ idol_register_catch_test(modeling.basic.constraints test_modeling_basic "[basic]
 idol_register_catch_test(modeling.basic.objective test_modeling_basic "[basic][objective]" "modeling")
 idol_register_catch_test(modeling.basic.model_copy test_modeling_basic "[basic][model-copy]" "modeling")
 
+idol_add_catch_executable(test_solution_types solution-types.test.cpp)
+idol_register_catch_test(modeling.solution_types test_solution_types "" "modeling;status")
+
 idol_add_catch_executable(test_modeling_presolve presolve.test.cpp)
 idol_register_catch_test(modeling.presolve test_modeling_presolve "" "modeling;presolve")
 

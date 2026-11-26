@@ -116,6 +116,49 @@ Then, we call the `Model::optimize` method that, indeed, creates and calls an op
 Finally, we retrieve some basic information regarding the solution of our problem.
 If the status is `Optimal` or `Feasible`, we print out the primal values.
 
+\subsection lib_milp_basics_status Status and termination reason
+
+`SolutionStatus` describes what result is available. `SolutionReason` describes
+why optimization stopped. In particular, the absence of an incumbent never
+implies infeasibility: `Infeasible` requires a proof, while `Unknown` means that
+neither an incumbent nor an infeasibility or unboundedness proof is available.
+
+The following table lists every valid status-reason combination. A combination
+not listed here is invalid.
+
+| Status | Valid reason | Meaning |
+|:-------|:-------------|:--------|
+| `Loaded` | `NotSpecified` | The model has not produced a solve result. |
+| `Optimal` | `Proved` | A feasible point is available and optimality is proven. |
+| `Feasible` | `NotSpecified` | A feasible point is available; the optimizer supplied no more specific termination reason. |
+| `Feasible` | `TimeLimit` | A feasible point is available and the time limit stopped optimization. |
+| `Feasible` | `IterLimit` | A feasible point is available and the iteration limit stopped optimization. |
+| `Feasible` | `NodeLimit` | A feasible point is available and the node limit stopped optimization. |
+| `Feasible` | `ObjLimit` | A feasible point is available and an objective limit stopped optimization. |
+| `Feasible` | `SolutionLimit` | A feasible point is available and the solution limit stopped optimization. |
+| `Feasible` | `MemoryLimit` | A feasible point is available and the memory limit stopped optimization. |
+| `Feasible` | `Cycling` | A feasible point is available and cycling stopped optimization. |
+| `Feasible` | `Numerical` | A feasible point is available, but numerical difficulties prevented a proof of optimality. |
+| `Feasible` | `Interrupted` | A feasible point is available and optimization was interrupted. |
+| `Infeasible` | `Proved` | Infeasibility is proven. |
+| `InfOrUnbnd` | `Proved` | Only the infeasible-or-unbounded disjunction is proven. |
+| `Unbounded` | `Proved` | Unboundedness is proven. |
+| `Unknown` | `NotSpecified` | No feasible point or proof is available and no more specific reason was supplied. |
+| `Unknown` | `TimeLimit` | The time limit was reached without a feasible point or proof. |
+| `Unknown` | `IterLimit` | The iteration limit was reached without a feasible point or proof. |
+| `Unknown` | `NodeLimit` | The node limit was reached without a feasible point or proof. |
+| `Unknown` | `ObjLimit` | An objective limit was reached without a feasible point or proof. |
+| `Unknown` | `MemoryLimit` | The memory limit was reached without a feasible point or proof. |
+| `Unknown` | `Cycling` | Cycling stopped optimization without a feasible point or proof. |
+| `Unknown` | `Numerical` | Numerical difficulties stopped optimization without a feasible point or proof. |
+| `Unknown` | `Interrupted` | Optimization was interrupted without a feasible point or proof. |
+
+Primal values are available only with `Optimal` or `Feasible`. A primal ray
+requires `Unbounded`, and a Farkas certificate requires the proven
+`Infeasible / Proved` combination. `InfOrUnbnd` and `Unknown` do not by
+themselves make either certificate available.
+
+
 > Obviously, Gurobi must be installed on your machine for this code to successfully run.
 > Note that Gurobi is dynamically loaded by `idol` provided that your `GUROBI_HOME` environment variable
 > is correctly set up.
@@ -988,7 +1031,7 @@ const auto status = model.get_status();
 std::cout << "Status: " << status << std::endl;
 std::cout << "Reason: " << model.get_reason() << std::endl;
 
-if (status == Optimal || status == Feasible || status == SubOptimal) {
+if (status == Optimal || status == Feasible) {
     std::cout << "Objective: " << model.get_best_obj() << std::endl;
     std::cout << "x = " << model.get_var_primal(x) << std::endl;
 }

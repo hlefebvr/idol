@@ -115,6 +115,7 @@ idol::Optimizers::HiGHS::DynamicLib::DynamicLib() {
     HIGHS_SYM_LOAD(Highs_writeModel);
     HIGHS_SYM_LOAD(Highs_version);
     HIGHS_SYM_LOAD(Highs_getDoubleInfoValue);
+    HIGHS_SYM_LOAD(Highs_getIntInfoValue);
     HIGHS_SYM_LOAD(Highs_setIntOptionValue);
     HIGHS_SYM_LOAD(Highs_destroy);
     HIGHS_SYM_LOAD(Highs_readModel);
@@ -422,7 +423,7 @@ void idol::Optimizers::HiGHS::hook_optimize() {
 
     analyze_status(result);
 
-    if (m_solution_status == Fail) {
+    if (m_solution_status == Unknown && m_solution_reason == Numerical) {
         lib.Highs_clearSolver(m_model);
         result = lib.Highs_run(m_model);
         analyze_status(result);
@@ -465,13 +466,19 @@ void idol::Optimizers::HiGHS::hook_optimize() {
 void idol::Optimizers::HiGHS::analyze_status(HighsInt t_status) {
 
     if (t_status < 0) {
-        m_solution_status = Fail;
-        m_solution_reason = NotSpecified;
+        m_solution_status = Unknown;
+        m_solution_reason = Numerical;
         return;
     }
 
     auto& lib = get_dynamic_lib();
     const auto status = (HighsModelStatus) lib.Highs_getModelStatus(m_model);
+    HighsInt primal_solution_status = kHighsSolutionStatusNone;
+    lib.Highs_getIntInfoValue(m_model, "primal_solution_status", &primal_solution_status);
+    const auto limited_status = [&](SolutionReason t_reason) {
+        m_solution_status = primal_solution_status == kHighsSolutionStatusFeasible ? Feasible : Unknown;
+        m_solution_reason = t_reason;
+    };
 
     switch (status) {
         case HighsModelStatus::kNotset:
@@ -484,8 +491,8 @@ void idol::Optimizers::HiGHS::analyze_status(HighsInt t_status) {
         case HighsModelStatus::kModelError:
         case HighsModelStatus::kPresolveError:
         case HighsModelStatus::kUnknown:
-            m_solution_status = Fail;
-            m_solution_reason = NotSpecified;
+            m_solution_status = Unknown;
+            m_solution_reason = Numerical;
             break;
         case HighsModelStatus::kModelEmpty:
         case HighsModelStatus::kOptimal:
@@ -505,21 +512,24 @@ void idol::Optimizers::HiGHS::analyze_status(HighsInt t_status) {
             m_solution_reason = Proved;
             break;
         case HighsModelStatus::kTimeLimit:
-        {
-            const double obj = lib.Highs_getObjectiveValue(m_model);
-            m_solution_status = obj < lib.Highs_getInfinity(m_model) ? Feasible : Infeasible;
-            m_solution_reason = TimeLimit;
+            limited_status(TimeLimit);
             break;
-        }
-        case HighsModelStatus::kObjectiveBound: {
-            m_solution_status = Feasible;
-            m_solution_reason = ObjLimit;
-            break;
-        }
+        case HighsModelStatus::kObjectiveBound:
         case HighsModelStatus::kObjectiveTarget:
+            limited_status(ObjLimit);
+            break;
         case HighsModelStatus::kIterationLimit:
+            limited_status(IterLimit);
+            break;
         case HighsModelStatus::kSolutionLimit:
+            limited_status(SolutionLimit);
+            break;
         case HighsModelStatus::kInterrupt:
+            limited_status(Interrupted);
+            break;
+        case HighsModelStatus::kMemoryLimit:
+            limited_status(MemoryLimit);
+            break;
         default:
             throw Exception("Unhandled status: " + std::to_string((int) status));
     }
@@ -550,8 +560,8 @@ void idol::Optimizers::HiGHS::run_without_presolve() {
     lib.Highs_setBoolOptionValue(m_model, "presolve", old_presolve_setting);
 
     if (result != 0) {
-        m_solution_status = Fail;
-        m_solution_reason = NotSpecified;
+        m_solution_status = Unknown;
+        m_solution_reason = Numerical;
     }
 }
 
@@ -617,7 +627,8 @@ double idol::Optimizers::HiGHS::get_best_obj() const {
         return -Inf;
     }
 
-    if (m_solution_status == Infeasible) {
+    if (m_solution_status == Infeasible || m_solution_status == InfOrUnbnd ||
+        m_solution_status == Unknown || m_solution_status == Loaded) {
         return +Inf;
     }
 

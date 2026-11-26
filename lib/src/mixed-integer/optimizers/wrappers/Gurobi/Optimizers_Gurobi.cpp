@@ -213,21 +213,29 @@ char idol::Optimizers::Gurobi::gurobi_ctr_type(int t_type) {
 
 std::pair<idol::SolutionStatus, idol::SolutionReason> idol::Optimizers::Gurobi::gurobi_status(int t_status) const {
     auto& lib = get_dynamic_lib();
+    const auto status_with_incumbent = [&](SolutionReason t_reason) {
+        int n_solutions = 0;
+        GUROBI_CATCH(m_model, GRBgetintattr(m_model, "SolCount", &n_solutions));
+        return std::make_pair(n_solutions > 0 ? Feasible : Unknown, t_reason);
+    };
     switch (t_status) {
-        case idol_GRB_SUBOPTIMAL: return { SubOptimal, Proved };
+        case idol_GRB_LOADED: return { Loaded, NotSpecified };
+        case idol_GRB_SUBOPTIMAL: return status_with_incumbent(Numerical);
         case idol_GRB_OPTIMAL: return { Optimal, Proved };
         case idol_GRB_INFEASIBLE: return { Infeasible, Proved };
         case idol_GRB_INF_OR_UNBD: return {InfOrUnbnd, Proved };
         case idol_GRB_UNBOUNDED: return { Unbounded, Proved };
-        case idol_GRB_CUTOFF: [[fallthrough]];
-        case idol_GRB_USER_OBJ_LIMIT: return {Feasible, ObjLimit };
-        case idol_GRB_TIME_LIMIT: {
-            int n_solutions;
-            GUROBI_CATCH(m_model, GRBgetintattr(m_model, "SolCount", &n_solutions));
-            return { n_solutions > 0 ? Feasible : Infeasible, TimeLimit };
-        }
-        case idol_GRB_NUMERIC: return {Fail, NotSpecified };
-        case idol_GRB_SOLUTION_LIMIT: return {Feasible, SolutionLimit };
+        case idol_GRB_CUTOFF: return { Unknown, ObjLimit };
+        case idol_GRB_USER_OBJ_LIMIT: return status_with_incumbent(ObjLimit);
+        case idol_GRB_TIME_LIMIT: return status_with_incumbent(TimeLimit);
+        case idol_GRB_ITERATION_LIMIT: return status_with_incumbent(IterLimit);
+        case idol_GRB_NODE_LIMIT: return status_with_incumbent(NodeLimit);
+        case idol_GRB_INTERRUPTED: return status_with_incumbent(Interrupted);
+        case idol_GRB_NUMERIC: return status_with_incumbent(Numerical);
+        case idol_GRB_SOLUTION_LIMIT: return status_with_incumbent(SolutionLimit);
+        case idol_GRB_MEM_LIMIT: return status_with_incumbent(MemoryLimit);
+        case idol_GRB_WORK_LIMIT: return status_with_incumbent(NotSpecified);
+        case idol_GRB_INPROGRESS: return { Unknown, NotSpecified };
         default:;
     }
     throw Exception("Unsupported Gurobi status: " + std::to_string(t_status));
@@ -763,7 +771,7 @@ double idol::Optimizers::Gurobi::get_best_obj() const {
         return -Inf;
     }
 
-    if (status == Infeasible || status == InfOrUnbnd) {
+    if (status == Infeasible || status == InfOrUnbnd || status == Unknown || status == Loaded) {
         return +Inf;
     }
 
@@ -833,7 +841,7 @@ double idol::Optimizers::Gurobi::get_best_bound() const {
 
 double idol::Optimizers::Gurobi::get_var_primal(const Var &t_var) const {
 
-    if (const auto status = get_status() ; status != Optimal && status != Feasible && status != SubOptimal) {
+    if (const auto status = get_status() ; status != Optimal && status != Feasible) {
         throw Exception("Primal solution not available.");
     }
 
@@ -883,7 +891,7 @@ double idol::Optimizers::Gurobi::get_var_ray(const Var &t_var) const {
 
 double idol::Optimizers::Gurobi::get_ctr_dual(const Ctr &t_ctr) const {
 
-    if (const auto status = get_status() ; status != Optimal && status != Feasible && status != SubOptimal) {
+    if (const auto status = get_status() ; status != Optimal && status != Feasible) {
         throw Exception("Dual solution not available.");
     }
 
@@ -1198,7 +1206,7 @@ void idol::Optimizers::Gurobi::update_objective_constant() {
 
 double idol::Optimizers::Gurobi::get_var_reduced_cost(const idol::Var &t_var) const {
 
-    if (const auto status = get_status() ; status != Optimal && status != Feasible && status != SubOptimal) {
+    if (const auto status = get_status() ; status != Optimal && status != Feasible) {
         throw Exception("Reduced cost not available.");
     }
 

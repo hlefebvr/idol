@@ -421,7 +421,7 @@ double idol::Optimizers::BranchAndBound<NodeInfoT>::get_var_primal(const Var &t_
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::submit_lower_bound(double t_lower_bound) {
     if (t_lower_bound > get_best_obj()) {
-        set_status(Fail);
+        set_status(Unknown);
         set_reason(NotSpecified);
         terminate();
         return;
@@ -610,14 +610,24 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
 
     m_node_updators[0]->clear();
 
-    if (get_status() == Fail) {
+    if (get_status() == Unknown) {
         return;
     }
 
     if (!has_incumbent()) {
 
+        if (get_status() == Infeasible) {
+            return;
+        }
+
+        if (get_reason() != Proved) {
+            set_status(Unknown);
+            return;
+        }
+
         if (is_pos_inf(get_best_obj())) {
             set_status(Infeasible);
+            set_reason(Proved);
             return;
         }
 
@@ -775,7 +785,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
     *t_reoptimize_flag = false;
 
     if (get_best_bound() > get_best_obj()) {
-        set_status(Fail);
+        set_status(Unknown);
         set_reason(NotSpecified);
         terminate();
         return;
@@ -801,20 +811,29 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
 
         if (t_node.level() == 0) {
             set_status(status);
+            set_reason(reason);
         }
 
         call_callbacks(PrunedSolution, t_node, t_relaxation_id);
         return;
     }
 
-    if (status == Feasible && reason == ObjLimit) {
+    if (reason == ObjLimit) {
         call_callbacks(PrunedSolution, t_node, t_relaxation_id);
         return;
     }
 
-    if (status == Fail || status == Loaded) {
+    if (status == Unknown) {
+        set_status(Unknown);
+        set_reason(reason);
+        terminate();
+        call_callbacks(PrunedSolution, t_node, t_relaxation_id);
+        return;
+    }
 
-        set_status(Fail);
+    if (status == Loaded) {
+
+        set_status(Unknown);
         set_reason(NotSpecified);
         terminate();
         call_callbacks(PrunedSolution, t_node, t_relaxation_id);

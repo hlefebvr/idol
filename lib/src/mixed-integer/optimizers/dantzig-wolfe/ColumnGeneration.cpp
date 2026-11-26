@@ -387,7 +387,7 @@ bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::check_numeri
     const auto n_sub_problems = formulation.n_sub_problems();
 
     if (m_best_bound > m_best_obj + 1e-4) {
-        m_status = Fail;
+        m_status = Unknown;
         m_reason = Numerical;
         m_is_terminated = true;
         return false;
@@ -509,7 +509,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::next_numeric
     }
 
     if (m_numerical_policy == Failure) {
-        m_status = Fail;
+        m_status = Unknown;
         m_reason = Numerical;
         m_is_terminated = true;
         return;

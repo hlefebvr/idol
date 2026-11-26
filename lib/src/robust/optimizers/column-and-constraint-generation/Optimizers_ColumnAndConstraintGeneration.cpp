@@ -296,7 +296,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_
         if (get_param_logs()) {
             std::cerr << "The current best bound is larger than current best obj. This should should not happen. Terminating..." << std::endl;
         }
-        set_status(Fail);
+        set_status(Unknown);
         set_reason(Numerical);
         terminate();
         return;
@@ -439,7 +439,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_
 
     }
 
-    set_status(Fail);
+    set_status(Unknown);
     set_reason(NotSpecified);
     terminate();
 
@@ -472,7 +472,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
         if (!is_last_optimizer) { // If we can, skip this optimizer
             ++m_index_feasibility_separation;
         } else { // otherwise, it's a fail
-            set_status(Fail);
+            set_status(Unknown);
             set_reason(high_point_relaxation.get_reason());
             terminate();
             return 0;
@@ -480,7 +480,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
     }
 
     if (is_last_optimizer && status != Optimal) { // if the last optimizer is not reporting optimal, it's a fail
-        set_status(Fail);
+        set_status(Unknown);
         set_reason(high_point_relaxation.get_reason());
         terminate();
         return 0;
@@ -534,7 +534,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
             ++m_index_feasibility_separation;
         } else { // otherwise, it's a failure
             std::cerr << "Last optimizer is nor optimal nor feasible (status=" << high_point_relaxation.get_status() << ", reason=" << high_point_relaxation.get_reason() << ")." << std::endl;
-            set_status(Fail);
+            set_status(Unknown);
             set_reason(high_point_relaxation.get_reason());
             terminate();
             return 1;
@@ -543,7 +543,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
 
     if (is_last_optimizer && status != Optimal) { // if the last optimizer is not reporting optimal, it's a fail
         std::cerr << "Last optimizer is not optimal. " << high_point_relaxation.get_reason() << "." << std::endl;
-        set_status(Fail);
+        set_status(Unknown);
         set_reason(high_point_relaxation.get_reason());
         terminate();
         return 1;
@@ -599,7 +599,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_join
         if (!is_last_optimizer) { // If we can, skip this optimizer
             ++m_index_joint_separation;
         } else { // otherwise, it's a fail
-            set_status(Fail);
+            set_status(Unknown);
             set_reason(high_point_relaxation.get_reason());
             terminate();
             return 0;
@@ -607,7 +607,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_join
     }
 
     if (is_last_optimizer && status != Optimal) { // if the last optimizer is not reporting optimal, it's a fail
-        set_status(Fail);
+        set_status(Unknown);
         set_reason(high_point_relaxation.get_reason());
         terminate();
         return 0;

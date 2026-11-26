@@ -117,7 +117,8 @@ void OsiIdolSolverInterface::branchAndBound() {
 }
 
 bool OsiIdolSolverInterface::isAbandoned() const {
-    return m_model->get_status() == idol::Fail;
+    const auto status = m_model->get_status();
+    return status == idol::Unknown;
 }
 
 bool OsiIdolSolverInterface::isProvenOptimal() const {

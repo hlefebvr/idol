@@ -20,8 +20,7 @@ namespace idol {
         Infeasible = 3,
         InfOrUnbnd = 4,
         Unbounded = 5,
-        Fail = 6,
-        SubOptimal = 7
+        Unknown = 6
     };
 
     enum SolutionReason {
@@ -33,7 +32,9 @@ namespace idol {
         Numerical = 5,
         MemoryLimit = 6,
         Cycling = 7,
-        SolutionLimit = 8
+        SolutionLimit = 8,
+        NodeLimit = 9,
+        Interrupted = 10
     };
 
     template<class T>
@@ -66,17 +67,15 @@ namespace idol {
             case Optimal:
                 return Optimal;
             case Feasible:
-                return SubOptimal;
+                return Unknown;
             case Infeasible:
                 return Unbounded;
             case InfOrUnbnd:
                 return InfOrUnbnd;
             case Unbounded:
                 return Infeasible;
-            case Fail:
-                return Fail;
-            case SubOptimal:
-                return Feasible;
+            case Unknown:
+                return Unknown;
         }
         throw Exception("Unexpected status: " + std::to_string(t_status));
     }
@@ -96,10 +95,8 @@ namespace idol {
                 return t_os << "InfOrUnbnd";
             case Unbounded:
                 return t_os << "Unbounded";
-            case Fail:
-                return t_os << "Fail";
-            case SubOptimal:
-                return t_os << "SubOptimal";
+            case Unknown:
+                return t_os << "Unknown";
             default:;
         }
 
@@ -127,6 +124,10 @@ namespace idol {
                 return t_os << "Cycling";
             case SolutionLimit:
                 return t_os << "SolutionLimit";
+            case NodeLimit:
+                return t_os << "NodeLimit";
+            case Interrupted:
+                return t_os << "Interrupted";
             default:;
         }
 

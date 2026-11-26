@@ -344,7 +344,7 @@ namespace idol {
         const auto status = t_model.get_status();
         const auto reason = t_model.get_reason();
 
-        if (status != Optimal && status != Feasible && status != SubOptimal) {
+        if (status != Optimal && status != Feasible) {
             throw Exception("Primal values not available.");
         }
 
@@ -460,7 +460,7 @@ namespace idol {
         const auto status = t_model.get_status();
         const auto reason = t_model.get_reason();
 
-        if (status != Optimal && status != Feasible && status != SubOptimal) {
+        if (status != Optimal && status != Feasible) {
             throw Exception("Reduced costs not available.");
         }
 

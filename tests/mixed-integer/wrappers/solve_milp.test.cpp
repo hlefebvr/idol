@@ -147,8 +147,25 @@ TEST_CASE("MILP: infeasible status", "[MILP]") {
     model.use(OPTIMIZER());
     model.optimize();
     CHECK(model.get_status() == Infeasible);
+    CHECK(model.get_reason() == Proved);
     CHECK(is_pos_inf(model.get_best_obj()));
 }
+
+#ifdef WRAPPER_HAS_ZERO_TIME_LIMIT_STATUS
+TEST_CASE("MILP: time limit without incumbent is unknown", "[MILP]") {
+    Env env;
+    Model model(env);
+    const auto x = model.add_vars(Dim<1>(100), 0., 1., Binary, -1., "x");
+    model.add_ctr(idol_Sum(i, Range(100), (i + 1.) * x[i]) <= 1000.);
+    model.use(OPTIMIZER().with_time_limit(0.).with_presolve(false));
+    model.optimize();
+    CHECK(model.get_status() == Unknown);
+    CHECK(model.get_reason() == TimeLimit);
+    CHECK(is_pos_inf(model.get_best_obj()));
+    CHECK_THROWS_WITH(save_primal(model), "Primal values not available.");
+    CHECK_THROWS_WITH(save_farkas(model), "Farkas certificate not available.");
+}
+#endif
 
 #ifdef WRAPPER_HAS_MILP_UNBOUNDED
 TEST_CASE("MILP: unbounded status", "[MILP]") {

@@ -96,7 +96,7 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::check
         if (get_param_logs()) {
             std::cerr << "The current best bound is larger than current best obj. This should should not happen. Terminating..." << std::endl;
         }
-        set_status(Fail);
+        set_status(Unknown);
         set_reason(Numerical);
         terminate();
         return;

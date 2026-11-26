@@ -120,7 +120,7 @@ module IdolJuMP
         elseif primal_status == MOI.FEASIBLE_POINT
             return 2
         else
-            return 0
+            return 6
         end
     end
 
@@ -139,7 +139,9 @@ module IdolJuMP
         elseif term_status == MOI.ITERATION_LIMIT
             return 3
         elseif term_status == MOI.NODE_LIMIT
-            return 3
+            return 9
+        elseif term_status == MOI.INTERRUPTED
+            return 10
         else
             return 0
         end

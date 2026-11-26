@@ -140,6 +140,7 @@ public:
     HIGHS_SYM_PTR(Highs_writeModel);
     HIGHS_SYM_PTR(Highs_version);
     HIGHS_SYM_PTR(Highs_getDoubleInfoValue);
+    HIGHS_SYM_PTR(Highs_getIntInfoValue);
     HIGHS_SYM_PTR(Highs_setIntOptionValue);
     HIGHS_SYM_PTR(Highs_destroy);
     HIGHS_SYM_PTR(Highs_readModel);
