@@ -52,6 +52,7 @@ public:
         }
 
         m_seed = t_seed;
+        return *this;
     }
 
 };
