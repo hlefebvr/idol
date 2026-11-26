@@ -41,4 +41,10 @@ inline void report_standard_output(const idol::Model& t_model, const Arguments& 
 
 }
 
+inline void save_primal_output(idol::Model& t_model, const Arguments& t_args) {
+    if (!t_args.save_primal_file.empty()) {
+        t_model.write(t_args.save_primal_file);
+    }
+}
+
 #endif //IDOL_OUTPUT_H

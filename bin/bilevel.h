@@ -75,6 +75,7 @@ inline void bilevel(const Arguments& t_args) {
         model->optimize();
 
         report_standard_output(*model, t_args);
+        save_primal_output(*model, t_args);
     }
 
     std::cerr << "Nothing to do with sub-command " << t_args.sub_command << "." << std::endl;

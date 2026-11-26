@@ -87,6 +87,16 @@ If you want to set a time limit and use a specific method, run
 idol_cl milp solve model.lp --time-limit 3600 --method GLPK
 ```
 
+To save the incumbent using Gurobi's plain-text SOL format, use `--save-primal`.
+The file contains the objective value as a comment followed by one
+variable-value pair per line. The same format is available from C++ by calling
+`model.write("solution.sol")`; `Model::write` selects the output format from the
+filename extension.
+
+```shell
+idol_cl milp solve model.lp --method GLPK --save-primal model.sol
+```
+
 To see which solution methods are available for a given problem, use the `list-methods` subcommand.
 
 ```shell

@@ -20,6 +20,9 @@ idol_register_catch_test(modeling.presolve test_modeling_presolve "" "modeling;p
 idol_add_catch_executable(test_modeling_striplib striplib.test.cpp)
 idol_register_catch_test(modeling.striplib test_modeling_striplib "" "modeling;striplib;GLPK;free-solver")
 
+idol_add_catch_executable(test_modeling_write_primal_solution write-primal-solution.test.cpp)
+idol_register_catch_test(modeling.write_primal_solution test_modeling_write_primal_solution "" "modeling;GLPK;free-solver")
+
 foreach (OPTIMIZER ${IDOL_TEST_SOLVERS})
     set(target_name test_modeling_dualizer_${OPTIMIZER})
     idol_add_catch_executable(${target_name} dualizer.test.cpp)

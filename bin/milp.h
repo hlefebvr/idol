@@ -77,6 +77,7 @@ inline void milp(const Arguments& t_args) {
         model->optimize();
 
         report_standard_output(*model, t_args);
+        save_primal_output(*model, t_args);
 
         exit(0);
     }

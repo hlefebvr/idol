@@ -202,6 +202,7 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
     };
 
     add_args_for_milp(solve_milp);
+    solve_milp->add_option("--save-primal", result.save_primal_file, "Write the incumbent to a Gurobi SOL file")->configurable();
     add_args_for_milp(list_milp);
 
     /// ============================================================================
@@ -270,6 +271,7 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
     };
 
     add_args_for_bilevel(solve_bilevel);
+    solve_bilevel->add_option("--save-primal", result.save_primal_file, "Write the incumbent to a Gurobi SOL file")->configurable();
     add_args_for_bilevel(list_bilevel);
 
     /// ============================================================================
@@ -341,6 +343,7 @@ Arguments Arguments::parse(int t_argc, const char** t_argv) {
     };
 
     add_args_for_robust(solve_robust);
+    solve_robust->add_option("--save-primal", result.save_primal_file, "Write the incumbent to a Gurobi SOL file")->configurable();
     add_args_for_robust(list_robust);
 
     /* PARSE ARGUMENTS */

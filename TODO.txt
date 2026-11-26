@@ -47,7 +47,7 @@ PHASE 1 — STRIPLIB, SOLUTION EXPORT AND PRESETS (P0)
    small instances with a direct solver. Do not wait for later CG refactoring.
    Done: parser, tests, example, documentation and reproducible invocation.
 
-02 [ ] Add CLI --save-primal model.sol.
+02 [x] Add CLI --save-primal model.sol.
    Write the Gurobi plain-text SOL format; verify its precise syntax against
    official documentation. Export the original model's variable values, not
    internal master columns. Handle no-incumbent cases explicitly, preserve

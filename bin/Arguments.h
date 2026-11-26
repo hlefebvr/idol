@@ -25,6 +25,7 @@ public:
     SubCommand sub_command = None;
     bool mute = false;
     bool csv_report = false;
+    std::string save_primal_file;
     std::string method;
     double time_limit = idol::Inf;
     unsigned int n_threads = 1;

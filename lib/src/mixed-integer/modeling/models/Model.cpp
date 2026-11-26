@@ -1,6 +1,10 @@
 //
 // Created by henri on 27/01/23.
 //
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
+#include <limits>
 #include <utility>
 
 #include "idol/mixed-integer/modeling/models/Model.h"
@@ -459,6 +463,30 @@ void idol::Model::optimize() {
 }
 
 void idol::Model::write(const std::string& t_name) {
+    if (std::filesystem::path(t_name).extension() == ".sol") {
+        const auto status = get_status();
+        if (status != Optimal && status != Feasible && status != SubOptimal) {
+            throw Exception("Cannot write primal solution: no incumbent is available.");
+        }
+
+        const auto solution = save_primal(*this);
+        std::ofstream file(t_name);
+        if (!file) {
+            throw Exception("Could not open primal solution file \"" + t_name + "\".");
+        }
+
+        file << std::setprecision(std::numeric_limits<double>::max_digits10);
+        file << "# Objective value = " << solution.objective_value() << '\n';
+        for (const auto& var : vars()) {
+            file << var.name() << ' ' << solution.get(var) << '\n';
+        }
+
+        file.close();
+        if (!file) {
+            throw Exception("Could not write primal solution file \"" + t_name + "\".");
+        }
+        return;
+    }
     optimizer().write(t_name);
 }
 
