@@ -12,6 +12,7 @@
 | `test-optimizer-interoperability` | Testing factory reuse, optimizer nesting, backend substitution or model updates |
 | `debug-optimizer` | Investigating wrong solutions, bounds, crashes or regressions |
 | `document-feature` | Updating public API docs, examples and mathematical documentation |
+| `write-tutorial` | Writing or completing mathematical optimization tutorials for the C++ library and CLI |
 | `prepare-hpc-validation` | Defining independent scientific validation and external campaign handoff |
 | `measure-performance` | Investigating or justifying significant performance optimizations |
 

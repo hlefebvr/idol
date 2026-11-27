@@ -129,7 +129,13 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
     m_reason = master.get_reason();
 
     if (m_status == Unbounded) {
-        m_master_primal_ray = save_ray(master);
+        try {
+            m_master_primal_ray = save_ray(master);
+        } catch (const Exception&) {
+            // Ray unavailable despite Unbounded status (e.g., CPLEX re-solve shifted the
+            // internal status after CPXgetray failed). Terminate without a ray.
+            m_is_terminated = true;
+        }
     }
 
     if (m_status == Infeasible && m_use_farkas_for_infeasibility) {
@@ -292,6 +298,23 @@ bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
         auto& model = formulation.sub_problem(i);
 
         if (model.get_status() == Unbounded) {
+
+            // Ensure the sub-problem optimizer has populated the primal ray.
+            // Mirrors the master re-solve pattern in solve_dual_master.
+            auto& sub_optimizer = model.optimizer();
+            if (!sub_optimizer.get_param_infeasible_or_unbounded_info()) {
+                sub_optimizer.set_param_infeasible_or_unbounded_info(true);
+                with_nested_resource_limits(m_parent, sub_optimizer, [&] { model.optimize(); });
+                sub_optimizer.set_param_infeasible_or_unbounded_info(false);
+            }
+
+            if (model.get_status() != Unbounded) {
+                // Status shifted during the info re-solve; treat as terminated.
+                m_status = model.get_status();
+                m_reason = model.get_reason();
+                m_is_terminated = true;
+                continue;
+            }
 
             auto ray = save_ray(model);
             if (!formulation.is_recession_direction(ray, i)) {

@@ -1,0 +1,185 @@
+idol — WEBSITE DEVELOPMENT ROADMAP
+Target branch: codex
+Scope: documentation, website, tutorial examples and documentation build tooling.
+
+Read AGENTS.md, SKILLS.md and the write-tutorial skill before working. Follow this
+roadmap in order; one focused change at a time. Mark tasks [x] only after their
+acceptance checks pass, and record blockers and actual validation. Do not edit
+TODO.txt or implement library features here. Report library bugs separately.
+Inspect the current codex branch rather than assuming main or dev-ai is current.
+Keep existing Doxygen page IDs/URLs where possible; preserve the current theme,
+cards, illustrations, colors and overall visual identity. No website redesign.
+No automatic push, publication or branch switching without maintainer approval.
+
+[x] 01 — Add AI disclosure to About (easy)
+    Append a short section at the END of About. Repository creation: September
+    2022. The first explicitly AI-related commit found on dev-ai is August 2026
+    (3fc8318ca, Add repository instructions for Codex documentation work).
+    Earlier inherited commits are not proof of AI use. Verify history and ask
+    maintainer only if evidence conflicts with the agreed August 2026 date.
+    Suggested wording: "From September 2022 until August 2026, idol was developed
+    entirely by humans, without generative AI. Since August 2026, AI-assisted
+    coding tools have supported development, documentation, testing and
+    maintenance. Mathematical foundations, architectural decisions and scientific
+    direction remain under human supervision. Independent computational
+    experiments are intended to assess algorithm correctness and performance."
+    Use month/year only; do not imply campaigns have already been completed.
+    Acceptance: existing About content preserved; disclosure at end; builds.
+
+[x] 02 — Document automated installation and customized MibS (easy)
+    Inspect install_idol.sh and installation pages. Add the automated script as
+    an installation option; describe prerequisites, working directory, exact
+    verified invocation, output installation directory, and PATH setup if needed.
+    Explain that it builds idol with the customized MibS fork hlefebvr/MibS
+    (idol branch); distinguish package distributions from source installation.
+    Document actual supported OSs; do not promise Linux/macOS compatibility
+    without checking script behavior (including platform-specific sed usage).
+    Cross-link CLI and library installation pages; avoid duplicated instructions.
+    Acceptance: commands and paths checked against script; dependencies and
+    commercial solver licensing limitations clear; no silent script changes.
+
+[x] 03 — Refine homepage and navigation (easy)
+    KEEP existing cards, illustrations, layout, colors and Doxygen theme.
+    Refine introductory copy to explain "solve problems / build algorithms",
+    interoperability and ease of use. Improve CLI and C++ entry points and
+    existing card links; check desktop and mobile layout. Do not replace cards
+    or invent a new design. Benchmark link is a separate task when available.
+    Acceptance: all existing cards remain recognizable; links work; no cosmetic
+    overhaul; generated homepage visually inspected where possible.
+
+[x] 04 — Centralize external solver configuration (easy)
+    Reuse existing cannot_find_solver troubleshooting content. Create one
+    canonical configuration reference linked from both CLI and library install
+    and troubleshooting pages. Inspect actual wrappers and CMake files for
+    Gurobi, CPLEX, GLPK, HiGHS, MibS, Osi, JuMP and other supported integrations.
+    Document exact case-sensitive environment variables, file vs directory paths,
+    discovery precedence, fallback names/locations, platform examples, compile-
+    time options, solver versions if verified, and licensing requirements.
+    Distinguish dynamic loading from build-time linking; keep troubleshooting
+    focused on diagnosis. Do not invent CPLEX paths or options.
+    Acceptance: every configuration claim traced to implementation; old page
+    remains reachable or forwards to canonical content; links validated.
+
+[x] 05 — Add solver compatibility tables (medium)
+    Separate problem classes (LP, MILP, QP, MIQP, SOS, etc.) from algorithmic
+    capabilities (duals, reduced costs, Farkas certificates, rays, callbacks,
+    lazy constraints, user cuts, IIS, etc.). Include relevant restrictions.
+    Describe support THROUGH IDOL, not native vendor capabilities. Distinguish
+    supported, conditional, unsupported and unverified; verify actual wrappers.
+    Link to configuration and existing stable feature pages. Avoid duplicate
+    matrices if a suitable table already exists; improve it instead.
+    Acceptance: cells traceable to code/tests; no aspirational features listed.
+
+[x] 06 — Integrate the write-tutorial skill (easy)
+    The starter archive includes matching canonical and Claude skill bodies.
+    Add an entry to existing SKILLS.md without replacing it; verify the skill
+    copies with scripts/check_agent_skills.py if present. Reuse document-feature
+    for general API documentation. Do this before authoring tutorials; it may
+    be completed alongside initial setup.
+    Acceptance: both copies identical; skill discoverable; existing skills intact.
+
+[x] 07 — Complete Basics tutorials (medium)
+    Preserve and improve existing material, rather than rewriting everything.
+    Cover first solved model; environment ownership/lifetime/defaults; models,
+    shared object identity and model-specific versions; variables and vector
+    variables; linear/affine/quadratic expressions; linear/quadratic/SOS constraints;
+    objectives/constants/supported senses; annotations; factories and optimizer
+    instances, configuration and composition; primal/dual points and certificates;
+    modify and reoptimize; creating a custom optimizer. Check feature availability.
+    Use a small consistent example; verify arithmetic, statuses and snippets.
+    Acceptance: no empty advertised sections; runnable complete examples; clear
+    prerequisites; references where appropriate; Doxygen cross-links work.
+
+[ ] 08 — Improve existing CLI tutorials (medium)
+    Review current MILP, robust and bilevel basics and KKT pages. Give downloadable
+    instance inputs, exact commands, expected status/output and explanation.
+    Clarify solver configuration, time/thread limits and file formats. Check
+    current CLI help/parser/method managers; do not document unimplemented flags.
+    Acceptance: all existing walkthroughs usable from a clean installation.
+
+[ ] 09 — Add missing CLI tutorials (medium)
+    Cover first MILP LP/MPS solve; configuring solver parameters; bilevel LP/MPS
+    and AUX files; continuous-follower reformulations; mixed-integer follower
+    with MibS; static robust counterpart; two-stage robust CCG; comparing
+    available robust separation methods on a small example. Reuse existing
+    pages and inputs rather than duplicating content. Not an algorithm selection
+    guide. Only cover commands that actually exist on the target branch.
+    Acceptance: examples reproducible; expected statuses and mathematical
+    assumptions clear; no unnecessary duplication of C++ tutorials.
+
+[ ] 10 — Create CLI command reference (medium)
+    Document commands, arguments, options, defaults, supported file formats,
+    method-specific options and exit/status behavior. Prefer generation from
+    the actual CLI help or option definitions when straightforward; do not
+    introduce complex infrastructure just for generation. Link from CLI landing
+    page and tutorials. Keep examples separate from reference content.
+    Acceptance: reference consistent with executable/help and parser; no
+    unsupported commands; build works in the documentation CI environment.
+
+[ ] 11 — Complete branch-and-bound tutorials (medium)
+    Keep existing substantial content and correct inaccuracies. Use a small
+    capacitated facility location running example where practical. Cover LP
+    relaxations, valid bounds, incumbent/pruning; constructing B&B with a node
+    optimizer, node selection and branching; existing strategies (including
+    pseudocost/strong branching), callbacks, user cuts vs lazy constraints,
+    primal heuristics, presolve, custom node information and custom strategies.
+    Show a small comparison of node selection/branching choices and explain
+    what node counts mean. Check minimization assumptions and exact API.
+    Acceptance: no empty advertised sections; examples compile/run when
+    dependencies available; mathematically justified strategy descriptions.
+
+[ ] 12 — Create column-and-constraint generation tutorials (substantial)
+    Use the existing robust facility location example as a starting point.
+    Present outline for maintainer review before writing full tutorial.
+    Cover two-stage robust formulation, first-stage decisions, uncertainty and
+    recourse; Robust::Description and Bilevel::Description; restricted scenario
+    master, adversarial problems, valid bounds and termination; first working
+    CCG configuration; feasibility separation; optimality separation;
+    MibS/strong duality/KKT alternatives under their assumptions; heuristic
+    separation (PADM and exact fallback); initial scenarios, stabilization and
+    other supported separation configurations. Explain why a heuristic's failure
+    to find a violation does not certify robustness. Cite Zeng and Zhao (2013)
+    and specific references for advanced methods. Verify actual APIs and
+    supported uncertainty/recourse structures. Give small reproducible examples.
+    Acceptance: approved outline, consistent math, executable examples,
+    references and precise limitations; no claims about unavailable features.
+
+[ ] 13 — Link to independent benchmark website (easy; external dependency)
+    Add a link from homepage/navigation without changing card design when the
+    independently maintained idol-benchmark GitHub Pages site is available.
+    Verify URL and actual availability. Do not develop or run HPC campaigns,
+    implement their website, download their data or invent performance claims.
+    If unavailable, mark blocked and continue other eligible work.
+    Acceptance: valid link and accurate short description of independent reports.
+
+[ ] 14 — Create branch-and-price tutorials (LAST; BLOCKED)
+    Do not start drafting/publishing this tutorial until the maintainer confirms
+    Vanderbeck branching has been implemented and its public API stabilized.
+    Also verify the latest column pool and pricing APIs. Present tutorial outline
+    for discussion and approval before full authoring. Earlier work may proceed.
+    Part I: bin packing motivating example, natural vs pattern formulation,
+    Dantzig-Wolfe block structure/annotations/convexity, restricted master,
+    pricing/reduced costs/valid termination, B&B + column generation composition.
+    Part II: artificial costs and Farkas pricing, Neame/Wentges stabilization,
+    heuristic and exact pricing, custom pricing (lambda optimizer if supported),
+    column pools/reuse/cleanup, original vs master branching, Vanderbeck
+    branching, integer master heuristic, multiplicities, supported presolve,
+    cutting planes and parallel pricing if available. Clearly distinguish
+    valid branching from rules that destroy exploitable pricing structure.
+    Part III: bin packing, generalized assignment, resource-constrained shortest
+    path/specialized pricing, and Striplib import/solve if available. Reuse
+    existing examples and show experiments with configurable strategies.
+    Cite Dantzig & Wolfe (1960), Gilmore & Gomory (1961), Barnhart et al. (1998),
+    Luebbecke & Desrosiers (2005), Vanderbeck and relevant strategy papers.
+    Acceptance: approval gate satisfied; mathematical explanations accurate;
+    all examples use current supported APIs; full example builds and results
+    are checked; no placeholder features advertised as working.
+
+FINAL CHECKS (apply throughout, repeat at completion)
+- Build the site using its existing scripts/workflow; inspect warnings, references,
+  formulas, code rendering, navigation and responsive layout.
+- Compile/run tutorial examples where available; state missing tools/licenses
+  and never claim checks that were not performed.
+- No separate algorithm selection guide, versioned docs, developer guide or
+  centralized bibliography. References belong within relevant tutorials.
+- Keep existing library instructions and backlog intact. No HPC responsibilities.

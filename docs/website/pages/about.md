@@ -39,3 +39,11 @@ LIRMM, CNRS, Université de Montpellier, France
 •
 <a href="https://henrilefebvre.com" target="_blank">henrilefebvre.com</a>
 
+## AI disclosure
+
+From September 2022 until August 2026, idol was developed entirely by humans, without generative AI.
+
+Since August 2026, AI-assisted coding tools have supported development, documentation, testing and maintenance.
+Mathematical foundations, architectural decisions and scientific direction remain under human supervision.
+Independent computational experiments are intended to assess algorithm correctness and performance.
+

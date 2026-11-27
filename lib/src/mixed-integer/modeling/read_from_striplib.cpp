@@ -1,6 +1,7 @@
 #include "idol/mixed-integer/modeling/read_from_striplib.h"
 
 #include <algorithm>
+#include <iostream>
 #include <cctype>
 #include <fstream>
 #include <limits>
@@ -357,7 +358,9 @@ idol::DantzigWolfe::read_decomposition(Model& t_model, const std::string& t_deco
 
     for (unsigned int block = 0; block < parsed.n_blocks; ++block) {
         if (!non_empty_blocks[block]) {
-            throw Exception("Empty block " + std::to_string(block + 1) + " cannot be represented by idol's current Dantzig-Wolfe formulation.");
+            std::cerr << "Warning: block " << (block + 1)
+                      << " in decomposition file is empty (no variables or constraints assigned). "
+                      << "It will be treated as a trivial sub-problem.\n";
         }
     }
     return decomposition;

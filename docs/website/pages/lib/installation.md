@@ -32,7 +32,10 @@ idol_cl --version
 
 \subsection lib_install_from_source From Source
 
-See the \ref build_from_source page.
+Two options are available:
+
+- \ref automated_install "Automated script" — builds idol and the customized MibS fork in one command (the fork lets you use any idol-compatible solver as a feasibility checker inside MibS). The easiest way to get a full setup.
+- \ref build_from_source "Manual build" — full control over compilers, CMake options, optional dependencies and install location.
 
 \section lib_linking Linking with `idol` using CMake
 
@@ -92,6 +95,6 @@ target_link_libraries(my_target PUBLIC idol)
 
 That's it! You can now use `idol` in your project.
 
-> Note that you some CMake options are available and listed on the \ref build_from_source page.
+> Note that CMake options for optional solvers are listed on the \ref build_from_source page. For runtime solver configuration (environment variables and search paths), see \ref solver_configuration.
 >
 > These can be set using `set(MY_OPTION VALUE)`. Be sure to check them out!

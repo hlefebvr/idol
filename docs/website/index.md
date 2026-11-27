@@ -11,18 +11,26 @@
             </span>
         </span>
         <span style="display: block; padding-top: 30px; line-height:1.4; font-size: 1.1em;font-weight: 500">
-            Solve <span class="highlight">bilevel</span> and <span class="highlight">two-stage robust optimization</span> problems with the command line interface, or build new custom algorithms
-            with the C++ library.
+            Use the <span class="highlight">command-line interface</span> to solve mixed-integer, bilevel and robust optimization problems.
+            Use the <span class="highlight">C++ library</span> to build and compose custom algorithms — mixing solvers and techniques freely.
         </span>
         <span style="display:block;padding-top: 30px;padding-bottom: 5px;">
             <a href="cli_tutorials.html" class="my-button">
-                Get started
+                Get started with the CLI
             </a>
-            <a href="examples.html" class="my-button-secondary">
-                To the C++ API
+            <a href="lib_tutorials.html" class="my-button-secondary">
+                C++ Library
             </a>
         </span>
-        <span style="font-size:.7em;">Compatible with Gurobi • Cplex • HiGHS • GLPK • CBC • MibS • JuMP</span>
+        <span class="solver-compat">
+            <span class="solver-badge">Gurobi</span>
+            <span class="solver-badge">CPLEX</span>
+            <span class="solver-badge">HiGHS</span>
+            <span class="solver-badge">GLPK</span>
+            <span class="solver-badge">CBC</span>
+            <span class="solver-badge">MibS</span>
+            <span class="solver-badge">JuMP</span>
+        </span>
     </span>
     <span>
         <span style="display: block; padding-right: 20px;margin-top:15%;" class="fragment" id="cli">
@@ -38,7 +46,7 @@ idol_cl bilevel solve model.mps \
     </span>
 </div>
 
-<span style="font-weight:500;">Browse per problem type</span>
+<div class="section-label">Browse per problem type</div>
 
 <div id="cards">
     <div class="card" onclick="window.location = 'examples_mixed_integer.html';">
@@ -85,7 +93,7 @@ idol_cl bilevel solve model.mps \
 <ul>
   <li>
     <b class="tab-title">Linux</b>
-```cpp
+```shell
 echo "deb [arch=amd64 trusted=yes] https://henrilefebvre.com/apt stable main" | sudo tee /etc/apt/sources.list.d/idol.list
 sudo apt-get update
 sudo apt-get install idol
@@ -93,19 +101,19 @@ idol_cl --version
 ```
   </li>
   <li><b class="tab-title">Mac</b>
-```cpp
+```shell
 brew tap hlefebvr/idol
 brew install idol
 idol_cl --version
 ```
   </li>
   <li><b class="tab-title">From Source</b>
-```cpp
+```shell
 git clone https://github.com/hlefebvr/idol.git
 mkdir -p idol/build && cd idol/build
 cmake .. && cmake --build .
 sudo cmake --install .
-./idol_cl --version
+idol_cl --version
 ```
 </li>
 </ul>
@@ -113,10 +121,12 @@ sudo cmake --install .
 
 \section highlights Highlights
 
-- <b>Unified CLI</b> Solve MILP, bilevel, and robust problems in one interface
-- <b>Composable C++ framework</b> Build, combine, and nest optimization algorithms
-- <b>Solver interoperability</b> Work with Gurobi, Cplex, HiGHS, and more
-- <b>Flexible modeling</b> Use your own branch-and-bound, branch-and-price, or decomposition methods
+<div id="feature-highlights">
+<div class="feature"><b>Unified CLI</b><span class="feature-desc">Solve MILP, bilevel and robust problems in one interface, without writing a line of code.</span></div>
+<div class="feature"><b>Composable C++ framework</b><span class="feature-desc">Build, combine and nest optimization algorithms — branch-and-bound, column generation, CCG and more.</span></div>
+<div class="feature"><b>Solver interoperability</b><span class="feature-desc">Plug in Gurobi, CPLEX, HiGHS, GLPK and others; swap them out without rewriting your algorithm.</span></div>
+<div class="feature"><b>Flexible modeling</b><span class="feature-desc">Express bilevel and robust structure via annotations; let idol wire up the decomposition automatically.</span></div>
+</div>
 
 \section is_this_a_mip_solver Is this a MIP Solver?
 

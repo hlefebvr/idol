@@ -25,6 +25,13 @@ brew install idol
 idol_cl --version
 ```
 
+\section cli_solver_config Solver Configuration
+
+Once installed, solvers are configured via environment variables — no reinstallation needed. See \ref solver_configuration for the full reference.
+
 \section from_source From Source
 
-See the \ref build_from_source page.
+Two options are available:
+
+- \ref automated_install "Automated script" — builds idol and the customized MibS fork in one command (the fork lets you use any idol-compatible solver as a feasibility checker inside MibS). The easiest way to get a full setup.
+- \ref build_from_source "Manual build" — full control over compilers, CMake options, optional dependencies and install location.

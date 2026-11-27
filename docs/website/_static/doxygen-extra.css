@@ -1,14 +1,50 @@
+/* ── Base typography ─────────────────────────────────────────── */
 body {
     background: #f5f7fb;
-    color: #1e293b;
+    color: #0f172a;
+    font-size: 16px;
+    line-height: 1.75;
 }
 
 body, div {
     font-family: "Fira Sans", sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 200;
+/* ── Heading hierarchy ───────────────────────────────────────── */
+h1 {
+    font-size: 2em;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4em;
+}
+
+h2 {
+    font-size: 1.45em;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 2.2em;
+    margin-bottom: 0.6em;
+    padding-bottom: 0.35em;
+    border-bottom: 2px solid #e2e8f0;
+    color: #0f172a;
+}
+
+h3 {
+    font-size: 1.15em;
+    font-weight: 600;
+    margin-top: 1.8em;
+    margin-bottom: 0.4em;
+    padding-left: 0.75em;
+    border-left: 3px solid #2f42ff;
+    color: #1e293b;
+}
+
+h4, h5, h6 {
+    font-size: 1em;
+    font-weight: 600;
+    margin-top: 1.4em;
+    margin-bottom: 0.3em;
+    color: #1e293b;
 }
 
 /* Floating glass header */
@@ -134,12 +170,20 @@ h1, h2, h3, h4, h5, h6 {
     color: #2f42ff !important;
 }
 
-/* Optional: left/center/right for top row */
+/* Logo: icon + "idol" text side by side */
 #idol-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
     font-size: 1.2em;
-    font-weight: 500;
+    font-weight: 600;
     color: #1e293b !important;
     margin: 0;
+}
+
+#idol-logo img {
+    display: block;
 }
 
 #my-header .header-center {
@@ -220,6 +264,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #welcome > span:last-child {
     width: 38%;
+    padding-right: 24px;
 }
 
 #welcome .secondary {
@@ -312,8 +357,9 @@ h1, h2, h3, h4, h5, h6 {
 /* hover */
 #cards .card:hover {
     background: #f8fafc;
-    border-color: #dbe2ea;
-    transform: translateY(-2px);
+    border-color: #c7d2fe;
+    box-shadow: 0 6px 20px rgba(47,66,255,0.10);
+    transform: translateY(-3px);
     cursor: pointer;
 }
 
@@ -363,22 +409,48 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
 }
 
-#welcome .fragment, .fragment {
-    background: #fafbff !important;
-    border: 1px solid #e0e7ff !important;
-    border-radius: 10px !important;
-    padding: 16px 18px !important;
+#welcome .fragment:not(#cli), .fragment:not(#cli) {
+    background: #f8faff !important;
+    border: 1px solid #dde4f5 !important;
+    border-radius: 8px !important;
+    padding: 1em 1.25em !important;
 
-    font-size: 0.95em !important;
-    line-height: 1.5 !important;
+    font-size: 0.9em !important;
+    line-height: 1.6 !important;
 
     color: #1e293b !important;
 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    overflow-x: auto !important;
 }
 
+/* ── Doc-page content ────────────────────────────────────────── */
+div.textblock p {
+    margin-bottom: 0.9em;
+}
+
+div.textblock a:not(.anchor) {
+    color: #2f42ff;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+div.textblock a:not(.anchor):hover {
+    color: #1a2ecc;
+}
+
+/* Keep content readable at wider viewports */
+div.contents {
+    max-width: 1050px;
+}
+
+/* ── API / class pages ───────────────────────────────────────── */
 h2.groupheader, td h2.groupheader {
     box-shadow: none;
+    border-bottom: none;    /* avoid double rule with our h2 style */
+    padding-left: 0;
+    border-left: none;
+    font-weight: 500;
 }
 
 div.memdoc {
@@ -390,7 +462,7 @@ div.header {
 }
 
 div.header .title {
-    font-weight: 300;
+    font-weight: 600;
 }
 
 /*
@@ -399,8 +471,58 @@ div.header .title {
 }
 */
 
+/* ── Tables ──────────────────────────────────────────────────── */
+.markdownTable {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.95em;
+    margin: 1.5em 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.markdownTable thead th {
+    background: #1e293b;
+    color: #f8fafc;
+    font-weight: 600;
+    padding: 0.65em 1em;
+    text-align: left;
+    letter-spacing: 0.02em;
+    font-size: 0.88em;
+    text-transform: uppercase;
+}
+
 .markdownTable tbody {
     background: white;
+}
+
+.markdownTable tbody tr:nth-child(even) td {
+    background: #f8fafc;
+}
+
+.markdownTable tbody tr:hover td {
+    background: #eef2ff;
+}
+
+.markdownTable tbody td {
+    padding: 0.6em 1em;
+    border-bottom: 1px solid #e9eef5;
+    vertical-align: top;
+}
+
+.markdownTable tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Group separator: top border on cells that start a new rowspan group */
+.markdownTable tbody td[rowspan] {
+    border-top: 2px solid #dde4f5;
+    font-weight: 600;
+}
+
+.markdownTable tbody tr:first-child td {
+    border-top: none;
 }
 
 .toc .interactive {
@@ -419,19 +541,7 @@ div.header .title {
 }
 
 
-.fragment {
-    counter-reset: line;
-}
-
-.fragment .line::before {
-    counter-increment: line;
-    content: counter(line) " ";
-    display: inline-block;
-    width: 2em;
-    text-align: right;
-    margin-right: 1em;
-    color: gray;
-}
+/* line numbers removed — too noisy for documentation snippets */
 
 div.contents .toc {
     top: 80px !important;
@@ -507,6 +617,113 @@ blockquote::before, blockquote::after {
 .formulaDsp {
     max-width: 100%;
     overflow-x: auto;
+}
+
+/* ── Homepage hero decoration ────────────────────────────────── */
+#welcome {
+    position: relative;
+    background: radial-gradient(ellipse 60% 120% at 100% 0%, rgba(47,66,255,0.13) 0%, transparent 65%),
+                radial-gradient(ellipse 40% 60% at 0% 100%, rgba(47,66,255,0.05) 0%, transparent 70%);
+    border-radius: 20px;
+    padding-bottom: 20px;
+}
+
+/* Dark terminal window for the animated CLI panel */
+#cli {
+    background: #0f172a !important;
+    border: 1px solid #1e3a5f !important;
+    border-left: 3px solid #2f42ff !important;
+    border-radius: 12px !important;
+    min-height: 180px;
+    color: #e2e8f0 !important;
+    font-size: 0.85em !important;
+    line-height: 1.6 !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25) !important;
+}
+
+/* Force all children — including typed.js-generated pre/span — to light text */
+#cli *,
+#cli pre,
+#cli code,
+#cli span,
+#cli .line,
+#cli .typed-cursor {
+    color: #e2e8f0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+/* ── Solver compatibility badges ─────────────────────────────── */
+.solver-compat {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 16px;
+    align-items: center;
+}
+
+.solver-badge {
+    display: inline-block;
+    font-size: 0.72em;
+    font-weight: 600;
+    padding: 3px 11px;
+    border-radius: 100px;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    color: #4338ca;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+}
+
+/* ── Section label ("Browse per problem type") ───────────────── */
+.section-label {
+    font-size: 0.72em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #64748b;
+    margin-top: 2.8em;
+    margin-bottom: 0.5em;
+}
+
+/* ── Feature highlights grid ─────────────────────────────────── */
+#feature-highlights {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 1em 0 2em;
+}
+
+.feature {
+    padding: 1em 1.1em;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #dde4f5;
+    border-left: 4px solid #2f42ff;
+    box-shadow: 0 2px 10px rgba(47,66,255,0.07);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.feature:hover {
+    box-shadow: 0 6px 20px rgba(47,66,255,0.14);
+    transform: translateY(-2px);
+}
+
+.feature b {
+    display: block;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 0.3em;
+    font-size: 0.95em;
+}
+
+.feature-desc {
+    display: block;
+    font-size: 0.88em;
+    color: #64748b;
+    line-height: 1.5;
 }
 
 /* Mobile adjustments */
@@ -589,5 +806,13 @@ blockquote::before, blockquote::after {
 
     div.contents .toc {
         top: 0px !important;
+    }
+
+    #feature-highlights {
+        grid-template-columns: 1fr;
+    }
+
+    .solver-compat {
+        gap: 5px;
     }
 }

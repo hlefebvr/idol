@@ -1,7 +1,12 @@
-\page build_from_source Build from source
-\brief Describes how to compile and install idol from source.
+\page build_from_source Manual Build from Source
+\brief Compile and install idol from source with full control over build options.
 
 \tableofcontents
+
+This page covers building idol manually — useful when you need to control
+compilers, CMake flags, optional dependencies or the install location.
+
+For the quickest setup (idol + MibS in one command), see \ref automated_install instead.
 
 \section requirements Requirements
 
@@ -11,18 +16,17 @@ To build `idol` and `idol_cl` from source, you need:
 - **C++20 compiler** (GCC or Clang)
 - **Git**
 
-You can verify your tools with:
+You only need one C++ compiler — GCC (typical on Linux) or Clang (typical on
+macOS via Xcode Command Line Tools). You can verify your tools with:
 
 ```shell
 cmake --version
-g++ --version
-clang++ --version
 git --version
+g++ --version      # GCC
+clang++ --version  # Clang
 ```
 
 \section build_steps Build instructions
-
-Follow these steps to compile and install `idol`.
 
 \subsection step_clone Step 1 — Clone the repository
 
@@ -70,20 +74,34 @@ idol_cl --version
 
 If the command prints the version, the installation was successful.
 
-
 \section cmake_options CMake Options
 
-You can customize the build using CMake options.
-
+You can customize the build by passing options to CMake.
 
 \subsection cmake_mibs Enable MibS support
 
-MibS is a mixed-integer linear solver that can be integrated in idol.
+MibS is a mixed-integer bilevel solver that can be integrated in idol.
 
-When installing via package managers (`apt-get` or `brew`), it is  included automatically.  
-When building from source, you must install it on your own, enable and configure it manually.
+When installing via package managers (`apt-get` or `brew`), it is included automatically.
+When building from source, you must build it separately and point CMake to it.
 
-First, install MibS by following the instructions on the <a href="https://github.com/coin-or/MibS" target="_blank">official MibS documentation</a>. Then either:
+idol requires the customized fork
+<a href="https://github.com/hlefebvr/MibS" target="_blank">hlefebvr/MibS</a>
+(branch `idol`), not the upstream coin-or/MibS release. The fork enables using
+any idol-compatible solver (e.g., Gurobi) as a feasibility checker inside MibS.
+Build it using
+<a href="https://github.com/coin-or/coinbrew" target="_blank">coinbrew</a>:
+
+```shell
+mkdir coin-or && cd coin-or
+curl -fsSL https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew -o coinbrew
+chmod +x coinbrew
+./coinbrew fetch https://github.com/hlefebvr/MibS@idol
+./coinbrew build https://github.com/hlefebvr/MibS@idol --no-prompt --tests=none
+cd ..
+```
+
+This installs into `coin-or/dist/`. Then either:
 
 - set the environment variable:
 
@@ -103,51 +121,30 @@ Both `COIN_OR_HOME` and `COIN_OR_DIR` must point to the COIN-OR `dist` directory
 
 \subsection cmake_cgl Enable Cgl support
 
-Cgl is a cut generation library from coin-or. It can be used by idol to generate cutting planes in a branch-and-bound algorithm.
+Cgl is a cut generation library from COIN-OR that idol can use to generate
+cutting planes in a branch-and-bound algorithm.
 
-When installing via package managers (`apt-get` or `brew`), Cgl is  included automatically.  
-When building from source, you must install it on your own, enable and configure it manually.
-
-First, install Cgl from source followin the instructions on the
-<a href="https://github.com/coin-or/Cgl" target="_blank">official Cgl documentation</a>. 
-Namely, do as follows 
+When installing via package managers (`apt-get` or `brew`), Cgl is included automatically.
+When building from source, you must build it separately:
 
 ```shell
-mkdir coin-or
-cd coin-or 
-wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
-chmod u+x coinbrew
+mkdir coin-or && cd coin-or
+curl -fsSL https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew -o coinbrew
+chmod +x coinbrew
 ./coinbrew fetch Cgl@master
 ./coinbrew build Cgl
 ```
 
-Then either:
-
-- set the environment variable:
-
-```shell
-export COIN_OR_HOME=/path/to/coin-or/dist
-```
-
-- or pass the directory directly to CMake with the option `COIN_OR_DIR`.
-
-Finally, enable Cgl with the CMake option `USE_CGL=ON`.
+Then either set `COIN_OR_HOME` or pass `COIN_OR_DIR` to CMake (same as above),
+and enable Cgl:
 
 ```shell
 cmake -DUSE_CGL=ON -DCOIN_OR_DIR=/path/to/coin-or/dist ..
 ```
 
-Both `COIN_OR_HOME` and `COIN_OR_DIR` must point to the COIN-OR `dist` directory.
-
 \subsection cmake_install_prefix Custom installation directory
 
-To install into a custom location, set:
-
-```shell
-cmake -DCMAKE_INSTALL_PREFIX=/custom/install/path ..
-```
-
-Example:
+To install into a custom location instead of `/usr/local`:
 
 ```shell
 cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local ..
@@ -159,19 +156,13 @@ The executable will be installed into:
 $HOME/.local/bin/idol_cl
 ```
 
-
 \subsection cmake_examples Build examples
-
-To build the example programs:
 
 ```shell
 cmake -DBUILD_EXAMPLES=ON ..
 ```
 
-
 \subsection cmake_tests Build tests
-
-To build the test suite:
 
 ```shell
 cmake -DBUILD_TESTS=ON ..

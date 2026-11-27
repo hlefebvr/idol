@@ -30,91 +30,79 @@ value \\( -6 \\).
 Modeling this problem in `idol` is straightforward and will look familiar if you use other optimization frameworks such as JuMP
 in Julia or the Gurobi C++, or even Python, interface.
 
-The following code snippet is largely self-explanatory.
+Here is the complete program.
 
 ```cpp
 #include <iostream>
 #include "idol/modeling.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
 
 using namespace idol;
 
-int main(int t_argc, const char** t_argv) {
+int main() {
 
     Env env;
-
-    // Create a new model.
     Model model(env);
 
-    // Create decision variables x and y.
+    // Variables: x, y ≥ 0, integer, objective coefficients -1 and -2.
     const auto x = model.add_var(0, Inf, Integer, -1, "x");
     const auto y = model.add_var(0, Inf, Integer, -2, "y");
 
-    // Create constraints.
-    const auto c1 = model.add_ctr(-x + y <= 1);
-    const auto c2 = model.add_ctr(2 * x + 3 * y <= 12);
-    const auto c3 = model.add_ctr(3 * x + 2 * y <= 12);
-    
+    // Constraints defining the feasible region.
+    model.add_ctr(-x + y <= 1);
+    model.add_ctr(2 * x + 3 * y <= 12);
+    model.add_ctr(3 * x + 2 * y <= 12);
+
+    // Attach a solver and optimize.
+    model.use(HiGHS());
+    model.optimize();
+
+    // Print results.
+    std::cout << "Status: " << model.get_status() << '\n';
+    std::cout << "Reason: " << model.get_reason() << '\n';
+
+    if (model.get_status() == Optimal || model.get_status() == Feasible) {
+        std::cout << "Objective: " << model.get_best_obj() << '\n';
+        std::cout << "x = " << model.get_var_primal(x) << '\n';
+        std::cout << "y = " << model.get_var_primal(y) << '\n';
+    }
+
     return 0;
 }
-
 ```
 
-Let's walk through this code. First, we create a new
-optimization environment that will store all our optimization objects such as
-variables or constraints. This is done with the `Env` class.
-Destroying an environment automatically destroys all
-objects which were created with this environment. 
+Expected output:
+```
+Status: Optimal
+Reason: Proved
+Objective: -6
+x = 2
+y = 2
+```
 
-Then, we create an optimization model using the `Model` class. In `idol`, all
-models are for minimization problems. Decision variables are created in
-using the `Model::add_var` method. There, we
-set the lower bound to 0 and an infinite upper bound using the defined
-constant `Inf`. Both variables are defined as `Integer`.
-Note that other types are possible, e.g., `Continuous` and
-`Binary`. The objective coefficients are also set in these lines by the
-fourth argument (note that this can also be done afterward). 
-The last argument corresponds to the internal name of that
-variable and is mainly used for debugging and printing. 
+Let's walk through the key parts.
 
-Finally, we add constraints to the model to define the feasible region of the problem.
-To do this, we use the `Model::add_ctr` method.
+**Environment and model.** `Env` owns all optimization objects; it must outlive all models, variables and constraints. `Model` holds the variables, constraints and objective. All models are minimization problems.
 
-Note that at this stage we are only formulating
-the problem; no optimization is being performed yet.
-Solving the model is the focus of the section.
+**Variables.** `model.add_var(lb, ub, type, obj_coeff, name)` creates a variable and adds it to the model in one call. The upper bound `Inf` is the sentinel value `1e20` (not IEEE infinity). `Integer`, `Continuous` and `Binary` are the available types.
+
+**Constraints.** `model.add_ctr(expr)` accepts any comparison of affine expressions. The operators `<=`, `>=` and `==` produce a temporary constraint object that `add_ctr` registers with the model.
+
+**Optimizer factory.** `HiGHS()` is an optimizer factory — a reusable configuration object. `model.use(factory)` creates the actual optimizer and binds it to the model. Calling `model.use` again replaces the current optimizer.
+
+**Results.** Always check the status before reading solution values. `get_best_obj` and `get_var_primal` are only meaningful when the status is `Optimal` or `Feasible`.
 
 \section lib_milp_basics_solving Using an External Solver
 
-To solve a model, we need to attach an optimizer to it. This is done using the `Model::use` method that takes a single argument.
-This argument is what is called an optimizer factory, i.e., an object that will create on demand an actual optimizer
-for solving the model. 
-
-Here, we continue ongoing example and illustrate how to use the commercial solver Gurobi
-to compute a solution to this problem. To do so, we use the `Gurobi` class, which is an optimizer factory
-for the optimizer `Optimizers::Gurobi` that interfaces with the Gurobi C API.
-
-Here is a code snippet.
+Switching to a different solver requires only one line change:
 
 ```cpp
-model.use(Gurobi());
-model.optimize();
-
-const auto status = model.get_status();
-
-std::cout << "Status: " << status << std::endl;
-std::cout << "Reason: " << model.get_reason() << std::endl;
-
-if (status == Optimal || status == Feasible) {
-    std::cout << "Best Obj. " << model.get_best_obj() << std::endl;
-    std::cout << "x = " << model.get_var_primal(x) << std::endl;
-    std::cout << "y = " << model.get_var_primal(y) << std::endl;
-}
+model.use(Gurobi());   // commercial, requires a license
+model.use(HiGHS());    // open-source, MIT license
+model.use(GLPK());     // open-source, GPL license
 ```
 
-First, we tell `idol` to "use" the Gurobi optimizer factory for this model. 
-Then, we call the `Model::optimize` method that, indeed, creates and calls an optimizer to solve the problem.
-Finally, we retrieve some basic information regarding the solution of our problem.
-If the status is `Optimal` or `Feasible`, we print out the primal values.
+See \ref solver_configuration for how to configure solver paths.
 
 \subsection lib_milp_basics_status Status and termination reason
 
@@ -126,32 +114,35 @@ neither an incumbent nor an infeasibility or unboundedness proof is available.
 The following table lists every valid status-reason combination. A combination
 not listed here is invalid.
 
-| Status | Valid reason | Meaning |
-|:-------|:-------------|:--------|
-| `Loaded` | `NotSpecified` | The model has not produced a solve result. |
-| `Optimal` | `Proved` | A feasible point is available and optimality is proven. |
-| `Feasible` | `NotSpecified` | A feasible point is available; the optimizer supplied no more specific termination reason. |
-| `Feasible` | `TimeLimit` | A feasible point is available and the time limit stopped optimization. |
-| `Feasible` | `IterLimit` | A feasible point is available and the iteration limit stopped optimization. |
-| `Feasible` | `NodeLimit` | A feasible point is available and the node limit stopped optimization. |
-| `Feasible` | `ObjLimit` | A feasible point is available and an objective limit stopped optimization. |
-| `Feasible` | `SolutionLimit` | A feasible point is available and the solution limit stopped optimization. |
-| `Feasible` | `MemoryLimit` | A feasible point is available and the memory limit stopped optimization. |
-| `Feasible` | `Cycling` | A feasible point is available and cycling stopped optimization. |
-| `Feasible` | `Numerical` | A feasible point is available, but numerical difficulties prevented a proof of optimality. |
-| `Feasible` | `Interrupted` | A feasible point is available and optimization was interrupted. |
-| `Infeasible` | `Proved` | Infeasibility is proven. |
-| `InfOrUnbnd` | `Proved` | Only the infeasible-or-unbounded disjunction is proven. |
-| `Unbounded` | `Proved` | Unboundedness is proven. |
-| `Unknown` | `NotSpecified` | No feasible point or proof is available and no more specific reason was supplied. |
-| `Unknown` | `TimeLimit` | The time limit was reached without a feasible point or proof. |
-| `Unknown` | `IterLimit` | The iteration limit was reached without a feasible point or proof. |
-| `Unknown` | `NodeLimit` | The node limit was reached without a feasible point or proof. |
-| `Unknown` | `ObjLimit` | An objective limit was reached without a feasible point or proof. |
-| `Unknown` | `MemoryLimit` | The memory limit was reached without a feasible point or proof. |
-| `Unknown` | `Cycling` | Cycling stopped optimization without a feasible point or proof. |
-| `Unknown` | `Numerical` | Numerical difficulties stopped optimization without a feasible point or proof. |
-| `Unknown` | `Interrupted` | Optimization was interrupted without a feasible point or proof. |
+<table class="markdownTable">
+<thead><tr><th>Status</th><th>Valid reason</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>Loaded</code></td><td><code>NotSpecified</code></td><td>The model has not produced a solve result.</td></tr>
+<tr><td><code>Optimal</code></td><td><code>Proved</code></td><td>A feasible point is available and optimality is proven.</td></tr>
+<tr><td rowspan="10" style="vertical-align:middle"><code>Feasible</code></td><td><code>NotSpecified</code></td><td>A feasible point is available; the optimizer supplied no more specific termination reason.</td></tr>
+<tr><td><code>TimeLimit</code></td><td>A feasible point is available and the time limit stopped optimization.</td></tr>
+<tr><td><code>IterLimit</code></td><td>A feasible point is available and the iteration limit stopped optimization.</td></tr>
+<tr><td><code>NodeLimit</code></td><td>A feasible point is available and the node limit stopped optimization.</td></tr>
+<tr><td><code>ObjLimit</code></td><td>A feasible point is available and an objective limit stopped optimization.</td></tr>
+<tr><td><code>SolutionLimit</code></td><td>A feasible point is available and the solution limit stopped optimization.</td></tr>
+<tr><td><code>MemoryLimit</code></td><td>A feasible point is available and the memory limit stopped optimization.</td></tr>
+<tr><td><code>Cycling</code></td><td>A feasible point is available and cycling stopped optimization.</td></tr>
+<tr><td><code>Numerical</code></td><td>A feasible point is available, but numerical difficulties prevented a proof of optimality.</td></tr>
+<tr><td><code>Interrupted</code></td><td>A feasible point is available and optimization was interrupted.</td></tr>
+<tr><td><code>Infeasible</code></td><td><code>Proved</code></td><td>Infeasibility is proven.</td></tr>
+<tr><td><code>InfOrUnbnd</code></td><td><code>Proved</code></td><td>Only the infeasible-or-unbounded disjunction is proven.</td></tr>
+<tr><td><code>Unbounded</code></td><td><code>Proved</code></td><td>Unboundedness is proven.</td></tr>
+<tr><td rowspan="9" style="vertical-align:middle"><code>Unknown</code></td><td><code>NotSpecified</code></td><td>No feasible point or proof is available and no more specific reason was supplied.</td></tr>
+<tr><td><code>TimeLimit</code></td><td>The time limit was reached without a feasible point or proof.</td></tr>
+<tr><td><code>IterLimit</code></td><td>The iteration limit was reached without a feasible point or proof.</td></tr>
+<tr><td><code>NodeLimit</code></td><td>The node limit was reached without a feasible point or proof.</td></tr>
+<tr><td><code>ObjLimit</code></td><td>An objective limit was reached without a feasible point or proof.</td></tr>
+<tr><td><code>MemoryLimit</code></td><td>The memory limit was reached without a feasible point or proof.</td></tr>
+<tr><td><code>Cycling</code></td><td>Cycling stopped optimization without a feasible point or proof.</td></tr>
+<tr><td><code>Numerical</code></td><td>Numerical difficulties stopped optimization without a feasible point or proof.</td></tr>
+<tr><td><code>Interrupted</code></td><td>Optimization was interrupted without a feasible point or proof.</td></tr>
+</tbody>
+</table>
 
 Primal values are available only with `Optimal` or `Feasible`. A primal ray
 requires `Unbounded`, and a Farkas certificate requires the proven
@@ -181,7 +172,10 @@ Next is a list of more in-depth pages about basic concepts in `idol`.
 - \subpage lib_milp_basics_advanced_expressions
 - \subpage lib_milp_basics_advanced_constraints
 - \subpage lib_milp_basics_advanced_objectives
+- \subpage lib_milp_basics_advanced_annotations
 - \subpage lib_milp_basics_advanced_optimizers
+- \subpage lib_milp_basics_advanced_solutions
+- \subpage lib_milp_basics_advanced_reoptimize
 - \subpage lib_milp_basics_advanced_create_optimizer
 
 \page lib_milp_basics_advanced_environment The Optimization Environment
@@ -438,7 +432,8 @@ Var(Env&, double, double, VarType, double, std::string)
 The constructor requires six arguments. The first specifies the optimization
 environment, which manages the variable's lifetime and versions. The next two
 arguments define the lower and upper bounds of the variable, which can be set
-to infinity using `Inf`. The fourth argument indicates the type
+to `Inf` (defined as `1e20`, a large finite sentinel — not IEEE infinity) or
+`-Inf` (`-1e20`). The fourth argument indicates the type
 of the variable, for example `Continuous`, `Integer`,
 or `Binary`. The fifth argument provides the linear coefficient of
 the variable in the objective function, and the sixth argument assigns a name
@@ -580,7 +575,7 @@ information about variables in a model.
 | Method | Description                                                             |
 |--------|-------------------------------------------------------------------------|
 | lb     | Returns the lower bound of the variable. May lie in [-`Inf`, `Inf`].    |
-| ub     | Returns the upper bound of the variable. May lie in ([-`Inf`, `Inf`].    |
+| ub     | Returns the upper bound of the variable. May lie in [-`Inf`, `Inf`].    |
 | obj    | Returns the objective coefficient in the linear part of the objective.  |
 | type   | Returns the variable type: `Continuous`, `Integer`, or `Binary`.        |
 | column | Returns the associated column in the constraint matrix.                 |
@@ -639,6 +634,19 @@ Expressions are the building blocks of objective functions, constraints, rows,
 and columns. In ordinary modeling code, they are created naturally by combining
 variables, constants, and the usual arithmetic operators. The header
 `idol/modeling.h` provides the expression types and their operators.
+
+Throughout this page, `x`, `y`, and `z` are `Var` objects in a model:
+
+```cpp
+#include "idol/modeling.h"
+using namespace idol;
+
+Env env;
+Model model(env);
+const auto x = model.add_var(0, Inf, Continuous, 0, "x");
+const auto y = model.add_var(0, Inf, Continuous, 0, "y");
+const auto z = model.add_var(0, Inf, Continuous, 0, "z");
+```
 
 \section lib_milp_basics_advanced_expressions_types Expression Types
 
@@ -1214,3 +1222,289 @@ Representative implementations to study are the `HiGHS` factory and
 `Optimizers::HiGHS` runtime wrapper for solver integration, and
 `LambdaOptimizer` with `Optimizers::LambdaOptimizer` for a small algorithmic
 optimizer using the `Algorithm` base class.
+
+\page lib_milp_basics_advanced_annotations Annotations
+\brief Describes how to attach metadata to optimization objects using annotations.
+\tableofcontents
+
+An annotation is a typed key that maps optimization objects — variables,
+constraints, and others — to values. It lives in the environment and can be
+queried and set on any object created in the same environment. Annotations are
+the primary mechanism for communicating problem structure to algorithmic
+optimizers such as the Dantzig-Wolfe decomposition or PADM.
+
+\section lib_milp_basics_advanced_annotations_create Creating an Annotation
+
+An annotation is an instance of `Annotation<ValueT>`, where `ValueT` is the
+type of the associated value. It is created in an environment with a name and,
+optionally, a default value that is returned when an object has not been
+explicitly annotated.
+
+```cpp
+#include "idol/modeling.h"
+using namespace idol;
+
+Env env;
+
+// Annotation with no default — accessing an un-annotated object throws.
+Annotation<unsigned int> block(env, "block");
+
+// Annotation with default value 0 — un-annotated objects return 0.
+Annotation<unsigned int> block_with_default(env, "block", 0u);
+```
+
+The annotation must outlive every object it annotates, and it must be created
+in the same environment as those objects.
+
+\section lib_milp_basics_advanced_annotations_use Reading and Writing
+
+Any optimization object derived from `Object` — including `Var` and `Ctr` —
+exposes `.set(annotation, value)` and `.get(annotation)`. These operate on
+the object's stored version inside the environment, not on a model.
+
+```cpp
+Model model(env);
+
+const auto x = model.add_var(0, Inf, Continuous, 0, "x");
+const auto y = model.add_var(0, Inf, Continuous, 0, "y");
+const auto c = model.add_ctr(x + y <= 10, "c");
+
+Annotation<unsigned int> block(env, "block", 0u);
+
+// Assign x and c to sub-problem 1; y stays at the default (0).
+x.set(block, 1u);
+c.set(block, 1u);
+
+std::cout << x.get(block) << '\n'; // 1
+std::cout << y.get(block) << '\n'; // 0 (default)
+```
+
+\section lib_milp_basics_advanced_annotations_use_case Typical Use Case: Decomposition
+
+Decomposition algorithms such as `DantzigWolfeDecomposition` and `PADM` read
+annotations to discover which variables and constraints belong to which
+sub-problem. The convention for Dantzig-Wolfe is to leave master-problem
+objects at the special value `MasterId` (the default) and assign sub-problem
+objects an integer id starting from zero:
+
+```cpp
+// By default, everything stays in the master problem.
+Annotation<unsigned int> decomposition(env, "decomposition", MasterId);
+
+// Move x and its linking constraint to sub-problem 0.
+x.set(decomposition, 0u);
+linking_ctr.set(decomposition, 0u);
+```
+
+The annotation itself carries no algorithmic semantics — it is just a typed
+label. The optimizer that reads it defines what the values mean. The
+branch-and-price tutorial shows a complete Dantzig-Wolfe setup using this
+pattern.
+
+\page lib_milp_basics_advanced_solutions Solution Values, Duals and Certificates
+\brief Explains how to retrieve primal solutions, dual values, rays and Farkas certificates.
+\tableofcontents
+
+After a call to `Model::optimize`, the model forwards the solver's result
+through a uniform interface. What is available depends on the solution status,
+the reason for termination, and the capabilities of the attached optimizer.
+Always check the status before querying result values.
+
+Throughout this page, `model` is a solved `Model`, `x` is a `Var` and `c` is a `Ctr` in that model:
+
+```cpp
+#include "idol/modeling.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+using namespace idol;
+
+Env env;
+Model model(env);
+const auto x = model.add_var(0, Inf, Continuous, -1, "x");
+const auto c = model.add_ctr(x <= 4, "c");
+model.use(HiGHS());
+model.optimize();
+```
+
+\section lib_milp_basics_advanced_solutions_primal Primal Solution
+
+Primal variable values are available when `status == Optimal` or
+`status == Feasible`.
+
+```cpp
+model.optimize();
+
+if (model.get_status() == Optimal || model.get_status() == Feasible) {
+    for (const auto& var : model.vars()) {
+        std::cout << var.name() << " = "
+                  << model.get_var_primal(var) << '\n';
+    }
+    std::cout << "Objective: " << model.get_best_obj() << '\n';
+    std::cout << "Bound:     " << model.get_best_bound() << '\n';
+}
+```
+
+\section lib_milp_basics_advanced_solutions_dual Dual Values and Reduced Costs
+
+Dual multipliers and reduced costs are produced by LP solvers for continuous
+models or for the continuous relaxation inside a branch-and-bound. They are
+typically available when `status == Optimal` and the model contains only
+continuous variables.
+
+```cpp
+// Dual multiplier for a constraint (shadow price).
+const double dual = model.get_ctr_dual(c);
+
+// Reduced cost of a variable.
+const double rc = model.get_var_reduced_cost(x);
+```
+
+Whether these values are available depends on the optimizer. Many MIP solvers
+do not return duals after solving the integer program, only after solving an LP
+relaxation.
+
+\section lib_milp_basics_advanced_solutions_ray Primal Ray (Unbounded Problems)
+
+A primal ray is available when `status == Unbounded`. It describes a direction
+along which the objective decreases without bound.
+
+```cpp
+if (model.get_status() == Unbounded) {
+    for (const auto& var : model.vars()) {
+        std::cout << var.name() << " ray = "
+                  << model.get_var_ray(var) << '\n';
+    }
+}
+```
+
+\section lib_milp_basics_advanced_solutions_farkas Farkas Certificate (Infeasible Problems)
+
+A Farkas certificate is available when `status == Infeasible` and
+`reason == Proved`. It provides a dual multiplier per constraint that certifies
+infeasibility.
+
+```cpp
+if (model.get_status() == Infeasible) {
+    for (const auto& ctr : model.ctrs()) {
+        std::cout << ctr.name() << " Farkas = "
+                  << model.get_ctr_farkas(ctr) << '\n';
+    }
+}
+```
+
+Not every optimizer produces a Farkas certificate even when it proves
+infeasibility. If a certificate is not available, `get_ctr_farkas` throws.
+Enable detailed infeasibility information via
+`with_infeasible_or_unbounded_info(true)` on the factory if the
+optimizer supports it.
+
+\section lib_milp_basics_advanced_solutions_pool Solution Pool
+
+Some optimizers retain multiple feasible solutions found during branch-and-bound.
+The pool is indexed from zero; index zero is the best solution.
+
+```cpp
+const unsigned int n = model.get_n_solutions();
+for (unsigned int i = 0; i < n; ++i) {
+    model.set_solution_index(i);
+    std::cout << "Solution " << i
+              << ": obj = " << model.get_best_obj() << '\n';
+    for (const auto& var : model.vars()) {
+        std::cout << "  " << var.name() << " = "
+                  << model.get_var_primal(var) << '\n';
+    }
+}
+// Reset to the best solution.
+model.set_solution_index(0);
+```
+
+Pool support is optimizer-specific. If only one solution is retained,
+`get_n_solutions()` returns 1 and `set_solution_index(0)` is a no-op.
+
+\page lib_milp_basics_advanced_reoptimize Modifying and Re-optimizing
+\brief Shows how to change a model after a first solve and optimize again.
+\tableofcontents
+
+An optimizer in idol is a persistent object that stays attached to its model
+across multiple calls to `Model::optimize`. When the model changes between
+solves, the optimizer is notified of the modification and can update its
+internal state incrementally rather than rebuilding from scratch. This makes
+repeated solves after small changes efficient.
+
+\section lib_milp_basics_advanced_reoptimize_what Supported Modifications
+
+The following changes to a model are propagated to the attached optimizer:
+
+- **Variable bounds** (`set_var_lb`, `set_var_ub`)
+- **Variable type** (`set_var_type`)
+- **Objective coefficients** (`set_var_obj`, `set_obj_const`, `set_obj_expr`)
+- **Constraint right-hand side** (`set_ctr_rhs`)
+- **Constraint type** (`set_ctr_type`)
+- **Constraint matrix coefficient** (`set_mat_coeff`, `set_ctr_row`)
+- **Adding or removing variables and constraints** (`add_var`, `add_ctr`, `remove`)
+
+Not all optimizers support every type of modification. If an unsupported
+modification is requested, the optimizer throws an exception.
+
+\section lib_milp_basics_advanced_reoptimize_example Example
+
+The following example solves the same LP twice, tightening an upper bound
+between solves.
+
+```cpp
+#include "idol/modeling.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+using namespace idol;
+
+Env env;
+Model model(env);
+
+const auto x = model.add_var(0, 10, Continuous, -1, "x");
+model.add_ctr(x <= 8);
+
+model.use(HiGHS());
+
+// First solve.
+model.optimize();
+std::cout << "First solve: x = " << model.get_var_primal(x) << '\n';
+
+// Tighten the upper bound and re-optimize.
+model.set_var_ub(x, 5);
+model.optimize();
+std::cout << "Second solve: x = " << model.get_var_primal(x) << '\n';
+```
+
+The optimizer updates only the modified bound before the second solve, without
+rebuilding the entire problem.
+
+\section lib_milp_basics_advanced_reoptimize_add Adding and Removing Objects
+
+Variables and constraints can be added or removed between solves. The optimizer
+adjusts its internal representation accordingly.
+
+```cpp
+// Add a new constraint after the first solve.
+const auto new_ctr = model.add_ctr(x <= 3);
+model.optimize();
+std::cout << "With extra cut: x = " << model.get_var_primal(x) << '\n';
+
+// Remove the constraint and solve again.
+model.remove(new_ctr);
+model.optimize();
+std::cout << "After removing cut: x = " << model.get_var_primal(x) << '\n';
+```
+
+\section lib_milp_basics_advanced_reoptimize_switch Switching Optimizers
+
+Calling `Model::use` with a new factory replaces the existing optimizer.
+The new optimizer is built from scratch. Use this when switching between
+different solvers or when switching between an LP relaxation and a MIP.
+
+```cpp
+// First solve with HiGHS.
+model.use(HiGHS());
+model.optimize();
+
+// Switch to Gurobi and solve again.
+model.use(Gurobi());
+model.optimize();
+```
