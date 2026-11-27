@@ -332,10 +332,14 @@ double idol::Optimizers::JuMP::get_best_bound() const {
 
     const auto status = get_status();
     if (status == Unbounded) {
+        return -Inf;
+    }
+
+    if (status == Infeasible) {
         return Inf;
     }
 
-    if (status != Optimal && status != Feasible) {
+    if (status == InfOrUnbnd || status == Loaded) {
         return -Inf;
     }
     
@@ -349,6 +353,10 @@ double idol::Optimizers::JuMP::get_best_bound() const {
 }
 
 double idol::Optimizers::JuMP::get_var_primal(const idol::Var &t_var) const {
+
+    if (const auto status = get_status(); status != Optimal && status != Feasible) {
+        throw Exception("Primal solution not available.");
+    }
 
     const auto& model = parent();
     
@@ -395,7 +403,8 @@ double idol::Optimizers::JuMP::get_absolute_gap() const {
 }
 
 unsigned int idol::Optimizers::JuMP::get_n_solutions() const {
-    throw Exception("Not implemented.");
+    const auto status = get_status();
+    return status == Optimal || status == Feasible;
 }
 
 unsigned int idol::Optimizers::JuMP::get_solution_index() const {

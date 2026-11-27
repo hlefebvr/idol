@@ -463,6 +463,8 @@ void idol::Optimizers::GLPK::hook_optimize() {
 
     auto& lib = get_dynamic_lib();
     m_solved_as_mip = false;
+    m_unbounded_ray.reset();
+    m_farkas_certificate.reset();
 
     if (m_solution_status == Unbounded) {
         m_rebuild_basis = true;
@@ -477,10 +479,10 @@ void idol::Optimizers::GLPK::hook_optimize() {
 
     if (result == GLP_ESING) {
         lib.glp_std_basis(m_model);
-        lib.glp_simplex(m_model, &m_simplex_parameters);
+        result = lib.glp_simplex(m_model, &m_simplex_parameters);
     }
 
-    save_simplex_solution_status();
+    save_simplex_solution_status(result);
 
     if (get_param_infeasible_or_unbounded_info()) {
 
@@ -506,25 +508,35 @@ void idol::Optimizers::GLPK::hook_optimize() {
         m_mip_parameters.sr_heur = GLP_ON;
         m_mip_parameters.presolve = GLP_ON;
 
-        lib.glp_intopt(m_model, &m_mip_parameters);
+        result = lib.glp_intopt(m_model, &m_mip_parameters);
         m_solved_as_mip = true;
 
-        save_milp_solution_status();
+        save_milp_solution_status(result);
 
     }
 
 }
 
-void idol::Optimizers::GLPK::save_simplex_solution_status() {
+void idol::Optimizers::GLPK::save_simplex_solution_status(int t_result) {
 
     auto& lib = get_dynamic_lib();
     int status = lib.glp_get_status(m_model);
 
-    if (status == GLP_UNDEF) {
-        m_solution_status = Unknown;
-        m_solution_reason = NotSpecified;
+    const auto limited_status = [&](SolutionReason t_reason) {
+        m_solution_status = status == GLP_FEAS ? Feasible : Unknown;
+        m_solution_reason = t_reason;
+    };
+
+    if (t_result == GLP_ETMLIM) { limited_status(TimeLimit); return; }
+    if (t_result == GLP_EITLIM) { limited_status(IterLimit); return; }
+    if (t_result == GLP_EOBJLL || t_result == GLP_EOBJUL) { limited_status(ObjLimit); return; }
+    if (t_result == GLP_ESTOP) { limited_status(Interrupted); return; }
+    if (t_result != 0 && t_result != GLP_ENOPFS && t_result != GLP_ENODFS) {
+        limited_status(Numerical);
         return;
     }
+
+    if (status == GLP_UNDEF) { m_solution_status = Unknown; m_solution_reason = NotSpecified; return; }
 
     if (status == GLP_OPT) {
         m_solution_status = Optimal;
@@ -777,21 +789,24 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
 
 }
 
-void idol::Optimizers::GLPK::save_milp_solution_status() {
+void idol::Optimizers::GLPK::save_milp_solution_status(int t_result) {
 
     auto& lib = get_dynamic_lib();
     int status = lib.glp_mip_status(m_model);
 
-    if (status == GLP_UNDEF) {
-        if (get_remaining_time() == 0) {
-            m_solution_status = Unknown;
-            m_solution_reason = TimeLimit;
-        } else {
-            m_solution_status = Unknown;
-            m_solution_reason = NotSpecified;
-        }
+    const auto limited_status = [&](SolutionReason t_reason) {
+        m_solution_status = status == GLP_FEAS ? Feasible : Unknown;
+        m_solution_reason = t_reason;
+    };
+
+    if (t_result == GLP_ETMLIM) { limited_status(TimeLimit); return; }
+    if (t_result == GLP_ESTOP) { limited_status(Interrupted); return; }
+    if (t_result != 0 && t_result != GLP_EMIPGAP && t_result != GLP_ENOPFS) {
+        limited_status(Numerical);
         return;
     }
+
+    if (status == GLP_UNDEF) { m_solution_status = Unknown; m_solution_reason = NotSpecified; return; }
 
     if (status == GLP_OPT) {
         m_solution_status = Optimal;

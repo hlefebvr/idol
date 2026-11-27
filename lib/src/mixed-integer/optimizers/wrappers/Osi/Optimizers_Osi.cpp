@@ -48,11 +48,8 @@ idol::SolutionStatus idol::Optimizers::Osi::get_status() const {
         // Some OSI backends do not implement this optional status query.
     }
 
-    if (m_solver_interface->isPrimalObjectiveLimitReached()) {
-        return Feasible;
-    }
-
-    if (m_solver_interface->isDualObjectiveLimitReached()) {
+    if (m_solver_interface->isPrimalObjectiveLimitReached() ||
+        m_solver_interface->isDualObjectiveLimitReached()) {
         return Unknown;
     }
 
@@ -104,6 +101,9 @@ double idol::Optimizers::Osi::get_best_bound() const {
 }
 
 double idol::Optimizers::Osi::get_var_primal(const idol::Var &t_var) const {
+    if (const auto status = get_status(); status != Optimal && status != Feasible) {
+        throw Exception("Primal not available.");
+    }
     if (m_solver_interface->getColSolution() == nullptr) {
         throw Exception("Primal not available.");
     }
@@ -111,10 +111,16 @@ double idol::Optimizers::Osi::get_var_primal(const idol::Var &t_var) const {
 }
 
 double idol::Optimizers::Osi::get_var_ray(const idol::Var &t_var) const {
-    if (m_solver_interface->getPrimalRays(1).front() == nullptr) {
+    if (get_status() != Unbounded) {
         throw Exception("Ray not available.");
     }
-    return m_solver_interface->getPrimalRays(1).front()[lazy(t_var).impl()];
+    auto rays = m_solver_interface->getPrimalRays(1);
+    if (rays.empty() || rays.front() == nullptr) {
+        throw Exception("Ray not available.");
+    }
+    const double result = rays.front()[lazy(t_var).impl()];
+    for (auto* ray : rays) { delete[] ray; }
+    return result;
 }
 
 double idol::Optimizers::Osi::get_ctr_dual(const idol::Ctr &t_ctr) const {
@@ -125,10 +131,16 @@ double idol::Optimizers::Osi::get_ctr_dual(const idol::Ctr &t_ctr) const {
 }
 
 double idol::Optimizers::Osi::get_ctr_farkas(const idol::Ctr &t_ctr) const {
-    if (m_solver_interface->getDualRays(1).front() == nullptr) {
+    if (get_status() != Infeasible) {
         throw Exception("Farkas certificate not available.");
     }
-    return -m_solver_interface->getDualRays(1).front()[lazy(t_ctr).impl()];
+    auto rays = m_solver_interface->getDualRays(1);
+    if (rays.empty() || rays.front() == nullptr) {
+        throw Exception("Farkas certificate not available.");
+    }
+    const double result = -rays.front()[lazy(t_ctr).impl()];
+    for (auto* ray : rays) { delete[] ray; }
+    return result;
 }
 
 double idol::Optimizers::Osi::get_relative_gap() const {

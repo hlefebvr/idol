@@ -36,16 +36,26 @@ idol::SolutionReason idol::Optimizers::Bilevel::MibS::get_reason() const {
 
 double idol::Optimizers::Bilevel::MibS::get_best_obj() const {
     throw_if_no_mibs();
+    const auto status = get_status();
+    if (status == Unbounded) { return -Inf; }
+    if (status != Optimal && status != Feasible) { return Inf; }
     return parent().get_obj_expr().affine().constant() + m_mibs->get_best_obj();
 }
 
 double idol::Optimizers::Bilevel::MibS::get_best_bound() const {
     throw_if_no_mibs();
+    const auto status = get_status();
+    if (status == Infeasible) { return Inf; }
+    if (status == Unbounded) { return -Inf; }
     return parent().get_obj_expr().affine().constant() + m_mibs->get_best_bound();
 }
 
 double idol::Optimizers::Bilevel::MibS::get_var_primal(const idol::Var &t_var) const {
     throw_if_no_mibs();
+    const auto status = get_status();
+    if (status != Optimal && status != Feasible) {
+        throw Exception("Primal solution not available.");
+    }
     return m_mibs->get_var_primal(t_var);
 }
 

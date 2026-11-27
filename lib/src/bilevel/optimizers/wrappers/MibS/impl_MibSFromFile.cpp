@@ -143,7 +143,8 @@ idol::SolutionStatus idol::impl::MibSFromFile::get_status() const {
         case AlpsExitStatusNodeLimit: [[fallthrough]];
         case AlpsExitStatusTimeLimit: [[fallthrough]];
         case AlpsExitStatusNoMemory: [[fallthrough]];
-        case AlpsExitStatusSolLimit: return broker->getBestNode() ? Feasible : Infeasible;
+        case AlpsExitStatusSolLimit:
+            return broker->getNumKnowledges(AlpsKnowledgeTypeSolution) > 0 ? Feasible : Unknown;
     }
 
     throw Exception("enum out of bounds.");
@@ -156,16 +157,16 @@ idol::SolutionReason idol::impl::MibSFromFile::get_reason() const {
 #ifdef IDOL_USE_MIBS
     const auto* broker = static_cast<AlpsKnowledgeBroker*>(m_broker);
     switch (broker->getSolStatus()) {
-        case AlpsExitStatusOptimal:  [[fallthrough]];
-        case AlpsExitStatusFeasible: [[fallthrough]];
+        case AlpsExitStatusOptimal:
         case AlpsExitStatusUnbounded: [[fallthrough]];
         case AlpsExitStatusInfeasible: return Proved;
+        case AlpsExitStatusFeasible: return NotSpecified;
         case AlpsExitStatusUnknown: [[fallthrough]];
         case AlpsExitStatusFailed: return NotSpecified;
-        case AlpsExitStatusNodeLimit: return IterLimit;
+        case AlpsExitStatusNodeLimit: return NodeLimit;
         case AlpsExitStatusTimeLimit: return TimeLimit;
         case AlpsExitStatusNoMemory: return MemoryLimit;
-        case AlpsExitStatusSolLimit: return ObjLimit;
+        case AlpsExitStatusSolLimit: return SolutionLimit;
     }
 
     throw Exception("enum out of bounds.");

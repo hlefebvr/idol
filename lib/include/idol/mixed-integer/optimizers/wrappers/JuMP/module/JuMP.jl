@@ -111,12 +111,14 @@ module IdolJuMP
         term_status = MOI.get(model, MOI.TerminationStatus())
         primal_status = MOI.get(model, MOI.PrimalStatus())
 
-        if term_status == MOI.OPTIMAL
+        if term_status == MOI.OPTIMIZE_NOT_CALLED
+            return 0
+        elseif term_status == MOI.OPTIMAL
             return 1
         elseif term_status == MOI.INFEASIBLE
             return 3
-        elseif term_status == MOI.DUAL_INFEASIBLE
-            return 5
+        elseif term_status == MOI.INFEASIBLE_OR_UNBOUNDED || term_status == MOI.DUAL_INFEASIBLE
+            return 4
         elseif primal_status == MOI.FEASIBLE_POINT
             return 2
         else
@@ -128,11 +130,10 @@ module IdolJuMP
         model = _registry[t_id].model
         term_status = MOI.get(model, MOI.TerminationStatus())
 
-        if term_status == MOI.OPTIMAL
-            return 1
-        elseif term_status == MOI.INFEASIBLE
-            return 1
-        elseif term_status == MOI.DUAL_INFEASIBLE
+        if term_status == MOI.OPTIMAL ||
+           term_status == MOI.INFEASIBLE ||
+           term_status == MOI.INFEASIBLE_OR_UNBOUNDED ||
+           term_status == MOI.DUAL_INFEASIBLE
             return 1
         elseif term_status == MOI.TIME_LIMIT
             return 2
@@ -140,8 +141,22 @@ module IdolJuMP
             return 3
         elseif term_status == MOI.NODE_LIMIT
             return 9
+        elseif term_status == MOI.SOLUTION_LIMIT
+            return 8
+        elseif term_status == MOI.OBJECTIVE_LIMIT
+            return 4
+        elseif term_status == MOI.MEMORY_LIMIT
+            return 6
         elseif term_status == MOI.INTERRUPTED
             return 10
+        elseif term_status == MOI.NUMERICAL_ERROR ||
+               term_status == MOI.SLOW_PROGRESS ||
+               term_status == MOI.ALMOST_OPTIMAL ||
+               term_status == MOI.ALMOST_INFEASIBLE ||
+               term_status == MOI.ALMOST_DUAL_INFEASIBLE ||
+               term_status == MOI.OTHER_ERROR ||
+               term_status == MOI.INVALID_MODEL
+            return 5
         else
             return 0
         end

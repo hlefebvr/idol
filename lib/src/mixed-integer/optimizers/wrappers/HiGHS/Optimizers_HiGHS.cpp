@@ -419,6 +419,15 @@ void idol::Optimizers::HiGHS::hook_optimize() {
     delete[] m_farkas_certificate;
     m_farkas_certificate = nullptr;
 
+    delete[] m_col_dual;
+    m_col_dual = nullptr;
+    delete[] m_col_value;
+    m_col_value = nullptr;
+    delete[] m_row_value;
+    m_row_value = nullptr;
+    delete[] m_row_dual;
+    m_row_dual = nullptr;
+
     auto result = lib.Highs_run(m_model);
 
     analyze_status(result);
@@ -525,6 +534,7 @@ void idol::Optimizers::HiGHS::analyze_status(HighsInt t_status) {
             limited_status(SolutionLimit);
             break;
         case HighsModelStatus::kInterrupt:
+        case HighsModelStatus::kHighsInterrupt:
             limited_status(Interrupted);
             break;
         case HighsModelStatus::kMemoryLimit:
@@ -640,6 +650,12 @@ double idol::Optimizers::HiGHS::get_best_obj() const {
 double idol::Optimizers::HiGHS::get_best_bound() const {
     if (m_solution_status == Optimal) {
         return get_best_obj();
+    }
+    if (m_solution_status == Infeasible) {
+        return Inf;
+    }
+    if (m_solution_status == Unbounded) {
+        return -Inf;
     }
     auto& lib = get_dynamic_lib();
     double result;

@@ -57,10 +57,10 @@ protected:
     void set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj);
     void set_ctr_attr(int t_index, int t_type, double t_rhs);
 
-    void save_simplex_solution_status();
+    void save_simplex_solution_status(int t_result);
     void compute_farkas_certificate();
     void compute_unbounded_ray();
-    void save_milp_solution_status();
+    void save_milp_solution_status(int t_result);
 
     [[nodiscard]] SolutionStatus get_status() const override;
     [[nodiscard]] SolutionReason get_reason() const override;
