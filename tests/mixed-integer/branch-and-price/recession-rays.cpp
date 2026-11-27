@@ -6,8 +6,14 @@
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
 #include "idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h"
+#include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/general/optimizers/LambdaOptimizer/LambdaOptimizer.h"
+#include "idol/general/optimizers/LambdaOptimizer/LambdaContext.h"
 
 using namespace idol;
 using namespace Catch::literals;
@@ -34,6 +40,33 @@ public:
 
     Strategy* operator()() const override { return new Strategy(m_linking); }
     UnboundedSmoothing* clone() const override { return new UnboundedSmoothing(*this); }
+};
+
+class PointHidingSmoothing : public DantzigWolfe::DualPriceSmoothingStabilization {
+    Ctr m_linking;
+    std::shared_ptr<unsigned int> m_n_calls;
+public:
+    PointHidingSmoothing(Ctr t_linking, std::shared_ptr<unsigned int> t_n_calls)
+        : m_linking(std::move(t_linking)), m_n_calls(std::move(t_n_calls)) {}
+
+    class Strategy : public DualPriceSmoothingStabilization::Strategy {
+        Ctr m_linking;
+        std::shared_ptr<unsigned int> m_n_calls;
+    public:
+        Strategy(Ctr t_linking, std::shared_ptr<unsigned int> t_n_calls)
+            : m_linking(std::move(t_linking)), m_n_calls(std::move(t_n_calls)) {}
+        void initialize() override {}
+        void update_stability_center(const DualPoint&) override {}
+        DualPoint compute_smoothed_dual_solution(const DualPoint& t_master_dual) override {
+            ++*m_n_calls;
+            DualPoint result = t_master_dual;
+            result.set(m_linking, 1000.);
+            return result;
+        }
+    };
+
+    Strategy* operator()() const override { return new Strategy(m_linking, m_n_calls); }
+    PointHidingSmoothing* clone() const override { return new PointHidingSmoothing(*this); }
 };
 
 PrimalPoint ray_with(const Var& t_var, double t_value) {
@@ -107,6 +140,216 @@ TEST_CASE("Generation patterns distinguish points from recession rays", "[ray][f
     CHECK(formulation.compute_ray_reduced_cost(0, dual, direction, false) == -5._a);
     CHECK(formulation.compute_ray_reduced_cost(0, dual, direction, true) == -20._a);
     CHECK_THROWS(formulation.generate_column(0, direction));
+}
+
+TEST_CASE("Point reduced costs match the explicit master column", "[reduced-cost][formulation]") {
+    Env env;
+    Annotation<unsigned int> decomposition(env, "decomposition", MasterId);
+    Model model(env);
+    const auto x = model.add_var(0., 2., Continuous, -3., "x");
+    x.set(decomposition, 0);
+    model.set_obj_const(-7.);
+    const auto linking = model.add_ctr(2. * x >= 1., "linking");
+
+    DantzigWolfe::Formulation formulation(model, decomposition);
+    formulation.add_aggregation_constraint(0, 1., 1.);
+
+    std::optional<Ctr> aggregation;
+    for (const auto& [ctr, coefficient] : formulation.generation_pattern(x).linear()) {
+        if (ctr.id() != linking.id() && coefficient.constant() == 1.) {
+            aggregation = ctr;
+        }
+    }
+
+    DualPoint dual;
+    dual.set(linking, 4.);
+    REQUIRE(aggregation.has_value());
+    dual.set(*aggregation, 5.);
+    PrimalPoint point;
+    point.set_status(Optimal);
+    point.set(x, 2.);
+
+    const auto pricing_objective = formulation.compute_sub_problem_objective(0, dual);
+    CHECK(evaluate(pricing_objective, point) == -27._a);
+    CHECK(formulation.compute_reduced_cost(0, dual, point) == -27._a);
+    CHECK(formulation.compute_sub_problem_variable_cost(0, dual, x) == -11._a);
+
+    formulation.generate_column(0, point);
+    const auto [alpha, generator] = *formulation.present_generators(0).begin();
+    CHECK(formulation.master().get_obj_expr().affine().constant() == -7._a);
+    CHECK(formulation.master().get_var_obj(alpha) == -6._a);
+    CHECK(formulation.master().get_mat_coeff(linking, alpha) == 4._a);
+    CHECK(formulation.master().get_mat_coeff(*aggregation, alpha) == 1._a);
+    CHECK(formulation.master().get_var_obj(alpha)
+          - 4. * formulation.master().get_mat_coeff(linking, alpha)
+          - 5. * formulation.master().get_mat_coeff(*aggregation, alpha) == -27._a);
+
+    Model direct = model.copy();
+    direct.use(Gurobi::ContinuousRelaxation());
+    direct.optimize();
+    formulation.master().use(Gurobi::ContinuousRelaxation());
+    formulation.master().optimize();
+    CHECK(direct.get_best_obj() == -13._a);
+    CHECK(formulation.master().get_best_obj() == direct.get_best_obj());
+}
+
+TEST_CASE("A valid bound from non-optimal pricing proves the CG bound", "[reduced-cost][pricing-bound]") {
+    Env env;
+    Annotation<unsigned int> decomposition(env, "decomposition", MasterId);
+    Model model(env);
+    const auto x = model.add_var(0., 1., Binary, -2., "x");
+    x.set(decomposition, 0);
+
+    const LambdaOptimizer enumerated_pricing([](LambdaContext& context) {
+        const auto& pricing = context.get_model();
+        const auto var = *pricing.vars().begin();
+        PrimalPoint zero;
+        zero.set(var, 0.);
+        PrimalPoint one;
+        one.set(var, 1.);
+        const double value_zero = pricing.get_var_lb(var) <= 0. && pricing.get_var_ub(var) >= 0.
+                                  ? evaluate(pricing.get_obj_expr(), zero) : Inf;
+        const double value_one = pricing.get_var_lb(var) <= 1. && pricing.get_var_ub(var) >= 1.
+                                 ? evaluate(pricing.get_obj_expr(), one) : Inf;
+        const double value = std::min(value_zero, value_one);
+        context.set_var_primal(var, value_one < value_zero ? 1. : 0.);
+        context.set_best_obj(value);
+        context.set_best_bound(value);
+        context.set_status(Feasible);
+    });
+
+    model.use(DantzigWolfeDecomposition(decomposition)
+                  .with_master_optimizer(Gurobi::ContinuousRelaxation())
+                  .with_default_sub_problem_spec(
+                      DantzigWolfe::SubProblem().add_optimizer(enumerated_pricing))
+                  .with_infeasibility_strategy(DantzigWolfe::ArtificialCosts()));
+    model.optimize();
+
+    CHECK(model.get_status() == Optimal);
+    CHECK(model.get_best_obj() == -2._a);
+    CHECK(model.get_best_bound() == -2._a);
+    CHECK(model.get_var_primal(x) == 1._a);
+    CHECK(model.get_var_reduced_cost(x) == -2._a);
+}
+
+TEST_CASE("Zero pricing correction with infinite multiplicity remains finite", "[reduced-cost][pricing-bound]") {
+    Env env;
+    Annotation<unsigned int> decomposition(env, "decomposition", MasterId);
+    Model model(env);
+    const auto x = model.add_var(0., 0., Continuous, 0., "x");
+    x.set(decomposition, 0);
+    model.use(DantzigWolfeDecomposition(decomposition)
+                  .with_master_optimizer(Gurobi::ContinuousRelaxation())
+                  .with_default_sub_problem_spec(
+                      DantzigWolfe::SubProblem()
+                          .with_multiplicities(1., Inf)
+                          .add_optimizer(Gurobi::ContinuousRelaxation()))
+                  .with_infeasibility_strategy(DantzigWolfe::ArtificialCosts()));
+    model.optimize();
+
+    CHECK(model.get_status() == Optimal);
+    CHECK(model.get_best_obj() == 0._a);
+    CHECK(model.get_best_bound() == 0._a);
+}
+
+TEST_CASE("Decomposed variable fixing uses a conditional pricing bound", "[reduced-cost][fixing]") {
+    // The raw pricing coefficients are 100 for x and 10 for y.  The local
+    // equation x + y = 1 makes the actual degradation for changing x from
+    // zero to one equal to 100 - 10 = 90.
+    Env env;
+    Annotation<unsigned int> decomposition(env, "decomposition", MasterId);
+    Model model(env);
+    const auto x = model.add_var(0., 1., Binary, 100., "x");
+    const auto y = model.add_var(0., 1., Binary, 10., "y");
+    x.set(decomposition, 0);
+    y.set(decomposition, 0);
+    const auto local = model.add_ctr(x + y == 1., "local");
+    local.set(decomposition, 0);
+
+    model.use(DantzigWolfeDecomposition(decomposition)
+                  .with_master_optimizer(Gurobi::ContinuousRelaxation())
+                  .with_default_sub_problem_spec(
+                      DantzigWolfe::SubProblem().add_optimizer(Gurobi()))
+                  .with_infeasibility_strategy(DantzigWolfe::ArtificialCosts()));
+    model.optimize();
+
+    REQUIRE(model.get_status() == Optimal);
+    CHECK(model.get_best_obj() == 10._a);
+    CHECK(model.get_var_primal(x) == 0._a);
+    CHECK(model.get_var_primal(y) == 1._a);
+    CHECK(model.get_var_reduced_cost(x) == 90._a);
+    CHECK(model.get_var_reduced_cost(y) == -90._a);
+}
+
+TEST_CASE("Reduced-cost fixing queries decomposed original variables", "[reduced-cost][fixing][branch-and-price]") {
+    Env env;
+    Annotation<unsigned int> decomposition(env, "decomposition", MasterId);
+    Model model(env);
+    const auto x = model.add_var(0., 1., Binary, 100., "x");
+    const auto y = model.add_var(0., 1., Binary, 10., "y");
+    const auto z = model.add_var(0., 1., Binary, 1., "z");
+    x.set(decomposition, 0);
+    y.set(decomposition, 0);
+    const auto local = model.add_ctr(x + y == 1., "local");
+    local.set(decomposition, 0);
+    model.add_ctr(x + 2. * z >= 1.5, "linking");
+
+    auto n_conditional_pricing_calls = std::make_shared<unsigned int>(0);
+    const LambdaOptimizer pricing([=](LambdaContext& context) {
+        const auto& sub_problem = context.get_model();
+        if (sub_problem.get_var_lb(x) > .5 || sub_problem.get_var_ub(y) < .5) {
+            ++*n_conditional_pricing_calls;
+        }
+        double best = Inf;
+        double best_x = 0.;
+        double best_y = 0.;
+        for (double x_value : {0., 1.}) {
+            for (double y_value : {0., 1.}) {
+                if (x_value < sub_problem.get_var_lb(x) || x_value > sub_problem.get_var_ub(x) ||
+                    y_value < sub_problem.get_var_lb(y) || y_value > sub_problem.get_var_ub(y) ||
+                    !equals(x_value + y_value, 1., 1e-9)) {
+                    continue;
+                }
+                PrimalPoint point;
+                point.set(x, x_value);
+                point.set(y, y_value);
+                const double value = evaluate(sub_problem.get_obj_expr(), point);
+                if (value < best) {
+                    best = value;
+                    best_x = x_value;
+                    best_y = y_value;
+                }
+            }
+        }
+        if (is_pos_inf(best)) {
+            context.set_status(Infeasible);
+            return;
+        }
+        context.set_var_primal(x, best_x);
+        context.set_var_primal(y, best_y);
+        context.set_best_obj(best);
+        context.set_best_bound(best);
+        context.set_status(Optimal);
+    });
+
+    const auto column_generation = DantzigWolfeDecomposition(decomposition)
+        .with_master_optimizer(Gurobi::ContinuousRelaxation())
+        .with_default_sub_problem_spec(DantzigWolfe::SubProblem().add_optimizer(pricing))
+        .with_infeasibility_strategy(DantzigWolfe::ArtificialCosts());
+    const auto branch_and_bound = BranchAndBound<DefaultNodeInfo>()
+        .with_branching_rule(MostInfeasible())
+        .with_node_selection_rule(BestBound())
+        .add_callback(Heuristics::IntegerMaster<>().with_optimizer(Gurobi()))
+        .add_callback(ReducedCostFixing<>());
+    model.use(branch_and_bound + column_generation);
+    model.optimize();
+
+    CHECK(model.get_status() == Optimal);
+    CHECK(model.get_best_obj() == 11._a);
+    CHECK(model.get_var_primal(x) == 0._a);
+    CHECK(model.get_var_primal(y) == 1._a);
+    CHECK(model.get_var_primal(z) == 1._a);
+    CHECK(*n_conditional_pricing_calls > 0);
 }
 
 TEST_CASE("Recession directions use homogeneous rows and bounds", "[ray][recession]") {
@@ -305,6 +548,43 @@ TEST_CASE("A stabilized non-improving ray triggers raw-dual repricing", "[ray][s
     model.optimize();
     CHECK(model.get_status() == Optimal);
     CHECK(model.get_best_obj() == 1._a);
+}
+
+TEST_CASE("A stabilized non-improving point triggers raw-dual repricing", "[reduced-cost][stabilization]") {
+    Env env;
+    Annotation<unsigned int> decomposition(env, "decomposition", MasterId);
+    Model model(env);
+    const auto a = model.add_var(0., 1., Binary, 100., "a");
+    const auto b = model.add_var(0., 1., Binary, 0., "b");
+    a.set(decomposition, 0);
+    b.set(decomposition, 0);
+    const auto local = model.add_ctr(a + b == 1., "local");
+    local.set(decomposition, 0);
+    const auto linking = model.add_ctr(2. * a + b >= 1., "linking");
+    auto n_smoothing_calls = std::make_shared<unsigned int>(0);
+
+    model.use(DantzigWolfeDecomposition(decomposition)
+                  .with_master_optimizer(Gurobi::ContinuousRelaxation())
+                  .with_default_sub_problem_spec(
+                      DantzigWolfe::SubProblem().add_optimizer(Gurobi()))
+                  .with_infeasibility_strategy(DantzigWolfe::ArtificialCosts())
+                  .with_dual_price_smoothing_stabilization(
+                      PointHidingSmoothing(linking, n_smoothing_calls)));
+
+    PrimalPoint initial;
+    initial.set_status(Optimal);
+    initial.set(a, 1.);
+    initial.set(b, 0.);
+    model.optimizer().as<Optimizers::DantzigWolfeDecomposition>()
+        .formulation().generate_column(0, std::move(initial));
+
+    model.optimize();
+
+    CHECK(model.get_status() == Optimal);
+    CHECK(model.get_best_obj() == 0._a);
+    CHECK(model.get_var_primal(a) == 0._a);
+    CHECK(model.get_var_primal(b) == 1._a);
+    CHECK(*n_smoothing_calls <= 3);
 }
 
 TEST_CASE("Integer master uses nonnegative unbounded integer ray multipliers", "[ray][integer-master]") {

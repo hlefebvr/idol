@@ -84,6 +84,10 @@ public:
 
     double compute_reduced_cost(unsigned int t_sub_problem_id, const DualPoint& t_master_dual, const PrimalPoint& t_generator);
 
+    double compute_sub_problem_variable_cost(unsigned int t_sub_problem_id,
+                                             const DualPoint& t_master_dual,
+                                             const Var& t_var) const;
+
     double compute_ray_reduced_cost(unsigned int t_sub_problem_id, const DualPoint& t_master_dual, const PrimalPoint& t_ray, bool t_use_farkas = false);
 
     bool is_recession_direction(const PrimalPoint& t_ray, unsigned int t_sub_problem_id) const;

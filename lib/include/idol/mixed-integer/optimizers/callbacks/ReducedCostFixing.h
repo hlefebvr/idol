@@ -32,26 +32,37 @@ public:
             const auto& relaxation = this->relaxation();
             const double best_obj = this->best_obj();
             const double current_obj = this->relaxation().get_best_obj();
+            if (is_pos_inf(best_obj)) {
+                return;
+            }
             const double tol_mip_absolute_gap = original_model.optimizer().get_tol_mip_absolute_gap();
-
+            const double tol_integer = original_model.optimizer().get_tol_integer();
+            const double tol_optimality = relaxation.optimizer().get_tol_optimality();
             for (const auto &var : original_model.vars()) {
 
-                double reduced_cost = relaxation.get_var_reduced_cost(var);
-
-                if (current_obj + reduced_cost > best_obj + tol_mip_absolute_gap) {
-                    const double relaxation_lb = relaxation.get_var_lb(var);
-                    const double current_ub = relaxation.get_var_ub(var);
-                    //if (!equals(relaxation_lb, current_ub, Tolerance::Integer)) {
-                        this->add_local_variable_branching(var, LessOrEqual, relaxation_lb);
-                    //}
+                if (original_model.get_var_type(var) == Continuous) {
+                    continue;
                 }
 
-                if (current_obj - reduced_cost > best_obj + tol_mip_absolute_gap) {
-                    const double relaxation_ub = relaxation.get_var_ub(var);
-                    const double current_lb = relaxation.get_var_lb(var);
-                    //if (!equals(relaxation_ub, current_lb, Tolerance::Integer)) {
-                        this->add_local_variable_branching(var, GreaterOrEqual, relaxation_ub);
-                    //}
+                const double reduced_cost = relaxation.get_var_reduced_cost(var);
+                const double primal = relaxation.get_var_primal(var);
+                const double relaxation_lb = relaxation.get_var_lb(var);
+                const double relaxation_ub = relaxation.get_var_ub(var);
+
+                if (!is_neg_inf(relaxation_lb) &&
+                    is_integer(relaxation_lb, tol_integer) &&
+                    equals(primal, relaxation_lb, tol_integer) &&
+                    reduced_cost > tol_optimality &&
+                    current_obj + reduced_cost > best_obj + tol_mip_absolute_gap) {
+                    this->add_local_variable_branching(var, LessOrEqual, relaxation_lb);
+                }
+
+                if (!is_pos_inf(relaxation_ub) &&
+                    is_integer(relaxation_ub, tol_integer) &&
+                    equals(primal, relaxation_ub, tol_integer) &&
+                    reduced_cost < -tol_optimality &&
+                    current_obj - reduced_cost > best_obj + tol_mip_absolute_gap) {
+                    this->add_local_variable_branching(var, GreaterOrEqual, relaxation_ub);
                 }
 
             }

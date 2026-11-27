@@ -114,7 +114,7 @@ PHASE 2 — CORRECTNESS BEFORE ALGORITHMIC EXTENSIONS (P0)
    supported, violated/nonviolated cuts, tolerance boundaries and equivalent
    sign-reversed formulations across relevant callback implementations.
 
-09 [ ] Fix reduced-cost computation in CG and reduced-cost fixing accordingly.
+09 [x] Fix reduced-cost computation in CG and reduced-cost fixing accordingly.
    Audit ColumnGeneration, Formulation and ReducedCostFixing, including dual
    signs, objective constants, convexity/linking rows, stabilization and pricing
    bounds. Distinguish original-variable reduced costs from master-column costs;

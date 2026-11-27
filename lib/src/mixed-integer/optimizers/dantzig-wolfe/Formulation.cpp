@@ -358,6 +358,19 @@ double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_
 
 }
 
+double idol::DantzigWolfe::Formulation::compute_sub_problem_variable_cost(
+        unsigned int t_sub_problem_id,
+        const idol::DualPoint& t_master_dual,
+        const idol::Var& t_var) const {
+
+    const auto& generation_pattern = m_generation_patterns[t_sub_problem_id];
+    double result = generation_pattern.constant().linear().get(t_var);
+    for (const auto& [ctr, coefficient] : generation_pattern.linear()) {
+        result -= t_master_dual.get(ctr) * coefficient.linear().get(t_var);
+    }
+    return result;
+}
+
 double idol::DantzigWolfe::Formulation::compute_ray_reduced_cost(unsigned int t_sub_problem_id,
                                                                  const idol::DualPoint &t_master_dual,
                                                                  const idol::PrimalPoint &t_ray,

@@ -101,7 +101,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 
     m_current_iteration_is_using_farkas = false;
 
-    if (status == Optimal || status == Feasible) {
+    if (status == Optimal) {
 
         m_status = Feasible;
 
@@ -113,6 +113,15 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
             m_master_dual_solution = save_dual(master);
         }
 
+        return;
+    }
+
+    if (status == Feasible) {
+        m_status = Feasible;
+        m_reason = master.get_reason();
+        m_best_obj = std::min(m_best_obj, master.get_best_obj());
+        m_master_dual_solution.reset();
+        m_is_terminated = true;
         return;
     }
 
@@ -177,7 +186,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_sub_pr
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_problems() {
 
-    bool all_sub_problems_have_optimal_status = true;
+    bool all_sub_problems_have_valid_bounds = m_current_pricing_uses_raw_dual;
     double sum_reduced_costs = 0.;
 
     auto& formulation = m_parent.m_formulation;
@@ -188,18 +197,24 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
         const auto status = model.get_status();
         const auto reason = model.get_reason();
 
-        if (status == Optimal) {
+        if (status == Optimal || status == Feasible) {
             const double upper_multiplicity = m_parent.m_sub_problem_specifications[i].upper_multiplicity();
-            const double objective_value = model.get_best_obj();
-            sum_reduced_costs += upper_multiplicity * std::min(0., objective_value);
+            const double pricing_bound = status == Optimal ? model.get_best_obj() : model.get_best_bound();
+            if (pricing_bound > model.get_best_obj() + m_parent.get_tol_optimality()) {
+                all_sub_problems_have_valid_bounds = false;
+                continue;
+            }
+            if (pricing_bound < 0.) {
+                if (is_pos_inf(upper_multiplicity)) {
+                    sum_reduced_costs = -Inf;
+                } else {
+                    sum_reduced_costs += upper_multiplicity * pricing_bound;
+                }
+            }
             continue;
         }
 
-        all_sub_problems_have_optimal_status = false;
-
-        if (status == Feasible) {
-            continue;
-        }
+        all_sub_problems_have_valid_bounds = false;
 
         if (status == Unbounded) {
             continue;
@@ -212,7 +227,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
 
     }
 
-    if (!all_sub_problems_have_optimal_status || m_current_iteration_is_using_farkas) {
+    if (!all_sub_problems_have_valid_bounds || m_current_iteration_is_using_farkas) {
         return;
     }
 
@@ -376,6 +391,13 @@ bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
         m_status = Infeasible;
         m_reason = Proved;
         m_is_terminated = true;
+        return false;
+    }
+
+    if (!m_current_iteration_is_using_farkas &&
+        !m_current_pricing_uses_raw_dual &&
+        !at_least_one_column_have_been_generated) {
+        m_force_raw_pricing = true;
         return false;
     }
 

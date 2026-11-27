@@ -3,6 +3,7 @@
 //
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 #include "idol/mixed-integer/modeling/objects/Versions.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 
 idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Model& t_model,
                                                                        idol::DantzigWolfe::Formulation &&t_formulation,
@@ -241,13 +242,84 @@ double idol::Optimizers::DantzigWolfeDecomposition::get_var_reduced_cost(const i
     if (t_var.get(m_formulation.decomposition()) == MasterId) {
         return master.get_var_reduced_cost(t_var);
     }
-    //throw Exception("Not implemented get_var_reduced_cost");
-    const auto& generation_pattern = m_formulation.generation_pattern(t_var);
-    double result = generation_pattern.constant().linear().get(t_var);
-    for (const auto& [ctr, coefficient] : generation_pattern.linear()) {
-        result -= master.get_ctr_dual(ctr) * (coefficient.constant() + coefficient.linear().get(t_var));
+
+    if (get_status() != Optimal || parent().get_var_type(t_var) == Continuous) {
+        return 0.;
     }
-    return result;
+
+    const unsigned int sub_problem_id = t_var.get(m_formulation.decomposition());
+    const auto& specification = m_sub_problem_specifications[sub_problem_id];
+    const double tol_feasibility = get_tol_feasibility();
+    if (!equals(specification.lower_multiplicity(), 1., tol_feasibility) ||
+        !equals(specification.upper_multiplicity(), 1., tol_feasibility)) {
+        return 0.;
+    }
+
+    const double primal = get_var_primal(t_var);
+    const double lb = parent().get_var_lb(t_var);
+    const double ub = parent().get_var_ub(t_var);
+    const bool at_lower = !is_neg_inf(lb) && equals(primal, lb, get_tol_integer());
+    const bool at_upper = !is_pos_inf(ub) && equals(primal, ub, get_tol_integer());
+    if (at_lower == at_upper) {
+        return 0.;
+    }
+
+    if ((at_lower && lb + 1. > ub + tol_feasibility) ||
+        (at_upper && ub - 1. < lb - tol_feasibility)) {
+        return at_lower ? Inf : -Inf;
+    }
+
+    const auto& sub_problem = m_formulation.sub_problem(sub_problem_id);
+    if (!sub_problem.has_optimizer_factory()) {
+        return 0.;
+    }
+
+    Model conditional = sub_problem.copy();
+    if (at_lower) {
+        conditional.set_var_lb(t_var, lb + 1.);
+    } else {
+        conditional.set_var_ub(t_var, ub - 1.);
+    }
+    conditional.use(sub_problem.optimizer_factory());
+    with_nested_resource_limits(*this, conditional.optimizer(), [&] { conditional.optimize(); });
+
+    double conditional_pricing_bound = -Inf;
+    if (conditional.get_status() == Infeasible && conditional.get_reason() == Proved) {
+        conditional_pricing_bound = Inf;
+    } else if (conditional.get_status() == Optimal) {
+        conditional_pricing_bound = conditional.get_best_obj();
+    } else if (conditional.get_status() == Feasible) {
+        conditional_pricing_bound = conditional.get_best_bound();
+    }
+
+    double degradation = conditional_pricing_bound;
+    for (unsigned int i = 0; i < m_formulation.n_sub_problems(); ++i) {
+        if (i == sub_problem_id) {
+            continue;
+        }
+        const auto& other = m_formulation.sub_problem(i);
+        double pricing_bound = -Inf;
+        if (other.get_status() == Optimal) {
+            pricing_bound = other.get_best_obj();
+        } else if (other.get_status() == Feasible &&
+                   other.get_best_bound() <= other.get_best_obj() + get_tol_optimality()) {
+            pricing_bound = other.get_best_bound();
+        } else {
+            return 0.;
+        }
+        if (pricing_bound < 0.) {
+            const double upper_multiplicity = m_sub_problem_specifications[i].upper_multiplicity();
+            if (is_pos_inf(upper_multiplicity)) {
+                return 0.;
+            }
+            degradation += upper_multiplicity * pricing_bound;
+        }
+    }
+
+    if (degradation <= get_tol_optimality()) {
+        return 0.;
+    }
+    return at_lower ? degradation : -degradation;
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::add_sub_problem() {
