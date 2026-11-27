@@ -5,6 +5,7 @@
 #include "idol/bilevel/optimizers/MinMaxDualize/MinMax_Dualize.h"
 #include "idol/mixed-integer/modeling/variables/TempVar.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 
 idol::Optimizers::Bilevel::MinMax::Dualize::Dualize(const Model& t_parent,
                                                        const idol::Bilevel::Description &t_description,
@@ -259,8 +260,8 @@ void idol::Optimizers::Bilevel::MinMax::Dualize::solve_lower_level() {
     }
 
     m_lower_level_model->use(*m_deterministic_optimizer);
-    m_lower_level_model->optimizer().set_param_time_limit(get_remaining_time());
-    m_lower_level_model->optimize();
+    auto& optimizer = m_lower_level_model->optimizer();
+    with_nested_resource_limits(*this, optimizer, [&] { m_lower_level_model->optimize(); });
 
     if (m_lower_level_model->get_status() != Optimal) {
         set_status(Unknown);

@@ -101,7 +101,7 @@ PHASE 2 — CORRECTNESS BEFORE ALGORITHMIC EXTENSIONS (P0)
    repeated solves; establish intended precedence before changing defaults.
    Test explicit true/false and unset configurations across relevant wrappers.
 
-07 [ ] Audit parameter propagation to nested optimizers.
+07 [x] Audit parameter propagation to nested optimizers.
    Check remaining time, threads, presolve, tolerances, logs, iteration limits
    and objective/bound stopping conditions. Respect explicit child settings
    subject to parent resource limits; do not oversubscribe CPUs. Check factory

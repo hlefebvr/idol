@@ -2,6 +2,7 @@
 // Created by Henri on 21/01/2026.
 //
 #include "idol/robust/optimizers/column-and-constraint-generation/separation/OptimalitySeparation.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 #include "idol/bilevel/optimizers/BilevelOptimizerInterface.h"
 #include "idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
@@ -46,10 +47,9 @@ void idol::Robust::CCG::OptimalitySeparation::operator()() {
 
     // Set optimizer parameters
     const auto& parent = get_parent();
-    model.optimizer().set_param_time_limit(parent.get_remaining_time());
-
     // Optimize
-    model.optimize();
+    auto& optimizer = model.optimizer();
+    with_nested_resource_limits(parent, optimizer, [&] { model.optimize(); });
 
     const auto status = model.get_status();
     const auto reason = model.get_reason();

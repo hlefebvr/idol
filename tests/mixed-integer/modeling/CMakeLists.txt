@@ -13,6 +13,8 @@ idol_register_catch_test(modeling.basic.variables test_modeling_basic "[basic][v
 idol_register_catch_test(modeling.basic.constraints test_modeling_basic "[basic][constraints]" "modeling")
 idol_register_catch_test(modeling.basic.objective test_modeling_basic "[basic][objective]" "modeling")
 idol_register_catch_test(modeling.basic.model_copy test_modeling_basic "[basic][model-copy]" "modeling")
+idol_register_catch_test(modeling.basic.environment test_modeling_basic "[basic][environment]" "modeling")
+idol_register_catch_test(modeling.basic.optimizer_factory test_modeling_basic "[basic][optimizer-factory]" "modeling")
 
 idol_add_catch_executable(test_solution_types solution-types.test.cpp)
 idol_register_catch_test(modeling.solution_types test_solution_types "" "modeling;status")

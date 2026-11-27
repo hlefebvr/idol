@@ -2,6 +2,7 @@
 // Created by henri on 31.10.23.
 //
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 
 idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::ColumnGeneration(DantzigWolfeDecomposition &t_parent,
                                                                                 bool t_use_farkas_for_infeasibility,
@@ -83,13 +84,15 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 
     auto& master = m_parent.m_formulation.master();
 
-    master.optimize();
+    auto& optimizer = master.optimizer();
+    with_nested_resource_limits(m_parent, optimizer, [&] { master.optimize(); });
 
     if (!m_use_farkas_for_infeasibility &&
         (master.get_status() == Unbounded || master.get_status() == InfOrUnbnd)) {
-        master.optimizer().set_param_infeasible_or_unbounded_info(true);
-        master.optimize();
-        master.optimizer().set_param_infeasible_or_unbounded_info(false);
+        const bool infeasible_info = optimizer.get_param_infeasible_or_unbounded_info();
+        optimizer.set_param_infeasible_or_unbounded_info(true);
+        with_nested_resource_limits(m_parent, optimizer, [&] { master.optimize(); });
+        optimizer.set_param_infeasible_or_unbounded_info(infeasible_info);
     }
 
     const bool save_dual_solution = m_iteration_count < parent().get_param_iteration_limit();
@@ -156,15 +159,17 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::update_sub_p
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_sub_problems_in_parallel() {
 
     const unsigned int n_threads = std::min(m_parent.get_param_thread_limit(), m_parent.m_max_parallel_pricing);
+    const unsigned int threads_per_sub_problem = std::max(1u, m_parent.get_param_thread_limit() / std::max(1u, n_threads));
 
-    #pragma omp parallel for num_threads(n_threads) default(none)
+    #pragma omp parallel for num_threads(n_threads) default(none) shared(threads_per_sub_problem)
     for (auto& sub_problem : m_parent.m_formulation.sub_problems()) {
-        sub_problem.optimizer().set_param_time_limit(m_parent.get_remaining_time());
-        sub_problem.optimize();
+        auto& optimizer = sub_problem.optimizer();
+        with_nested_resource_limits(m_parent, optimizer, threads_per_sub_problem, [&] { sub_problem.optimize(); });
         if (sub_problem.get_status() == Unbounded || sub_problem.get_status() == InfOrUnbnd) {
-            sub_problem.optimizer().set_param_infeasible_or_unbounded_info(true);
-            sub_problem.optimize();
-            sub_problem.optimizer().set_param_infeasible_or_unbounded_info(false);
+            const bool infeasible_info = optimizer.get_param_infeasible_or_unbounded_info();
+            optimizer.set_param_infeasible_or_unbounded_info(true);
+            with_nested_resource_limits(m_parent, optimizer, threads_per_sub_problem, [&] { sub_problem.optimize(); });
+            optimizer.set_param_infeasible_or_unbounded_info(infeasible_info);
         }
     }
 
@@ -293,12 +298,13 @@ bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
                 formulation.update_sub_problem_objective(i,
                                                          m_master_dual_solution.value(),
                                                          m_current_iteration_is_using_farkas);
-                model.optimizer().set_param_time_limit(m_parent.get_remaining_time());
-                model.optimize();
+                auto& optimizer = model.optimizer();
+                with_nested_resource_limits(m_parent, optimizer, [&] { model.optimize(); });
                 if (model.get_status() == Unbounded || model.get_status() == InfOrUnbnd) {
-                    model.optimizer().set_param_infeasible_or_unbounded_info(true);
-                    model.optimize();
-                    model.optimizer().set_param_infeasible_or_unbounded_info(false);
+                    const bool infeasible_info = optimizer.get_param_infeasible_or_unbounded_info();
+                    optimizer.set_param_infeasible_or_unbounded_info(true);
+                    with_nested_resource_limits(m_parent, optimizer, [&] { model.optimize(); });
+                    optimizer.set_param_infeasible_or_unbounded_info(infeasible_info);
                 }
 
                 if (model.get_status() == Unbounded) {

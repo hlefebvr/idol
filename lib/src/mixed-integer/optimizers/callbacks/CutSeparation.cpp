@@ -4,6 +4,7 @@
 
 #include "idol/mixed-integer/optimizers/callbacks/cutting-planes/CutSeparation.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 
 idol::impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
                                    Model *t_separation_problem,
@@ -39,8 +40,9 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
     m_separation_problem->set_obj_expr(std::move(objective));
 
-    m_separation_problem->optimizer().set_param_time_limit(src_model.optimizer().get_remaining_time());
-    m_separation_problem->optimize();
+    auto& optimizer = m_separation_problem->optimizer();
+    with_nested_resource_limits(src_model.optimizer(), optimizer,
+                                [&] { m_separation_problem->optimize(); });
 
     const auto status = m_separation_problem->get_status();
 

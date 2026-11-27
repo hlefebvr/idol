@@ -14,7 +14,7 @@ idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const
 
 idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
         const idol::Robust::ColumnAndConstraintGeneration &t_src)
-        : OptimizerFactoryWithDefaultParameters<ColumnAndConstraintGeneration>(*this),
+        : OptimizerFactoryWithDefaultParameters<ColumnAndConstraintGeneration>(t_src),
           m_robust_description(t_src.m_robust_description),
           m_bilevel_description(t_src.m_bilevel_description),
           m_initial_scenarios(t_src.m_initial_scenarios),

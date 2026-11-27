@@ -9,7 +9,8 @@ idol::Bilevel::BranchAndCut::BranchAndCut(const Bilevel::Description &t_descript
 }
 
 idol::Bilevel::BranchAndCut::BranchAndCut(const idol::Bilevel::BranchAndCut &t_src)
-     : m_description(t_src.m_description),
+     : OptimizerFactoryWithDefaultParameters<BranchAndCut>(t_src),
+       m_description(t_src.m_description),
        m_optimizer_for_sub_problems(t_src.m_optimizer_for_sub_problems ? t_src.m_optimizer_for_sub_problems->clone() : nullptr) {
 
 }

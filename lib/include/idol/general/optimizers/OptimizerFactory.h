@@ -141,7 +141,7 @@ CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_tol_mip_absolute_g
 
 template <class CRTP>
 CRTP& idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_tol_integer(double t_tol_integer) {
-    if (m_tol_mip_absolute_gap.has_value()) {
+    if (m_tol_integer.has_value()) {
         throw Exception("A tolerance for integrality has already been given.");
     }
     m_tol_integer = t_tol_integer;

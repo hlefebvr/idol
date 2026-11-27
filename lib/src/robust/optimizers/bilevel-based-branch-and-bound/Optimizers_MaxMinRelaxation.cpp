@@ -5,6 +5,7 @@
 #include "idol/robust/optimizers/critical-value-column-and-constraint-generation/CriticalValueColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 
 idol::Optimizers::Robust::MaxMinRelaxation::MaxMinRelaxation(const Model& t_model,
                                                              const idol::Robust::Description& t_description,
@@ -38,23 +39,9 @@ void idol::Optimizers::Robust::MaxMinRelaxation::hook_optimize() {
 
     auto& reformulation = m_formulation->model;
     
-    // Parameters
-    reformulation.optimizer().set_param_logs(get_param_logs());
-    reformulation.optimizer().set_param_time_limit(get_remaining_time());
-    reformulation.optimizer().set_param_threads(get_param_thread_limit());
-    reformulation.optimizer().set_param_best_bound_stop(get_param_best_bound_stop());
-    reformulation.optimizer().set_param_best_obj_stop(get_param_best_obj_stop());
-    reformulation.optimizer().set_param_presolve(get_param_presolve());
-    reformulation.optimizer().set_param_infeasible_or_unbounded_info(get_param_infeasible_or_unbounded_info());
-
-    // Tolerances
-    reformulation.optimizer().set_tol_feasibility(get_tol_feasibility());
-    reformulation.optimizer().set_tol_integer(get_tol_integer());
-    reformulation.optimizer().set_tol_mip_absolute_gap(get_tol_mip_absolute_gap());
-    reformulation.optimizer().set_tol_mip_relative_gap(get_tol_mip_relative_gap());
-    reformulation.optimizer().set_tol_optimality(get_tol_optimality());
-
-    m_formulation->model.optimize();
+    auto& optimizer = reformulation.optimizer();
+    inherit_reformulation_parameters(*this, optimizer);
+    with_nested_resource_limits(*this, optimizer, [&] { m_formulation->model.optimize(); });
 
     set_status(m_formulation->model.get_status());
     set_reason(m_formulation->model.get_reason());

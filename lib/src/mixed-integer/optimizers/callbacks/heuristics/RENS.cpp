@@ -4,6 +4,7 @@
 #include "idol/mixed-integer/optimizers/callbacks/heuristics/RENS.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 
 idol::Heuristics::RENS::RENS(const RENS& t_src)
     : m_optimizer_factory(t_src.m_optimizer_factory->clone()),
@@ -79,9 +80,10 @@ void idol::Heuristics::RENS::Strategy::operator()(idol::CallbackEvent t_event) {
     }
 
     model->use(*m_optimizer_factory);
-    model->optimizer().set_param_time_limit(10);
-
-    model->optimize();
+    auto& optimizer = model->optimizer();
+    with_nested_resource_limits(original_model().optimizer(), optimizer,
+                                original_model().optimizer().get_param_thread_limit(), 10.,
+                                [&] { model->optimize(); });
 
     if (const auto status = model->get_status() ; status != Optimal && status != Feasible) {
         return;

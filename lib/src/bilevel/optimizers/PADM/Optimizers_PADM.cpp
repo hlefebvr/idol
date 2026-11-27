@@ -5,6 +5,7 @@
 #include "idol/bilevel/optimizers/KKT/KKT.h"
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/mixed-integer/optimizers/padm/PADM.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 
 idol::Optimizers::Bilevel::PADM::PADM(const Model& t_parent,
                                       const idol::Bilevel::Description &t_description,
@@ -137,23 +138,9 @@ void idol::Optimizers::Bilevel::PADM::hook_optimize() {
         m_single_level_reformulation->use(padm);
     }
 
-    // Parameters
-    m_single_level_reformulation->optimizer().set_param_logs(get_param_logs());
-    m_single_level_reformulation->optimizer().set_param_time_limit(get_param_time_limit());
-    m_single_level_reformulation->optimizer().set_param_threads(get_param_thread_limit());
-    m_single_level_reformulation->optimizer().set_param_best_bound_stop(get_param_best_bound_stop());
-    m_single_level_reformulation->optimizer().set_param_best_obj_stop(get_param_best_obj_stop());
-    m_single_level_reformulation->optimizer().set_param_presolve(get_param_presolve());
-    m_single_level_reformulation->optimizer().set_param_infeasible_or_unbounded_info(get_param_infeasible_or_unbounded_info());
-
-    // Tolerances
-    m_single_level_reformulation->optimizer().set_tol_feasibility(get_tol_feasibility());
-    m_single_level_reformulation->optimizer().set_tol_integer(get_tol_integer());
-    m_single_level_reformulation->optimizer().set_tol_mip_absolute_gap(get_tol_mip_absolute_gap());
-    m_single_level_reformulation->optimizer().set_tol_mip_relative_gap(get_tol_mip_relative_gap());
-    m_single_level_reformulation->optimizer().set_tol_optimality(get_tol_optimality());
-
-    m_single_level_reformulation->optimize();
+    auto& optimizer = m_single_level_reformulation->optimizer();
+    inherit_reformulation_parameters(*this, optimizer);
+    with_nested_resource_limits(*this, optimizer, [&] { m_single_level_reformulation->optimize(); });
 
 }
 

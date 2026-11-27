@@ -7,6 +7,7 @@
 
 #include "idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeSet.h"
 #include "idol/general/optimizers/Algorithm.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingRuleFactory.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/NodeSelectionRuleFactory.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/BranchingRule.h"
@@ -126,7 +127,7 @@ public:
 
     [[nodiscard]] std::string name() const override { return "Branch-and-Bound"; }
 
-    void solve(TreeNode& t_node, unsigned int t_relaxation_id);
+    void solve(TreeNode& t_node, unsigned int t_relaxation_id, unsigned int t_step = 0);
 
     virtual void set_subtree_depth(unsigned int t_depth) { m_steps.at(1) = t_depth; }
 
@@ -671,7 +672,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::explore(
 
     do {
 
-        solve(t_node, t_relaxation_id);
+        solve(t_node, t_relaxation_id, t_step);
 
         analyze(t_node, t_relaxation_id, &explore_children_flag, &reoptimize_flag);
 
@@ -746,13 +747,14 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::explore(
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
-                                                        unsigned int t_relaxation_id) {
+                                                        unsigned int t_relaxation_id,
+                                                        unsigned int t_step) {
 
     auto& node_updator = *m_node_updators[t_relaxation_id];
     auto& relaxation = *m_relaxations[t_relaxation_id];
 
     relaxation.optimizer().set_param_best_bound_stop(std::min(get_best_obj(), get_param_best_bound_stop()));
-    relaxation.optimizer().set_param_time_limit(get_remaining_time());
+    auto& optimizer = relaxation.optimizer();
 
     node_updator.prepare(t_node);
 
@@ -770,7 +772,10 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
 
     m_user_cut_pool.clean_up(relaxation);
 
-    relaxation.optimize();
+    const unsigned int thread_limit = t_step == 0
+                                      ? get_param_thread_limit()
+                                      : std::max(1u, get_param_thread_limit() / m_n_threads);
+    with_nested_resource_limits(*this, optimizer, thread_limit, [&] { relaxation.optimize(); });
 
     t_node.info().save(working_model(), relaxation);
 

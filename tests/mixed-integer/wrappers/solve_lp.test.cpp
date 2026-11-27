@@ -1,6 +1,7 @@
 #include <catch2/catch_all.hpp>
 
 #include "idol/modeling.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
@@ -30,6 +31,67 @@ TEST_CASE("LP: presolve configuration precedence", "[LP]") {
         env.set_param_presolve(true);
         model.use(OPTIMIZER().with_presolve(false));
         CHECK_FALSE(model.optimizer().get_param_presolve());
+    }
+}
+
+TEST_CASE("LP: integer tolerance duplicate detection is independent", "[LP]") {
+    auto optimizer = OPTIMIZER().with_tol_mip_absolute_gap(1e-5);
+    CHECK_NOTHROW(optimizer.with_tol_integer(1e-6));
+    CHECK_THROWS(optimizer.with_tol_integer(1e-7));
+}
+
+TEST_CASE("LP: nested optimizer resource limits are per invocation", "[LP]") {
+    Env env;
+    Model parent(env);
+    Model child(env);
+    parent.use(OPTIMIZER().with_time_limit(1.).with_thread_limit(2));
+    child.use(OPTIMIZER().with_time_limit(120.).with_thread_limit(4));
+
+    for (unsigned int invocation = 0; invocation < 2; ++invocation) {
+        with_nested_resource_limits(parent.optimizer(), child.optimizer(), [&] {
+            CHECK(child.optimizer().get_param_time_limit() <= 1.);
+            CHECK(child.optimizer().get_param_thread_limit() == 2);
+        });
+        CHECK(child.optimizer().get_param_time_limit() == 120.);
+        CHECK(child.optimizer().get_param_thread_limit() == 4);
+    }
+}
+
+TEST_CASE("LP: reformulation inheritance preserves explicit child parameters", "[LP]") {
+    Env env;
+    Model parent(env);
+    parent.use(OPTIMIZER()
+                   .with_logs(true)
+                   .with_presolve(false)
+                   .with_best_bound_stop(10.)
+                   .with_best_obj_stop(-10.)
+                   .with_tol_feasibility(1e-5));
+
+    SECTION("unset child values inherit") {
+        Model child(env);
+        child.use(OPTIMIZER());
+        inherit_reformulation_parameters(parent.optimizer(), child.optimizer());
+        CHECK(child.optimizer().get_param_presolve() == false);
+        CHECK(child.optimizer().get_param_best_bound_stop() == 10.);
+        CHECK(child.optimizer().get_param_best_obj_stop() == -10.);
+        CHECK(child.optimizer().get_tol_feasibility() == 1e-5);
+        CHECK(child.optimizer().get_param_logs() == env.get_param_logs());
+    }
+
+    SECTION("explicit child values win") {
+        Model child(env);
+        child.use(OPTIMIZER()
+                      .with_logs(false)
+                      .with_presolve(true)
+                      .with_best_bound_stop(20.)
+                      .with_best_obj_stop(-20.)
+                      .with_tol_feasibility(1e-7));
+        inherit_reformulation_parameters(parent.optimizer(), child.optimizer());
+        CHECK(child.optimizer().get_param_presolve() == true);
+        CHECK(child.optimizer().get_param_best_bound_stop() == 20.);
+        CHECK(child.optimizer().get_param_best_obj_stop() == -20.);
+        CHECK(child.optimizer().get_tol_feasibility() == 1e-7);
+        CHECK(child.optimizer().get_param_logs() == false);
     }
 }
 

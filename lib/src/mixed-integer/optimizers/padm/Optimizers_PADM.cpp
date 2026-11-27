@@ -4,6 +4,7 @@
 
 #include "idol/mixed-integer/optimizers/padm/Optimizers_PADM.h"
 #include "idol/general/optimizers/logs.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 #include "idol/mixed-integer/modeling/objects/Versions.h"
 
 #include <utility>
@@ -395,23 +396,11 @@ idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
         }
     }
 
-    // Parameters
-    sub_problem.model.optimizer().set_param_logs(false);
-    sub_problem.model.optimizer().set_param_time_limit(get_remaining_time());
-    sub_problem.model.optimizer().set_param_threads(get_param_thread_limit());
-    sub_problem.model.optimizer().set_param_best_bound_stop(get_param_best_bound_stop());
-    sub_problem.model.optimizer().set_param_best_obj_stop(get_param_best_obj_stop());
-    sub_problem.model.optimizer().set_param_presolve(get_param_presolve());
-    sub_problem.model.optimizer().set_param_infeasible_or_unbounded_info(get_param_infeasible_or_unbounded_info());
-
-    // Tolerances
-    sub_problem.model.optimizer().set_tol_feasibility(get_tol_feasibility());
-    sub_problem.model.optimizer().set_tol_integer(get_tol_integer());
-    sub_problem.model.optimizer().set_tol_mip_absolute_gap(get_tol_mip_absolute_gap());
-    sub_problem.model.optimizer().set_tol_mip_relative_gap(get_tol_mip_relative_gap());
-    sub_problem.model.optimizer().set_tol_optimality(get_tol_optimality());
-    
-    sub_problem.model.optimize();
+    auto& optimizer = sub_problem.model.optimizer();
+    if (!optimizer.has_explicit_logs()) {
+        optimizer.set_param_logs(false);
+    }
+    with_nested_resource_limits(*this, optimizer, [&] { sub_problem.model.optimize(); });
 
     const auto status = sub_problem.model.get_status();
 

@@ -2,6 +2,7 @@
 // Created by Henri on 13/05/2026.
 //
 #include "idol/robust/optimizers/wrappers/Optimizers_ROCPP.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 
 void idol::Optimizers::Robust::ROCPP::throw_if_no_deterministic_model() const {
     if (!m_model) {
@@ -102,21 +103,7 @@ void idol::Optimizers::Robust::ROCPP::hook_optimize() {
     m_model = std::make_unique<Model>(idol::Robust::ROCPP::make_model(parent(), m_robust_description, m_bilevel_description, m_approximation, m_n_policies));
     m_model->use(*m_optimizer_factory);
     
-    // Parameters
-    m_model->optimizer().set_param_logs(get_param_logs());
-    m_model->optimizer().set_param_time_limit(get_remaining_time());
-    m_model->optimizer().set_param_threads(get_param_thread_limit());
-    m_model->optimizer().set_param_best_bound_stop(get_param_best_bound_stop());
-    m_model->optimizer().set_param_best_obj_stop(get_param_best_obj_stop());
-    m_model->optimizer().set_param_presolve(get_param_presolve());
-    m_model->optimizer().set_param_infeasible_or_unbounded_info(get_param_infeasible_or_unbounded_info());
-
-    // Tolerances
-    m_model->optimizer().set_tol_feasibility(get_tol_feasibility());
-    m_model->optimizer().set_tol_integer(get_tol_integer());
-    m_model->optimizer().set_tol_mip_absolute_gap(get_tol_mip_absolute_gap());
-    m_model->optimizer().set_tol_mip_relative_gap(get_tol_mip_relative_gap());
-    m_model->optimizer().set_tol_optimality(get_tol_optimality());
-
-    m_model->optimize();
+    auto& optimizer = m_model->optimizer();
+    inherit_reformulation_parameters(*this, optimizer);
+    with_nested_resource_limits(*this, optimizer, [&] { m_model->optimize(); });
 }

@@ -8,6 +8,7 @@
 #include <idol/bilevel/modeling/write_to_file.h>
 #include <cassert>
 #include "idol/general/optimizers/logs.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 
 idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const idol::Model &t_parent,
                                                                                        const idol::Robust::Description &t_robust_description,
@@ -227,9 +228,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_initial_scenar
     Model model = m_robust_description.uncertainty_set().copy();
     model.set_obj_expr(idol_Sum(var, model.vars(), t_coefficient * var));
     model.use(t_optimizer);
-    const double time_limit = std::min<double>(model.optimizer().get_remaining_time(), get_remaining_time());
-    model.optimizer().set_param_time_limit(time_limit);
-    model.optimize();
+    auto& optimizer = model.optimizer();
+    with_nested_resource_limits(*this, optimizer, [&] { model.optimize(); });
 
     const auto status = model.get_status();
     if (status != Optimal && status != Feasible) {
@@ -243,10 +243,10 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_initial_scenar
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_problem() {
 
     auto& master = m_formulation->master();
-    master.optimizer().set_param_time_limit(get_remaining_time());
+    auto& optimizer = master.optimizer();
 
     m_master_timer.start();
-    master.optimize();
+    with_nested_resource_limits(*this, optimizer, [&] { master.optimize(); });
     m_master_timer.stop();
 
     const auto status = master.get_status();
@@ -456,11 +456,10 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
 
     // Set optimizer
     high_point_relaxation.use(*m_optimizer_feasibility_separation[m_index_feasibility_separation]);
-    high_point_relaxation.optimizer().set_param_time_limit(get_remaining_time());
-
     // Solve adversarial problem
     m_separation_timer.start();
-    high_point_relaxation.optimize();
+    auto& optimizer = high_point_relaxation.optimizer();
+    with_nested_resource_limits(*this, optimizer, [&] { high_point_relaxation.optimize(); });
     m_separation_timer.stop();
 
     // Analyze results
@@ -518,11 +517,10 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
     } else {
         high_point_relaxation.use(Bilevel::PessimisticAsOptimistic(separation_bilevel_description) + *m_optimizer_optimality_separation[m_index_optimality_separation]);
     }
-    high_point_relaxation.optimizer().set_param_time_limit(get_remaining_time());
-
     // Solve adversarial problem
     m_separation_timer.start();
-    high_point_relaxation.optimize();
+    auto& optimizer = high_point_relaxation.optimizer();
+    with_nested_resource_limits(*this, optimizer, [&] { high_point_relaxation.optimize(); });
     m_separation_timer.stop();
 
     // Analyze results
@@ -583,11 +581,11 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_join
 
     // Set optimizer
     high_point_relaxation.use(*m_optimizer_joint_separation[m_index_joint_separation]);
-    high_point_relaxation.optimizer().set_param_time_limit(get_remaining_time());
 
     // Solve adversarial problem
     m_separation_timer.start();
-    high_point_relaxation.optimize();
+    auto& optimizer = high_point_relaxation.optimizer();
+    with_nested_resource_limits(*this, optimizer, [&] { high_point_relaxation.optimize(); });
     m_separation_timer.stop();
 
     // Analyze results

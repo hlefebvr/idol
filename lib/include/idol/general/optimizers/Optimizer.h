@@ -25,9 +25,12 @@ namespace idol {
     }
 
     class Optimizer;
+    class OptimizerFactory;
 }
 
 class idol::impl::Optimizer {
+    friend class ::idol::OptimizerFactory;
+
     const ::idol::Model& m_parent;
 
     bool m_is_terminated = false;
@@ -47,6 +50,20 @@ class idol::impl::Optimizer {
     std::optional<double> m_tol_integer;
     std::optional<double> m_tol_feasibility;
     std::optional<double> m_tol_optimality;
+
+    bool m_explicit_logs = false;
+    bool m_explicit_time_limit = false;
+    bool m_explicit_thread_limit = false;
+    bool m_explicit_iteration_limit = false;
+    bool m_explicit_best_obj_stop = false;
+    bool m_explicit_best_bound_stop = false;
+    bool m_explicit_presolve = false;
+    bool m_explicit_infeasible_or_unbounded_info = false;
+    bool m_explicit_tol_mip_relative_gap = false;
+    bool m_explicit_tol_mip_absolute_gap = false;
+    bool m_explicit_tol_integer = false;
+    bool m_explicit_tol_feasibility = false;
+    bool m_explicit_tol_optimality = false;
 
     Timer m_timer;
 protected:
@@ -185,6 +202,20 @@ public:
     [[nodiscard]] bool get_param_infeasible_or_unbounded_info() const { return m_param_infeasible_or_unbounded_info; }
 
     virtual void set_param_infeasible_or_unbounded_info(bool t_value) { m_param_infeasible_or_unbounded_info = t_value; }
+
+    [[nodiscard]] bool has_explicit_logs() const { return m_explicit_logs; }
+    [[nodiscard]] bool has_explicit_time_limit() const { return m_explicit_time_limit; }
+    [[nodiscard]] bool has_explicit_thread_limit() const { return m_explicit_thread_limit; }
+    [[nodiscard]] bool has_explicit_iteration_limit() const { return m_explicit_iteration_limit; }
+    [[nodiscard]] bool has_explicit_best_obj_stop() const { return m_explicit_best_obj_stop; }
+    [[nodiscard]] bool has_explicit_best_bound_stop() const { return m_explicit_best_bound_stop; }
+    [[nodiscard]] bool has_explicit_presolve() const { return m_explicit_presolve; }
+    [[nodiscard]] bool has_explicit_infeasible_or_unbounded_info() const { return m_explicit_infeasible_or_unbounded_info; }
+    [[nodiscard]] bool has_explicit_tol_mip_relative_gap() const { return m_explicit_tol_mip_relative_gap; }
+    [[nodiscard]] bool has_explicit_tol_mip_absolute_gap() const { return m_explicit_tol_mip_absolute_gap; }
+    [[nodiscard]] bool has_explicit_tol_integer() const { return m_explicit_tol_integer; }
+    [[nodiscard]] bool has_explicit_tol_feasibility() const { return m_explicit_tol_feasibility; }
+    [[nodiscard]] bool has_explicit_tol_optimality() const { return m_explicit_tol_optimality; }
 
     [[nodiscard]] const Timer& time() const { return m_timer; }
 

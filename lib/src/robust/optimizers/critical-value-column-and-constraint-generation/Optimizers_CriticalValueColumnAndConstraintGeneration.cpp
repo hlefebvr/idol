@@ -4,6 +4,7 @@
 #include "idol/robust/optimizers/critical-value-column-and-constraint-generation/Optimizers_CriticalValueColumnAndConstraintGeneration.h"
 
 #include "idol/general/optimizers/logs.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 
 idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::CriticalValueColumnAndConstraintGeneration(const Model& t_model, const idol::Robust::Description& t_description, const OptimizerFactory& t_master_optimizer, const OptimizerFactory& t_deterministic_optimizer, bool t_use_indicator) :
@@ -62,7 +63,9 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::hook_
 }
 
 void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve_master_problem() {
-    m_formulation->master().optimize();
+    auto& master = m_formulation->master();
+    auto& optimizer = master.optimizer();
+    with_nested_resource_limits(*this, optimizer, [&] { master.optimize(); });
 }
 
 void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::analyze_master_problem() {
@@ -148,7 +151,8 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::solve
         m_formulation->update_sub_problem_objective(master_solution, uncertainty);
 
         auto& sub_problem = m_formulation->sub_problem();
-        sub_problem.optimize();
+        auto& optimizer = sub_problem.optimizer();
+        with_nested_resource_limits(*this, optimizer, [&] { sub_problem.optimize(); });
 
         const auto status = sub_problem.get_status();
 

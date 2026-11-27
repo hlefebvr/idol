@@ -187,7 +187,7 @@ public:
     void set_param_best_bound_stop(double t_best_bound_stop) { m_param_best_bound_stop = t_best_bound_stop; }
     void set_param_best_obj_stop(double t_best_obj_stop) { m_param_best_obj_stop = t_best_obj_stop; }
     void set_param_iteration_limit(unsigned int t_iteration_limit) { m_param_iteration_limit = t_iteration_limit; }
-    void set_param_infeasible_or_unbounded_info(bool t_param_infeasible_or_unbounded_info) { m_param_best_bound_stop = t_param_infeasible_or_unbounded_info; }
+    void set_param_infeasible_or_unbounded_info(bool t_value) { m_param_infeasible_or_unbounded_info = t_value; }
 };
 
 /**

@@ -1,8 +1,47 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "idol/modeling.h"
+#include "idol/bilevel/modeling/Description.h"
+#include "idol/bilevel/optimizers/BranchAndCut/BranchAndCut.h"
+#include "idol/robust/modeling/Description.h"
+#include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 
 using namespace idol;
+
+TEST_CASE("Environment keeps infeasible-or-unbounded information separate from the best-bound stop", "[basic][environment]") {
+    Env env;
+    const double best_bound_stop = 42.;
+    env.set_param_best_bound_stop(best_bound_stop);
+
+    env.set_param_infeasible_or_unbounded_info(true);
+    CHECK(env.get_param_infeasible_or_unbounded_info());
+    CHECK(env.get_param_best_bound_stop() == best_bound_stop);
+
+    env.set_param_infeasible_or_unbounded_info(false);
+    CHECK_FALSE(env.get_param_infeasible_or_unbounded_info());
+    CHECK(env.get_param_best_bound_stop() == best_bound_stop);
+}
+
+TEST_CASE("Composite optimizer clones retain common factory parameters", "[basic][optimizer-factory]") {
+    Env env;
+    Model uncertainty_set(env);
+    Bilevel::Description bilevel_description(env);
+    Robust::Description robust_description(uncertainty_set);
+
+    SECTION("bilevel branch-and-cut") {
+        Bilevel::BranchAndCut factory(bilevel_description);
+        factory.with_logs(true);
+        std::unique_ptr<OptimizerFactory> clone(factory.clone());
+        CHECK_THROWS(clone->as<Bilevel::BranchAndCut>().with_logs(false));
+    }
+
+    SECTION("column-and-constraint generation") {
+        Robust::ColumnAndConstraintGeneration factory(robust_description, bilevel_description);
+        factory.with_logs(true);
+        std::unique_ptr<OptimizerFactory> clone(factory.clone());
+        CHECK_THROWS(clone->as<Robust::ColumnAndConstraintGeneration>().with_logs(false));
+    }
+}
 
 TEST_CASE("Basic expression algebra preserves coefficients", "[basic][expressions]") {
     Env env;

@@ -1,4 +1,5 @@
 #include "idol/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.h"
+#include "idol/general/optimizers/NestedOptimizer.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/optimizers/callbacks/cutting-planes/LazyCutCallback.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
@@ -275,15 +276,17 @@ idol::Optimizers::Bilevel::BranchAndCut::compute_big_M(const idol::Model &t_mode
 
         auto copy = t_model.copy();
         copy.use(*m_optimizer_for_sub_problems);
-        copy.optimizer().set_param_time_limit(5 * 60);
+        auto& optimizer = copy.optimizer();
 
         copy.set_obj_expr(m_description.lower_level_obj());
-        copy.optimize();
+        with_nested_resource_limits(*this, optimizer, get_param_thread_limit(), 5. * 60.,
+                                    [&] { copy.optimize(); });
 
         elaborated_LB = is_inf(copy.get_best_bound()) ? -Inf : copy.get_best_bound();
 
         copy.set_obj_expr(-1. * m_description.lower_level_obj());
-        copy.optimize();
+        with_nested_resource_limits(*this, optimizer, get_param_thread_limit(), 5. * 60.,
+                                    [&] { copy.optimize(); });
 
         elaborated_UB = is_inf(copy.get_best_bound()) ? Inf : -copy.get_best_bound();
 
