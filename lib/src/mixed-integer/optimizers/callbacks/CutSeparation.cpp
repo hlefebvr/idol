@@ -56,14 +56,16 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
         m_separation_problem->set_solution_index(k);
 
-        const double objective_value = m_separation_problem->get_best_obj();
-
-        if (objective_value >= -tol_feasibility) {
-            break;
-        }
-
         const auto& solution = save_primal(*m_separation_problem);
         auto expr = m_cut_pattern(solution);
+        const double value = evaluate(expr, current_solution);
+        const bool is_violated = m_type == LessOrEqual
+                                 ? value > tol_feasibility
+                                 : value < -tol_feasibility;
+
+        if (!is_violated) {
+            continue;
+        }
 
         TempCtr cut(std::move(expr.linear()), m_type, -expr.constant());
 

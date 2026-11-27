@@ -109,7 +109,7 @@ PHASE 2 — CORRECTNESS BEFORE ALGORITHMIC EXTENSIONS (P0)
    Env::set_param_infeasible_or_unbounded_info and duplicate-check condition in
    with_tol_integer; confirm on current code and add regression tests if present.
 
-08 [ ] Check lazy-cut separator for >= constraints.
+08 [x] Check lazy-cut separator for >= constraints.
    Reproduce and fix sense/sign handling. Test <=, >= and equality where
    supported, violated/nonviolated cuts, tolerance boundaries and equivalent
    sign-reversed formulations across relevant callback implementations.

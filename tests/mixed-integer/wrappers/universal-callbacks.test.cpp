@@ -15,6 +15,48 @@ enum class Action { Observe, UserCut, Terminate };
 struct State { unsigned incumbent = 0, fractional = 0; bool read = false, acted = false; };
 struct HeuristicState { bool submitted = false, accepted = false; };
 
+class CountingLazyCutCallback : public CallbackFactory {
+    std::unique_ptr<Model> separation;
+    std::shared_ptr<std::vector<double>> generated_rhs;
+    GenerationPattern<Ctr> cut;
+    CtrType type;
+public:
+    CountingLazyCutCallback(const Model& separation_,
+                            std::shared_ptr<std::vector<double>> generated_rhs_,
+                            GenerationPattern<Ctr> cut_,
+                            CtrType type_)
+        : separation(separation_.clone()), generated_rhs(std::move(generated_rhs_)), cut(std::move(cut_)), type(type_) {}
+
+    CountingLazyCutCallback(const CountingLazyCutCallback& other)
+        : separation(other.separation->clone()), generated_rhs(other.generated_rhs), cut(other.cut), type(other.type) {}
+
+    class Strategy : public impl::CutSeparation {
+        std::shared_ptr<std::vector<double>> generated_rhs;
+    protected:
+        void hook_add_cut(const TempCtr& cut_) override {
+            generated_rhs->emplace_back(cut_.rhs());
+            add_lazy_cut(cut_);
+        }
+
+        [[nodiscard]] std::string name() const override { return "counting-lazy-cut-callback"; }
+    public:
+        Strategy(Model* separation_,
+                 std::shared_ptr<std::vector<double>> generated_rhs_,
+                 GenerationPattern<Ctr> cut_,
+                 CtrType type_)
+            : impl::CutSeparation(IncumbentSolution, separation_, std::move(cut_), type_),
+              generated_rhs(std::move(generated_rhs_)) {}
+    };
+
+    Callback* operator()() override {
+        auto* model = separation->clone();
+        model->use(OPTIMIZER().with_max_n_solution_in_pool(2));
+        return new Strategy(model, generated_rhs, cut, type);
+    }
+
+    CallbackFactory* clone() const override { return new CountingLazyCutCallback(*this); }
+};
+
 class TestCallback : public Callback {
     std::shared_ptr<State> state; Var x, y; Action action;
 public:
@@ -112,6 +154,93 @@ TEST_CASE("Universal callback adds a lazy constraint", "[Callbacks]") {
     auto optimizer = make_optimizer(); add_benders_callback<LazyCutCallback>(optimizer, env, x, y);
     model.use(optimizer); model.optimize();
     CHECK(model.get_status() == Optimal); CHECK(model.get_best_obj() == 5.4_a);
+}
+
+TEST_CASE("Lazy-cut separation handles constraint senses and feasibility tolerance", "[Callbacks]") {
+    Env env;
+    const double tolerance = env.get_tol_feasibility();
+    Model model(env);
+    const auto x = model.add_var(0, 1, Binary, 1, "x");
+    Model separation(env);
+
+    const auto generated_rhs = std::make_shared<std::vector<double>>();
+    CtrType type;
+    GenerationPattern<Ctr> cut;
+    double expected_objective;
+
+    SECTION(">= violated") {
+        const auto u = separation.add_var(.5, .5, Continuous, 0, "u");
+        cut = x - !u;
+        type = GreaterOrEqual;
+        expected_objective = 1.;
+    }
+
+    SECTION("equivalent sign-reversed <= violated") {
+        const auto u = separation.add_var(.5, .5, Continuous, 0, "u");
+        cut = -1. * (x - !u);
+        type = LessOrEqual;
+        expected_objective = 1.;
+    }
+
+    SECTION(">= violation within tolerance") {
+        const auto u = separation.add_var(.5 * tolerance, .5 * tolerance, Continuous, 0, "u");
+        cut = x - !u;
+        type = GreaterOrEqual;
+        expected_objective = 0.;
+    }
+
+    SECTION("equivalent sign-reversed <= violation within tolerance") {
+        const auto u = separation.add_var(.5 * tolerance, .5 * tolerance, Continuous, 0, "u");
+        cut = -1. * (x - !u);
+        type = LessOrEqual;
+        expected_objective = 0.;
+    }
+
+    SECTION(">= satisfied") {
+        const auto u = separation.add_var(-.5, -.5, Continuous, 0, "u");
+        cut = x - !u;
+        type = GreaterOrEqual;
+        expected_objective = 0.;
+    }
+
+    SECTION("equivalent sign-reversed <= satisfied") {
+        const auto u = separation.add_var(-.5, -.5, Continuous, 0, "u");
+        cut = -1. * (x - !u);
+        type = LessOrEqual;
+        expected_objective = 0.;
+    }
+
+    SECTION(">= solution pool contains a nonviolating generator") {
+        const auto u = separation.add_var(0, 1, Binary, 0, "u");
+        cut = x - !u;
+        type = GreaterOrEqual;
+        expected_objective = 1.;
+    }
+
+    auto optimizer = make_optimizer();
+    optimizer.add_callback(CountingLazyCutCallback(separation, generated_rhs, cut, type));
+    model.use(optimizer);
+    model.optimize();
+
+    CHECK(model.get_status() == Optimal);
+    CHECK(model.get_best_obj() == Catch::Approx(expected_objective));
+    CHECK((!generated_rhs->empty()) == (expected_objective == 1.));
+    for (const double rhs : *generated_rhs) {
+        CHECK(std::abs(rhs) > tolerance);
+    }
+}
+
+TEST_CASE("Lazy-cut separation rejects equality constraints explicitly", "[Callbacks]") {
+    Env env;
+    Model model(env);
+    const auto x = model.add_var(0, 1, Binary, 1, "x");
+    Model separation(env);
+    const auto u = separation.add_var(1, 1, Continuous, 0, "u");
+    const auto generated_rhs = std::make_shared<std::vector<double>>();
+    auto optimizer = make_optimizer();
+    optimizer.add_callback(CountingLazyCutCallback(separation, generated_rhs, x - !u, Equal));
+    CHECK_THROWS_WITH(([&] { model.use(optimizer); model.optimize(); }()),
+                      "Separating equality constraints is not available.");
 }
 
 TEST_CASE("Universal callback terminates optimization", "[Callbacks]") {
