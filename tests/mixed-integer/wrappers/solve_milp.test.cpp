@@ -167,6 +167,24 @@ TEST_CASE("MILP: time limit without incumbent is unknown", "[MILP]") {
 }
 #endif
 
+#ifdef WRAPPER_HAS_EXTERNAL_PRESOLVE
+TEST_CASE("MILP: external presolve setting overrides generic defaults", "[MILP]") {
+    Env env;
+    Model model(env);
+    const auto x = model.add_vars(Dim<1>(100), 0., 1., Binary, -1., "x");
+    model.add_ctr(idol_Sum(i, Range(100), (i + 1.) * x[i]) <= 1000.);
+    model.use(OPTIMIZER().with_presolve(true).with_external_param("Presolve", 0).with_time_limit(0.));
+    CHECK_FALSE(model.optimizer().get_param_presolve());
+    model.optimize();
+    CHECK(model.get_status() == Unknown);
+    CHECK(model.get_reason() == TimeLimit);
+    model.optimize();
+    CHECK_FALSE(model.optimizer().get_param_presolve());
+    CHECK(model.get_status() == Unknown);
+    CHECK(model.get_reason() == TimeLimit);
+}
+#endif
+
 #ifdef WRAPPER_HAS_MILP_UNBOUNDED
 TEST_CASE("MILP: unbounded status", "[MILP]") {
     Env env;

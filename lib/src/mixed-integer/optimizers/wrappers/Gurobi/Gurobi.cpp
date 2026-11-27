@@ -25,15 +25,26 @@ idol::Optimizer *idol::Gurobi::create(const Model &t_model) const {
         result->set_param("OutputFlag", 0);
     }
 
+    return result;
+}
+
+idol::Optimizer* idol::Gurobi::operator()(const Model& t_model) const {
+
+    std::unique_ptr<Optimizers::Gurobi> result(static_cast<Optimizers::Gurobi*>(OptimizerFactory::operator()(t_model)));
+
     for (const auto& [param, value] : m_int_params) {
-        result->set_param(param, value);
+        if (param == "Presolve" && (value == 0 || value == 1)) {
+            result->set_param_presolve(value != 0);
+        } else {
+            result->set_param(param, value);
+        }
     }
 
     for (const auto& [param, value] : m_double_params) {
         result->set_param(param, value);
     }
 
-    return result;
+    return result.release();
 }
 
 idol::Gurobi idol::Gurobi::ContinuousRelaxation() {

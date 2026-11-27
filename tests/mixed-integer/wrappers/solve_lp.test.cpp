@@ -10,6 +10,29 @@
 using namespace Catch::literals;
 using namespace idol;
 
+TEST_CASE("LP: presolve configuration precedence", "[LP]") {
+    Env env;
+    Model model(env);
+
+    SECTION("environment default is used when the factory is unset") {
+        env.set_param_presolve(false);
+        model.use(OPTIMIZER());
+        CHECK_FALSE(model.optimizer().get_param_presolve());
+    }
+
+    SECTION("explicit factory true overrides the environment") {
+        env.set_param_presolve(false);
+        model.use(OPTIMIZER().with_presolve(true));
+        CHECK(model.optimizer().get_param_presolve());
+    }
+
+    SECTION("explicit factory false overrides the environment") {
+        env.set_param_presolve(true);
+        model.use(OPTIMIZER().with_presolve(false));
+        CHECK_FALSE(model.optimizer().get_param_presolve());
+    }
+}
+
 TEST_CASE("LP: bounded model has a unique optimum", "[LP]") {
     // min -3 x - 2 y; x + y <= 4, x <= 2, y <= 3, x,y >= 0.
     // Unique optimum: (x,y) = (2,2), objective -10.

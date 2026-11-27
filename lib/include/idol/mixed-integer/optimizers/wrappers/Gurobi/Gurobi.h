@@ -38,6 +38,8 @@ public:
 
     static Gurobi ContinuousRelaxation();
 
+    Optimizer* operator()(const Model& t_model) const override;
+
     Gurobi& add_callback(const CallbackFactory& t_cb);
     Gurobi& with_lazy_cut(bool t_value);
     Gurobi& with_max_n_solution_in_pool(unsigned int t_value);
