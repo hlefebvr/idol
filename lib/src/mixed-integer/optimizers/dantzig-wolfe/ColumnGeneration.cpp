@@ -41,35 +41,47 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
 
     log_init();
 
-    while (true) {
+    try {
 
-        if (m_solve_dual_master) { solve_dual_master(); }
+        while (true) {
 
-        log_master();
+            if (m_solve_dual_master) { solve_dual_master(); }
 
-        ++m_iteration_count;
-        ++m_parent.m_n_total_cg_iterations;
-        if (m_parent.m_is_root_node) { ++m_parent.m_n_root_cg_iterations; }
+            log_master();
 
-        if (check_stopping_criterion()) { break; }
+            ++m_iteration_count;
+            ++m_parent.m_n_total_cg_iterations;
+            if (m_parent.m_is_root_node) { ++m_parent.m_n_root_cg_iterations; }
 
-        update_sub_problems();
+            if (check_stopping_criterion()) { break; }
 
-        solve_sub_problems_in_parallel();
+            update_sub_problems();
 
-        analyze_sub_problems();
+            solve_sub_problems_in_parallel();
 
-        log_sub_problems();
+            analyze_sub_problems();
 
-        if (check_numerical_stability()) { continue; }
+            log_sub_problems();
 
-        if (check_stopping_criterion()) { break; }
+            if (check_numerical_stability()) { continue; }
 
-        m_solve_dual_master = pool_clean_up();
+            if (check_stopping_criterion()) { break; }
 
-        m_solve_dual_master |= enrich_master();
-        m_solve_dual_master &= !m_is_terminated;
+            m_solve_dual_master = pool_clean_up();
 
+            m_solve_dual_master |= enrich_master();
+            m_solve_dual_master &= !m_is_terminated;
+
+        }
+
+    } catch (const Exception& e) {
+        // A recoverable solver numerical error (e.g., CPLEX Error 1256 singular
+        // basis, 1265 dual-unbounded ray) occurred during the master or pricing
+        // solve. Treat this node as numerically failed so the B&B can prune it
+        // and continue rather than crashing the whole run.
+        m_status = Unknown;
+        m_reason = Numerical;
+        m_is_terminated = true;
     }
 
     if (m_status == Feasible || m_status == Optimal) {
