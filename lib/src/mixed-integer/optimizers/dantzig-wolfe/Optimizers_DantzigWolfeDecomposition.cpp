@@ -45,6 +45,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::hook_before_optimize() {
     set_best_obj(+Inf);
     m_original_space_solution.reset();
     m_original_space_ray.reset();
+    m_n_total_cg_iterations = 0;
+    m_n_root_cg_iterations = 0;
+    m_is_root_node = true;
 
     auto& master = m_formulation.master();
 
@@ -64,6 +67,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::hook_optimize() {
     set_reason(m_strategy->reason());
     set_best_obj(m_strategy->best_obj());
     set_best_bound(m_strategy->best_bound());
+
+    m_is_root_node = false;
 
 }
 

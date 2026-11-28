@@ -31,7 +31,13 @@ class idol::Optimizers::DantzigWolfeDecomposition : public Algorithm {
 
     std::optional<PrimalPoint> m_original_space_solution;
     std::optional<PrimalPoint> m_original_space_ray;
+
+    unsigned int m_n_total_cg_iterations = 0;
+    unsigned int m_n_root_cg_iterations = 0;
+    bool m_is_root_node = true;
 public:
+    [[nodiscard]] unsigned int n_cg_iterations() const { return m_n_total_cg_iterations; }
+    [[nodiscard]] unsigned int n_root_cg_iterations() const { return m_n_root_cg_iterations; }
     DantzigWolfeDecomposition(const Model& t_model,
                               idol::DantzigWolfe::Formulation&& t_formulation,
                               const OptimizerFactory& t_master_optimizer_factory,

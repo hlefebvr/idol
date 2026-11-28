@@ -48,6 +48,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
         log_master();
 
         ++m_iteration_count;
+        ++m_parent.m_n_total_cg_iterations;
+        if (m_parent.m_is_root_node) { ++m_parent.m_n_root_cg_iterations; }
 
         if (check_stopping_criterion()) { break; }
 
