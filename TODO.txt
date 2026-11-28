@@ -96,7 +96,7 @@ PHASE 2 — CORRECTNESS BEFORE ALGORITHMIC EXTENSIONS (P0)
    primal availability and certificates remain valid. Never infer infeasibility
    from timeout, failure to find a solution or lack of a negative-cost column.
 
-06 [ ] Fix presolve being re-enabled after external parameter configuration.
+06 [x] Fix presolve being re-enabled after external parameter configuration.
    Reproduce exact precedence through Env, factory, CLI/native parameters and
    repeated solves; establish intended precedence before changing defaults.
    Test explicit true/false and unset configurations across relevant wrappers.
@@ -140,7 +140,7 @@ PHASE 2 — CORRECTNESS BEFORE ALGORITHMIC EXTENSIONS (P0)
 PHASE 3 — RATIONALIZE CORE INFRASTRUCTURE (P1)
 --------------------------------------------
 
-12 [ ] Update lib/idolConfig.cmake.in for consistency.
+12 [x] Update lib/idolConfig.cmake.in for consistency.
    Match lib/CMakeLists.txt, exported targets, dependency discovery and optional
    solver configurations. Test build-tree and installed-package consumption as
    applicable, with and without optional backends; use a minimal external

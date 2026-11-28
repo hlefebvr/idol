@@ -198,7 +198,21 @@ unsigned int Cplex::get_solution_index()const{return m_solution_index;} void Cpl
 
 void Cplex::set_param_time_limit(double v){check(get_dynamic_lib().CPXsetdblparam(m_env,idol_CPXPARAM_TimeLimit,std::min(v,1e75)));Optimizer::set_param_time_limit(v);} void Cplex::set_param_threads(unsigned v){check(get_dynamic_lib().CPXsetintparam(m_env,idol_CPXPARAM_Threads,(int)v));Optimizer::set_param_threads(v);}
 void Cplex::set_param_best_obj_stop(double v){check(get_dynamic_lib().CPXsetdblparam(m_env,idol_CPXPARAM_MIP_Limits_LowerObjStop,v));Optimizer::set_param_best_obj_stop(v);} void Cplex::set_param_best_bound_stop(double v){check(get_dynamic_lib().CPXsetdblparam(m_env,idol_CPXPARAM_MIP_Limits_UpperObjStop,v));Optimizer::set_param_best_bound_stop(v);}
-void Cplex::set_param_presolve(bool v){check(get_dynamic_lib().CPXsetintparam(m_env,idol_CPXPARAM_Preprocessing_Presolve,v));Optimizer::set_param_presolve(v);} void Cplex::set_param_infeasible_or_unbounded_info(bool v){if(v)check(get_dynamic_lib().CPXsetintparam(m_env,idol_CPXPARAM_Preprocessing_Presolve,0));Optimizer::set_param_infeasible_or_unbounded_info(v);}
+void Cplex::set_param_presolve(bool v){check(get_dynamic_lib().CPXsetintparam(m_env,idol_CPXPARAM_Preprocessing_Presolve,v));Optimizer::set_param_presolve(v);}
+void Cplex::set_param_infeasible_or_unbounded_info(bool v){
+    // CPLEX cannot populate infeasibility/unboundedness info while presolve is
+    // active, so we disable it when enabling info and restore the user's idol
+    // presolve setting when disabling info. Without the restore, a transient
+    // enable/disable (e.g., during CG's ray-generation re-solve) would leave
+    // CPLEX presolve off even though m_param_presolve still reports on.
+    auto& lib = get_dynamic_lib();
+    if (v) {
+        check(lib.CPXsetintparam(m_env, idol_CPXPARAM_Preprocessing_Presolve, 0));
+    } else {
+        check(lib.CPXsetintparam(m_env, idol_CPXPARAM_Preprocessing_Presolve, get_param_presolve() ? 1 : 0));
+    }
+    Optimizer::set_param_infeasible_or_unbounded_info(v);
+}
 void Cplex::set_param_logs(bool v){check(get_dynamic_lib().CPXsetintparam(m_env,idol_CPXPARAM_ScreenOutput,v));Optimizer::set_param_logs(v);} void Cplex::set_max_n_solution_in_pool(unsigned v){check(get_dynamic_lib().CPXsetintparam(m_env,idol_CPXPARAM_MIP_Pool_Capacity,(int)v));}
 void Cplex::set_tol_mip_relative_gap(double v){check(get_dynamic_lib().CPXsetdblparam(m_env,idol_CPXPARAM_MIP_Tolerances_MIPGap,v));Optimizer::set_tol_mip_relative_gap(v);} void Cplex::set_tol_mip_absolute_gap(double v){check(get_dynamic_lib().CPXsetdblparam(m_env,idol_CPXPARAM_MIP_Tolerances_AbsMIPGap,v));Optimizer::set_tol_mip_absolute_gap(v);}
 void Cplex::set_tol_feasibility(double v){check(get_dynamic_lib().CPXsetdblparam(m_env,idol_CPXPARAM_Simplex_Tolerances_Feasibility,v));Optimizer::set_tol_feasibility(v);} void Cplex::set_tol_optimality(double v){check(get_dynamic_lib().CPXsetdblparam(m_env,idol_CPXPARAM_Simplex_Tolerances_Optimality,v));Optimizer::set_tol_optimality(v);} void Cplex::set_tol_integer(double v){check(get_dynamic_lib().CPXsetdblparam(m_env,idol_CPXPARAM_MIP_Tolerances_Integrality,v));Optimizer::set_tol_integer(v);}

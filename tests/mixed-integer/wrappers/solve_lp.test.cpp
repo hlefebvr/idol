@@ -32,7 +32,47 @@ TEST_CASE("LP: presolve configuration precedence", "[LP]") {
         model.use(OPTIMIZER().with_presolve(false));
         CHECK_FALSE(model.optimizer().get_param_presolve());
     }
+
+    SECTION("presolve survives repeated optimize calls") {
+        const auto x = model.add_var(0, 1, Continuous, 1, "x");
+        model.add_ctr(x >= 0);
+        model.use(OPTIMIZER().with_presolve(false));
+        for (unsigned int i = 0; i < 3; ++i) {
+            model.optimize();
+            CHECK_FALSE(model.optimizer().get_param_presolve());
+        }
+    }
 }
+
+#ifdef WRAPPER_HAS_EXTERNAL_PRESOLVE
+TEST_CASE("LP: native-param presolve is tracked as explicit", "[LP]") {
+    Env env;
+    Model parent(env);
+    parent.use(OPTIMIZER().with_external_param("Presolve", 0));
+    CHECK_FALSE(parent.optimizer().get_param_presolve());
+    CHECK(parent.optimizer().has_explicit_presolve());
+
+    Model child(env);
+    child.use(OPTIMIZER());
+    REQUIRE_FALSE(child.optimizer().has_explicit_presolve());
+    inherit_reformulation_parameters(parent.optimizer(), child.optimizer());
+    CHECK_FALSE(child.optimizer().get_param_presolve());
+}
+#endif
+
+#ifdef OPTIMIZER_IS_Cplex
+TEST_CASE("LP: Cplex infeasible-or-unbounded-info toggle preserves presolve", "[LP]") {
+    Env env;
+    Model model(env);
+    model.use(OPTIMIZER().with_presolve(true));
+    REQUIRE(model.optimizer().get_param_presolve());
+
+    // Enabling info disables presolve inside CPLEX; disabling info must restore it.
+    model.optimizer().set_param_infeasible_or_unbounded_info(true);
+    model.optimizer().set_param_infeasible_or_unbounded_info(false);
+    CHECK(model.optimizer().get_param_presolve());
+}
+#endif
 
 TEST_CASE("LP: integer tolerance duplicate detection is independent", "[LP]") {
     auto optimizer = OPTIMIZER().with_tol_mip_absolute_gap(1e-5);

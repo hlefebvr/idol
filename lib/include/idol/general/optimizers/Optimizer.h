@@ -217,6 +217,11 @@ public:
     [[nodiscard]] bool has_explicit_tol_feasibility() const { return m_explicit_tol_feasibility; }
     [[nodiscard]] bool has_explicit_tol_optimality() const { return m_explicit_tol_optimality; }
 
+    // Lets solver-specific factories mark a parameter as user-explicit when
+    // the user set it through a native param path (e.g. Gurobi's "Presolve")
+    // rather than through the generic with_X on the factory.
+    void mark_explicit_presolve() { m_explicit_presolve = true; }
+
     [[nodiscard]] const Timer& time() const { return m_timer; }
 
     [[nodiscard]] double get_remaining_time() const;

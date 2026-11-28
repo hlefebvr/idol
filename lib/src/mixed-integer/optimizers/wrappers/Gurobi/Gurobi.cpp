@@ -35,6 +35,10 @@ idol::Optimizer* idol::Gurobi::operator()(const Model& t_model) const {
     for (const auto& [param, value] : m_int_params) {
         if (param == "Presolve" && (value == 0 || value == 1)) {
             result->set_param_presolve(value != 0);
+            // Mark presolve as explicit so nested optimizers inherit the user
+            // intent (set via Gurobi's native param), matching the behaviour of
+            // with_presolve on the factory.
+            result->mark_explicit_presolve();
         } else {
             result->set_param(param, value);
         }

@@ -546,7 +546,7 @@ target_include_directories(
 )
 
 install(DIRECTORY "${idol_SOURCE_DIR}/lib/include/"
-        DESTINATION include/idol
+        DESTINATION include
         FILES_MATCHING
         PATTERN "*.h"
 )

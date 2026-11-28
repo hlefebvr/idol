@@ -263,20 +263,11 @@ The DEC file contains 178+ blocks; block 178 has no variables or constraints.
 GCG writes empty blocks in some decompositions (the block contributes only via
 the implicit convexity constraint / `PricingSetupVar`).
 
-### Suggested fix
+### Fix (implemented, commit 892b332c)
 
-Skip empty blocks with a one-time warning rather than throwing:
-
-```cpp
-if (block_vars.empty() && block_constraints.empty()) {
-    // warn once; PricingSetupVar provides the convexity constraint
-    std::cerr << "[DEC] Warning: skipping empty block " << block_id << "\n";
-    continue;
-}
-```
-
-An empty subproblem is mathematically valid — its only content is the
-`PricingSetupVar` column with lb=1, ub=1 (enforces the convexity row).
+`read_from_striplib.cpp`'s `read_decomposition` now emits a warning for empty
+blocks instead of throwing. Empty sub-problems are mathematically valid: their
+`PricingSetupVar` column (lb=1, ub=1) enforces the convexity row.
 
 ---
 

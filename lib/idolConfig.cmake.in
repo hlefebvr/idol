@@ -1,6 +1,14 @@
 include(CMakeFindDependencyMacro)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "@CMAKE_INSTALL_PREFIX@/lib/cmake/idol/")
+# Resolve Find*.cmake modules relative to the installed idolConfig.cmake so
+# the package remains usable when the install tree is relocated. The install
+# rule in lib/CMakeLists.txt copies cmake/Find*.cmake under
+# <prefix>/lib/cmake/idol/ (same directory as this file), so we add the
+# current list dir and its coin-or/ subdirectory to CMAKE_MODULE_PATH.
+list(APPEND CMAKE_MODULE_PATH
+    "${CMAKE_CURRENT_LIST_DIR}"
+    "${CMAKE_CURRENT_LIST_DIR}/coin-or"
+)
 
 set(USE_MIBS @USE_MIBS@)
 set(USE_OSI @USE_OSI@)
@@ -14,89 +22,80 @@ set(USE_JULIA @USE_JULIA@)
 set(USE_CGL @USE_CGL@)
 set(USE_LOCAL_MIP @USE_LOCAL_MIP@)
 
-find_dependency(OpenMP REQUIRED)
-
-if (USE_OSI_SYMPHONY)
-
-    set(COIN_OR_DIR "@COIN_OR_DIR@")
-    find_dependency(SYMPHONY REQUIRED)
-    add_compile_definitions(IDOL_USE_SYMPHONY)
+# Match CMakeLists.txt: OpenMP is not used on Apple.
+if (NOT APPLE)
+    find_dependency(OpenMP REQUIRED)
 endif()
 
-if (USE_OSI_CLP)
-
-    set(COIN_OR_DIR "@COIN_OR_DIR@")
-    find_dependency(CLP REQUIRED)
-    add_compile_definitions(IDOL_USE_OSI_CLP)
-endif()
-
-if (@USE_ROOT@)
-
+if (USE_ROOT)
     find_dependency(ROOT REQUIRED)
     add_compile_definitions(IDOL_USE_ROOT)
 endif()
 
-if (@USE_ROBINHOOD@)
-
-    set(ROBINHOOD_DIR "@ROBINHOOD_DIR@")
-    find_dependency(ROBINHOOD REQUIRED)
-    add_compile_definitions(IDOL_USE_ROBINHOOD)
-endif()
-
-if (@USE_MIBS@)
-
-    set(COIN_OR_DIR "@COIN_OR_DIR@")
-
-    find_dependency(ALPS REQUIRED)
-    find_dependency(BCPS REQUIRED)
-    find_dependency(BLIS REQUIRED)
-    find_dependency(CGL REQUIRED)
-
-    find_dependency(MIBS REQUIRED)
-
-    add_compile_definitions(IDOL_USE_MIBS)
-
-endif()
-
-if (@USE_CGL@)
-    set(COIN_OR_DIR "@COIN_OR_DIR@")
-    find_dependency(CGL REQUIRED)
-    add_compile_definitions(IDOL_USE_CGL)
-endif()
-
-if (@USE_TSL@)
+if (USE_TSL)
     set(TSL_SPARSE_MAP_DIR "@TSL_SPARSE_MAP_DIR@")
     set(TSL_ORDERED_DIR "@TSL_ORDERED_DIR@")
     find_dependency(TSL REQUIRED)
     add_compile_definitions(IDOL_USE_TSL)
 endif()
 
-if (@USE_LOCAL_MIP@)
+if (USE_ROBINHOOD)
+    set(ROBINHOOD_DIR "@ROBINHOOD_DIR@")
+    find_dependency(ROBINHOOD REQUIRED)
+    add_compile_definitions(IDOL_USE_ROBINHOOD)
+endif()
+
+if (USE_LOCAL_MIP)
     set(LOCAL_MIP_DIR "@LOCAL_MIP_DIR@")
     find_dependency(LocalMIP REQUIRED)
     add_compile_definitions(IDOL_USE_LOCAL_MIP)
 endif()
 
-if (@USE_ROCPP@)
+if (USE_ROCPP)
     set(ROCPP_DIR "@ROCPP_DIR@")
     find_dependency(ROCPP REQUIRED)
     add_compile_definitions(IDOL_USE_ROCPP)
 endif()
 
-if (@USE_JULIA@)
+# COIN-OR-shipped dependencies share COIN_OR_DIR; set it once up front.
+if (USE_OSI_SYMPHONY OR USE_OSI_CLP OR USE_MIBS OR USE_CGL OR USE_OSI)
+    set(COIN_OR_DIR "@COIN_OR_DIR@")
+endif()
+
+if (USE_OSI_SYMPHONY)
+    find_dependency(SYMPHONY REQUIRED)
+    add_compile_definitions(IDOL_USE_OSI_SYMPHONY)
+endif()
+
+if (USE_MIBS)
+    find_dependency(ALPS REQUIRED)
+    find_dependency(BCPS REQUIRED)
+    find_dependency(BLIS REQUIRED)
+    find_dependency(CGL REQUIRED)
+    find_dependency(MIBS REQUIRED)
+    add_compile_definitions(IDOL_USE_MIBS)
+endif()
+
+if (USE_CGL)
+    find_dependency(CGL REQUIRED)
+    add_compile_definitions(IDOL_USE_CGL)
+endif()
+
+if (USE_OSI_CLP)
+    find_dependency(CLP REQUIRED)
+    add_compile_definitions(IDOL_USE_OSI_CLP)
+endif()
+
+if (USE_OSI)
+    find_dependency(COINUTILS REQUIRED)
+    find_dependency(OSI REQUIRED)
+    add_compile_definitions(IDOL_USE_OSI)
+endif()
+
+if (USE_JULIA)
     set(JULIA_DIR "@JULIA_DIR@")
     find_dependency(Julia REQUIRED)
     add_compile_definitions(IDOL_USE_JULIA)
-endif()
-
-if (@USE_OSI@)
-
-    set(COIN_OR_DIR "@COIN_OR_DIR@")
-    find_dependency(COINUTILS REQUIRED)
-    find_dependency(OSI REQUIRED)
-
-    add_compile_definitions(IDOL_USE_OSI)
-
 endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/idolTargets.cmake")
