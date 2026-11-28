@@ -116,7 +116,7 @@ No automatic push, publication or branch switching without maintainer approval.
     Acceptance: reference consistent with executable/help and parser; no
     unsupported commands; build works in the documentation CI environment.
 
-[ ] 11 — Complete branch-and-bound tutorials (medium)
+[x] 11 — Complete branch-and-bound tutorials (medium)
     Keep existing substantial content and correct inaccuracies. Use a small
     capacitated facility location running example where practical. Cover LP
     relaxations, valid bounds, incumbent/pruning; constructing B&B with a node

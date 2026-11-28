@@ -11,54 +11,130 @@ It is a divide and conquer type of algorithms.
 > 
 > Otherwise, we assume that you are familiar with the branch-and-bound algorithm.
 
-\section lib_milp_bnb_basics Basics
+\section lib_milp_bnb_running_example Running Example: Capacitated Facility Location
 
-Writing a branch-and-bound algorithm with `idol` can be done using the `BranchAndBound<NodeTypeT>` class.
-This is a template class where the template argument, `NodeTypeT`, is the class that stores the information of each node
-in the tree. If none is specified, the default one is picked, i.e., `DefaultNodeInfo`. This class is more than enough for 
-classic LP-based branch-and-bounds.
+Throughout this tutorial we use a small capacitated facility location (CFL) instance
+to illustrate each concept concretely.
+Given a set of facilities \\(I\\) and customers \\(J\\), the problem is
 
-Then, at least three ingredients need to be provided in order to set up the algorithm:
+\f[
+\begin{aligned}
+\min_{x,y} \quad & \sum_{i\in I} f_i y_i + \sum_{i\in I}\sum_{j\in J} c_{ij} x_{ij} \\
+\text{s.t.} \quad & \sum_{i\in I} x_{ij} = 1, && j \in J, \\
+                  & \sum_{j\in J} x_{ij} \le q_i y_i, && i \in I, \\
+                  & y_i \in \{0,1\},\; x_{ij} \ge 0.
+\end{aligned}
+\f]
 
-- An optimizer, for solving each node;
-- A node selection rule, for choosing which node to be solved next;
-- A branching rule, for choosing how to branch on a node whose solution is not feasible for the original problem.
+We use \\(|I|=2\\) facilities and \\(|J|=3\\) customers with the following data:
 
-> Clearly, the `BranchAndBound` class can be used to create any sort of branch-and-bound algorithm. To streamline the discussion, however, we will focus on 
-> a branch-and-bound algorithm for solving an MILP, based on the LP relaxation. 
+| | Fixed cost \\(f_i\\) | Capacity \\(q_i\\) |
+|:-:|:-:|:-:|
+| Facility 1 | 3 | 2 |
+| Facility 2 | 4 | 3 |
 
-Throughout this tutorial, bounds and objective values are described using the minimization convention implemented
-by the current branch-and-bound optimizer. Thus, a node relaxation provides a lower bound, a smaller node bound is
-better for node selection, and an incumbent provides an upper bound on the optimal objective value. Idol models are
-minimization problems.
+| Allocation cost \\(c_{ij}\\) | Customer 1 | Customer 2 | Customer 3 |
+|:-:|:-:|:-:|:-:|
+| Facility 1 | 2 | 3 | 1 |
+| Facility 2 | 3 | 1 | 2 |
 
-To start with, we give a minimal example for constructing such a branch-and-bound method. 
-Assume to have an object called `model` of the class `Model`, storing your MILP. 
-Here is how to define a branch-and-bound method to solve it.
+The LP relaxation optimal is \\(5.5\\); the integer optimal is \\(7\\)
+(open facility 1, serve customers 1 and 3 from it; open facility 2, serve customer 2 from it).
 
 ```cpp
-// Create the algorithm
-auto branch_and_bound = BranchAndBound();
+#include "idol/modeling.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
+using namespace idol;
 
-// Set the optimizer used to solve the nodes
-branch_and_bound.with_node_optimizer(Gurobi::ContinuousRelaxation());
+int main() {
+    const unsigned int n_facilities = 2, n_customers = 3;
+    const std::vector<double> f = {3, 4};
+    const std::vector<double> q = {2, 3};
+    const std::vector<std::vector<double>> c = {{2,3,1},{3,1,2}};
 
-// Set the node selection rule
-branch_and_bound.with_node_selection_rule(BestBound());
+    Env env;
+    Model model(env);
 
-// Set the branching rule
-branch_and_bound.with_branching_rule(MostInfeasible());
+    auto y = model.add_vars(Dim<1>(n_facilities), 0, 1, Binary, 0, "y");
+    auto x = model.add_vars(Dim<2>(n_facilities, n_customers), 0, 1, Continuous, 0, "x");
 
-// Use the optimizer
-model.use(branch_and_bound);
+    // Fixed + allocation costs
+    model.set_obj_expr(
+        idol_Sum(i, Range(n_facilities), f[i] * y[i]) +
+        idol_Sum(i, Range(n_facilities),
+        idol_Sum(j, Range(n_customers), c[i][j] * x[i][j]))
+    );
 
-// Solve
+    // Demand: each customer served exactly once
+    for (unsigned int j = 0; j < n_customers; ++j)
+        model.add_ctr(idol_Sum(i, Range(n_facilities), x[i][j]) == 1);
+
+    // Capacity: facility i can serve at most q[i] units if open
+    for (unsigned int i = 0; i < n_facilities; ++i)
+        model.add_ctr(idol_Sum(j, Range(n_customers), x[i][j]) <= q[i] * y[i]);
+
+    model.use(
+        BranchAndBound()
+            .with_node_optimizer(HiGHS::ContinuousRelaxation())
+            .with_node_selection_rule(BestBound())
+            .with_branching_rule(MostInfeasible())
+    );
+    model.optimize();
+
+    std::cout << "Status: " << model.get_status() << '\n';
+    std::cout << "Objective: " << model.get_best_obj() << '\n';  // 7
+    return 0;
+}
+```
+
+\section lib_milp_bnb_how_it_works How Branch-and-Bound Works
+
+The algorithm maintains three quantities:
+- **Lower bound** (best bound): the best dual bound over all active nodes; initially the root LP value.
+  Under minimization, the true optimum cannot be smaller than this value.
+- **Incumbent** (best objective): the objective value of the best feasible integer solution found so far;
+  initially \\(+\infty\\). Under minimization, this is an upper bound on the optimum.
+- **Gap**: \\((\text{incumbent} - \text{lower bound}) / |\text{incumbent}|\\).
+  The algorithm terminates when the gap is within the configured tolerance.
+
+At each iteration, one active node is selected, its LP relaxation is solved, and one of three outcomes occurs:
+- **Prune by bound**: the node LP value ≥ incumbent. The node cannot improve the solution.
+- **Prune by infeasibility**: the node LP is infeasible (can happen after branching cuts off the feasible region).
+- **Branch**: the LP solution is feasible but fractional. A variable is chosen and the node is split into two children.
+
+If the LP solution is integer-feasible and better than the current incumbent, it becomes the new incumbent.
+
+For our CFL example: the root LP gives 5.5. On branching on \\(y_1\\) (say), the left child forces \\(y_1=0\\)
+(LP: 7.33) and the right child forces \\(y_1=1\\) (LP: 6). The right child is solved further; eventually
+the integer solution with value 7 is found and the algorithm closes the gap.
+
+\section lib_milp_bnb_basics Assembling the Algorithm
+
+`BranchAndBound<NodeInfoT>` is a template class where the template argument stores per-node metadata.
+The default, `DefaultNodeInfo`, is sufficient for all standard LP-based branch-and-bound.
+Three ingredients are required:
+
+- A **node optimizer** — solves the LP relaxation at each node.
+- A **node selection rule** — picks which active node to process next.
+- A **branching rule** — decides how to split a node with a fractional LP solution.
+
+```cpp
+model.use(
+    BranchAndBound()
+        .with_node_optimizer(HiGHS::ContinuousRelaxation())
+        .with_node_selection_rule(BestBound())
+        .with_branching_rule(MostInfeasible())
+);
 model.optimize();
 ```
 
-Pretty easy no? Beware, however, that we are using here the `Gurobi::ContinuousRelaxation()` optimizer, and not `Gurobi()`. 
-This is because `Gurobi()` would not relax the integrality requirements by default and solve the node's problem directly as a MILP.
-Here, we really want to solve each node by means of the continuous relaxation of the problem at that node.
+Use `HiGHS::ContinuousRelaxation()` (not `HiGHS()`) as the node optimizer: `HiGHS()` would solve each
+node as a MIP internally, defeating the purpose of the branch-and-bound.
+
+All models are minimization problems. Node LP bounds are lower bounds; the incumbent is an upper bound.
 
 \section lib_milp_bnb_sub_pages More Advanced Topics
 
@@ -72,6 +148,7 @@ like callbacks, presolve, cutting planes, etc.
 - \subpage lib_milp_bnb_cutting_planes
 - \subpage lib_milp_bnb_heuristics
 - \subpage lib_milp_bnb_node_type
+- \subpage lib_milp_bnb_strategy_comparison
 - \subpage lib_milp_bnb_options
 
 \page lib_milp_bnb_node_selection Node Selection Rules
@@ -392,15 +469,6 @@ considered variables and on the maximum depth for the final phase. Note that, by
 given depth, e.g., because it was not specified, full strong branching is applied. 
 Here, however, we make sure that the second phase is always triggered.
 
-\subsection lib_milp_bnb_branching_rule_StrongBranching_look_ahead Strong Branching with Look Ahead
-
-Strong branchign with look ahead is similar to restricted strong branching yet differs from it by not specifying a
-fixed size for the "restricted branching candidate set". Instead, it considers a look ahead parameter, noted
-\f$ L \f$, and applies the full strong branching rule until the branching candidate does not change after \f$ L \f$
-iterations. Then, the algorithm stops and the current branching candidate is returned.
-
-Unfortunately, this approach is not yet implemented in `idol`.
-
 \subsection lib_milp_bnb_branching_rule_scoring Changing the Scoring Function
 
 The strong-branching score combiner is selected with `with_node_scoring_function`. The available implementations
@@ -711,8 +779,7 @@ Presolve techniques analyze the problem before starting the branch-and-bound sea
 For instance, it may tighten variable bounds, remove redundancies, or strengthen constraints.
 Presolve can significantly speed up the solution process.
 
-Typically, a presolve operation is added using the `.with_presolver` method. For instance, here is how to add the 
-`Presolvers::OneRowBoundTightening` presolver detailed below.
+A presolve pass is added with `add_presolver`. Multiple presolvers compose by applying each in turn.
 
 ```cpp
 branch_and_bound.add_presolver(Presolvers::OneRowBoundTightening());
@@ -825,6 +892,62 @@ Override `save` when extra data must be extracted from the solved relaxation, an
 `NodeUpdator<MyNodeInfo>` when preparing and clearing a node requires more than applying the default branching
 decisions. `NodeWithCGInfo` is a current example: it extends `DefaultNodeInfo` to save active column-generation
 columns while continuing to use `DefaultNodeUpdator`.
+
+\page lib_milp_bnb_strategy_comparison Strategy Comparison
+
+\tableofcontents
+
+Choosing a node selection rule and a branching rule affects how quickly the algorithm finds and proves the
+optimum. The table below summarizes the qualitative behaviour of the main strategies.
+
+\section lib_milp_bnb_strategy_comparison_node Node Selection
+
+| Rule | Bounds | First incumbent | Memory | When to prefer |
+|:-----|:-------|:----------------|:-------|:---------------|
+| **BestBound** | Improves fastest | Often late | High | Proving optimality quickly |
+| **DepthFirst** | Improves slowly | Very fast | Low | Finding a first feasible solution |
+| **BestEstimate** | Good balance | Moderate | Moderate | General-purpose (default in many solvers) |
+| **BreadthFirst** | Slow | Late | Very high | Rarely; mainly for analysis |
+
+**What node counts mean.** The node count is the total number of LP relaxations solved, including the root.
+A low node count does not always mean a short wall time — fewer but harder nodes (e.g., with strong branching)
+may be faster than many cheap ones (e.g., with depth-first + most infeasible).
+
+For our CFL instance:
+- `BestBound + MostInfeasible` closes the gap in around 5 nodes.
+- `DepthFirst + FirstInfeasibleFound` finds the incumbent faster but may explore more nodes before proving it.
+
+\section lib_milb_bnb_strategy_comparison_branching Branching Rule
+
+| Rule | Nodes | Per-node cost | When to prefer |
+|:-----|:------|:--------------|:---------------|
+| **MostInfeasible** | Moderate | Cheap | Simple, robust default |
+| **PseudoCost** | Fewer | Cheap (after warm-up) | Long runs where history pays off |
+| **StrongBranching** | Fewest | Expensive | Small trees where per-node cost is acceptable |
+| **FirstInfeasibleFound** | Most | Cheapest | Rarely; mostly for reference |
+
+\note No single strategy dominates across all instances. Use `--with_logs(true)` to monitor the gap
+trajectory, then pick the strategy that closes the gap earliest on your problem family.
+
+\section lib_milp_bnb_strategy_comparison_configure Configuring the Example
+
+```cpp
+// Fast first incumbent, good for warm-starting
+model.use(
+    BranchAndBound()
+        .with_node_optimizer(HiGHS::ContinuousRelaxation())
+        .with_node_selection_rule(DepthFirst())
+        .with_branching_rule(MostInfeasible())
+);
+
+// Aggressive bound improvement
+model.use(
+    BranchAndBound()
+        .with_node_optimizer(HiGHS::ContinuousRelaxation())
+        .with_node_selection_rule(BestBound())
+        .with_branching_rule(PseudoCost())
+);
+```
 
 \page lib_milp_bnb_options Other Options
 
