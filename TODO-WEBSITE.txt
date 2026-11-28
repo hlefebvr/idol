@@ -107,7 +107,7 @@ No automatic push, publication or branch switching without maintainer approval.
     Acceptance: examples reproducible; expected statuses and mathematical
     assumptions clear; no unnecessary duplication of C++ tutorials.
 
-[ ] 10 — Create CLI command reference (medium)
+[x] 10 — Create CLI command reference (medium)
     Document commands, arguments, options, defaults, supported file formats,
     method-specific options and exit/status behavior. Prefer generation from
     the actual CLI help or option definitions when straightforward; do not
