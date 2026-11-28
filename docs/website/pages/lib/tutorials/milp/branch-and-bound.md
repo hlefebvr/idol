@@ -170,10 +170,16 @@ Here is a quick sumary.
 
 \section lib_milp_bnb_node_selection_BestBound Best Bound
 
-Under the minimization convention stated above, the best bound strategy selects the active node with the smallest
-relaxation bound.
+Selects the active node \\(v^*\\) with the smallest LP bound:
+\f[
+    v^* = \arg\min_{v \in \mathcal{A}} z_v,
+\f]
+where \\(\mathcal{A}\\) is the set of active nodes and \\(z_v\\) is the LP relaxation value at node \\(v\\).
 
-Here is how to use it.
+The global lower bound after this choice equals \\(\min_{v \in \mathcal{A}} z_v\\), which is the best possible
+lower bound obtainable from the current tree. This strategy minimises the number of nodes needed to prove
+optimality, since it always tightens the dual gap as fast as possible. The drawback is that memory usage can
+be high because many active nodes may need to be stored simultaneously.
 
 ```cpp
 branch_and_bound.with_node_selection_rule(BestBound());
@@ -211,9 +217,9 @@ This node selection rule is due to <a href="https://doi.org/10.1287/mnsc.20.5.73
 
 \section lib_milp_bnb_node_selection_BreadthFirst Breadth First
 
-The breadth first strategy explores nodes level by level, starting from the root and moving across all nodes at a given depth before descending further.
-
-Here is how to use it.
+Processes all nodes at depth \\(d\\) before moving to depth \\(d+1\\). This guarantees that the first integer-feasible
+node found has the smallest possible depth, but it does not guarantee optimality at that point. Memory usage grows
+exponentially with depth since all nodes at the current level must be stored.
 
 ```cpp
 branch_and_bound.with_node_selection_rule(BreadthFirst());
@@ -221,11 +227,10 @@ branch_and_bound.with_node_selection_rule(BreadthFirst());
 
 \section lib_milp_bnb_node_selection_DepthFirst Depth First
 
-The depth first strategy explores a branch as far as possible before backtracking.
-It can quickly find feasible solutions deep in the tree, which helps prune other branches early.
-However, it may waste time exploring suboptimal branches if the initial path is not promising.
-
-Here is how to use it.
+Follows a single root-to-leaf path before backtracking. Because each step restricts one variable further, an
+incumbent is typically found in \\(O(n)\\) LP solves where \\(n\\) is the number of integer variables. The global lower
+bound remains weak until many paths have been explored, so this strategy is effective for finding a first
+feasible solution quickly but inefficient at proving optimality.
 
 ```cpp
 branch_and_bound.with_node_selection_rule(DepthFirst());
@@ -233,9 +238,8 @@ branch_and_bound.with_node_selection_rule(DepthFirst());
 
 \section lib_milp_bnb_node_selection_WorstBound Worst Bound
 
-The worst bound strategy selects the node with the worst (i.e., the highest) bound among all active nodes.
-
-Here is how to use it.
+Selects the node with the highest LP bound — the opposite of BestBound. This deliberately expands the least
+promising part of the tree and is mainly used as a stress test or baseline for comparisons.
 
 ```cpp
 branch_and_bound.with_node_selection_rule(WorstBound());
@@ -293,8 +297,20 @@ branch_and_bound.with_node_selection_rule(
 
 \tableofcontents
 
-Given a node selected for exploration, the next step is to decide how to split the node into new nodes. 
-Here again, several strategies are at hand.
+When a node LP solution \\(x^*\\) is fractional, the algorithm must choose a variable \\(x_j\\) with
+\\(x_j^* \notin \mathbb{Z}\\) and split the node into two children:
+\f[
+    \text{left child: } x_j \le \lfloor x_j^* \rfloor, \qquad
+    \text{right child: } x_j \ge \lceil x_j^* \rceil.
+\f]
+Both children inherit the parent's bounds and add one new bound. The choice of \\(j\\) is the branching decision.
+
+The **integrality infeasibility** of a fractional variable \\(x_j^*\\) is defined as
+\f[
+    f_j = \min\bigl(x_j^* - \lfloor x_j^* \rfloor,\; \lceil x_j^* \rceil - x_j^*\bigr) \in (0, 0.5].
+\f]
+A large \\(f_j\\) means the LP is far from satisfying integrality for \\(x_j\\); a small \\(f_j\\) means it is close.
+The simple rules below differ only in which fractional variable they select.
 
 | Branching Rule             | Purpose / Guideline                                                                                    |
 |----------------------------|--------------------------------------------------------------------------------------------------------|
@@ -307,9 +323,8 @@ Here again, several strategies are at hand.
 
 \section lib_milp_bnb_branching_rule_FirstInfeasibleFound First Infeasible Found
 
-The first infeasible found strategy selects the first variable that violates its integrality constraint.
-
-Here is how to use it. 
+Picks the first \\(j\\) (in model order) with \\(f_j > 0\\). Requires no computation beyond finding the first
+fractional variable, but the choice is arbitrary and typically gives the worst node counts.
 
 ```cpp
 branch_and_bound.with_branching_rule(FirstInfeasibleFound());
@@ -317,9 +332,9 @@ branch_and_bound.with_branching_rule(FirstInfeasibleFound());
 
 \section lib_milp_bnb_branching_rule_LeastInfeasible Least Infeasible
 
-The least infeasible strategy selects the variable whose value is closest to an integer.
-
-Here is how to use it.
+Picks \\(j^* = \arg\min_{f_j > 0} f_j\\) — the variable whose LP value is closest to an integer.
+The intuition is that rounding this variable is "almost free", so branching on it may quickly produce
+integer-feasible children. In practice the effect is mixed: the two children's LP bounds often barely improve.
 
 ```cpp
 branch_and_bound.with_branching_rule(LeastInfeasible());
@@ -327,9 +342,9 @@ branch_and_bound.with_branching_rule(LeastInfeasible());
 
 \section lib_milp_bnb_branching_rule_MostInfeasible Most Infeasible
 
-The most infeasible strategy selects the variable whose value is farthest from an integer.
-
-Here is how to use it.
+Picks \\(j^* = \arg\max_{f_j > 0} f_j\\) — the variable farthest from an integer (maximum \\(f_j\\), so closest
+to \\(0.5\\)). The intuition is that branching on a highly fractional variable is likely to change the LP solution
+substantially, potentially yielding a large bound improvement in at least one child.
 
 ```cpp
 branch_and_bound.with_branching_rule(MostInfeasible());
@@ -592,17 +607,20 @@ Callbacks observe the search and may modify it at specific points. Add as many c
 `BranchAndBound::add_callback`; the algorithm creates and owns the callback strategies when it is attached to a
 model.
 
-The current branch-and-bound implementation emits three events after solving and analyzing a node relaxation:
+Three events are emitted after solving a node LP with solution \\(x^*\\) and LP value \\(z_v\\):
 
-- `IncumbentSolution`, after the relaxation point satisfies the branching rule and improves the incumbent bound,
-  but before idol accepts it as the new incumbent;
-- `InvalidSolution`, after a promising relaxation point fails the branching rule, and before cuts are recycled or
-  children are created;
-- `PrunedSolution`, after idol determines that the node will not be branched because it is infeasible, reached an
-  objective limit, or cannot improve the incumbent.
+| Event | Condition | Typical action |
+|:------|:----------|:---------------|
+| `InvalidSolution` | \\(x^*\\) violates integrality (some \\(x_j^* \notin \mathbb{Z}\\)) | Separate a user cut to tighten the LP |
+| `IncumbentSolution` | \\(x^*\\) is integer-feasible and \\(c^\top x^* < z_{\text{ub}}\\) | Reject with a lazy cut, or accept as new incumbent |
+| `PrunedSolution` | \\(z_v \ge z_{\text{ub}}\\), or LP infeasible, or objective limit reached | Log or update statistics |
 
-`NodeLoaded` is part of the generic `CallbackEvent` enumeration, but the current `BranchAndBound` implementation
-does not emit it. Callback code should therefore not rely on receiving that event from this optimizer.
+**What you can do in each event:**
+- At `InvalidSolution`: add user cuts (valid inequalities that cut \\(x^*\\) from the LP without removing integer solutions), set a proven bound, or terminate.
+- At `IncumbentSolution`: add lazy cuts (constraints omitted from the initial formulation that \\(x^*\\) violates); doing so rejects the candidate and re-solves the node.
+- At `PrunedSolution`: read-only inspection; no cuts are accepted.
+
+`NodeLoaded` is part of the generic `CallbackEvent` enumeration but is not emitted by the current `BranchAndBound` implementation.
 
 \section lib_milp_bnb_callbacks_specific Writing a Branch-and-Bound-Specific Callback
 
@@ -669,11 +687,23 @@ Passing a `CallbackFactory` to `BranchAndBound::add_callback` automatically wrap
 
 \tableofcontents
 
-Cuts are submitted from callbacks as temporary linear constraints. A user cut is intended to strengthen a node
-relaxation at an `InvalidSolution` event. The caller is responsible for ensuring that it does not remove solutions
-that should remain feasible; the callback API does not prove this property. A lazy cut is intended to reject a
-candidate encountered at an `IncumbentSolution` event because it violates a constraint omitted from the initial
-formulation. These two roles correspond to `add_user_cut` and `add_lazy_cut` on both callback interfaces.
+A **valid inequality** for a MILP is a linear inequality \\(a^\top x \le b\\) satisfied by every integer-feasible
+point. Adding it to the LP relaxation tightens the bound without excluding any feasible solution.
+
+Two types of cuts serve different roles:
+
+- A **user cut** is a valid inequality added at `InvalidSolution` to remove the current fractional LP solution
+  \\(x^*\\) from the relaxation. It is intended to strengthen the LP bound without being a constraint of the
+  original problem.
+- A **lazy cut** represents a constraint of the original problem that was initially omitted from the formulation
+  for efficiency (e.g. because there are exponentially many of them). It is added at `IncumbentSolution` when
+  an integer candidate \\(x^*\\) violates it, forcing the node to be re-solved.
+
+The key distinction: a user cut may safely be dropped from the formulation at any time (the MILP solution is
+still correct), while a lazy cut must remain active once added to avoid missing infeasible incumbents.
+
+Cuts are submitted from callbacks as temporary linear constraints. These two roles correspond to `add_user_cut`
+and `add_lazy_cut` on both callback interfaces.
 
 \section lib_milp_bnb_cutting_planes_cut_pool The Cut Pool
 
@@ -744,7 +774,13 @@ separation model, a `GenerationPattern<Ctr>`, an optional constraint type, and a
 
 \tableofcontents
 
-The callback interface is also the extension point for primal heuristics. A universal `Callback` submits a
+A primal heuristic constructs or repairs a candidate solution \\(\hat x\\) without solving the MILP exactly.
+If \\(\hat x\\) is integer-feasible and \\(c^\top \hat x < z_{\text{ub}}\\), it becomes the new incumbent and
+tightens the upper bound. A tighter upper bound allows more nodes to be pruned by bound, potentially saving
+significant computation. The heuristic does not affect the lower bound or the optimality guarantee; it only
+accelerates convergence.
+
+A universal `Callback` submits a
 `PrimalPoint` with `submit_heuristic_solution`; a `BranchAndBoundCallback<NodeInfoT>` instead transfers ownership
 of a `NodeInfoT*` whose primal solution has been filled. Submission only proposes a candidate. Under minimization,
 the incumbent is the accepted candidate with the smallest objective value found so far, and its value is the current
