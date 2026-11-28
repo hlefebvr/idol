@@ -101,8 +101,11 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
     auto& optimizer = master.optimizer();
     with_nested_resource_limits(m_parent, optimizer, [&] { master.optimize(); });
 
-    if (!m_use_farkas_for_infeasibility &&
-        (master.get_status() == Unbounded || master.get_status() == InfOrUnbnd)) {
+    // Always re-solve with infeasibility info when the master is Unbounded so that
+    // the primal ray is available regardless of m_use_farkas_for_infeasibility.
+    // For InfOrUnbnd, only re-solve when not using Farkas pricing (existing behaviour).
+    if (master.get_status() == Unbounded ||
+        (!m_use_farkas_for_infeasibility && master.get_status() == InfOrUnbnd)) {
         const bool infeasible_info = optimizer.get_param_infeasible_or_unbounded_info();
         optimizer.set_param_infeasible_or_unbounded_info(true);
         with_nested_resource_limits(m_parent, optimizer, [&] { master.optimize(); });
@@ -146,8 +149,10 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
         try {
             m_master_primal_ray = save_ray(master);
         } catch (const Exception&) {
-            // Ray unavailable despite Unbounded status (e.g., CPLEX re-solve shifted the
-            // internal status after CPXgetray failed). Terminate without a ray.
+            // CPXgetray failed even after the info re-solve (e.g., the internal
+            // LP re-solve shifted the status). Terminate this node cleanly.
+            m_status = Unknown;
+            m_reason = Numerical;
             m_is_terminated = true;
         }
     }
@@ -281,6 +286,12 @@ bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::check_stoppi
     }
 
     if (m_iteration_count >= m_parent.get_param_iteration_limit()) {
+        m_reason = IterLimit;
+        return true;
+    }
+
+    if (m_parent.m_is_root_node &&
+        m_iteration_count >= m_parent.m_max_root_cg_iterations) {
         m_reason = IterLimit;
         return true;
     }

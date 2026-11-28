@@ -5,6 +5,7 @@
 #ifndef IDOL_OPTIMIZERS_DANTZIGWOLFEDECOMPOSITION_H
 #define IDOL_OPTIMIZERS_DANTZIGWOLFEDECOMPOSITION_H
 
+#include <limits>
 #include "idol/general/optimizers/Algorithm.h"
 #include "Formulation.h"
 #include "SubProblem.h"
@@ -35,9 +36,11 @@ class idol::Optimizers::DantzigWolfeDecomposition : public Algorithm {
     unsigned int m_n_total_cg_iterations = 0;
     unsigned int m_n_root_cg_iterations = 0;
     bool m_is_root_node = true;
+    unsigned int m_max_root_cg_iterations = std::numeric_limits<unsigned int>::max();
 public:
     [[nodiscard]] unsigned int n_cg_iterations() const { return m_n_total_cg_iterations; }
     [[nodiscard]] unsigned int n_root_cg_iterations() const { return m_n_root_cg_iterations; }
+    void set_max_root_cg_iterations(unsigned int t_n) { m_max_root_cg_iterations = t_n; }
     DantzigWolfeDecomposition(const Model& t_model,
                               idol::DantzigWolfe::Formulation&& t_formulation,
                               const OptimizerFactory& t_master_optimizer_factory,

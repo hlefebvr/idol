@@ -25,6 +25,7 @@ class idol::DantzigWolfeDecomposition : public OptimizerFactoryWithDefaultParame
     std::unique_ptr<DantzigWolfe::DualPriceSmoothingStabilization> m_dual_price_smoothing_stabilization;
     std::unique_ptr<Logs::DantzigWolfe::Factory> m_logger_factory;
     std::optional<unsigned int> m_max_parallel_sub_problems;
+    std::optional<unsigned int> m_max_root_cg_iterations;
     std::optional<bool> m_use_hard_branching;
     std::optional<bool> m_use_infeasible_column_removal_when_branching;
     std::optional<DantzigWolfe::SubProblem> m_default_sub_problem_spec;
@@ -58,6 +59,8 @@ public:
     DantzigWolfeDecomposition& with_infeasible_columns_removal(bool t_value);
 
     DantzigWolfeDecomposition& with_max_parallel_sub_problems(unsigned int t_n_sub_problems);
+
+    DantzigWolfeDecomposition& with_max_root_cg_iterations(unsigned int t_n_iterations);
 
     DantzigWolfeDecomposition& with_logger(const Logs::DantzigWolfe::Factory& t_logger);
 

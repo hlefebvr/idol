@@ -25,6 +25,7 @@ idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDec
       m_master_optimizer_factory(t_src.m_master_optimizer_factory ? t_src.m_master_optimizer_factory->clone() : nullptr),
       m_dual_price_smoothing_stabilization(t_src.m_dual_price_smoothing_stabilization ? t_src.m_dual_price_smoothing_stabilization->clone() : nullptr),
       m_max_parallel_sub_problems(t_src.m_max_parallel_sub_problems),
+      m_max_root_cg_iterations(t_src.m_max_root_cg_iterations),
       m_use_hard_branching(t_src.m_use_hard_branching),
       m_use_infeasible_column_removal_when_branching(t_src.m_use_infeasible_column_removal_when_branching),
       m_infeasibility_strategy(t_src.m_infeasibility_strategy ? t_src.m_infeasibility_strategy->clone() : nullptr),
@@ -79,6 +80,10 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::create(const Model &t_model) c
                                                      m_infeasibility_strategy ? *m_infeasibility_strategy : *default_strategy,
                                                      m_logger_factory ? *m_logger_factory : *default_logger_factory
                                                      );
+
+    if (m_max_root_cg_iterations.has_value()) {
+        result->set_max_root_cg_iterations(m_max_root_cg_iterations.value());
+    }
 
     return result;
 }
@@ -215,6 +220,18 @@ idol::DantzigWolfeDecomposition::with_max_parallel_sub_problems(unsigned int t_n
     }
 
     m_max_parallel_sub_problems = t_n_sub_problems;
+
+    return *this;
+}
+
+idol::DantzigWolfeDecomposition &
+idol::DantzigWolfeDecomposition::with_max_root_cg_iterations(unsigned int t_n_iterations) {
+
+    if (m_max_root_cg_iterations.has_value()) {
+        throw Exception("Maximum root-node CG iterations has already been configured.");
+    }
+
+    m_max_root_cg_iterations = t_n_iterations;
 
     return *this;
 }
