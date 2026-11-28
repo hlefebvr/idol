@@ -35,7 +35,8 @@ inline BranchAndBound<NodeWithCGInfo> BranchAndPrice(
             .with_master_optimizer(t_master_optimizer)
             .with_default_sub_problem_spec(
                     DantzigWolfe::SubProblem().add_optimizer(t_pricing_optimizer))
-            .with_dual_price_smoothing_stabilization(DantzigWolfe::Wentges(.4));
+            .with_dual_price_smoothing_stabilization(DantzigWolfe::Wentges(.4))
+            .with_max_root_cg_iterations(10'000);
 
     auto branch_and_bound = BranchAndBound<NodeWithCGInfo>()
             .with_branching_rule(MostInfeasible())
