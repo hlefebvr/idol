@@ -307,17 +307,90 @@ For more details on the `.aux` file format, see \ref cli_bilevel_basics.
 
 \subsection cli_robust_basics_aro_solving Solving a Two-Stage Robust Problem
 
-Given a two-stage robust problem, you can solve it by running 
+Using the example above (files `model.mps`, `instance-unc.mps`, `params.par`, `instance.aux`):
 
 ```shell
-idol_cl robust solve model.lp --aux stages.aux --par parameters.par --unc uncertainty-set.mps
+idol_cl robust solve model.mps \
+    --aux instance.aux \
+    --par params.par \
+    --unc instance-unc.mps
 ```
 
-Here, `model.lp` is the deterministic model, `stages.aux` is the auxiliary file indicating which variable and constraints
-belong to the second-stage and `uncertainty-set.mps` denotes the uncertainty set.
-
-Here again, to list the available methods for your problem class, you may use
+To choose a specific CCG method (see \ref cli_robust_ccg_methods):
 
 ```shell
-idol_cl robust list model.lp --aux stages.aux --par parameters.par --unc uncertainty-set.mps
+idol_cl robust solve model.mps \
+    --aux instance.aux \
+    --par params.par \
+    --unc instance-unc.mps \
+    --method CCG_KKT_SOS1
+```
+
+To list all applicable methods for the problem:
+
+```shell
+idol_cl robust list model.mps --aux instance.aux --par params.par --unc instance-unc.mps
+```
+
+\section cli_robust_ccg_methods Two-Stage CCG Separation Methods
+
+Column-and-constraint generation (CCG) iteratively adds adversarial scenarios
+and their recourse constraints until the gap closes.
+Three separation methods are available; they differ in the assumptions they make
+on the uncertainty set and the second stage.
+
+| Method | Uncertainty set | Second stage | Extra requirements |
+|:-------|:----------------|:-------------|:-------------------|
+| `CCG_KKT_SOS1` | Any (continuous or integer) | Continuous LP | Solver with SOS1 (Gurobi, CPLEX) |
+| `CCG_Farkas` | Binary or {0,1} polytope | Continuous LP | — |
+| `CCG_MibS` | General integer | Any (LP or MIP) | MibS (`--complete-recourse` flag) |
+
+**CCG_KKT_SOS1** — solves the adversarial problem via its KKT single-level
+reformulation with SOS1 complementarity constraints. Requires a solver with SOS1
+support and a continuous second stage.
+
+```shell
+idol_cl robust solve model.mps --aux instance.aux --par params.par --unc instance-unc.mps \
+    --method CCG_KKT_SOS1
+```
+
+**CCG_Farkas** — uses a Big-M-free Farkas-based separation valid when the
+uncertainty set is binary or a {0,1} polytope. Does not require a commercial
+solver.
+
+```shell
+idol_cl robust solve model.mps --aux instance.aux --par params.par --unc instance-unc.mps \
+    --method CCG_Farkas
+```
+
+**CCG_MibS** — calls the MibS bilevel solver to separate scenarios when the
+uncertainty set has general integer variables. Requires the `--complete-recourse`
+flag when the second stage always has a feasible solution.
+
+```shell
+idol_cl robust solve model.mps --aux instance.aux --par params.par --unc instance-unc.mps \
+    --method CCG_MibS --complete-recourse
+```
+
+\note No separation method certifies robustness from a heuristic separation
+failure alone. Only a provably negative reduced cost (no violated scenario found)
+closes the gap. `idol_cl` reports `Status: Optimal / Reason: Proved` only when
+this certificate is established.
+
+\section cli_robust_static_method Static Robust: CG_Indicator
+
+For single-stage problems (no `--aux` file), `idol_cl` recognizes the problem as
+static robust. The `CG_Indicator` method enumerates extreme scenarios via a
+cutting-plane loop and applies to both decision-independent and decision-dependent
+uncertainty sets.
+
+```shell
+idol_cl robust solve model.mps --par params.par --unc uncertainty.mps \
+    --method CG_Indicator
+```
+
+To list all methods applicable to your static robust problem:
+
+```shell
+idol_cl robust list model.mps --par params.par --unc uncertainty.mps
 ```

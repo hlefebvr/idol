@@ -156,3 +156,35 @@ Required Assumptions:
 ```
 
 For solver configuration (environment variables, search paths), see \ref solver_configuration.
+
+\section cli_milp_basics_options Common Options
+
+The following options apply to all `idol_cl milp solve` commands.
+
+| Option | Description | Example |
+|:-------|:------------|:--------|
+| `--method` | Solver to use (`Gurobi`, `HiGHS`, `GLPK`, `Cplex`, `JuMP`) | `--method HiGHS` |
+| `--time-limit` | Wall-clock limit in seconds | `--time-limit 300` |
+| `--thread-limit` | Maximum number of threads | `--thread-limit 4` |
+| `--tol-feasibility` | Feasibility tolerance | `--tol-feasibility 1e-6` |
+| `--save-primal` | Write incumbent to a `.sol` file | `--save-primal out.sol` |
+| `--csv-report` | Also print a one-line CSV summary | `--csv-report` |
+
+**Example — time-limited solve with four threads:**
+```shell
+idol_cl milp solve model.lp --method Gurobi --time-limit 300 --thread-limit 4
+```
+
+**Example — read settings from a configuration file:**
+
+Options can also be stored in an `.ini` file and loaded with `--config`:
+
+```ini
+method = HiGHS
+time-limit = 600
+thread-limit = 2
+```
+
+```shell
+idol_cl milp solve model.lp --config settings.ini
+```

@@ -97,7 +97,7 @@ No automatic push, publication or branch switching without maintainer approval.
     current CLI help/parser/method managers; do not document unimplemented flags.
     Acceptance: all existing walkthroughs usable from a clean installation.
 
-[ ] 09 — Add missing CLI tutorials (medium)
+[x] 09 — Add missing CLI tutorials (medium)
     Cover first MILP LP/MPS solve; configuring solver parameters; bilevel LP/MPS
     and AUX files; continuous-follower reformulations; mixed-integer follower
     with MibS; static robust counterpart; two-stage robust CCG; comparing
