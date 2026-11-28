@@ -1,0 +1,12 @@
+\ HF1c regression: DEC names that include ';' must resolve to the LP-reader
+\ truncated name (CPLEX silently truncates row names at ';').
+PRESOLVED
+0
+NBLOCKS
+2
+BLOCK 1
+block_1;1;
+BLOCK 2
+block_2;2;
+MASTERCONSS
+linking

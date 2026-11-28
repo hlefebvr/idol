@@ -180,7 +180,43 @@ std::pair<idol::SolutionStatus,idol::SolutionReason> Cplex::cplex_status(int s) 
     case idol_CPXMIP_TIME_LIM_FEAS:case idol_CPXMIP_DETTIME_LIM_FEAS:return{Feasible,TimeLimit};case idol_CPXMIP_TIME_LIM_INFEAS:case idol_CPXMIP_DETTIME_LIM_INFEAS:return{Unknown,TimeLimit};case idol_CPXMIP_NODE_LIM_FEAS:return{Feasible,NodeLimit};case idol_CPXMIP_NODE_LIM_INFEAS:return{Unknown,NodeLimit};case idol_CPXMIP_SOL_LIM:case idol_CPXMIP_POPULATESOL_LIM:return{Feasible,SolutionLimit};case idol_CPXMIP_MEM_LIM_FEAS:return{Feasible,MemoryLimit};case idol_CPXMIP_MEM_LIM_INFEAS:return{Unknown,MemoryLimit};case idol_CPXMIP_FAIL_FEAS:case idol_CPXMIP_FAIL_FEAS_NO_TREE:return{Feasible,Numerical};case idol_CPX_STAT_NUM_BEST:return{Feasible,Numerical};case idol_CPX_STAT_OPTIMAL_INFEAS:case idol_CPXMIP_OPTIMAL_INFEAS:case idol_CPXMIP_FAIL_INFEAS:case idol_CPXMIP_FAIL_INFEAS_NO_TREE:return{Unknown,Numerical};case idol_CPX_STAT_FEASIBLE:case idol_CPXMIP_FEASIBLE:case idol_CPXMIP_ABORT_FEAS:return{Feasible,NotSpecified};case idol_CPXMIP_ABORT_INFEAS:return{Unknown,NotSpecified};case idol_CPX_STAT_ABORT_TIME_LIM:case idol_CPX_STAT_ABORT_DETTIME_LIM:return limited(TimeLimit);case idol_CPX_STAT_ABORT_IT_LIM:return limited(IterLimit);case idol_CPX_STAT_ABORT_USER:return limited(Interrupted);case idol_CPX_STAT_ABORT_PRIM_OBJ_LIM:return{Feasible,ObjLimit};case idol_CPX_STAT_ABORT_OBJ_LIM:case idol_CPX_STAT_ABORT_DUAL_OBJ_LIM:return limited(ObjLimit);default:return{Unknown,NotSpecified};}
 }
 void Cplex::hook_optimize(){m_solution_index=0;m_primal_ray.reset();m_farkas.reset();auto& l=get_dynamic_lib();if(m_cplex_callback)m_cplex_callback->register_callbacks();const int error=m_is_mip?l.CPXmipopt(m_env,m_model):parent().qctrs().size()?l.CPXbaropt(m_env,m_model):parent().get_obj_expr().has_quadratic()?l.CPXqpopt(m_env,m_model):l.CPXlpopt(m_env,m_model);if(m_cplex_callback)m_cplex_callback->rethrow_exception();check(error);if(get_param_infeasible_or_unbounded_info())save_infeasibility_information();}
-void Cplex::save_infeasibility_information(){auto& l=get_dynamic_lib();const auto s=get_status();if(s==Unbounded&&!m_is_mip&&!m_has_quadratic_objective){check(l.CPXsetintparam(m_env,idol_CPXPARAM_LPMethod,idol_CPX_ALG_PRIMAL));check(l.CPXlpopt(m_env,m_model));m_primal_ray.emplace(parent().vars().size());if(l.CPXgetray(m_env,m_model,m_primal_ray->data())!=0){m_primal_ray.reset();}}else if(s==Infeasible&&!m_is_mip&&!m_has_quadratic_objective){check(l.CPXsetintparam(m_env,idol_CPXPARAM_LPMethod,idol_CPX_ALG_DUAL));check(l.CPXlpopt(m_env,m_model));m_farkas.emplace(parent().ctrs().size());double proof=0;check(l.CPXdualfarkas(m_env,m_model,m_farkas->data(),&proof));}}
+void Cplex::save_infeasibility_information() {
+    auto& l = get_dynamic_lib();
+    const auto s = get_status();
+    if (m_has_quadratic_objective) { return; }
+
+    // CPXgetray / CPXdualfarkas only work on LPs. For a MIP whose LP relaxation
+    // is unbounded (resp. infeasible), temporarily flip the problem type to LP,
+    // re-solve as LP to extract the certificate, then restore MILP. Integer
+    // variable types are preserved by CPLEX across CPXchgprobtype.
+    const bool was_mip = m_is_mip;
+
+    if (s == Unbounded) {
+        if (was_mip) { check(l.CPXchgprobtype(m_env, m_model, idol_CPXPROB_LP)); }
+        check(l.CPXsetintparam(m_env, idol_CPXPARAM_LPMethod, idol_CPX_ALG_PRIMAL));
+        check(l.CPXlpopt(m_env, m_model));
+        m_primal_ray.emplace(parent().vars().size());
+        if (l.CPXgetray(m_env, m_model, m_primal_ray->data()) != 0) {
+            m_primal_ray.reset();
+        }
+        if (was_mip) { check(l.CPXchgprobtype(m_env, m_model, idol_CPXPROB_MILP)); }
+    } else if (s == Infeasible) {
+        if (was_mip) { check(l.CPXchgprobtype(m_env, m_model, idol_CPXPROB_LP)); }
+        check(l.CPXsetintparam(m_env, idol_CPXPARAM_LPMethod, idol_CPX_ALG_DUAL));
+        check(l.CPXlpopt(m_env, m_model));
+        // The LP relaxation of an infeasible MIP may itself be feasible; guard
+        // CPXdualfarkas against that case so we return without a certificate
+        // rather than aborting.
+        if (cplex_status(l.CPXgetstat(m_env, m_model)).first == Infeasible) {
+            m_farkas.emplace(parent().ctrs().size());
+            double proof = 0;
+            if (l.CPXdualfarkas(m_env, m_model, m_farkas->data(), &proof) != 0) {
+                m_farkas.reset();
+            }
+        }
+        if (was_mip) { check(l.CPXchgprobtype(m_env, m_model, idol_CPXPROB_MILP)); }
+    }
+}
 void Cplex::hook_write(const std::string& name){check(get_dynamic_lib().CPXwriteprob(m_env,m_model,name.c_str(),nullptr));}
 idol::SolutionStatus Cplex::get_status()const{return cplex_status(get_dynamic_lib().CPXgetstat(m_env,m_model)).first;}
 idol::SolutionReason Cplex::get_reason()const{return cplex_status(get_dynamic_lib().CPXgetstat(m_env,m_model)).second;}

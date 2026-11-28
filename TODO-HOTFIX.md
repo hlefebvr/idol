@@ -1,8 +1,8 @@
 # idol — Hotfix requests from benchmark
 
-**Campaign:** `bap_56e013dc6f5d`  
-**Benchmark:** 149 Striplib MILP instances, branch-and-price, 3600 s / 10 GB / 1 thread  
-**idol SHA:** `56e013dc6f5d84450ae31e08357887a63909a204` (codex branch)  
+**Campaign:** `bap_bde0974036f6_fa909f04`  
+**Benchmark:** 145 Striplib MILP instances, branch-and-price, 3600 s / 10 GB / 1 thread  
+**idol SHA:** `bde0974036f68ff3114bd34cc01d6057a7bcf1bb` (codex branch)  
 **Reported by:** hlefebvr/idol-benchmark, 2026-11-28  
 
 ---
@@ -69,13 +69,33 @@ Compile against idol (codex branch) and CPLEX 22.2. Set `CPLEX_STUDIO_DIR` or
 
 ## HF1 — `"Ray not available."` exception crashes solver (9 instances)
 
+### Status after codex commit 91da7593 ("HF1 real fix")
+
+**Partially fixed.** The fix resolved 3 of the 9 instances
+(`nrp_sprint06`, `nrp_sprint_late03_p`, `train-timetabling_cycle-T15S8L8Z1W1P3`).
+The remaining 6 (`job-shop-scheduling_*`) still crash for a **different root cause**
+(see HF1b below). Do not close HF1 until all 9 are resolved.
+
 ### Affected instances — all crash in < 1 s
+
+```
+FIXED   nrp_sprint06                nrp_sprint_late03_p
+FIXED   train-timetabling_cycle-T15S8L8Z1W1P3
+
+OPEN    job-shop-scheduling_abz5    job-shop-scheduling_ft06
+OPEN    job-shop-scheduling_la25    job-shop-scheduling_la27
+OPEN    job-shop-scheduling_la35    job-shop-scheduling_orb08
+```
+
+---
+
+## HF1b — `"Ray not available."` in MIP pricing sub-problem (6 instances, still open)
+
+### Affected instances
 
 ```
 job-shop-scheduling_abz5    job-shop-scheduling_ft06    job-shop-scheduling_la25
 job-shop-scheduling_la27    job-shop-scheduling_la35    job-shop-scheduling_orb08
-nrp_sprint06                nrp_sprint_late03_p
-train-timetabling_cycle-T15S8L8Z1W1P3
 ```
 
 ### Reproduce
@@ -83,68 +103,236 @@ train-timetabling_cycle-T15S8L8Z1W1P3
 ```bash
 ./reproducer striplib_job-shop-scheduling_abz5.lp \
              striplib_job-shop-scheduling_abz5.dec
-# Observed: std::exception thrown: "Ray not available."  exit 1
+# Observed: std::exception thrown: "Ray not available."  exit 1 in < 0.1 s
 ```
 
 ### Root cause
 
-**Files:**
-- `lib/include/idol/mixed-integer/modeling/models/Model.h`, line ~376 (`save_ray`)
-- `lib/src/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.cpp`, lines ~131–132 and ~294–296
-- `lib/src/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.cpp`, line ~191 (`Cplex::get_var_ray`)
+**File:** `lib/src/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.cpp`,
+`save_infeasibility_information()`
 
-`save_ray` (Model.h) throws when the model's status is not `Unbounded`:
-
-```cpp
-// Model.h:369-392
-static auto save_ray(const Model& t_original_model, const Model& t_model) {
-    if (t_model.get_status() != Unbounded) {
-        throw Exception("Ray not available.");   // ← crashes here
-    }
-    ...
-}
-```
-
-`m_primal_ray` is populated in `Cplex::save_infeasibility_information` only
-when `s == Unbounded && !m_is_mip`. After an internal LP re-solve, the CPLEX
-status can shift; `m_primal_ray` remains empty and `save_ray` throws.
-
-The stale status is read in `ColumnGeneration`:
+The job-shop decomposition has **MIP pricing sub-problems** (the original LP contains
+integer variables; each block inherits them). When a pricing sub-problem returns
+`Unbounded`, `save_infeasibility_information` guards the ray extraction with:
 
 ```cpp
-// ColumnGeneration.cpp:131-132  (master ray, using PRE-re-solve status)
-if (m_status == Unbounded) {           // m_status set before re-solve at line ~92
-    m_master_primal_ray = save_ray(master);   // master may no longer be Unbounded
+// Optimizers_Cplex.cpp: save_infeasibility_information
+if (s == Unbounded && !m_is_mip && !m_has_quadratic_objective) {
+    // ... CPXgetray ...
+    m_primal_ray.emplace(...);
 }
-
-// ColumnGeneration.cpp:294-296  (sub-problem ray)
-if (model.get_status() == Unbounded) {
-    auto ray = save_ray(model);               // same pattern
-}
+// m_is_mip == true for job-shop sub-problems → branch never taken
+// m_primal_ray stays empty
 ```
 
-### Suggested fix
+`CPXgetray` only works on LPs; for MIPs CPLEX has no equivalent.
+`m_primal_ray` is therefore never set, and the subsequent `save_ray()` →
+`get_var_ray()` call throws immediately.
 
-Re-read `master.get_status()` after the internal re-solve before calling `save_ray`:
+The info re-solve added in commit 91da7593 (ColumnGeneration.cpp) correctly
+mirrors the master re-solve pattern and gates entry on the status check, but
+it cannot help because `save_infeasibility_information` exits early for MIPs
+before ever calling `CPXgetray`.
 
-```cpp
-// ColumnGeneration.cpp, after the re-solve block (~line 96):
-m_status = master.get_status();   // override stale pre-re-solve value
-...
-if (m_status == Unbounded) {
-    m_master_primal_ray = save_ray(master);
-}
+### Fix (implemented)
+
+`Cplex::save_infeasibility_information` now handles the MIP case by flipping
+the problem type to LP (`CPXchgprobtype(idol_CPXPROB_LP)`), re-solving as LP
+(primal simplex for `Unbounded`, dual simplex for `Infeasible`), extracting
+the ray / Farkas certificate on the LP state, and restoring
+`idol_CPXPROB_MILP`. CPLEX preserves per-variable integrality across the
+probtype flip, so the sub-problem keeps its MIP shape.
+
+If `CPXgetray` / `CPXdualfarkas` still fails (ray numerically unavailable, or
+the LP relaxation of an infeasible MIP is itself feasible), the corresponding
+field is reset so the caller reports a clean missing-certificate state rather
+than a crash.
+
+---
+
+## HF1c — DEC constraint name truncated at `;` by CPLEX LP reader (4 instances)
+
+**Owner: idol** — the LP reader (via CPLEX) silently truncates constraint names
+at `;`, so the full names in the DEC file are never found.
+
+### Affected instances — all crash immediately on decomp read
+
+```
+cpmp_p2350-1.txt
+cpmp_p33100-12.txt
+cuttingstock_TEST0028-18
+cuttingstock_TEST0056-15
 ```
 
-Also guard `Cplex::save_infeasibility_information` against `CPXgetray` failure:
-
-```cpp
-// Optimizers_Cplex.cpp, inside save_infeasibility_information:
-int rc = l.CPXgetray(m_env, m_model, m_primal_ray->data());
-if (rc != 0) {
-    m_primal_ray.reset();   // CPXgetray failed — do not mark ray as valid
-}
+Exact error:
 ```
+exception: Unknown constraint "b_capa_;1;" in decomposition file.
+```
+
+### Reproduce
+
+```bash
+# Local instance files:
+# /Users/henri/Research/Solvers/idol-benchmark/benchmarks/milp/striplib/instances/
+
+./reproducer \
+  /Users/henri/Research/Solvers/idol-benchmark/benchmarks/milp/striplib/instances/striplib_cpmp_p2350-1.txt.lp \
+  /Users/henri/Research/Solvers/idol-benchmark/benchmarks/milp/striplib/instances/striplib_cpmp_p2350-1.txt.dec
+# Observed: exception at DantzigWolfe::read_decomposition — "Unknown constraint b_capa_;1;"
+# Crashes before any optimization starts.
+```
+
+### Root cause
+
+The DEC file lists constraint `b_capa_;1;` as a block member. When CPLEX reads
+the LP file, it truncates constraint names at `;` (treats it as a terminator in
+its LP format parser), so the constraint is stored internally as `b_capa_`. The
+DEC reader then looks up `b_capa_;1;` in idol's model and fails to find it.
+
+```
+LP file  → CPLEX reads → model stores name as: "b_capa_"
+DEC file → reads name:                          "b_capa_;1;"  ← not found → throws
+```
+
+### Fix (implemented)
+
+`read_from_striplib.cpp` now resolves DEC constraint names with a semicolon
+fallback: if the full name is not found in the model, the substring before
+the first `;` is tried. Matches are then routed through the standard
+block/master assignment. A regression test (`semicolon-truncated-name.dec`)
+checks that a DEC entry like `block_1;1;` resolves to the LP-reader-stored
+`block_1`.
+
+---
+
+## HF1d — Unknown DEC constraint name due to LP/DEC naming mismatch (3 instances)
+
+**Owner: idol** — the DEC was generated against a different naming convention
+than what CPLEX uses when it reads the LP. Rather than hard-failing, idol should
+emit a warning and treat the constraint as a master constraint.
+
+### Affected instances — crash immediately on decomp read
+
+```
+hlp_ap25_c_p4_a05
+hlp_tr10_c_p4_a05
+hlp_tr40_c_p4_a05
+```
+
+Exact error:
+```
+exception: Unknown constraint "demand_0_1_inhub_0" in decomposition file.
+```
+
+### Reproduce
+
+```bash
+./reproducer \
+  /Users/henri/Research/Solvers/idol-benchmark/benchmarks/milp/striplib/instances/striplib_hlp_ap25_c_p4_a05.lp \
+  /Users/henri/Research/Solvers/idol-benchmark/benchmarks/milp/striplib/instances/striplib_hlp_ap25_c_p4_a05.dec
+# Observed: exception at read_decomposition — "Unknown constraint demand_0_1_inhub_0"
+```
+
+### Root cause
+
+The constraint `demand_0_1_inhub_0` appears in the DEC file but not in idol's
+model after CPLEX reads the LP. The LP likely names the constraint differently
+(e.g., `c1`, auto-generated, or truncated). The DEC was produced by a tool that
+read the LP with a different parser (GCG/SCIP), which preserves a different name.
+
+### Fix (implemented)
+
+`read_from_striplib.cpp` now emits a warning and skips unknown DEC constraint
+names instead of throwing. Skipped names remain implicitly in the master
+(since the `decomposition` annotation defaults to `MasterId` for unassigned
+objects). The existing `modeling.striplib` "unknown constraint is tolerated
+with a warning" test case guards this behaviour.
+
+---
+
+## HF1e — DEC duplicate constraint name causes hard failure (2 instances)
+
+**Owner: idol** — a repeated constraint name in the DEC should warn and skip,
+not throw.
+
+### Affected instances — crash immediately on decomp read
+
+```
+clp_BR2_42
+clp_BR3_73
+```
+
+Exact error:
+```
+exception: Cannot read a name-based decomposition: duplicate constraint name "orthogonalityb(0)".
+```
+
+### Reproduce
+
+```bash
+./reproducer \
+  /Users/henri/Research/Solvers/idol-benchmark/benchmarks/milp/striplib/instances/striplib_clp_BR2_42.lp \
+  /Users/henri/Research/Solvers/idol-benchmark/benchmarks/milp/striplib/instances/striplib_clp_BR2_42.dec
+# Observed: exception at read_decomposition — duplicate constraint name
+```
+
+### Root cause
+
+The DEC file assigns `orthogonalityb(0)` to two different blocks.
+idol's DEC reader throws immediately on the second assignment.
+
+### Fix (implemented)
+
+Both the model-side `objects_by_name` helper (duplicate row/column names in
+the imported LP) and the DEC-side `assign` helper (duplicate block assignments
+for the same name) now warn and keep the first occurrence instead of throwing.
+Lets the decomposition be read on LPs that CPLEX accepts with duplicate row
+names and on DEC files that double-assign a constraint.
+
+---
+
+## HF1f — `boundsL` / `regionGe` constraints in DEC not in LP (3 instances)
+
+**Owner: idol** — GCG encodes variable bounds as named constraints
+(`boundsL(i)`, `regionGe(i,j)`) in DEC files. The LP reader adds bounds as
+variable attributes, not as named constraints. The DEC reader should recognise
+these patterns as bound constraints and handle them gracefully.
+
+### Affected instances — crash immediately on decomp read
+
+```
+clp_BR2_41    →  "Unknown constraint "boundsL(0)" in decomposition file."
+clp_BR3_12    →  "Unknown constraint "boundsL(0)" in decomposition file."
+clp_BR3_42    →  "Unknown constraint "regionGe(0,1)" in decomposition file."
+```
+
+### Reproduce
+
+```bash
+./reproducer \
+  /Users/henri/Research/Solvers/idol-benchmark/benchmarks/milp/striplib/instances/striplib_clp_BR2_41.lp \
+  /Users/henri/Research/Solvers/idol-benchmark/benchmarks/milp/striplib/instances/striplib_clp_BR2_41.dec
+# Observed: exception — "Unknown constraint boundsL(0)"
+```
+
+### Root cause
+
+GCG writes `CONS` sections in DEC files using synthetic constraint names
+for variable bounds:
+- `boundsL(i)` = lower bound `x_i ≥ lb_i`
+- `regionGe(i,j)` = a regional bound constraint
+
+The LP format stores these bounds as variable attributes (`lb ≤ x ≤ ub`),
+not as named rows. When idol reads the LP through CPLEX, no constraint named
+`boundsL(0)` exists in the model.
+
+### Fix (implemented)
+
+Covered by the HF1d fix: unknown DEC constraint names (including the
+synthetic `boundsL(i)` / `regionGe(i,j)` entries that GCG emits for
+variable bounds) now warn and are skipped. Variable-bound constraints are
+already enforced on the model variables, so skipping them is the correct
+behaviour.
 
 ---
 
@@ -327,15 +515,13 @@ No equivalent accessor exists for the total number of column-generation master
 iterations across all B&B nodes. This metric is essential for comparing
 stabilisation strategies and diagnosing HF2.
 
-### Suggested fix
+### Fix (implemented, commit e7e941ec)
 
-Expose accessors on the B&P / DW optimizer:
-
-```cpp
-// e.g., on BranchAndBound<NodeWithCGInfo> or its DW sub-optimizer:
-[[nodiscard]] long n_cg_iterations() const;        // total across all B&B nodes
-[[nodiscard]] long n_root_cg_iterations() const;   // root node only (most useful for HF2)
-```
+`Optimizers::DantzigWolfeDecomposition` exposes
+`n_cg_iterations()` (cumulative across all B&B nodes) and
+`n_root_cg_iterations()` (root node only). Access via
+`dynamic_cast<const Optimizers::DantzigWolfeDecomposition*>(...)` on the
+B&P sub-optimizer. The counters are reset in `hook_before_optimize`.
 
 ---
 

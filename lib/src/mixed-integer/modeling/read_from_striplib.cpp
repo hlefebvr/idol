@@ -237,20 +237,49 @@ idol::Map<std::string, ObjectT> objects_by_name(const auto& t_objects, const std
     idol::Map<std::string, ObjectT> result;
     for (const auto& object : t_objects) {
         if (!result.emplace(object.name(), object).second) {
-            throw idol::Exception("Cannot read a name-based decomposition: duplicate " + t_kind +
-                                  " name \"" + object.name() + "\".");
+            // Some LP readers (notably CPLEX) silently accept duplicate row/column
+            // names when importing. Keeping the first occurrence and warning lets
+            // the decomposition be read instead of hard-failing on instances we
+            // otherwise have no way to re-generate (HF1e).
+            std::cerr << "Warning: duplicate " << t_kind << " name \"" << object.name()
+                      << "\" encountered while reading model; keeping the first occurrence.\n";
         }
     }
     return result;
 }
 
+// Resolve a DEC-file constraint name to a model constraint. CPLEX's LP reader
+// truncates constraint names at ';', so a DEC name like "b_capa_;1;" may be
+// stored as "b_capa_" in the model (HF1c). If the full name is not found, try
+// the prefix up to the first ';'.
+template<class ObjectT>
+const ObjectT* lookup_with_semicolon_fallback(const idol::Map<std::string, ObjectT>& t_by_name,
+                                              const std::string& t_dec_name) {
+    if (const auto it = t_by_name.find(t_dec_name); it != t_by_name.end()) {
+        return &it->second;
+    }
+    const auto semicolon = t_dec_name.find(';');
+    if (semicolon != std::string::npos && semicolon > 0) {
+        if (const auto it = t_by_name.find(t_dec_name.substr(0, semicolon)); it != t_by_name.end()) {
+            return &it->second;
+        }
+    }
+    return nullptr;
+}
+
+// Assign a name to a block, warning (and keeping the first assignment) on
+// conflicts rather than throwing. Prefix-matching in the constraint lookup
+// (HF1c) and tolerant duplicate handling (HF1e) can both cause two DEC entries
+// to resolve to the same model object.
 void assign(idol::Map<std::string, unsigned int>& t_assignments,
             const std::string& t_name,
             unsigned int t_block,
             const std::string& t_kind) {
     const auto [it, inserted] = t_assignments.emplace(t_name, t_block);
-    if (!inserted) {
-        throw idol::Exception("The " + t_kind + " \"" + t_name + "\" is assigned more than once in the decomposition.");
+    if (!inserted && it->second != t_block) {
+        std::cerr << "Warning: " << t_kind << " \"" << t_name
+                  << "\" is assigned to multiple blocks in the decomposition; "
+                  << "keeping the first assignment (block " << it->second << ").\n";
     }
 }
 
@@ -271,31 +300,51 @@ idol::DantzigWolfe::read_decomposition(Model& t_model, const std::string& t_deco
     Map<std::string, unsigned int> constraint_assignments;
     Map<std::string, unsigned int> variable_assignments;
 
+    const auto resolve_ctr = [&](const std::string& t_name) -> std::optional<std::string> {
+        if (const auto* ctr = lookup_with_semicolon_fallback(constraints, t_name)) {
+            return ctr->name();
+        }
+        // Unknown DEC constraint names: safer to warn and skip (leaving the
+        // constraint in the master) than to hard-fail. Covers HF1d (name
+        // mismatch between GCG/CPLEX LP readers), HF1f (synthetic names like
+        // boundsL(i) / regionGe(i,j) for bounds already encoded as variable
+        // attributes), and other GCG-vs-CPLEX naming artefacts.
+        std::cerr << "Warning: constraint \"" << t_name
+                  << "\" not found in model while reading decomposition; "
+                  << "skipping (constraint will remain in the master).\n";
+        return std::nullopt;
+    };
+    const auto resolve_var = [&](const std::string& t_name) -> std::optional<std::string> {
+        if (const auto it = variables.find(t_name); it != variables.end()) {
+            return it->second.name();
+        }
+        std::cerr << "Warning: variable \"" << t_name
+                  << "\" not found in model while reading decomposition; "
+                  << "skipping (variable will remain in the master).\n";
+        return std::nullopt;
+    };
+
     for (unsigned int block = 0; block < parsed.n_blocks; ++block) {
         for (const auto& name : parsed.block_constraints[block]) {
-            if (!constraints.contains(name)) {
-                throw Exception("Unknown constraint \"" + name + "\" in decomposition file.");
+            if (const auto resolved = resolve_ctr(name)) {
+                assign(constraint_assignments, *resolved, block, "constraint");
             }
-            assign(constraint_assignments, name, block, "constraint");
         }
         for (const auto& name : parsed.block_variables[block]) {
-            if (!variables.contains(name)) {
-                throw Exception("Unknown variable \"" + name + "\" in decomposition file.");
+            if (const auto resolved = resolve_var(name)) {
+                assign(variable_assignments, *resolved, block, "variable");
             }
-            assign(variable_assignments, name, block, "variable");
         }
     }
     for (const auto& name : parsed.master_constraints) {
-        if (!constraints.contains(name)) {
-            throw Exception("Unknown constraint \"" + name + "\" in decomposition file.");
+        if (const auto resolved = resolve_ctr(name)) {
+            assign(constraint_assignments, *resolved, MasterId, "constraint");
         }
-        assign(constraint_assignments, name, MasterId, "constraint");
     }
     for (const auto& name : parsed.master_variables) {
-        if (!variables.contains(name)) {
-            throw Exception("Unknown variable \"" + name + "\" in decomposition file.");
+        if (const auto resolved = resolve_var(name)) {
+            assign(variable_assignments, *resolved, MasterId, "variable");
         }
-        assign(variable_assignments, name, MasterId, "variable");
     }
     for (const auto& name : parsed.linking_variables) {
         if (!variables.contains(name)) {

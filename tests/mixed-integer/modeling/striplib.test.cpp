@@ -82,6 +82,18 @@ TEST_CASE("Empty trailing block is accepted with a warning", "[striplib]") {
     CHECK_NOTHROW(DantzigWolfe::read_decomposition(model, "../../data/striplib/empty-trailing-block.dec"));
 }
 
+TEST_CASE("DEC constraint name with trailing ;...; resolves to LP-truncated name", "[striplib]") {
+    // HF1c regression: CPLEX's LP reader truncates row names at ';'. DEC names
+    // like "block_1;1;" must still resolve to the stored "block_1".
+    Env env;
+    auto model = Model::read_from_file(env, "../../data/striplib/tiny.lp");
+    auto decomposition = DantzigWolfe::read_decomposition(
+            model, "../../data/striplib/semicolon-truncated-name.dec");
+    CHECK(constraint_named(model, "block_1").get(decomposition) == 0);
+    CHECK(constraint_named(model, "block_2").get(decomposition) == 1);
+    CHECK(constraint_named(model, "linking").get(decomposition) == MasterId);
+}
+
 TEST_CASE("Reject unsupported or invalid Striplib decompositions", "[striplib]") {
     Env env;
     auto model = Model::read_from_file(env, "../../data/striplib/tiny.lp");
@@ -102,8 +114,10 @@ TEST_CASE("Reject unsupported or invalid Striplib decompositions", "[striplib]")
         CHECK_THROWS_WITH(DantzigWolfe::read_decomposition(model, "../../data/striplib/unassigned.dec"),
                           Catch::Matchers::ContainsSubstring("is unassigned and CONSDEFAULTMASTER is 0"));
     }
-    SECTION("unknown constraint") {
-        CHECK_THROWS_WITH(DantzigWolfe::read_decomposition(model, "../../data/striplib/unknown-name.dec"),
-                          Catch::Matchers::ContainsSubstring("Unknown constraint \"does_not_exist\""));
+    SECTION("unknown constraint is tolerated with a warning") {
+        // HF1d / HF1f: unknown DEC constraint names (naming-convention mismatch
+        // between GCG and the LP reader, or synthetic names like boundsL(i))
+        // must not hard-fail — they are now logged and skipped.
+        CHECK_NOTHROW(DantzigWolfe::read_decomposition(model, "../../data/striplib/unknown-name.dec"));
     }
 }
