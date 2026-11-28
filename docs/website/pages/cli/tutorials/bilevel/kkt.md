@@ -5,6 +5,11 @@
 
 \section kkt_introduction Introduction
 
+This tutorial uses the Moore-Bard example from \ref cli_bilevel_basics (files
+`moore-and-bard.mps` and `moore-and-bard.aux`). It has a continuous lower
+level (replace `z ∈ Z` by `z ≥ 0` in the `.aux` file, or use an LP-LP instance),
+so the KKT conditions are necessary and sufficient.
+
 We consider an LP-LP bilevel problem given by
 \f[
     \begin{align*}
@@ -41,13 +46,11 @@ exist for solving it. This is detailed in the next sections.
 
 \section kkt_nlp Using the NLP Formulation
 
-Using the option `--method KKT-NLP` automatically formulates and solves the KKT reformulation as a nonlinear optimization problem. 
-Obviously, the underlying solver must handle nonlinear constraints.
-
-Simply run
+`--method KKT_NLP` formulates the bilevel problem as a nonlinear program and
+solves it with the underlying solver. The solver must support nonlinear constraints.
 
 ```shell
-idol_cl bilevel solve model.lp --aux follower.aux --method KKT_NLP
+idol_cl bilevel solve moore-and-bard.mps --aux moore-and-bard.aux --method KKT_NLP
 ```
 
 \section kkt_sos1 Using the SOS1 Formulation
@@ -81,24 +84,20 @@ Thus, one can further reformulate the KKT-based single-level reformulation as
 Here, \\( \text{SOS1}(\lambda_i,s_i) \\) models the fact that \\( \\{ \lambda_i, s_i \\} \\) must be a special ordered set 
 of type 1, i.e., at most one value in the set can be nonzero.
 
-Using the option `--method KKT` together with `--sos1` automatically reformulates and solves the bilevel problem using this 
-SOS1 approach.
-Obviously, the underlying solver must handle SOS1 constraints for this approach to work.
-
-Simply run
+`--method KKT_SOS1` reformulates the complementarity constraints using SOS1
+variables. The solver must support SOS1 constraints (Gurobi, CPLEX).
 
 ```shell
-idol_cl bilevel solve model.lp --aux follower.aux --method KKT_SOS1
+idol_cl bilevel solve moore-and-bard.mps --aux moore-and-bard.aux --method KKT_SOS1
 ```
 
 \section kkt_big_m Using the Big-M Reformulation 
 
 Using the Big-M reformulation requires an additional file to provide bounds on the dual variables of the primal lower-level 
-problem. The format for this file is detailed in the next section. Given such a file, say `bounds.txt`, the method can be 
-triggered as follows.
+problem. The format for this file is detailed in the next section. Given such a file, say `bounds.txt`, trigger the method as follows.
 
 ```shell
-idol_cl bilevel solve model.lp --aux follower.aux --method KKT_BigM --bound-provider bounds.txt
+idol_cl bilevel solve moore-and-bard.mps --aux moore-and-bard.aux --method KKT_BigM --bound-provider bounds.txt
 ```
 
 \subsection kkt_big_m_file The File Format for Providing Bounds on the Dual Variables
@@ -302,10 +301,10 @@ For less-or-equal-to constraints, the big-M values must be non-positive. For gre
 
 By default, `idol_cl` will choose a MILP solver automatically for solving the obtained single-level relaxation. 
 
-To change the underlying solver, use the `--default-method` option as follows.
+To change the underlying solver, use `--default-method`:
 
 ```shell
-idol_cl bilevel solve model.lp --aux follower.aux --method KKT_BigM --bound-provider bounds.txt --default-method GLPK
+idol_cl bilevel solve moore-and-bard.mps --aux moore-and-bard.aux --method KKT_BigM --bound-provider bounds.txt --default-method GLPK
 ```
 
 Here, `GLPK` will now be used to solve the single-level reformulation of the bilevel problem.
@@ -324,8 +323,6 @@ where \\( C^-_i \ge \min \\{ C_i x \\} \\{ x\in \\{ x^\ge, x^\le \\} \\} \\) for
 
 This is done automatically. If, however, you want to deactivate this functionality, please use the `--no-kleinert-vi` option.
 
-Simply run
-
 ```shell
-idol_cl bilevel solve model.lp --aux follower.aux --method KKT_SOS1 --no-kleinert-vi
+idol_cl bilevel solve moore-and-bard.mps --aux moore-and-bard.aux --method KKT_SOS1 --no-kleinert-vi
 ```

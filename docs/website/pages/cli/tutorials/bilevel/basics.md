@@ -138,33 +138,47 @@ Note that bounds on lower-level variables are always assumed to be constraints o
 
 \section cli_bilevel_basics_optimistic Solving An Optimistic Bilevel Problem
 
-Given a bilevel problem, you can solve it by running
-
-```shell 
-idol_cl bilevel solve model.mps --aux follower.aux
-```
-
-Some commands require more parameters than others. For instance, here is how to solve an LP-LP bilevel problem
-using its KKT reformulation using big-M values.
+Using the Moore-Bard example above (files `moore-and-bard.mps` and `moore-and-bard.aux`),
+solve with the default method:
 
 ```shell
-idol_cl bilevel solve model.mps --aux follower.aux --method KKT_BigM --bound-provider bounds.txt
+idol_cl bilevel solve moore-and-bard.mps --aux moore-and-bard.aux
 ```
 
-For more information, see our tutorial on \ref cli_bilevel_kkt.
+**Expected output:**
+```text
+-- Problem type is bilevel problem.
+...
+Status: Optimal
+Reason: Proved
+Objective value: -22
+x = 2
+y = 2
+```
 
-Here again, to list the available methods for your problem class, you may use
+The optimal solution is \\( x = 2, y = 2 \\) with objective \\( -x - 10y = -22 \\).
+
+To solve using a KKT reformulation, see \ref cli_bilevel_kkt.
+
+To use a specific underlying MILP solver, use `--default-method`:
 
 ```shell
-idol_cl bilevel list model.mps --aux follower.aux
+idol_cl bilevel solve moore-and-bard.mps --aux moore-and-bard.aux --default-method HiGHS
+```
+
+To list available methods for the problem:
+
+```shell
+idol_cl bilevel list moore-and-bard.mps --aux moore-and-bard.aux
 ```
 
 \section cli_bilevel_basics_pessimistic Solving A Pessimistic Bilevel Problem
 
 **If the bilevel problem does not have coupling constraints**, it is possible to address its pessimistic version by
-appending the `--pessimistic` flag. If so, the relaxation-and-correction scheme from <a href="https://doi.org/10.1287/ijoc.2019.0927" target="_blank">Zeng (2025)</a>
+appending the `--pessimistic` flag. The relaxation-and-correction scheme of Zeng (2020)
+(<a href="https://doi.org/10.1287/ijoc.2019.0927" target="_blank">doi:10.1287/ijoc.2019.0927</a>)
 will be applied.
 
 ```shell
-idol_cl bilevel solve model.lp --aux follower.aux --method KKT_SOS1 --pessimistic
+idol_cl bilevel solve moore-and-bard.mps --aux moore-and-bard.aux --method KKT_SOS1 --pessimistic
 ```

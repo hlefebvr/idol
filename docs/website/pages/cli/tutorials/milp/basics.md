@@ -58,53 +58,43 @@ ROWS
  G  c1
  G  c2
 COLUMNS
-    x       obj     3
-    x       c1      2
-    x       c2      1
-    y       obj     4
-    y       c1      1
-    y       c2      2
+    MARKER    'MARKER'    'INTORG'
+    x         obj         3
+    x         c1          2
+    x         c2          1
+    y         obj         4
+    y         c1          1
+    y         c2          2
+    MARKER    'MARKER'    'INTEND'
 RHS
-    rhs     c1      5
-    rhs     c2      6
+    rhs       c1          5
+    rhs       c2          6
 BOUNDS
- LO bnd     x       0
- LO bnd     y       0
+ LO bnd       x           0
+ LO bnd       y           0
 ENDATA
 ```
 
+The `MARKER 'INTORG'` / `MARKER 'INTEND'` lines delimit the integer variable block.
+Without them all variables are treated as continuous.
+
 \section cli_milp_basics_first Solving Your First MILP
 
-To solve a given MILP stored in an `.lp` file, all you need to do is
+To solve the example MILP above, save the `.lp` file as `model.lp` and run:
 
 ```shell
 idol_cl milp solve model.lp
 ```
 
-If you want to set a time limit and use a specific method, run
+`idol_cl` automatically selects a suitable solver for the detected problem type.
+To specify one explicitly and add a time limit:
 
 ```shell
 idol_cl milp solve model.lp --time-limit 3600 --method GLPK
 ```
 
-To save the incumbent using Gurobi's plain-text SOL format, use `--save-primal`.
-The file contains the objective value as a comment followed by one
-variable-value pair per line. The same format is available from C++ by calling
-`model.write("solution.sol")`; `Model::write` selects the output format from the
-filename extension.
-
-```shell
-idol_cl milp solve model.lp --method GLPK --save-primal model.sol
-```
-
-To see which solution methods are available for a given problem, use the `list-methods` subcommand.
-
-```shell
-idol_cl milp list model.lp
-```
-
-**Sampled Output**:
-```text 
+**Expected output** (solver may differ):
+```text
 ╔════════════════════════════════════════╗
 ║               idol 0.10.3              ║
 ║    A C++ Framework for Optimization    ║
@@ -112,9 +102,36 @@ idol_cl milp list model.lp
 ║     https://henrilefebvre.com/idol     ║
 ╚════════════════════════════════════════╝
 -- No configuration file loaded.
+-- No time limit was configured (use --time-limit to configure).
+-- Using up to 1 threads (use --thread-limit to configure).
 -- Problem type is MILP.
--- Read main model from 10teams.mps.gz
+...
+Status: Optimal
+Reason: Proved
+Objective value: 14
+x = 2
+y = 2
+```
 
+The unique optimal solution is \\( x = 2, y = 2 \\) with objective value \\( 14 \\).
+
+To save the incumbent to a file, use `--save-primal`:
+
+```shell
+idol_cl milp solve model.lp --method GLPK --save-primal solution.sol
+```
+
+The `.sol` file contains the objective value as a comment followed by one
+variable-value pair per line.
+
+To see which solution methods are available for a given problem, run:
+
+```shell
+idol_cl milp list model.lp
+```
+
+**Sampled output:**
+```text
 Applicable Methods
 Gurobi
 Description: Gurobi Optimizer [https://www.gurobi.com/]
@@ -136,19 +153,6 @@ Required Assumptions:
  ✓ Requires no SOS-type constraints.
  ✓ Requires no quadratic constraints.
  ✓ Requires a linear objective function.
-
-Other Methods
-Cplex
-Description: IBM ILOG CPLEX Optimization Studio [https://www.ibm.com/fr-fr/products/ilog-cplex-optimization-studio]
-Required Assumptions:
- ✗ Requires Cplex to be installed.
-
-JuMP
-Description: Calls the Julia package JuMP [https://jump.dev/].
-Required Assumptions:
- ✓ Requires JuMP to be installed.
- ✗ Requires a JuMP Optimizer to be specified with --jump-optimizer.
 ```
 
-If no method is specified, `idol_cl` automatically selects a suitable solver
-for the detected problem type.
+For solver configuration (environment variables, search paths), see \ref solver_configuration.

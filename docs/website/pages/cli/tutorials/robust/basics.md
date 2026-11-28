@@ -18,8 +18,6 @@ A (classic) static robust optimization considers problems of the form
 
 Here \\(U\\) models the uncertainty set which contains a (possibly infinite) set of possible scenarios for the parameters \\(u\\).
 
-\warning TODO, add decision-dependent problems
-
 \subsection cli_robust_basics_input Input File Format
 
 \subsubsection cli_robust_basics_input_example A First Example
@@ -116,7 +114,7 @@ In `idol` a static robust instance is made of three files:
 
 In case multiple uncertainty sets must be used, they are all represented in a single `.mps`/`.lp`.
 
-For more details on the `.mps` and `.lp` file formats, see the page \ref cli_input_format_milp.
+For more details on the `.mps` and `.lp` file formats, see \ref cli_milp_basics.
 
 The `.par` file is composed of tagged sections, each identified by a keyword starting with `@`. The following table lists all supported tags and their meaning. 
 
@@ -147,7 +145,31 @@ The `@MAT` section is composed of a list of entries with the format `<CTR> <VAR>
 `<VAR>` is a variable name, `<UNC_VAR>` is an uncertainty parameter name (which must be defined in the uncertainty set), and `<COEFF>` is a number. 
 Each entry specifies that the coefficient of the variable `<VAR>` in the constraint `<CTR>` has an uncertain contribution equal to `<COEFF>` times `<UNC_VAR>`.
 
-\warning TODO, add decision-dependent problems
+\section cli_robust_basics_static_solving Solving a Static Robust Problem
+
+Given the three files above (`model.mps`, `uncertainty.mps`, `params.par`), solve with:
+
+```shell
+idol_cl robust solve model.mps --uncertainty-param params.par --uncertainty-set uncertainty.mps
+```
+
+The short aliases `--par` and `--unc` also work:
+
+```shell
+idol_cl robust solve model.mps --par params.par --unc uncertainty.mps
+```
+
+To specify a time limit and a method:
+
+```shell
+idol_cl robust solve model.mps --par params.par --unc uncertainty.mps --time-limit 300 --method CCG_KKT_SOS1
+```
+
+To list available methods for the problem:
+
+```shell
+idol_cl robust list model.mps --par params.par --unc uncertainty.mps
+```
 
 \section cli_robust_basics_aro Two-Stage Robust Optimization
 
@@ -258,11 +280,11 @@ Thus, four files are necessary to define a two-stage robust problem.
 - A `.par` file indicates where the uncertain parameters enter in the deterministic problem. 
 - A `.aux` file indicates which variable and constraint belong to the second-stage problem.
 
-For more details on the `.mps` and `.lp` file formats, see the page \ref cli_input_format_milp.
+For more details on the `.mps` and `.lp` file formats, see \ref cli_milp_basics.
 
-For more details on the `.par` file format, see the section on \ref cli_robust_static.
+For more details on the `.par` file format, see \ref cli_robust_basics_input.
 
-For more details on the `.aux` file format, see the page \ref cli_input_format_bilevel. 
+For more details on the `.aux` file format, see \ref cli_bilevel_basics. 
 
 <div class="info">
     <span>

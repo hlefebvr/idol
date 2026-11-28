@@ -90,7 +90,7 @@ No automatic push, publication or branch switching without maintainer approval.
     Acceptance: no empty advertised sections; runnable complete examples; clear
     prerequisites; references where appropriate; Doxygen cross-links work.
 
-[ ] 08 — Improve existing CLI tutorials (medium)
+[x] 08 — Improve existing CLI tutorials (medium)
     Review current MILP, robust and bilevel basics and KKT pages. Give downloadable
     instance inputs, exact commands, expected status/output and explanation.
     Clarify solver configuration, time/thread limits and file formats. Check
