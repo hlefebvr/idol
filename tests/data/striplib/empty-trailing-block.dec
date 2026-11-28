@@ -1,0 +1,11 @@
+\ Synthetic decomposition with an empty trailing block (HF3 regression).
+PRESOLVED
+0
+NBLOCKS
+3
+BLOCK 1
+block_1
+BLOCK 2
+block_2
+MASTERCONSS
+linking

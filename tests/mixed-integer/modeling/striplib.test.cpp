@@ -73,6 +73,15 @@ TEST_CASE("Solve a small imported Striplib decomposition", "[striplib]") {
     CHECK(decomposed.get_best_obj() == Catch::Approx(direct.get_best_obj()));
 }
 
+TEST_CASE("Empty trailing block is accepted with a warning", "[striplib]") {
+    // HF3 regression: a DEC file declaring NBLOCKS=3 but only populating
+    // blocks 1 and 2 must not throw. The third block has no variables or
+    // constraints; its PricingSetupVar provides the convexity row.
+    Env env;
+    auto model = Model::read_from_file(env, "../../data/striplib/tiny.lp");
+    CHECK_NOTHROW(DantzigWolfe::read_decomposition(model, "../../data/striplib/empty-trailing-block.dec"));
+}
+
 TEST_CASE("Reject unsupported or invalid Striplib decompositions", "[striplib]") {
     Env env;
     auto model = Model::read_from_file(env, "../../data/striplib/tiny.lp");
