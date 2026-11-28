@@ -2,7 +2,6 @@ include(CMakeFindDependencyMacro)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "@CMAKE_INSTALL_PREFIX@/lib/cmake/idol/")
 
-set(USE_CPLEX @USE_CPLEX@)
 set(USE_MIBS @USE_MIBS@)
 set(USE_OSI @USE_OSI@)
 set(USE_OSI_CLP @USE_OSI_CLP@)

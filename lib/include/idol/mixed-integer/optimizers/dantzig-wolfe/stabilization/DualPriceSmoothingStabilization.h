@@ -24,6 +24,12 @@ public:
         virtual void update_stability_center(const DualPoint& t_master_dual) = 0;
 
         virtual DualPoint compute_smoothed_dual_solution(const DualPoint& t_master_dual) = 0;
+
+        // Returns true iff the last call to compute_smoothed_dual_solution returned
+        // the master dual unchanged. In that case, pricing with the smoothed dual
+        // produces a valid Lagrangian bound (as if raw-dual pricing was performed).
+        // Conservative default: assume the stabilisation does modify the dual.
+        [[nodiscard]] virtual bool last_result_equals_master_dual() const { return false; }
     };
 
     virtual Strategy* operator()() const = 0;

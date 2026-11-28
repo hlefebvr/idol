@@ -9,6 +9,7 @@
 
 namespace idol {
     class Exception;
+    class NumericalException;
 }
 
 class idol::Exception : public std::exception {
@@ -17,6 +18,15 @@ public:
     explicit Exception(std::string t_message) : m_message(std::move(t_message)) {}
 
     [[nodiscard]] const char * what () const noexcept override { return m_message.c_str(); }
+};
+
+// Signals a recoverable solver-level numerical failure (e.g., CPLEX singular
+// basis, missing ray/Farkas certificate). Separated from plain Exception so
+// algorithms can catch solver numerical errors while letting semantic errors
+// (unsupported configuration, invalid user input) propagate.
+class idol::NumericalException : public Exception {
+public:
+    using Exception::Exception;
 };
 
 #endif //OPTIMIZE_EXCEPTION_H

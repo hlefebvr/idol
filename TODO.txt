@@ -89,7 +89,7 @@ PHASE 2 — CORRECTNESS BEFORE ALGORITHMIC EXTENSIONS (P0)
    reasons orthogonal. Audit enum values, serialization, printing, CLI, switch
    statements and consumers. Preserve compatibility where possible.
 
-05 [ ] Standardize status and termination reason semantics across optimizers.
+05 [x] Standardize status and termination reason semantics across optimizers.
    Depends on 04. Audit all solver wrappers and algorithms, especially nested
    optimizers; cover time/iteration limits, interruption, numerical failures,
    infeasibility proofs and early stop with/without incumbent. Test that bounds,

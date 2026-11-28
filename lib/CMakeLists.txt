@@ -387,10 +387,7 @@ if (${USE_ROBINHOOD})
 
 endif()
 
-set(USE_CPLEX OFF CACHE BOOL "Build idol with CPLEX (https://www.ibm.com/analytics/cplex-optimizer)")
-if (${USE_CPLEX})
-    list(APPEND AVAILABLE_MILP_SOLVERS "Cplex")
-endif()
+list(APPEND AVAILABLE_MILP_SOLVERS "Cplex")
 target_link_libraries(idol PRIVATE ${CMAKE_DL_LIBS})
 
 #######################

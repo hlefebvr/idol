@@ -516,7 +516,7 @@ void idol::Optimizers::PADM::check_time_limit() {
         return;
     }
 
-    set_status(Infeasible);
+    set_status(is_pos_inf(get_best_obj()) ? Unknown : Feasible);
     set_reason(TimeLimit);
     terminate();
 
@@ -528,7 +528,7 @@ void idol::Optimizers::PADM::check_outer_iteration_limit() {
         return;
     }
 
-    set_status(Infeasible);
+    set_status(is_pos_inf(get_best_obj()) ? Unknown : Feasible);
     set_reason(IterLimit);
     terminate();
 

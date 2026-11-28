@@ -105,7 +105,7 @@ void idol::Optimizers::Robust::CriticalValueColumnAndConstraintGeneration::check
         return;
     }
 
-    set_status(is_pos_inf(get_best_obj()) ? Infeasible : Feasible);
+    set_status(is_pos_inf(get_best_obj()) ? Unknown : Feasible);
 
     if (get_remaining_time() == 0) {
         if (get_param_logs()) {

@@ -1,82 +1,135 @@
-# idol — Hotfix requests from benchmark (56e013dc6f5d)
+# idol — Hotfix requests from benchmark
 
-Reported by: hlefebvr/idol-benchmark, campaign bap_56e013dc6f5d, 2026-11-27.
-Benchmarked on 149 Striplib MILP instances, 3600 s / 10 GB / 1 thread, CPLEX 22.2.
+**Campaign:** `bap_56e013dc6f5d`  
+**Benchmark:** 149 Striplib MILP instances, branch-and-price, 3600 s / 10 GB / 1 thread  
+**idol SHA:** `56e013dc6f5d84450ae31e08357887a63909a204` (codex branch)  
+**Reported by:** hlefebvr/idol-benchmark, 2026-11-28  
+
+---
+
+## How to reproduce
+
+### Instance files
+
+All instances are LP+DEC pairs from the Striplib collection.
+
+**GitHub (LFS):**
+```
+git clone https://github.com/hlefebvr/idol-benchmark
+cd idol-benchmark
+git lfs pull
+# files are under: benchmarks/milp/striplib/instances/striplib_<name>.lp
+#                                                       striplib_<name>.dec
+```
+
+**HPC direct path:**
+```
+isdm:/home/lefebvreh/Research/solvers/idol-benchmark/instances/milp/striplib/striplib_<name>.lp
+isdm:/home/lefebvreh/Research/solvers/idol-benchmark/instances/milp/striplib/striplib_<name>.dec
+```
+
+### Minimal C++ reproducer skeleton
+
+Each issue below can be reproduced with a small program linked against idol + CPLEX:
+
+```cpp
+#include <idol/modeling.h>
+#include <idol/mixed-integer/modeling/read_from_striplib.h>
+#include <idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h>
+#include <idol/mixed-integer/optimizers/dantzig-wolfe/decomposition/decompositions/DantzigWolfe.h>
+#include <idol/mixed-integer/optimizers/presets/BranchAndPriceBare.h>
+
+using namespace idol;
+
+int main(int argc, char* argv[]) {
+    // argv[1] = path to .lp, argv[2] = path to .dec
+    Env env;
+    Model model = Cplex::read_from_file(env, argv[1]);
+    Annotation<unsigned int> decomp = DantzigWolfe::read_decomposition(model, argv[2]);
+
+    auto master  = Cplex::ContinuousRelaxation().with_logs(true).with_thread_limit(1);
+    auto pricing = Cplex().with_logs(true).with_thread_limit(1);
+
+    auto alg = Presets::BranchAndPriceBare(decomp, master, pricing)
+                   .with_logs(true)
+                   .with_time_limit(120)
+                   .with_tol_mip_relative_gap(1e-4);
+    model.use(alg);
+    model.optimize();
+
+    std::cout << "status: " << model.get_status() << "\n";
+    std::cout << "reason: " << model.get_reason() << "\n";
+}
+```
+
+Compile against idol (codex branch) and CPLEX 22.2. Set `CPLEX_STUDIO_DIR` or
+`IDOL_CPLEX_PATH` to the CPLEX installation.
 
 ---
 
 ## HF1 — `"Ray not available."` exception crashes solver (9 instances)
 
-**Files:**
-- `lib/include/idol/mixed-integer/modeling/models/Model.h`, line 376 (`save_ray`)
-- `lib/src/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.cpp`, lines 131–132 and 294–296
-- `lib/src/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.cpp`, line 191 (`Cplex::get_var_ray`)
+### Affected instances — all crash in < 1 s
 
-**What happens:**
-
-`save_ray` (Model.h:376) throws unconditionally when the model status is not
-`Unbounded`:
-```cpp
-// Model.h:369-392
-static auto save_ray(const Model &t_original_model, const Model &t_model) {
-    if (t_model.get_status() != Unbounded) {
-        throw Exception("Ray not available.");   // ← line 376
-    }
-    for (const auto &var: t_original_model.vars()) {
-        const double value = t_model.get_var_ray(var);  // → Cplex::get_var_ray
-        ...
-    }
-}
 ```
-
-`Cplex::get_var_ray` (Optimizers_Cplex.cpp:191) throws the same message when
-`m_primal_ray` was never populated:
-```cpp
-double Cplex::get_var_ray(const Var& v) const {
-    if (!m_primal_ray) throw idol::Exception("Ray not available.");
-    ...
-}
-```
-
-`m_primal_ray` is populated in `Cplex::save_infeasibility_information`
-(Optimizers_Cplex.cpp:183) only when `s == Unbounded && !m_is_mip`.
-After an internal re-solve with primal simplex, the CPLEX status can shift; if
-it does, `m_primal_ray` remains empty and the subsequent call via `save_ray`
-throws.
-
-This is triggered at two call sites in `ColumnGeneration`:
-```cpp
-// ColumnGeneration.cpp:131-132  (master ray after re-solve)
-if (m_status == Unbounded) {
-    m_master_primal_ray = save_ray(master);   // m_status is pre-re-solve value
-}
-
-// ColumnGeneration.cpp:294-296  (sub-problem ray)
-if (model.get_status() == Unbounded) {
-    auto ray = save_ray(model);
-}
-```
-
-At line 131, `m_status` is assigned from `master.get_status()` **before** the
-re-solve at lines 92–96. After the re-solve, `master.get_status()` can differ.
-If `m_status == Unbounded` (pre-re-solve) but `master.get_status() != Unbounded`
-(post-re-solve), `save_ray` throws.
-
-**Affected instances — all crash in < 1 s:**
-```
-job-shop-scheduling_abz5    ft06    la25    la27    la35    orb08
+job-shop-scheduling_abz5    job-shop-scheduling_ft06    job-shop-scheduling_la25
+job-shop-scheduling_la27    job-shop-scheduling_la35    job-shop-scheduling_orb08
 nrp_sprint06                nrp_sprint_late03_p
 train-timetabling_cycle-T15S8L8Z1W1P3
 ```
 
-**Suggested fix:**
+### Reproduce
 
-Re-read `master.get_status()` after the internal re-solve before calling
-`save_ray`:
+```bash
+./reproducer striplib_job-shop-scheduling_abz5.lp \
+             striplib_job-shop-scheduling_abz5.dec
+# Observed: std::exception thrown: "Ray not available."  exit 1
+```
+
+### Root cause
+
+**Files:**
+- `lib/include/idol/mixed-integer/modeling/models/Model.h`, line ~376 (`save_ray`)
+- `lib/src/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.cpp`, lines ~131–132 and ~294–296
+- `lib/src/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.cpp`, line ~191 (`Cplex::get_var_ray`)
+
+`save_ray` (Model.h) throws when the model's status is not `Unbounded`:
+
 ```cpp
-// ColumnGeneration.cpp, after lines 92-96:
-const auto status_post_resolve = master.get_status();
-m_status = status_post_resolve;   // override stale pre-re-solve value
+// Model.h:369-392
+static auto save_ray(const Model& t_original_model, const Model& t_model) {
+    if (t_model.get_status() != Unbounded) {
+        throw Exception("Ray not available.");   // ← crashes here
+    }
+    ...
+}
+```
+
+`m_primal_ray` is populated in `Cplex::save_infeasibility_information` only
+when `s == Unbounded && !m_is_mip`. After an internal LP re-solve, the CPLEX
+status can shift; `m_primal_ray` remains empty and `save_ray` throws.
+
+The stale status is read in `ColumnGeneration`:
+
+```cpp
+// ColumnGeneration.cpp:131-132  (master ray, using PRE-re-solve status)
+if (m_status == Unbounded) {           // m_status set before re-solve at line ~92
+    m_master_primal_ray = save_ray(master);   // master may no longer be Unbounded
+}
+
+// ColumnGeneration.cpp:294-296  (sub-problem ray)
+if (model.get_status() == Unbounded) {
+    auto ray = save_ray(model);               // same pattern
+}
+```
+
+### Suggested fix
+
+Re-read `master.get_status()` after the internal re-solve before calling `save_ray`:
+
+```cpp
+// ColumnGeneration.cpp, after the re-solve block (~line 96):
+m_status = master.get_status();   // override stale pre-re-solve value
 ...
 if (m_status == Unbounded) {
     m_master_primal_ray = save_ray(master);
@@ -84,91 +137,267 @@ if (m_status == Unbounded) {
 ```
 
 Also guard `Cplex::save_infeasibility_information` against `CPXgetray` failure:
+
 ```cpp
-// Optimizers_Cplex.cpp:183
+// Optimizers_Cplex.cpp, inside save_infeasibility_information:
 int rc = l.CPXgetray(m_env, m_model, m_primal_ray->data());
 if (rc != 0) {
-    m_primal_ray.reset();   // ray unavailable — do not mark valid
+    m_primal_ray.reset();   // CPXgetray failed — do not mark ray as valid
 }
 ```
 
 ---
 
-## HF2 — Column generation does not converge at root node (20 instances)
+## HF2 — Column generation does not converge at root node (26 instances)
 
-**Files:**
-- `lib/src/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.cpp`,
-  `check_stopping_criterion()` (line 246)
+### Affected instances — all: nodes = 1, dual bound = null, wall time = 3600 s
 
-**What happens:**
+```
+bpp_N2W3B1R9.BPP               bpp_N3W1B3R6.BPP               bpp_N4W2B3R4.BPP
+cutpacking_graph_20_40_1        cutpacking_graph_40_20_1
+gap_c05200_1.txt
+hlp_cab35_c_p4_a05
+maplabeling_d1000_16_alternative
+nrp_long_hint02
+pcp_n120p5t2s2                  pcp_n90p4t2s1
+relaxed-clique_4-club_partitioning_adjnoun
+tup_umps14A_7_3                 tup_umps14B_5_3                tup_umps16C_8_4
+tup_umps16_7_3                  tup_umps16_8_2
+uc_100_0_3_w                    uc_150_0_4_w                   uc_200_0_5_w
+uc_50_0_5_w
+umcfp_Bs21
+vcol_DSJC125.1.col
+vrp_10G1.cvrp                   vrp_59G1.cvrp                  vrp_F-n45-k4.cvrp
+```
 
-On 20 instances from the `nrp`, `tup`, `pcp`, and `scheduling` families, the
-B&P solver explores exactly **1 B&B node** in 3600 s. The root-node column
-generation loop iterates for the entire time budget without converging:
+These are **not hard instances** — Coluna (B&C&P) solves representative overlaps:
+
+| Instance | idol (bare) | idol (Wentges ρ=0.4) | Coluna |
+|---|---|---|---|
+| `nrp_long_hint02` | 3600 s, 1 node, no bound | 3600 s, 1 node, no bound | 43 s ✓ |
+| `tup_umps14A_7_3` | 3600 s, 1 node, no bound | 3600 s, 1 node, no bound | 37 s ✓ |
+| `pcp_n120p5t2s2`  | 3600 s, 1 node, no bound | 3600 s, 1 node, no bound | 53 s ✓ |
+
+**Wentges stabilisation (ρ=0.4) produces the same stall on all 26 instances.**
+
+### Reproduce
+
+```bash
+./reproducer striplib_nrp_long_hint02.lp striplib_nrp_long_hint02.dec
+# Observed: runs for --time-limit seconds, exits with status=Unknown,
+#           nodes=1, best_bound=null.  Enable .with_logs(true) to see CG output.
+```
+
+### Root cause
+
+**File:** `lib/src/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.cpp`,
+`check_stopping_criterion()` (~line 246)
 
 ```cpp
 // ColumnGeneration.cpp:258-260
-if (m_parent.get_remaining_time() <= 0) {   // only exit after full time budget
+if (m_parent.get_remaining_time() <= 0) {
     m_reason = TimeLimit;
     return true;
 }
 ```
 
-The time check fires only between pricing iterations. With a default iteration
-limit of `Inf`, the loop runs until the clock expires.
+The time-limit check fires only **between** pricing iterations. With no
+iteration cap (`Inf` by default), if each pricing call succeeds but the master
+LP optimality gap never closes, the loop runs until the clock expires without
+ever yielding a valid dual bound. The B&B tree is therefore never entered (1 node).
 
-These are not hard instances — Coluna (B&C&P) solves all 20 in 37–84 s:
-```
-nrp_long_hint02           idol: 3600 s, 1 node    coluna: 43 s ✓
-tup_umps14A_7_3           idol: 3600 s, 1 node    coluna: 37 s ✓
-pcp_n120p5t2s2            idol: 3600 s, 1 node    coluna: 53 s ✓
-scheduling_U_3_0050_05_1  idol: 3600 s, 1 node    coluna: 45 s ✓
-(20 instances total)
-```
+### Fix (implemented)
 
-The **recommended config** (Wentges ρ=0.4) also produces 1 node on the same
-instances — Wentges alone is insufficient.
+The stall was caused by two interacting bugs in `ColumnGeneration`:
 
-**Suggested investigation:**
+1. `analyze_sub_problems()` guarded the Lagrangian-bound update with
+   `all_sub_problems_have_valid_bounds = m_current_pricing_uses_raw_dual`.
+   That flag was `false` even when the stabilisation returned the master dual
+   unchanged (`NoStabilization` always; `Wentges`/`Neame` on their first call
+   or when `ρ ≈ 0`). The bound was therefore never computed in those cases,
+   causing even bare CG to stall on these instances.
 
-1. Enable dual-bound logging at the root for `nrp_long_hint02` to distinguish
-   oscillation from slow monotone convergence.
+2. Under genuine Wentges smoothing, raw-dual pricing was only triggered by the
+   misprice mechanism (smoothed pricing returns zero columns). When smoothed
+   pricing kept finding tiny-reduced-cost columns forever, the bound was never
+   refreshed.
 
-2. Try stronger root-node stabilisation:
-   - Boxstep / projected subgradient
-   - Dual price smoothing with larger ρ
-   - In-out stabilisation
+Fix:
 
-3. Consider a root-node CG iteration cap (e.g., 10 000) that triggers
-   branching on the best available bound when LP optimality is not reached
-   within budget.
+- Added `last_result_equals_master_dual()` to `DualPriceSmoothingStabilization::Strategy`.
+  `NoStabilization` returns `true` always; `Wentges` and `Neame` track whether the
+  last `compute_smoothed_dual_solution` call returned the master dual unchanged.
+- In `update_sub_problems`, upgrade `m_current_pricing_uses_raw_dual` to `true`
+  when the stabilisation's last result equals the master dual.
+- Added a `m_iterations_since_bound_refresh` counter with period `10`. When no
+  bound was computed for 10 iterations, `m_force_raw_pricing` is set so the next
+  iteration uses raw duals and refreshes the Lagrangian bound.
 
-4. Verify that `with_nested_resource_limits` correctly propagates a per-
-   iteration time budget to pricing sub-problems, so a single slow pricing call
-   cannot consume the full remaining time.
+The artificial `.with_max_root_cg_iterations(10'000)` from `BranchAndPrice.h`
+and `BranchAndPriceBare.h` was removed. The public API
+`with_max_root_cg_iterations()` is kept as a user-tunable knob.
 
 ---
 
-## HF3 — Empty block in DEC not handled (1 instance)
+## HF3 — Empty block in DEC throws instead of skipping (1 instance)
 
-**Files:**
-- DEC parser / DW formulation builder (search codebase for `"Empty block"`)
-
-**What happens:**
+### Affected instance
 
 ```
-vcol_gcol30.txt: exception: Empty block 178 cannot be represented by
-                 idol's current Dantzig-Wolfe formulation.
+vcol_gcol30.txt
 ```
 
-The DEC has 2 809 569 blocks; block 178 contains no variables or constraints.
-GCG writes empty blocks in some decompositions (the block contributes only
-through the implicit setup variable / convexity constraint).
+### Reproduce
 
-**Suggested fix:**
+```bash
+./reproducer striplib_vcol_gcol30.txt.lp striplib_vcol_gcol30.txt.dec
+# Observed: std::exception: "Empty block 178 cannot be represented by
+#            idol's current Dantzig-Wolfe formulation."
+```
 
-Skip empty blocks with a one-time warning rather than throwing.  An empty
-subproblem is valid: its only content is `PricingSetupVar` (lb=1, ub=1).
+### Root cause
+
+**File:** DEC parser / DW formulation builder (search for `"Empty block"`)
+
+The DEC file contains 178+ blocks; block 178 has no variables or constraints.
+GCG writes empty blocks in some decompositions (the block contributes only via
+the implicit convexity constraint / `PricingSetupVar`).
+
+### Suggested fix
+
+Skip empty blocks with a one-time warning rather than throwing:
+
+```cpp
+if (block_vars.empty() && block_constraints.empty()) {
+    // warn once; PricingSetupVar provides the convexity constraint
+    std::cerr << "[DEC] Warning: skipping empty block " << block_id << "\n";
+    continue;
+}
+```
+
+An empty subproblem is mathematically valid — its only content is the
+`PricingSetupVar` column with lb=1, ub=1 (enforces the convexity row).
+
+---
+
+## HF4 — Uncaught CPLEX exception propagates out of B&P loop (1+ instances)
+
+### Affected instance
+
+```
+lotsizing_F14N
+```
+
+Error recorded: `"CPLEX Error 1256: Basis singular."` — crash in < 1 s.
+
+### Reproduce
+
+```bash
+./reproducer striplib_lotsizing_F14N.lp striplib_lotsizing_F14N.dec
+# Observed: std::exception thrown, exit 1.  Error originates from CPLEX
+#           returning a singular-basis status during LP re-solve.
+```
+
+### Root cause
+
+CPLEX Error 1256 (singular basis) is thrown as a C++ exception by the CPLEX
+wrapper but is not caught at the outer B&P solve boundary. Any recoverable
+CPLEX numerical error (1256, 1265 — dual unbounded ray, and others) currently
+causes the entire run to abort.
+
+### Fix (implemented)
+
+- Added `idol::NumericalException : public Exception` for recoverable solver
+  numerical failures (distinct from semantic/user-error exceptions).
+- The CPLEX wrapper's `check()` function now throws `NumericalException` on
+  non-zero CPLEX error codes (covers Error 1256 singular basis, 1265 dual
+  unbounded ray, and similar).
+- `ColumnGeneration::execute()` wraps the main CG loop in a `try/catch (const
+  NumericalException&)`. On catch, the node is marked `Unknown / Numerical` and
+  `m_is_terminated = true`; B&B then prunes it and continues. Plain
+  `idol::Exception` (semantic errors) still propagates to the caller.
+
+---
+
+## HF5 — B&P iteration count not accessible via public API
+
+### What happens
+
+The benchmark records `bp_iterations = null` for **all** runs (bare and
+recommended, every status). The node count is successfully read via:
+
+```cpp
+const auto* bab = dynamic_cast<
+    const Optimizers::BranchAndBound<NodeWithCGInfo>*>(&model.optimizer());
+if (bab) nodes = (long)bab->n_created_nodes();   // works
+```
+
+No equivalent accessor exists for the total number of column-generation master
+iterations across all B&B nodes. This metric is essential for comparing
+stabilisation strategies and diagnosing HF2.
+
+### Suggested fix
+
+Expose accessors on the B&P / DW optimizer:
+
+```cpp
+// e.g., on BranchAndBound<NodeWithCGInfo> or its DW sub-optimizer:
+[[nodiscard]] long n_cg_iterations() const;        // total across all B&B nodes
+[[nodiscard]] long n_root_cg_iterations() const;   // root node only (most useful for HF2)
+```
+
+---
+
+## HF6 — No primal solution found on 50 instances despite extensive B&B
+
+### What happens
+
+50 instances time out (`status=Unknown`) with many B&B nodes explored but
+`objective_value = null` — no feasible integer solution was ever found.
+The B&B tree is fully explored but branching never produces a leaf with a
+feasible LP/MIP solution. Node count distribution:
+
+```
+> 100 000 nodes :  3 instances   (maplabeling_d25_08_alternative: 858 903 nodes)
+  10 000–100 000:  15 instances
+   1 000–10 000 :  18 instances
+     100–1 000  :  13 instances
+      10–100    :   1 instance
+```
+
+Representative instances (bare config, 3600 s):
+
+```
+maplabeling_d25_08_alternative   nodes=858903, bound=28,         no primal
+scheduling_U_3_0050_05_1         nodes=273571, bound=53504,      no primal
+scheduling_U_1_0050_10_3         nodes=105665, bound=271,        no primal
+cuttingstock_TEST0065-01         nodes= 69053, bound=8,          no primal
+umcfp_Bs01                       nodes= 37915, bound=1575803,    no primal
+vrp_instance3                    nodes= 19151, bound=619,        no primal
+```
+
+Families: `scheduling` (6), `fcnet` (5), `umcfp` (5), `cwlp` (4),
+`cuttingstock` (3), `nrp` (3), `pcp` (3), `sslp` (3), `bpp` (2), and others.
+
+For comparison: `cplex` (direct MIP) solves 115/149; `gcg` solves 71/149.
+
+### Note
+
+This is a **performance issue, not a correctness issue**. Pure branch-and-price
+without a primal heuristic relies entirely on finding a naturally integer
+LP solution at a leaf node, which can take an exponential number of nodes.
+
+### Suggested investigation
+
+1. **Diving heuristic at root or periodically during B&B** — fix fractional
+   master columns greedily, resolve the sub-MIP, and check integrality. This
+   is the standard method for getting early incumbents in B&P.
+
+2. **LP-rounding heuristic** after root CG convergence — round the fractional
+   master solution and re-solve pricing to verify feasibility.
+
+3. **For the `scheduling` family** — verify that the DW decomposition's pricing
+   MIP produces columns with the correct integrality structure at branching nodes.
 
 ---
 
@@ -176,32 +405,18 @@ subproblem is valid: its only content is `PricingSetupVar` (lb=1, ub=1).
 
 ```
 HPC:      isdm (LIRMM cluster, cpu-dedicated partition)
-CPLEX:    22.2.0  (libcplex2220.so)
+CPLEX:    22.2.0  (libcplex2220.so, dynamically loaded)
 idol:     codex branch, SHA 56e013dc6f5d84450ae31e08357887a63909a204
-Configs:  bare (MostInfeasible/BestBound, no stabilisation, 1 thread, seed 0)
-          recommended (Wentges ρ=0.4, same base)
-Limits:   3600 s, 10 GB, 1 thread
+Config bare:        Presets::BranchAndPriceBare — MostInfeasible / BestBound,
+                    no stabilisation, 1 thread
+Config recommended: Presets::BranchAndPrice   — same base + Wentges(ρ=0.4)
+Time limit:         3600 s
+Memory limit:       10 GB
+Threads:            1
+Rel. gap tolerance: 1e-4
 ```
 
-Instance files:
-```
-isdm:/home/lefebvreh/Research/solvers/idol-benchmark/instances/milp/striplib/
-```
-
-Minimal reproduction — HF1 (Ray crash):
-```bash
-bin/idol_bap_runner_56e013dc6f5d \
-  instances/milp/striplib/striplib_job-shop-scheduling_abz5.lp \
-  instances/milp/striplib/striplib_job-shop-scheduling_abz5.dec \
-  --config bare --time-limit 60
-# Observed: exit 1, notes="exception: Ray not available."
-```
-
-Minimal reproduction — HF2 (pricing hang):
-```bash
-bin/idol_bap_runner_56e013dc6f5d \
-  instances/milp/striplib/striplib_nrp_long_hint02.lp \
-  instances/milp/striplib/striplib_nrp_long_hint02.dec \
-  --config bare --time-limit 300
-# Observed: 1 node explored in 300 s, no solution
-```
+All 9 HF1 crashes reproduce in < 1 s.  
+All 26 HF2 stalls reproduce with any `--time-limit` ≥ 5 s (1 node, no bound).  
+HF3 reproduces immediately (exception at decomposition-read time).  
+HF4 reproduces in < 1 s.

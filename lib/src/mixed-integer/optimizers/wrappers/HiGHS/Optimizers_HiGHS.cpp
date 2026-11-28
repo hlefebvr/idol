@@ -657,6 +657,14 @@ double idol::Optimizers::HiGHS::get_best_bound() const {
     if (m_solution_status == Unbounded) {
         return -Inf;
     }
+    if (m_solution_status == Loaded || m_solution_status == InfOrUnbnd) {
+        return -Inf;
+    }
+    const bool is_mip = !m_continuous_relaxation && std::any_of(parent().vars().begin(), parent().vars().end(),
+        [this](const auto& var) { return parent().get_var_type(var) != Continuous; });
+    if (!is_mip) {
+        return -Inf;
+    }
     auto& lib = get_dynamic_lib();
     double result;
     lib.Highs_getDoubleInfoValue(m_model, "mip_dual_bound", &result);
@@ -697,11 +705,11 @@ double idol::Optimizers::HiGHS::get_ctr_farkas(const Ctr &t_ctr) const {
 }
 
 double idol::Optimizers::HiGHS::get_relative_gap() const {
-    return 0;
+    return relative_gap(get_best_bound(), get_best_obj());
 }
 
 double idol::Optimizers::HiGHS::get_absolute_gap() const {
-    return 0;
+    return absolute_gap(get_best_bound(), get_best_obj());
 }
 
 unsigned int idol::Optimizers::HiGHS::get_n_solutions() const {

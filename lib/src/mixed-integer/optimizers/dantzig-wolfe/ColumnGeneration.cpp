@@ -32,6 +32,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     m_force_raw_pricing = false;
     m_numerical_policy = Default;
     m_n_iterations_without_generating_column = 0;
+    m_iterations_since_bound_refresh = 0;
     initialize_sub_problem_phases();
     m_parent.m_stabilization->initialize();
 
@@ -74,11 +75,13 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
 
         }
 
-    } catch (const Exception& e) {
+    } catch (const NumericalException& e) {
         // A recoverable solver numerical error (e.g., CPLEX Error 1256 singular
         // basis, 1265 dual-unbounded ray) occurred during the master or pricing
         // solve. Treat this node as numerically failed so the B&B can prune it
-        // and continue rather than crashing the whole run.
+        // and continue rather than crashing the whole run. Semantic exceptions
+        // (unsupported configuration, invalid user input) are plain Exception
+        // and propagate to the caller.
         m_status = Unknown;
         m_reason = Numerical;
         m_is_terminated = true;
@@ -179,9 +182,17 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::update_sub_p
     auto& formulation = m_parent.m_formulation;
     assert(m_master_dual_solution.has_value());
     m_current_pricing_uses_raw_dual = m_current_iteration_is_using_farkas || m_numerical_policy >= NoDualSmoothing || m_force_raw_pricing;
-    m_pricing_dual_solution = m_current_pricing_uses_raw_dual ?
-        m_master_dual_solution.value() :
-        m_parent.m_stabilization->compute_smoothed_dual_solution(m_master_dual_solution.value());
+    if (m_current_pricing_uses_raw_dual) {
+        m_pricing_dual_solution = m_master_dual_solution.value();
+    } else {
+        m_pricing_dual_solution = m_parent.m_stabilization->compute_smoothed_dual_solution(m_master_dual_solution.value());
+        // If the stabilisation returned the master dual unchanged (NoStabilization,
+        // or Wentges/Neame on their first call), pricing yields a valid Lagrangian
+        // bound and should be treated as raw-dual for bound-computation purposes.
+        if (m_parent.m_stabilization->last_result_equals_master_dual()) {
+            m_current_pricing_uses_raw_dual = true;
+        }
+    }
     m_force_raw_pricing = false;
 
     for (unsigned int i = 0, n = formulation.n_sub_problems() ; i < n ; ++i) {
@@ -252,17 +263,29 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
 
     }
 
-    if (!all_sub_problems_have_valid_bounds || m_current_iteration_is_using_farkas) {
-        return;
-    }
+    if (all_sub_problems_have_valid_bounds && !m_current_iteration_is_using_farkas) {
 
-    assert(m_master_dual_solution.has_value());
-    const double iter_lower_bound = m_master_dual_solution->objective_value() + sum_reduced_costs;
+        assert(m_master_dual_solution.has_value());
+        const double iter_lower_bound = m_master_dual_solution->objective_value() + sum_reduced_costs;
 
-    if (m_best_bound <= iter_lower_bound) {
+        if (m_best_bound <= iter_lower_bound) {
 
-        m_parent.m_stabilization->update_stability_center(m_master_dual_solution.value());
-        m_best_bound = std::min(m_best_obj, iter_lower_bound);
+            m_parent.m_stabilization->update_stability_center(m_master_dual_solution.value());
+            m_best_bound = std::min(m_best_obj, iter_lower_bound);
+
+        }
+
+        m_iterations_since_bound_refresh = 0;
+
+    } else if (!m_current_iteration_is_using_farkas) {
+
+        // Pricing used smoothed duals that genuinely differ from the master dual,
+        // so the Lagrangian bound could not be computed this iteration. If this
+        // persists, force a raw-dual pricing pass on the next iteration to refresh
+        // the bound and prevent indefinite stalling under dual price smoothing.
+        if (++m_iterations_since_bound_refresh >= m_bound_refresh_period) {
+            m_force_raw_pricing = true;
+        }
 
     }
 

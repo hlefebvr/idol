@@ -801,7 +801,8 @@ void idol::Optimizers::GLPK::save_milp_solution_status(int t_result) {
 
     if (t_result == GLP_ETMLIM) { limited_status(TimeLimit); return; }
     if (t_result == GLP_ESTOP) { limited_status(Interrupted); return; }
-    if (t_result != 0 && t_result != GLP_EMIPGAP && t_result != GLP_ENOPFS) {
+    if (t_result == GLP_EMIPGAP) { limited_status(ObjLimit); return; }
+    if (t_result != 0 && t_result != GLP_ENOPFS) {
         limited_status(Numerical);
         return;
     }
@@ -873,7 +874,10 @@ double idol::Optimizers::GLPK::get_best_obj() const {
 }
 
 double idol::Optimizers::GLPK::get_best_bound() const {
-    return get_best_obj();
+    if (m_solution_status == Optimal || m_solution_status == Infeasible || m_solution_status == Unbounded) {
+        return get_best_obj();
+    }
+    return -Inf;
 }
 
 double idol::Optimizers::GLPK::get_var_primal(const Var &t_var) const {
@@ -912,11 +916,11 @@ double idol::Optimizers::GLPK::get_ctr_farkas(const Ctr &t_ctr) const {
 }
 
 double idol::Optimizers::GLPK::get_relative_gap() const {
-    return 0;
+    return relative_gap(get_best_bound(), get_best_obj());
 }
 
 double idol::Optimizers::GLPK::get_absolute_gap() const {
-    return 0;
+    return absolute_gap(get_best_bound(), get_best_obj());
 }
 
 unsigned int idol::Optimizers::GLPK::get_n_solutions() const {

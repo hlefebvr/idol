@@ -97,7 +97,11 @@ double idol::Optimizers::Osi::get_best_obj() const {
 }
 
 double idol::Optimizers::Osi::get_best_bound() const {
-    return get_best_obj(); // TODO handle this properly...
+    const auto status = get_status();
+    if (status == Optimal || status == Infeasible || status == Unbounded) {
+        return get_best_obj();
+    }
+    return -Inf;
 }
 
 double idol::Optimizers::Osi::get_var_primal(const idol::Var &t_var) const {
@@ -144,11 +148,11 @@ double idol::Optimizers::Osi::get_ctr_farkas(const idol::Ctr &t_ctr) const {
 }
 
 double idol::Optimizers::Osi::get_relative_gap() const {
-    throw Exception("Not implemented Osi::get_relative_gap");
+    return relative_gap(get_best_bound(), get_best_obj());
 }
 
 double idol::Optimizers::Osi::get_absolute_gap() const {
-    throw Exception("Not implemented Osi::get_absolute_gap");
+    return absolute_gap(get_best_bound(), get_best_obj());
 }
 
 unsigned int idol::Optimizers::Osi::get_n_solutions() const {

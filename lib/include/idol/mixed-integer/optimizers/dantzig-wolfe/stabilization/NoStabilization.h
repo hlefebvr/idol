@@ -31,6 +31,8 @@ public:
             return t_master_dual;
         }
 
+        [[nodiscard]] bool last_result_equals_master_dual() const override { return true; }
+
     };
 
     DualPriceSmoothingStabilization::Strategy *operator()() const override {

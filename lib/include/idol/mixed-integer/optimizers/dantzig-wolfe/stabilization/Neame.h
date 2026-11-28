@@ -19,11 +19,13 @@ public:
     class Strategy : public DualPriceSmoothingStabilization::Strategy {
         double m_factor;
         std::optional<DualPoint> m_smoothed_dual;
+        bool m_last_result_equals_master = true;
     public:
         explicit Strategy(double t_initial_factor) : m_factor(t_initial_factor) {}
 
         void initialize() override {
             m_smoothed_dual.reset();
+            m_last_result_equals_master = true;
         }
 
         void update_stability_center(const DualPoint &t_master_dual) override {
@@ -34,12 +36,16 @@ public:
 
             if (!m_smoothed_dual.has_value() || m_factor <= 1e-4) {
                 m_smoothed_dual = t_master_dual;
+                m_last_result_equals_master = true;
             } else {
                 m_smoothed_dual = m_factor * m_smoothed_dual.value() + (1. - m_factor) * t_master_dual;
+                m_last_result_equals_master = false;
             }
 
             return m_smoothed_dual.value();
         }
+
+        [[nodiscard]] bool last_result_equals_master_dual() const override { return m_last_result_equals_master; }
 
     };
 

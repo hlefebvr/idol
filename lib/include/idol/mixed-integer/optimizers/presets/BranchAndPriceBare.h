@@ -25,8 +25,7 @@ inline BranchAndBound<NodeWithCGInfo> BranchAndPriceBare(
     auto column_generation = DantzigWolfeDecomposition(std::move(t_decomposition))
             .with_master_optimizer(t_master_optimizer)
             .with_default_sub_problem_spec(
-                    DantzigWolfe::SubProblem().add_optimizer(t_pricing_optimizer))
-            .with_max_root_cg_iterations(10'000);
+                    DantzigWolfe::SubProblem().add_optimizer(t_pricing_optimizer));
 
     const auto branch_and_bound = BranchAndBound<NodeWithCGInfo>()
             .with_branching_rule(MostInfeasible())

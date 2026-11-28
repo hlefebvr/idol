@@ -72,11 +72,11 @@ double idol::Optimizers::Bilevel::MibS::get_ctr_farkas(const idol::Ctr &t_ctr) c
 }
 
 double idol::Optimizers::Bilevel::MibS::get_relative_gap() const {
-    throw Exception("Not implemented.");
+    return relative_gap(get_best_bound(), get_best_obj());
 }
 
 double idol::Optimizers::Bilevel::MibS::get_absolute_gap() const {
-    throw Exception("Not implemented.");
+    return absolute_gap(get_best_bound(), get_best_obj());
 }
 
 unsigned int idol::Optimizers::Bilevel::MibS::get_n_solutions() const {

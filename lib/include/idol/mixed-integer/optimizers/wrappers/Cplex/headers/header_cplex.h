@@ -42,6 +42,7 @@ typedef int (IDOL_CPXPUBLIC *idol_cpx_info_callback)(CPXCENVptr, void*, int, voi
 #define idol_CPX_STAT_INFEASIBLE 3
 #define idol_CPX_STAT_INForUNBD 4
 #define idol_CPX_STAT_OPTIMAL_INFEAS 5
+#define idol_CPX_STAT_NUM_BEST 6
 #define idol_CPX_STAT_ABORT_IT_LIM 10
 #define idol_CPX_STAT_ABORT_TIME_LIM 11
 #define idol_CPX_STAT_ABORT_OBJ_LIM 12
@@ -49,6 +50,7 @@ typedef int (IDOL_CPXPUBLIC *idol_cpx_info_callback)(CPXCENVptr, void*, int, voi
 #define idol_CPX_STAT_ABORT_PRIM_OBJ_LIM 21
 #define idol_CPX_STAT_ABORT_DUAL_OBJ_LIM 22
 #define idol_CPX_STAT_FEASIBLE 23
+#define idol_CPX_STAT_ABORT_DETTIME_LIM 25
 
 #define idol_CPXMIP_OPTIMAL 101
 #define idol_CPXMIP_OPTIMAL_TOL 102

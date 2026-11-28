@@ -162,6 +162,8 @@ TEST_CASE("MILP: time limit without incumbent is unknown", "[MILP]") {
     CHECK(model.get_status() == Unknown);
     CHECK(model.get_reason() == TimeLimit);
     CHECK(is_pos_inf(model.get_best_obj()));
+    CHECK(is_pos_inf(model.optimizer().get_relative_gap()));
+    CHECK(is_pos_inf(model.optimizer().get_absolute_gap()));
     CHECK_THROWS_WITH(save_primal(model), "Primal values not available.");
     CHECK_THROWS_WITH(save_farkas(model), "Farkas certificate not available.");
 }

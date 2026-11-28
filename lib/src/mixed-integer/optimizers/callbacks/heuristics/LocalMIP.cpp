@@ -154,7 +154,7 @@ idol::Heuristics::impl::call_local_mip(const Model& t_model, const PrimalPoint& 
 
         result = std::make_optional<PrimalPoint>();
         result->set_status(Feasible);
-        result->set_reason(Proved);
+        result->set_reason(NotSpecified);
         result->set_objective_value(obj);
 
         for (unsigned int j = 0; j < n_vars; ++j) {

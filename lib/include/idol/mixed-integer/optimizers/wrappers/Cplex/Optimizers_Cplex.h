@@ -110,6 +110,7 @@ public:
     addcols_t CPXaddcols=nullptr; addrows_t CPXaddrows=nullptr; addqconstr_t CPXaddqconstr=nullptr; addsos_t CPXaddsos=nullptr;
     using opt_t=int(IDOL_CPXPUBLIC*)(CPXCENVptr,CPXLPptr); opt_t CPXlpopt=nullptr, CPXmipopt=nullptr, CPXqpopt=nullptr, CPXbaropt=nullptr;
     using stat_t=int(IDOL_CPXPUBLIC*)(CPXCENVptr,CPXCLPptr); stat_t CPXgetstat=nullptr;
+    using solninfo_t=int(IDOL_CPXPUBLIC*)(CPXCENVptr,CPXCLPptr,int*,int*,int*,int*); solninfo_t CPXsolninfo=nullptr;
     using getdbl_t=int(IDOL_CPXPUBLIC*)(CPXCENVptr,CPXCLPptr,double*); getdbl_t CPXgetobjval=nullptr,CPXgetbestobjval=nullptr,CPXgetmiprelgap=nullptr;
     using getvec_t=int(IDOL_CPXPUBLIC*)(CPXCENVptr,CPXCLPptr,double*,int,int); getvec_t CPXgetx=nullptr,CPXgetpi=nullptr,CPXgetdj=nullptr;
     using getray_t=int(IDOL_CPXPUBLIC*)(CPXCENVptr,CPXCLPptr,double*); getray_t CPXgetray=nullptr;

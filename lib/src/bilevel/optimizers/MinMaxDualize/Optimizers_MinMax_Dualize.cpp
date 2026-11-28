@@ -265,7 +265,7 @@ void idol::Optimizers::Bilevel::MinMax::Dualize::solve_lower_level() {
 
     if (m_lower_level_model->get_status() != Optimal) {
         set_status(Unknown);
-        set_reason(NotSpecified);
+        set_reason(m_lower_level_model->get_reason());
         return;
     }
 

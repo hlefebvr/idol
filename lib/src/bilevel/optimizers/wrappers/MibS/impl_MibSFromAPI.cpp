@@ -62,7 +62,7 @@ idol::impl::MibSFromAPI::MibSFromAPI(const idol::Model &t_model,
 }
 
 idol::impl::MibSFromAPI::~MibSFromAPI() {
-#ifdef IDOL_USE_CPLEX
+#ifdef IDOL_USE_MIBS
     auto* mibs = static_cast<IdolMibSModel*>(m_mibs);
     delete mibs;
     m_mibs = nullptr;

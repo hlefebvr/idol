@@ -110,6 +110,8 @@ TEST_CASE("LP: bounded model has a unique optimum", "[LP]") {
     CHECK(model.get_status() == Optimal);
     CHECK(model.get_best_obj() == -10_a);
     CHECK(model.get_best_bound() == -10_a);
+    CHECK(model.optimizer().get_relative_gap() == 0_a);
+    CHECK(model.optimizer().get_absolute_gap() == 0_a);
     CHECK(model.get_var_primal(x) == 2_a);
     CHECK(model.get_var_primal(y) == 2_a);
 }

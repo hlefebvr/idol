@@ -813,6 +813,10 @@ double idol::Optimizers::Gurobi::get_best_bound() const {
         return +Inf;
     }
 
+    if (status == Loaded || status == InfOrUnbnd) {
+        return -Inf;
+    }
+
     auto& lib = get_dynamic_lib();
 
     int solution_index = 0;
@@ -926,11 +930,11 @@ double idol::Optimizers::Gurobi::get_ctr_farkas(const Ctr &t_ctr) const {
 }
 
 double idol::Optimizers::Gurobi::get_relative_gap() const {
-    throw Exception("Not implemented");
+    return relative_gap(get_best_bound(), get_best_obj());
 }
 
 double idol::Optimizers::Gurobi::get_absolute_gap() const {
-    throw Exception("Not implemented");
+    return absolute_gap(get_best_bound(), get_best_obj());
 }
 
 unsigned int idol::Optimizers::Gurobi::get_n_solutions() const {

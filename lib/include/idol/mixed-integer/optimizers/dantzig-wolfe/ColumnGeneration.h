@@ -37,6 +37,12 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     bool m_current_pricing_uses_raw_dual = true;
     bool m_force_raw_pricing = false;
 
+    // Without this periodic refresh, Wentges-style dual smoothing can keep
+    // generating columns from smoothed duals forever while never producing a
+    // valid Lagrangian bound (see analyze_sub_problems).
+    unsigned int m_iterations_since_bound_refresh = 0;
+    static constexpr unsigned int m_bound_refresh_period = 10;
+
     void initialize_sub_problem_phases();
     void solve_dual_master();
     [[nodiscard]] bool gap_is_closed() const;

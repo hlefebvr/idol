@@ -254,7 +254,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
 
     if (status != Optimal) {
         if (reason == TimeLimit) {
-            set_status(is_pos_inf(get_best_obj()) ? Infeasible : Feasible);
+            set_status(is_pos_inf(get_best_obj()) ? Unknown : Feasible);
         } else {
             set_status(status);
         }
@@ -302,7 +302,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_
         return;
     }
 
-    set_status(is_pos_inf(get_best_obj()) ? Infeasible : Feasible);
+    set_status(is_pos_inf(get_best_obj()) ? Unknown : Feasible);
 
     if (get_remaining_time() == 0) {
         if (get_param_logs()) {

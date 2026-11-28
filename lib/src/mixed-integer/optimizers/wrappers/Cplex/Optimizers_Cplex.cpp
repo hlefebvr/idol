@@ -94,7 +94,7 @@ std::string Cplex::get_version() {
 void Cplex::check(int error) const {
     if (!error) return;
     char buffer[4096] = {}; auto& lib = get_dynamic_lib(); lib.CPXgeterrorstring(m_env, error, buffer);
-    throw idol::Exception("CPLEX exception [" + std::to_string(error) + "]: " + buffer);
+    throw idol::NumericalException("CPLEX exception [" + std::to_string(error) + "]: " + buffer);
 }
 
 Cplex::Cplex(const idol::Model& model, bool relaxation)
